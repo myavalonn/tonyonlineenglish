@@ -37,8 +37,7 @@
     }
     .pill-btn:hover { background-color: rgba(255,255,255,0.1); }
     .social-icon { height: 18px; width: auto; display: block; }
-    .hamburger-icon { width: 20px; height: auto; margin-right: 5px; cursor: pointer; filter: invert(1); }
-
+    .hamburger-icon { font-size: 28px;  /* 讓它大一點，比較好按 */ color: #FFFFFF;  /* 設定為白色 */ margin-right: 15px; cursor: pointer; display: flex; align-items: center; /* 這裡絕對不能寫 filter: invert(1) */ }
     @media (max-width: 500px) {
         .pill-btn span { display: none; }
         .pill-btn { padding: 8px; border-radius: 50%; width: 35px; height: 35px; justify-content: center; }
