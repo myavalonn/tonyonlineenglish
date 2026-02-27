@@ -1,0 +1,1932 @@
+<!-- VERSION 11.37 (Theme: Navy #0d1ea1 + Multi-Mode Purple #8B5CF6) -->
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <title>預約時段</title>
+  <style>
+    /* === 核心變數 === */
+    :root {
+      --bg-color: #ffffff;
+      --cal-bg-color: #f8f9fa;
+      --text-main: #111111;
+     
+      --pill-inactive: #f3f4f6;
+      
+      /* === SINGLE MODE (Navy #0d1ea1) === */
+      --pill-active: #0d1ea1; 
+      --blue-main: #0d1ea1;
+      --blue-gradient: linear-gradient(135deg, #0d1ea1, #2c4870);
+      --active-gradient: linear-gradient(135deg, #0d1ea1, #0f1a2e);
+      --blue-glow: rgba(26, 43, 76, 0.6);
+      
+      /* === MULTI MODE (Purple #8B5CF6) === */
+      --purple-main: #8B5CF6;
+      --purple-gradient: linear-gradient(135deg, #8B5CF6, #7C3AED);
+      --purple-glow: rgba(139, 92, 246, 0.6);
+
+      --card-morning: #f0f4f8; /* Adjusted for Blue Theme */
+      --card-afternoon: #eefaff;
+      --card-evening: #faf0ff;
+     
+      /* Default Selection (Single Mode) */
+      --selected-bg: #0d1ea1;
+      --selected-color: #ffffff;
+    }
+   
+    html, body {
+        margin: 0 !important;
+        padding: 0 !important;
+        background-color: var(--bg-color);
+        color: var(--text-main);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        -webkit-tap-highlight-color: transparent;
+        overflow-x: hidden;
+        overscroll-behavior-y: none;
+        min-height: 100vh;
+    }
+   
+    button { font-family: inherit; outline: none; -webkit-tap-highlight-color: transparent;}
+   
+    /* === MODIFIED: Hide Old Main Container Globally === */
+    .container#p-main {
+        display: none !important; /* Force hide the pill/list view on all devices */
+    }
+
+    /* Header (Kept for reference but hidden via container) */
+    .header-section {
+        position: relative;
+        background: rgba(255,255,255,0.98);
+        z-index: 80;
+        padding-top: 0 !important;
+        margin-top: 0 !important;
+        padding-bottom: 5px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+   
+    .top-info-bar {
+        position: relative;
+        display: flex; justify-content: center; align-items: center;
+        margin-top: 8px !important; margin-bottom: 5px; height: 30px;
+        padding: 0 100px 0 15px; box-sizing: border-box;
+    }
+    .full-date-display {
+        text-align: center; color: var(--text-main);
+        font-size: 19px;
+        font-weight: 800; letter-spacing: 0.5px;
+        margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.2;
+    }
+   
+    .duration-hint {
+        position: absolute; right: 15px; top: 50%; transform: translateY(-50%);
+        font-size: 11px; font-weight: 800; letter-spacing: 0.5px; color: #ffffff;
+        background: var(--active-gradient);
+        box-shadow: 0 2px 8px var(--blue-glow);
+        padding: 5px 12px; border-radius: 20px; border: none; white-space: nowrap;
+    }
+   
+    .controls-container {
+        display: flex; justify-content: center; align-items: center; padding-bottom: 5px;
+        flex-direction: row; gap: 15px;
+    }
+
+    /* === ANIMATED TOGGLE SWITCH STYLE === */
+    @keyframes spin-border {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+
+    .toggle-wrapper {
+        position: relative;
+        display: flex; align-items: center;
+        width: 190px;
+        height: 42px; 
+        background: transparent; 
+        border-radius: 25px;
+        cursor: pointer;
+        overflow: hidden;
+        z-index: 1; 
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15); 
+        /* Setup for pulse animation */
+        transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease;
+    }
+
+    /* === Pulse Emphasis (Intro Animation) === */
+    .toggle-wrapper.pulse-emphasis {
+        transform: scale(1.15); /* 放大 1.15 倍 */
+        /* REQ: Glow #8B5CF6 (Purple) */
+        box-shadow: 0 0 25px rgba(139, 92, 246, 0.8); 
+        z-index: 100; /* 確保在最上層 */
+    }
+
+    .toggle-wrapper::before {
+        content: '';
+        position: absolute;
+        top: -100%; left: -100%;
+        width: 300%; height: 300%;
+        /* REQ: Animation Colors #0d1ea1 (Navy) and #8B5CF6 (Purple) */
+        background: conic-gradient(
+            from 0deg,
+            #0d1ea1, 
+            #8B5CF6, 
+            #0d1ea1, 
+            #8B5CF6, 
+            #0d1ea1
+        );
+        animation: spin-border 3s linear infinite;
+        z-index: -2;
+    }
+
+    .toggle-wrapper::after {
+        content: '';
+        position: absolute;
+        inset: 3px; 
+        background: #f0f0f0;
+        border-radius: 25px;
+        z-index: -1;
+    }
+
+    .toggle-bg {
+        position: absolute;
+        top: 5px; 
+        left: 5px;
+        height: 32px; 
+        width: calc(50% - 5px); 
+        background: var(--active-gradient);
+        border-radius: 20px;
+        transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), background 0.3s, box-shadow 0.3s;
+        box-shadow: 0 2px 5px var(--blue-glow);
+        z-index: 1;
+    }
+
+    .toggle-labels {
+        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        display: flex; z-index: 2;
+    }
+    .toggle-label {
+        flex: 1; display: flex; justify-content: center; align-items: center;
+        font-size: 15px; 
+        font-weight: 800; 
+        color: #000000; 
+        transition: color 0.3s;
+    }
+
+    /* Single Mode (Navy) */
+    .toggle-wrapper.single .toggle-bg { 
+        transform: translateX(0); 
+        background: var(--active-gradient);
+        box-shadow: 0 2px 5px var(--blue-glow);
+    }
+    
+    /* Multi Mode (Purple) */
+    .toggle-wrapper.multi .toggle-bg { 
+        transform: translateX(102%); 
+        background: var(--purple-gradient); 
+        box-shadow: 0 2px 5px var(--purple-glow);
+    }
+    
+    .toggle-wrapper.single .label-single { color: #fff; }
+    .toggle-wrapper.multi .label-multi { color: #fff; }
+
+    .cal-btn-trigger { 
+        padding: 8px 16px; border-radius: 20px; border: 1px solid #ddd;
+        background: #fff; color: #333; cursor: pointer;
+        font-size: 15px; font-weight: bold; display: flex; align-items: center; justify-content: center;
+        white-space: nowrap; height: 40px;
+    }
+
+    /* === Info/Rule Icon Styles (UPDATED: Black Bold with Blue Glow) === */
+    .rule-info-wrapper {
+        position: relative;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .rule-info-btn {
+        width: 30px; height: 30px;
+        border-radius: 50%;
+        /* REQ: Black Bold */
+        border: 2px solid #000000;
+        color: #000000;
+        background: #fff;
+        font-weight: 900; /* Extra Bold */
+        font-size: 18px;
+        font-family: "Times New Roman", serif;
+        display: flex; align-items: center; justify-content: center;
+        cursor: pointer;
+        transition: 0.2s, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .rule-info-btn:active { transform: scale(0.9); background: #eee; }
+
+    /* === Pulse Animation for Info Icon (Blue Glow) === */
+    .rule-info-btn.pulse-emphasis-icon {
+        transform: scale(1.3);
+        /* REQ: Blue Glow Animation */
+        box-shadow: 0 0 15px var(--blue-glow);
+        border-color: var(--pill-active);
+        color: var(--pill-active);
+        z-index: 100;
+    }
+    
+    .rule-popover {
+        display: none;
+        position: absolute;
+        top: 40px; right: 0;
+        width: 260px;
+        background: #fff;
+        border: 1px solid #ddd;
+        border-radius: 12px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.15);
+        padding: 15px;
+        z-index: 1000;
+        font-size: 13px;
+        color: #000000;
+        line-height: 1.5;
+        text-align: center;
+    }
+    .rule-popover.show { display: block; animation: fadeIn 0.2s; }
+    .rule-popover p { margin: 0 0 8px 0; padding: 0; }
+    .rule-popover p:last-child { margin-bottom: 0; }
+    
+    .rule-highlight { color: #000000; font-weight: bold; }
+    .rule-highlight-red { color: #d32f2f; font-weight: bold; }
+
+    .rule-logo {
+        width: 50px;
+        height: auto;
+        display: block;
+        margin: 0 auto 10px auto; 
+        pointer-events: none;
+    }
+    
+    .mob-br { display: block; }
+
+    /* Date Scroller */
+    .date-scroller {
+        display: flex; overflow-x: auto; padding: 5px 15px 10px;
+        scroll-behavior: smooth; min-height: 100px;
+    }
+    .date-scroller::-webkit-scrollbar { display: none; }
+   
+    .date-pill {
+      flex: 0 0 auto; width: 70px; height: 95px;
+      background: var(--pill-inactive); margin-right: 10px; border-radius: 28px;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
+      cursor: default; position: relative; border: 1px solid transparent;
+    }
+    .date-pill.loaded { background: var(--pill-inactive); color: #333; cursor: pointer; }
+    .date-pill.active {
+        background: var(--pill-active); color: #ffffff;
+        transform: scale(1.05) translateY(-3px);
+        box-shadow: 0 8px 15px var(--blue-glow); z-index: 2;
+    }
+    .date-num-row { display: flex; align-items: flex-start; justify-content: center; margin-bottom: 0px; }
+    .date-text { font-size: 24px; font-weight: 800; color: inherit; font-family: "Arial", sans-serif; line-height: 1; }
+    .week-row { display: flex; flex-direction: row; align-items: baseline; justify-content: center; gap: 4px; margin-top: 4px; }
+    .week-eng { font-size: 14px; text-transform: uppercase; font-weight: 700; }
+    .week-chi { font-size: 13px; font-weight: 500; opacity: 0.9; }
+    .date-pill.active .week-eng, .date-pill.active .week-chi, .date-pill.active .date-text { color: white; }
+    .pill-loader {
+        width: 14px; height: 14px; border: 2px solid #ccc; border-top-color: #333;
+        border-radius: 50%; animation: spin 0.8s linear infinite; margin-top: 5px; display: none;
+    }
+    .date-pill.loading .pill-loader { display: block; }
+    .slots-container { padding: 10px; display: flex; flex-direction: column; gap: 10px; position: relative; z-index: 10; }
+   
+    #empty-msg {
+        text-align: center; display: none; color: #333; margin-top: 20px;
+        font-weight: bold; font-size: 16px; background: #f8f9fa; padding: 20px; border-radius: 12px;
+    }
+    .time-card {
+        border-radius: 16px; display: none; flex-direction: row; overflow: hidden;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.05);
+        align-items: stretch; height: auto;
+    }
+    .time-card.force-show { display: flex !important; }
+    .time-card.morning { background-color: var(--card-morning); }
+    .time-card.afternoon { background-color: var(--card-afternoon); }
+    .time-card.evening { background-color: var(--card-evening); }
+    .time-card.evening .slot-btn { background: #ffffff; }
+    .time-axis {
+        width: 55px; background: rgba(255,255,255,0.4);
+        display: flex; flex-direction: column; justify-content: space-between; align-items: center;
+        padding: 12px 0; border-right: 1px solid rgba(0,0,0,0.05); flex-shrink: 0;
+        font-family: 'Arial Narrow', sans-serif;
+    }
+    .axis-time { font-size: 13px; font-weight: 800; color: #333; line-height: 1; text-align: center; }
+    .axis-time small { font-size: 10px; font-weight: 600; color: #666; display: block;}
+    .axis-line { flex-grow: 1; width: 0px; border-left: 2px dashed #999; margin: 3px 0; min-height: 10px; display: none; }
+    .axis-icon { font-size: 16px; line-height: 1; padding: 2px 0; opacity: 0.8; display: block !important; }
+    .card-content { flex-grow: 1; padding: 12px; display: flex; flex-direction: column; justify-content: center; }
+    .slot-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+   
+    .slot-btn {
+        background: rgba(255,255,255,0.7); border: 1px solid #333; color: #333;
+        padding: 8px 0; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.1s;
+        font-size: 14px; text-align: center; position: relative;
+        touch-action: manipulation; user-select: none;
+    }
+    .slot-btn:active { transform: scale(0.95); }
+    
+    /* === Single Mode Selection (Default) === */
+    .slot-btn.selected {
+        background: var(--selected-bg) !important; color: var(--selected-color) !important;
+        transform: scale(1.05); box-shadow: 0 4px 10px rgba(0,0,0,0.2); border-color: var(--selected-bg);
+    }
+    .slot-btn.selected::after, .simple-slot-btn.selected::after {
+        content: '✓'; position: absolute; top: -6px; right: -6px; width: 20px; height: 20px;
+        background: white; color: var(--pill-active); border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 14px; font-weight: bold; box-shadow: 0 1px 3px rgba(0,0,0,0.2); border: 1px solid #eee;
+    }
+
+    /* === REQ: Multi Mode Selection (Purple #8B5CF6) === */
+    /* Applied when body has 'mode-multi' class */
+    body.mode-multi .slot-btn.selected,
+    body.mode-multi .simple-slot-btn.selected {
+        background: var(--purple-main) !important; 
+        color: #ffffff !important;
+        border-color: var(--purple-main) !important;
+        box-shadow: 0 4px 10px var(--purple-glow) !important;
+    }
+    
+    body.mode-multi .slot-btn.selected::after,
+    body.mode-multi .simple-slot-btn.selected::after {
+        color: var(--purple-main); /* Purple Checkmark */
+    }
+    
+    /* === FIX: Spinner Overlay - Highest Priority & Solid Background === */
+    #loading-overlay {
+        display: flex !important; /* Force flex display initially */
+        position: fixed !important; 
+        top: 0; left: 0; width: 100%; height: 100%;
+        background: #ffffff !important; /* Solid White (No Transparency) */
+        z-index: 2147483647 !important; /* Max Z-Index to beat Durable header */
+        flex-direction: column; justify-content: center; align-items: center;
+        color: #333; 
+        opacity: 1; /* Start fully opaque */
+        transition: opacity 0.5s ease-out;
+        pointer-events: auto;
+    }
+    
+    /* Spinner Animation */
+    .spinner {
+        width: 40px; height: 40px; 
+        border: 4px solid #ddd;
+        border-top-color: var(--pill-active); 
+        border-radius: 50%; 
+        animation: spin 0.8s linear infinite; 
+        margin-bottom: 15px;
+        display: block; /* Ensure spinner block */
+    }
+    
+    /* === MODIFIED: Larger Font for Loading Text === */
+    .loading-subtext {
+        margin-top: 15px;
+        font-size: 20px; /* Increased font size */
+        color: #333;
+        line-height: 1.6;
+        font-weight: 800; /* Bolder */
+        text-align: center;
+    }
+    
+    @keyframes spin { to { transform: rotate(360deg); } }
+   
+    /* === Confirmation Form === */
+    .page-form {
+        display: none;
+        position: fixed;
+        top: 0; left: 0; width: 100vw; height: 100vh;
+        background: #fff; z-index: 2000;
+        padding: 0; box-sizing: border-box; overflow: hidden;
+    }
+   
+    .form-box {
+        background: #f8f9fa; border-radius: 24px; padding: 30px 20px;
+        margin-top: 40px;
+        color: #333; max-width:500px; margin: 40px auto; border: 1px solid #eee;
+        position: relative;
+    }
+   
+    .form-box input {
+        width: 100%; padding: 20px; margin: 10px 0 20px;
+        background: #fff; border: 1px solid #ccc; color: #333;
+        border-radius: 10px; box-sizing: border-box; font-size: 16px;
+    }
+   
+    .clear-all-btn {
+        width: 100%; padding: 15px; background: #ffebee; color: #d32f2f;
+        border: 2px solid #ef9a9a; border-radius: 12px; margin-bottom: 20px;
+        font-weight: 800; cursor: pointer; text-align: center; font-size: 16px;
+    }
+    .confirm-btn { width: 100%; padding: 15px; background: var(--pill-active); color: #fff; border: none; border-radius: 12px; font-size: 18px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px var(--blue-glow);}
+   
+    .back-btn {
+        background: none; border: none; color: #333;
+        font-size: 18px; font-weight: bold;
+        margin-bottom: 10px; cursor: pointer;
+        display: block; text-align: left; padding: 5px 0;
+    }
+    .page-title { font-size: 20px; font-weight: bold; text-align: center; margin-bottom: 15px; }
+    
+    .selected-item {
+        font-size: 18px; padding: 15px; background: #f3f4f6;
+        border-radius: 12px; margin-bottom: 8px;
+        display: flex; justify-content: space-between; align-items: center;
+        flex-shrink: 0; min-height: 50px;
+    }
+
+    /* === NEW: Number Badge for Slots in Cart === */
+    .slot-index-badge {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        background-color: #000000; /* Black Box */
+        color: #ffffff; /* White Text */
+        width: 24px;
+        height: 24px;
+        margin-right: 10px;
+        font-size: 14px;
+        font-weight: bold;
+        border-radius: 4px; /* Slight rounded corners */
+        flex-shrink: 0;
+        line-height: 1;
+    }
+    
+    .remove-slot-btn {
+        background: #ffebee; color: #d32f2f;
+        border: 1px solid #ffcdd2; border-radius: 8px;
+        width: 36px; height: 36px;
+        display: flex; align-items: center; justify-content: center;
+        font-weight: bold; font-size: 16px;
+        cursor: pointer; margin-left: 10px;
+        flex-shrink: 0;
+        transition: 0.2s;
+    }
+    .remove-slot-btn:active { transform: scale(0.9); }
+
+    /* === MODIFIED: Calendar Modal as Default Layout === */
+    /* Override defaults so cal-modal appears as the main page */
+    .cal-modal {
+        display: block; /* We show it, but control visibility with opacity */
+        position: relative !important;
+        width: 100%; 
+        height: auto !important;
+        min-height: 100vh;
+        z-index: 100; 
+        animation: none !important;
+        background: var(--bg-color);
+        overflow: visible !important;
+        
+        /* FIX: Start invisible so user sees spinner */
+        opacity: 0; 
+        transition: opacity 0.6s ease-in; 
+    }
+    
+    /* Hide the back button in Calendar, as it's the main view now */
+    #cal-modal .back-btn { display: none !important; }
+
+    /* === Mobile Layout adjustments for Calendar Default === */
+    @media (max-width: 767px) {
+        .page-form.active { display: block; animation: slideUp 0.3s; }
+       
+        .form-box {
+            margin: 0; width: 100%; height: 100%; max-width: 100%;
+            border-radius: 0; padding: 15px 20px;
+            display: flex; flex-direction: column;
+            justify-content: flex-start;
+            border: none; background: #fff;
+        }
+       
+        #checkout-list {
+            flex: 0 1 auto; max-height: 40vh; overflow-y: auto;
+            min-height: 0; margin-bottom: 15px; display: flex; flex-direction: column;
+        }
+       
+        .form-inputs-area { margin-top: 0; flex-shrink: 0; }
+       
+        .form-box input { padding: 12px; margin: 5px 0 15px; font-size: 16px; }
+        .form-box label { font-size: 14px; font-weight: bold; margin-bottom: 2px; display: block; }
+        .confirm-btn { padding: 12px; font-size: 18px; margin-bottom: 10px; }
+        .clear-all-btn { padding: 10px; margin-bottom: 10px; font-size: 14px; }
+        
+        /* Mobile: Few Slots Logic - 2 Columns */
+        .simple-slot-grid.few-slots {
+            grid-template-columns: repeat(2, 1fr) !important;
+        }
+        .simple-slot-grid.few-slots .simple-slot-btn {
+            padding: 20px 0;
+            font-size: 20px;
+        }
+    }
+    @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+    /* === Desktop/Tablet Layout === */
+    @media (min-width: 768px) {
+        .page-form { background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); padding: 20px; overflow-y: auto;}
+        .page-form.active { display: flex !important; justify-content: center; align-items: flex-start; animation: fadeIn 0.3s; padding-top: 50px;}
+       
+        .form-box {
+            margin: 0; width: 80%; max-width: 650px; padding: 70px 40px 40px; /* Top padding for button */
+            border-radius: 30px; position: relative;
+            display: flex; flex-direction: column;
+        }
+       
+        #checkout-list { max-height: 300px; overflow-y: auto; margin-bottom: 20px; }
+       
+        .page-title { font-size: 36px; margin-bottom: 30px; margin-top: 0; }
+        .form-box label { font-size: 28px; display: block; margin-bottom: 10px; font-weight: bold;}
+        .form-box input { padding: 30px; font-size: 24px; border-radius: 16px; margin-bottom: 30px; }
+        .confirm-btn { padding: 25px; font-size: 28px; border-radius: 20px; }
+        .clear-all-btn { padding: 25px; font-size: 24px; margin-bottom: 30px; border-width: 3px; }
+        .selected-item { font-size: 24px; padding: 20px;}
+        .remove-slot-btn { width: 44px; height: 44px; font-size: 20px; }
+       
+        .back-btn {
+            display: inline-flex !important;
+            align-items: center;
+            justify-content: center;
+            position: absolute !important;
+            top: 30px;
+            left: 30px;
+            margin: 0 !important;
+            font-size: 20px;
+            color: #333;
+            font-weight: bold;
+            background: #f0f0f0;
+            padding: 10px 20px;
+            border-radius: 30px;
+            z-index: 1000;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .back-btn:hover { background: #e0e0e0; transform: translateY(-2px); transition: 0.2s;}
+    }
+    @media (min-width: 1024px) {
+        .form-box { max-width: 800px; padding: 80px 50px 50px; }
+        .page-title { font-size: 42px; }
+        .back-btn { font-size: 24px; top: 40px; left: 40px; padding: 12px 24px; }
+    }
+    /* Floating Icons */
+    @keyframes glow {
+        from { filter: drop-shadow(0 0 4px rgba(26, 43, 76, 0.4)); }
+        to { filter: drop-shadow(0 0 8px rgba(26, 43, 76, 0.8)); }
+    }
+    #hot-panel {
+      position: fixed; top: 20%; left: 0; width: 85%; max-width: 280px;
+      background: linear-gradient(135deg, #ffebee, #fff0f5);
+      backdrop-filter: blur(10px);
+      border-top-right-radius: 20px; border-bottom-right-radius: 20px;
+      box-shadow: 5px 5px 20px rgba(0,0,0,0.1);
+      transform: translateX(-110%);
+      transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+      padding: 20px; border: 1px solid #eee; border-left: none;
+      z-index: 900;
+      overflow: hidden;
+    }
+    #hot-panel::before {
+        content: '⚡'; position: absolute; top: 50%; left: 50%;
+        transform: translate(-50%, -50%); font-size: 200px; color: #ffab91;
+        opacity: 0.25; z-index: -1; text-shadow: 0 0 20px #ffccbc, 0 0 30px #ffccbc;
+    }
+    #hot-panel.show { transform: translateX(0); }
+    .hot-title {
+        color: var(--text-main); font-size: 18px; font-weight: bold; margin-bottom: 15px;
+        display: flex; align-items: center;
+    }
+    .title-arrow-icon { width: 20px; height: 20px; margin-left: 8px; }
+    #hot-icon {
+        display: inline-block; margin-right: 8px; font-size: 22px;
+        background: linear-gradient(45deg, #0d1ea1, #4a6fa5);
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        animation: glow 1.5s infinite alternate;
+    }
+    .hot-list { display: flex; flex-direction: column; gap: 10px; max-height: 50vh; overflow-y: auto; }
+    .hot-btn {
+      background: #ffffff; border: 1px solid #ffd0c0; color: #333; padding: 12px;
+      border-radius: 12px; text-align: left; font-weight: bold; cursor: pointer;
+      display: flex; justify-content: flex-start; align-items: center;
+    }
+    .tap-icon {
+        width: 20px; height: 20px; margin-left: 8px; display: inline-block; vertical-align: middle;
+    }
+    .hot-show-more {
+        text-align: center; color: #0d1ea1; font-weight: bold; font-size: 14px; padding: 8px; cursor: pointer;
+        background: rgba(255, 255, 255, 0.5); border-radius: 8px; margin-top: 5px;
+    }
+    .hot-hidden { display: none; }
+
+    .close-hot { position: absolute; top: 10px; right: 10px; background: #eee; color: #333; border: none; border-radius: 50%; width: 25px; height: 25px; cursor: pointer; z-index: 5; }
+    
+    /* Cart Button Animation & Style */
+    @keyframes bump-anim {
+        0% { transform: scale(1); } 
+        50% { transform: scale(1.6); } 
+        100% { transform: scale(1); }
+    }
+    .bump-effect { animation: bump-anim 0.3s ease-out; }
+   
+    @keyframes glow-blue-btn {
+        from { box-shadow: 0 4px 12px rgba(0,0,0,0.1), 0 0 10px rgba(26, 43, 76, 0.4); }
+        to { box-shadow: 0 6px 16px rgba(0,0,0,0.2), 0 0 20px rgba(26, 43, 76, 0.8); }
+    }
+   
+    #floating-cart-btn {
+        position: fixed; bottom: 30px; right: 20px; z-index: 999;
+        width: 60px; height: 60px;
+        background: #ffffff; box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        display: none; cursor: pointer; transition: transform 0.2s, opacity 0.2s;
+        border: none; padding: 10px; border-radius: 50%; box-sizing: border-box;
+        animation: glow-blue-btn 1.5s infinite alternate;
+    }
+   
+    #floating-cart-btn.in-cal-view {
+        position: absolute; width: 44px; height: 44px; padding: 7px;
+        top: 0px; right: 10px; bottom: auto; left: auto;
+        border-radius: 10px; background: #ffffff;
+        box-shadow: 0 4px 12px var(--blue-glow);
+        animation: none; transform: none !important; z-index: 400;
+    }
+    #floating-cart-btn .cal-icon-svg { width: 100%; height: 100%; color: var(--blue-main); }
+    #floating-cart-btn.show { display: block; }
+   
+    .cart-badge {
+        position: absolute; top: -5px; right: -5px;
+        background: var(--active-gradient); color: white;
+        width: 24px; height: 24px; border-radius: 50%;
+        font-size: 13px; font-weight: bold;
+        display: flex; justify-content: center; align-items: center;
+        border: 2px solid white; box-shadow: 0 0 8px var(--blue-glow);
+    }
+
+    @media (min-width: 768px) {
+        #floating-cart-btn {
+            width: 120px; height: 120px; padding: 25px;
+            bottom: 50px; right: 40px;
+        }
+        .cart-badge {
+            width: 40px; height: 40px; font-size: 20px;
+            top: 0; right: 0; border-width: 3px;
+        }
+    }
+
+    /* === Calendar Modal (Fixed Full Screen) === */
+    /* (Styles moved up to be global default, overrides here only if needed) */
+   
+    .cal-header-wrap {
+        background: #fff; padding: 15px 10px;
+        min-height: 100%; height: auto;
+        border-top-left-radius: 24px; border-top-right-radius: 24px;
+        border-bottom-left-radius: 0; border-bottom-right-radius: 0;
+        box-shadow: none; position: relative; z-index: 10; margin-bottom: 0;
+    }
+   
+    .cal-top-info { text-align: center; margin: 5px 0; }
+    .cal-today-label { display: none !important; }
+    .cal-nav {
+        display: flex; justify-content: space-between; align-items: center;
+        margin-bottom: 10px; font-size: 18px; font-weight: bold; color: #333;
+    }
+    .cal-nav-btn { background: none; border: none; color: #333; font-size: 20px; padding: 5px 10px; cursor: pointer; transition: opacity 0.2s;}
+    .cal-nav-btn.disabled { opacity: 0.2; cursor: default; pointer-events: none; }
+   
+    .cal-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; text-align: center; }
+   
+    .cal-head { 
+        color: #000; font-size: 12px; font-weight: 900; padding-bottom: 5px; 
+        display: flex; flex-direction: column; line-height: 1.2; 
+        transition: 0.2s; /* Smooth color transition */
+    }
+    .cal-head small { font-size: 10px; opacity: 0.7; }
+
+    /* Active Week Header */
+    .cal-head.active-day {
+        background-color: var(--pill-active);
+        color: #ffffff;
+        border-radius: 8px;
+        padding-top: 5px;
+    }
+    .cal-head.active-day small { color: #ffffff; opacity: 1; }
+    
+    .cal-cell {
+        /* Mobile defaults */
+        height: 48px; 
+        display: flex; align-items: center; justify-content: center;
+        border-radius: 12px; 
+        font-size: 20px; 
+        font-weight: bold; cursor: default;
+        transition: 0.2s; color: #333; position: relative;
+        background: #fff; border: 1px solid transparent;
+    }
+    .cal-cell.loaded { cursor: pointer; border-color: #eee; }
+    .cal-cell.disabled { color: #ddd !important; background: #fafafa; pointer-events: none; }
+   
+    .cal-cell.today { border: 2px solid var(--pill-active); color: var(--pill-active); }
+    .cal-cell.selected { background: var(--pill-active) !important; color: #fff !important; box-shadow: 0 4px 10px var(--blue-glow);}
+   
+    .cal-cell.loaded::after { content: ''; width: 4px; height: 4px; background: #ccc; border-radius: 50%; position: absolute; bottom: 3px; }
+    .cal-cell.selected::after { background: #fff; }
+    
+    #cal-slots-area {
+        margin-top: 10px; padding-bottom: 100px;
+        border-top: 1px solid #f0f0f0; padding-top: 15px; position: relative;
+    }
+    .cal-slots-title { color: #333; font-size: 16px; font-weight: bold; margin-bottom: 10px; padding-left: 5px; border-left: 4px solid var(--pill-active); line-height: 1;}
+   
+    .simple-slot-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    
+    /* Mobile: Enlarged Slots */
+    .simple-slot-btn {
+        background: #fff; border: 1px solid #ccc; color: #333; padding: 15px 0; /* Larger padding */
+        border-radius: 10px; font-weight: bold; font-size: 18px; /* Larger font */
+        cursor: pointer;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05); position: relative;
+    }
+    .simple-slot-btn.selected {
+        background: var(--active-gradient); /* Blue gradient (Point 8) */
+        color: white; border-color: transparent;
+        box-shadow: 0 4px 10px var(--blue-glow);
+    }
+    
+    /* NEW: Duration Hint Style (Base Mobile Style - Black on White) */
+    .cal-duration-hint {
+        font-size: 13px; font-weight: 800; padding: 6px 12px; border-radius: 20px;
+        background: #fff; color: #111; border: 1px solid #eee;
+        white-space: nowrap; margin-right: 5px; 
+    }
+
+    @media (min-width: 768px) {
+        /* Tablet Vertical Layout */
+        .cal-header-wrap { max-width: 100% !important; margin: 0 !important; border-radius: 0 !important; min-height: 100vh; padding: 40px; box-sizing: border-box; }
+        
+        /* Desktop Toggle Wrapper Adjustment */
+        .toggle-wrapper { width: 300px; height: 60px; border-radius: 40px; }
+        .toggle-wrapper::after { inset: 3px; border-radius: 40px; } /* Keep track radius consistent */
+        
+        /* Desktop Active Pill */
+        .toggle-bg { 
+            height: 48px; /* 60 - 6 - 6 */
+            top: 6px; 
+            left: 6px; 
+            width: calc(50% - 6px); /* Adjust width */
+            border-radius: 36px; 
+        }
+        
+        .toggle-label { font-size: 24px; }
+        
+        .cal-grid { gap: 10px; }
+        
+        /* Desktop: Slightly Larger than Original, Not Square */
+        .cal-cell { 
+            height: 90px; 
+            font-size: 32px; 
+            border-radius: 20px; 
+        }
+        
+        .cal-head { font-size: 20px; margin-bottom: 10px;}
+        .cal-head small { font-size: 16px; }
+        .cal-nav { font-size: 36px; margin-bottom: 30px; }
+        .cal-nav-btn { font-size: 40px; }
+        
+        /* Desktop: Slightly Larger Slots */
+        .simple-slot-grid { 
+            gap: 20px; 
+            grid-template-columns: repeat(3, 1fr); /* 3 columns */
+        }
+        .simple-slot-btn { 
+            padding: 25px 0; 
+            font-size: 24px; 
+            border-radius: 15px;
+        }
+        
+        .cal-slots-title { font-size: 28px; margin-bottom: 20px; border-left-width: 8px;}
+        
+        /* Hot Panel - Standard size */
+        #hot-panel {
+            width: 500px;
+            max-width: 80vw;
+            padding: 30px; 
+            border-radius: 30px;
+            transform: translateX(-120%); /* No scale */
+        }
+        #hot-panel.show {
+            transform: translateX(0); /* No scale */
+        }
+
+        .hot-title { font-size: 28px; margin-bottom: 25px; }
+        .hot-btn { padding: 20px; font-size: 20px; border-radius: 20px; }
+        .close-hot { width: 40px; height: 40px; font-size: 24px; }
+        .tap-icon { width: 30px; height: 30px; }
+        
+        /* Desktop Info Icon */
+        .rule-info-btn { width: 44px; height: 44px; font-size: 24px; border-width: 3px; }
+        
+        /* Hide Mobile Break Line on Desktop */
+        .mob-br { display: none; }
+
+        .rule-popover { 
+            position: fixed;
+            top: 15%;
+            left: 50%;
+            transform: translateX(-50%);
+            width: auto;
+            min-width: 600px; /* Wider for desktop */
+            font-size: 28px; 
+            line-height: 1.5;
+            padding: 40px;
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+            border: 1px solid #ddd;
+            z-index: 2100; /* Ensure on top of calendar */
+        }
+        .rule-logo { width: 100px; margin-bottom: 20px; }
+        
+        /* Smart Grid Logic for Tablet (768+) */
+        .simple-slot-grid.few-slots {
+            grid-template-columns: repeat(2, 1fr) !important;
+        }
+        .simple-slot-grid.few-slots .simple-slot-btn {
+            padding: 35px 0 !important;
+            font-size: 28px !important;
+        }
+
+        /* NEW: Tablet/Desktop Duration Hint Style (Gradient, Right Side) */
+        .cal-duration-hint {
+            /* Theme Gradient */
+            background: var(--active-gradient);
+            color: #fff; border: none;
+            box-shadow: 0 2px 8px var(--blue-glow);
+            font-size: 16px; padding: 10px 20px;
+            /* Flex Order Manipulation: Toggle(1), Info(2), Duration(3) */
+            order: 3; 
+            margin-right: 0; margin-left: 10px;
+        }
+        .cal-top-right-group .toggle-wrapper { order: 1; }
+        .cal-top-right-group .rule-info-wrapper { order: 2; }
+    }
+
+    /* Desktop Layout (Full Width, Split View) ONLY for > 1024px */
+    @media (min-width: 1024px) {
+        .cal-header-wrap { 
+            display: flex; 
+            justify-content: center;
+            width: 100%; /* Full Width */
+            padding: 40px;
+        }
+
+        .cal-desktop-wrapper {
+            display: flex;
+            flex-direction: row;
+            width: 100%; /* Full Width */
+            justify-content: space-between;
+            gap: 40px;
+        }
+
+        .cal-left-col {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #cal-slots-area {
+            flex: 1;
+            border-top: none;
+            border-left: 1px solid #e0e0e0;
+            padding-left: 40px;
+            margin-top: 0;
+            /* REQ: Alignment restored to match left header (125px) */
+            padding-top: 125px; 
+            height: calc(100vh - 80px);
+            overflow-y: auto;
+            padding-bottom: 100px;
+        }
+        
+        /* Responsive Square Grid for Split View */
+        .cal-cell { 
+            height: auto; 
+            aspect-ratio: 1.2 / 1; 
+        }
+        
+        .simple-slot-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+        
+        /* Smart Grid Logic for Desktop (1024+) */
+        .simple-slot-grid.few-slots {
+            grid-template-columns: repeat(2, 1fr) !important; /* Keep 2 cols */
+        }
+        .simple-slot-grid.few-slots .simple-slot-btn {
+            padding: 45px 0 !important; /* Larger for Desktop */
+            font-size: 32px !important;
+        }
+    }
+    
+    @media (min-width: 1400px) {
+        .simple-slot-grid { grid-template-columns: repeat(3, 1fr); }
+    }
+
+    @media (max-width: 400px) {
+        .full-date-display { font-size: 18px; }
+    }
+  </style>
+</head>
+<body>
+<div id="loading-overlay">
+  <div class="spinner"></div>
+  <div id="loadingText">載入中...</div>
+  <!-- Modified: Larger text, removed calendar mode line -->
+  <div class="loading-subtext">
+    <div>支援多堂預約</div>    <div>正在進入25分鐘課程預約系統</div>
+
+  </div>
+</div>
+<!-- NOTE: This container is now globally hidden via CSS to force Calendar View on all devices -->
+<div class="container" id="p-main">
+  <div class="header-section">
+    <div class="top-info-bar">
+        <div id="full-date-display" class="full-date-display"></div>
+        <div class="duration-hint">25分/堂</div>
+    </div>
+   
+    <div class="controls-container">
+        <!-- New Toggle Switch -->
+        <div class="toggle-wrapper single" id="main-mode-toggle" onclick="toggleMode()">
+            <div class="toggle-bg"></div>
+            <div class="toggle-labels">
+                <span class="toggle-label label-single">單堂預約</span>
+                <span class="toggle-label label-multi">多堂預約</span>
+            </div>
+        </div>
+        
+        <button class="cal-btn-trigger" onclick="openCalendar()">📅 月曆</button>
+        
+        <!-- Info Icon (Mobile View) -->
+        <div class="rule-info-wrapper">
+             <div class="rule-info-btn" onclick="toggleRules('mob-rules')">!</div>
+             <div class="rule-popover" id="mob-rules">
+                 <img src="https://ik.imagekit.io/lql1uveoc/IMG_9614.PNG?updatedAt=1750437382543" class="rule-logo" alt="Logo">
+                  <p>25分鐘課程 <span class="rule-highlight">規範<br class=“mob-br”> </span></p>
+ 
+                 <p>24小時內提出請假或調課, <span class="rule-highlight">扣除<br class=“mob-br"> 1 堂</span></p>
+                 <p><span class="rule-highlight-red">週六及國定假日24小時內</span><br class="mob-br">請假或調課, 扣除 1 堂</p>
+             </div>
+        </div>
+    </div>
+    <div class="date-scroller" id="dateScroller"></div>
+  </div>
+  <div class="slots-container" id="main-slots-container">
+    <div id="empty-msg"></div>
+    <!-- Slots (Morning, Afternoon, Evening) -->
+    <div id="card-morning" class="time-card morning">
+      <div class="time-axis">
+          <div class="axis-time">10<small>AM</small></div><div class="axis-line"></div><div class="axis-icon">☀</div><div class="axis-line"></div><div class="axis-time">12<small>PM</small></div>
+      </div>
+      <div class="card-content"><div id="grid-morning" class="slot-grid"></div></div>
+    </div>
+    <div id="card-afternoon" class="time-card afternoon">
+      <div class="time-axis">
+          <div class="axis-time">01<small>PM</small></div><div class="axis-line"></div><div class="axis-icon">☕</div><div class="axis-line"></div><div class="axis-time">05<small>PM</small></div>
+      </div>
+      <div class="card-content"><div id="grid-afternoon" class="slot-grid"></div></div>
+    </div>
+    <div id="card-evening" class="time-card evening">
+      <div class="time-axis">
+          <div class="axis-time">06<small>PM</small></div><div class="axis-line"></div><div class="axis-icon">🌙</div><div class="axis-line"></div><div class="axis-time">10<small>PM</small></div>
+      </div>
+      <div class="card-content"><div id="grid-evening" class="slot-grid"></div></div>
+    </div>
+  </div>
+</div>
+<div id="hot-panel">
+  <button class="close-hot" onclick="closeHotPanel()">✕</button>
+  <div class="hot-title">
+    <span id="hot-icon">⚡</span>近期晚間時段
+    <img src="https://ik.imagekit.io/lql1uveoc/pointing-down-4.png" class="title-arrow-icon">
+  </div>
+  <div class="hot-list" id="hot-list"></div>
+</div>
+<!-- Floating Cart Button (Toggle Logic) -->
+<button id="floating-cart-btn" onclick="toggleCartForm()">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="cal-icon-svg">
+        <path fill="currentColor" d="M19,4H18V2H16V4H8V2H6V4H5A2,2 0 0,0 3,6V20A2,2 0 0,0 5,22H19A2,2 0 0,0 21,20V6A2,2 0 0,0 19,4M19,20H5V10H19V20M19,8H5V6H19V8Z" />
+    </svg>
+    <span class="cart-badge" id="cart-count">0</span>
+</button>
+<div id="p-form" class="page-form">
+  <div class="form-box">
+    <!-- Back Button: Absolute positioned on Desktop, Flow on Mobile -->
+    <button class="back-btn" onclick="closeForm()">❮ 返回</button>
+    <div class="page-title">確認預約</div>
+    <button class="clear-all-btn" onclick="clearCart()">🗑️ 清除所有時段</button>
+    <div style="margin-bottom:5px; font-weight:bold; color:#666;">預約內容 (共 <span id="form-total">0</span> 堂)：每堂25分鐘</div>
+   
+    <!-- Scrollable Area -->
+    <div id="checkout-list"></div>
+   
+    <!-- Bottom Area -->
+    <div class="form-inputs-area">         <!-- 新增的提示文字開始 -->
+    <div style="background: #fff3e0; border: 1px solid #ffe0b2; padding: 10px 15px; border-radius: 10px; font-size: 14px; color: #e65100; margin-bottom: 15px; line-height: 1.5; font-weight: bold;">
+    購買 50 分鐘課程者，若實際上課為 25 分鐘，<br class="mob-br">(一堂課點數/2) *1.33)計算。(國小學童除外)。
+</div>     <!-- 新增的提示文字結束 -->
+        <label>姓名 Name</label><input type="text" id="iptName" placeholder="請輸入姓名">
+        <label>Email</label>
+        <input type="email" id="iptEmail" placeholder="接收通知用" required pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$">
+        <button class="confirm-btn" onclick="submitData()">確認送出</button>
+    </div>
+  </div>
+</div>
+<div id="cal-modal" class="cal-modal">
+    <div class="cal-header-wrap">
+        <!-- New Wrapper for Desktop Flex Layout -->
+        <div class="cal-desktop-wrapper">
+            
+            <!-- Left Column: All Calendar Controls + Grid -->
+            <div class="cal-left-col">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
+                    <!-- Back button hidden via CSS -->
+                    <button class="back-btn" onclick="closeCalendar()" style="margin-bottom:0;">✕</button>
+                    
+                    <!-- Calendar Toggle Switch Grouped with Info Icon -->
+                    <div style="display:flex; align-items:center; gap: 10px;" class="cal-top-right-group">
+                        
+                        <!-- New Duration Hint Element -->
+                        <div class="cal-duration-hint">25分/堂</div>
+
+                        <div class="toggle-wrapper single" id="cal-mode-toggle" onclick="toggleMode()">
+                            <div class="toggle-bg"></div>
+                            <div class="toggle-labels">
+                                <span class="toggle-label label-single">單堂預約</span>
+                                <span class="toggle-label label-multi">多堂預約</span>
+                            </div>
+                        </div>
+                        <!-- Info Icon (Calendar View) -->
+                        <div class="rule-info-wrapper">
+                             <div class="rule-info-btn" onclick="toggleRules('cal-rules')">!</div>
+                             <div class="rule-popover" id="cal-rules">
+                                 <img src="https://ik.imagekit.io/lql1uveoc/IMG_9614.PNG?updatedAt=1750437382543" class="rule-logo" alt="Logo">
+                               <p>25分鐘課程 <span class="rule-highlight">規範<br class=“mob-br"> </span></p>
+                                 <p>24小時內提出請假或調課, <span class="rule-highlight">扣除<br class="mob-br">1 堂</span></p>
+                                 <!-- NEW RULE ADDED HERE -->
+                                 <p><span class="rule-highlight-red">週六及國定假日24小時內</span><br class="mob-br">請假或調課, 扣除1 堂</p>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+               
+                <div class="cal-top-info">
+                    <div class="cal-today-label" id="cal-today-date"></div>
+                </div>
+               
+                <div class="cal-nav">
+                    <button class="cal-nav-btn" id="cal-prev-btn" onclick="changeCalMonth(-1)">❮</button>
+                    <div id="cal-title"></div>
+                    <button class="cal-nav-btn" onclick="changeCalMonth(1)">❯</button>
+                </div>
+               
+                <div class="cal-grid">
+                    <div class="cal-head">MON<small>一</small></div>
+                    <div class="cal-head">TUE<small>二</small></div>
+                    <div class="cal-head">WED<small>三</small></div>
+                    <div class="cal-head">THU<small>四</small></div>
+                    <div class="cal-head">FRI<small>五</small></div>
+                    <div class="cal-head">SAT<small>六</small></div>
+                </div>
+                <div id="cal-body" class="cal-grid"></div>
+            </div> <!-- End Left Col -->
+
+            <!-- Right Column: Slots (Only separate on Desktop) -->
+            <div id="cal-slots-area">
+                <div class="cal-slots-title" id="cal-slots-title">請選擇日期</div>
+                <div id="cal-slots-content"></div>
+            </div>
+
+        </div> <!-- End Desktop Wrapper -->
+    </div>
+</div>
+<script>
+  // === EXTERNAL SAFETY TIMER (The "Nuclear Option") ===
+  // This guarantees the loading screen vanishes after 4 seconds even if everything else fails.
+  (function(){
+      setTimeout(function(){
+          var o = document.getElementById("loading-overlay");
+          if(o && o.style.display !== "none") {
+              o.style.opacity = "0";
+              o.style.pointerEvents = "none";
+              setTimeout(function(){ o.style.display = "none"; }, 500);
+          }
+      }, 4000);
+  })();
+
+  const API_URL = "https://script.google.com/macros/s/AKfycbyZMqL135r1VvRL7pdW6EB6nmeLja-MhQt95ri5xa9j9Z810WfMb7_Vm156MPFn8t5Q/exec";
+  const STAGE_1_DAYS = 3; const STAGE_2_DAYS = 11; const BACKGROUND_BATCH = 14; const MAX_DAYS = 60; const MAX_SELECTION = 10;
+  let cachedData = {}; let loadedDaysCount = 0; let selectedDateStr = ""; let selectedSlots = []; let currentMode = 'single';
+  const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]; const chiDayNames = ["日", "一", "二", "三", "四", "五", "六"]; const monthNamesEng = ["Jan", "Feb", "March", "April", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
+  let hotPanelShown = false; let calYear, calMonth;
+  let limitDate = new Date(); limitDate.setDate(limitDate.getDate() + MAX_DAYS); limitDate.setHours(23, 59, 59, 999);
+  
+  // define the startup function
+  function initBookingApp() {
+    // 1. Force Safety Mechanism
+    setTimeout(() => { 
+        hideLoading(true); // Force hide if data takes too long
+    }, 3000);
+    
+    // Explicitly SHOW the loading overlay at start (Fix for Durable)
+    const overlay = document.getElementById("loading-overlay");
+    if(overlay) overlay.style.display = "flex";
+
+    // 2. Remove loading state from pills
+    setTimeout(() => {
+        document.querySelectorAll('.date-pill.loading').forEach(pill => { 
+            pill.classList.remove('loading'); 
+            pill.classList.add('loaded'); 
+            pill.classList.add('force-loaded'); 
+        });
+        const msg = document.getElementById("empty-msg"); 
+        if(msg && msg.innerText.includes("中...")) msg.innerText = "請點選日期重新載入";
+    }, 3000);
+
+    const now = new Date();
+    const todayLabel = document.getElementById("cal-today-date");
+    if(todayLabel) todayLabel.innerText = `Today ${now.getMonth()+1}/${now.getDate()}`;
+    
+    calYear = now.getFullYear(); 
+    calMonth = now.getMonth();
+    
+    updateHeaderDate();
+    initDateScroller();
+    
+    // Reset Data if re-initializing
+    loadedDaysCount = 0;
+    cachedData = {};
+    
+    fetchBatchData(0, STAGE_1_DAYS, "STAGE1");
+   
+    // Ensure Main container is hidden as requested
+    const pMain = document.getElementById("p-main");
+    if(pMain) pMain.style.display = "none";
+    
+    setTimeout(() => { 
+        const cal = document.getElementById("cal-modal");
+        if(cal) cal.scrollIntoView({ behavior: "smooth", block: "start" }); 
+    }, 600);
+  }
+
+  // === SMART STARTER ===
+  // If document is already loaded (navigation), run immediately.
+  // If document is loading (refresh), wait for load event.
+  if (document.readyState === 'complete' || document.readyState === 'interactive') {
+      initBookingApp();
+  } else {
+      window.addEventListener('load', initBookingApp);
+  }
+
+  // === Consolidated Loading Hide Function ===
+  function hideLoading(isForce = false) {
+      const overlay = document.getElementById("loading-overlay");
+      if(overlay && overlay.style.display !== "none") {
+          overlay.style.opacity = "0";
+          overlay.style.pointerEvents = "none"; 
+          setTimeout(() => { 
+              overlay.style.display = "none"; 
+              // Triggers Animation only after overlay is gone
+              playIntroAnimation();
+          }, 500);
+      }
+  }
+
+  // === NEW: INTRO ANIMATION LOGIC ===
+  function playIntroAnimation() {
+      // Find the toggle (Main view on mobile, or Calendar view on desktop)
+      const toggleWrappers = document.querySelectorAll('.toggle-wrapper');
+      
+      // Also find Info Buttons
+      const infoBtns = document.querySelectorAll('.rule-info-btn');
+
+      if (toggleWrappers.length === 0) return;
+
+      let count = 0;
+      const maxFlickers = 12; // Number of quick toggles (e.g. 6 pairs)
+      const speed = 150;      // Speed of toggle in ms
+
+      // 1. Fast Flicker Interval
+      const interval = setInterval(() => {
+          const mode = (count % 2 === 0) ? 'multi' : 'single';
+          // Use 'silent' true to prevent heavy re-rendering of slots during rapid flickering
+          switchMode(mode, true); 
+          count++;
+
+          if (count >= maxFlickers) {
+              clearInterval(interval);
+              
+              // 2. Lock onto Multi-Booking & Pulse
+              switchMode('multi', true); // Ensure landing on multi
+              
+              toggleWrappers.forEach(el => el.classList.add('pulse-emphasis'));
+              // Add Pulse to Info Icon
+              infoBtns.forEach(btn => btn.classList.add('pulse-emphasis-icon'));
+
+              // 3. Hold for ~1.2 seconds (Focus)
+              setTimeout(() => {
+                  // 4. Return to Default (Single)
+                  toggleWrappers.forEach(el => el.classList.remove('pulse-emphasis'));
+                  // Remove Pulse from Info Icon
+                  infoBtns.forEach(btn => btn.classList.remove('pulse-emphasis-icon'));
+                  
+                  // Slight delay to allow shrink animation to start before switching text
+                  setTimeout(() => {
+                      switchMode('single', false); // False = actually render the single view now
+                  }, 300);
+                  
+              }, 1200); // 1.2s Hold duration
+          }
+      }, speed);
+  }
+
+  // Toggle Rule Popover
+  function toggleRules(id) {
+      const el = document.getElementById(id);
+      // Close others first
+      document.querySelectorAll('.rule-popover').forEach(p => {
+          if (p.id !== id) p.classList.remove('show');
+      });
+      el.classList.toggle('show');
+  }
+
+  // Close Popover when clicking outside
+  document.addEventListener('click', function(e) {
+      if (!e.target.closest('.rule-info-wrapper')) {
+          document.querySelectorAll('.rule-popover').forEach(p => p.classList.remove('show'));
+      }
+      
+      // REQ: Click Anywhere to Close Hot Panel (if open)
+      const hotPanel = document.getElementById("hot-panel");
+      if (hotPanel && hotPanel.classList.contains("show")) {
+          // If click is NOT inside the hot panel, close it
+          if (!e.target.closest("#hot-panel")) {
+              hotPanel.classList.remove("show");
+          }
+      }
+  });
+
+  // === Helper: Check if a slot is valid (not expired/too late) ===
+  function isValidSlot(slot) {
+      if (!slot || !slot.time) return false;
+      const [hStr, mStr] = slot.time.split(":");
+      const h = parseInt(hStr);
+      const m = parseInt(mStr);
+      
+      // Update: Hide 21:00 (9 PM) and anything later
+      // 只要是晚上 9 點 (21:00) 或更晚，一律隱藏
+      if (h >= 21) return false;
+
+      // 如果有 20:xx 的時段，但超過 30 分 (例如 20:45)，也不顯示
+      if (h === 20 && m > 30) return false;
+
+      return true;
+  }
+
+  function initDateScroller() {
+    const container = document.getElementById("dateScroller");
+    const today = new Date();
+    for (let i = 0; i < MAX_DAYS; i++) {
+      const d = new Date(); d.setDate(today.getDate() + i); const dStr = fmt(d);
+      if (d.getDay() === 0) continue;
+      const dayName = dayNames[d.getDay()]; const chiName = chiDayNames[d.getDay()]; const dateText = `${d.getMonth()+1}/${d.getDate()}`;
+      const pill = document.createElement("div"); pill.className = "date-pill loading"; pill.style.animationDelay = `${i * 0.05}s`;
+      pill.id = `pill-${dStr}`; pill.dataset.date = dStr;
+      pill.innerHTML = `<div class="date-num-row"><span class="date-text">${dateText}</span></div><div class="week-row"><span class="week-eng">${dayName}</span><span class="week-chi">${chiName}</span></div><div class="pill-loader"></div>`;
+      pill.onclick = () => { if (pill.classList.contains('loading')) forceLoadDate(dStr); else selectDate(dStr); };
+      container.appendChild(pill);
+    }
+  }
+
+  function forceLoadDate(dStr) {
+      selectDatePillUI(dStr);
+      if (!cachedData[dStr]) { document.getElementById("empty-msg").innerText = "資料載入中..."; document.getElementById("empty-msg").style.display = "block"; }
+      document.querySelectorAll(".time-card").forEach(c => c.style.display="none");
+      fetch(`${API_URL}?action=getBatchSlots&startDate=${dStr}&days=1`).then(res => res.json()).then(data => {
+            Object.assign(cachedData, data);
+            if (!cachedData[dStr]) cachedData[dStr] = { slots: [] };
+            const pill = document.getElementById(`pill-${dStr}`); if(pill) { pill.classList.remove('loading'); pill.classList.add('loaded'); }
+            renderSlots(dStr);
+      }).catch(err => { document.getElementById("empty-msg").innerText = "連線失敗，請重試"; const pill = document.getElementById(`pill-${dStr}`); if(pill) pill.classList.remove('loading'); });
+  }
+
+  function updateDatePills(startDateStr, days) {
+      const start = new Date(startDateStr);
+      for(let i=0; i<days; i++) {
+          const d = new Date(start); d.setDate(start.getDate() + i); const dStr = fmt(d);
+          const pill = document.getElementById(`pill-${dStr}`); if (pill) { pill.classList.remove('loading'); pill.classList.add('loaded'); }
+      }
+  }
+
+  function fetchBatchData(startIndex, days, stage) {
+    const today = new Date(); const startD = new Date(); startD.setDate(today.getDate() + startIndex); const startStr = fmt(startD);
+    
+    fetch(`${API_URL}?action=getBatchSlots&startDate=${startStr}&days=${days}`)
+      .then(res => res.json())
+      .then(data => {
+        Object.assign(cachedData, data);
+        for (let i = 0; i < days; i++) {
+            const d = new Date(); d.setDate(today.getDate() + startIndex + i); const dStr = fmt(d);
+            if (!cachedData[dStr]) cachedData[dStr] = { slots: [] };
+        }
+        loadedDaysCount += days; updateDatePills(startStr, days);
+        
+        if (stage === "STAGE1") {
+          // === NEW LOGIC: SHOW CALENDAR, THEN HIDE LOADING ===
+          selectNearestAvailableDay(); 
+          
+          openCalendar(); 
+          
+          // Make calendar visible (opacity transition)
+          const calModal = document.getElementById("cal-modal");
+          if(calModal) calModal.style.opacity = "1";
+
+          if (calModal && calModal.classList.contains("active")) {
+             jumpToDate(selectedDateStr);
+          }
+
+          // Delay hiding loading slightly to ensure smooth transition
+          setTimeout(() => { hideLoading(false); }, 100);
+
+          checkHotSlots(14); 
+          fetchBatchData(loadedDaysCount, STAGE_2_DAYS, "STAGE2");
+
+        } else if (stage === "STAGE2") {
+          checkHotSlots(14); loadRestInBackground();
+        } else if (stage === "BG") {
+          loadRestInBackground();
+        }
+        
+        if (document.getElementById("cal-modal").classList.contains("active")) {
+            renderCalGrid(); 
+            if(selectedDateStr && document.getElementById("cal-slots-content").innerHTML.includes("載入")) {
+                renderSlotsInsideCalendar(selectedDateStr);
+            }
+        }
+      }) 
+      .catch(err => { 
+        console.error("Load error", err); 
+        hideLoading(true); // Hide on error too
+        
+        updateDatePills(startStr, days);
+        if(stage === "STAGE1") { 
+            document.getElementById("empty-msg").innerText = "連線不穩，請手動點選日期"; 
+            document.getElementById("empty-msg").style.display = "block"; 
+        }
+        else setTimeout(() => loadRestInBackground(), 2000);
+      });
+  }
+
+  function loadRestInBackground() { if (loadedDaysCount < MAX_DAYS) setTimeout(() => { fetchBatchData(loadedDaysCount, BACKGROUND_BATCH, "BG"); }, 500); }
+
+  function selectNearestAvailableDay() {
+      const sortedDates = Object.keys(cachedData).sort();
+      const todayStr = fmt(new Date());
+      let foundDate = null;
+
+      for (const dStr of sortedDates) {
+          if (dStr < todayStr) continue;
+          const dayData = cachedData[dStr];
+          
+          if (dayData && dayData.slots && dayData.slots.length > 0) {
+              const hasValid = dayData.slots.some(slot => isValidSlot(slot));
+              if (hasValid) {
+                  foundDate = dStr;
+                  break;
+              }
+          }
+      }
+
+      if (foundDate) {
+          selectDate(foundDate);
+      } else {
+          autoSelectFirst(); 
+      }
+  }
+
+  function jumpToDate(dStr) {
+      selectedDateStr = dStr; renderCalGrid();
+      const container = document.getElementById("cal-slots-content");
+      const dObj = new Date(dStr); const wDay = chiDayNames[dObj.getDay()];
+      document.getElementById("cal-slots-title").innerText = `${dStr} 週${wDay} 可預約時段`;
+      
+      // REQ 3: Trigger Highlight Logic
+      highlightWeekDay(dStr);
+
+      if (cachedData[dStr]) { renderSlotsInsideCalendar(dStr); } else {
+          container.innerHTML = `<div style="text-align:center; padding:30px;"><div class="spinner" style="width:30px;height:30px;margin:0 auto 10px auto;"></div>讀取該日行程中...</div>`;
+          fetch(`${API_URL}?action=getBatchSlots&startDate=${dStr}&days=1`).then(r => r.json()).then(data => {
+                Object.assign(cachedData, data);
+                if (!cachedData[dStr]) cachedData[dStr] = { slots: [] };
+                const pill = document.getElementById(`pill-${dStr}`); if(pill) { pill.classList.remove('loading'); pill.classList.add('loaded'); }
+                renderSlotsInsideCalendar(dStr);
+            }).catch(() => { container.innerHTML = `<div style="text-align:center; padding:20px; color:red;">讀取失敗</div>`; });
+      }
+  }
+
+  // REQ 3: Function to highlight weekday header
+  function highlightWeekDay(dStr) {
+      const date = new Date(dStr);
+      const dayIndex = date.getDay(); // 0(Sun) - 6(Sat)
+      
+      // Calendar headers in HTML order: MON, TUE, WED, THU, FRI, SAT
+      const headers = document.querySelectorAll('.cal-head');
+      
+      // Reset all
+      headers.forEach(h => h.classList.remove('active-day'));
+      
+      // Sunday (0) is ignored in this calendar grid
+      if (dayIndex === 0) return;
+      
+      // MON is 1 -> Index 0, SAT is 6 -> Index 5
+      const targetIndex = dayIndex - 1;
+      if (headers[targetIndex]) {
+          headers[targetIndex].classList.add('active-day');
+      }
+  }
+
+  function renderSlotsInsideCalendar(dStr) {
+      const container = document.getElementById("cal-slots-content"); container.innerHTML = "";
+      const data = cachedData[dStr];
+      if (!data || !data.slots || data.slots.length === 0) { container.innerHTML = `<div style="text-align:center; padding:20px; color:#aaa; font-weight:bold;">請選擇其他日期</div>`; return; }
+      
+      const grid = document.createElement("div"); grid.className = "simple-slot-grid";
+      
+      // Smart Grid Logic
+      // Check count of VALID slots
+      const validSlots = data.slots.filter(s => isValidSlot(s));
+      let visibleCount = validSlots.length;
+
+      // REQ: If 1-4 slots, enlarge them (Add 'few-slots' class)
+      if (visibleCount > 0 && visibleCount <= 4) {
+          grid.classList.add('few-slots');
+      } else {
+          grid.classList.remove('few-slots');
+      }
+
+      validSlots.forEach(slot => {
+          const btn = document.createElement("button"); btn.className = "simple-slot-btn"; btn.innerText = formatTime12H(slot.time);
+          if (currentMode === 'multi' && selectedSlots.some(s => s.timestamp === slot.timestamp)) btn.classList.add("selected");
+          btn.addEventListener('click', () => { handleSlotClick(slot, dStr); renderSlotsInsideCalendar(dStr); });
+          grid.appendChild(btn);
+      });
+
+      if (visibleCount === 0) {
+          container.innerHTML = `<div style="text-align:center; padding:20px; color:#aaa; font-weight:bold;">本日無可預約時段</div>`;
+      } else {
+          container.appendChild(grid); 
+      }
+      updateBottomBar();
+  }
+
+  function updateHeaderDate() {
+      const now = new Date();
+      const y = now.getFullYear();
+      const m = now.getMonth() + 1;
+      const d = now.getDate();
+      const day = chiDayNames[now.getDay()];
+      document.getElementById("full-date-display").innerText = `今日 ${y}年${m}月${d}日 週${day}`;
+  }
+
+  function openCalendar() {
+      if (!selectedDateStr) selectedDateStr = fmt(new Date());
+      renderCalGrid(); jumpToDate(selectedDateStr);
+      const modal = document.getElementById("cal-modal");
+      modal.classList.add("active");
+     
+      window.scrollTo(0, 0);
+      modal.scrollTop = 0;
+     
+      updateBottomBar();
+  }
+ 
+  function closeCalendar() {
+      if (window.innerWidth >= 768) return;
+      document.getElementById("cal-modal").classList.remove("active");
+      if (selectedDateStr) { selectDatePillUI(selectedDateStr); renderSlots(selectedDateStr); const pill = document.getElementById(`pill-${selectedDateStr}`); if (pill && pill.classList.contains('loading')) forceLoadDate(selectedDateStr); }
+      updateBottomBar();
+  }
+  
+  function changeCalMonth(n) { 
+      if (n < 0) {
+          const now = new Date();
+          const currentRealYear = now.getFullYear();
+          const currentRealMonth = now.getMonth();
+          if (calYear === currentRealYear && calMonth === currentRealMonth) {
+              return;
+          }
+          const targetDate = new Date(calYear, calMonth + n, 1);
+          const minDate = new Date(currentRealYear, currentRealMonth, 1);
+          if (targetDate < minDate) {
+              return;
+          }
+      }
+
+      calMonth += n; 
+      if (calMonth > 11) { calMonth = 0; calYear++; } 
+      else if (calMonth < 0) { calMonth = 11; calYear--; } 
+      renderCalGrid(); 
+  }
+ 
+  function renderCalGrid() {
+      document.getElementById("cal-title").innerText = `${calYear}年 ${calMonth+1}月 ${monthNamesEng[calMonth]}`;      
+      const now = new Date();
+      const prevBtn = document.getElementById('cal-prev-btn');
+      if (calYear === now.getFullYear() && calMonth === now.getMonth()) {
+          prevBtn.classList.add('disabled');
+      } else {
+          prevBtn.classList.remove('disabled');
+      }
+
+      const container = document.getElementById("cal-body"); container.innerHTML = "";
+      const firstDay = new Date(calYear, calMonth, 1).getDay(); const daysInMonth = new Date(calYear, calMonth+1, 0).getDate();
+      const today = new Date(); today.setHours(0,0,0,0);
+      let emptyCells = firstDay === 0 ? 6 : firstDay - 1;
+      for (let i=0; i<emptyCells; i++) container.innerHTML += `<div class="cal-cell empty"></div>`;
+      for (let d=1; d<=daysInMonth; d++) {
+          const dateStr = `${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`; const currentD = new Date(dateStr);
+          if (currentD.getDay() === 0) continue;
+          const cell = document.createElement("div"); cell.className = "cal-cell"; cell.innerText = d;
+          if (currentD < today || currentD > limitDate) cell.classList.add("disabled");
+          else {
+              cell.classList.add("loaded");
+              if (dateStr === fmt(new Date())) cell.classList.add("today");
+              if (dateStr === selectedDateStr) cell.classList.add("selected");
+              if (cachedData[dateStr] && cachedData[dateStr].slots && cachedData[dateStr].slots.length > 0) cell.classList.add("has-data");
+              cell.onclick = () => jumpToDate(dateStr);
+          }
+          container.appendChild(cell);
+      }
+      
+      // Ensure header is updated on render
+      if (selectedDateStr) highlightWeekDay(selectedDateStr);
+  }
+
+  function toggleMode() {
+      const newMode = (currentMode === 'single') ? 'multi' : 'single';
+      switchMode(newMode);
+  }
+
+  function switchMode(mode, silent = false) {
+    if (currentMode === mode && !document.querySelector('.toggle-wrapper')) return; 
+    currentMode = mode; 
+    
+    // === REQ: Toggle Body Class for CSS Styling Override ===
+    if (mode === 'multi') {
+        document.body.classList.add('mode-multi');
+    } else {
+        document.body.classList.remove('mode-multi');
+    }
+    
+    document.querySelectorAll('.toggle-wrapper').forEach(wrapper => {
+        wrapper.className = `toggle-wrapper ${mode}`;
+    });
+
+    // If silent is true, we skip the heavy rendering part (for animation performance)
+    if (silent) return;
+
+    selectedSlots = []; 
+    updateBottomBar();
+    if (selectedDateStr) { 
+        renderSlots(selectedDateStr); 
+        if(document.getElementById("cal-modal").classList.contains("active")) renderSlotsInsideCalendar(selectedDateStr); 
+    }
+  }
+ 
+  function handleSlotClick(slot, dateStr) {
+    if (currentMode === 'single') { selectedSlots = []; addToCart(slot, dateStr); openBatchForm(); } else { toggleSlot(slot, dateStr); }
+  }
+  function addToCart(slot, dateStr) {
+      const dObj = new Date(dateStr); const displayStr = `${dObj.getMonth()+1}/${dObj.getDate()} (${dayNames[dObj.getDay()]} ${chiDayNames[dObj.getDay()]}) ${formatTime12H(slot.time)}`;
+      selectedSlots.push({ dateStr, time: slot.time, timestamp: slot.timestamp, displayStr });
+  }
+  function toggleSlot(slot, dateStr) {
+    const index = selectedSlots.findIndex(s => s.timestamp === slot.timestamp);
+    if (index >= 0) selectedSlots.splice(index, 1); else { if (selectedSlots.length >= MAX_SELECTION) return alert(`最多 ${MAX_SELECTION} 個時段`); addToCart(slot, dateStr); }
+    updateBottomBar();
+    if(document.getElementById("cal-modal").classList.contains("active")) renderSlotsInsideCalendar(dateStr); else renderSlots(selectedDateStr);
+  }
+  function clearCart() {
+      selectedSlots = []; updateBottomBar();
+      if(document.getElementById("cal-modal").classList.contains("active")) { if(selectedDateStr) renderSlotsInsideCalendar(selectedDateStr); } else { renderSlots(selectedDateStr); }
+      closeForm();
+  }
+  function toggleCartForm() {
+      const form = document.getElementById("p-form");
+      if (form.classList.contains("active")) {
+          closeForm();
+      } else {
+          openBatchForm();
+      }
+  }
+  function updateBottomBar() {
+    const count = selectedSlots.length;
+    const isMulti = currentMode === 'multi';
+    const show = (isMulti && count > 0);
+   
+    const btn = document.getElementById("floating-cart-btn");
+    const cartCount = document.getElementById("cart-count");
+    const isCalActive = document.getElementById('cal-modal').classList.contains('active');
+   
+    if (show) {
+        cartCount.innerText = count;
+       
+        cartCount.classList.remove("bump-effect");
+        void cartCount.offsetWidth;
+        cartCount.classList.add("bump-effect");
+       
+        btn.classList.add("show");
+       
+        if (window.innerWidth < 768 && isCalActive) {
+            const calArea = document.getElementById('cal-slots-area');
+            if (btn.parentElement !== calArea) {
+                calArea.appendChild(btn);
+                btn.classList.add('in-cal-view');
+            }
+        } else {
+            if (btn.parentElement !== document.body) {
+                document.body.appendChild(btn);
+                btn.classList.remove('in-cal-view');
+            }
+        }
+    } else {
+        btn.classList.remove("show");
+    }
+  }
+  
+  // === Updated Logic for Removing Single Slot ===
+  function removeSingleSlot(ts) {
+      // 1. Remove from array
+      selectedSlots = selectedSlots.filter(s => s.timestamp !== ts);
+
+      // 2. If list becomes empty, clear cart and close
+      if (selectedSlots.length === 0) {
+          clearCart();
+          return;
+      }
+
+      // 3. Re-render the confirmation list
+      openBatchForm(); 
+
+      // 4. Update the background views (Calendar/Main) so if they go back, it's unselected
+      if(document.getElementById("cal-modal").classList.contains("active")) {
+           renderSlotsInsideCalendar(selectedDateStr);
+      } else {
+           renderSlots(selectedDateStr);
+      }
+      updateBottomBar();
+  }
+
+  function openBatchForm() {
+    if (selectedSlots.length === 0) return;
+    const list = document.getElementById("checkout-list"); list.innerHTML = "";
+    selectedSlots.sort((a,b) => a.timestamp - b.timestamp);
+    
+    // === MODIFIED: Add index number badge ===
+    selectedSlots.forEach((s, index) => { 
+        const div = document.createElement("div"); 
+        div.className = "selected-item"; 
+        
+        // Structure: [Wrapper for (Badge + Text)] [Delete Button]
+        div.innerHTML = `
+            <div style="display:flex; align-items:center;">
+                <span class="slot-index-badge">${index + 1}</span>
+                <span>${s.displayStr}</span>
+            </div>
+            <button class="remove-slot-btn" onclick="removeSingleSlot(${s.timestamp})">🗑️</button>
+        `; 
+        list.appendChild(div); 
+    });
+    
+    document.getElementById("form-total").innerText = selectedSlots.length; 
+    document.getElementById("p-form").classList.add("active");
+
+    // REQ: Tablet (768-1023) Auto Scroll to Top
+    if (window.innerWidth >= 768 && window.innerWidth < 1024) {
+        // Scroll the form box container (the overlay)
+        const formPage = document.getElementById("p-form");
+        if(formPage) {
+            formPage.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        // Fallback for body scroll
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  }
+  
+  function closeForm() { document.getElementById("p-form").classList.remove("active"); }
+
+  function submitData() {
+    const name = document.getElementById("iptName").value.trim(); 
+    const email = document.getElementById("iptEmail").value.trim();
+    
+    // 嚴格 Email 正規表示式 (必須有 @ 且有點及網域)
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+    if(!name || !email) return alert("請填寫完整資訊");
+    if(!emailRegex.test(email)) return alert("Email 格式不正確，請輸入完整的 Email (例如: name@gmail.com)");
+    
+    const btn = document.querySelector(".confirm-btn"); 
+    const orgText = btn.innerText; 
+    btn.innerText = "處理中..."; 
+    btn.disabled = true;
+    
+    const DURATION_MS = 60 * 60 * 1000;
+    
+    fetch(API_URL, { 
+        method: "POST", 
+        body: JSON.stringify({ name, email, appointments: selectedSlots }) 
+    })
+    .then(res => res.json())
+    .then(res => {
+       if (res.bookingSummary) {
+           const summary = res.bookingSummary;
+           if (summary.failCount === 0) {
+               alert(`🎉 預約成功！\n共 ${summary.successCount} 堂課。\n確認信已寄至您的信箱。`);
+               finishSuccessBooking();
+           } else {
+               let msg = `⚠️ 注意：有 ${summary.failCount} 堂課預約失敗 (已被搶先預約)。\n`;
+               msg += `✅ 成功預約：${summary.successCount} 堂\n`;
+               
+               if (summary.failedSlots && summary.failedSlots.length > 0) {
+                   msg += "\n❌ 失敗時段：\n";
+                   summary.failedSlots.forEach(slot => {
+                       const d = new Date(parseInt(slot.timestamp));
+                       const min = d.getMinutes();
+                       const timeStr = d.getHours() + ":" + (min<10?'0':'') + min;
+                       const dateStr = (d.getMonth()+1) + "/" + d.getDate();
+                       msg += `- ${dateStr} ${timeStr}\n`;
+                   });
+               }
+               msg += "\n系統已保留成功的時段。\n頁面將重新整理以顯示最新剩餘名額。";
+               alert(msg);
+               location.reload();
+           }
+       } else if (res.success) {
+         alert(`預約完成！`);
+         finishSuccessBooking();
+       } else { 
+         alert("預約發生錯誤：" + res.message); 
+       }
+
+       btn.innerText = orgText; 
+       btn.disabled = false;
+    })
+    .catch(err => { 
+        alert("網路錯誤，請檢查連線"); 
+        btn.innerText = orgText; 
+        btn.disabled = false; 
+    });
+
+    function finishSuccessBooking() {
+         selectedSlots.forEach(booked => {
+           if (cachedData[booked.dateStr]) {
+             cachedData[booked.dateStr].slots = cachedData[booked.dateStr].slots.filter(s => {
+               const sStart = s.timestamp; const sEnd = sStart + DURATION_MS; const bookedStart = booked.timestamp; const bookedEnd = bookedStart + DURATION_MS;
+               return !(sStart < bookedEnd && sEnd > bookedStart);
+             });
+           }
+         });
+         selectedSlots = []; 
+         closeForm(); 
+         closeCalendar(); 
+         renderSlots(selectedDateStr); 
+         updateBottomBar(); 
+         checkHotSlots(loadedDaysCount > 7 ? 14 : 7);
+    }
+  }
+
+  // === Point 1, 2, 3: Hot Slot Updated Logic ===
+  function checkHotSlots(daysLimit) {
+    if (!daysLimit) daysLimit = 14;
+    const list = document.getElementById("hot-list"); list.innerHTML = ""; 
+    let hotItems = [];
+    
+    const sortedDates = Object.keys(cachedData).sort(); const today = new Date(); today.setHours(0, 0, 0, 0);
+    for (const dStr of sortedDates) {
+      const d = new Date(dStr); d.setHours(0,0,0,0); const diff = (d - today) / (1000 * 60 * 60 * 24);
+      if (diff >= 0 && diff < daysLimit) {
+          const dateObj = new Date(dStr); const day = dateObj.getDay();
+          // Point 1: Include Saturday (Day 6)
+          if (day >= 1 && day <= 6) {
+            const slots = cachedData[dStr].slots || [];
+            slots.forEach(slot => {
+               const h = parseInt(slot.time.split(":")[0]);
+               
+               // Hot Slots range: 18 (6PM) to 20 (8PM). 
+               // This logic ALREADY excludes 21 (9PM), so it is safe.
+               if (h >= 18 && h <= 20) {
+                 const monDate = `${dateObj.getMonth()+1}/${dateObj.getDate()}`; 
+                 const weekName = dayNames[day];
+                 // Point 1: Format time (7pm vs 7:00 PM based on mobile/desktop)
+                 const displayTime = formatHotTime(slot.time); 
+                 
+                 const btn = document.createElement("button"); btn.className = "hot-btn";
+                 // Point 2: Add Tap Icon
+                 btn.innerHTML = `<div>${monDate} (${weekName}) &nbsp;&nbsp; ${displayTime} <img src="https://ik.imagekit.io/lql1uveoc/tap.png?updatedAt=1751188454925" class="tap-icon"></div>`;
+                 btn.onclick = () => {
+                     closeHotPanel();
+                     if (window.innerWidth < 768) { closeCalendar(); selectDate(dStr); } else { jumpToDate(dStr); }
+                     setTimeout(() => { handleSlotClick(slot, dStr); if (currentMode === 'single') openBatchForm(); }, 100);
+                 };
+                 hotItems.push(btn);
+               }
+            });
+          }
+      }
+    }
+    
+    // Point 3: Limit Mobile items (Max 4)
+    if (hotItems.length > 0) {
+        hotItems.forEach((btn, index) => {
+            if (window.innerWidth < 768 && index >= 4) {
+                btn.classList.add("hot-hidden");
+            }
+            list.appendChild(btn);
+        });
+
+        // Add Show More button if needed
+        if (window.innerWidth < 768 && hotItems.length > 4) {
+            const showMoreBtn = document.createElement("div");
+            showMoreBtn.className = "hot-show-more";
+            showMoreBtn.innerText = "顯示更多";
+            showMoreBtn.onclick = function() {
+                document.querySelectorAll(".hot-hidden").forEach(el => el.classList.remove("hot-hidden"));
+                showMoreBtn.style.display = "none";
+            };
+            list.appendChild(showMoreBtn);
+        }
+
+        if (!hotPanelShown) { hotPanelShown = true; const panel = document.getElementById("hot-panel"); setTimeout(() => { panel.classList.add("show"); }, 100); }
+    }
+  }
+
+  // Point 1: Custom formatter for hot list (Conditional Mobile/Desktop)
+  function formatHotTime(timeStr) {
+      if(!timeStr) return ""; 
+      const [h, m] = timeStr.split(':'); 
+      let hour = parseInt(h); 
+      const suffix = hour >= 12 ? 'pm' : 'am'; 
+      hour = hour % 12 || 12; 
+
+      // New Logic: Check screen width
+      const isMobile = window.innerWidth < 768;
+
+      if (isMobile) {
+          // Mobile: Compact (7pm)
+          if(m === '00') return `${hour}${suffix}`;
+          return `${hour}:${m}${suffix}`;
+      } else {
+          // Desktop: Standard (7:00 PM)
+          return `${hour}:${m} ${suffix}`; 
+      }
+  }
+
+  function closeHotPanel() { document.getElementById("hot-panel").classList.remove("show"); }
+  function autoSelectFirst() {
+    const firstLoaded = document.querySelector(".date-pill.loaded");
+    if (firstLoaded) { selectDate(firstLoaded.dataset.date); } else { document.getElementById("empty-msg").innerText = "資料讀取中..."; document.getElementById("empty-msg").style.display = "block"; }
+  }
+  function selectDate(dStr) {
+    selectedDateStr = dStr; selectDatePillUI(dStr); renderSlots(dStr);
+    if (window.innerWidth < 768 && !document.getElementById('cal-modal').classList.contains('active')) document.querySelector('.header-section').scrollIntoView({behavior: 'smooth'});
+  }
+  function selectDatePillUI(dStr) {
+    document.querySelectorAll(".date-pill").forEach(e => e.classList.remove("active"));
+    const el = document.getElementById(`pill-${dStr}`);
+    if(el) { el.classList.add("active"); el.scrollIntoView({behavior:"smooth", inline:"center", block:"nearest"}); document.getElementById("empty-msg").style.display = "none"; }
+  }
+  function renderSlots(dStr) {
+    if (!cachedData[dStr]) { document.getElementById("empty-msg").innerText = "資料載入中..."; document.getElementById("empty-msg").style.display = "block"; document.querySelectorAll(".time-card").forEach(c => c.style.display="none"); return; }
+    const data = cachedData[dStr];
+    const zones = { morning: { el: document.getElementById("grid-morning"), card: document.getElementById("card-morning") }, afternoon: { el: document.getElementById("grid-afternoon"), card: document.getElementById("card-afternoon") }, evening: { el: document.getElementById("grid-evening"), card: document.getElementById("card-evening") } };
+    Object.values(zones).forEach(z => { z.el.innerHTML = ""; z.card.style.display = "none"; });
+    if (!data.slots || data.slots.length === 0) { document.getElementById("empty-msg").innerHTML = "<b>請選擇其他日期</b>"; document.getElementById("empty-msg").style.display = "block"; return; }
+    document.getElementById("empty-msg").style.display = "none";
+    Object.keys(zones).forEach(key => {
+        const slots = data.slots.filter(s => s.type === key); const z = zones[key];
+        if (slots.length > 0) {
+            z.card.style.display = "flex"; z.el.className = "slot-grid"; z.el.innerHTML = "";
+            const axisLine = z.card.querySelectorAll(".axis-line");
+            if (slots.length <= 3) axisLine.forEach(line => line.style.display = "none"); else axisLine.forEach(line => line.style.display = "block");
+            slots.forEach(slot => {
+                const btn = document.createElement("button"); btn.className = "slot-btn"; btn.innerText = formatTime12H(slot.time); btn.dataset.ts = slot.timestamp;
+                if (currentMode === 'multi' && selectedSlots.some(s => s.timestamp === slot.timestamp)) btn.classList.add("selected");
+               
+                btn.onclick = () => { handleSlotClick(slot, dStr); };
+                z.el.appendChild(btn);
+            });
+        }
+    });
+    updateBottomBar();
+  }
+  function formatTime12H(timeStr) {
+      if(!timeStr) return ""; const [h, m] = timeStr.split(':'); let hour = parseInt(h); const suffix = hour >= 12 ? 'PM' : 'AM'; hour = hour % 12 || 12; return `${hour}:${m} ${suffix}`;
+  }
+  function fmt(d) { return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0"); }
+</script>
+</body>
+</html>
