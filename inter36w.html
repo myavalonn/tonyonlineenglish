@@ -1,0 +1,1179 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GEPT 寫作課程方案</title>
+    <!-- FontAwesome for Features Section Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Noto+Sans+TC:wght@400;700;900&display=swap');
+
+        :root {
+            --bg-color: #f9fafb;
+            --card-bg: #ffffff;
+            --text-main: #111827;
+            --text-muted: #6b7280;
+            --content-width: 100%; 
+            --theme-purple: #8b5cf6;
+            --theme-blue: #0065ff;
+            --theme-orange: #f97316;
+        }
+
+        *, *::before, *::after { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', 'Noto Sans TC', system-ui, sans-serif;
+            background-color: var(--bg-color);
+            padding: 0; padding-bottom: 60px; line-height: 1.5;
+            width: 100%; min-height: 100vh; margin: 0;
+            display: flex; justify-content: center; overflow-x: hidden;
+        }
+
+        .pricing-wrapper { width: 100%; padding: 0 40px; margin: 0 auto; }
+
+        #desktop-view-anchor { scroll-margin-top: 60px; }
+        
+        /* HEADER */
+        .header-section { margin-top: 60px; margin-bottom: 20px; text-align: center; }
+        @media (max-width: 1180px) { .header-section { display: none; } }
+        .main-title { font-size: 2rem; font-weight: 700; color: var(--text-main); display: flex; align-items: center; justify-content: center; flex-wrap: wrap; gap: 15px; }
+        .header-logo { height: 50px; width: auto; display: block; }
+
+        /* Mobile Header Section */
+        .m-header-section { display: none; padding-top: 25px; margin-bottom: 10px; }
+
+        /* =========================================
+           FEATURES SECTION (Merged from Doc 2)
+           ========================================= */
+        .features-wrapper {
+            width: 100%;
+            max-width: 1400px;
+            margin: 60px auto 40px auto; /* 加大 margin-top 確保與上方方案區有足夠間距 */
+            padding: 20px 0; 
+            box-sizing: border-box;
+        }
+
+        .feature-item { box-sizing: border-box; position: relative; }
+
+        .feature-icon-wrapper {
+            background-color: #eff6ff;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #0066ff;
+            position: relative;
+            flex-shrink: 0; 
+        }
+
+        .feature-badge {
+            position: absolute;
+            background-color: #ff4757; 
+            color: white;
+            font-weight: bold;
+            border-radius: 20px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            white-space: nowrap;
+            z-index: 10;
+        }
+        
+        .feature-badge::after {
+            content: '';
+            position: absolute;
+            border-style: solid;
+            border-color: #ff4757 transparent transparent transparent; 
+        }
+
+        .feature-text h3 { color: #1a2b4b; font-weight: 700; margin: 0; line-height: 1.4; }
+        .feature-text p { color: #7b859a; margin: 4px 0 0 0; }
+        .time-highlight { color: #0066ff; font-weight: 800; }
+
+        .terms-box {
+            background-color: #f8f9fa; border-radius: 8px; padding: 15px;
+            margin-top: 30px; color: #8fa0b3; font-size: 13px;
+            line-height: 1.6; text-align: left; border: 1px solid #eef2f6;
+        }
+        .terms-box strong { color: #5e6e82; font-weight: 600; }
+
+        @media (min-width: 768px) {
+            .feature-group-row { display: flex; justify-content: center; width: 100%; }
+            .feature-service-group { gap: 60px; margin-bottom: 50px; }
+            .feature-video-group { gap: 30px; flex-wrap: nowrap; }
+
+            .feature-item {
+                display: flex; flex-direction: column; align-items: center;
+                text-align: center; padding: 0; flex: 1; max-width: 300px; 
+            }
+
+            .feature-icon-wrapper { width: 120px; height: 120px; margin-bottom: 20px; }
+            .feature-icon-wrapper i { font-size: 50px; }
+
+            .feature-text h3 { font-size: 24px; margin-bottom: 10px; }
+            .feature-text p { font-size: 16px; }
+            .time-highlight { font-size: 18px; }
+            
+            .feature-badge { top: 0; right: -10px; font-size: 14px; padding: 5px 12px; }
+            .feature-badge::after { bottom: -5px; left: 10px; border-width: 5px 5px 0; }
+            
+            .terms-box { text-align: center; max-width: 800px; margin-left: auto; margin-right: auto; }
+        }
+
+        @media (max-width: 767px) {
+            .features-wrapper { padding: 15px; margin-top: 30px; margin-bottom: 20px; }
+            .feature-group-row { display: flex; flex-direction: column; gap: 12px; } 
+            .feature-service-group { margin-bottom: 12px; }
+
+            .feature-item {
+                display: flex; flex-direction: row; align-items: center; 
+                text-align: left; width: 100%; background-color: #fff;
+                border: 1px solid #eef2f6; border-radius: 12px;
+                padding: 15px; box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            }
+
+            .feature-icon-wrapper { width: 55px; height: 55px; margin-right: 15px; }
+            .feature-icon-wrapper i { font-size: 24px; }
+            .feature-text { flex: 1; }
+            
+            .feature-text h3 { font-size: 18px; margin-bottom: 4px; }
+            .feature-text p { font-size: 14px; line-height: 1.4; color: #6a7a8c; }
+            .time-highlight { font-size: 15px; }
+
+            .feature-badge { top: -8px; right: -8px; font-size: 12px; padding: 3px 8px; }
+            .feature-badge::after { bottom: -3px; left: 8px; border-width: 3px 3px 0; }
+            .terms-box { font-size: 12px; padding: 15px; margin-top: 20px; }
+        }
+
+        /* --- DESKTOP VIEW STYLES --- */
+        .desktop-view { display: flex; flex-direction: column; gap: 40px; padding-top: 20px; }
+        
+        .desktop-cards-row { 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 25px; 
+            align-items: stretch; 
+            perspective: 1000px; 
+        }
+        
+        /* Desktop Card Structure */
+        .card {
+            background: var(--card-bg); 
+            border-radius: 20px; 
+            padding: 35px 25px 30px 25px;
+            display: flex; 
+            flex-direction: column;
+            border: 2px solid var(--theme-color); 
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            position: relative; 
+            opacity: 0; 
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%;
+        }
+        .card:hover { transform: translateY(-5px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); }
+
+        .card.theme-purple { --theme-color: var(--theme-purple); }
+        .card.theme-blue { --theme-color: var(--theme-blue); }
+        .card.theme-orange { --theme-color: var(--theme-orange); }
+        
+        /* Header elements inside card */
+        .card-header-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
+        .plan-title-label { font-size: 1.2rem; font-weight: 800; color: var(--theme-color); }
+        .card-corner-logo { height: 50px; width: auto; opacity: 0.8; }
+
+        /* "Most Popular" Badge */
+        .top-badge {
+            position: absolute; top: -16px; left: 50%; transform: translateX(-50%);
+            background-color: var(--theme-blue);
+            color: white; padding: 6px 18px; border-radius: 50px; font-weight: 800;
+            font-size: 0.85rem; white-space: nowrap; z-index: 10;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15); letter-spacing: 0.5px;
+        }
+
+        /* Desktop Typography */
+        .d-main-heading { font-size: 2.2rem; font-weight: 900; color: #111827; margin-bottom: 15px; text-align: center; line-height: 1.2; }
+        .d-big-num { font-size: 1.3em; margin-right: 5px; font-weight: 900; }
+        
+        .d-desc-text { 
+            font-size: 1.15rem; 
+            color: #4b5563; 
+            line-height: 1.6; 
+            margin-bottom: 25px; 
+            text-align: center; 
+            min-height: 50px; 
+            padding: 0 5px;
+        }
+        
+        /* The Middle Colored Bar */
+        .identity-bar {
+            width: 100%; padding: 12px; border-radius: 8px;
+            background-color: var(--theme-color); color: white;
+            text-align: center; font-weight: 800; font-size: 1.2rem;
+            margin-bottom: 30px; letter-spacing: 1px;
+        }
+
+        /* Lists */
+        .d-list-container { flex-grow: 1; display: flex; flex-direction: column; gap: 18px; margin-bottom: 25px; }
+        .d-section-title { 
+            font-size: 1.15rem; font-weight: 700; color: #9ca3af; 
+            border-bottom: 1px solid #e5e7eb; padding-bottom: 10px; margin-bottom: 15px; 
+            text-align: left; 
+        }
+        
+        .d-list-row { 
+            display: flex; align-items: flex-start; margin-bottom: 10px; 
+            font-size: 1.15rem; 
+            color: #374151; line-height: 1.5; font-weight: 600; 
+        }
+        
+        .d-text-wrap { display: flex; align-items: center; flex-wrap: wrap; }
+
+        .d-check { min-width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 12px; margin-top: 3px; flex-shrink: 0; }
+        .d-check.purple { background-color: var(--theme-purple); }
+        .d-check.blue { background-color: var(--theme-blue); }
+        .d-check.orange { background-color: var(--theme-orange); }
+        .d-check svg { width: 14px; height: 14px; fill: white; }
+        
+        .gift-icon { 
+            height: 1.3em; 
+            width: auto; 
+            vertical-align: middle; 
+            margin-right: 4px; 
+            margin-bottom: 4px;
+            display: inline-block;
+        }
+        .gift-text { color: #dc2626; font-weight: 800; margin-right: 4px; }
+        .promo-tag { background-color: #f97316; color: white; padding: 1px 6px; border-radius: 4px; font-size: 0.85em; margin-right: 6px; vertical-align: middle; }
+
+        /* Bottom Button */
+        .desktop-action-area { margin-top: 15px; width: 100%; }
+        .d-action-btn { 
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+            width: 100%; padding: 16px; border-radius: 10px; 
+            background: white; border: 2px solid var(--theme-color); color: var(--theme-color);
+            font-weight: 800; font-size: 1.2rem; text-decoration: none; 
+            transition: all 0.2s ease; cursor: pointer; 
+        }
+        .d-action-btn:hover { background: var(--theme-color); color: white; box-shadow: 0 6px 16px rgba(0,0,0,0.15); }
+        
+        .cart-icon { width: 22px; height: 22px; object-fit: contain; }
+        .d-action-btn:hover .cart-icon { filter: brightness(0) invert(1); }
+        .btn-purple .cart-icon { filter: invert(44%) sepia(51%) saturate(3029%) hue-rotate(233deg) brightness(96%) contrast(96%); }
+        .btn-blue .cart-icon { filter: invert(28%) sepia(87%) saturate(3223%) hue-rotate(205deg) brightness(103%) contrast(106%); }
+        .btn-orange .cart-icon { filter: invert(56%) sepia(61%) saturate(2251%) hue-rotate(345deg) brightness(98%) contrast(97%); }
+
+        @media (min-width: 1181px) {
+            .card.popular { animation: popMiddle 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards; z-index: 2; transform: scale(1.02); }
+            .card:first-child { transform-origin: center right; animation: spreadLeft 1s cubic-bezier(0.23, 1, 0.32, 1) 0.3s forwards; }
+            .card:last-child { transform-origin: center left; animation: spreadRight 1s cubic-bezier(0.23, 1, 0.32, 1) 0.3s forwards; }
+            @keyframes popMiddle { 0% { opacity: 0; transform: scale(0.8); } 100% { opacity: 1; transform: scale(1.02); } }
+            @keyframes spreadLeft { 0% { opacity: 0; z-index: 1; transform: translateX(50%) scale(0.9); } 100% { opacity: 1; z-index: 1; transform: translateX(0) scale(1); } }
+            @keyframes spreadRight { 0% { opacity: 0; z-index: 1; transform: translateX(-50%) scale(0.9); } 100% { opacity: 1; z-index: 1; transform: translateX(0) scale(1); } }
+        }
+
+        /* --- MOBILE/TABLET VIEW --- */
+        .mobile-view { display: none; }
+        .m-view-title { text-align: center; font-size: 1.8rem; font-weight: 900; color: #111827; padding: 0 15px; line-height: 1.3; }
+
+        @media (max-width: 1180px) {
+            .m-header-section { display: block; }
+            .desktop-view { display: none; } 
+            body { display: block; padding: 0; background: #fff; }
+            .pricing-wrapper { padding: 0; max-width: 100%; }
+            .mobile-view { display: flex; flex-direction: column; width: 100%; min-height: 100vh; padding-top: 5px; }
+
+            /* Sticky Segmented Control Wrapper */
+            .m-ladder-nav-wrapper {
+                position: -webkit-sticky;
+                position: sticky;
+                top: 0;
+                z-index: 100;
+                background: rgba(255, 255, 255, 0.95);
+                backdrop-filter: blur(8px);
+                -webkit-backdrop-filter: blur(8px);
+                padding: 10px 15px 12px 15px;
+                box-shadow: 0 4px 10px -4px rgba(0,0,0,0.08);
+            }
+
+            /* Segmented Control (Capsule) */
+            .m-ladder-nav {
+                display: flex; 
+                align-items: center; 
+                justify-content: space-between;
+                background: #f1f5f9; 
+                border-radius: 50px; 
+                padding: 4px;
+                margin: 0 auto;
+                max-width: 380px; 
+            }
+            .ladder-tab {
+                text-align: center; font-family: 'Noto Sans TC', sans-serif; white-space: nowrap;
+                cursor: pointer; transition: all 0.3s ease;
+                font-size: 0.95rem; font-weight: 600; color: #64748b; 
+                padding: 8px 12px; border-radius: 50px;
+                flex: 1;
+            }
+            .ladder-tab.active {
+                font-weight: 800; color: #0f172a; background: #ffffff;
+                box-shadow: 0 2px 6px rgba(0,0,0,0.08); 
+            }
+
+            /* HORIZONTAL SLIDER CONTAINER */
+            .m-slider-container {
+                display: flex;
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                gap: 15px;
+                padding: 20px 20px 30px 20px; 
+                -webkit-overflow-scrolling: touch;
+                scrollbar-width: none;
+            }
+            .m-slider-container::-webkit-scrollbar { display: none; }
+
+            /* INFO BOX */
+            .m-info-box { 
+                min-width: 88%;
+                scroll-snap-align: center;
+                margin: 0; 
+                border-radius: 16px; background: #fff; 
+                border: 2px solid #e5e7eb; padding: 40px 20px 30px 20px; position: relative; 
+                display: flex; flex-direction: column;
+            }
+            
+            .m-theme-blue { border-color: var(--theme-blue); }
+            .m-theme-purple { border-color: var(--theme-purple); }
+            .m-theme-orange { border-color: var(--theme-orange); }
+            .m-corner-logo { position: absolute; top: 15px; right: 15px; width: 60px; }
+            .m-plan-name { font-size: 1.2rem; font-weight: 700; margin-bottom: 5px; text-align: left;}
+            
+            .m-main-heading { font-size: 1.8rem; font-weight: 900; color: #111827; margin-bottom: 15px; text-align: center; }
+            .m-big-num { font-size: 1.2em; margin-right: 5px; }
+            
+            /* Description Text with Inline Tags */
+            .m-desc-text { font-size: 1.1rem; color: #64748b; line-height: 1.6; margin-bottom: 25px; }
+            
+            /* INLINE TAGS */
+            .m-inline-tags { display: inline; font-weight: 700; margin-left: 5px; }
+            .m-inline-tag { display: inline-block; font-size: 0.9em; margin-right: 4px; padding: 0 2px; }
+            .m-inline-tag.blue { color: var(--theme-blue); background-color: #e0e7ff; border-radius: 4px; padding: 0 6px;}
+            .m-inline-tag.purple { color: var(--theme-purple); background-color: #f3e8ff; border-radius: 4px; padding: 0 6px;}
+            .m-inline-tag.orange { color: var(--theme-orange); background-color: #ffedd5; border-radius: 4px; padding: 0 6px;}
+
+            /* MOBILE BADGE */
+            .m-floating-btn {
+                position: absolute; top: -25px; left: 50%; transform: translateX(-50%);
+                display: inline-flex; align-items: center; justify-content: center;
+                gap: 8px; padding: 8px 20px; border-radius: 50px; color: white;
+                font-weight: 800; font-size: 1rem; text-decoration: none; border: none;
+                cursor: default; box-shadow: 0 4px 8px rgba(0,0,0,0.2); z-index: 50;
+                white-space: nowrap;
+            }
+            
+            /* MOBILE CART BUTTON */
+            .m-action-btn { 
+                display: flex; flex-direction: row; align-items: center; justify-content: center; 
+                width: 100%; padding: 16px; border-radius: 8px; color: white; 
+                font-weight: 700; font-size: 1.4rem; text-align: center; 
+                text-decoration: none; margin-top: 30px; 
+                box-shadow: 0 4px 6px rgba(0,0,0,0.1); cursor: pointer; position: relative; z-index: 5;
+            }
+            .m-action-btn .cart-icon {
+                width: 28px; height: 28px; filter: brightness(0) invert(1); 
+                margin-right: 12px; object-fit: contain;
+            }
+            
+            .bg-blue { background: var(--theme-blue); }
+            .bg-purple { background: var(--theme-purple); }
+            .bg-orange { background: var(--theme-orange); }
+
+            .m-list-title { font-size: 1.2rem; font-weight: 700; color: var(--theme-blue); border-bottom: 1px solid #e2e8f0; padding-bottom: 10px; margin-bottom: 20px; }
+            .m-list-title.purple { color: var(--theme-purple); }
+            .m-list-title.orange { color: var(--theme-orange); }
+            
+            .m-list-row { display: flex; align-items: center; margin-bottom: 15px; font-size: 1.1rem; color: #1e293b; line-height: 1.4; }
+            .m-check { min-width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 12px; flex-shrink: 0; }
+            .m-check svg { width: 16px; height: 16px; fill: white; }
+            
+            .badge-solid { display: inline-block; padding: 2px 8px; border-radius: 6px; color: white; font-weight: 700; font-size: 0.9em; padding-bottom: 4px; margin-right: 5px; }
+            .bg-solid-blue { background: var(--theme-blue); }
+            .bg-solid-purple { background: var(--theme-purple); }
+            .bg-solid-orange { background: var(--theme-orange); }
+            .option-item { font-weight: 700; }
+            .option-tag-orange { background: #ffedd5; color: #c2410c; padding: 2px 6px; border-radius: 4px; margin-right: 5px; }
+
+            /* PAGINATION DOTS */
+            .m-pagination-dots {
+                display: flex; justify-content: center; align-items: center; gap: 8px;
+                margin-top: -10px; margin-bottom: 30px;
+            }
+            .m-dot {
+                width: 8px; height: 8px; border-radius: 50%; background: #cbd5e1;
+                cursor: pointer; transition: all 0.3s ease;
+            }
+            .m-dot.active {
+                width: 24px; border-radius: 10px; background: #1e293b;
+            }
+        }
+
+        /* TABLET SPECIFIC (768px - 1180px) */
+        @media (min-width: 768px) and (max-width: 1180px) {
+            .m-view-title { font-size: 2.8rem; margin-bottom: 25px; }
+            
+            /* Tablet Scale for Features Section */
+            .feature-icon-wrapper { width: 120px; height: 120px; margin-bottom: 25px; }
+            .feature-icon-wrapper i { font-size: 60px; }
+            .feature-text h3 { font-size: 28px; }
+            .feature-text p { font-size: 20px; }
+            .time-highlight { font-size: 22px; }
+            .feature-badge { font-size: 16px; padding: 6px 16px; }
+            .terms-box { font-size: 16px; padding: 25px; }
+
+            .m-ladder-nav-wrapper { padding: 15px 30px; }
+            .m-ladder-nav { max-width: 500px; padding: 6px; }
+            .ladder-tab { font-size: 1.1rem; padding: 12px 20px; }
+            .ladder-tab.active { font-size: 1.1rem; }
+            
+            .m-info-box { min-width: 80%; padding: 60px 40px; }
+            .m-slider-container { padding: 30px 40px; gap: 30px; }
+
+            .m-plan-name { font-size: 2rem; margin-bottom: 15px; }
+            .m-main-heading { font-size: 3rem; margin-bottom: 30px; white-space: normal; }
+            .m-desc-text { font-size: 1.8rem; margin-bottom: 40px; line-height: 1.5; }
+
+            .m-inline-tag { font-size: 0.9em; padding: 2px 10px; }
+
+            .m-action-btn { font-size: 2.5rem; padding: 25px; margin-top: 40px; gap: 15px; }
+            .m-list-title { font-size: 2rem; margin-bottom: 30px; }
+            .m-list-row { font-size: 1.8rem; margin-bottom: 30px; line-height: 1.4; }
+            .m-check { width: 44px; height: 44px; margin-right: 20px; }
+            .m-check svg { width: 24px; height: 24px; }
+            
+            .gift-icon { height: 1.3em; margin-right: 10px; }
+            .badge-solid { font-size: 0.9em; padding: 4px 12px; }
+            .m-floating-btn { font-size: 1.8rem; padding: 12px 35px; top: -35px; }
+            .m-action-btn .cart-icon { width: 40px; height: 40px; margin-right: 15px; }
+
+            .m-pagination-dots { gap: 12px; margin-bottom: 40px; }
+            .m-dot { width: 10px; height: 10px; }
+            .m-dot.active { width: 30px; }
+        }
+
+        /* CART & OVERLAY STYLES */
+        .cart-overlay { 
+            position: fixed; top: 0; left: 0; 
+            width: 100%; height: 100%; 
+            background-color: rgba(0, 0, 0, 0.5); 
+            z-index: 20000; 
+            opacity: 0; visibility: hidden; 
+            transition: opacity 0.5s ease, visibility 0.5s ease; 
+        }
+        .cart-overlay.open { opacity: 1; visibility: visible; }
+        
+        .cart-panel { 
+            position: fixed; 
+            top: 0; 
+            right: -100%; 
+            width: 90%; max-width: 800px; 
+            height: 100dvh; 
+            background-color: #f9f9f9; 
+            box-shadow: -5px 0 15px rgba(0,0,0,0.1); 
+            z-index: 20001; 
+            transition: right 0.5s ease-in-out; 
+            display: flex; flex-direction: column; 
+        }
+        .cart-panel.open { right: 0; }
+        
+        .cart-body { display: flex; flex-grow: 1; padding: 0 20px 20px 20px; gap: 40px; overflow-y: auto; }
+        .cart-left, .cart-right { flex-basis: 50%; background-color: white; padding: 20px; border-radius: 8px; border: 1px solid #e0e0e0; }
+        .cart-left { position: relative; }
+        .cart-left h3 { margin-top: 0; }
+        
+        #close-cart-btn-main { 
+            position: absolute; top: 15px; right: 15px; 
+            background: none; border: none; font-size: 40px; line-height: 1; 
+            cursor: pointer; color: #555; padding: 10px; z-index: 10002; 
+        }
+        
+        .cart-item { display: flex; justify-content: space-between; align-items: flex-start; gap: 15px; padding-bottom: 20px; border-bottom: 1px solid #eee; }
+        .cart-item-info { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+        .cart-item-name { font-weight: bold; font-size: 16px; }
+        .remove-item-btn { background: none; border: none; color: #999; cursor: pointer; font-size: 14px; text-decoration: underline; padding: 0; white-space: nowrap; }
+        .cart-item-price { font-weight: bold; white-space: nowrap; text-align: right; color: red; } 
+        .cart-total { margin-top: 20px; padding-top: 20px; border-top: 2px solid #333; }
+        .cart-total .total-row { display: flex; justify-content: space-between; font-size: 18px; line-height: 1.6; }
+        .cart-total .final-total { font-size: 22px; font-weight: bold; }
+        .cart-total .final-total span:last-child { color: red; }
+        #checkout-form p { color: #555; }
+        .line-link { font-weight: bold; color: #00B900; text-align: center; margin-bottom: 15px; display: block; text-decoration: none;}
+        #checkout-form input[type="email"] { width: 100%; padding: 12px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; margin-bottom: 15px; box-sizing: border-box; cursor: pointer; }
+        
+        #sidebar-checkout-btn { width: 100%; background-color: #3b414a; color: white; border: none; padding: 15px; font-size: 18px; font-weight: bold; border-radius: 6px; cursor: pointer; transition: background-color 0.3s ease; margin-top: 5px; margin-bottom: 20px; }
+        #sidebar-checkout-btn:hover { background-color: #525964; }
+
+        .tls-info { text-align: center; color: #888; font-size: 12px; margin-top: 15px; }
+        .payment-info-section { margin-top: 15px; padding-top: 20px; border-top: 1px solid #eee; }
+        .payment-method { background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 6px; padding: 15px; display: flex; align-items: center; gap: 15px; font-size: 15px; }
+        .icon-circle { border: 2px solid black; border-radius: 50%; width: 18px; height: 18px; display: flex; justify-content: center; align-items: center; flex-shrink: 0; }
+        .icon-circle div { width: 8px; height: 8px; background-color: black; border-radius: 50%; }
+        .payment-method.custom-style { background-color: black; }
+        .payment-method.custom-style span { color: white; }
+        .payment-method.custom-style .icon-circle { border-color: white; }
+        .payment-method.custom-style .icon-circle div { background-color: white; }
+
+        /* Plan C Selection Inside Cart */
+        .plan-c-selection-header { font-size: 1.4rem; font-weight: 800; color: var(--theme-orange); margin-bottom: 20px; text-align: center; }
+        .plan-c-option-card { border: 2px solid #eee; border-radius: 8px; padding: 15px; margin-bottom: 15px; cursor: pointer; transition: all 0.2s; position: relative; }
+        .plan-c-option-card:hover { border-color: var(--theme-orange); background-color: #fff7ed; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .plan-c-opt-title { font-weight: 700; font-size: 1.1rem; color: #333; margin-bottom: 5px; }
+        .plan-c-opt-price { font-weight: 800; color: #000; font-size: 1.2rem; display: block; text-align: right; }
+        .plan-c-opt-select-btn { margin-top: 10px; width: 100%; background: var(--theme-orange); color: white; border: none; padding: 8px; border-radius: 4px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 5px; }
+        .btn-plan-c-a { background-color: #d41165 !important; }
+        .btn-plan-c-b { background-color: #8f0988 !important; }
+        .btn-plan-c-combo { background-color: #e65100 !important; }
+        
+        /* Thank You Page */
+        #thank-you-page { display: none; padding: 20px; box-sizing: border-box; }
+        .thank-you-container { max-width: 900px; width: 100%; margin: 0 auto; background-color: #f9f9f9; border: 1px solid #e0e0e0; }
+        .ty-left-panel { background-color: white; padding: 40px; }
+        .ty-right-panel { background-color: #f9f9f9; padding: 40px; }
+        .ty-checkmark { font-size: 48px; color: #27ae60; }
+        .ty-header { display: flex; align-items: center; gap: 15px; font-size: 28px; color: #333; margin: 15px 0; }
+        .ty-message { color: #555; line-height: 1.6; }
+        .ty-order-details { margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; }
+        .ty-detail-item { display: flex; justify-content: space-between; padding: 8px 0; font-size: 14px; align-items: center; }
+        .ty-summary-header { font-size: 18px; color: #555; margin: 0 0 20px 0; border-bottom: 1px solid #ddd; padding-bottom: 10px;}
+        .ty-order-item { padding-bottom: 15px; border-bottom: 1px solid #eee; }
+        .ty-item-details { display: flex; justify-content: space-between; align-items: flex-start; gap: 15px; }
+        .ty-item-info { font-weight: bold; }
+        .ty-item-price { font-weight: bold; white-space: nowrap; }
+        #ty-order-id { font-size: 2em; color: #007bff; font-weight: bold; }
+        .ty-booking-link { display: block; background-color: #007bff; color: white !important; padding: 12px 20px; border-radius: 8px; text-decoration: none; text-align: center; font-weight: bold; margin-top: 10px; margin-bottom: 10px; transition: background-color 0.3s ease; }
+        .ty-booking-link:hover { background-color: #0056b3; }
+        .ty-line-link { color: green; font-weight: bold; text-decoration: none; }
+        #continue-shopping-btn { color: blue; cursor: pointer; text-decoration: underline; margin-right: 20px; }
+        #close-btn { color: red; cursor: pointer; text-decoration: underline; }
+        #celebration-icon { font-size: 1.5em; position: relative; display: inline-block; z-index: 1;}
+        
+        /* Mobile Cart Adjustments */
+        @media (max-width: 767px) {
+            .cart-panel { width: 100%; max-width: 100%; height: 100dvh; }
+            .cart-body { flex-direction: column; gap: 20px; padding: 0 15px 15px 15px; }
+            .cart-left, .cart-right { flex-basis: auto; }
+            #close-cart-btn-main { top: 15px; right: 15px; }
+            .thank-you-container { flex-direction: column; }
+            .ty-left-panel, .ty-right-panel { padding: 25px; }
+        }
+        @media (min-width: 1025px) { .thank-you-container { display: flex; gap: 30px; } .ty-left-panel { flex-basis: 55%; } .ty-right-panel { flex-basis: 45%; } }
+    </style>
+</head>
+<body>
+
+<div class="pricing-wrapper" id="content-start">
+    
+    <!-- DESKTOP HEADER -->
+    <div class="header-section">
+        <div class="main-title">
+            <img src="https://ik.imagekit.io/lql1uveoc/Front%20Page/GEPT_logo.svg.png?updatedAt=1756611596300" class="header-logo" alt="GEPT Logo">
+            <div class="desktop-text">
+                <span style="color: #1242a3;">GEPT 全民英檢</span>
+                「<span style="color: #dc2626;">中級寫作</span>」
+                影片課程+加強
+            </div>
+        </div>
+    </div>
+
+    <!-- MOBILE HEADER -->
+    <div class="m-header-section">
+        <div class="m-view-title">
+            <span style="color: #1242a3;">全民英檢</span><span style="color: #dc2626;">中級寫作(複)</span>
+        </div>
+    </div>
+
+    <!-- DESKTOP VIEW -->
+    <div class="desktop-view" id="desktop-view-anchor">
+        <div class="desktop-cards-row">
+            
+            <!-- Plan A (Desktop) -->
+            <div class="card theme-purple">
+                <div class="card-header-row">
+                    <div class="plan-title-label">方案 A</div>
+                    <img src="https://ik.imagekit.io/lql1uveoc/Front%20Page/GEPT_logo.svg.png?updatedAt=1756611596300" class="card-corner-logo" alt="GEPT">
+                </div>
+                
+                <div class="d-main-heading"><span class="d-big-num">3</span>回完整影片課程</div>
+                <p class="d-desc-text">這是完整課程的精選版，適合想在短時間內掌握核心技巧的學生。</p>
+                
+                <div class="identity-bar">輕量實戰派</div>
+                
+                <div class="d-list-container">
+                    <div class="d-section-title">課程內容</div>
+                    <div class="d-list-row"><div class="d-check purple"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><div class="d-text-wrap"><span class="badge-solid bg-solid-purple">3 回</span>完整翻譯+寫作影片詳解</div></div>
+                    <div class="d-list-row"><div class="d-check purple"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><div class="d-text-wrap"><img src="https://ik.imagekit.io/lql1uveoc/%E6%9C%83%E5%93%A1450/2026.%20%E6%96%B0%E5%A2%9E18000.36000/coupon.gif?updatedAt=1768548704641" class="gift-icon"><span class="gift-text">贈送</span>2 回寫作+翻譯批改</div></div>
+                    <div class="d-list-row"><div class="d-check purple"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><div class="d-text-wrap"><img src="https://ik.imagekit.io/lql1uveoc/%E6%9C%83%E5%93%A1450/2026.%20%E6%96%B0%E5%A2%9E18000.36000/coupon.gif?updatedAt=1768548704641" class="gift-icon"><span class="gift-text">贈送</span>1 堂 1-1 線上家教(50分鐘/堂）</div></div>
+                </div>
+
+                <div class="d-list-container">
+                    <div class="d-section-title">適合對象</div>
+                    <div class="d-list-row"><div class="d-check purple"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><div><span style="font-weight:800;">備考時間緊湊</span>：需快速吸收</div></div>
+                    <div class="d-list-row"><div class="d-check purple"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><div><span style="font-weight:800;">重點補強</span>：確認盲點</div></div>
+                    <div class="d-list-row"><div class="d-check purple"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><div><span style="font-weight:800;">初次嘗試</span>：體驗教學與批改</div></div>
+                </div>
+
+                <div class="desktop-action-area">
+                    <button class="d-action-btn btn-purple" onclick="addToCart('course-3A')">
+                        NT$3,650 加入購物車 <img src="https://ik.imagekit.io/lql1uveoc/Beginning-intermediate%20level/grocery-store.png" class="cart-icon">
+                    </button>
+                </div>
+            </div>
+
+            <!-- Plan B (Desktop) -->
+            <div class="card popular theme-blue">
+                <div class="top-badge">MOST POPULAR</div>
+                <div class="card-header-row">
+                    <div class="plan-title-label">方案 B</div>
+                    <img src="https://ik.imagekit.io/lql1uveoc/Front%20Page/GEPT_logo.svg.png?updatedAt=1756611596300" class="card-corner-logo" alt="GEPT">
+                </div>
+                
+                <div class="d-main-heading"><span class="d-big-num">6</span>回完整影片課程</div>
+                <p class="d-desc-text">最紮實的教學方案，提供兩倍的教學量與練習機會，全面提升實力。</p>
+                
+                <div class="identity-bar">完整實戰型</div>
+                
+                <div class="d-list-container">
+                    <div class="d-section-title">完整內容包含</div>
+                    <div class="d-list-row"><div class="d-check blue"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><div class="d-text-wrap"><span class="badge-solid bg-solid-blue">6 回</span>完整翻譯+寫作影片詳解</div></div>
+                    <div class="d-list-row"><div class="d-check blue"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><div class="d-text-wrap"><img src="https://ik.imagekit.io/lql1uveoc/%E6%9C%83%E5%93%A1450/2026.%20%E6%96%B0%E5%A2%9E18000.36000/coupon.gif?updatedAt=1768548704641" class="gift-icon"><span class="gift-text">贈送</span>4 回寫作+翻譯批改</div></div>
+                    <div class="d-list-row"><div class="d-check blue"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><div class="d-text-wrap"><img src="https://ik.imagekit.io/lql1uveoc/%E6%9C%83%E5%93%A1450/2026.%20%E6%96%B0%E5%A2%9E18000.36000/coupon.gif?updatedAt=1768548704641" class="gift-icon"><span class="gift-text">贈送</span>2 堂 1-1 線上家教(50分鐘/堂）</div></div>
+                </div>
+
+                <div class="d-list-container">
+                    <div class="d-section-title">適合對象</div>
+                    <div class="d-list-row"><div class="d-check blue"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><div><span style="font-weight:800;">追求高分</span>：完整練習所有題型</div></div>
+                    <div class="d-list-row"><div class="d-check blue"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><div><span style="font-weight:800;">大量實作</span>：看多、寫多、改多</div></div>
+                    <div class="d-list-row"><div class="d-check blue"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><div><span style="font-weight:800;">長期練習</span>：加強寫作邏輯</div></div>
+                </div>
+
+                <div class="desktop-action-area">
+                    <button class="d-action-btn btn-blue" onclick="addToCart('course-6A')">
+                        NT$6,600 加入購物車 <img src="https://ik.imagekit.io/lql1uveoc/Beginning-intermediate%20level/grocery-store.png" class="cart-icon">
+                    </button>
+                </div>
+            </div>
+
+            <!-- Plan C (Desktop) -->
+            <div class="card theme-orange">
+                <div class="card-header-row">
+                    <div class="plan-title-label">方案 C</div>
+                    <img src="https://ik.imagekit.io/lql1uveoc/Front%20Page/GEPT_logo.svg.png?updatedAt=1756611596300" class="card-corner-logo" alt="GEPT">
+                </div>
+                
+                <div class="d-main-heading">中級寫作加強課程</div>
+                <p class="d-desc-text">針對已有教學資源，需要「純練習」或「純指導」的客製化選項。</p>
+                
+                <div class="identity-bar">加強衝刺型</div>
+                
+                <div class="d-list-container">
+                    <div class="d-section-title">客製化選項 (擇一或全部)</div>
+                    <div class="d-list-row"><div class="d-check orange"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><div>選項A：4回批改 + 兩堂1-1家教(50分/堂）</div></div>
+                    <div class="d-list-row"><div class="d-check orange"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><div>選項B：6堂 1-1 家教課程（50分/堂）</div></div>
+                    <div class="d-list-row"><div class="d-check orange"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><div class="d-text-wrap"><span class="promo-tag">優惠(A+B)</span>八堂1-1線上寫作家教(50分/堂)+4回批改</div></div>
+                </div>
+
+                <div class="d-list-container">
+                    <div class="d-section-title">適合對象</div>
+                    <div class="d-list-row"><div class="d-check orange"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><div><span style="font-weight:800;">重實戰輕理論</span>：直接寫與批改</div></div>
+                    <div class="d-list-row"><div class="d-check orange"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><div><span style="font-weight:800;">特定弱點突破</span>：高密度指導</div></div>
+                    <div class="d-list-row"><div class="d-check orange"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><div><span style="font-weight:800;">靈活安排</span>：針對性修正</div></div>
+                </div>
+
+                <div class="desktop-action-area">
+                    <button class="d-action-btn btn-orange" onclick="openPlanC_InCart()">
+                        NT$3,000 加入購物車 <img src="https://ik.imagekit.io/lql1uveoc/Beginning-intermediate%20level/grocery-store.png" class="cart-icon">
+                    </button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- MOBILE/TABLET VIEW -->
+    <div class="mobile-view" id="mobile-view-anchor">
+        
+        <!-- Sticky Segmented Control -->
+        <div class="m-ladder-nav-wrapper">
+            <div class="m-ladder-nav">
+                <div class="ladder-tab active" onclick="scrollToCard(0)">六回影片</div>
+                <div class="ladder-tab" onclick="scrollToCard(1)">三回影片</div>
+                <div class="ladder-tab" onclick="scrollToCard(2)">加強課程</div>
+            </div>
+        </div>
+
+        <!-- HORIZONTAL SCROLL CONTAINER -->
+        <div class="m-slider-container" id="mobile-slider">
+
+            <!-- Card 0 (Blue) -->
+            <div class="m-info-box m-theme-blue" id="m-card-0">
+                <button class="m-floating-btn bg-blue">Plan B 完整實戰型</button>
+                <img src="https://ik.imagekit.io/lql1uveoc/Front%20Page/GEPT_logo.svg.png?updatedAt=1756611596300" class="m-corner-logo">
+                <div class="m-plan-name text-blue">方案 B</div>
+                <div class="m-main-heading"><span class="m-big-num">6</span>回完整影片課程</div>
+                
+                <!-- Description + Tags Inline -->
+                <p class="m-desc-text">
+    最紮實的教學方案，提供兩倍的教學量與練習機會，全面提升實力。適合👉
+    <span class="m-inline-tags">
+        <span class="m-inline-tag blue">#追求高分</span>
+        <span class="m-inline-tag blue">#大量實作</span>
+        <span class="m-inline-tag blue">#多次練習</span>
+    </span>
+</p>
+     
+
+                <div class="m-list-title">完整內容包含</div>
+                <div class="m-list-row"><div class="m-check bg-blue"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><div><span class="badge-solid bg-solid-blue">6 回</span>完整翻譯+寫作影片課程詳解</div></div>
+                <div class="m-list-row"><div class="m-check bg-blue"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><div><img src="https://ik.imagekit.io/lql1uveoc/%E6%9C%83%E5%93%A1450/2026.%20%E6%96%B0%E5%A2%9E18000.36000/coupon.gif?updatedAt=1768548704641" class="gift-icon"><span class="gift-text">贈送</span>4 回寫作+翻譯批改</div></div>
+                <div class="m-list-row"><div class="m-check bg-blue"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><div><img src="https://ik.imagekit.io/lql1uveoc/%E6%9C%83%E5%93%A1450/2026.%20%E6%96%B0%E5%A2%9E18000.36000/coupon.gif?updatedAt=1768548704641" class="gift-icon"><span class="gift-text">贈送</span>2 堂 1-1 線上家教 (50分/堂)</div></div>
+
+                <a href="#" onclick="addToCart('course-6A'); return false;" class="m-action-btn bg-blue">
+                    <img src="https://ik.imagekit.io/lql1uveoc/Beginning-intermediate%20level/grocery-store.png" class="cart-icon">
+                    <span>NT$6,600</span>
+                </a>
+            </div>
+
+            <!-- Card 1 (Purple) -->
+            <div class="m-info-box m-theme-purple" id="m-card-1">
+                <button class="m-floating-btn bg-purple">Plan A 輕量實戰派</button>
+                <img src="https://ik.imagekit.io/lql1uveoc/Front%20Page/GEPT_logo.svg.png?updatedAt=1756611596300" class="m-corner-logo">
+                <div class="m-plan-name text-purple">方案 A</div>
+                <div class="m-main-heading"><span class="m-big-num">3</span>回完整影片課程</div>
+                
+                <!-- Description + Tags Inline -->
+                <p class="m-desc-text">
+                    這是完整課程的精選版，適合想在短時間內掌握核心技巧的學生。適合👉
+                    <span class="m-inline-tags">
+                        <span class="m-inline-tag purple">#重點補強</span>
+                        <span class="m-inline-tag purple">#備考時間緊湊</span>
+                        <span class="m-inline-tag purple">#初次嘗試</span>
+                         
+                    </span>
+                </p>
+
+                <div class="m-list-title">課程內容</div>
+                <div class="m-list-row"><div class="m-check bg-purple"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><div><span class="badge-solid bg-solid-purple">3 回</span>完整翻譯+寫作影片課程詳解</div></div>
+                <div class="m-list-row"><div class="m-check bg-purple"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><div><img src="https://ik.imagekit.io/lql1uveoc/%E6%9C%83%E5%93%A1450/2026.%20%E6%96%B0%E5%A2%9E18000.36000/coupon.gif?updatedAt=1768548704641" class="gift-icon"><span class="gift-text">贈送</span>2 回寫作+翻譯批改</div></div>
+                <div class="m-list-row"><div class="m-check bg-purple"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><div><img src="https://ik.imagekit.io/lql1uveoc/%E6%9C%83%E5%93%A1450/2026.%20%E6%96%B0%E5%A2%9E18000.36000/coupon.gif?updatedAt=1768548704641" class="gift-icon"><span class="gift-text">贈送</span>1 堂 1-1 線上家教 (50分/堂)</div></div>
+
+                <a href="#" onclick="addToCart('course-3A'); return false;" class="m-action-btn bg-purple">
+                     <img src="https://ik.imagekit.io/lql1uveoc/Beginning-intermediate%20level/grocery-store.png" class="cart-icon">
+                     <span>NT$3,650</span>
+                </a>
+            </div>
+
+            <!-- Card 2 (Orange) -->
+            <div class="m-info-box m-theme-orange" id="m-card-2">
+                <button class="m-floating-btn bg-orange">Plan C 加強衝刺型</button>
+                <img src="https://ik.imagekit.io/lql1uveoc/Front%20Page/GEPT_logo.svg.png?updatedAt=1756611596300" class="m-corner-logo">
+                <div class="m-plan-name text-orange">方案 C</div>
+                <div class="m-main-heading">中級寫作加強課程</div>
+                
+                <!-- Description + Tags Inline -->
+                <p class="m-desc-text">
+                    針對已有教學資源，需要「純練習」或「純指導」的客製化選項。適合👉
+                    <span class="m-inline-tags">
+                        <span class="m-inline-tag orange">#重實戰練習</span>
+                        <span class="m-inline-tag orange">#弱點突破</span>
+                        <span class="m-inline-tag orange">#針對性修正</span>
+                    </span>
+                </p>
+
+                <div class="m-list-title">客製化選項</div>
+                <div class="m-list-row"><div class="m-check bg-orange"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><div>選項A：4回批改 & 兩堂1-1家教(50分/堂)</div></div>
+                <div class="m-list-row"><div class="m-check bg-orange"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><div>選項B：6堂 1-1 家教課程(50分/堂)</div></div>
+                <div class="m-list-row"><div class="m-check bg-orange"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><div class="option-item"><span class="option-tag-orange">A+B優惠</span>八堂1-1家教 + 四回寫作批改</div></div>
+
+                <a href="#" onclick="openPlanC_InCart(); return false;" class="m-action-btn bg-orange">
+                     <img src="https://ik.imagekit.io/lql1uveoc/Beginning-intermediate%20level/grocery-store.png" class="cart-icon">
+                     <span>NT$3,000</span>
+                </a>
+            </div>
+        </div>
+
+        <!-- PAGINATION DOTS -->
+        <div class="m-pagination-dots">
+            <div class="m-dot active" onclick="scrollToCard(0)"></div>
+            <div class="m-dot" onclick="scrollToCard(1)"></div>
+            <div class="m-dot" onclick="scrollToCard(2)"></div>
+        </div>
+    </div>
+
+    <!-- COURSE FEATURES SECTION (Merged from Doc 2) - MOVED TO BOTTOM -->
+    <div class="features-wrapper">
+        <!-- 第一區：核心真人服務 -->
+        <div class="feature-group-row feature-service-group">
+            
+            <!-- Item 1: 雙師批改 -->
+            <div class="feature-item">
+                <div class="feature-icon-wrapper">
+                    <span class="feature-badge">獨家</span>
+                    <i class="fa-solid fa-user-pen"></i>
+                </div>
+                <div class="feature-text">
+                    <h3>雙師專業批改+評分</h3>
+                    <p>修飾語感 ＋ 點評邏輯 ＋ 範本提供</p>
+                </div>
+            </div>
+
+            <!-- Item 2: 1-1 診斷 -->
+            <div class="feature-item">
+                <div class="feature-icon-wrapper">
+                    <span class="feature-badge">贈送</span>
+                    <i class="fa-solid fa-chalkboard-user"></i>
+                </div>
+                <div class="feature-text">
+                    <h3>1-1 真人寫作診斷課程</h3>
+                    <p>50分鐘/堂，彈性線上預約(或Line)</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 第二區：影片資源 -->
+        <div class="feature-group-row feature-video-group">
+            
+            <div class="feature-item">
+                <div class="feature-icon-wrapper">
+                    <i class="fa-solid fa-circle-play"></i>
+                </div>
+                <div class="feature-text">
+                    <h3>精選 3 回影片組</h3>
+                    <p>總時長 <span class="time-highlight">3小時 36分</span></p>
+                </div>
+            </div>
+
+            <div class="feature-item">
+                <div class="feature-icon-wrapper">
+                    <i class="fa-solid fa-layer-group"></i>
+                </div>
+                <div class="feature-text">
+                    <h3>完整 6 回影片組</h3>
+                    <p>總時長 <span class="time-highlight">7小時 38分</span></p>
+                </div>
+            </div>
+            
+            <div class="feature-item">
+                <div class="feature-icon-wrapper">
+                    <i class="fa-solid fa-infinity"></i>
+                </div>
+                <div class="feature-text">
+                    <h3>無期限觀看</h3>
+                    <p>課程影片可重複播放複習</p>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- 第三區：條款防護說明 -->
+        <div class="terms-box">
+            <strong>💡 組合優惠說明：</strong><br>
+            本專案包含之真人服務（批改評分與家教） 。贈送項目為限時福利，恕不折現或抵扣主課程費用。
+        </div>
+    </div>
+
+</div> <!-- End of pricing-wrapper -->
+
+<!-- Cart Overlay -->
+<div id="cart-overlay" class="cart-overlay" onclick="toggleCartPanel()"></div>
+<div id="cart-panel" class="cart-panel">
+    <div class="cart-body">
+        <div class="cart-left">
+            <h3>購物車 <button id="close-cart-btn-main" onclick="toggleCartPanel()">×</button></h3>
+            <div id="cart-items-container"></div>
+            <div id="cart-total-container" class="cart-total"></div>
+        </div>
+        <div class="cart-right">
+            <h3>結帳</h3>
+            <form id="checkout-form" onsubmit="return false;">
+                <p>請輸入您的電子信箱。</p>
+                <input type="email" id="email" required placeholder="請輸入您的電子信箱">
+                <button type="button" id="sidebar-checkout-btn" onclick="handleCheckout()">確認送出訂單</button>
+                <a class="line-link" href="https://line.me/ti/p/T9YdimtG8_" target="_blank">請加入Line: Myavalon</a>
+                <div class="payment-info-section">
+                    <h3>付款資訊</h3>
+                    <div class="payment-method custom-style">
+                        <div class="icon-circle"><div></div></div>
+                        <span>匯款或可以使用Line Pay/iPassMoney 付款</span>
+                    </div>
+                </div>
+                <p class="tls-info">所有數據都透過安全 TLS 連線進行加密傳輸</p>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Thank You Page -->
+<div id="thank-you-page" style="display:none;">
+    <div class="thank-you-container">
+        <div class="ty-left-panel">
+            <div class="ty-checkmark">✓</div>
+            <h2 class="ty-header">感謝您的訂購！<span id="celebration-icon" class="celebration-icon">🎉</span></h2>
+            <p class="ty-message">您的訂單已成功建立。確認信已寄送至您的電子信箱，請檢查您的收件匣。</p>
+            <div class="ty-order-details">
+                <div class="ty-detail-item"><span>訂單編號</span><span id="ty-order-id"></span></div>
+                <div class="ty-detail-item"><span>訂單時間</span><span id="ty-order-timestamp"></span></div>
+                <div class="ty-detail-item"><span>電子信箱</span><span id="ty-customer-email"></span></div>
+            </div>
+            <div id="ty-booking-container" style="display: none; margin-top: 20px;">
+                <h3>下一步：預約課程</h3>
+                <p>請點擊下方專屬連結，預約您的上課時間：</p>
+                <div id="ty-booking-links-list"></div>
+            </div>
+            <div class="ty-payment-instructions" style="margin-top: 20px;">
+                <h3>如何付款:</h3>
+                <p><a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="ty-line-link">請點選加入Line: myavalon</a></p>
+                <p>匯款或可以使用Line Pay/iPassMoney 付款</p>
+                <p>交易成功後煩請告知<br>將提供學費證明<br>感謝 ＾＾</p>
+            </div>
+            <div style="margin-top: 20px;">
+              <a id="continue-shopping-btn" onclick="location.reload()">繼續購物</a>
+              <a id="close-btn" onclick="location.reload()">關閉</a>
+            </div>
+        </div>
+        <div class="ty-right-panel">
+            <h3 class="ty-summary-header">訂單摘要</h3>
+            <div id="ty-cart-items-container"></div>
+            <div id="ty-total-container" class="cart-total"></div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const products =[
+        { id: 'course-3A', name: '全民英檢中級影片課程3回(A)', price: 3650, description: '方案A (輕量實戰派)', bookingLink: null, imageId: 0 },
+        { id: 'course-6A', name: '全民英檢中級影片課程6回(B)', price: 6600, description: '方案B (完整實戰型)', bookingLink: null, imageId: 1 },
+        { id: 'course-CA', name: '方案C: 四回批改+兩堂課程', price: 3000, description: '選項 A (加強衝刺)', bookingLink: null, imageId: 2 },
+        { id: 'course-CB', name: '方案C: 六堂線上家教寫作課程', price: 4200, description: '選項 B (家教+寫作作業練習)', bookingLink: null, imageId: 2 },
+        { id: 'course-COMBO', name: '方案C: 八堂1-1家教+四回批改', price: 6800, description: 'A+B 組合優惠', bookingLink: null, imageId: 2 }
+    ];
+    // Dummy images for cart (kept for compatibility)
+    const images =[
+        "https://ik.imagekit.io/lql1uveoc/Beginning-intermediate%20level/Dark%20Blue%20and%20Beige%20Modern%20Simple%20Schedule%20A4%20Document-7.png", 
+        "https://ik.imagekit.io/lql1uveoc/Beginning-intermediate%20level/Dark%20Blue%20and%20Beige%20Modern%20Simple%20Schedule%20A4%20Document-2.png", 
+        "https://ik.imagekit.io/lql1uveoc/Beginning-intermediate%20level/Dark%20Blue%20and%20Beige%20Modern%20Simple%20Schedule%20A4%20Document-6.png"
+    ];
+    let cart = {};
+
+    window.addToCart = function(productId) {
+        if(event) event.stopPropagation();
+        const productToAdd = products.find(p => p.id === productId);
+        if (productToAdd) {
+            cart = {}; // One item max rule preserved
+            cart[productToAdd.id] = { ...productToAdd, imageUrl: images[productToAdd.imageId] || images[0] };
+        }
+        updateCartDisplay();
+        document.getElementById("cart-overlay").classList.add("open");
+        document.getElementById("cart-panel").classList.add("open");
+        setTimeout(() => { 
+            const emailInput = document.getElementById("email");
+            if(emailInput) emailInput.scrollIntoView({ behavior: 'smooth', block: 'center' }); 
+        }, 500);
+    };
+
+    window.toggleCartPanel = function() {
+        document.getElementById("cart-overlay").classList.toggle("open");
+        document.getElementById("cart-panel").classList.toggle("open");
+    };
+
+    // Open Cart with Plan C Options displayed inside
+    window.openPlanC_InCart = function() {
+        if(event) event.stopPropagation();
+        document.getElementById("cart-overlay").classList.add("open");
+        document.getElementById("cart-panel").classList.add("open");
+        
+        const container = document.getElementById("cart-items-container");
+        const totalContainer = document.getElementById("cart-total-container");
+        
+        container.innerHTML = `
+            <div id="plan-c-header" class="plan-c-selection-header">請選擇加強課程方案</div>
+            <div class="plan-c-option-card" onclick="addToCart('course-CA')">
+                <div class="plan-c-opt-title">選項 A (四回批改+兩堂課程)</div>
+                <span class="plan-c-opt-price">NT$ 3,000</span>
+                <button class="plan-c-opt-select-btn btn-plan-c-a">選項 A 加入購物車</button>
+            </div>
+            <div class="plan-c-option-card" onclick="addToCart('course-CB')">
+                <div class="plan-c-opt-title">選項 B (六堂線上家教寫作課程)</div>
+                <span class="plan-c-opt-price">NT$ 4,200</span>
+                <button class="plan-c-opt-select-btn btn-plan-c-b">選項 B 加入購物車</button>
+            </div>
+            <div class="plan-c-option-card" style="border-color: #f97316; background-color: #fff7ed;" onclick="addToCart('course-COMBO')">
+            <div class="plan-c-opt-title" style="margin-bottom: 2px;">A+B 組合優惠 (八堂家教+四回批改)</div>
+            <span class="plan-c-opt-price" style="margin-top: 0px; display: block;">NT$ 6,800</span>
+            <button class="plan-c-opt-select-btn btn-plan-c-combo">
+               A+B 加入購物車 
+           </button>
+        </div>
+        `;
+        totalContainer.innerHTML = ''; 
+
+        setTimeout(() => {
+            const cartBody = document.querySelector('.cart-body');
+            if (cartBody) {
+                cartBody.scrollTop = 0;
+            }
+            const header = document.getElementById('plan-c-header');
+            if (header) {
+                header.scrollIntoView({ behavior: 'auto', block: 'start' });
+            }
+        }, 50);
+    };
+
+    window.removeFromCart = function(id) {
+        delete cart[id];
+        updateCartDisplay();
+        if (Object.keys(cart).length === 0) { toggleCartPanel(); }
+    };
+
+    window.handleCheckout = function() {
+        const emailInput = document.getElementById("email");
+        const btn = document.getElementById("sidebar-checkout-btn");
+        const email = emailInput.value;
+        
+        if (Object.keys(cart).length === 0) return alert("您的購物車是空的！");
+        if (!email || !email.includes('@')) { alert("請輸入有效的電子信箱！"); return emailInput.focus(); }
+        
+        const finalTotal = Object.values(cart).reduce((sum, item) => sum + item.price, 0);
+        const orderId = '#' + Math.random().toString(36).substr(2, 5).toUpperCase();
+        const timestamp = new Date().toLocaleString("zh-TW",{year:"numeric",month:"long",day:"numeric",hour:"2-digit",minute:"2-digit"});
+        
+        btn.disabled = true;
+        btn.innerText = "處理中...";
+        
+        // Show TY Page
+        let itemsHtml = '';
+        Object.values(cart).forEach(item => {
+             itemsHtml += `<div class="ty-order-item"><div class="ty-item-details"><div class="ty-item-info">${item.name}</div><div class="ty-item-price">NT$ ${item.price.toLocaleString()}</div></div></div>`;
+        });
+        document.getElementById('ty-cart-items-container').innerHTML = itemsHtml;
+        document.getElementById('ty-total-container').innerHTML = `<div class="total-row final-total"><span>總計</span><span>NT$ ${finalTotal.toLocaleString()}</span></div>`;
+        document.getElementById('ty-customer-email').innerText = email;
+        document.getElementById('ty-order-id').innerText = orderId;
+        document.getElementById('ty-order-timestamp').innerText = timestamp;
+        
+        document.querySelector('.pricing-wrapper').style.display = 'none';
+        document.getElementById("cart-overlay").classList.remove('open');
+        document.getElementById("cart-panel").classList.remove('open');
+        document.getElementById("thank-you-page").style.display = 'block';
+        window.scrollTo(0,0);
+
+        const cartItemKey = Object.keys(cart)[0];
+        const submittedImage = (cartItemKey && cart[cartItemKey].imageUrl) ? cart[cartItemKey].imageUrl : '';
+
+        fetch("https://script.google.com/macros/s/AKfycbyU13Wivs341DMPupk9EKrL9u908zrHNOVqZUXri-hGezkk6qj_7loQGIf0GCfmvj_f/exec", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: new URLSearchParams({
+                orderId, email,
+                productName: Object.values(cart).map(item => item.name).join(', '),
+                totalPrice: finalTotal, status: "未付款",
+                imageUrls: submittedImage
+            })
+        })
+        .then(res => res.text())
+        .catch(e => console.error("Fetch error:", e))
+        .finally(() => { 
+            btn.disabled = false; 
+            btn.innerText = "確認送出訂單"; 
+            cart = {}; 
+        });
+    };
+
+    function updateCartDisplay() {
+        const container = document.getElementById("cart-items-container");
+        const totalContainer = document.getElementById("cart-total-container");
+        const totalItems = Object.keys(cart).length;
+        container.innerHTML = totalItems > 0 ? '' : '<p>您的購物車是空的。</p>';
+        
+        Object.entries(cart).forEach(([id, item]) => {
+            container.innerHTML += `<div class="cart-item">
+                                        <div class="cart-item-info">
+                                            <div class="cart-item-name">${item.name} <br><small>${item.description}</small></div>
+                                            <button class="remove-item-btn" onclick="removeFromCart('${id}')">移除</button>
+                                        </div>
+                                        <div class="cart-item-price">NT$ ${item.price.toLocaleString()}</div>
+                                    </div>`;
+        });
+        
+        const finalTotal = Object.values(cart).reduce((sum, item) => sum + item.price, 0);
+        totalContainer.innerHTML = `<div class="total-row final-total"><span>總計</span><span>NT$ ${finalTotal.toLocaleString()}</span></div>`;
+    }
+
+    // --- FIXED MOBILE SCROLL & TAB SYNC LOGIC ---
+    
+    // Function to programmatically scroll to a card (when clicking top tabs/dots)
+    function scrollToCard(index) {
+        const slider = document.getElementById('mobile-slider');
+        const targetCard = document.getElementById('m-card-' + index);
+        
+        if(slider && targetCard) {
+            // New logic: Use offsetLeft of the card minus the padding of the container
+            // This is more robust than calculating center points manually with width math
+            const paddingLeft = 20; // Matches CSS padding: 20px 20px 30px 20px
+            const scrollPos = targetCard.offsetLeft - paddingLeft;
+            
+            slider.scrollTo({
+                left: scrollPos,
+                behavior: 'smooth'
+            });
+            
+            updateActiveTab(index);
+        }
+    }
+
+    // Update active class on segmented control tabs & pagination dots
+    function updateActiveTab(index) {
+        // Update Segmented Control Tabs
+        document.querySelectorAll('.ladder-tab').forEach(t => t.classList.remove('active'));
+        const tabs = document.querySelectorAll('.ladder-tab');
+        if(tabs[index]) {
+            tabs[index].classList.add('active');
+        }
+
+        // Update Pagination Dots
+        document.querySelectorAll('.m-dot').forEach(d => d.classList.remove('active'));
+        const dots = document.querySelectorAll('.m-dot');
+        if(dots[index]) {
+            dots[index].classList.add('active');
+        }
+    }
+
+    // Detect Scroll to update tabs and dots automatically
+    document.addEventListener('DOMContentLoaded', () => {
+        const slider = document.getElementById('mobile-slider');
+        if(slider) {
+            slider.addEventListener('scroll', () => {
+                // Find which card is closest to the center of the viewport/container
+                let bestIndex = 0;
+                let minDistance = Infinity;
+                
+                // Center point of the visible slider area
+                const sliderCenter = slider.scrollLeft + (slider.clientWidth / 2);[0, 1, 2].forEach(i => {
+                    const card = document.getElementById('m-card-' + i);
+                    if(card) {
+                        // Center point of the card itself
+                        const cardCenter = card.offsetLeft + (card.offsetWidth / 2);
+                        const distance = Math.abs(sliderCenter - cardCenter);
+                        
+                        if (distance < minDistance) {
+                            minDistance = distance;
+                            bestIndex = i;
+                        }
+                    }
+                });
+
+                updateActiveTab(bestIndex);
+            });
+        }
+    });
+</script>
+
+</body>
+</html>
