@@ -9,15 +9,15 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Noto+Sans+TC:wght@400;700;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
 <style>
-    /* === 插入的第一段代碼：Header Banner Styles === */
+    /* === 原有 Header Banner Styles === */
     .tony-banner {
-        position: absolute; /* 確保不影響原有的 flex 置中排版 */
+        position: absolute;
         top: 0;
         left: 0;
-        z-index: 90; /* 顯示在主頁上方，但會被 content-panel (z-index 100) 覆蓋，避免擋住返回按鈕 */
+        z-index: 90;
         width: 100%;
-        height: 90px;
-        background-color: #060b1c; /* Logo 底色 */
+        height: 75px;
+        background-color: #060b1c;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -25,92 +25,51 @@
         box-sizing: border-box;
         border-bottom: 1px solid #1a2a4a;
     }
-
-    .logo-box { height: 60px; flex-shrink: 0; }
+    .logo-box { height: 50px; flex-shrink: 0; }
     .logo-box img { height: 100%; width: auto; display: block; }
-
     .nav-links { display: flex; align-items: center; gap: 8px; }
-
     .pill-btn {
-        color: white;
-        border: 1px solid rgba(255,255,255,0.6);
-        padding: 6px 12px;
-        border-radius: 50px;
-        text-decoration: none;
-        font-size: 13px;
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        transition: 0.3s;
-        white-space: nowrap;
+        color: white; border: 1px solid rgba(255,255,255,0.6);
+        padding: 6px 12px; border-radius: 50px;
+        text-decoration: none; font-size: 13px;
+        display: flex; align-items: center; gap: 6px;
+        transition: 0.3s; white-space: nowrap;
     }
     .pill-btn:hover { background-color: rgba(255,255,255,0.1); }
-
     .social-icon { height: 18px; width: auto; display: block; }
-
     .hamburger-icon { width: 20px; height: auto; margin-right: 5px; cursor: pointer; filter: invert(1); }
 
     @media (max-width: 500px) {
-        .pill-btn span { display: none; } /* 隱藏文字 */
+        .pill-btn span { display: none; }
         .pill-btn { padding: 8px; border-radius: 50%; width: 35px; height: 35px; justify-content: center; }
-        .tony-banner { height: 75px; padding: 0 10px; }
-        .logo-box { height: 48px; }
+        .tony-banner { height: 65px; padding: 0 10px; }
+        .logo-box { height: 40px; }
     }
 
-    /* === 以下為原版代碼，保持完全不變 === */
-    /* === 關鍵修正：讓頁面永遠有可滾動空間（解決 flex center 無法小滾動的問題） === */
-    html, body {
-        min-height: calc(100vh + 200px); /* 多出 200px 空間，確保可以滾動 */
-    }
-
-    html {
-        scroll-behavior: smooth;
-    }
+    /* === 原有主頁面版型 (Desktop & Mobile) === */
+    html, body { min-height: calc(100vh + 200px); }
+    html { scroll-behavior: smooth; }
     body {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        margin: 0;
-        font-family: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-        overflow-x: hidden;
-        background-color: #1a1a1d;
+        display: flex; flex-direction: column; justify-content: center;
+        margin: 0; font-family: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        overflow-x: hidden; background-color: #1a1a1d;
     }
     .desktop-view-wrapper {
-        background-color: #1a1a1d;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        flex-wrap: nowrap;
-        gap: 40px;
-        padding: 40px;
-        width: 100%;
-        box-sizing: border-box;
+        background-color: #1a1a1d; display: flex; justify-content: center; align-items: center;
+        flex-wrap: nowrap; gap: 40px; padding: 40px; width: 100%; box-sizing: border-box;
     }
-    /* --- Base Phone Mockup Styles --- */
-    .phone {
-        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-        position: relative;
-        background-color: #000;
-        overflow: hidden;
-        flex-shrink: 0;
-        transition: margin 0.3s ease, transform 0.3s ease;
-    }
+    .phone { box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5); position: relative; background-color: #000; overflow: hidden; flex-shrink: 0; transition: margin 0.3s ease, transform 0.3s ease; }
     .phone-max { width: 430px; height: 888px; border: 12px solid #2c2c2c; border-radius: 54px; }
     .phone-standard { width: 393px; height: 852px; border: 11px solid #2c2c2c; border-radius: 52px; }
     .phone-max.shortened { height: 788px; }
     .phone-standard.shortened { height: 752px; }
-    .phone-screen {
-        background-size: cover; background-position: center;
-        width: 100%; height: 100%; display: flex; flex-direction: column;
-        color: white; text-align: center; box-sizing: border-box;
-        position: relative;
-    }
+    .phone-screen { background-size: cover; background-position: center; width: 100%; height: 100%; display: flex; flex-direction: column; color: white; text-align: center; box-sizing: border-box; position: relative; }
     .status-bar-container { position: absolute; top: 18px; left: 20px; right: 20px; height: 40px; z-index: 10; }
     .status-bar { height: 100%; display: flex; justify-content: space-between; align-items: center; color: white; font-size: 15px; font-weight: 600; padding: 0 15px; }
     .time { position: absolute; left: 20px; }
     .status-icons { position: absolute; right: 20px; }
     .dynamic-island { position: absolute; top: 24px; left: 50%; transform: translateX(-50%); width: 120px; height: 35px; background-color: #000; border-radius: 20px; z-index: 9; }
-    /* --- LEFT PHONE (檢定) --- */
+    
     #screen-certs { background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url('https://ik.imagekit.io/lql1uveoc/%E8%AA%B2%E7%A8%8B%E8%A9%B3%E7%B4%B0%E4%BB%8B%E7%B4%B9/wallace-henry-WHfpUNsHTdQ-unsplash.jpg?updatedAt=1757228192757'); justify-content: flex-start; padding: 110px 20px 20px 20px; align-items: center; }
     #screen-certs .certs-title-container { background: rgba(0, 0, 0, 0.25); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.18); border-radius: 999px; padding: 10px 30px; margin-bottom: 25px; box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2); }
     #screen-certs .certs-title { font-family: 'Orbitron', sans-serif; font-size: 2.8em; font-weight: 700; color: #e0e0e0; text-shadow: 0 0 15px rgba(255, 255, 255, 0.5); }
@@ -124,7 +83,7 @@
     #screen-certs .icon-img { height: 1.8em; width: 1.8em; margin-right: 15px; object-fit: contain; }
     #screen-certs .subtitle { font-family: 'Orbitron', sans-serif; margin-top: 18px; font-size: 1.4em; color: white; font-weight: 700; }
     #screen-certs .certs-footer { margin-top: auto; padding-bottom: 10px; }
-    /* --- MIDDLE PHONE (升學英文) --- */
+    
     #screen-academic { background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url('https://ik.imagekit.io/lql1uveoc/%E8%AA%B2%E7%A8%8B%E8%A9%B3%E7%B4%B0%E4%BB%8B%E7%B4%B9/benjamin-voros-phIFdC6lA4E-unsplash.jpg?updatedAt=1759344584590&tr=w-800,f-auto,q-70'); padding-top: 100px; justify-content: flex-start; align-items: center;}
     #screen-academic .menu { width:100%; padding: 0 20px; box-sizing:border-box; display:flex; flex-direction:column; align-items:center; flex-grow:1; }
     #screen-academic .glass-title { background:rgba(0,0,0,0.25); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,0.18); border-radius:25px; padding:15px 35px; margin-bottom:25px; box-shadow:0 4px 30px rgba(0,0,0,0.2); }
@@ -133,7 +92,7 @@
     #screen-academic .slide-button { display: flex; justify-content: center; align-items: center; font-weight: bold; color: white; text-decoration: none; padding: 15px; font-size: 1.3rem; font-family: 'Orbitron', sans-serif; transition: transform 0.2s ease, background-color 0.2s ease; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 4px 25px rgba(0, 0, 0, 0.25); border-radius: 20px; background-color: transparent; }
     #screen-academic .slide-button:hover { transform: scale(1.04); background-color: rgba(255, 255, 255, 0.1); }
     #screen-academic .footer-text { margin-top: auto; padding-bottom: 10px; }
-    /* --- RIGHT PHONE (客製化課程) --- */
+    
     #screen-custom { background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url('https://ik.imagekit.io/lql1uveoc/%E8%AA%B2%E7%A8%8B%E8%A9%B3%E7%B4%B0%E4%BB%8B%E7%B4%B9/daniel-sessler-IyhdFcaRYqE-unsplash.jpg?updatedAt=1757228147966&tr=w-800,f-auto,q-70'); padding: 80px 20px 20px; justify-content: flex-start; align-items: center;}
     #screen-custom .menu { width:100%; padding: 0 20px; box-sizing:border-box; display:flex; flex-direction:column; align-items:center; flex-grow:1; }
     #screen-custom .glass-title-link { background:rgba(100,20,80,0.25); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,0.18); border-radius:25px; padding:20px 30px; margin-bottom:25px; box-shadow:0 4px 30px rgba(0,0,0,0.2); text-decoration:none; color:white; transition:transform 0.2s ease; display: inline-block; }
@@ -144,68 +103,29 @@
     #screen-custom .slide-button:hover { transform: scale(1.04); background-color: rgba(255, 255, 255, 0.1); }
     #screen-custom .footer-text { margin-top: auto; padding-bottom: 10px; }
     .footer-text { font-size: 0.9em; opacity: 0.7; margin-top: auto; padding-bottom: 10px; }
-    /* === DESKTOP & TABLET LANDSCAPE ADJUSTMENTS === */
+    
     @media (min-width: 1025px) {
-        .desktop-view-wrapper {
-            gap: 40px;
-            padding: 40px;
-        }
-     
-        #screen-academic .footer-text {
-            margin-top: 25px;
-        }
+        .desktop-view-wrapper { gap: 40px; padding: 40px; }
+        #screen-academic .footer-text { margin-top: 25px; }
         @media (min-width: 1025px) and (max-width: 1380px) {
-            .desktop-view-wrapper {
-                gap: 0;
-                padding: 40px 20px;
-            }
-            .phone:not(:first-child) {
-                margin-left: -60px;
-            }
-            .phone:hover {
-                transform: translateY(-10px);
-                z-index: 1;
-            }
+            .desktop-view-wrapper { gap: 0; padding: 40px 20px; }
+            .phone:not(:first-child) { margin-left: -60px; }
+            .phone:hover { transform: translateY(-10px); z-index: 1; }
         }
     }
-    /* === MOBILE & TABLET PORTRAIT STYLES START HERE === */
+    
     #mobile-view-container { display: none; }
     @media (max-width: 1024px) {
         .desktop-view-wrapper { display: none !important; }
-        html.mobile-panel-visible,
-        body.mobile-panel-visible {
-             overflow: hidden;
-        }
+        html.mobile-panel-visible, body.mobile-panel-visible { overflow: hidden; }
         body { padding: 0; gap: 0; display: block; background-color: #1a1a1d; }
         #mobile-view-container { display: block; }
-        #mobile-menu {
-            display: flex; flex-direction: row; width: 100vw; height: 100vh;
-            position: fixed; top: 0; left: 0;
-            transition: opacity 0.4s ease, visibility 0.4s;
-        }
-        #mobile-menu.hidden {
-            opacity: 0; visibility: hidden; pointer-events: none;
-        }
-        .content-panel {
-            display: flex; flex-direction: column;
-            width: 100%; height: 100vh;
-            position: fixed; top: 0; left: 0;
-            background-color: #1a1a1d;
-            transform: translateX(100%);
-            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
-            visibility: hidden;
-            overflow-y: auto; z-index: 100;
-            -webkit-overflow-scrolling: touch;
-        }
-        .content-panel.visible {
-            transform: translateX(0); visibility: visible;
-        }
+        #mobile-menu { display: flex; flex-direction: row; width: 100vw; height: 100vh; position: fixed; top: 0; left: 0; transition: opacity 0.4s ease, visibility 0.4s; }
+        #mobile-menu.hidden { opacity: 0; visibility: hidden; pointer-events: none; }
+        .content-panel { display: flex; flex-direction: column; width: 100%; height: 100vh; position: fixed; top: 0; left: 0; background-color: #1a1a1d; transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); visibility: hidden; overflow-y: auto; z-index: 100; -webkit-overflow-scrolling: touch; }
+        .content-panel.visible { transform: translateX(0); visibility: visible; }
         .content-panel .phone-screen { min-height: 100%; height: auto; }
-        .menu-choice {
-            flex: 1; display: flex; justify-content: center; align-items: flex-start;
-            background-size: cover; background-position: center;
-            color: white; text-decoration: none; position: relative; cursor: pointer;
-        }
+        .menu-choice { flex: 1; display: flex; justify-content: center; align-items: flex-start; background-size: cover; background-position: center; color: white; text-decoration: none; position: relative; cursor: pointer; }
         .menu-choice::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.15); z-index: 1; }
         .menu-choice .content-wrapper { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; padding-top: 18vh; }
         .certs-text-container { display: flex; flex-direction: column; gap: 18px; }
@@ -215,13 +135,7 @@
         .char-box.purple { background-color: rgba(155, 89, 182, 0.7); }
         .char-box.orange { background-color: rgba(243, 156, 18, 0.7); }
         .vertical-text-large { display: flex; flex-direction: column; font-size: 50px; font-weight: 900; color: white; text-shadow: 2px 2px 8px rgba(0,0,0,0.7); line-height: 1.3; }
-        #mobile-menu-footer {
-            position: absolute;
-            bottom: 32vh;
-            left: 0; right: 0; z-index: 5;
-            color: rgba(255, 255, 255, 0.9); text-align: center; pointer-events: none;
-            font-family: '手札體-繁體', 'Noto Sans TC', sans-serif;
-        }
+        #mobile-menu-footer { position: absolute; bottom: 32vh; left: 0; right: 0; z-index: 5; color: rgba(255, 255, 255, 0.9); text-align: center; pointer-events: none; font-family: '手札體-繁體', 'Noto Sans TC', sans-serif; }
         #mobile-menu-footer p { margin: 2px 0; font-size: 16px; text-shadow: 1px 1px 3px #000; }
         #mobile-menu-footer .brand-name { font-family: 'Times New Roman', serif; font-style: italic; font-size: 18px; }
         .mobile-status-bar { position: absolute; top: 0; left: 0; right: 0; z-index: 5; color: white; padding: 15px 25px; display: flex; justify-content: space-between; font-size: 15px; font-weight: 600; pointer-events: none; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
@@ -230,28 +144,12 @@
         .content-panel #screen-certs { padding: 80px 15px 40px; }
         .content-panel #screen-academic, .content-panel #screen-custom { padding: 80px 15px 40px; }
         .content-panel #screen-academic .glass-title-text { font-size: 2.8em; }
-     
-        .content-panel #screen-academic .slide-button,
-        .content-panel #screen-custom .slide-button {
-            font-size: 1.2rem;
-            padding: 15px;
-            white-space: nowrap;
-        }
+        .content-panel #screen-academic .slide-button, .content-panel #screen-custom .slide-button { font-size: 1.2rem; padding: 15px; white-space: nowrap; }
         .content-panel #screen-custom .glass-title-text { font-size: 2.5em; }
-        .back-button {
-            display: block; position: fixed; top: 25px; left: 20px; z-index: 105;
-            color: white; background: rgba(0, 0, 0, 0.5); padding: 10px 18px;
-            border-radius: 25px; text-decoration: none; font-weight: bold;
-            border: 1px solid rgba(255, 255, 255, 0.2); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
-        }
-     
-        .content-panel #screen-certs .certs-footer {
-            margin-top: 25px;
-            padding-bottom: 20px;
-        }
+        .back-button { display: block; position: fixed; top: 25px; left: 20px; z-index: 105; color: white; background: rgba(0, 0, 0, 0.5); padding: 10px 18px; border-radius: 25px; text-decoration: none; font-weight: bold; border: 1px solid rgba(255, 255, 255, 0.2); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px); }
+        .content-panel #screen-certs .certs-footer { margin-top: 25px; padding-bottom: 20px; }
     }
  
-    /* --- Specific Adjustments for Tablet Portrait --- */
     @media (min-width: 768px) and (max-width: 1024px) {
         .menu-choice .content-wrapper { padding-top: 25vh; }
         .char-box { font-size: 60px; padding: 18px 35px; border-radius: 30px; }
@@ -260,12 +158,7 @@
         #mobile-menu-footer p { font-size: 22px; }
         #mobile-menu-footer .brand-name { font-size: 24px; }
         #mobile-menu .mobile-status-bar .time { display: none; }
-      
-        .content-panel #screen-certs,
-        .content-panel #screen-academic,
-        .content-panel #screen-custom {
-            padding-top: 120px;
-        }
+        .content-panel #screen-certs, .content-panel #screen-academic, .content-panel #screen-custom { padding-top: 120px; }
         #panel-certs .certs-title { font-size: 5.6em; }
         #panel-certs .slide-button { font-size: 2.6rem; padding: 25px; border-radius: 35px; }
         #panel-certs .slide-button .icon-img { height: 2.6em; width: 2.6em; margin-right: 25px;}
@@ -273,42 +166,121 @@
         #panel-certs .certs-footer { margin-top: 40px; }
         #panel-academic .glass-title-text { font-size: 5.6em; }
         #panel-custom .glass-title-text { font-size: 5em; }
-     
-        .content-panel#panel-academic .slide-button,
-        .content-panel#panel-custom .slide-button {
-            font-size: 2.6rem; padding: 25px; border-radius: 35px;
-        }
-        #panel-academic .button-group,
-        #panel-custom .button-group { gap: 25px; }
-        #panel-academic .footer-text,
-        #panel-custom .footer-text {
-            margin-top: 80px; padding-bottom: 60px; font-size: 1.8em;
-        }
+        .content-panel#panel-academic .slide-button, .content-panel#panel-custom .slide-button { font-size: 2.6rem; padding: 25px; border-radius: 35px; }
+        #panel-academic .button-group, #panel-custom .button-group { gap: 25px; }
+        #panel-academic .footer-text, #panel-custom .footer-text { margin-top: 80px; padding-bottom: 60px; font-size: 1.8em; }
     }
-    /* === MOBILE & TABLET PORTRAIT STYLES END HERE === */
+
+    /* === 新增嵌入：右側預約體驗按鈕與彈出面板 Styles === */
+    .vertical-banner-link {
+      position: fixed; top: 50%; right: 0; transform: translateY(-50%);
+      transform-origin: right center; writing-mode: vertical-rl; text-orientation: upright;
+      background-color: #00BCD4; color: white; font-size: 14px; font-weight: bold;
+      padding: 4px 4px; border-radius: 8px 0 0 8px; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      text-decoration: none; z-index: 1002; transition: all 0.3s ease-in-out; display: block;
+    }
+    #modal-trigger { display: none; }
+    #modal-trigger:target { display: block; position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 9999; }
+    #modal-trigger .overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 10000; cursor: pointer; }
+    #modal-trigger .panel {
+      position: fixed; top: 0; right: 0; width: 100%; max-width: 500px; height: 100%;
+      overflow-y: auto; background: #fff; box-shadow: -4px 0 12px rgba(0,0,0,0.1);
+      padding: 24px; z-index: 10001; animation: slideIn 0.3s ease-out; box-sizing: border-box; padding-top: 60px;
+    }
+    @keyframes slideIn { from { transform: translateX(100%); } to { transform: translateX(0); } }
+    body:has(#modal-trigger:target) { overflow: hidden; }
+    @media (min-width: 1024px) {
+      .vertical-banner-link { font-size: 20px; padding: 8px 8px; top: 58%; right: 20px; }
+      #modal-trigger .panel { max-width: 750px; }
+    }
+
+    .steps { max-width: 100%; margin: 20px auto; text-align: left; }
+    .step { display: flex; align-items: center; position: relative; padding-bottom: 30px; }
+    .number { flex-shrink: 0; width: 40px; height: 40px; border-radius: 8px; display: flex; justify-content: center; align-items: center; font-weight: bold; font-size: 1.2rem; margin-right: 16px; z-index: 1; }
+    .black-bg { background: #000; color: white; }
+    .white-bg { background: white; color: black; border: 2px solid #ccc; }
+    .step:not(:last-child)::after { content: ""; position: absolute; left: 20px; top: 40px; width: 2px; height: calc(100% - 40px); background: #ccc; z-index: 0; }
+    .step-content a { text-decoration: none; color: inherit; display: block; }
+    #modal-trigger .panel .title { font-weight: bold; font-size: 1.2rem; margin-bottom: 4px; color: #111; }
+    #modal-trigger .panel .description { font-size: 0.95rem; color: #555; }
+    #modal-trigger .panel .email { font-size: 0.85rem; margin-top: 2px; color: #333; }
+    .cart-box { background: black; color: white; display: inline-block; padding: 8px 16px; border-radius: 8px; font-weight: bold; cursor: pointer; user-select: none; transition: background-color 0.2s; }
+    hr.widget-separator { border: 0; height: 1px; background: #ddd; margin: 40px 0; }
+    .extra-close-container { text-align: center; margin-top: -20px; padding-bottom: 20px; }
+    .extra-close-button {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 50px; height: 50px; border: 3px solid red; border-radius: 50%;
+      background-color: white; color: red; font-size: 30px; font-weight: 300;
+      line-height: 1; text-decoration: none; transition: all 0.2s;
+    }
+    .extra-close-button:hover { background-color: #ffeeee; transform: scale(1.05); }
+    
+    #embedding-container { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background-color: #fff; padding-top: 20px; }
+    .product-widget { max-width: 560px; width: 100%; margin: 0 auto; background-color: white; border-radius: 12px; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); overflow: hidden; }
+    .gallery-slide img { width: 100%; display: block; }
+    .product-info { padding: 24px; position: relative; }
+    #modal-trigger .panel .product-info h1 { font-size: 24px; color: #111; margin: 0 0 10px 0; line-height: 1.3; }
+    #modal-trigger .panel .product-info h2 { font-size: 18px; color: #555; margin: 0; font-weight: 500;}
+    .option-selector { margin: 25px 0; }
+    #modal-trigger .panel .option-selector label { font-size: 16px; color: #333; font-weight: bold; display: block; margin-bottom: 10px; }
+    .option-selector select { font-size: 16px; padding: 10px 14px; border: 1px solid #ccc; border-radius: 6px; width: 100%; box-sizing: border-box; color: #007bff; font-weight: bold; }
+    #add-to-cart-btn { width: 100%; background-color: #3b414a; color: white; border: none; padding: 15px 20px; font-size: 18px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: background-color 0.3s ease; }
+
+    .checkout-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 1px solid #eee; }
+    #modal-trigger .panel .checkout-header h2 { margin: 0; font-size: 24px; color: #111; }
+    #back-to-main-btn { background: none; border: 1px solid #ccc; color: #333; padding: 8px 12px; border-radius: 6px; cursor: pointer; font-size: 14px; }
+    .checkout-body { display: flex; flex-direction: column; gap: 30px; }
+    .cart-summary, .checkout-form-container { background-color: #f9f9f9; padding: 20px; border-radius: 8px; border: 1px solid #e0e0e0; }
+    #modal-trigger .panel .cart-summary h3, #modal-trigger .panel .checkout-form-container h3 { margin-top: 0; border-bottom: 1px solid #ddd; padding-bottom: 10px; color: #111;}
+    #modal-trigger .panel #checkout-form p { color: #555; }
+    .cart-item { display: flex; justify-content: space-between; align-items: flex-start; gap: 15px; padding: 15px 0; border-bottom: 1px solid #eee; }
+    .cart-item-name { font-weight: bold; color: #333; }
+    .remove-item-btn { background: none; border: none; color: #999; cursor: pointer; font-size: 14px; text-decoration: underline; padding: 0; }
+    .cart-item-price { font-weight: bold; white-space: nowrap; color: #333; }
+    .cart-total { margin-top: 15px; padding-top: 15px; border-top: 2px solid #333; display: flex; justify-content: space-between; font-size: 20px; font-weight: bold; color: #111; }
+    #checkout-form input[type="email"] { width: 100%; padding: 12px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; margin-bottom: 15px; box-sizing: border-box; color: #000; }
+    #checkout-form button { width: 100%; background-color: #3b414a; color: white; border: none; padding: 15px; font-size: 18px; font-weight: bold; border-radius: 6px; cursor: pointer; }
+    .line-link { font-weight: bold; color: #00B900; text-align: center; margin-bottom: 15px; display: block; text-decoration: none;}
+    .payment-info-section { margin-top: 25px; }
+    .payment-method { background-color: #fff; border: 1px solid #e0e0e0; border-radius: 6px; padding: 15px; font-size: 15px; color: #555; }
+    @media (min-width: 768px) {
+      .checkout-body { flex-direction: row; align-items: flex-start; }
+      .cart-summary { flex: 1 1 45%; }
+      .checkout-form-container { flex: 1 1 55%; }
+    }
+
+    #modal-trigger .panel .ty-header { display: flex; align-items: center; gap: 15px; font-size: 24px; color: #111; margin: 15px 0; }
+    .ty-checkmark { font-size: 40px; color: #27ae60; }
+    #modal-trigger .panel .ty-message, #modal-trigger .panel #thank-you-view p { color: #555; line-height: 1.6; }
+    #modal-trigger .panel .ty-payment-instructions h3 { color: #00B900; }
+    #modal-trigger .panel .ty-payment-instructions a { color: #00B900; font-weight: bold; text-decoration: none; }
+    #modal-trigger .panel #ty-booking-container h3 { color: #111; font-weight: bold; }
+    .ty-order-details { margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; }
+    #modal-trigger .panel .ty-detail-item { display: flex; justify-content: space-between; padding: 8px 0; font-size: 14px; color: #555; }
+    .ty-booking-link { display: block; background-color: #007bff; color: white !important; padding: 12px 20px; border-radius: 8px; text-decoration: none; text-align: center; font-weight: bold; margin-top: 15px; transition: background-color 0.3s ease; }
+    .ty-booking-link:hover { background-color: #0056b3; }
+    .ty-navigation-links { margin-top: 25px; display: flex; align-items: center; gap: 25px; }
+    #continue-shopping-btn, .return-to-main-link { color: #007bff; text-decoration: none; font-weight: bold; }
+    .return-to-main-link { color: #dc3545; }
 </style>
 </head>
 <body>
 
-<!-- 第一段代碼：Header Banner -->
+<!-- Header Banner -->
 <header class="tony-banner">
-    <a href="https://tonyonlineenglish.netlify.app/" class="logo-box">
+    <a href="index.html" class="logo-box">
         <img src="https://ik.imagekit.io/lql1uveoc/IMG_9614.PNG?updatedAt=1750437382543" alt="Logo">
     </a>
-
     <nav class="nav-links">
         <div class="hamburger-icon" style="color:white; font-size: 20px;">☰</div>
-        
         <a href="https://www.youtube.com/@TonyOnlineEnglish" target="_blank" class="pill-btn">
             <img src="https://ik.imagekit.io/lql1uveoc/Banner%20Front%20page/youtube.png" class="social-icon">
             <span>YouTube</span>
         </a>
-        
         <a href="https://www.facebook.com/share/1LwadaizKW/?mibextid=wwXIfr" target="_blank" class="pill-btn">
             <img src="https://ik.imagekit.io/lql1uveoc/Banner%20Front%20page/facebook.png" class="social-icon">
             <span>Facebook</span>
         </a>
-        
         <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="pill-btn">
             <img src="https://ik.imagekit.io/lql1uveoc/Banner%20Front%20page/line.png" class="social-icon">
             <span>LINE</span>
@@ -316,7 +288,6 @@
     </nav>
 </header>
 
-<!-- 第二段代碼開始：原版佈局 (uncharted content) -->
 <!-- DESKTOP/TABLET VIEW WRAPPER -->
 <div class="desktop-view-wrapper">
     <!-- LEFT PHONE: 檢定 -->
@@ -442,20 +413,108 @@
     </div>
 </div>
 
+<!-- === 新增：右側預約體驗課程按鈕與彈出面板 === -->
+<a id="reservationBtn" class="vertical-banner-link" href="#modal-trigger">📅 點選預約體驗課程</a>
+
+<div id="modal-trigger">
+    <a href="#" class="overlay"></a>
+    <div class="panel">
+      <div id="main-content-view">
+        <div class="steps">
+          <div class="step"><div class="number black-bg">1</div><div class="step-content"><a href="https://line.me/ti/p/T9YdimtG8_" target="_blank"><div class="title">加入Line: Myavalon</div><div class="description">點擊後會自動開啟Line並加入好友</div></a></div></div>
+          <div class="step"><div class="number white-bg">2</div><div class="step-content"><div class="title">或是Email</div><div class="email">TonyOnlineEnglish@gmail.com</div></div></div>
+          <div class="step"><div class="number white-bg">3</div><div class="step-content"><a href="https://docs.google.com/forms/d/e/1FAIpQLSfk2FL_YLvCUVIJ4l03NyfoofHPxzWXP-MbODb9V5dEHWpHRw/viewform?usp=header" target="_blank"><div class="title">學習需求問卷（3 分鐘）</div><div class="description">點擊進入並完成線上問卷</div></a></div></div>
+          <div style="display: flex; align-items: center; gap: 20px;">
+              <div class="step" style="flex-grow: 1; padding-bottom: 0;">
+                <div class="number white-bg">4</div>
+                <div class="step-content"><a href="https://tonyonlineenglish.mydurable.com/experience" target="_blank"><div class="cart-box"> 🔗 加入購物車</div></a></div>
+              </div>
+              <div class="extra-close-container" style="flex-shrink: 0; padding-bottom: 0; margin-top: 0;">
+                <a href="#" class="extra-close-button">×</a>
+              </div>
+          </div>
+        </div>
+        <hr class="widget-separator">
+        <div id="embedding-container">
+          <div class="product-widget">
+            <div class="image-gallery"><div class="gallery-slide"><img id="product-image" src="" alt="線上體驗課程"></div></div>
+            <div class="product-info">
+              <h1>Tony線上美語家教</h1>
+              <h2>線上體驗課程 25/50分鐘</h2>
+              <div class="option-selector">
+                <label for="course-options">選擇體驗課程方案</label>
+                <select id="course-options"></select>
+              </div>
+              <button id="add-to-cart-btn"></button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="checkout-view" style="display: none;">
+        <div class="checkout-header">
+          <h2>您的購物車</h2>
+          <button id="back-to-main-btn">← 返回</button>
+        </div>
+        <div class="checkout-body">
+          <div class="cart-summary">
+            <h3>訂單摘要</h3>
+            <div id="cart-items-container"></div>
+            <div class="cart-total"><span>總計</span><span id="total-price">NT$0</span></div>
+          </div>
+          <div class="checkout-form-container">
+            <h3>結帳</h3>
+            <form id="checkout-form">
+              <p>請輸入您的電子信箱。</p>
+              <input type="email" id="email" name="email" required>
+              <a class="line-link" href="https://line.me/ti/p/T9YdimtG8_" target="_blank">請加入Line: Myavalon</a>
+              <button type="submit">確認訂單</button>
+              <div class="payment-info-section">
+                <h3>付款資訊</h3>
+                <div class="payment-method">
+                    <span>銀行轉帳或是Line Pay 付款 (iPass Money)</span>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div id="thank-you-view" style="display: none;">
+        <h2 class="ty-header"><span class="ty-checkmark">✓</span>感謝您的訂購！</h2>
+        <p class="ty-message">您的訂單已成功建立。確認信已寄送至您的電子信箱，請檢查您的收件匣。</p>
+        <div class="ty-order-details">
+          <div class="ty-detail-item"><span>訂單編號</span><span id="ty-order-id"></span></div>
+          <div class="ty-detail-item"><span>訂單時間</span><span id="ty-order-timestamp"></span></div>
+          <div class="ty-detail-item"><span>電子信箱</span><span id="ty-customer-email"></span></div>
+        </div>
+        <div id="ty-booking-container" style="display: none;">
+          <h3>下一步：預約課程</h3>
+          <p>請點擊下方專屬連結，預約您的上課時間：</p>
+          <div id="ty-booking-links-list"></div>
+        </div>
+        <div class="ty-payment-instructions" style="margin-top: 20px;">
+          <h3>如何付款</h3>
+          <p><a href="https://line.me/ti/p/T9YdimtG8_" target="_blank">請點選加入 Line: Myavalon</a></p>
+        </div>
+        <div class="ty-navigation-links">
+          <a href="#" id="continue-shopping-btn">繼續購物</a>
+          <a href="#" class="return-to-main-link">返回主頁</a>
+        </div>
+      </div>
+    </div>
+</div>
+
 <script>
+// --- 原有邏輯：頁面滾動與手機版面板控制 ---
 (function() {
-    // 電腦版：載入後自動輕輕往下滾一點（現在會真的動了！）
     if (window.innerWidth > 1024) {
         setTimeout(() => {
-            window.scrollTo({
-                top: 180,           // 加大一點，瀏覽器才會執行平滑滾動
-                behavior: 'smooth'
-            });
-        }, 500);  // 延遲 0.5 秒，讓頁面先載好再動，看起來更自然
-        return;   // 電腦版到這裡結束，不跑手機邏輯
+            window.scrollTo({ top: 180, behavior: 'smooth' });
+        }, 500); 
+        return; 
     }
 
-    // 手機版邏輯（原本的，沒動過）
     const docRoot = document.documentElement;
     const mobileMenu = document.getElementById('mobile-menu');
     const contentPanels = document.querySelectorAll('.content-panel');
@@ -514,18 +573,126 @@
         } else {
             history.replaceState({ panel: null }, '', window.location.pathname);
             showMainMenu();
-            
             setTimeout(() => {
                 if (window.innerWidth <= 1024) {
-                    window.scrollTo({
-                        top: 100,
-                        behavior: 'smooth'
-                    });
+                    window.scrollTo({ top: 100, behavior: 'smooth' });
                 }
             }, 200);
         }
     });
 })();
+
+// --- 新增邏輯：購物車面板功能 ---
+document.addEventListener('DOMContentLoaded', () => {
+    // 進入網頁若帶有 #modal-trigger 將其清除（防重新整理依然開著）
+    if (window.location.hash === '#modal-trigger') {
+        history.replaceState(null, document.title, window.location.pathname + window.location.search);
+    }
+    const products =[
+        { id: 'trial-25', name: '體驗課程25分鐘', price: 350, bookingLink: 'https://tonyonlineenglish.setmore.com/services/e2482488-9727-40ce-87f4-3a12700d8d74?step=time-slot&products=e2482488-9727-40ce-87f4-3a12700d8d74&type=service&staff=f0ab8ee6-e0c0-4c4e-8f89-d68a4cdaf046&staffSelected=false' },
+        { id: 'trial-50', name: '體驗課程50分鐘', price: 550, bookingLink: 'https://tonyonlineenglish.setmore.com/services/3de1afad-6f57-4b4f-8ba8-0185f3e039d5?step=time-slot&products=3de1afad-6f57-4b4f-8ba8-0185f3e039d5&type=service&staff=f0ab8ee6-e0c0-4c4e-8f89-d68a4cdaf046&staffSelected=false' }
+    ];
+    const logoUrl = "https://ik.imagekit.io/lql1uveoc/Abstract%20Special%20Offer%20Announcement%20Free%20Facebook%20Post.png?updatedAt=1754673537869";
+    let cart = {};
+    const panel = document.querySelector('#modal-trigger .panel');
+    const mainView = document.getElementById('main-content-view');
+    const checkoutView = document.getElementById('checkout-view');
+    const thankYouView = document.getElementById('thank-you-view');
+    const courseOptionsSelect = document.getElementById('course-options');
+    const addToCartBtn = document.getElementById('add-to-cart-btn');
+    const backToMainBtn = document.getElementById('back-to-main-btn');
+    const checkoutForm = document.getElementById('checkout-form');
+    const continueShoppingBtn = document.getElementById("continue-shopping-btn");
+
+    function initializeWidget() {
+        document.getElementById('product-image').src = logoUrl;
+        products.forEach(p => courseOptionsSelect.innerHTML += `<option value="${p.id}">${p.name} NT$ ${p.price.toLocaleString()}</option>`);
+        updateButton();
+    }
+    function updateButton() {
+        const selectedProduct = products.find(p => p.id === courseOptionsSelect.value);
+        if (selectedProduct) addToCartBtn.textContent = `NT$ ${selectedProduct.price.toLocaleString()} | 加入購物車`;
+    }
+    function handleAddToCart() {
+        const productToAdd = products.find(p => p.id === courseOptionsSelect.value);
+        if (productToAdd) cart[productToAdd.id] = { ...productToAdd };
+        updateCheckoutView();
+        mainView.style.display = 'none';
+        checkoutView.style.display = 'block';
+        panel.scrollTo(0, 0);
+    }
+    function updateCheckoutView() {
+        const cartItemsContainer = document.getElementById('cart-items-container');
+        const totalPriceSpan = document.getElementById('total-price');
+        let totalItems = Object.keys(cart).length, totalPrice = 0;
+        cartItemsContainer.innerHTML = "";
+        if (totalItems > 0) {
+            Object.keys(cart).forEach(id => {
+                const item = cart[id];
+                totalPrice += item.price;
+                cartItemsContainer.innerHTML += `<div class="cart-item" data-id="${id}"><div class="cart-item-info"><div class="cart-item-name">${item.name}</div><button class="remove-item-btn">移除</button></div><div class="cart-item-price">NT$ ${item.price.toLocaleString()}</div></div>`;
+            });
+        } else {
+            cartItemsContainer.innerHTML = '<p>您的購物車是空的。</p>';
+        }
+        totalPriceSpan.innerText = `NT$ ${totalPrice.toLocaleString()}`;
+    }
+    function handleRemoveItem(e) {
+        if (e.target.classList.contains('remove-item-btn')) {
+            const productId = e.target.closest('.cart-item').dataset.id;
+            delete cart[productId];
+            updateCheckoutView();
+            if (Object.keys(cart).length === 0) showMainView();
+        }
+    }
+    function showMainView() {
+        checkoutView.style.display = 'none';
+        thankYouView.style.display = 'none';
+        mainView.style.display = 'block';
+        panel.scrollTo(0, 0);
+    }
+    function handleCheckout(e) {
+      e.preventDefault();
+      const email = document.getElementById("email").value;
+      if (Object.keys(cart).length === 0) { alert("您的購物車是空的！"); return; }
+      const orderId = '#'+Math.random().toString(36).substr(2, 5).toUpperCase();
+      const timestamp = new Date().toLocaleString("zh-TW",{year:"numeric",month:"long",day:"numeric",hour:"2-digit",minute:"2-digit"});
+      const checkoutButton = checkoutForm.querySelector("button");
+      let totalPrice = 0;
+      const itemsForThankYouPage = Object.values(cart);
+      const bookingLinks = itemsForThankYouPage.map(item => ({ name: item.name, link: item.bookingLink }));
+      itemsForThankYouPage.forEach(item => totalPrice += item.price);
+      checkoutButton.disabled = true; checkoutButton.innerText = "處理中...";
+      populateThankYouPage({ email, totalPrice, orderId, timestamp, bookingLinks });
+      checkoutView.style.display = 'none';
+      thankYouView.style.display = 'block';
+      panel.scrollTo(0, 0);
+      const productNamesString = itemsForThankYouPage.map(i => i.name).join(', ');
+      fetch("https://script.google.com/macros/s/AKfycbyU13Wivs341DMPupk9EKrL9u908zrHNOVqZUXri-hGezkk6qj_7loQGIf0GCfmvj_f/exec", { method: "POST", body: new URLSearchParams({ orderId, email, productName: productNamesString, totalPrice, status: "未付款", imageUrls: logoUrl }) })
+      .catch(e => console.error("Fetch error:", e))
+      .finally(() => { checkoutButton.disabled = false; checkoutButton.innerText = "確認訂單"; });
+    }
+    function populateThankYouPage(data) {
+        document.getElementById('ty-customer-email').innerText = data.email;
+        document.getElementById('ty-order-id').innerText = data.orderId;
+        document.getElementById('ty-order-timestamp').innerText = data.timestamp;
+        const bookingLinksList = document.getElementById('ty-booking-links-list');
+        const bookingContainer = document.getElementById('ty-booking-container');
+        bookingLinksList.innerHTML = data.bookingLinks.map(item => `<a href="${item.link}" target="_blank" class="ty-booking-link">點此預約：${item.name}</a>`).join('');
+        bookingContainer.style.display = data.bookingLinks.length > 0 ? 'block' : 'none';
+    }
+    initializeWidget();
+    courseOptionsSelect.addEventListener('change', updateButton);
+    addToCartBtn.addEventListener("click", handleAddToCart);
+    backToMainBtn.addEventListener("click", showMainView);
+    document.getElementById('cart-items-container').addEventListener('click', handleRemoveItem);
+    checkoutForm.addEventListener("submit", handleCheckout);
+    continueShoppingBtn.addEventListener('click', (e) => { 
+        e.preventDefault(); 
+        cart = {};
+        showMainView(); 
+    });
+});
 </script>
 </body>
 </html>
