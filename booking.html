@@ -1,4 +1,4 @@
-<!-- VERSION 11.29 (Fix: Restore Auto-Scroll on Load) -->
+<!-- VERSION 11.31 (Fix: Custom Modal for LINE Browser & Wix Iframe Compatibility) -->
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -46,6 +46,32 @@
     }
    
     button { font-family: inherit; outline: none; -webkit-tap-highlight-color: transparent;}
+
+    /* === Custom Result Modal for LINE Browser === */
+    .result-overlay {
+        display: none;
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0,0,0,0.7); z-index: 10000;
+        justify-content: center; align-items: center; padding: 20px;
+        box-sizing: border-box; backdrop-filter: blur(4px);
+    }
+    .result-content {
+        background: #fff; width: 95%; max-width: 420px;
+        border-radius: 24px; padding: 40px 25px; text-align: center;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        animation: modalFadeIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        box-sizing: border-box;
+    }
+    .result-icon { font-size: 60px; margin-bottom: 20px; }
+    .result-title { font-size: 24px; font-weight: 800; margin-bottom: 12px; color: #111; }
+    .result-msg { font-size: 17px; color: #444; line-height: 1.6; margin-bottom: 30px; white-space: pre-wrap; word-wrap: break-word; }
+    .result-close-btn {
+        background: var(--pill-active); color: #fff; border: none;
+        padding: 16px 0; border-radius: 15px; font-size: 18px; font-weight: bold;
+        cursor: pointer; width: 100%; box-shadow: 0 4px 12px rgba(255, 84, 0, 0.3);
+        box-sizing: border-box;
+    }
+    @keyframes modalFadeIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
    
     /* === MODIFIED: Hide Old Main Container Globally === */
     .container#p-main {
@@ -377,12 +403,21 @@
         border-radius: 10px; box-sizing: border-box; font-size: 16px;
     }
    
+    /* FIX: Added box-sizing: border-box to prevent overflow on mobile */
     .clear-all-btn {
         width: 100%; padding: 15px; background: #ffebee; color: #d32f2f;
         border: 2px solid #ef9a9a; border-radius: 12px; margin-bottom: 20px;
         font-weight: 800; cursor: pointer; text-align: center; font-size: 16px;
+        box-sizing: border-box;
     }
-    .confirm-btn { width: 100%; padding: 15px; background: var(--pill-active); color: #fff; border: none; border-radius: 12px; font-size: 18px; font-weight: bold; cursor: pointer; box-shadow: 0 4px 10px rgba(255,84,0,0.3);}
+    
+    /* FIX: Added box-sizing: border-box to prevent overflow on mobile */
+    .confirm-btn { 
+        width: 100%; padding: 15px; background: var(--pill-active); color: #fff; border: none; 
+        border-radius: 12px; font-size: 18px; font-weight: bold; cursor: pointer; 
+        box-shadow: 0 4px 10px rgba(255,84,0,0.3);
+        box-sizing: border-box;
+    }
    
     .back-btn {
         background: none; border: none; color: #333;
@@ -455,6 +490,7 @@
             display: flex; flex-direction: column;
             justify-content: flex-start;
             border: none; background: #fff;
+            box-sizing: border-box;
         }
        
         #checkout-list {
@@ -489,6 +525,7 @@
             margin: 0; width: 80%; max-width: 650px; padding: 70px 40px 40px; /* Top padding for button */
             border-radius: 30px; position: relative;
             display: flex; flex-direction: column;
+            box-sizing: border-box;
         }
        
         #checkout-list { max-height: 300px; overflow-y: auto; margin-bottom: 20px; }
@@ -889,6 +926,17 @@
   </style>
 </head>
 <body>
+
+<!-- Custom Notification Modal (Fix for LINE/Wix alert blocking) -->
+<div id="result-modal" class="result-overlay">
+    <div class="result-content">
+        <div id="res-icon" class="result-icon">🎉</div>
+        <div id="res-title" class="result-title">預約成功</div>
+        <div id="res-msg" class="result-msg">時段已保留，請檢查您的電子郵件確認信。</div>
+        <button class="result-close-btn" onclick="closeResultModal()">確定 OK</button>
+    </div>
+</div>
+
 <div id="loading-overlay">
   <div class="spinner"></div>
   <div id="loadingText">載入中...</div>
@@ -1058,6 +1106,23 @@
     </div>
 </div>
 <script>
+  let modalCloseCallback = null;
+  function showNotice(title, message, isError = false, callback = null) {
+      document.getElementById('res-icon').innerText = isError ? "⚠️" : "🎉";
+      document.getElementById('res-title').innerText = title;
+      document.getElementById('res-msg').innerText = message;
+      document.getElementById('result-modal').style.display = 'flex';
+      modalCloseCallback = callback;
+  }
+
+  function closeResultModal() {
+      document.getElementById('result-modal').style.display = 'none';
+      if (modalCloseCallback) {
+          modalCloseCallback();
+          modalCloseCallback = null;
+      }
+  }
+
   // === EXTERNAL SAFETY TIMER (The "Nuclear Option") ===
   // This guarantees the loading screen vanishes after 4 seconds even if everything else fails.
   (function(){
@@ -1074,7 +1139,7 @@
   const API_URL = "https://script.google.com/macros/s/AKfycbyWvhW6fp_ohPEvPK226KtNiQLCyAVMl77zV0Hq0k_TcEk3F1ni9qVcJystGUovVjTMGQ/exec";
   const STAGE_1_DAYS = 3; const STAGE_2_DAYS = 11; const BACKGROUND_BATCH = 14; const MAX_DAYS = 60; const MAX_SELECTION = 10;
   let cachedData = {}; let loadedDaysCount = 0; let selectedDateStr = ""; let selectedSlots = []; let currentMode = 'single';
-  const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]; const chiDayNames = ["日", "一", "二", "三", "四", "五", "六"]; const monthNamesEng = ["Jan", "Feb", "March", "April", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
+  const dayNames =["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]; const chiDayNames =["日", "一", "二", "三", "四", "五", "六"]; const monthNamesEng =["Jan", "Feb", "March", "April", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
   let hotPanelShown = false; let calYear, calMonth;
   let limitDate = new Date(); limitDate.setDate(limitDate.getDate() + MAX_DAYS); limitDate.setHours(23, 59, 59, 999);
   
@@ -1238,7 +1303,7 @@
       document.querySelectorAll(".time-card").forEach(c => c.style.display="none");
       fetch(`${API_URL}?action=getBatchSlots&startDate=${dStr}&days=1`).then(res => res.json()).then(data => {
             Object.assign(cachedData, data);
-            if (!cachedData[dStr]) cachedData[dStr] = { slots: [] };
+            if (!cachedData[dStr]) cachedData[dStr] = { slots:[] };
             const pill = document.getElementById(`pill-${dStr}`); if(pill) { pill.classList.remove('loading'); pill.classList.add('loaded'); }
             renderSlots(dStr);
       }).catch(err => { document.getElementById("empty-msg").innerText = "連線失敗，請重試"; const pill = document.getElementById(`pill-${dStr}`); if(pill) pill.classList.remove('loading'); });
@@ -1258,7 +1323,7 @@
         Object.assign(cachedData, data);
         for (let i = 0; i < days; i++) {
             const d = new Date(); d.setDate(today.getDate() + startIndex + i); const dStr = fmt(d);
-            if (!cachedData[dStr]) cachedData[dStr] = { slots: [] };
+            if (!cachedData[dStr]) cachedData[dStr] = { slots:[] };
         }
         loadedDaysCount += days; updateDatePills(startStr, days);
         if (stage === "STAGE1") {
@@ -1329,7 +1394,7 @@
           container.innerHTML = `<div style="text-align:center; padding:30px;"><div class="spinner" style="width:30px;height:30px;margin:0 auto 10px auto;"></div>讀取該日行程中...</div>`;
           fetch(`${API_URL}?action=getBatchSlots&startDate=${dStr}&days=1`).then(r => r.json()).then(data => {
                 Object.assign(cachedData, data);
-                if (!cachedData[dStr]) cachedData[dStr] = { slots: [] };
+                if (!cachedData[dStr]) cachedData[dStr] = { slots:[] };
                 const pill = document.getElementById(`pill-${dStr}`); if(pill) { pill.classList.remove('loading'); pill.classList.add('loaded'); }
                 renderSlotsInsideCalendar(dStr);
             }).catch(() => { container.innerHTML = `<div style="text-align:center; padding:20px; color:red;">讀取失敗</div>`; });
@@ -1490,7 +1555,7 @@
     // If silent is true, we skip the heavy rendering part (for animation performance)
     if (silent) return;
 
-    selectedSlots = []; 
+    selectedSlots =[]; 
     updateBottomBar();
     if (selectedDateStr) { 
         renderSlots(selectedDateStr); 
@@ -1499,7 +1564,7 @@
   }
  
   function handleSlotClick(slot, dateStr) {
-    if (currentMode === 'single') { selectedSlots = []; addToCart(slot, dateStr); openBatchForm(); } else { toggleSlot(slot, dateStr); }
+    if (currentMode === 'single') { selectedSlots =[]; addToCart(slot, dateStr); openBatchForm(); } else { toggleSlot(slot, dateStr); }
   }
   function addToCart(slot, dateStr) {
       const dObj = new Date(dateStr); const displayStr = `${dObj.getMonth()+1}/${dObj.getDate()} (${dayNames[dObj.getDay()]} ${chiDayNames[dObj.getDay()]}) ${formatTime12H(slot.time)}`;
@@ -1507,12 +1572,12 @@
   }
   function toggleSlot(slot, dateStr) {
     const index = selectedSlots.findIndex(s => s.timestamp === slot.timestamp);
-    if (index >= 0) selectedSlots.splice(index, 1); else { if (selectedSlots.length >= MAX_SELECTION) return alert(`最多 ${MAX_SELECTION} 個時段`); addToCart(slot, dateStr); }
+    if (index >= 0) selectedSlots.splice(index, 1); else { if (selectedSlots.length >= MAX_SELECTION) return showNotice("提醒", `最多 ${MAX_SELECTION} 個時段`, true); addToCart(slot, dateStr); }
     updateBottomBar();
     if(document.getElementById("cal-modal").classList.contains("active")) renderSlotsInsideCalendar(dateStr); else renderSlots(selectedDateStr);
   }
   function clearCart() {
-      selectedSlots = []; updateBottomBar();
+      selectedSlots =[]; updateBottomBar();
       if(document.getElementById("cal-modal").classList.contains("active")) { if(selectedDateStr) renderSlotsInsideCalendar(selectedDateStr); } else { renderSlots(selectedDateStr); }
       closeForm();
   }
@@ -1592,7 +1657,7 @@
         const div = document.createElement("div"); 
         div.className = "selected-item"; 
         
-        // Structure: [Wrapper for (Badge + Text)] [Delete Button]
+        // Structure:[Wrapper for (Badge + Text)] [Delete Button]
         div.innerHTML = `
             <div style="display:flex; align-items:center;">
                 <span class="slot-index-badge">${index + 1}</span>
@@ -1627,8 +1692,8 @@
     // 嚴格 Email 正規表示式 (必須有 @ 且有點及網域)
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
 
-    if(!name || !email) return alert("請填寫完整資訊");
-    if(!emailRegex.test(email)) return alert("Email 格式不正確，請輸入完整的 Email (例如: name@gmail.com)");
+    if(!name || !email) return showNotice("提示", "請填寫完整資訊", true);
+    if(!emailRegex.test(email)) return showNotice("格式錯誤", "Email 格式不正確，請輸入完整的 Email (例如: name@gmail.com)", true);
     
     const btn = document.querySelector(".confirm-btn"); 
     const orgText = btn.innerText; 
@@ -1646,7 +1711,7 @@
        if (res.bookingSummary) {
            const summary = res.bookingSummary;
            if (summary.failCount === 0) {
-               alert(`🎉 預約成功！\n共 ${summary.successCount} 堂課。\n確認信已寄至您的信箱。`);
+               showNotice("預約成功", `🎉 預約成功！\n共 ${summary.successCount} 堂課。\n確認信已寄至您的信箱。`);
                finishSuccessBooking();
            } else {
                let msg = `⚠️ 注意：有 ${summary.failCount} 堂課預約失敗 (已被搶先預約)。\n`;
@@ -1663,21 +1728,20 @@
                    });
                }
                msg += "\n系統已保留成功的時段。\n頁面將重新整理以顯示最新剩餘名額。";
-               alert(msg);
-               location.reload();
+               showNotice("部分預約成功", msg, true, () => { location.reload(); });
            }
        } else if (res.success) {
-         alert(`預約完成！`);
+         showNotice("預約成功", `預約完成！`);
          finishSuccessBooking();
        } else { 
-         alert("預約發生錯誤：" + res.message); 
+         showNotice("預約失敗", "預約發生錯誤：" + res.message, true); 
        }
 
        btn.innerText = orgText; 
        btn.disabled = false;
     })
     .catch(err => { 
-        alert("網路錯誤，請檢查連線"); 
+        showNotice("網路錯誤", "網路錯誤，請檢查連線", true); 
         btn.innerText = orgText; 
         btn.disabled = false; 
     });
@@ -1691,7 +1755,7 @@
              });
            }
          });
-         selectedSlots = []; 
+         selectedSlots =[]; 
          closeForm(); 
          closeCalendar(); 
          renderSlots(selectedDateStr); 
@@ -1704,7 +1768,7 @@
   function checkHotSlots(daysLimit) {
     if (!daysLimit) daysLimit = 14;
     const list = document.getElementById("hot-list"); list.innerHTML = ""; 
-    let hotItems = [];
+    let hotItems =[];
     
     const sortedDates = Object.keys(cachedData).sort(); const today = new Date(); today.setHours(0, 0, 0, 0);
     for (const dStr of sortedDates) {
@@ -1713,7 +1777,7 @@
           const dateObj = new Date(dStr); const day = dateObj.getDay();
           // Point 1: Include Saturday (Day 6)
           if (day >= 1 && day <= 6) {
-            const slots = cachedData[dStr].slots || [];
+            const slots = cachedData[dStr].slots ||[];
             slots.forEach(slot => {
                const h = parseInt(slot.time.split(":")[0]);
                
