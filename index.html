@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>課程選單 - Tony Online English</title>
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Noto+Sans+TC:wght@400;700;900&family=Space+Grotesk:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+    /* === 插入的第一段代碼：Header Banner Styles === */
+    .tony-banner {
+        position: absolute; /* 確保不影響原有的 flex 置中排版 */
+        top: 0;
+        left: 0;
+        z-index: 90; /* 顯示在主頁上方，但會被 content-panel (z-index 100) 覆蓋，避免擋住返回按鈕 */
+        width: 100%;
+        height: 90px;
+        background-color: #060b1c; /* Logo 底色 */
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 15px;
+        box-sizing: border-box;
+        border-bottom: 1px solid #1a2a4a;
+    }
+
+    .logo-box { height: 60px; flex-shrink: 0; }
+    .logo-box img { height: 100%; width: auto; display: block; }
+
+    .nav-links { display: flex; align-items: center; gap: 8px; }
+
+    .pill-btn {
+        color: white;
+        border: 1px solid rgba(255,255,255,0.6);
+        padding: 6px 12px;
+        border-radius: 50px;
+        text-decoration: none;
+        font-size: 13px;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        transition: 0.3s;
+        white-space: nowrap;
+    }
+    .pill-btn:hover { background-color: rgba(255,255,255,0.1); }
+
+    .social-icon { height: 18px; width: auto; display: block; }
+
+    .hamburger-icon { width: 20px; height: auto; margin-right: 5px; cursor: pointer; filter: invert(1); }
+
+    @media (max-width: 500px) {
+        .pill-btn span { display: none; } /* 隱藏文字 */
+        .pill-btn { padding: 8px; border-radius: 50%; width: 35px; height: 35px; justify-content: center; }
+        .tony-banner { height: 75px; padding: 0 10px; }
+        .logo-box { height: 48px; }
+    }
+
+    /* === 以下為原版代碼，保持完全不變 === */
+    /* === 關鍵修正：讓頁面永遠有可滾動空間（解決 flex center 無法小滾動的問題） === */
+    html, body {
+        min-height: calc(100vh + 200px); /* 多出 200px 空間，確保可以滾動 */
+    }
+
+    html {
+        scroll-behavior: smooth;
+    }
+    body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        margin: 0;
+        font-family: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+        overflow-x: hidden;
+        background-color: #1a1a1d;
+    }
+    .desktop-view-wrapper {
+        background-color: #1a1a1d;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: nowrap;
+        gap: 40px;
+        padding: 40px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+    /* --- Base Phone Mockup Styles --- */
+    .phone {
+        box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+        position: relative;
+        background-color: #000;
+        overflow: hidden;
+        flex-shrink: 0;
+        transition: margin 0.3s ease, transform 0.3s ease;
+    }
+    .phone-max { width: 430px; height: 888px; border: 12px solid #2c2c2c; border-radius: 54px; }
+    .phone-standard { width: 393px; height: 852px; border: 11px solid #2c2c2c; border-radius: 52px; }
+    .phone-max.shortened { height: 788px; }
+    .phone-standard.shortened { height: 752px; }
+    .phone-screen {
+        background-size: cover; background-position: center;
+        width: 100%; height: 100%; display: flex; flex-direction: column;
+        color: white; text-align: center; box-sizing: border-box;
+        position: relative;
+    }
+    .status-bar-container { position: absolute; top: 18px; left: 20px; right: 20px; height: 40px; z-index: 10; }
+    .status-bar { height: 100%; display: flex; justify-content: space-between; align-items: center; color: white; font-size: 15px; font-weight: 600; padding: 0 15px; }
+    .time { position: absolute; left: 20px; }
+    .status-icons { position: absolute; right: 20px; }
+    .dynamic-island { position: absolute; top: 24px; left: 50%; transform: translateX(-50%); width: 120px; height: 35px; background-color: #000; border-radius: 20px; z-index: 9; }
+    /* --- LEFT PHONE (檢定) --- */
+    #screen-certs { background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url('https://ik.imagekit.io/lql1uveoc/%E8%AA%B2%E7%A8%8B%E8%A9%B3%E7%B4%B0%E4%BB%8B%E7%B4%B9/wallace-henry-WHfpUNsHTdQ-unsplash.jpg?updatedAt=1757228192757'); justify-content: flex-start; padding: 110px 20px 20px 20px; align-items: center; }
+    #screen-certs .certs-title-container { background: rgba(0, 0, 0, 0.25); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.18); border-radius: 999px; padding: 10px 30px; margin-bottom: 25px; box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2); }
+    #screen-certs .certs-title { font-family: 'Orbitron', sans-serif; font-size: 2.8em; font-weight: 700; color: #e0e0e0; text-shadow: 0 0 15px rgba(255, 255, 255, 0.5); }
+    #screen-certs .button-group { display: flex; flex-direction: column; gap: 18px; width: 100%; }
+    #screen-certs .slide-button { display: flex; justify-content: center; align-items: center; font-weight: bold; color: white; text-decoration: none; padding: 15px; font-size: 1.3rem; font-family: 'Orbitron', sans-serif; transition: transform 0.2s ease; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 4px 25px rgba(0, 0, 0, 0.25); border-radius: 20px; }
+    #screen-certs .slide-button:hover { transform: scale(1.04); }
+    #screen-certs .green { background-color: rgba(26, 188, 156, 0.4); }
+    #screen-certs .red { background-color: rgba(231, 76, 60, 0.4); }
+    #screen-certs .purple { background-color: rgba(155, 89, 182, 0.4); }
+    #screen-certs .custom-orange { background-color: rgba(243, 156, 18, 0.4); }
+    #screen-certs .icon-img { height: 1.8em; width: 1.8em; margin-right: 15px; object-fit: contain; }
+    #screen-certs .subtitle { font-family: 'Orbitron', sans-serif; margin-top: 18px; font-size: 1.4em; color: white; font-weight: 700; }
+    #screen-certs .certs-footer { margin-top: auto; padding-bottom: 10px; }
+    /* --- MIDDLE PHONE (升學英文) --- */
+    #screen-academic { background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url('https://ik.imagekit.io/lql1uveoc/%E8%AA%B2%E7%A8%8B%E8%A9%B3%E7%B4%B0%E4%BB%8B%E7%B4%B9/benjamin-voros-phIFdC6lA4E-unsplash.jpg?updatedAt=1759344584590&tr=w-800,f-auto,q-70'); padding-top: 100px; justify-content: flex-start; align-items: center;}
+    #screen-academic .menu { width:100%; padding: 0 20px; box-sizing:border-box; display:flex; flex-direction:column; align-items:center; flex-grow:1; }
+    #screen-academic .glass-title { background:rgba(0,0,0,0.25); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,0.18); border-radius:25px; padding:15px 35px; margin-bottom:25px; box-shadow:0 4px 30px rgba(0,0,0,0.2); }
+    #screen-academic .glass-title-text { font-size:3.5em; font-weight:bold; color:#fff; text-shadow:0 2px 4px rgba(0,0,0,0.5); }
+    #screen-academic .button-group { display: flex; flex-direction: column; gap: 15px; width: 100%; }
+    #screen-academic .slide-button { display: flex; justify-content: center; align-items: center; font-weight: bold; color: white; text-decoration: none; padding: 15px; font-size: 1.3rem; font-family: 'Orbitron', sans-serif; transition: transform 0.2s ease, background-color 0.2s ease; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 4px 25px rgba(0, 0, 0, 0.25); border-radius: 20px; background-color: transparent; }
+    #screen-academic .slide-button:hover { transform: scale(1.04); background-color: rgba(255, 255, 255, 0.1); }
+    #screen-academic .footer-text { margin-top: auto; padding-bottom: 10px; }
+    /* --- RIGHT PHONE (客製化課程) --- */
+    #screen-custom { background-image: linear-gradient(rgba(0,0,0,0.2), rgba(0,0,0,0.2)), url('https://ik.imagekit.io/lql1uveoc/%E8%AA%B2%E7%A8%8B%E8%A9%B3%E7%B4%B0%E4%BB%8B%E7%B4%B9/daniel-sessler-IyhdFcaRYqE-unsplash.jpg?updatedAt=1757228147966&tr=w-800,f-auto,q-70'); padding: 80px 20px 20px; justify-content: flex-start; align-items: center;}
+    #screen-custom .menu { width:100%; padding: 0 20px; box-sizing:border-box; display:flex; flex-direction:column; align-items:center; flex-grow:1; }
+    #screen-custom .glass-title-link { background:rgba(100,20,80,0.25); backdrop-filter:blur(12px); -webkit-backdrop-filter:blur(12px); border:1px solid rgba(255,255,255,0.18); border-radius:25px; padding:20px 30px; margin-bottom:25px; box-shadow:0 4px 30px rgba(0,0,0,0.2); text-decoration:none; color:white; transition:transform 0.2s ease; display: inline-block; }
+    #screen-custom .glass-title-link:hover { transform: scale(1.05); }
+    #screen-custom .glass-title-text { font-size:2.5em; font-weight:bold; text-shadow:0 2px 4px rgba(0,0,0,0.5); }
+    #screen-custom .button-group { display: flex; flex-direction: column; gap: 15px; width: 100%; }
+    #screen-custom .slide-button { display: flex; justify-content: center; align-items: center; font-weight: bold; color: white; text-decoration: none; padding: 15px; font-size: 1.3rem; font-family: 'Orbitron', sans-serif; transition: transform 0.2s ease, background-color 0.2s ease; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.2); box-shadow: 0 4px 25px rgba(0, 0, 0, 0.25); border-radius: 20px; background-color: transparent; }
+    #screen-custom .slide-button:hover { transform: scale(1.04); background-color: rgba(255, 255, 255, 0.1); }
+    #screen-custom .footer-text { margin-top: auto; padding-bottom: 10px; }
+    .footer-text { font-size: 0.9em; opacity: 0.7; margin-top: auto; padding-bottom: 10px; }
+    /* === DESKTOP & TABLET LANDSCAPE ADJUSTMENTS === */
+    @media (min-width: 1025px) {
+        .desktop-view-wrapper {
+            gap: 40px;
+            padding: 40px;
+        }
+     
+        #screen-academic .footer-text {
+            margin-top: 25px;
+        }
+        @media (min-width: 1025px) and (max-width: 1380px) {
+            .desktop-view-wrapper {
+                gap: 0;
+                padding: 40px 20px;
+            }
+            .phone:not(:first-child) {
+                margin-left: -60px;
+            }
+            .phone:hover {
+                transform: translateY(-10px);
+                z-index: 1;
+            }
+        }
+    }
+    /* === MOBILE & TABLET PORTRAIT STYLES START HERE === */
+    #mobile-view-container { display: none; }
+    @media (max-width: 1024px) {
+        .desktop-view-wrapper { display: none !important; }
+        html.mobile-panel-visible,
+        body.mobile-panel-visible {
+             overflow: hidden;
+        }
+        body { padding: 0; gap: 0; display: block; background-color: #1a1a1d; }
+        #mobile-view-container { display: block; }
+        #mobile-menu {
+            display: flex; flex-direction: row; width: 100vw; height: 100vh;
+            position: fixed; top: 0; left: 0;
+            transition: opacity 0.4s ease, visibility 0.4s;
+        }
+        #mobile-menu.hidden {
+            opacity: 0; visibility: hidden; pointer-events: none;
+        }
+        .content-panel {
+            display: flex; flex-direction: column;
+            width: 100%; height: 100vh;
+            position: fixed; top: 0; left: 0;
+            background-color: #1a1a1d;
+            transform: translateX(100%);
+            transition: transform 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+            visibility: hidden;
+            overflow-y: auto; z-index: 100;
+            -webkit-overflow-scrolling: touch;
+        }
+        .content-panel.visible {
+            transform: translateX(0); visibility: visible;
+        }
+        .content-panel .phone-screen { min-height: 100%; height: auto; }
+        .menu-choice {
+            flex: 1; display: flex; justify-content: center; align-items: flex-start;
+            background-size: cover; background-position: center;
+            color: white; text-decoration: none; position: relative; cursor: pointer;
+        }
+        .menu-choice::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(0, 0, 0, 0.15); z-index: 1; }
+        .menu-choice .content-wrapper { position: relative; z-index: 2; display: flex; flex-direction: column; align-items: center; padding-top: 18vh; }
+        .certs-text-container { display: flex; flex-direction: column; gap: 18px; }
+        .char-box { font-size: 45px; font-weight: 900; color: #fff; text-shadow: 1px 1px 5px rgba(0,0,0,0.4); padding: 12px 25px; border-radius: 22px; border: 1px solid rgba(255, 255, 255, 0.1); box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        .char-box.green { background-color: rgba(46, 204, 113, 0.7); }
+        .char-box.red { background-color: rgba(231, 76, 60, 0.7); }
+        .char-box.purple { background-color: rgba(155, 89, 182, 0.7); }
+        .char-box.orange { background-color: rgba(243, 156, 18, 0.7); }
+        .vertical-text-large { display: flex; flex-direction: column; font-size: 50px; font-weight: 900; color: white; text-shadow: 2px 2px 8px rgba(0,0,0,0.7); line-height: 1.3; }
+        #mobile-menu-footer {
+            position: absolute;
+            bottom: 32vh;
+            left: 0; right: 0; z-index: 5;
+            color: rgba(255, 255, 255, 0.9); text-align: center; pointer-events: none;
+            font-family: '手札體-繁體', 'Noto Sans TC', sans-serif;
+        }
+        #mobile-menu-footer p { margin: 2px 0; font-size: 16px; text-shadow: 1px 1px 3px #000; }
+        #mobile-menu-footer .brand-name { font-family: 'Times New Roman', serif; font-style: italic; font-size: 18px; }
+        .mobile-status-bar { position: absolute; top: 0; left: 0; right: 0; z-index: 5; color: white; padding: 15px 25px; display: flex; justify-content: space-between; font-size: 15px; font-weight: 600; pointer-events: none; text-shadow: 1px 1px 2px rgba(0,0,0,0.5); }
+        .dynamic-island-placeholder { position: absolute; top: 12px; left: 50%; transform: translateX(-50%); width: 110px; height: 30px; background: #000; border-radius: 20px; }
+        .content-panel .status-bar-container { display: none; }
+        .content-panel #screen-certs { padding: 80px 15px 40px; }
+        .content-panel #screen-academic, .content-panel #screen-custom { padding: 80px 15px 40px; }
+        .content-panel #screen-academic .glass-title-text { font-size: 2.8em; }
+     
+        .content-panel #screen-academic .slide-button,
+        .content-panel #screen-custom .slide-button {
+            font-size: 1.2rem;
+            padding: 15px;
+            white-space: nowrap;
+        }
+        .content-panel #screen-custom .glass-title-text { font-size: 2.5em; }
+        .back-button {
+            display: block; position: fixed; top: 25px; left: 20px; z-index: 105;
+            color: white; background: rgba(0, 0, 0, 0.5); padding: 10px 18px;
+            border-radius: 25px; text-decoration: none; font-weight: bold;
+            border: 1px solid rgba(255, 255, 255, 0.2); backdrop-filter: blur(5px); -webkit-backdrop-filter: blur(5px);
+        }
+     
+        .content-panel #screen-certs .certs-footer {
+            margin-top: 25px;
+            padding-bottom: 20px;
+        }
+    }
+ 
+    /* --- Specific Adjustments for Tablet Portrait --- */
+    @media (min-width: 768px) and (max-width: 1024px) {
+        .menu-choice .content-wrapper { padding-top: 25vh; }
+        .char-box { font-size: 60px; padding: 18px 35px; border-radius: 30px; }
+        .certs-text-container { gap: 25px; }
+        .vertical-text-large { font-size: 70px; }
+        #mobile-menu-footer p { font-size: 22px; }
+        #mobile-menu-footer .brand-name { font-size: 24px; }
+        #mobile-menu .mobile-status-bar .time { display: none; }
+      
+        .content-panel #screen-certs,
+        .content-panel #screen-academic,
+        .content-panel #screen-custom {
+            padding-top: 120px;
+        }
+        #panel-certs .certs-title { font-size: 5.6em; }
+        #panel-certs .slide-button { font-size: 2.6rem; padding: 25px; border-radius: 35px; }
+        #panel-certs .slide-button .icon-img { height: 2.6em; width: 2.6em; margin-right: 25px;}
+        #panel-certs .subtitle { font-size: 2.8em; }
+        #panel-certs .certs-footer { margin-top: 40px; }
+        #panel-academic .glass-title-text { font-size: 5.6em; }
+        #panel-custom .glass-title-text { font-size: 5em; }
+     
+        .content-panel#panel-academic .slide-button,
+        .content-panel#panel-custom .slide-button {
+            font-size: 2.6rem; padding: 25px; border-radius: 35px;
+        }
+        #panel-academic .button-group,
+        #panel-custom .button-group { gap: 25px; }
+        #panel-academic .footer-text,
+        #panel-custom .footer-text {
+            margin-top: 80px; padding-bottom: 60px; font-size: 1.8em;
+        }
+    }
+    /* === MOBILE & TABLET PORTRAIT STYLES END HERE === */
+</style>
+</head>
+<body>
+
+<!-- 第一段代碼：Header Banner -->
+<header class="tony-banner">
+    <a href="https://tonyonlinenglish.netlify.app/" class="logo-box">
+        <img src="https://ik.imagekit.io/lql1uveoc/IMG_9614.PNG?updatedAt=1750437382543" alt="Logo">
+    </a>
+
+    <nav class="nav-links">
+        <div class="hamburger-icon" style="color:white; font-size: 20px;">☰</div>
+        
+        <a href="https://www.youtube.com/@TonyOnlineEnglish" target="_blank" class="pill-btn">
+            <img src="https://ik.imagekit.io/lql1uveoc/Banner%20Front%20page/youtube.png" class="social-icon">
+            <span>YouTube</span>
+        </a>
+        
+        <a href="https://www.facebook.com/share/1LwadaizKW/?mibextid=wwXIfr" target="_blank" class="pill-btn">
+            <img src="https://ik.imagekit.io/lql1uveoc/Banner%20Front%20page/facebook.png" class="social-icon">
+            <span>Facebook</span>
+        </a>
+        
+        <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="pill-btn">
+            <img src="https://ik.imagekit.io/lql1uveoc/Banner%20Front%20page/line.png" class="social-icon">
+            <span>LINE</span>
+        </a>
+    </nav>
+</header>
+
+<!-- 第二段代碼開始：原版佈局 (uncharted content) -->
+<!-- DESKTOP/TABLET VIEW WRAPPER -->
+<div class="desktop-view-wrapper">
+    <!-- LEFT PHONE: 檢定 -->
+    <div class="phone phone-standard shortened">
+        <div class="phone-screen" id="screen-certs">
+            <div class="status-bar-container"><div class="dynamic-island"></div><div class="status-bar"><div class="time">9:41</div><div class="status-icons"><span>📶</span> <span>Wi-Fi</span> <span>🔋</span></div></div></div>
+            <div class="certs-title-container"><div class="certs-title">檢定</div></div>
+            <div class="button-group">
+                <a class="slide-button green" href="https://tonyonlineenglish.mydurable.com/gept" target="_blank"><img class="icon-img" src="https://ik.imagekit.io/lql1uveoc/Front%20Page/GEPT_logo.svg.png?updatedAt=1756611596300" alt="Icon">全民英檢GEPT</a>
+                <a class="slide-button red" href="https://tonyonlineenglish.mydurable.com/toeic" target="_blank"><img class="icon-img" src="https://ik.imagekit.io/lql1uveoc/Front%20Page/71-636x434.jpg?updatedAt=1756611513122" alt="Icon">多益TOEIC</a>
+                <a class="slide-button purple" href="https://tonyonlineenglish.mydurable.com/ielts" target="_blank"><img class="icon-img" src="https://ik.imagekit.io/lql1uveoc/%E6%AA%A2%E5%AE%9A%E8%80%83%E8%A9%A6%E7%B6%B2%E7%AB%99/%E6%88%AA%E5%9C%96%202025-09-05%20%E5%87%8C%E6%99%A81.43.58.png?updatedAt=1757007847078" alt="Icon">雅思IELTS</a>
+                <a class="slide-button custom-orange" href="https://tonyonlineenglish.mydurable.com/linguaskill" target="_blank"><img class="icon-img" src="https://ik.imagekit.io/lql1uveoc/def6e10ece563983eda53901c98c6dfe.webp?updatedAt=1749752404746" alt="Icon">領思Linguaskill</a>
+                <div class="subtitle">❖ 聽說讀寫 ❖ 各級數</div>
+            </div>
+            <footer class="certs-footer"><div class="footer-text">詳情請點擊上方各連結</div></footer>
+        </div>
+    </div>
+    <!-- MIDDLE PHONE: 升學英文 -->
+    <div class="phone phone-max">
+        <div class="phone-screen" id="screen-academic">
+            <div class="status-bar-container"><div class="dynamic-island"></div><div class="status-bar"><div class="time">9:41</div><div class="status-icons"><span>📶</span> <span>Wi-Fi</span> <span>🔋</span></div></div></div>
+            <div class="menu">
+                <div class="glass-title"><span class="glass-title-text">升學英文</span></div>
+                <div class="button-group">
+                    <a href="https://tonyonlineenglish.mydurable.com/elementary-school" class="slide-button" target="_blank">國小英文</a>
+                    <a href="https://tonyonlineenglish.mydurable.com/junior-high-school" class="slide-button" target="_blank">國中會考</a>
+                    <a href="https://tonyonlineenglish.mydurable.com/high-school" class="slide-button" target="_blank">高中英文學測＋<span style="color: #FFC300; font-weight: bold;">寫作</span></a>
+                    <a href="https://tonyonlineenglish.mydurable.com/vochighschool" class="slide-button" target="_blank">技高統測英文＋<span style="color: #FF80AB; font-weight: bold;">作文</span></a>
+                    <a href="https://tonyonlineenglish.mydurable.com/colleges" class="slide-button" target="_blank">大學英文</a>
+                    <a href="https://tonyonlineenglish.mydurable.com/graduateschool" class="slide-button" target="_blank">研究所碩士英文</a>
+                </div>
+                <div class="footer-text" style="font-size: 1.1em; opacity: 0.8;">詳情請點擊上方各連結</div>
+            </div>
+        </div>
+    </div>
+    <!-- RIGHT PHONE: 客製化課程 -->
+    <div class="phone phone-max shortened">
+        <div class="phone-screen" id="screen-custom">
+            <div class="status-bar-container"><div class="dynamic-island"></div><div class="status-bar"><div class="time">9:41</div><div class="status-icons"><span>📶</span> <span>Wi-Fi</span> <span>🔋</span></div></div></div>
+            <div class="menu">
+                <a href="https://tonyonlineenglish.mydurable.com/cuz" class="glass-title-link" target="_blank"><span class="glass-title-text">客製化課程</span></a>
+                <div class="button-group">
+                     <a href="https://tonyonlineenglish.mydurable.com/cuz" class="slide-button" target="_blank">★ 成人美語</a>
+                     <a href="https://tonyonlineenglish.mydurable.com/cuz" class="slide-button" target="_blank">★ 口說能力提升</a>
+                     <a href="https://tonyonlineenglish.mydurable.com/cuz" class="slide-button" target="_blank">★ 職場英文</a>
+                     <a href="https://tonyonlineenglish.mydurable.com/cuz" class="slide-button" target="_blank">★ 公職英文</a>
+                     <a href="https://tonyonlineenglish.mydurable.com/cuz" class="slide-button" target="_blank">★ 觀光美語</a>
+                     <a href="https://tonyonlineenglish.mydurable.com/cuz" class="slide-button" target="_blank">★ 在學生</a>
+                </div>
+                <div class="footer-text" style="font-size: 1.1em; opacity: 0.8;">詳情請點擊上方各連結</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- MOBILE-ONLY VIEW -->
+<div id="mobile-view-container">
+    <div id="mobile-menu">
+        <div class="menu-choice" data-target="panel-certs" style="background-image: url('https://ik.imagekit.io/lql1uveoc/%E8%AA%B2%E7%A8%8B%E8%A9%B3%E7%B4%B0%E4%BB%8B%E7%B4%B9/wallace-henry-WHfpUNsHTdQ-unsplash.jpg?updatedAt=1757228192757');">
+            <div class="mobile-status-bar"><span class="time">9:41</span><div class="dynamic-island-placeholder"></div></div>
+            <div class="content-wrapper"><div class="certs-text-container"><div class="char-box green">英</div><div class="char-box red">文</div><div class="char-box purple">檢</div><div class="char-box orange">定</div></div></div>
+        </div>
+        <div class="menu-choice" data-target="panel-academic" style="background-image: url('https://ik.imagekit.io/lql1uveoc/%E8%AA%B2%E7%A8%8B%E8%A9%B3%E7%B4%B0%E4%BB%8B%E7%B4%B9/benjamin-voros-phIFdC6lA4E-unsplash.jpg?updatedAt=1759344584590&tr=w-800,f-auto,q-70');">
+            <div class="mobile-status-bar"><span class="time">9:41</span><div class="dynamic-island-placeholder"></div></div>
+            <div class="content-wrapper"><div class="vertical-text-large"><span>升</span><span>學</span><span>英</span><span>文</span></div></div>
+        </div>
+        <div class="menu-choice" data-target="panel-custom" style="background-image: url('https://ik.imagekit.io/lql1uveoc/%E8%AA%B2%E7%A8%8B%E8%A9%B3%E7%B4%B0%E4%BB%8B%E7%B4%B9/daniel-sessler-IyhdFcaRYqE-unsplash.jpg?updatedAt=1757228147966&tr=w-800,f-auto,q-70');">
+            <div class="mobile-status-bar"><span></span><div class="dynamic-island-placeholder"></div></div>
+            <div class="content-wrapper"><div class="vertical-text-large"><span>客</span><span>製</span><span>化</span><span>課</span><span>程</span></div></div>
+        </div>
+        <div id="mobile-menu-footer">
+            <p>詳情請點擊上方各連結</p><p><span class="brand-name">Tony</span> 線上美語家教</p>
+        </div>
+    </div>
+    <!-- Content Panels for Mobile -->
+    <div class="content-panel" id="panel-certs">
+        <a href="#" class="back-button">← 返回</a>
+        <div class="phone-screen" id="screen-certs">
+            <div class="certs-title-container"><div class="certs-title">檢定</div></div>
+            <div class="button-group">
+                <a class="slide-button green" href="https://tonyonlineenglish.mydurable.com/gept" target="_blank"><img class="icon-img" src="https://ik.imagekit.io/lql1uveoc/Front%20Page/GEPT_logo.svg.png?updatedAt=1756611596300" alt="Icon">全民英檢GEPT</a>
+                <a class="slide-button red" href="https://tonyonlineenglish.mydurable.com/toeic" target="_blank"><img class="icon-img" src="https://ik.imagekit.io/lql1uveoc/Front%20Page/71-636x434.jpg?updatedAt=1756611513122" alt="Icon">多益TOEIC</a>
+                <a class="slide-button purple" href="https://tonyonlineenglish.mydurable.com/ielts" target="_blank"><img class="icon-img" src="https://ik.imagekit.io/lql1uveoc/%E6%AA%A2%E5%AE%9A%E8%80%83%E8%A9%A6%E7%B6%B2%E7%AB%99/%E6%88%AA%E5%9C%96%202025-09-05%20%E5%87%8C%E6%99%A81.43.58.png?updatedAt=1757007847078" alt="Icon">雅思IELTS</a>
+                <a class="slide-button custom-orange" href="https://tonyonlineenglish.mydurable.com/linguaskill" target="_blank"><img class="icon-img" src="https://ik.imagekit.io/lql1uveoc/def6e10ece563983eda53901c98c6dfe.webp?updatedAt=1749752404746" alt="Icon">領思Linguaskill</a>
+                <div class="subtitle">❖ 聽說讀寫 ❖ 各級數</div>
+            </div>
+            <footer class="certs-footer"><div class="footer-text">詳情請點擊上方各連結</div></footer>
+        </div>
+    </div>
+    <div class="content-panel" id="panel-academic">
+        <a href="#" class="back-button">← 返回</a>
+        <div class="phone-screen" id="screen-academic">
+            <div class="menu">
+                <div class="glass-title"><span class="glass-title-text">升學英文</span></div>
+                <div class="button-group">
+                    <a href="https://tonyonlineenglish.mydurable.com/elementary-school" class="slide-button" target="_blank">國小英文</a>
+                    <a href="https://tonyonlineenglish.mydurable.com/junior-high-school" class="slide-button" target="_blank">國中會考</a>
+                    <a href="https://tonyonlineenglish.mydurable.com/high-school" class="slide-button" target="_blank">高中英文學測＋<span style="color: #FFC300; font-weight: bold;">寫作</span></a>
+                    <a href="https://tonyonlineenglish.mydurable.com/vochighschool" class="slide-button" target="_blank">技高統測英文＋<span style="color: #FF80AB; font-weight: bold;">作文</span></a>
+                    <a href="https://tonyonlineenglish.mydurable.com/colleges" class="slide-button" target="_blank">大學英文</a>
+                    <a href="https://tonyonlineenglish.mydurable.com/graduateschool" class="slide-button" target="_blank">研究所碩士英文</a>
+                </div>
+                <div class="footer-text">詳情請點擊上方各連結</div>
+            </div>
+        </div>
+    </div>
+    <div class="content-panel" id="panel-custom">
+        <a href="#" class="back-button">← 返回</a>
+        <div class="phone-screen" id="screen-custom">
+            <div class="menu">
+                <a href="https://tonyonlineenglish.mydurable.com/cuz" class="glass-title-link" target="_blank"><span class="glass-title-text">客製化課程</span></a>
+                <div class="button-group">
+                    <a href="https://tonyonlineenglish.mydurable.com/cuz" class="slide-button" target="_blank">★ 成人美語</a>
+                    <a href="https://tonyonlineenglish.mydurable.com/cuz" class="slide-button" target="_blank">★ 口說能力提升</a>
+                    <a href="https://tonyonlineenglish.mydurable.com/cuz" class="slide-button" target="_blank">★ 職場英文</a>
+                    <a href="https://tonyonlineenglish.mydurable.com/cuz" class="slide-button" target="_blank">★ 公職英文</a>
+                    <a href="https://tonyonlineenglish.mydurable.com/cuz" class="slide-button" target="_blank">★ 觀光美語</a>
+                    <a href="https://tonyonlineenglish.mydurable.com/cuz" class="slide-button" target="_blank">★ 在學生</a>
+                </div>
+                <div class="footer-text">詳情請點擊上方各連結</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+(function() {
+    // 電腦版：載入後自動輕輕往下滾一點（現在會真的動了！）
+    if (window.innerWidth > 1024) {
+        setTimeout(() => {
+            window.scrollTo({
+                top: 180,           // 加大一點，瀏覽器才會執行平滑滾動
+                behavior: 'smooth'
+            });
+        }, 500);  // 延遲 0.5 秒，讓頁面先載好再動，看起來更自然
+        return;   // 電腦版到這裡結束，不跑手機邏輯
+    }
+
+    // 手機版邏輯（原本的，沒動過）
+    const docRoot = document.documentElement;
+    const mobileMenu = document.getElementById('mobile-menu');
+    const contentPanels = document.querySelectorAll('.content-panel');
+    const menuChoices = document.querySelectorAll('#mobile-menu .menu-choice');
+
+    const showMainMenu = () => {
+        docRoot.classList.remove('mobile-panel-visible');
+        mobileMenu.classList.remove('hidden');
+        contentPanels.forEach(p => p.classList.remove('visible'));
+    };
+
+    const showPanel = (panelId) => {
+        const targetPanel = document.getElementById(panelId);
+        if (targetPanel) {
+            docRoot.classList.add('mobile-panel-visible');
+            mobileMenu.classList.add('hidden');
+            contentPanels.forEach(p => p.classList.remove('visible'));
+            targetPanel.classList.add('visible');
+            targetPanel.scrollTop = 0;
+        } else {
+            showMainMenu();
+        }
+    };
+
+    menuChoices.forEach(choice => {
+        choice.addEventListener('click', (e) => {
+            e.preventDefault();
+            const panelId = choice.dataset.target;
+            history.pushState({ panel: panelId }, '', `#${panelId}`);
+            showPanel(panelId);
+        });
+    });
+
+    document.querySelectorAll('.back-button').forEach(button => {
+        button.addEventListener('click', (e) => {
+            e.preventDefault();
+            history.pushState({ panel: null }, '', window.location.pathname);
+            showMainMenu();
+        });
+    });
+
+    window.addEventListener('popstate', (event) => {
+        if (event.state && event.state.panel) {
+            showPanel(event.state.panel);
+        } else {
+            showMainMenu();
+        }
+    });
+
+    window.addEventListener('load', () => {
+        const initialHash = window.location.hash.slice(1);
+        const validPanels = ['panel-certs', 'panel-academic', 'panel-custom'];
+        if (initialHash && validPanels.includes(initialHash)) {
+            history.replaceState({ panel: initialHash }, '', `#${initialHash}`);
+            showPanel(initialHash);
+        } else {
+            history.replaceState({ panel: null }, '', window.location.pathname);
+            showMainMenu();
+            
+            setTimeout(() => {
+                if (window.innerWidth <= 1024) {
+                    window.scrollTo({
+                        top: 100,
+                        behavior: 'smooth'
+                    });
+                }
+            }, 200);
+        }
+    });
+})();
+</script>
+</body>
+</html>
