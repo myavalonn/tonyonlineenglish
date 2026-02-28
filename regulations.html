@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Tony Online English Tutoring - 課程規範</title>
+  <style>
+    :root {
+      /* Bar 1: 金黃色系 */
+      --gold-gradient: linear-gradient(135deg, #FFD700, #FFA500, #FFD700);
+      /* Bar 2: 霓虹藍色系 */
+      --neon-blue-gradient: linear-gradient(135deg, #00f0ff, #0099ff, #00f0ff);
+      /* Bar 3: 警示橘紅色系 (週六) */
+      --warning-red-gradient: linear-gradient(135deg, #ff416c, #ff4b2b, #ff416c);
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+      background: #f5f5f5;
+      scroll-behavior: smooth;
+    }
+
+    /* --- 規範條容器 --- */
+    .bar-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.2rem;
+      padding: 2rem 1rem;
+      min-height: 100vh; 
+    }
+
+    .bar {
+      position: relative;
+      width: 100%;
+      max-width: 1000px;
+      border-radius: 50px;
+      padding: 1.5rem 2rem;
+      font-style: italic;
+      font-weight: bold;
+      font-size: clamp(1.2rem, 4vw, 2.2rem);
+      animation: slideIn 1.2s ease forwards;
+      opacity: 0;
+      background: #444;
+      color: white;
+      z-index: 0;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    /* 旋轉流光邊框背景 */
+    .bar::before {
+      content: "";
+      position: absolute;
+      top: -3px;
+      left: -3px;
+      right: -3px;
+      bottom: -3px;
+      border-radius: 60px;
+      z-index: -1;
+      background-size: 200% 200%;
+      animation: spin 4s linear infinite;
+    }
+
+    /* 內部遮罩 */
+    .bar::after {
+      content: "";
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      right: 3px;
+      bottom: 3px;
+      background: inherit;
+      border-radius: 50px;
+      z-index: -1;
+    }
+
+    /* --- Bar 1 (24hr) --- */
+    .bar1 {
+      background: linear-gradient(90deg, #6ecf68, #f9d976, #f26a4b);
+      animation-delay: 0.2s;
+    }
+    .bar1::before {
+      background: var(--gold-gradient);
+      filter: drop-shadow(0 0 8px #ffdb4d);
+    }
+
+    /* --- Bar 2 (12hr) --- */
+    .bar2 {
+      background: linear-gradient(90deg, #5dade2, #a569bd, #e74c3c);
+      animation-delay: 0.7s;
+    }
+    .bar2::before {
+      background: var(--neon-blue-gradient);
+      filter: drop-shadow(0 0 5px #00f0ff);
+    }
+
+    /* --- Bar 3 (週六規範 - 橘紅色系) --- */
+    .bar3 {
+      background: linear-gradient(90deg, #ff416c, #ff4b2b, #ff9966);
+      animation-delay: 1.2s;
+      flex-direction: column; 
+      align-items: flex-start;
+      line-height: 1.4; 
+    }
+    .bar3::before {
+      background: var(--warning-red-gradient);
+      filter: drop-shadow(0 0 5px #ff4b2b);
+    }
+
+    /* --- Bar 4 (總結 - 深藍色) --- */
+    .bar4 {
+      background-color: #0d1038;
+      color: white;
+      animation-delay: 1.7s;
+      flex-direction: column;
+      align-items: center;
+      line-height: 1.6;
+      text-align: center;
+    }
+    .bar4::before {
+      background: none;
+      animation: none;
+      filter: none;
+    }
+
+    /* 通用元素樣式 */
+    .rule-icon-img {
+      height: 1.5em;
+      width: auto;
+      vertical-align: middle;
+      display: inline-block;
+      margin-right: 8px;
+      animation: zoomPop 1s ease-out;
+    }
+
+    .number {
+      color: black;
+      font-size: 1.3em;
+      display: inline-block;
+      animation: zoomPop 1s ease-out;
+      font-style: italic;
+      margin: 0 4px;
+    }
+
+    .italic-black {
+      color: black;
+      font-style: italic;
+      display: inline-block;
+      white-space: nowrap;
+    }
+    
+    .highlight-black {
+      color: black;
+      font-style: italic;
+      display: inline-block;
+      font-weight: 800;
+    }
+
+    /* 動畫定義 */
+    @keyframes slideIn {
+      from { transform: translateX(-100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    @keyframes zoomPop {
+      0% { transform: scale(1); }
+      30% { transform: scale(1.5); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* --- 手機版優化 --- */
+    @media (max-width: 600px) {
+      .bar-container {
+        padding: 2rem 0.25rem; 
+      }
+
+      .bar {
+        width: 98%; 
+        padding: 1.5rem 0.8rem; 
+        border-radius: 35px;
+        font-size: 1.35rem; 
+      }
+      
+      .bar3 {
+        line-height: 1.4; 
+        font-size: 1.35rem; 
+      }
+      
+      .rule-icon-img {
+        height: 1.3em;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 主要內容區塊 -->
+  <div class="bar-container" id="main-content">
+    
+    <!-- 第一條：24小時規則 (已更新：加上週六1堂說明) -->
+    <div class="bar bar1">
+      <div>
+        <img class="rule-icon-img" src="https://ik.imagekit.io/lql1uveoc/rules.png?updatedAt=1748531353399" alt="rule icon">
+        <span class="number">24</span>小時內提出請假或調課,
+        <span class="italic-black">扣除</span><span class="number">0.5</span><span class="italic-black"> 堂</span>
+        <span class="italic-black">（週六</span><span class="number">1</span><span class="italic-black">堂）</span>
+      </div>
+    </div>
+
+    <!-- 第二條：12小時規則 -->
+    <div class="bar bar2">
+      <div>
+        <img class="rule-icon-img" src="https://ik.imagekit.io/lql1uveoc/rules.png?updatedAt=1748531353399" alt="rule icon">
+        <span class="number">12</span>小時內提出請假或調課,
+        <span class="italic-black">扣除</span><span class="number">1</span><span class="italic-black"> 堂</span>
+      </div>
+    </div>
+
+    <!-- 第三條：週六特殊規則 -->
+    <div class="bar bar3">
+      <div style="width: 100%;">
+        ⚠️ <span class="highlight-black">週六</span>課程需於上課前 <span class="number" style="color: black;">24</span> 小時提出請假或調課；<br>
+        若未於 <span class="number" style="color: black;">24</span> 小時前提出，<span class="highlight-black">當堂課將視為已使用。</span>
+      </div>
+    </div>
+
+    <!-- 第四條：總結與警告 -->
+    <div class="bar bar4">
+      <div>規範適用全部上課時段</div>
+      <div style="color: #ffaaaa; margin-top: 5px;">（請假/缺席頻繁，取消該固定時段課程。）</div>
+    </div>
+
+  </div>
+
+  <script>
+    // 自動捲動腳本
+    window.addEventListener('load', function() {
+      const content = document.getElementById('main-content');
+      if (content) {
+        setTimeout(() => {
+          content.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+      }
+    });
+  </script>
+
+</body>
+</html>
