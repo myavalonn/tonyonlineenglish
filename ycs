@@ -1,0 +1,1623 @@
+<!-- Tony's Schedule Finder - Start -->
+<style>
+/* This style block is self-contained */
+#tony-schedule-container {
+font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+background: #f9f9f9;
+padding: 20px;
+width: 100%;
+max-width: 800px; /* Default max width */
+margin: 0 auto; /* Center align */
+box-sizing: border-box;
+position: relative;
+overflow-x: hidden; /* Prevent horizontal scrollbars from animations */
+}
+#tony-schedule-container * { box-sizing: border-box; }
+
+/* Title Styles */
+#tony-schedule-container #current-date-header { font-size: 1.5em; color: #333; text-align: center; margin-bottom: 15px; transition: all 0.3s; }
+#tony-schedule-container h2 {
+color: #333; text-align: center; margin-bottom: 25px; font-size: 2.2em;
+display: flex; justify-content: center; align-items: center; flex-wrap: nowrap;
+}
+#tony-schedule-container .logo-tony {
+font-family: 'Pacifico', cursive; color: #4a4aff; font-weight: normal;
+margin-right: 10px; flex-shrink: 0;
+}
+#tony-schedule-container .logo-text { color: #2c2c2c; font-weight: bold; flex-shrink: 0; }
+
+/* === NEW: Progress Pill Animation Styles === */
+#progress-pill-container {
+    position: fixed;
+    top: 100px;
+    left: 0;
+    background: #2c2f36;
+    color: #fff;
+    padding: 15px 25px;
+    border-radius: 0 50px 50px 0;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    z-index: 2000;
+    transform: translateX(-110%);
+    transition: transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+#progress-pill-container.show {
+    transform: translateX(20px);
+}
+.progress-chart-container {
+    position: relative;
+    width: 120px;
+    height: 120px;
+}
+.progress-chart-svg {
+    width: 100%;
+    height: 100%;
+    transform: rotate(-90deg); /* Start from the top */
+}
+.progress-bg {
+    fill: none;
+    stroke: #40444f;
+    stroke-width: 12;
+}
+.progress-bar {
+    fill: none;
+    stroke: url(#progressGradient);
+    stroke-width: 12;
+    stroke-linecap: round;
+    stroke-dasharray: 314; /* Circumference of a circle with r=50 */
+    stroke-dashoffset: 314;
+    transition: stroke-dashoffset 1.5s cubic-bezier(0.65, 0, 0.35, 1);
+}
+.progress-text-group {
+    transform: rotate(90deg); /* Counter-rotate the text */
+    transform-origin: center;
+}
+.progress-percentage {
+    fill: #fff;
+    font-size: 28px;
+    font-weight: bold;
+    text-anchor: middle;
+}
+.progress-label {
+    fill: #a0a4b0;
+    font-size: 14px;
+    text-anchor: middle;
+}
+.progress-student-name {
+    font-size: 1.8em;
+    font-weight: 500;
+    line-height: 1.2; /* Adjust line height for two lines */
+}
+@media (max-width: 600px) {
+    #progress-pill-container {
+        top: 130px; /* Adjusted from 100px to be lower on mobile */
+        padding: 10px 15px;
+        gap: 15px;
+        transform: translateX(-110%);
+    }
+    #progress-pill-container.show {
+        transform: translateX(10px);
+    }
+    .progress-chart-container {
+        width: 80px;
+        height: 80px;
+    }
+    .progress-bg, .progress-bar {
+        stroke-width: 10;
+    }
+    .progress-percentage {
+        font-size: 20px;
+    }
+    .progress-label {
+        font-size: 10px;
+    }
+    .progress-student-name {
+        font-size: 1.3em;
+    }
+}
+
+
+/* Search Bar & Autocomplete */
+#tony-schedule-container .search-bar {
+position: relative; width: 100%; max-width: 600px;
+text-align: center; margin-bottom: 20px; display: flex;
+justify-content: center; align-items: center; margin-left: auto; margin-right: auto;
+}
+#tony-schedule-container .autocomplete { position: relative; display: inline-block; width: 70%; }
+
+#tony-schedule-container input {
+width: 100%; padding: 15px; font-size: 18px;
+margin-right: 10px; border: 2px solid #ccc; border-radius: 8px;
+transition: all 0.3s ease-in-out;
+}
+#tony-schedule-container input:hover, #tony-schedule-container input:focus {
+border-color: #007BFF; box-shadow: 0 0 10px rgba(0, 123, 255, 0.3); outline: none;
+}
+
+#tony-schedule-container button {
+font-size: 16px; padding: 15px 10px; width: 25%; border: none;
+background-color: #007BFF; color: white; border-radius: 8px;
+cursor: pointer; transition: background-color: 0.3s;
+margin-left: 10px;
+}
+#tony-schedule-container button:hover { background-color: #0056b3; }
+
+.autocomplete-items {
+position: absolute; border: 1px solid #d4d4d4; border-bottom: none;
+border-top: none; z-index: 99; top: 100%; left: 0; right: 0;
+max-height: 200px; overflow-y: auto;
+}
+.autocomplete-items div {
+padding: 10px; cursor: pointer; background-color: #fff; border-bottom: 1px solid #d4d4d4;
+text-align: left;
+}
+.autocomplete-items div:hover { background-color: #e9e9e9; }
+.autocomplete-active { background-color: DodgerBlue !important; color: #ffffff; }
+
+/* --- Class Counter Styles --- */
+.class-counter-wrapper {
+display: flex;
+justify-content: center;
+gap: 15px;
+margin: 25px auto;
+max-width: 600px;
+padding: 0 10px;
+}
+.class-counter-wrapper .info-card {
+background-color: #FFFFFF;
+border-radius: 20px;
+padding: 10px;
+display: flex;
+align-items: center;
+gap: 8px;
+flex: 1;
+min-width: 0;
+box-shadow: none;
+opacity: 1;
+position: relative; /* Needed for positioning the click reminder */
+}
+/* Animation class will handle initial hide for new data */
+.class-counter-wrapper .info-card.start-animation {
+opacity: 0;
+}
+.class-counter-wrapper .icon { width: 30px; height: 30px; }
+.class-counter-wrapper .data { text-align: left; }
+.class-counter-wrapper .number {
+font-size: 1.5em;
+font-weight: bold;
+line-height: 1.1;
+display: flex;
+align-items: center;
+justify-content: flex-start;
+height: 1.65em;
+}
+.class-counter-wrapper .label { font-size: 0.65em; color: #666; line-height: 1.2; }
+.class-counter-wrapper .total .number { color: #F88379; }
+.class-counter-wrapper .completed .number { color: #20C997; }
+.class-counter-wrapper .remaining .number { color: #6F42C1; }
+
+.mobile-only-text { display: none; }
+
+/* --- NEW: Loading GIF and Number Animation Styles --- */
+.class-counter-wrapper .number .loading-gif {
+height: 100%;
+width: auto;
+}
+@keyframes fade-in-scale-up {
+from {
+opacity: 0;
+transform: scale(0.8);
+}
+to {
+opacity: 1;
+transform: scale(1);
+}
+}
+.number-loaded-animation {
+animation: fade-in-scale-up 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+
+/* --- Upcoming 3 Sessions --- */
+#tony-schedule-container #upcoming-sessions-container {
+display: flex; justify-content: center; gap: 15px;
+margin: 10px auto 10px auto;
+max-width: 600px;
+}
+#tony-schedule-container .session-item {
+background-color: #00696b;
+color: white; border-radius: 20px; padding: 12px 10px; text-align: center;
+width: 110px; flex-shrink: 0; box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+display: flex; flex-direction: column; justify-content: center; min-height: 100px;
+position: relative; z-index: 1;
+opacity: 0; /* Initially hidden for animation */
+}
+#tony-schedule-container .session-item.female-session { background-color: #E85D75; }
+#tony-schedule-container .session-day { font-size: 1.1em; font-weight: 500; }
+#tony-schedule-container .session-date { font-size: 1.8em; font-weight: bold; line-height: 1.2; margin: 4px 0; white-space: nowrap; }
+#tony-schedule-container .session-time { font-size: 1.1em; font-weight: 500; }
+
+/* --- NEW: Animation Styles --- */
+@keyframes slide-in-left {
+from {
+transform: translateX(-40px);
+opacity: 0;
+}
+to {
+transform: translateX(0);
+opacity: 1;
+}
+}
+
+.animate-slide-in {
+animation-name: slide-in-left;
+animation-duration: 0.5s;
+animation-fill-mode: both;
+animation-timing-function: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Schedule List Styles */
+#tony-schedule-container #results { width: 100%; max-width: 600px; margin: 0 auto 30px auto; text-align: center; }
+/* === MODIFIED: Styling for the individual event items in the list === */
+#tony-schedule-container .event {
+    background: #ffffff;
+    border-radius: 12px;
+    padding: 15px;
+    margin-bottom: 12px;
+    text-align: left;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+    border: 1px solid #eee; /* Subtle border */
+    transition: background-color 0.3s; /* Smooth color transition */
+}
+/* --- NEW: Style for future month list items --- */
+#tony-schedule-container .event.future-month {
+    background-color: #F5F5F5; /* White Smoke */
+}
+
+#tony-schedule-container .info-date { color: blue; font-weight: bold; }
+#tony-schedule-container .info-time { color: red; font-weight: bold; }
+#tony-schedule-container .info-day { color: green; font-weight: bold; }
+
+/* === MODIFIED: Upcoming Course List Toggle Bar Styling === */
+.upcoming-title-toggle {
+    font-size: 1.2em;
+    font-weight: bold;
+    margin-bottom: 15px; /* Increased margin */
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 15px;
+    background: linear-gradient(90deg, #00A9E5, #833AB4);
+    color: #ffffff;
+    border-radius: 10px;
+    border: none;
+    transition: filter 0.3s, transform 0.2s;
+}
+.upcoming-title-toggle:hover {
+    filter: brightness(115%);
+    transform: scale(1.01);
+}
+.toggle-icon {
+    font-size: 1.5em;
+    line-height: 1;
+    transition: transform 0.3s ease;
+    color: #ffffff;
+}
+.toggle-icon.expanded {
+    transform: rotate(180deg); /* Point chevron down when expanded */
+}
+#schedule-list-details { display: none; padding-top: 10px; }
+
+.multi-class-reminder {
+display: flex; align-items: center; justify-content: flex-start; gap: 8px;
+font-size: 0.9em; color: #d9534f; font-weight: bold; margin-top: 5px;
+padding: 8px; background-color: #fdf2f2; border-radius: 5px;
+}
+.multi-class-reminder img { width: 20px; height: 20px; }
+
+/* Glowing/Flashing Animations */
+@keyframes glow {
+0%, 100% { box-shadow: 0 0 10px rgba(0, 123, 255, 0.5); border-color: #007BFF; }
+50% { box-shadow: 0 0 20px rgba(0, 123, 255, 0.9); border-color: #6dafff; }
+}
+#tony-schedule-container .today-schedule-item {
+    border: 2px solid #007BFF;
+    animation: glow 1.8s infinite ease-in-out;
+}
+
+@keyframes header-glow {
+0%, 100% { text-shadow: 0 0 5px #ff8c00, 0 0 10px #ff8c00; color: #000; }
+50% { text-shadow: 0 0 10px #ff8c00, 0 0 20px #ff8c00; color: #333; }
+}
+#tony-schedule-container #current-date-header.has-class-today { animation: header-glow 2.5s infinite ease-in-out; }
+
+@keyframes neon-glow {
+0%, 100% { box-shadow: 0 0 10px #00d9ff, 0 0 20px #00d9ff, 0 0 30px #00d9ff; }
+50% { box-shadow: 0 0 20px #00d9ff, 0 0 30px #00d9ff, 0 0 40px #00d9ff; }
+}
+
+@keyframes spin-glow {
+from { transform: rotate(0deg); }
+to { transform: rotate(360deg); }
+}
+.session-item.is-today-session::before {
+content: '';
+position: absolute;
+z-index: -1;
+top: -4px; bottom: -4px; left: -4px; right: -4px;
+background: conic-gradient(from 180deg at 50% 50%, #FFDC80, #FCAF45, #F77737, #F56040, #FD1D1D, #E1306C, #C13584, #833AB4, #5851DB, #405DE6, #FFDC80);
+border-radius: 24px;
+animation: spin-glow 3s linear infinite;
+}
+.session-item.is-today-session {
+animation: session-pulse 1.5s infinite ease-in-out;
+}
+@keyframes session-pulse {
+0%, 100% { transform: scale(1); }
+50% { transform: scale(1.05); }
+}
+
+/* --- NEW: Rainbow Glow Animation --- */
+@keyframes rainbow-glow {
+    0%, 100% { border-color: #ff0000; box-shadow: 0 0 15px #ff0000, inset 0 0 5px rgba(255, 255, 255, 0.5); }
+    16%      { border-color: #ff7f00; box-shadow: 0 0 20px #ff7f00, inset 0 0 7px rgba(255, 255, 255, 0.5); }
+    33%      { border-color: #ffff00; box-shadow: 0 0 15px #ffff00, inset 0 0 5px rgba(255, 255, 255, 0.5); }
+    50%      { border-color: #00ff00; box-shadow: 0 0 20px #00ff00, inset 0 0 7px rgba(255, 255, 255, 0.5); }
+    66%      { border-color: #0000ff; box-shadow: 0 0 15px #0000ff, inset 0 0 5px rgba(255, 255, 255, 0.5); }
+    83%      { border-color: #8b00ff; box-shadow: 0 0 20px #8b00ff, inset 0 0 7px rgba(255, 255, 255, 0.5); }
+}
+#tony-schedule-container .day-glow {
+    animation: rainbow-glow 3s linear 2;
+    border: 2px solid transparent;
+    position: relative;
+    z-index: 10;
+}
+
+/* --- NEW: Enlarged Card Styled After Image --- */
+.enlarged-remaining-card {
+    background-color: #ffffff;
+    border: 1.5px solid #6F42C1;
+    border-radius: 20px;
+    padding: 30px;
+    margin: 25px auto 0 auto;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    text-align: center;
+    max-width: 450px;
+}
+.enlarged-remaining-card .enlarged-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+}
+.enlarged-remaining-card .enlarged-number-section {
+    font-size: 5em; /* Large number */
+    font-weight: bold;
+    color: #6F42C1;
+    line-height: 1;
+}
+.enlarged-remaining-card .enlarged-text-section {
+    text-align: left;
+}
+.enlarged-remaining-card .enlarged-icon {
+    width: 30px;
+    height: 30px;
+    margin-bottom: 8px;
+}
+.enlarged-remaining-card .enlarged-label-zh {
+    font-size: 1.2em;
+    color: #333;
+    font-weight: 500;
+}
+.enlarged-remaining-card .enlarged-label-en {
+    font-size: 1em;
+    color: #555;
+}
+.booking-button-enlarged {
+    display: inline-block;
+    margin-top: 25px;
+    padding: 14px 30px;
+    background-color: #007BFF;
+    color: white;
+    text-decoration: none;
+    border-radius: 10px;
+    font-weight: bold;
+    font-size: 1.2em;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+.booking-button-enlarged:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}
+
+/* === NEW: Line Button Styling === */
+.line-contact-button {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 20px;
+    background-color: #06C755; /* LINE green */
+    color: white;
+    text-decoration: none;
+    border-radius: 50px; /* pill-shape */
+    font-weight: bold;
+    font-size: 1em;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+}
+.line-contact-button:hover {
+    background-color: #05a546;
+    transform: scale(1.05);
+}
+/* Style for the enlarged card view */
+.enlarged-remaining-card .line-contact-button {
+    margin-top: 25px;
+    padding: 14px 30px;
+    font-size: 1.2em;
+}
+
+/* === NEW: Standalone Line Button for 'Not Found' Case === */
+.standalone-line-button {
+    margin-top: 25px; /* More space from the search bar */
+    padding: 16px 40px; /* Larger padding */
+    font-size: 1.5em; /* Larger font */
+}
+.standalone-line-button:hover {
+    transform: scale(1.05);
+}
+
+
+/* --- MODIFIED: Modal Styles for top positioning and X button --- */
+.details-modal {
+display: none;
+position: absolute;
+z-index: 1000;
+left: 0;
+top: 0;
+width: 100%;
+height: 100%;
+background-color: rgba(0, 0, 0, 0.6);
+justify-content: center;
+align-items: flex-start; /* Position at the top */
+padding: 15px;
+padding-top: 10vh; /* Add some space from the top */
+}
+.details-modal .modal-content {
+background-color: #fff;
+padding: 25px;
+border-radius: 20px;
+box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+display: flex;
+flex-direction: column;
+gap: 20px;
+width: 100%;
+max-width: 350px;
+position: relative; /* Needed for positioning the close button */
+}
+.close-modal-btn {
+position: absolute;
+top: 10px;
+right: 15px;
+font-size: 28px;
+font-weight: bold;
+color: #aaa;
+cursor: pointer;
+line-height: 1;
+}
+.close-modal-btn:hover {
+color: #333;
+}
+.modal-row {
+display: flex;
+align-items: center;
+gap: 15px;
+}
+.modal-icon {
+width: 40px;
+height: 40px;
+flex-shrink: 0;
+}
+.modal-data {
+text-align: left;
+}
+.modal-number {
+font-size: 2.5em;
+font-weight: bold;
+line-height: 1;
+}
+.modal-label {
+font-size: 1em;
+color: #555;
+white-space: nowrap;
+}
+
+
+/* Calendar Styles */
+#tony-schedule-container .calendar-container { width: 100%; max-width: 800px; margin: 0 auto; transition: max-width 0.4s ease; }
+#tony-schedule-container .single-calendar { margin-bottom: 25px; }
+#tony-schedule-container .month-label { text-align: center; font-size: 22px; font-weight: bold; margin-bottom: 10px; }
+#tony-schedule-container .calendar { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; text-align: center; width: 100%; }
+#tony-schedule-container .day-label { font-weight: bold; background-color: #f0f0f0; padding: 8px 5px; border-radius: 10px; line-height: 1.4; font-size: 14px; border: 1px solid #e0e0e0; }
+#tony-schedule-container .weekend-label { color: red; }
+#tony-schedule-container .day {
+background: #fff; border: 1px solid #ddd; border-radius: 10px;
+padding: 8px 4px; min-height: 120px; display: flex; flex-direction: column;
+align-items: center; justify-content: flex-start; transition: all 0.3s ease; font-size: 16px;
+}
+#tony-schedule-container .day.empty { background-color: transparent; border-color: transparent; }
+#tony-schedule-container .today { background-color: #e0f7ff; border: 1px solid #b3e5fc; }
+
+#tony-schedule-container .today-with-event {
+background-color: #00c4e6;
+border-color: #00bfff;
+animation: neon-glow 2s infinite;
+}
+
+#tony-schedule-container .highlight { background-color: #ffe0e0; }
+#tony-schedule-container .multi-event-day { background-color: #e0ffed; }
+
+#tony-schedule-container .date-number {
+font-size: 18px; font-weight: 500; margin-bottom: 6px;
+display: inline-flex; justify-content: center; align-items: center; line-height: 1; padding: 0;
+}
+#tony-schedule-container .day.has-event .date-number,
+#tony-schedule-container .day.today .date-number,
+#tony-schedule-container .day.today-with-event .date-number {
+font-weight: bold; color: black; background-color: white;
+border: 2px solid black; border-radius: 50%;
+width: 28px; height: 28px; font-size: 18px; margin-bottom: 6px; box-shadow: none;
+}
+#tony-schedule-container .day.today .date-number,
+#tony-schedule-container .day.today-with-event .date-number { background-color: black; color: white; border-color: black; }
+#tony-schedule-container .time { display: block; font-size: 14px; margin-top: 4px; font-weight: normal; white-space: nowrap; color: #d00; }
+#tony-schedule-container .multi-event-day .time { color: #00642f; }
+
+/* --- Click Reminder GIF Styles --- */
+.click-reminder {
+position: absolute;
+bottom: -2px; /* Positioned below the main icon */
+left: 8px; /* Aligned with the main icon's left edge */
+width: 25px;
+height: 25px;
+z-index: 5;
+}
+.click-reminder img {
+width: 100%;
+height: 100%;
+}
+
+/* === CALENDAR PAST/COMPLETED STYLES START === */
+/* Style to darken past days for de-emphasis */
+#tony-schedule-container .day.past-day {
+opacity: 0.7;
+background-color: #f0f0f0; /* A neutral gray to indicate inactivity */
+}
+#tony-schedule-container .day.past-day .date-number {
+color: #999;
+}
+/* Ensure past days with events don't get bright highlight colors */
+#tony-schedule-container .day.past-day.highlight,
+#tony-schedule-container .day.past-day.multi-event-day {
+background-color: #e9e9e9;
+}
+#tony-schedule-container .day.past-day.has-event .date-number {
+border-color: #ccc;
+background-color: #f5f5f5;
+color: #888;
+}
+
+/* Container for the completion icon to ensure it's centered and scales well */
+#tony-schedule-container .completed-class-icon-wrapper {
+margin-top: 5px;
+flex-grow: 1;
+display: flex;
+align-items: center;
+justify-content: center;
+width: 100%;
+}
+/* The completion icon itself, using your provided URL */
+#tony-schedule-container .completed-class-icon-wrapper img {
+width: 55%; /* Scales with the size of the day cell */
+max-width: 40px; /* Prevents it from becoming too large on big screens */
+height: auto; /* Maintains aspect ratio */
+}
+
+/* === NEW: MULTI-ICON STYLES === */
+#tony-schedule-container .completed-class-icon-wrapper.multi-icon {
+    flex-direction: row; /* Align icons side-by-side */
+    gap: 4px; /* Add a small space between icons */
+}
+#tony-schedule-container .completed-class-icon-wrapper.multi-icon img {
+    width: auto; /* Let height dictate the width */
+    height: 28px; /* A smaller, fixed height for multiple icons */
+    max-width: 28px; /* Ensure they don't get too wide */
+}
+
+/* === MODIFICATION START: Specific style for the absent (❖) icon === */
+#tony-schedule-container .completed-class-icon-wrapper img[src*="absent%202.png"] {
+    width: 82.5%; /* 55% * 1.5 */
+    max-width: 60px;  /* 40px * 1.5 */
+}
+#tony-schedule-container .completed-class-icon-wrapper.multi-icon img[src*="absent%202.png"] {
+    height: 42px; /* 28px * 1.5 */
+    max-width: 42px; /* 28px * 1.5 */
+}
+/* === MODIFICATION END === */
+
+
+/* === CALENDAR PAST/COMPLETED STYLES END === */
+
+
+/* --- MODIFICATION START --- */
+
+/* iPad Horizontal Mode (20% bigger) */
+@media screen and (min-width: 900px) and (max-width: 1199px) and (orientation: landscape) {
+#tony-schedule-container { max-width: 95%; }
+#tony-schedule-container h2 { font-size: 2.64em; } /* 20% bigger */
+#tony-schedule-container .day { min-height: 144px; font-size: 19px; } /* 20% bigger */
+#tony-schedule-container .day-label { font-size: 17px; } /* 20% bigger */
+#tony-schedule-container .day.has-event .date-number,
+#tony-schedule-container .day.today .date-number,
+#tony-schedule-container .day.today-with-event .date-number {
+width: 34px; height: 34px; font-size: 21px; /* ~20% bigger */
+}
+}
+
+/* NEW: Comprehensive Desktop Mode (50% bigger) */
+@media screen and (min-width: 1200px) {
+#tony-schedule-container { max-width: 1400px; padding: 40px; }
+#tony-schedule-container #current-date-header { font-size: 2.25em; margin-bottom: 25px;}
+#tony-schedule-container h2 { font-size: 3.3em; margin-bottom: 40px; } /* 50% bigger */
+
+/* Search Bar */
+#tony-schedule-container .search-bar { max-width: 800px; margin-bottom: 35px; }
+#tony-schedule-container input { font-size: 24px; padding: 20px; border-radius: 12px; }
+#tony-schedule-container button { font-size: 24px; padding: 20px; border-radius: 12px; }
+
+/* Info Cards */
+.class-counter-wrapper { max-width: 900px; gap: 30px; margin: 40px auto; }
+.class-counter-wrapper .info-card { padding: 20px; gap: 15px; border-radius: 30px; }
+.class-counter-wrapper .icon { width: 45px; height: 45px; }
+.class-counter-wrapper .number { font-size: 2.25em; }
+.class-counter-wrapper .label { font-size: 1em; }
+
+/* Upcoming Sessions */
+#tony-schedule-container #upcoming-sessions-container { max-width: 900px; gap: 30px; margin-bottom: 20px; }
+#tony-schedule-container .session-item {
+width: 165px; /* 50% bigger */
+min-height: 150px; /* 50% bigger */
+padding: 20px 15px;
+border-radius: 30px;
+}
+#tony-schedule-container .session-day { font-size: 1.65em; }
+#tony-schedule-container .session-date { font-size: 2.7em; }
+#tony-schedule-container .session-time { font-size: 1.65em; }
+.session-item.is-today-session::before { border-radius: 34px; } /* Adjust to new border-radius */
+
+/* Results List */
+#tony-schedule-container #results { max-width: 900px; }
+.upcoming-title-toggle { font-size: 1.8em; padding: 15px; }
+
+/* Calendar */
+#tony-schedule-container .calendar-container { max-width: 1400px; }
+#tony-schedule-container .month-label { font-size: 33px; margin-bottom: 20px; }
+#tony-schedule-container .calendar { gap: 10px; }
+#tony-schedule-container .day-label { font-size: 21px; padding: 12px 8px; border-radius: 15px; } /* 50% bigger */
+#tony-schedule-container .day {
+min-height: 180px; /* 50% bigger */
+font-size: 24px; /* 50% bigger */
+padding: 12px 6px;
+border-radius: 15px;
+}
+#tony-schedule-container .date-number { font-size: 27px; margin-bottom: 10px; }
+#tony-schedule-container .day.has-event .date-number,
+#tony-schedule-container .day.today .date-number,
+#tony-schedule-container .day.today-with-event .date-number {
+width: 42px; height: 42px; font-size: 27px; margin-bottom: 10px; /* 50% bigger */
+}
+#tony-schedule-container .time { font-size: 21px; }
+#tony-schedule-container .completed-class-icon-wrapper img { max-width: 60px; }
+#tony-schedule-container .completed-class-icon-wrapper.multi-icon img { height: 40px; max-width: 40px; }
+}
+/* --- MODIFICATION END --- */
+
+
+/* Portrait Tablets */
+@media screen and (min-width: 601px) and (max-width: 1024px) and (orientation: portrait) {
+#tony-schedule-container .day.has-event .date-number,
+#tony-schedule-container .day.today .date-number,
+#tony-schedule-container .day.today-with-event .date-number {
+width: 36px; height: 36px; font-size: 18px;
+}
+
+#tony-schedule-container #upcoming-sessions-container {
+gap: 22px;
+}
+#tony-schedule-container .session-item {
+width: 180px;
+min-height: 162px;
+padding: 18px;
+border-radius: 27px;
+}
+#tony-schedule-container .session-day { font-size: 1.44em; }
+#tony-schedule-container .session-date { font-size: 2.88em; }
+#tony-schedule-container .session-time { font-size: 1.44em; }
+
+.class-counter-wrapper {
+max-width: 90%;
+gap: 20px;
+}
+.class-counter-wrapper .info-card {
+padding: 15px 25px;
+gap: 15px;
+border-radius: 25px;
+justify-content: center;
+}
+.class-counter-wrapper .icon {
+width: 40px;
+height: 40px;
+}
+.class-counter-wrapper .number {
+white-space: nowrap;
+}
+.class-counter-wrapper .label {
+white-space: nowrap;
+}
+}
+
+/* Mobile Styles */
+@media screen and (max-width: 600px) {
+#tony-schedule-container { padding: 10px; }
+#tony-schedule-container #current-date-header { font-size: 1.2em; }
+#tony-schedule-container h2 { font-size: 1.2em; }
+#tony-schedule-container .autocomplete { width: 65%; }
+#tony-schedule-container button { width: 30%; }
+#tony-schedule-container #upcoming-sessions-container { gap: 10px; flex-wrap: wrap; }
+/* Modified: Increased width to 99.2px (94.5px * 1.05) */
+#tony-schedule-container .session-item { width: 99.2px; min-height: 85px; padding: 10px 5px; border-radius: 15px; }
+
+.class-counter-wrapper { gap: 10px; margin: 20px auto; }
+.class-counter-wrapper .icon { width: 24px; height: 24px; }
+.class-counter-wrapper .number { font-size: 1.32em; }
+.class-counter-wrapper .label { font-size: 0.66em; }
+.class-counter-wrapper .info-card { cursor: pointer; }
+
+.desktop-only-text { display: none; }
+.mobile-only-text { display: inline; }
+
+#tony-schedule-container .six-day-view { grid-template-columns: repeat(6, 1fr); }
+#tony-schedule-container .day-label { font-size: 12px; border-radius: 8px; }
+#tony-schedule-container .day { min-height: 90px; border-radius: 8px; font-size: 0; }
+#tony-schedule-container .date-number { font-size: 16px; margin-bottom: 4px; }
+#tony-schedule-container .time { font-size: 12px; margin-top: 0; }
+
+#tony-schedule-container .day.has-event .date-number,
+#tony-schedule-container .day.today .date-number,
+#tony-schedule-container .day.today-with-event .date-number {
+width: 24px; height: 24px; border-width: 2px;
+font-size: 13px; margin-bottom: 4px; white-space: nowrap;
+}
+
+#tony-schedule-container .today-with-event { animation: none; }
+#tony-schedule-container .event-date-line { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.5em; font-size: 1em; line-height: 1.4; }
+#tony-schedule-container .event-title-line { margin-top: 5px; }
+}
+</style>
+<!-- Google Fonts -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+<div id="tony-schedule-container">
+<h1 id="current-date-header"></h1>
+
+<!-- === NEW: Progress Pill HTML === -->
+<div id="progress-pill-container">
+    <div class="progress-chart-container">
+        <svg class="progress-chart-svg" viewBox="0 0 120 120">
+            <defs>
+                <linearGradient id="progressGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+                    <stop offset="0%" style="stop-color:#ff8c42;stop-opacity:1" />
+                    <stop offset="100%" style="stop-color:#ff4d6d;stop-opacity:1" />
+                </linearGradient>
+            </defs>
+            <circle class="progress-bg" cx="60" cy="60" r="50"></circle>
+            <circle class="progress-bar" cx="60" cy="60" r="50"></circle>
+            <g class="progress-text-group">
+                <text class="progress-percentage" x="50%" y="48%" dominant-baseline="middle">0%</text>
+                <text class="progress-label" x="50%" y="65%" dominant-baseline="middle">Completed</text>
+            </g>
+        </svg>
+    </div>
+    <div id="progress-student-name" class="progress-student-name"></div>
+</div>
+<!-- === END: Progress Pill HTML === -->
+
+<h2>
+<span class="logo-tony">Tony</span>
+<span class="logo-text">線上美語家教 課表查詢</span>
+</h2>
+<div class="search-bar">
+<div class="autocomplete">
+<input type="text" id="studentName" placeholder="請輸入英文名字, Your English name, please.">
+</div>
+<button onclick="searchSchedule()">查詢</button>
+</div>
+<!-- Layout order matching the image -->
+<div id="upcoming-sessions-container"></div>
+<div id="class-counter-container" class="class-counter-wrapper">
+<div class="info-card total">
+<img src="https://ik.imagekit.io/lql1uveoc/Schedule%20information/all.png?updatedAt=1757145798800" alt="Total Icon" class="icon">
+<div class="data">
+<div class="number total-val">-</div>
+<div class="label" id="total-label">總堂數 Total</div>
+</div>
+</div>
+<div class="info-card completed">
+<img src="https://ik.imagekit.io/lql1uveoc/Schedule%20information/check.png?updatedAt=1757145613691" alt="Completed Icon" class="icon">
+<div class="data">
+<div class="number completed-val">-</div>
+<div class="label">
+<span class="desktop-only-text">已完成 Completed</span>
+<span class="mobile-only-text">已完成 Comp.</span>
+</div>
+</div>
+</div>
+<div class="info-card remaining">
+<img src="https://ik.imagekit.io/lql1uveoc/Schedule%20information/time.png?updatedAt=1757145608777" alt="Remaining Icon" class="icon">
+<div class="data">
+<div class="number remaining-val">-</div>
+<div class="label">
+<span class="desktop-only-text">剩餘堂數 Remaining classes</span>
+<span class="mobile-only-text">剩餘堂數 Rem.</span>
+</div>
+</div>
+<div class="click-reminder"></div> <!-- Placeholder for GIF, does not break layout -->
+</div>
+</div>
+<div id="results"></div>
+<div class="calendar-container" id="calendarContainer"></div>
+<!-- MODIFIED: Modal HTML with X button -->
+<div id="details-modal" class="details-modal" onclick="closeDetailsModal()">
+<div class="modal-content" onclick="event.stopPropagation()">
+<span class="close-modal-btn" onclick="closeDetailsModal()">&times;</span>
+<div class="modal-row">
+<img src="https://ik.imagekit.io/lql1uveoc/Schedule%20information/all.png?updatedAt=1757145798800" alt="Total Icon" class="modal-icon">
+<div class="modal-data">
+<div id="modal-total-number" class="modal-number"></div>
+<div class="modal-label" id="modal-total-label">總堂數 Total</div>
+</div>
+</div>
+<div class="modal-row">
+<img src="https://ik.imagekit.io/lql1uveoc/Schedule%20information/check.png?updatedAt=1757145613691" alt="Completed Icon" class="modal-icon">
+<div class="modal-data">
+<div id="modal-completed-number" class="modal-number"></div>
+<div class="modal-label">已完成 Completed</div>
+</div>
+</div>
+<div class="modal-row">
+<img src="https://ik.imagekit.io/lql1uveoc/Schedule%20information/time.png?updatedAt=1757145608777" alt="Remaining Icon" class="modal-icon">
+<div class="modal-data">
+<div id="modal-remaining-number" class="modal-number"></div>
+<div class="modal-label">剩餘堂數 Remaining classes</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+// =================================================================================
+// === MODIFICATION START: Use a single URL for all Google Apps Script requests ===
+// =================================================================================
+const GAS_URL = "https://script.google.com/macros/s/AKfycbxrSJS4dGWmG_GHpginXD_Nl-R8KaZq-6NHRtBjT8_Q4TWz0pp4yinVaMKibdf-Vz1ELg/exec";
+// ===============================================================================
+// === MODIFICATION END ==========================================================
+// ===============================================================================
+
+const weekdaysEn = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+const weekdaysZh = ["週日","週一","週二","週三","週四","週五","週六"];
+const monthsEn = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+const monthsZh = ["一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"];
+const femaleStudentNames = ["sophie", "sofy", "anna", "claire", "linda", "judy", "mary"];
+const maleStudentNames = ["tony", "bob", "charles", "david", "peter", "tom"];
+let allStudentNames = [];
+
+const googleCalendarColors = {
+"1": "#a4bdfc", "2": "#7ae7bf", "3": "#dbadff", "4": "#ff887c",
+"5": "#fbd75b", "6": "#ffb878", "7": "#46d6db", "8": "#e1e1e1",
+"9": "#5484ed", "10": "#51b749", "11": "#dc2127"
+};
+
+// This object holds the raw, full numbers from the API
+let fullData = { total: '-', completed: '-', remaining: '-' };
+// === NEW: Timer for progress pill auto-hide ===
+let progressPillTimeout;
+
+
+// === MODIFIED: Progress Pill Function ===
+function showProgressPill(name, completed, total) {
+    const pillContainer = document.getElementById('progress-pill-container');
+    const studentNameEl = document.getElementById('progress-student-name');
+    const percentageTextEl = document.querySelector('.progress-percentage');
+    const progressBarEl = document.querySelector('.progress-bar');
+
+    if (!pillContainer || !studentNameEl || !percentageTextEl || !progressBarEl) {
+        console.error('Progress pill elements not found.');
+        return;
+    }
+
+    // Clear any existing timeout to prevent premature hiding
+    if (progressPillTimeout) {
+        clearTimeout(progressPillTimeout);
+    }
+    
+    // Calculate percentage and handle division by zero
+    const percentage = (total > 0) ? (completed / total) : 0;
+    const percentageString = (percentage * 100).toFixed(1) + '%';
+    
+    // Capitalize the first letter of the name
+    const capitalizedName = name.charAt(0).toUpperCase() + name.slice(1);
+    
+    // Update text content with the new multi-line format
+    studentNameEl.innerHTML = `Hello : ${capitalizedName}<br><span style="font-size: 0.6em; color: #d0d3db;">How's it going?</span>`;
+    
+    percentageTextEl.textContent = percentageString;
+    
+    // Animate the circle
+    const radius = progressBarEl.r.baseVal.value;
+    const circumference = 2 * Math.PI * radius;
+    const offset = circumference - (percentage * circumference);
+    
+    progressBarEl.style.strokeDasharray = circumference;
+    progressBarEl.style.strokeDashoffset = circumference; // Reset before animating
+    
+    // Use a short delay to ensure the CSS reset is applied before the transition starts
+    setTimeout(() => {
+        progressBarEl.style.strokeDashoffset = offset;
+    }, 100);
+
+    // Show the pill
+    pillContainer.classList.add('show');
+
+    // Set a timer to hide the pill after 5 seconds
+    progressPillTimeout = setTimeout(() => {
+        pillContainer.classList.remove('show');
+    }, 5000);
+}
+
+
+function formatTime(date) {
+let hours = date.getHours();
+let minutes = date.getMinutes().toString().padStart(2, "0");
+const ampm = hours >= 12 ? "pm" : "am";
+hours = hours % 12 || 12;
+return `${hours}:${minutes} ${ampm}`;
+}
+
+function formatShortTime(date) {
+let hours = date.getHours();
+let minutes = date.getMinutes();
+const ampm = hours >= 12 ? "pm" : "am";
+hours = hours % 12 || 12;
+if (minutes === 0) return `${hours}${ampm}`;
+return `${hours}:${minutes.toString().padStart(2, '0')}${ampm}`;
+}
+
+function setDateHeader() {
+const today = new Date();
+const year = today.getFullYear();
+const month = today.getMonth() + 1;
+const day = today.getDate();
+const dayOfWeek = weekdaysZh[today.getDay()];
+const header = document.querySelector('#tony-schedule-container #current-date-header');
+if (header) header.textContent = `${year}年${month}月${day}日 ${dayOfWeek}`;
+}
+
+function toggleScheduleList() {
+    const details = document.getElementById('schedule-list-details');
+    const icon = document.getElementById('toggle-icon');
+    const isExpanded = details.style.display === 'block';
+
+    if (isExpanded) {
+        details.style.display = 'none';
+        icon.classList.remove('expanded');
+    } else {
+        details.style.display = 'block';
+        icon.classList.add('expanded');
+    }
+}
+
+function showDetailsModal() {
+if (window.innerWidth > 600 || fullData.total === '-') return;
+
+const modal = document.getElementById('details-modal');
+const totalNumEl = document.getElementById('modal-total-number');
+const completedNumEl = document.getElementById('modal-completed-number');
+const remainingNumEl = document.getElementById('modal-remaining-number');
+
+if (!isNaN(fullData.total) && Number(fullData.total) >= 100) {
+totalNumEl.textContent = '會員';
+} else {
+totalNumEl.textContent = fullData.total;
+}
+
+if (!isNaN(fullData.completed) && Number(fullData.completed) >= 100) {
+completedNumEl.textContent = '訂閱';
+} else {
+completedNumEl.textContent = fullData.completed;
+}
+
+remainingNumEl.textContent = fullData.remaining;
+
+totalNumEl.style.color = '#F88379';
+completedNumEl.style.color = '#20C997';
+remainingNumEl.style.color = '#6F42C1';
+
+modal.style.display = 'flex';
+}
+
+function closeDetailsModal() {
+const modal = document.getElementById('details-modal');
+modal.style.display = 'none';
+}
+
+
+async function searchSchedule() {
+    const nameInput = document.getElementById("studentName").value.trim();
+    const resultsDiv = document.querySelector('#tony-schedule-container #results');
+    const upcomingContainer = document.querySelector('#tony-schedule-container #upcoming-sessions-container');
+    const header = document.querySelector('#tony-schedule-container #current-date-header');
+    const counterContainer = document.getElementById('class-counter-container');
+
+    counterContainer.style.display = 'flex';
+    document.getElementById('total-label').innerHTML = '總堂數 Total';
+    if(resultsDiv) resultsDiv.innerHTML = "<p>Your request is being processed. 查詢中</p>";
+    if(upcomingContainer) upcomingContainer.innerHTML = "";
+    document.querySelector('.click-reminder').innerHTML = '';
+    if(header) header.classList.remove('has-class-today');
+    buildCalendars([]);
+
+    if (!nameInput) {
+        alert("請輸入英文名字, Your English name, please.");
+        resultsDiv.innerHTML = "";
+        return;
+    }
+
+    const loadingGifHtml = `<img src="https://ik.imagekit.io/lql1uveoc/Schedule%20information/process.gif?updatedAt=1757567850334" alt="Loading..." class="loading-gif">`;
+    document.querySelectorAll('.total-val, .completed-val, .remaining-val').forEach(el => el.innerHTML = loadingGifHtml);
+
+    const nameLower = nameInput.toLowerCase();
+    const scheduleUrl = `${GAS_URL}?action=getSchedule&name=${encodeURIComponent(nameInput)}`;
+    const classCountUrl = `${GAS_URL}?action=getLessonCount&name=${encodeURIComponent(nameInput)}`;
+    const schedulePromise = fetch(scheduleUrl);
+    const classCountPromise = fetch(classCountUrl);
+
+    let scheduleData = [];
+    let userFoundInSchedule = false;
+    let noUpcomingClassesIn30Days = true;
+    let upcomingEventsCount = 0;
+
+    try {
+        const scheduleResponse = await schedulePromise;
+        const scheduleDataRaw = await scheduleResponse.json();
+        if (scheduleDataRaw.error) throw new Error(scheduleDataRaw.error);
+        
+        // === MODIFIED: Filter logic with "English Class" Whitelist ===
+        if (Array.isArray(scheduleDataRaw)) {
+            if (nameLower === 'eason') {
+                scheduleData = scheduleDataRaw.filter(ev => {
+                    if (!ev.title || typeof ev.title !== 'string') return false;
+                    const titleLower = ev.title.toLowerCase();
+                    // Must contain "eason", must NOT contain "cheng", AND must contain "english class"
+                    return titleLower.includes('eason') && !titleLower.includes('cheng') && titleLower.includes('english class');
+                });
+            } else {
+                scheduleData = scheduleDataRaw.filter(ev => {
+                    if (!ev.title || typeof ev.title !== 'string') return false;
+                    const titleLower = ev.title.toLowerCase();
+                    // Must contain the searched name AND must contain "english class"
+                    return titleLower.includes(nameLower) && titleLower.includes('english class');
+                });
+            }
+            userFoundInSchedule = scheduleData.length > 0;
+        }
+
+        if (userFoundInSchedule) {
+            resultsDiv.innerHTML = "";
+            const now = new Date();
+            const limitDate = new Date();
+            limitDate.setDate(now.getDate() + 60);
+            const upcomingEventsIn30Days = scheduleData.filter(ev => new Date(ev.start) >= now && new Date(ev.start) <= limitDate);
+            upcomingEventsCount = upcomingEventsIn30Days.length;
+            noUpcomingClassesIn30Days = upcomingEventsCount === 0;
+
+            if (!noUpcomingClassesIn30Days) {
+                buildUpcomingSessions(scheduleData, femaleStudentNames.includes(nameLower.split(' ')));
+                buildScheduleList(scheduleData);
+            }
+            if (scheduleData.some(ev => new Date(ev.start).toDateString() === now.toDateString())) {
+                header.classList.add('has-class-today');
+            }
+            buildCalendars(scheduleData);
+        }
+    } catch (err) {
+        console.error("Schedule fetch error:", err);
+        if (resultsDiv.innerHTML.includes("processing")) {
+            resultsDiv.innerHTML = `<p>課表查詢失敗: ${err.message}</p>`;
+        }
+    }
+
+    let userFoundInClassCount = false;
+    try {
+        const classCountResponse = await classCountPromise;
+        let classCountData;
+        if (classCountResponse.ok) classCountData = await classCountResponse.json();
+
+        if (classCountData && !classCountData.error && classCountData.total !== "" && classCountData.total !== null) {
+            userFoundInClassCount = true;
+            fullData = { total: classCountData.total, completed: classCountData.completed, remaining: classCountData.remaining };
+            if (classCountData.sharedGroupId) document.getElementById('total-label').innerHTML = '共享堂數 Shared';
+        } else {
+            fullData = { total: 'N/A', completed: 'N/A', remaining: 'N/A' };
+        }
+    } catch (err) {
+        console.error("Class count fetch error:", err);
+        fullData = { total: 'N/A', completed: 'N/A', remaining: 'N/A' };
+    }
+
+    const formatNumber = (num) => (window.innerWidth <= 600 && String(num).length > 3 && String(num) !== 'N/A') ? String(num).substring(0, 3) + '.' : num;
+    const isMobile = window.innerWidth <= 600;
+    const updateValue = (selector, value) => document.querySelectorAll(selector).forEach(el => el.innerHTML = `<span class="number-loaded-animation">${value}</span>`);
+    updateValue('.total-val', (!isNaN(fullData.total) && Number(fullData.total) >= 100) ? '會員' : formatNumber(fullData.total));
+    updateValue('.completed-val', (!isNaN(fullData.completed) && Number(fullData.completed) >= 100) ? (isMobile ? '訂閱' : '訂閱制') : formatNumber(fullData.completed));
+    updateValue('.remaining-val', formatNumber(fullData.remaining));
+
+    // ========================================================================
+    // === NEW: Trigger Progress Pill Animation ===
+    // ========================================================================
+    if (userFoundInClassCount && !isNaN(fullData.total) && fullData.total > 0) {
+        showProgressPill(nameInput, fullData.completed, fullData.total);
+    }
+    // ========================================================================
+
+
+    if (!userFoundInSchedule && !userFoundInClassCount) {
+        counterContainer.style.display = 'none';
+        upcomingContainer.innerHTML = "";
+        buildCalendars([]);
+        resultsDiv.innerHTML = `<a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" rel="noopener noreferrer" class="line-contact-button standalone-line-button">Line 諮詢</a>`;
+        return;
+    }
+
+    const clickReminderDiv = document.querySelector('.click-reminder');
+    if (isMobile && clickReminderDiv) {
+        clickReminderDiv.innerHTML = `<img src="https://ik.imagekit.io/lql1uveoc/Schedule%20information/click.gif?updatedAt=1757226123268" alt="Click hint">`;
+    }
+
+    const showLineButton = (fullData.remaining == 0);
+    let callToActionHtml = '';
+
+    if ((userFoundInSchedule && noUpcomingClassesIn30Days) || (!userFoundInSchedule && userFoundInClassCount)) {
+        let buttonHtml;
+        if (showLineButton) {
+             buttonHtml = `<a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" rel="noopener noreferrer" class="line-contact-button">Line 諮詢</a>`;
+        } else {
+             buttonHtml = `<a href="https://tonyonlineenglish.mydurable.com/onlinebooking25-50" target="_blank" rel="noopener noreferrer" class="booking-button-enlarged">預約課程 BOOK NOW</a>`;
+        }
+
+        callToActionHtml = `
+        <div class="enlarged-remaining-card">
+            <div style="text-align: center; margin-bottom: 20px;">
+                <div style="font-size: 1.5em; font-weight: bold; color: #d9534f;">無預約課程</div>
+                <div style="font-size: 1.1em; color: #555; margin-top: 5px;">No Booked Classes</div>
+            </div>
+            <div class="enlarged-content">
+                <div class="enlarged-number-section">${userFoundInClassCount ? fullData.remaining : '?'}</div>
+                <div class="enlarged-text-section">
+                    <img src="https://ik.imagekit.io/lql1uveoc/Schedule%20information/time.png?updatedAt=1757145608777" alt="Icon" class="enlarged-icon">
+                    <div class="enlarged-label-zh">剩餘堂數</div>
+                    <div class="enlarged-label-en">Remaining</div>
+                </div>
+            </div>
+            ${buttonHtml}
+        </div>`;
+        resultsDiv.innerHTML = callToActionHtml;
+
+    } else if (userFoundInSchedule && !noUpcomingClassesIn30Days) {
+        if (showLineButton) {
+            callToActionHtml = `<a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" rel="noopener noreferrer" class="line-contact-button">Line 諮詢</a>`;
+        } else if (upcomingEventsCount < 3 && userFoundInClassCount) {
+            callToActionHtml = `<a href="https://tonyonlineenglish.mydurable.com/onlinebooking25-50" target="_blank" rel="noopener noreferrer" style="display:inline-block; margin-top:15px; padding:10px 20px; background-color:#007BFF; color:white; text-decoration:none; border-radius:8px; font-weight:bold;">預約課程 BOOK NOW</a>`;
+        }
+        if (callToActionHtml) resultsDiv.insertAdjacentHTML('beforeend', callToActionHtml);
+    }
+}
+
+
+function highlightCalendarDate(year, month, day) {
+  const previouslyGlowed = document.querySelector('.day-glow');
+  if (previouslyGlowed) {
+    previouslyGlowed.classList.remove('day-glow');
+  }
+  const targetId = `date-${year}-${month}-${day}`;
+  const targetDay = document.getElementById(targetId);
+  if (targetDay) {
+    targetDay.classList.add('day-glow');
+    setTimeout(() => {
+      targetDay.classList.remove('day-glow');
+    }, 6000);
+  }
+}
+
+function buildUpcomingSessions(data, isFemale) {
+    const container = document.querySelector('#tony-schedule-container #upcoming-sessions-container');
+    if (!container) return;
+    const now = new Date();
+    const upcomingEvents = data
+        .filter(ev => ev.end && new Date(ev.end) > now)
+        .sort((a, b) => new Date(a.start) - new Date(b.start));
+    const nextThree = upcomingEvents.slice(0, 3);
+    container.innerHTML = nextThree.map((ev, index) => {
+        const d = new Date(ev.start);
+        const isStartingToday = d.toDateString() === now.toDateString();
+        
+        let styleParts = [];
+        if (ev.color && googleCalendarColors[ev.color]) {
+            styleParts.push(`background-color: ${googleCalendarColors[ev.color]}`);
+        } else if (ev.color && ev.color.startsWith('#')) {
+            styleParts.push(`background-color: ${ev.color}`);
+        }
+
+        if (index === 0 && !isStartingToday) {
+            styleParts.push('color: black');
+        }
+
+        const style = styleParts.length > 0 ? `style="${styleParts.join('; ')}"` : '';
+        
+        let sessionClass = isFemale ? "session-item female-session" : "session-item";
+        if (isStartingToday) {
+            sessionClass += ' is-today-session';
+        }
+        
+        const year = d.getFullYear();
+        const month = d.getMonth() + 1;
+        const day = d.getDate();
+        const calendarId = `calendar-${year}-${month}`;
+        
+        return `
+            <a href="#${calendarId}" style="text-decoration: none; color: inherit;" aria-label="Go to calendar for this session">
+                <div class="${sessionClass}" ${style} onclick="highlightCalendarDate(${year}, ${month}, ${day})">
+                    <div class="session-day">${weekdaysEn[d.getDay()]}</div>
+                    <div class="session-date">${d.getMonth() + 1}/${d.getDate()}</div>
+                    <div class="session-time">${formatShortTime(d)}</div>
+                </div>
+            </a>
+        `;
+    }).join('');
+
+    const sessionItems = container.querySelectorAll('.session-item');
+    sessionItems.forEach((item, index) => {
+        if (!item.classList.contains('is-today-session')) {
+            item.classList.add('animate-slide-in');
+            item.style.animationDelay = `${index * 0.15}s`;
+        } else {
+            item.style.opacity = 1;
+        }
+    });
+}
+
+
+function buildScheduleList(data) {
+const resultsDiv = document.querySelector('#tony-schedule-container #results');
+if (!resultsDiv) return;
+
+const now = new Date();
+const limitDate = new Date();
+limitDate.setDate(now.getDate() + 60);
+
+const upcomingEvents = data
+.filter(ev => {
+const eventDate = new Date(ev.start);
+return eventDate >= now && eventDate <= limitDate;
+})
+.sort((a, b) => new Date(a.start) - new Date(b.start));
+
+if (upcomingEvents.length === 0) { return; }
+
+const currentMonth = new Date().getMonth();
+let detailsHtml = '';
+
+upcomingEvents.forEach(ev => {
+    const startDate = new Date(ev.start);
+    const eventMonth = startDate.getMonth();
+    const isToday = startDate.toDateString() === new Date().toDateString();
+    
+    const monthClass = eventMonth !== currentMonth ? ' future-month' : '';
+    
+    const displayDate = `${startDate.getFullYear()}-${(startDate.getMonth()+1).toString().padStart(2,"0")}-${startDate.getDate().toString().padStart(2,"0")}`;
+    const dayOfWeekEn = weekdaysEn[startDate.getDay()];
+    const dayOfWeekZh = weekdaysZh[startDate.getDay()];
+    let durationText = ev.end ? ` (${(new Date(ev.end) - startDate) / 60000} mins)` : "";
+
+    const fullDateInfo = `<span class="info-date">${displayDate}</span> <span class="info-day">${dayOfWeekEn} ${dayOfWeekZh}</span> <span class="info-time">${formatTime(startDate)}</span>`;
+    const titleInfo = `<strong>${ev.title}${durationText}</strong>`;
+
+    detailsHtml += `
+    <div class="event${monthClass} ${isToday ? 'today-schedule-item' : ''}">
+        <div class="event-date-line">${fullDateInfo}</div>
+        <div class="event-title-line">${titleInfo}</div>
+    </div>`;
+});
+
+const toggleIconSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: middle;"><polyline points="6 9 12 15 18 9"></polyline></svg>`;
+
+let finalHtml = `
+<div class="upcoming-title-toggle" onclick="toggleScheduleList()">
+<span>即將課程清單 Upcoming Course List </span>
+<span class="toggle-icon" id="toggle-icon">${toggleIconSvg}</span>
+</div>
+<div id="schedule-list-details" style="display: none;">${detailsHtml}</div>
+`;
+
+resultsDiv.innerHTML = finalHtml;
+}
+
+function buildCalendars(data) {
+const calendarContainer = document.querySelector('#tony-schedule-container #calendarContainer');
+if (!calendarContainer) return;
+calendarContainer.innerHTML = "";
+
+if (!data || data.length === 0) {
+buildSingleCalendar([], new Date());
+return;
+}
+
+const now = new Date();
+const today = new Date();
+today.setHours(0,0,0,0);
+
+const limitDate = new Date();
+limitDate.setDate(now.getDate() + 60);
+
+const filteredData = data.filter(event => {
+const eventDate = new Date(event.start);
+return eventDate < today || eventDate <= limitDate;
+});
+
+const currentYear = now.getFullYear();
+const currentMonth = now.getMonth();
+
+const currentMonthDate = new Date(currentYear, currentMonth, 1);
+buildSingleCalendar(filteredData, currentMonthDate);
+
+const nextMonthDate = new Date(currentYear, currentMonth + 1, 1);
+const nextMonthYear = nextMonthDate.getFullYear();
+const nextMonthMonth = nextMonthDate.getMonth();
+
+const hasEventsNextMonth = data.some(event => {
+const eventDate = new Date(event.start);
+return eventDate.getFullYear() === nextMonthYear && eventDate.getMonth() === nextMonthMonth;
+});
+
+if (hasEventsNextMonth) {
+buildSingleCalendar(filteredData, nextMonthDate);
+}
+}
+
+
+function buildSingleCalendar(data, displayDate) {
+const calendarContainer = document.querySelector('#tony-schedule-container #calendarContainer');
+if (!calendarContainer) return;
+
+const isMobileView = window.innerWidth <= 600;
+const now = new Date();
+const today = new Date();
+today.setHours(0, 0, 0, 0);
+
+const month = displayDate.getMonth();
+const year = displayDate.getFullYear();
+const firstDay = new Date(year, month, 1);
+const lastDay = new Date(year, month + 1, 0);
+
+const dailyData = {};
+data.forEach(ev => {
+const d = new Date(ev.start);
+if (d.getMonth() === month && d.getFullYear() === year) {
+const dayNum = d.getDate();
+if (!dailyData[dayNum]) dailyData[dayNum] = [];
+dailyData[dayNum].push(ev);
+}
+});
+
+let html = `<div class="single-calendar" id="calendar-${year}-${month + 1}">`;
+html += `<div class="month-label">${monthsEn[month]} ${monthsZh[month]}, ${year}</div><div class="calendar ${isMobileView ? 'six-day-view' : ''}">`;
+
+weekdaysEn.forEach((day, idx) => {
+if (isMobileView && idx === 0) return;
+html += `<div class="day-label ${[0,6].includes(idx) ? 'weekend-label' : ''}">${day}<br>${weekdaysZh[idx]}</div>`;
+});
+
+let startOffset = firstDay.getDay();
+if (isMobileView) startOffset = (startOffset === 0) ? 6 : startOffset - 1;
+for (let i = 0; i < startOffset; i++) html += `<div class="day empty"></div>`;
+
+for (let d = 1; d <= lastDay.getDate(); d++) {
+const dayDate = new Date(year, month, d);
+if (isMobileView && dayDate.getDay() === 0) continue;
+
+const dayEvents = dailyData[d] || [];
+const hasEventsOnDay = dayEvents.length > 0;
+
+const allEventsCompleted = hasEventsOnDay && dayEvents.every(ev => {
+if (!ev.end) return false;
+const completionTime = new Date(ev.end);
+completionTime.setMinutes(completionTime.getMinutes() + 10);
+return now > completionTime;
+});
+
+const isPastCalendarDay = dayDate < today;
+const isCurrentCalendarDay = dayDate.toDateString() === today.toDateString();
+
+let classes = 'day';
+
+if (isPastCalendarDay) {
+classes += ' past-day';
+} else if (isCurrentCalendarDay) {
+classes += hasEventsOnDay ? ' today-with-event' : ' today';
+} else if (hasEventsOnDay) {
+classes += ' has-event';
+classes += dayEvents.length >= 2 ? ' multi-event-day' : ' highlight';
+}
+
+const dayId = `date-${year}-${month + 1}-${d}`;
+html += `<div class="${classes}" id="${dayId}"><span class="date-number">${d}</span>`;
+
+if (allEventsCompleted) {
+    const iconUrlSet = new Set(); 
+
+    dayEvents.forEach(ev => {
+        const title = ev.title || '';
+        const titleLower = title.toLowerCase();
+        
+        let iconAdded = false;
+
+        if (titleLower.includes('sick')) {
+            iconUrlSet.add("https://ik.imagekit.io/lql1uveoc/Schedule%20information/sick.png?updatedAt=1761040616337");
+            iconAdded = true;
+        }
+        if (titleLower.includes('12h')) {
+            iconUrlSet.add("https://ik.imagekit.io/lql1uveoc/Schedule%20information/12-4.png?updatedAt=1761203508055");
+            iconAdded = true;
+        }
+        if (titleLower.includes('24h')) {
+            iconUrlSet.add("https://ik.imagekit.io/lql1uveoc/Schedule%20information/24-hours-support-2.png");
+            iconAdded = true;
+   }
+        if (title.includes('❖')) {
+            iconUrlSet.add("https://ik.imagekit.io/lql1uveoc/Schedule%20information/absent%202.png?updatedAt=1757568614877");
+            iconAdded = true;
+        }
+ 
+        if (title.includes('?')) {
+            iconUrlSet.add("https://ik.imagekit.io/lql1uveoc/Schedule%20information/question-sign.png?updatedAt=1762328136511");
+            iconAdded = true;
+        }
+        
+        if (!iconAdded) {
+            if (ev.start && ev.end && (new Date(ev.end) - new Date(ev.start)) / 60000 === 25) {
+                iconUrlSet.add("https://ik.imagekit.io/lql1uveoc/Schedule%20information/IMG_3645.PNG?updatedAt=1761203025502");
+            } else {
+                iconUrlSet.add("https://ik.imagekit.io/lql1uveoc/Schedule%20information/check-10.png?updatedAt=1757403336170");
+            }
+        }
+    });
+
+    if (iconUrlSet.size > 0) {
+        const wrapperClass = `completed-class-icon-wrapper${iconUrlSet.size > 1 ? ' multi-icon' : ''}`;
+        html += `<div class="${wrapperClass}">`;
+        iconUrlSet.forEach(iconUrl => {
+            html += `<img src="${iconUrl}" alt="Status Icon">`;
+        });
+        html += `</div>`;
+    }
+
+} else if (hasEventsOnDay) {
+    dayEvents.sort((a, b) => new Date(a.start) - new Date(b.start)).forEach(ev => {
+        html += `<span class="time">${formatShortTime(new Date(ev.start))}</span>`;
+    });
+}
+
+
+html += `</div>`;
+}
+html += `</div></div>`;
+calendarContainer.innerHTML += html;
+}
+
+function buildEmptyCalendar() { buildCalendars([]); }
+
+function setupEasonAutocomplete() {
+    const nameInput = document.getElementById('studentName');
+    if (!nameInput) return; 
+
+    const autocompleteContainer = nameInput.parentElement;
+
+    function closeAllLists(elmnt) {
+        const items = document.getElementsByClassName("autocomplete-items");
+        for (let i = 0; i < items.length; i++) {
+            if (elmnt != items[i] && elmnt != nameInput) {
+                items[i].parentNode.removeChild(items[i]);
+            }
+        }
+    }
+
+    nameInput.addEventListener('input', function() {
+        closeAllLists();
+        const val = this.value;
+        if (val.trim().toLowerCase() !== 'eason') {
+            return;
+        }
+
+        const suggestionsDiv = document.createElement("DIV");
+        suggestionsDiv.setAttribute("class", "autocomplete-items");
+        autocompleteContainer.appendChild(suggestionsDiv);
+
+        const easons = [
+            { displayName: "Eason Hsieh 新營高工", searchValue: "Eason" },
+            { displayName: "Eason Cheng 鄭", searchValue: "Eason Cheng" }
+        ];
+
+        easons.forEach(eason => {
+            const itemDiv = document.createElement("DIV");
+            itemDiv.innerHTML = eason.displayName;
+            
+            itemDiv.addEventListener("click", function() {
+                nameInput.value = eason.searchValue;
+                closeAllLists();
+                searchSchedule();
+            });
+            suggestionsDiv.appendChild(itemDiv);
+        });
+    });
+
+    document.addEventListener("click", function (e) {
+        closeAllLists(e.target);
+    });
+}
+
+
+function initializeScheduleFinder() {
+if (document.querySelector('#tony-schedule-container')) {
+setDateHeader();
+buildEmptyCalendar();
+
+const nameInput = document.getElementById('studentName');
+if (nameInput) {
+nameInput.addEventListener('keydown', function(event) {
+if (event.key === 'Enter') {
+event.preventDefault();
+searchSchedule();
+}
+});
+}
+
+setupEasonAutocomplete();
+
+document.querySelectorAll('.info-card').forEach(card => {
+card.addEventListener('click', showDetailsModal);
+});
+}
+}
+
+if (document.readyState === 'loading') {
+document.addEventListener('DOMContentLoaded', initializeScheduleFinder);
+} else {
+initializeScheduleFinder();
+}
+</script>
+<!-- Tony's Schedule Finder - End -->
