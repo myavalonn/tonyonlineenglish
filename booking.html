@@ -1140,7 +1140,7 @@
 
   const API_URL = "https://script.google.com/macros/s/AKfycbyWvhW6fp_ohPEvPK226KtNiQLCyAVMl77zV0Hq0k_TcEk3F1ni9qVcJystGUovVjTMGQ/exec";
   const STAGE_1_DAYS = 3; const STAGE_2_DAYS = 11; const BACKGROUND_BATCH = 14; const MAX_DAYS = 60; const MAX_SELECTION = 10;
-  let cachedData = {}; let loadedDaysCount = 0; let selectedDateStr = ""; let selectedSlots =[]; let currentMode = 'single';
+  let cachedData = {}; let loadedDaysCount = 0; let selectedDateStr = ""; let selectedSlots = []; let currentMode = 'single';
   const dayNames =["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]; const chiDayNames =["日", "一", "二", "三", "四", "五", "六"]; const monthNamesEng =["Jan", "Feb", "March", "April", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
   let hotPanelShown = false; let calYear, calMonth;
   let limitDate = new Date(); limitDate.setDate(limitDate.getDate() + MAX_DAYS); limitDate.setHours(23, 59, 59, 999);
@@ -1274,20 +1274,12 @@
       const h = parseInt(hStr);
       const m = parseInt(mStr);
       
-      // 取得該時段是星期幾 (0是週日，2是週二)
-      const d = new Date(slot.timestamp);
-      const isTuesday = (d.getDay() === 2);
+      // Update: Hide 21:00 (9 PM) and anything later
+      // 只要是晚上 9 點 (21:00) 或更晚，一律隱藏
+      if (h >= 21) return false;
 
-      if (isTuesday) {
-          // 週二：開放到 21:00 的課程 (結束為 21:50)
-          if (h > 21) return false;
-          if (h === 21 && m > 0) return false; // 如果有 21:30 則隱藏
-      } else {
-          // 其他日子：晚上 9 點 (21:00) 或更晚一律隱藏
-          if (h >= 21) return false;
-          // 其他日子：如果有 20:xx 的時段，但超過 30 分 (例如 20:45)，也不顯示
-          if (h === 20 && m > 30) return false;
-      }
+      // 如果有 20:xx 的時段，但超過 30 分 (例如 20:45)，也不顯示
+      if (h === 20 && m > 30) return false;
 
       return true;
   }
@@ -1791,8 +1783,9 @@
             slots.forEach(slot => {
                const h = parseInt(slot.time.split(":")[0]);
                
-               // 判斷晚間時段 (大於等於 18:00) 並且符合當日的限制條件
-               if (h >= 18 && isValidSlot(slot)) {
+               // Hot Slots range: 18 (6PM) to 20 (8PM). 
+               // This logic ALREADY excludes 21 (9PM), so it is safe.
+               if (h >= 18 && h <= 20) {
                  const monDate = `${dateObj.getMonth()+1}/${dateObj.getDate()}`; 
                  const weekName = dayNames[day];
                  // Point 1: Format time (7pm vs 7:00 PM based on mobile/desktop)
@@ -1841,7 +1834,7 @@
   // Point 1: Custom formatter for hot list (Conditional Mobile/Desktop)
   function formatHotTime(timeStr) {
       if(!timeStr) return ""; 
-      const[h, m] = timeStr.split(':'); 
+      const [h, m] = timeStr.split(':'); 
       let hour = parseInt(h); 
       const suffix = hour >= 12 ? 'pm' : 'am'; 
       hour = hour % 12 || 12; 
@@ -1881,7 +1874,7 @@
     if (!data.slots || data.slots.length === 0) { document.getElementById("empty-msg").innerHTML = "<b>請選擇其他日期</b>"; document.getElementById("empty-msg").style.display = "block"; return; }
     document.getElementById("empty-msg").style.display = "none";
     Object.keys(zones).forEach(key => {
-        const slots = data.slots.filter(s => s.type === key && isValidSlot(s)); const z = zones[key];
+        const slots = data.slots.filter(s => s.type === key); const z = zones[key];
         if (slots.length > 0) {
             z.card.style.display = "flex"; z.el.className = "slot-grid"; z.el.innerHTML = "";
             const axisLine = z.card.querySelectorAll(".axis-line");
