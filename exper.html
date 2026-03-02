@@ -1,0 +1,540 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tony線上美語家教 - 課程方案</title>
+  <style>
+    /* Base styles */
+    #embedding-container { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background-color: #f0f2f5; padding: 20px 0; }
+    .product-widget { max-width: 560px; width: 90%; margin: 40px auto; background-color: white; border-radius: 12px; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); overflow: hidden; }
+    .image-gallery { position: relative; overflow: hidden; background-color: #eee; }
+    .gallery-track { display: flex; }
+    .gallery-slide { min-width: 100%; box-sizing: border-box; }
+    .gallery-slide img { width: 100%; display: block; }
+    .product-info { padding: 32px; position: relative; }
+    .product-info h1 { font-size: 28px; color: #333; margin: 0 0 10px 0; line-height: 1.3; }
+    .product-info h2 { font-size: 22px; color: #555; margin: 0; font-weight: 500;}
+    .subtitle-wrapper { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 25px; }
+    .subtitle-note { font-size: 16px; color: #777; }
+    .option-selector { display: flex; flex-direction: column; gap: 10px; margin-bottom: 25px; }
+    .option-selector label { font-size: 18px; color: #555; font-weight: bold; }
+    .option-selector select { font-size: 18px; padding: 10px 14px; border: 1px solid #ccc; border-radius: 6px; width: 100%; box-sizing: border-box; }
+    .option-selector select, .option-selector option { color: #007bff; font-weight: bold; }
+    #add-to-cart-btn { width: 100%; background-color: #3b414a; color: white; border: none; padding: 18px 20px; font-size: 20px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: background-color 0.3s ease; }
+    .cart-icon-wrapper { position: absolute; top: 32px; right: 32px; font-size: 36px; cursor: pointer; color: #333; z-index: 10; }
+    .cart-count { position: absolute; top: -8px; right: -12px; background-color: red; color: white; border-radius: 50%; width: 22px; height: 22px; font-size: 14px; font-weight: bold; display: flex; justify-content: center; align-items: center; transition: transform 0.2s ease; transform: scale(0); }
+    .cart-count.visible { transform: scale(1); }
+    .cart-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 1000; opacity: 0; visibility: hidden; transition: opacity 0.5s ease, visibility 0.5s ease; }
+    .cart-overlay.open { opacity: 1; visibility: visible; }
+    
+    /* CART PANEL STYLES */
+    .cart-panel { position: fixed; top: 0; right: -100%; width: 90%; max-width: 800px; height: 100%; background-color: #f9f9f9; box-shadow: -5px 0 15px rgba(0,0,0,0.1); z-index: 1001; transition: right 0.5s ease-in-out; display: flex; flex-direction: column; }
+    .cart-panel.open { right: 0; }
+    .cart-body { display: flex; flex-grow: 1; padding: 0 20px 20px 20px; gap: 40px; overflow-y: auto; }
+    
+    /* Default (Desktop/Tablet) Styles for Cart Boxes */
+    .cart-left, .cart-right { flex-basis: 50%; background-color: white; padding: 20px; border-radius: 8px; border: 1px solid #e0e0e0; }
+    
+    .cart-left { position: relative; }
+    .cart-left h3 { margin-top: 0; }
+    #close-cart-btn-main { position: absolute; top: 20px; right: 20px; background: none; border: none; font-size: 28px; line-height: 1; cursor: pointer; color: #888; padding: 0; }
+    .cart-item { display: flex; justify-content: space-between; align-items: flex-start; gap: 15px; padding-bottom: 20px; border-bottom: 1px solid #eee; }
+    .cart-item-info { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+    .cart-item-name { font-weight: bold; }
+    .remove-item-btn { background: none; border: none; color: #999; cursor: pointer; font-size: 14px; text-decoration: underline; padding: 0; white-space: nowrap; }
+    .cart-item-price { font-weight: bold; white-space: nowrap; }
+    .cart-total { margin-top: 20px; padding-top: 20px; border-top: 2px solid #333; }
+    .cart-total .total-row { display: flex; justify-content: space-between; font-size: 22px; font-weight: bold; }
+    #checkout-form p { color: #555; }
+    .line-link { font-weight: bold; color: #00B900; text-align: center; margin-bottom: 15px; display: block; text-decoration: none;}
+    #checkout-form input[type="email"] { width: 100%; padding: 12px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; margin-bottom: 15px; box-sizing: border-box; cursor: pointer; }
+    #checkout-form button { width: 100%; background-color: #3b414a; color: white; border: none; padding: 15px; font-size: 18px; font-weight: bold; border-radius: 6px; cursor: pointer; transition: background-color 0.3s ease; }
+    .tls-info { text-align: center; color: #888; font-size: 12px; margin-top: 15px; }
+    .payment-info-section { margin-top: 15px; padding-top: 20px; border-top: 1px solid #eee; }
+    .payment-method { background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 6px; padding: 15px; display: flex; align-items: center; gap: 15px; font-size: 15px; }
+    .icon-circle { border: 2px solid black; border-radius: 50%; width: 18px; height: 18px; display: flex; justify-content: center; align-items: center; flex-shrink: 0; }
+    .icon-circle div { width: 8px; height: 8px; background-color: black; border-radius: 50%; }
+    #thank-you-page { display: none; padding: 20px; box-sizing: border-box; }
+    .thank-you-container { max-width: 900px; width: 100%; margin: 0 auto; background-color: #f9f9f9; border: 1px solid #e0e0e0; }
+    .ty-left-panel { background-color: white; padding: 40px; }
+    .ty-right-panel { background-color: #f9f9f9; padding: 40px; }
+    .ty-checkmark { font-size: 48px; color: #27ae60; }
+    .ty-header { display: flex; align-items: center; gap: 15px; font-size: 28px; color: #333; margin: 15px 0; }
+    .ty-message { color: #555; line-height: 1.6; }
+    .ty-order-details { margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; }
+    .ty-detail-item { display: flex; justify-content: space-between; padding: 8px 0; font-size: 14px; align-items: flex-start; }
+    .ty-summary-header { font-size: 18px; color: #555; margin: 0 0 20px 0; border-bottom: 1px solid #ddd; padding-bottom: 10px;}
+    .ty-order-item { padding-bottom: 15px; border-bottom: 1px solid #eee; }
+    .ty-item-details { display: flex; justify-content: space-between; align-items: flex-start; gap: 15px; }
+    .ty-item-info { font-weight: bold; }
+    .ty-item-price { font-weight: bold; white-space: nowrap; }
+    #celebration-icon { font-size: 1.5em; position: relative; }
+    @keyframes confetti-fall { 0% { transform: translateY(-100%) rotate(0deg); opacity: 1; } 100% { transform: translateY(100px) rotate(360deg); opacity: 0; } }
+    .celebration-icon::before, .celebration-icon::after { content: '🎊'; position: absolute; top: -20px; left: 0; font-size: 20px; opacity: 0; animation: confetti-fall 2s ease-in-out infinite; }
+    .celebration-icon::after { content: '🎉'; left: 20px; animation-delay: 0.5s; }
+    #ty-order-id { font-size: 2em; color: #007bff; font-weight: bold; }
+    .ty-booking-link { display: block; background-color: #007bff; color: white !important; padding: 12px 20px; border-radius: 8px; text-decoration: none; text-align: center; font-weight: bold; margin-top: 10px; margin-bottom: 10px; transition: background-color 0.3s ease; }
+    .ty-booking-link:hover { background-color: #0056b3; }
+    .ty-line-link { color: green; font-weight: bold; text-decoration: none; }
+    #continue-shopping-btn { color: blue; }
+    #close-btn { color: red; margin-left: 20px; }
+
+    /* --- HIGHLIGHT STYLE --- */
+    .tony-highlight {
+        color: #0000FF !important;
+        font-style: italic !important;
+        font-weight: bold !important;
+    }
+
+    /* Warning Styles */
+    .payment-warning-box {
+        background-color: #fff3cd;
+        color: #856404;
+        padding: 20px;
+        border-radius: 8px;
+        margin-top: 25px;
+        border: 1px solid #ffeeba;
+        text-align: center;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .payment-warning-text {
+        margin: 0;
+        font-weight: bold;
+        font-size: 16px;
+        line-height: 1.4;
+    }
+
+    /* Email Popup Styles */
+    #email-popup-overlay {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background-color: rgba(0, 0, 0, 0.7); z-index: 2000;
+        display: none; justify-content: center; align-items: center;
+        opacity: 0; transition: opacity 0.3s ease-in-out;
+    }
+    #email-popup-overlay.visible { display: flex; opacity: 1; }
+    .email-popup-content {
+        background-color: white; padding: 40px; border-radius: 12px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.2); position: relative;
+        width: 90%; max-width: 500px; text-align: center;
+        transform: scale(0.9); transition: transform 0.3s ease-in-out;
+    }
+    #email-popup-overlay.visible .email-popup-content { transform: scale(1); }
+    #close-popup-btn {
+        position: absolute; top: 15px; right: 15px; background: none;
+        border: none; font-size: 28px; cursor: pointer; color: #888;
+    }
+    .email-popup-content label {
+        font-size: 22px; color: #333; display: block; margin-bottom: 15px;
+    }
+    .email-popup-content input[type="email"] {
+        width: 100%; padding: 15px; font-size: 20px;
+        border: 2px solid #007bff; border-radius: 8px;
+        box-sizing: border-box; text-align: center;
+    }
+    #popup-checkout-btn {
+        width: 100%; background-color: #3b414a; color: white; border: none;
+        padding: 15px; font-size: 20px; font-weight: bold; border-radius: 8px;
+        cursor: pointer; transition: background-color 0.3s ease; margin-top: 20px;
+    }
+    #popup-checkout-btn:hover { background-color: #525964; }
+    
+    .error-container {
+        color: #d9534f;
+        font-size: 18px;
+        padding: 20px;
+        line-height: 1.6;
+    }
+
+    /* DESKTOP & TABLET MEDIA QUERIES (Min-Width 768px) */
+    @media (min-width: 768px) {
+      .thank-you-container { display: flex; gap: 30px; }
+      .ty-left-panel { flex-basis: 55%; }
+      .ty-right-panel { flex-basis: 45%; }
+      
+      /* FIX: Desktop/Tablet font size bigger (2x) */
+      .ty-detail-item {
+          font-size: 28px; 
+          padding: 15px 0; 
+          line-height: 1.5;
+      }
+      
+      /* FIX: Desktop Labels NO WRAP */
+      .ty-detail-item span:first-child {
+          white-space: nowrap; /* Forces "訂單編號" etc to stay on one line */
+          flex-shrink: 0;
+          margin-right: 20px;
+      }
+      
+      /* Desktop Values: Align Right, Allow Wrap */
+      .ty-detail-item span:last-child {
+          text-align: right;
+          word-break: break-word; /* Prevents overflow if email is super long */
+      }
+      
+      /* Desktop: Booking link inline */
+      .booking-break { display: inline; }
+      
+      /* Desktop: Email break inline (unless natural wrap) */
+      .email-break { display: inline; }
+    }
+    
+    @media (min-width: 768px) and (max-width: 1024px) {
+      .product-widget { max-width: 700px; margin: 50px auto; }
+      .product-info { padding: 45px; }
+      .product-info h1 { font-size: 38px; }
+      .thank-you-container { flex-direction: column; display: block; }
+    }
+    
+    @media (min-width: 1025px) {
+        .thank-you-container { display: flex; gap: 30px; }
+    }
+
+    /* --- MOBILE SPECIFIC FIXES (CELLPHONE MODE) --- */
+    @media (max-width: 767px) {
+      
+      /* FIX: Remove gray background/padding from main container to allow full width */
+      #embedding-container {
+          padding: 0;
+      }
+
+      /* FIX: Landing Page Widget - Borderless & Full Width */
+      .product-widget { 
+          max-width: 100%; 
+          width: 100%;
+          margin: 0; 
+          border-radius: 0;
+          box-shadow: none;
+          border: none;
+      }
+      .product-info { padding: 24px; }
+      
+      /* FIX: Thank You Page - Borderless & Full Width */
+      #thank-you-page {
+          padding: 0;
+      }
+      .thank-you-container { 
+          flex-direction: column; 
+          width: 100%;
+          max-width: 100%;
+          border: none;
+          box-shadow: none;
+          margin: 0;
+      }
+      
+      /* Cart Panel Full Width and White */
+      .cart-panel { width: 100%; max-width: 100%; background-color: white; }
+      .cart-body { flex-direction: column; gap: 10px; padding: 10px 15px 30px 15px; }
+      .cart-left, .cart-right {
+          flex-basis: auto; width: 100%; box-sizing: border-box; margin-bottom: 20px;
+          border: none; box-shadow: none; border-radius: 0; background-color: white; 
+      }
+      .cart-item { flex-wrap: nowrap; }
+      .cart-item-name { white-space: normal; }
+      
+      /* Email: Force break at @ on mobile */
+      .email-break { display: block; }
+      
+      /* Booking Link: Force "Course Name" to new line on mobile */
+      .booking-break { display: block; margin-top: 4px; }
+      
+      /* Detail Items on Mobile */
+      .ty-detail-item span:first-child {
+          white-space: nowrap; 
+          margin-right: 15px;
+          flex-shrink: 0;
+      }
+      .ty-detail-item span:last-child {
+          text-align: right; 
+      }
+    }
+  </style>
+</head>
+<body>
+<div id="embedding-container">
+  <div id="product-page">
+    <div class="product-widget">
+        <div class="image-gallery"><div class="gallery-track"></div></div>
+        <div class="product-info">
+            <div id="cart-icon" class="cart-icon-wrapper">🛒<span id="cart-count" class="cart-count">0</span></div>
+            <h1>Tony線上美語家教</h1>
+            <div class="subtitle-wrapper"><h2>線上體驗課程 25/50分鐘</h2></div>
+            <div class="option-selector">
+                <label for="course-options">選擇體驗課程方案</label>
+                <select id="course-options"></select>
+            </div>
+            <button id="add-to-cart-btn"></button>
+        </div>
+    </div>
+    <div id="cart-overlay" class="cart-overlay"></div>
+    <div id="cart-panel" class="cart-panel">
+        <div class="cart-body">
+            <div class="cart-left">
+                <h3>購物車 <button class="close-btn" id="close-cart-btn-main">×</button></h3>
+                <div id="cart-items-container"></div>
+                <div class="cart-total"><div class="total-row"><span>總計</span><span id="total-price">NT$0</span></div></div>
+            </div>
+            <div class="cart-right">
+                <h3>結帳</h3>
+                <form id="checkout-form" onsubmit="return false;">
+                    <p>請輸入您的電子信箱。</p>
+                    <input type="email" id="email" required readonly placeholder="點擊這裡輸入信箱">
+                    <a class="line-link" href="https://line.me/ti/p/T9YdimtG8_" target="_blank">請加入Line: Myavalon</a>
+                    <div class="payment-info-section">
+                        <h3>付款資訊</h3>
+                        <div class="payment-method"><div class="icon-circle"><div></div></div><span>銀行轉帳或是Line Pay 付款 (iPass Money)</span></div>
+                    </div>
+                    <p class="tls-info">所有數據都透過安全 TLS 連線進行加密傳輸</p>
+                </form>
+            </div>
+        </div>
+    </div>
+  </div>
+  <div id="email-popup-overlay">
+      <div class="email-popup-content">
+          <button id="close-popup-btn">×</button>
+          <div id="popup-inner-content">
+              <label for="popup-email-input">請輸入您的電子信箱</label>
+              <input type="email" id="popup-email-input" required placeholder="example@email.com">
+              <button id="popup-checkout-btn">確認</button>
+          </div>
+      </div>
+  </div>
+  <div id="thank-you-page" style="display:none;">
+    <div class="thank-you-container">
+        <div class="ty-left-panel">
+            <div class="ty-checkmark">✓</div>
+            <h2 class="ty-header">感謝您的訂購！<span id="celebration-icon">🎉</span></h2>
+            <p class="ty-message">您的訂單已成功建立。確認信已寄送至您的電子信箱，請檢查您的收件匣。</p>
+            <div class="ty-order-details">
+                <div class="ty-detail-item"><span>訂單編號</span><span id="ty-order-id"></span></div>
+                <div class="ty-detail-item"><span>訂單時間</span><span id="ty-order-timestamp"></span></div>
+                <div class="ty-detail-item"><span>電子信箱</span><span id="ty-customer-email"></span></div>
+            </div>
+            <div id="ty-booking-container" style="display: none; margin-top: 20px;">
+                <h3>下一步：預約課程</h3>
+                <p>請點擊下方專屬連結，預約您的上課時間：</p>
+                <div id="ty-booking-links-list"></div>
+            </div>
+            <div class="payment-warning-box">
+                <p class="payment-warning-text">
+                    ⚠️ 預約課程只保留2小時, 請聯繫
+                    <span class="tony-highlight">Tony線上美語家教</span>
+                    繳納課程費用。
+                </p>
+            </div>
+            <div class="payment-instructions" style="margin-top: 20px;">
+                <h3>如何付款:</h3>
+                <p><a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="ty-line-link">請點選加入Line: myavalon</a></p>
+            </div>
+            <div style="margin-top: 20px;">
+              <a href="#" id="continue-shopping-btn">繼續購物</a>
+              <a href="#" id="close-btn">關閉</a>
+            </div>
+        </div>
+        <div class="ty-right-panel">
+            <h3 class="ty-summary-header">訂單摘要</h3>
+            <div id="ty-cart-items-container"></div>
+            <div class="cart-total"><div class="total-row"><span>總計</span><span id="ty-total-price">NT$0</span></div></div>
+        </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    const products = [
+        { id: 'trial-25', name: '體驗課程25分鐘', price: 350, bookingLink: 'https://tonyonlineenglish.setmore.com/services/e2482488-9727-40ce-87f4-3a12700d8d74' },
+        { id: 'trial-50', name: '體驗課程50分鐘', price: 550, bookingLink: 'https://tonyonlineenglish.setmore.com/services/3de1afad-6f57-4b4f-8ba8-0185f3e039d5' }
+    ];
+    const logoUrl = "https://ik.imagekit.io/lql1uveoc/Abstract%20Special%20Offer%20Announcement%20Free%20Facebook%20Post.png?updatedAt=1754673537869";
+    let cart = {};
+
+    const productPage = document.getElementById("product-page"),
+        thankYouPage = document.getElementById("thank-you-page"),
+        addToCartBtn = document.getElementById("add-to-cart-btn"),
+        courseOptionsSelect = document.getElementById('course-options'),
+        cartIcon = document.getElementById("cart-icon"),
+        cartCountSpan = document.getElementById("cart-count"),
+        cartOverlay = document.getElementById("cart-overlay"),
+        cartPanel = document.getElementById("cart-panel"),
+        closeCartBtn = document.getElementById("close-cart-btn-main"),
+        cartItemsContainer = document.getElementById("cart-items-container"),
+        totalPriceSpan = document.getElementById("total-price"),
+        emailInput = document.getElementById("email"),
+        continueShoppingBtn = document.getElementById("continue-shopping-btn"),
+        closeBtn = document.getElementById("close-btn"),
+        galleryTrack = document.querySelector('.gallery-track'),
+        emailPopupOverlay = document.getElementById('email-popup-overlay'),
+        popupEmailInput = document.getElementById('popup-email-input'),
+        closePopupBtn = document.getElementById('close-popup-btn'),
+        popupCheckoutBtn = document.getElementById('popup-checkout-btn');
+
+    function initGallery() {
+        galleryTrack.innerHTML = '';
+        const slide = document.createElement('div');
+        slide.className = 'gallery-slide';
+        slide.innerHTML = `<img src="${logoUrl}" alt="線上體驗課程">`;
+        galleryTrack.appendChild(slide);
+    }
+    function populateCourseOptions() {
+        products.forEach(p => {
+            const option = document.createElement("option");
+            option.value = p.id;
+            option.textContent = `${p.name} NT$ ${p.price.toLocaleString()}`;
+            courseOptionsSelect.appendChild(option);
+        });
+    }
+    function updateButton() {
+        const selectedId = courseOptionsSelect.value;
+        const selectedProduct = products.find(p => p.id === selectedId);
+        if (selectedProduct) addToCartBtn.textContent = `NT$ ${selectedProduct.price.toLocaleString()} | 加入購物車`;
+    }
+    function handleAddToCart() {
+        const selectedId = courseOptionsSelect.value;
+        const productToAdd = products.find(p => p.id === selectedId);
+        if (productToAdd && !cart[productToAdd.id]) {
+            cart[productToAdd.id] = { name: productToAdd.name, price: productToAdd.price, imageUrl: logoUrl, bookingLink: productToAdd.bookingLink };
+        }
+        updateCartDisplay();
+        cartOverlay.classList.add("open");
+        cartPanel.classList.add("open");
+        setTimeout(() => { emailInput.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 500);
+    }
+    function updateCartDisplay() {
+        let totalItems = Object.keys(cart).length;
+        let totalPrice = 0;
+        cartItemsContainer.innerHTML = "";
+        if (totalItems > 0) {
+            Object.values(cart).forEach(item => {
+                const productId = products.find(p => p.name === item.name).id;
+                cartItemsContainer.innerHTML += `<div class="cart-item"><div class="cart-item-info"><div class="cart-item-name">${item.name}</div><button class="remove-item-btn" data-id="${productId}">移除</button></div><div class="cart-item-price">NT$ ${item.price.toLocaleString()}</div></div>`;
+                totalPrice += item.price;
+            });
+        } else {
+            cartItemsContainer.innerHTML = '<p>您的購物車是空的。</p>';
+        }
+        cartCountSpan.innerText = totalItems;
+        totalItems > 0 ? cartCountSpan.classList.add("visible") : cartCountSpan.classList.remove("visible");
+        totalPriceSpan.innerText = `NT$ ${totalPrice.toLocaleString()}`;
+    }
+    function handleCartInteraction(e) {
+        if (e.target.classList.contains("remove-item-btn")) {
+            delete cart[e.target.dataset.id];
+            updateCartDisplay();
+            if (Object.keys(cart).length === 0) toggleCartPanel();
+        }
+    }
+    function showThankYouPage(orderData) {
+        const tyCartContainer=document.getElementById('ty-cart-items-container'),tyTotalPrice=document.getElementById('ty-total-price'),tyCustomerEmail=document.getElementById('ty-customer-email'),tyOrderId=document.getElementById('ty-order-id'),tyOrderTimestamp=document.getElementById('ty-order-timestamp');
+        const tyBookingContainer = document.getElementById('ty-booking-container'), tyBookingLinksList = document.getElementById('ty-booking-links-list');
+        let itemsHtml = '';
+        orderData.items.forEach(item => { itemsHtml += `<div class="ty-order-item"><div class="ty-item-details"><div class="ty-item-info">${item.name}</div><div class="ty-item-price">NT$ ${item.price.toLocaleString()}</div></div></div>`; });
+        if(tyCartContainer) tyCartContainer.innerHTML = itemsHtml;
+        if(tyTotalPrice) tyTotalPrice.innerText = `NT$ ${orderData.totalPrice.toLocaleString()}`;
+        
+        // --- Email Formatting Logic ---
+        if(tyCustomerEmail) {
+            const emailParts = orderData.email.split('@');
+            if (emailParts.length === 2) {
+                // Wrap the @domain in a span. Mobile will set this to block, Desktop to inline.
+                tyCustomerEmail.innerHTML = `${emailParts[0]}<span class="email-break">@${emailParts[1]}</span>`;
+            } else {
+                tyCustomerEmail.innerText = orderData.email;
+            }
+        }
+        // -----------------------------------
+        
+        if(tyOrderId) tyOrderId.innerText = orderData.orderId;
+        if(tyOrderTimestamp) tyOrderTimestamp.innerText = orderData.timestamp;
+        
+        // --- Booking Link Formatting Logic ---
+        if (orderData.bookingLinks && orderData.bookingLinks.length > 0) {
+            tyBookingLinksList.innerHTML = '';
+            orderData.bookingLinks.forEach(item => {
+                const linkElement = document.createElement('a');
+                linkElement.href = item.link;
+                // HTML insertion for the break span
+                linkElement.innerHTML = `點此預約：<span class="booking-break">${item.name}</span>`;
+                linkElement.target = '_blank';
+                linkElement.className = 'ty-booking-link';
+                tyBookingLinksList.appendChild(linkElement);
+            });
+            tyBookingContainer.style.display = 'block';
+        } else { tyBookingContainer.style.display = 'none'; }
+        // -------------------------------------
+        
+        productPage.style.display = 'none';
+        cartOverlay.classList.remove('open');
+        cartPanel.classList.remove('open');
+        thankYouPage.style.display = 'block';
+    }
+
+    function handleCheckout(e) {
+      if(e) e.preventDefault();
+      const email = popupEmailInput.value;
+      if (Object.keys(cart).length === 0) return void alert("您的購物車是空的！");
+      
+      const blacklist = [
+          "8888@gmail.com",
+          "z0970957377@gmail.com",
+          "blockthisperson@gmail.com"
+      ];
+      
+      const cleanEmail = email.toLowerCase().trim();
+      
+      if (blacklist.includes(cleanEmail)) {
+          // Highlight applied here too!
+          const errorHtml = `你已經上過一堂體驗課程或其他原因無法下訂單 ，請聯繫 <span class="tony-highlight">Tony線上美語家教</span> Thanks. (<a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" style="color: #00B900; font-weight: bold; text-decoration: underline;">Line</a>)`;
+          const popupContent = document.getElementById('popup-inner-content');
+          popupContent.innerHTML = `<div class="error-container">${errorHtml}</div>`;
+          return;
+      }
+
+      const orderId = generateOrderId();
+      const timestamp = new Date().toLocaleString("zh-TW",{year:"numeric",month:"long",day:"numeric",hour:"2-digit",minute:"2-digit"});
+      let productNames = [], totalPrice = 0, itemsForThankYouPage = [], bookingLinks = [];
+      Object.values(cart).forEach(item => { 
+          productNames.push(item.name); 
+          totalPrice += item.price; 
+          itemsForThankYouPage.push({name: item.name, price: item.price});
+          if (item.bookingLink) bookingLinks.push({ name: item.name, link: item.bookingLink });
+      });
+
+      closeEmailPopup();
+      showThankYouPage({ email: email, items: itemsForThankYouPage, totalPrice: totalPrice, orderId: orderId, timestamp: timestamp, bookingLinks: bookingLinks });
+      cart = {}; 
+      updateCartDisplay();
+
+      const productNamesString = productNames.join(', ');
+      const scriptURL = "https://script.google.com/macros/s/AKfycbyU13Wivs341DMPupk9EKrL9u908zrHNOVqZUXri-hGezkk6qj_7loQGIf0GCfmvj_f/exec";
+
+      fetch(scriptURL, { 
+          method: "POST", 
+          headers: { "Content-Type": "application/x-www-form-urlencoded" }, 
+          body: new URLSearchParams({ orderId: orderId, email: email, productName: productNamesString, totalPrice: totalPrice, status: "未付款", imageUrls: logoUrl }) 
+      });
+    }
+
+    function toggleCartPanel() { cartOverlay.classList.toggle("open"), cartPanel.classList.toggle("open") }
+    function generateOrderId() { let e = "#"; for (let t = 0; t < 5; t++) e += "ABCDEFGHIJKLMNOPQRSTUVWXYZ01223456789".charAt(Math.floor(36 * Math.random())); return e }
+    function openEmailPopup() {
+        popupEmailInput.value = emailInput.value;
+        emailPopupOverlay.classList.add('visible');
+    }
+    function closeEmailPopup() { emailPopupOverlay.classList.remove('visible'); }
+
+    initGallery(); populateCourseOptions(); updateButton(); updateCartDisplay();
+    courseOptionsSelect.addEventListener('change', updateButton);
+    addToCartBtn.addEventListener("click", handleAddToCart);
+    cartIcon.addEventListener("click", toggleCartPanel);
+    if (closeCartBtn) closeCartBtn.addEventListener("click", toggleCartPanel);
+    cartOverlay.addEventListener("click", (e) => { if(e.target === cartOverlay) toggleCartPanel() });
+    cartItemsContainer.addEventListener("click", handleCartInteraction);
+    continueShoppingBtn.addEventListener('click', (e) => { e.preventDefault(); thankYouPage.style.display = 'none'; productPage.style.display = 'block'; });
+    closeBtn.addEventListener('click', (e) => { e.preventDefault(); thankYouPage.style.display = 'none'; productPage.style.display = 'block'; });
+    emailInput.addEventListener('click', openEmailPopup);
+    closePopupBtn.addEventListener('click', closeEmailPopup);
+    popupCheckoutBtn.addEventListener('click', handleCheckout);
+</script>
+</body>
+</html>
