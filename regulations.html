@@ -5,6 +5,27 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Tony Online English Tutoring - 課程規範</title>
   <style>
+    /* =========================================
+       【全域修正】修復手機版寬度溢出 (Horizontal Overflow)
+       ========================================= */
+    *, *::before, *::after {
+      box-sizing: border-box;
+    }
+    html, body {
+      overflow-x: hidden;
+      width: 100%;
+      max-width: 100vw;
+      margin: 0;
+      padding: 0;
+      font-family: sans-serif;
+      background: #fdf6ea; /* 配合圖片的淺米色背景 */
+      scroll-behavior: smooth;
+      word-break: break-word;
+    }
+
+    /* =========================================
+       原有的 CSS (保留不動，僅受上方 box-sizing 保護)
+       ========================================= */
     :root {
       /* Bar 1: 金黃色系 */
       --gold-gradient: linear-gradient(135deg, #FFD700, #FFA500, #FFD700);
@@ -14,14 +35,6 @@
       --warning-red-gradient: linear-gradient(135deg, #ff416c, #ff4b2b, #ff416c);
     }
 
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: sans-serif;
-      background: #f5f5f5;
-      scroll-behavior: smooth;
-    }
-
     /* --- 規範條容器 --- */
     .bar-container {
       display: flex;
@@ -29,7 +42,9 @@
       align-items: center;
       gap: 1.2rem;
       padding: 2rem 1rem;
-      min-height: 100vh; 
+      /* 調整此處以無縫接合下方新內容 */
+      min-height: auto; 
+      margin-bottom: 2rem;
     }
 
     .bar {
@@ -199,12 +214,134 @@
       .rule-icon-img {
         height: 1.3em;
       }
+      /* 確保小螢幕上斜體字若過長可正常折行 */
+      .italic-black {
+        white-space: normal;
+        word-break: keep-all;
+      }
+    }
+
+
+    /* =========================================
+       新増區塊 CSS (常見問題與公告)
+       ========================================= */
+    .extra-section {
+      width: 100%;
+      max-width: 1000px;
+      margin: 0 auto;
+      padding: 1rem;
+    }
+
+    /* --- 折疊式問答 (Accordion) --- */
+    .faq-title {
+      font-size: 1.8rem;
+      color: #333;
+      margin-bottom: 2rem;
+      border-bottom: 2px solid #ddd;
+      padding-bottom: 0.5rem;
+    }
+    .faq-item {
+      border-bottom: 1px solid #ccc;
+      margin-bottom: 0.5rem;
+    }
+    .faq-question {
+      width: 100%;
+      text-align: left;
+      background: none;
+      border: none;
+      font-size: 1.15rem;
+      color: #111;
+      padding: 1.2rem 0;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      outline: none;
+      transition: color 0.3s;
+    }
+    .faq-question:hover {
+      color: #555;
+    }
+    .faq-icon {
+      font-size: 1.5rem;
+      font-weight: 300;
+      color: #666;
+    }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease-out;
+    }
+    .faq-content {
+      padding: 0.5rem 0 1.5rem 0;
+      font-size: 1.05rem;
+      line-height: 1.6;
+      color: #222;
+    }
+    .faq-content.grey-box {
+      background-color: #e5e5e5;
+      padding: 1.5rem;
+      margin-top: 0.5rem;
+      border-radius: 8px;
+    }
+    .faq-content a {
+      color: #000;
+      text-decoration: underline;
+      font-style: italic;
+      word-break: break-all;
+    }
+
+    /* --- 底部公告區塊 --- */
+    .announcement-box {
+      margin-top: 4rem;
+      margin-bottom: 4rem;
+      border: 3px solid #00bfff; /* 霓虹藍色外框 */
+      padding: 3rem 2rem;
+      background-color: #fdf6ea;
+      text-align: center;
+      line-height: 1.8;
+      border-radius: 10px;
+    }
+    .announcement-box p {
+      margin: 1rem 0;
+      font-size: 1.1rem;
+    }
+    .hr-divider {
+      width: 50%;
+      border: 0;
+      border-top: 1px solid #ffaa00;
+      margin: 2rem auto;
+    }
+    .btn-link {
+      display: inline-block;
+      margin-top: 1.5rem;
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: #0000ee;
+      text-decoration: underline;
+    }
+
+    /* 公告文字高光樣式 */
+    .text-blue { color: #0044cc; }
+    .text-blue-light { color: #4682B4; }
+    .text-red { color: #e60000; }
+    .text-magenta { color: #ff00ff; }
+    .text-green { color: #3cb371; }
+    .text-bold { font-weight: bold; }
+    .text-italic { font-style: italic; }
+    .text-large { font-size: 1.4rem; }
+    
+    @media (max-width: 600px) {
+      .announcement-box { padding: 1.5rem 1rem; }
+      .hr-divider { width: 80%; }
     }
   </style>
 </head>
 <body>
 
-  <!-- 主要內容區塊 -->
+  <!-- =========================================
+       主要內容區塊 (原有提供的流光邊框，內容完全未更動)
+       ========================================= -->
   <div class="bar-container" id="main-content">
     
     <!-- 第一條：24小時規則 (已更新：加上週六1堂說明) -->
@@ -212,7 +349,7 @@
       <div>
         <img class="rule-icon-img" src="https://ik.imagekit.io/lql1uveoc/rules.png?updatedAt=1748531353399" alt="rule icon">
         <span class="number">24</span>小時內提出請假或調課,
-        <span class="italic-black">扣除</span><span class="number">0.5</span><span class="italic-black"> 堂</span>
+        <span class="italic-black">扣除</span><span class="number">0.5</span><span class="italic-black">&nbsp;堂</span>
         <span class="italic-black">（週六</span><span class="number">1</span><span class="italic-black">堂）</span>
       </div>
     </div>
@@ -222,7 +359,7 @@
       <div>
         <img class="rule-icon-img" src="https://ik.imagekit.io/lql1uveoc/rules.png?updatedAt=1748531353399" alt="rule icon">
         <span class="number">12</span>小時內提出請假或調課,
-        <span class="italic-black">扣除</span><span class="number">1</span><span class="italic-black"> 堂</span>
+        <span class="italic-black">扣除</span><span class="number">1</span><span class="italic-black">&nbsp;堂</span>
       </div>
     </div>
 
@@ -242,8 +379,174 @@
 
   </div>
 
+
+  <!-- =========================================
+       新增區塊：常見問題 FAQ (Accordion 折疊式)
+       ========================================= -->
+  <div class="extra-section">
+    <h2 class="faq-title">學生請假規範常見問題</h2>
+
+    <!-- FAQ 1 -->
+    <div class="faq-item">
+      <button class="faq-question">1. 什麼情況下會因請假或調課而有堂數扣除？ <span class="faq-icon">⊕</span></button>
+      <div class="faq-answer">
+        <div class="faq-content">
+          <p class="text-bold text-italic">
+            ❖24小時內提出請假或調課,<br>&nbsp;&nbsp;&nbsp;扣除0.5堂<br>
+            ❖12小時內提出請假或調課,<br>&nbsp;&nbsp;&nbsp;扣除1堂<br>
+            ❖<span class="text-red">週六課程</span>需上課前<span class="text-red">24小時前</span>提出請假或調課, 若未於 24 小時前提出，當堂課將視為已使用。
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- FAQ 2 -->
+    <div class="faq-item">
+      <button class="faq-question">2. 適用時段為？ <span class="faq-icon">⊕</span></button>
+      <div class="faq-answer">
+        <div class="faq-content text-bold text-italic">
+          <p>如果上課時間為：</p>
+          <p>
+            *週一～週五:10 am~10 pm.<br>
+            *週六&國定假日- 整天
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- FAQ 3 (原圖片 2.2) -->
+    <div class="faq-item">
+      <button class="faq-question">2.2 時常請假或缺席？ <span class="faq-icon">⊕</span></button>
+      <div class="faq-answer">
+        <div class="faq-content grey-box text-bold">
+          ⭐ 若請假或缺席過於頻繁，<br>
+          <span style="font-size: 1.2rem;">Tony線上美語家教將<span class="text-red">取消該時段課程</span>。</span>建議選擇更合適的固定時段上課，或透過線上系統預約課程。謝謝！
+        </div>
+      </div>
+    </div>
+
+    <!-- FAQ 4 (原圖片 3) -->
+    <div class="faq-item">
+      <button class="faq-question">3. 我因為生病,不舒服,然後於24或12小時內請假,而被扣除堂數,該怎麼辦？ <span class="faq-icon">⊕</span></button>
+      <div class="faq-answer">
+        <div class="faq-content">
+          <p class="text-italic">
+            若因身體不適或突發疾病而無法提前通知，導致課堂時數已被扣除，『請填寫下方表單提出申請』。我們將由專人進行審核，並於審核完成後主動通知您審核結果。
+          </p>
+          <p>
+            <a href="https://tonyonlineenglish.netlify.app/sickleave" target="_blank">
+              請點選：申請取消扣堂數表單 Application Form for Class Deduction Waiver Due to Illness (Bilingual)
+            </a>
+          </p>
+          <p class="text-italic" style="font-size: 0.85rem; margin-top: 1.5rem; line-height: 1.4;">
+            病假規範細節<br>
+            審查核准後:<br>
+            上課前,六小時內提出申請,不扣除堂數<br>
+            上課前,三小時內提出申請,扣除堂數0.5堂
+          </p>
+        </div>
+      </div>
+    </div>
+
+    <!-- FAQ 5 (原圖片 4) -->
+    <div class="faq-item">
+      <button class="faq-question">4. 週日可以上課嗎？ <span class="faq-icon">⊕</span></button>
+      <div class="faq-answer">
+        <div class="faq-content text-italic text-bold">
+          週日基本上不安排課程，但若有特殊需求，需提前預約並協調時間進行安排。或是線上預約系統會不定期開放週日時段。
+        </div>
+      </div>
+    </div>
+
+    <!-- FAQ 6 (原圖片 5) -->
+    <div class="faq-item">
+      <button class="faq-question">5. 實施後的成效如何？ <span class="faq-icon">⊕</span></button>
+      <div class="faq-answer">
+        <div class="faq-content text-italic text-bold" style="font-size: 1.2rem;">
+          🎉以上規範自2024年9月1日起開始試行，並已從學生及家長的回饋中取得顯著成效。🎉
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- =========================================
+       新增區塊：底部公告區 (Announcement)
+       ========================================= -->
+  <div class="extra-section">
+    <div class="announcement-box">
+      
+      <h2 class="text-blue">各位線上美語家教的同學及家長您好：</h2>
+      
+      <p class="text-bold">
+        目前正值考試季，包括國中會考、高中學測、技職統測、國家公職考試、全民英檢、多益雅思等考試。<span class="text-blue-light">因應學生和家長的強烈需求，要求每週安排至少兩堂課程</span>，因此目前部分學生僅能安排每週1次課程，或將課程安排於週六。
+      </p>
+      
+      <p class="text-bold">
+        此外，部分學生為上班族，需進修英文，且僅能在週六上課。<span class="text-blue-light">因此為保障您和所有學生的上課權益及學習成效</span>，<span class="text-red text-italic">並避免有濫用請假權益而影響其他學生上課需求情況發生。</span>
+      </p>
+
+      <h3 class="text-blue-light text-large" style="margin-top: 2rem; margin-bottom: 0;">Tony 線上美語家教</h3>
+      <p style="margin-top: 0;">訂定請假規範。<span class="text-bold">請嚴格遵守：</span></p>
+      
+      <p class="text-bold text-large">
+        適用對象：所有學生<br>
+        開始規範時間：<span class="text-red">即日起</span>
+      </p>
+
+      <hr class="hr-divider">
+
+      <p class="text-bold text-large">
+        - 適用時段 ：GMT+8 時區（Taipei)<br>
+        如果上課時間為：<br>
+        *週一～週五:10 am~10 pm.<br>
+        *週六& 國定假日- 整天
+      </p>
+
+      <hr class="hr-divider">
+
+      <p class="text-bold text-large text-italic">📌重要訊息：</p>
+      <p class="text-bold text-italic">
+        ❖24小時內提出請假或調課,<br>扣除0.5堂<br>
+        ❖12小時內提出請假或調課,<br>扣除1堂<br>
+        ❖<span class="text-red">週六課程需上課前24小時前提出請假或調課, 若未於 24 小時前提出，當堂課將視為已使用。</span>
+      </p>
+
+      <br><br>
+
+      <h2 class="text-blue">✅ 請務必於24小時前<br>完成請假手續。</h2>
+      
+      <p class="text-bold text-large" style="line-height: 1.5;">
+        ⭐ 若請假或缺席過於頻繁，<br>
+        <span class="text-blue-light" style="font-size: 1.3rem;">Tony線上美語家教</span>將<span class="text-magenta" style="font-size: 1.3rem;">取消</span>該時段的保留。建議選擇更合適的固定時段上課，或透過線上系統預約課程。謝謝！
+      </p>
+
+      <p class="text-bold text-italic text-green text-large">
+        🎉 以上規範自2024年9月1日起開始試行，並已從學生及家長的回饋中取得顯著成效。🎉
+      </p>
+
+      <p class="text-bold text-large" style="margin-top: 2rem;">
+        🫶 感謝您的理解與配合！ 🫶
+      </p>
+
+      <p class="text-bold">
+        有任何問題或需要停止課程請再與我聯繫。
+      </p>
+
+      <a href="https://tonyonlineenglish.netlify.app/25-50bk" target="_blank" class="btn-link">
+        線上預約課程
+      </a>
+
+    </div>
+  </div>
+
+
+  <!-- =========================================
+       JavaScript 互動腳本
+       ========================================= -->
   <script>
-    // 自動捲動腳本
+    // 1. 自動捲動腳本 (原有)
     window.addEventListener('load', function() {
       const content = document.getElementById('main-content');
       if (content) {
@@ -251,6 +554,28 @@
           content.scrollIntoView({ behavior: 'smooth', block: 'start' });
         }, 100);
       }
+    });
+
+    // 2. 常見問題 Accordion 展開/收合控制腳本 (新增)
+    document.addEventListener("DOMContentLoaded", function() {
+      const faqQuestions = document.querySelectorAll(".faq-question");
+      
+      faqQuestions.forEach(question => {
+        question.addEventListener("click", function() {
+          const answer = this.nextElementSibling;
+          const icon = this.querySelector('.faq-icon');
+          
+          if (answer.style.maxHeight) {
+            // 收合
+            answer.style.maxHeight = null;
+            icon.textContent = "⊕";
+          } else {
+            // 展開 (保留其他開啟的也可，此處預設不自動收合其他項目)
+            answer.style.maxHeight = answer.scrollHeight + "px";
+            icon.innerHTML = "⊖";
+          }
+        });
+      });
     });
   </script>
 
