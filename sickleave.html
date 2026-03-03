@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Class Announcement</title>
+<style>
+  /* --- Base and Mobile First Styles --- */
+  body {
+    margin: 0;
+    padding: 0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    background-color: #ffffff; 
+  }
+
+  .container {
+    background-color: #ffffff;
+    padding: 1.5rem;
+    box-sizing: border-box; 
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* This will center content on mobile */
+  }
+
+  h1 {
+    /* Base font size for calculation */
+    font-size: 2.2rem; 
+    font-weight: 900;
+    color: #000000;
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+  }
+
+  .policy-details {
+    /* Base font size for calculation */
+    font-size: 1rem;
+    line-height: 1.7;
+    color: #333333;
+    margin-bottom: 1.5rem;
+  }
+
+  strong {
+    font-weight: 700;
+    color: #000000;
+  }
+  
+  /* --- Custom Styles --- */
+  .light-blue-bg {
+    background-color: #5b92e5; /* A readable light blue */
+    color: #ffffff; /* White font */
+    padding: 0.2em 0.6em; /* Add some space around the text */
+    border-radius: 4px; /* Soften the corners */
+  }
+
+  .purple {
+    color: #8A2BE2; /* A shade of purple (blueviolet) */
+  }
+  
+  /* By default, the special mobile line break is hidden */
+  .mobile-break {
+    display: none;
+  }
+
+  /* --- Mobile Mode (Font size 1.5x bigger) --- */
+  @media (max-width: 768px) {
+    h1 {
+      /* 2.2rem * 1.5 = 3.3rem */
+      font-size: 3.3rem; 
+    }
+    .policy-details {
+      /* 1rem * 1.5 = 1.5rem */
+      font-size: 1.5rem;
+    }
+    /* On mobile, activate the special line break */
+    .mobile-break {
+      display: block; 
+    }
+  }
+
+  /* --- Tablet Mode (Font size 2x bigger) --- */
+  @media (min-width: 769px) and (max-width: 1200px) {
+    .container {
+        padding: 3rem 5%;
+        justify-content: flex-start; /* MODIFICATION: Align content to the top */
+    }
+    h1 {
+      /* 2.2rem * 2 = 4.4rem */
+      font-size: 4.4rem; 
+    }
+    .policy-details {
+      /* 1rem * 2 = 2rem */
+      font-size: 2rem;
+    }
+  }
+
+  /* --- Desktop Mode (Font size 2.5x bigger) --- */
+  @media (min-width: 1201px) {
+    .container {
+        padding: 3rem 8%;
+        justify-content: flex-start; /* MODIFICATION: Align content to the top */
+    }
+    h1 {
+      /* 2.2rem * 2.5 = 5.5rem */
+      font-size: 5.5rem; 
+    }
+    .policy-details {
+      /* 1rem * 2.5 = 2.5rem */
+      font-size: 2.5rem;
+    }
+  }
+</style>
+</head>
+<body>
+
+<!-- START: ADDED THE ID HERE -->
+<div class="container" id="sick-leave-policy-details">
+<!-- END: ADDED THE ID HERE -->
+  <div> <!-- Content wrapper -->
+    <h1>各位學員</h1>
+    <div class="policy-details">
+      <strong>病假規範細節</strong><br>
+      <span class="light-blue-bg">審查核准後:</span><br>
+      上課前,<strong class="purple">六小時內</strong>提出申請,<br class="mobile-break"><strong>不扣除堂數</strong><br>
+      上課前,<strong class="purple">三小時內</strong>提出申請,<br class="mobile-break"><strong>扣除堂數0.5堂</strong>
+    </div>
+    <div class="policy-details">
+        <strong>Sick Leave Policy Details</strong><br>
+        <span class="light-blue-bg">After approval:</span><br>
+        Applied within <strong class="purple">6 hours</strong> before class: <strong>no deduction.</strong><br>
+        Applied within <strong class="purple">3 hours</strong> before class: <strong>0.5 class deducted.</strong>
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
