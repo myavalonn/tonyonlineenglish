@@ -1,581 +1,279 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html>
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Tony Online English Tutoring - 課程規範</title>
+  <title>課程預約</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
-    /* =========================================
-       【全域修正】修復手機版寬度溢出 (Horizontal Overflow)
-       ========================================= */
-    *, *::before, *::after {
-      box-sizing: border-box;
-    }
-    html, body {
-      overflow-x: hidden;
-      width: 100%;
-      max-width: 100vw;
-      margin: 0;
-      padding: 0;
-      font-family: sans-serif;
-      background: #fdf6ea; /* 配合圖片的淺米色背景 */
-      scroll-behavior: smooth;
-      word-break: break-word;
-    }
-
-    /* =========================================
-       原有的 CSS (保留不動，僅受上方 box-sizing 保護)
-       ========================================= */
-    :root {
-      /* Bar 1: 金黃色系 */
-      --gold-gradient: linear-gradient(135deg, #FFD700, #FFA500, #FFD700);
-      /* Bar 2: 霓虹藍色系 */
-      --neon-blue-gradient: linear-gradient(135deg, #00f0ff, #0099ff, #00f0ff);
-      /* Bar 3: 警示橘紅色系 (週六) */
-      --warning-red-gradient: linear-gradient(135deg, #ff416c, #ff4b2b, #ff416c);
-    }
-
-    /* --- 規範條容器 --- */
-    .bar-container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 1.2rem;
-      padding: 2rem 1rem;
-      /* 調整此處以無縫接合下方新內容 */
-      min-height: auto; 
-      margin-bottom: 2rem;
-    }
-
-    .bar {
+    .slide-button {
       position: relative;
-      width: 100%;
-      max-width: 1000px;
-      border-radius: 50px;
-      padding: 1.5rem 2rem;
-      font-style: italic;
-      font-weight: bold;
-      font-size: clamp(1.2rem, 4vw, 2.2rem);
-      animation: slideIn 1.2s ease forwards;
-      opacity: 0;
-      background: #444;
-      color: white;
-      z-index: 0;
-      overflow: hidden;
       display: flex;
+      justify-content: center;
       align-items: center;
-      flex-wrap: wrap;
-    }
-
-    /* 旋轉流光邊框背景 */
-    .bar::before {
-      content: "";
-      position: absolute;
-      top: -3px;
-      left: -3px;
-      right: -3px;
-      bottom: -3px;
-      border-radius: 60px;
-      z-index: -1;
-      background-size: 200% 200%;
-      animation: spin 4s linear infinite;
-    }
-
-    /* 內部遮罩 */
-    .bar::after {
-      content: "";
-      position: absolute;
-      top: 3px;
-      left: 3px;
-      right: 3px;
-      bottom: 3px;
-      background: inherit;
-      border-radius: 50px;
-      z-index: -1;
-    }
-
-    /* --- Bar 1 (24hr) --- */
-    .bar1 {
-      background: linear-gradient(90deg, #6ecf68, #f9d976, #f26a4b);
-      animation-delay: 0.2s;
-    }
-    .bar1::before {
-      background: var(--gold-gradient);
-      filter: drop-shadow(0 0 8px #ffdb4d);
-    }
-
-    /* --- Bar 2 (12hr) --- */
-    .bar2 {
-      background: linear-gradient(90deg, #5dade2, #a569bd, #e74c3c);
-      animation-delay: 0.7s;
-    }
-    .bar2::before {
-      background: var(--neon-blue-gradient);
-      filter: drop-shadow(0 0 5px #00f0ff);
-    }
-
-    /* --- Bar 3 (週六規範 - 橘紅色系) --- */
-    .bar3 {
-      background: linear-gradient(90deg, #ff416c, #ff4b2b, #ff9966);
-      animation-delay: 1.2s;
-      flex-direction: column; 
-      align-items: flex-start;
-      line-height: 1.4; 
-    }
-    .bar3::before {
-      background: var(--warning-red-gradient);
-      filter: drop-shadow(0 0 5px #ff4b2b);
-    }
-
-    /* --- Bar 4 (總結 - 深藍色) --- */
-    .bar4 {
-      background-color: #0d1038;
+      font-weight: bold;
       color: white;
-      animation-delay: 1.7s;
-      flex-direction: column;
-      align-items: center;
-      line-height: 1.6;
-      text-align: center;
-    }
-    .bar4::before {
-      background: none;
-      animation: none;
-      filter: none;
-    }
-
-    /* 通用元素樣式 */
-    .rule-icon-img {
-      height: 1.5em;
-      width: auto;
-      vertical-align: middle;
-      display: inline-block;
-      margin-right: 8px;
-      animation: zoomPop 1s ease-out;
-    }
-
-    .number {
-      color: black;
-      font-size: 1.3em;
-      display: inline-block;
-      animation: zoomPop 1s ease-out;
-      font-style: italic;
-      margin: 0 4px;
-    }
-
-    .italic-black {
-      color: black;
-      font-style: italic;
-      display: inline-block;
+      border-radius: 999px;
       white-space: nowrap;
-    }
-    
-    .highlight-black {
-      color: black;
-      font-style: italic;
-      display: inline-block;
-      font-weight: 800;
-    }
-
-    /* 動畫定義 */
-    @keyframes slideIn {
-      from { transform: translateX(-100%); opacity: 0; }
-      to { transform: translateX(0); opacity: 1; }
-    }
-
-    @keyframes zoomPop {
-      0% { transform: scale(1); }
-      30% { transform: scale(1.5); }
-      100% { transform: scale(1); }
-    }
-
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-    /* --- 手機版優化 --- */
-    @media (max-width: 600px) {
-      .bar-container {
-        padding: 2rem 0.25rem; 
-      }
-
-      .bar {
-        width: 98%; 
-        padding: 1.5rem 0.8rem; 
-        border-radius: 35px;
-        font-size: 1.35rem; 
-      }
-      
-      .bar3 {
-        line-height: 1.4; 
-        font-size: 1.35rem; 
-      }
-      
-      .rule-icon-img {
-        height: 1.3em;
-      }
-      /* 確保小螢幕上斜體字若過長可正常折行 */
-      .italic-black {
-        white-space: normal;
-        word-break: keep-all;
-      }
-    }
-
-
-    /* =========================================
-       新増區塊 CSS (常見問題與公告)
-       ========================================= */
-    .extra-section {
-      width: 100%;
-      max-width: 1000px;
-      margin: 0 auto;
-      padding: 1rem;
-    }
-
-    /* --- 折疊式問答 (Accordion) --- */
-    .faq-title {
-      font-size: 1.8rem;
-      color: #333;
-      margin-bottom: 2rem;
-      border-bottom: 2px solid #ddd;
-      padding-bottom: 0.5rem;
-    }
-    .faq-item {
-      border-bottom: 1px solid #ccc;
-      margin-bottom: 0.5rem;
-    }
-    .faq-question {
-      width: 100%;
-      text-align: left;
-      background: none;
-      border: none;
-      font-size: 1.15rem;
-      color: #111;
-      padding: 1.2rem 0;
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      outline: none;
-      transition: color 0.3s;
-    }
-    .faq-question:hover {
-      color: #555;
-    }
-    .faq-icon {
-      font-size: 1.5rem;
-      font-weight: 300;
-      color: #666;
-    }
-    .faq-answer {
-      max-height: 0;
       overflow: hidden;
-      transition: max-height 0.4s ease-out;
-    }
-    .faq-content {
-      padding: 0.5rem 0 1.5rem 0;
-      font-size: 1.05rem;
-      line-height: 1.6;
-      color: #222;
-    }
-    .faq-content.grey-box {
-      background-color: #e5e5e5;
-      padding: 1.5rem;
-      margin-top: 0.5rem;
-      border-radius: 8px;
-    }
-    .faq-content a {
-      color: #000;
-      text-decoration: underline;
-      font-style: italic;
-      word-break: break-all;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeIn 1s forwards;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+      text-decoration: none;
+      margin-bottom: 28px;
+      padding: 24px 48px;
+      min-width: 400px;
+      font-size: 1rem;
+      max-width: 95vw;
+      transition: background 0.5s ease, transform 0.3s ease;
+      z-index: 0;
     }
 
-    /* --- 底部公告區塊 --- */
-    .announcement-box {
-      margin-top: 4rem;
-      margin-bottom: 4rem;
-      border: 3px solid #00bfff; /* 霓虹藍色外框 */
-      padding: 3rem 2rem;
-      background-color: #fdf6ea;
-      text-align: center;
-      line-height: 1.8;
-      border-radius: 10px;
+    .slide-button::before {
+      content: "";
+      position: absolute;
+      top: -4px; left: -4px; right: -4px; bottom: -4px;
+      border-radius: 999px;
+      z-index: -1;
     }
-    .announcement-box p {
-      margin: 1rem 0;
-      font-size: 1.1rem;
-    }
-    .hr-divider {
-      width: 50%;
-      border: 0;
-      border-top: 1px solid #ffaa00;
-      margin: 2rem auto;
-    }
-    .btn-link {
-      display: inline-block;
-      margin-top: 1.5rem;
-      font-size: 1.3rem;
-      font-weight: bold;
-      color: #0000ee;
-      text-decoration: underline;
-    }
-
-    /* 公告文字高光樣式 */
-    .text-blue { color: #0044cc; }
-    .text-blue-light { color: #4682B4; }
-    .text-red { color: #e60000; }
-    .text-magenta { color: #ff00ff; }
-    .text-green { color: #3cb371; }
-    .text-bold { font-weight: bold; }
-    .text-italic { font-style: italic; }
-    .text-large { font-size: 1.4rem; }
     
-    @media (max-width: 600px) {
-      .announcement-box { padding: 1.5rem 1rem; }
-      .hr-divider { width: 80%; }
+    /* --- ADJUSTMENT: Blue & Green Gradient --- */
+
+    /* New animated background with blue and green */
+    .btn-50 {
+      background: linear-gradient(135deg, #021B79, #0575E6, #69F0AE, #021B79);
+      background-size: 400% 400%;
+      animation: futuristicFlow 15s ease infinite, fadeIn 1s forwards;
+    }
+
+    /* New glow effect to match the green and blue theme */
+    .btn-50::before {
+      background: linear-gradient(270deg, #69F0AE, #0575E6, #69F0AE);
+      background-size: 200% 200%;
+      animation: glowFuturistic 6s linear infinite;
+      color: #69F0AE; /* This color is used by the drop-shadow filter */
+    }
+
+    /* --- END ADJUSTMENT --- */
+
+    .btn-25::before {
+      background: linear-gradient(270deg, #CC4B00, #FF8000, #CC4B00);
+      background-size: 200% 200%;
+      animation: glowOrange 5s linear infinite;
+      color: #FF8000;
+    }
+
+    .btn-rules::before {
+      background: linear-gradient(270deg, #8a63e7, #a45fff, #8a63e7);
+      background-size: 200% 200%;
+      animation: glowPurple 5s linear infinite;
+      color: #a45fff;
+    }
+
+    /* New style for the fourth bar: R74 G74 B246 */
+    .btn-schedule::before {
+      background: linear-gradient(270deg, rgb(74, 74, 246), rgb(120, 120, 255), rgb(74, 74, 246));
+      background-size: 200% 200%;
+      animation: glowSchedule 5s linear infinite; /* Define a new glow animation */
+      color: rgb(74, 74, 246);
+    }
+    
+    /* New "New" tag for the schedule button */
+    .btn-schedule::after {
+      content: 'New';
+      position: absolute;
+      top: 10px; /* Adjust vertical position */
+      right: 15px; /* Adjust horizontal position */
+      background-color: #4CAF50; /* Green background */
+      color: white;
+      padding: 4px 10px;
+      border-radius: 5px;
+      font-size: 0.7em;
+      font-weight: bold;
+      transform: rotate(15deg); /* Slightly rotated */
+      box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+      z-index: 1;
+    }
+
+
+    .btn-25 { background: linear-gradient(90deg, #FF7A00, #FFA931); }
+    .btn-rules { background: linear-gradient(90deg, #6f42c1, #9d50bb); }
+    /* Background for the new schedule button */
+    .btn-schedule { background: linear-gradient(90deg, rgb(74, 74, 246), rgb(100, 100, 255)); }
+
+
+    .slide-button:nth-child(1) { animation-delay: 0.1s; }
+    .slide-button:nth-child(2) { animation-delay: 0.4s; }
+    .slide-button:nth-child(3) { animation-delay: 0.7s; }
+    .slide-button:nth-child(4) { animation-delay: 1.0s; } /* Animation delay for the fourth button */
+
+    .slide-button:hover {
+      transform: scale(1.05);
+      filter: brightness(1.1);
+    }
+
+    .slide-button:active {
+      transform: scale(0.97);
+      filter: brightness(0.9);
+    }
+
+    @keyframes fadeIn {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    
+    @keyframes futuristicFlow {
+        0%{background-position:0% 50%}
+        50%{background-position:100% 50%}
+        100%{background-position:0% 50%}
+    }
+
+    @keyframes glowFuturistic {
+      0%, 100% {
+        background-position: 0% 50%;
+        filter: drop-shadow(0 0 8px currentColor);
+      }
+      50% {
+        background-position: 100% 50%;
+        filter: drop-shadow(0 0 16px currentColor);
+      }
+    }
+
+    @keyframes glowOrange {
+      0%, 100% {
+        background-position: 0% 50%;
+        filter: drop-shadow(0 0 8px currentColor);
+      }
+      50% {
+        background-position: 100% 50%;
+        filter: drop-shadow(0 0 14px currentColor);
+      }
+    }
+
+    @keyframes glowPurple {
+      0%, 100% {
+        background-position: 0% 50%;
+        filter: drop-shadow(0 0 10px currentColor);
+      }
+      50% {
+        background-position: 100% 50%;
+        filter: drop-shadow(0 0 16px currentColor);
+      }
+    }
+
+    /* New glow animation for the schedule button */
+    @keyframes glowSchedule {
+      0%, 100% {
+        background-position: 0% 50%;
+        filter: drop-shadow(0 0 8px currentColor);
+      }
+      50% {
+        background-position: 100% 50%;
+        filter: drop-shadow(0 0 14px currentColor);
+      }
+    }
+
+
+    @media (min-width: 1025px) {
+      .slide-button {
+        font-size: 2.25rem;
+        min-width: 780px;
+        padding: 30px 60px;
+      }
+      /* Adjust tag position for larger screens */
+      .btn-schedule::after {
+        top: 15px;
+        right: 25px;
+        padding: 6px 14px;
+        font-size: 0.8em;
+      }
+    }
+
+    @media (min-width: 481px) and (max-width: 1024px) {
+      .slide-button {
+        font-size: 2.2rem;
+        min-width: 620px;
+        padding: 28px 56px;
+      }
+      /* Adjust tag position for medium screens */
+      .btn-schedule::after {
+        top: 12px;
+        right: 20px;
+        padding: 5px 12px;
+        font-size: 0.75em;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .slide-button {
+        font-size: 1.7rem;
+        padding: 24px 20px;
+        width: 92vw;
+        max-width: none;
+        min-width: unset;
+      }
+
+      .slide-button img {
+        width: 45px !important;
+        height: 45px !important;
+      }
+      /* Adjust tag position for small screens */
+      .btn-schedule::after {
+        top: 8px;
+        right: 10px;
+        padding: 3px 8px;
+        font-size: 0.6em;
+      }
     }
   </style>
 </head>
 <body>
-
-  <!-- =========================================
-       主要內容區塊 (原有提供的流光邊框，內容完全未更動)
-       ========================================= -->
-  <div class="bar-container" id="main-content">
+  <div style="display: flex; flex-direction: column; align-items: center;">
     
-    <!-- 第一條：24小時規則 (已更新：加上週六1堂說明) -->
-    <div class="bar bar1">
-      <div>
-        <img class="rule-icon-img" src="https://ik.imagekit.io/lql1uveoc/rules.png?updatedAt=1748531353399" alt="rule icon">
-        <span class="number">24</span>小時內提出請假或調課,
-        <span class="italic-black">扣除</span><span class="number">0.5</span><span class="italic-black">&nbsp;堂</span>
-        <span class="italic-black">（週六</span><span class="number">1</span><span class="italic-black">堂）</span>
-      </div>
-    </div>
+    <a id="booking-link-50" class="slide-button btn-50" href="#" style="display: flex; align-items: center; gap: 12px;">
+      預約50分鐘課程
+      <img src="https://ik.imagekit.io/lql1uveoc/external-link.png?updatedAt=1754911187731" alt="external link icon" width="40" height="40" />
+    </a>
 
-    <!-- 第二條：12小時規則 -->
-    <div class="bar bar2">
-      <div>
-        <img class="rule-icon-img" src="https://ik.imagekit.io/lql1uveoc/rules.png?updatedAt=1748531353399" alt="rule icon">
-        <span class="number">12</span>小時內提出請假或調課,
-        <span class="italic-black">扣除</span><span class="number">1</span><span class="italic-black">&nbsp;堂</span>
-      </div>
-    </div>
+    <a class="slide-button btn-25" href="https://koalendar.com/e/TonyOnlineEnglish/" target="_blank" style="display: flex; align-items: center; gap: 12px;">
+      預約25分鐘課程 
+      <img src="https://ik.imagekit.io/lql1uveoc/Schedule%20information/info.png?updatedAt=1761978562177" width="40" height="40" />
+    </a>
 
-    <!-- 第三條：週六特殊規則 -->
-    <div class="bar bar3">
-      <div style="width: 100%;">
-        ⚠️ <span class="highlight-black">週六</span>課程需於上課前 <span class="number" style="color: black;">24</span> 小時提出請假或調課；<br>
-        若未於 <span class="number" style="color: black;">24</span> 小時前提出，<span class="highlight-black">當堂課將視為已使用。</span>
-      </div>
-    </div>
+    <a class="slide-button btn-rules" href="https://tonyonlineenglish.netlify.app/regulations" target="_blank" style="display: flex; align-items: center; gap: 12px;">
+      學生請假調課規範
+      <img src="https://ik.imagekit.io/lql1uveoc/external-link.png?updatedAt=1754911187731" alt="external link icon" width="40" height="40" />
+    </a>
 
-    <!-- 第四條：總結與警告 -->
-    <div class="bar bar4">
-      <div>規範適用全部上課時段</div>
-      <div style="color: #ffaaaa; margin-top: 5px;">（請假/缺席頻繁，取消該固定時段課程。）</div>
-    </div>
+    <!-- Fourth bar added below -->
+    <a class="slide-button btn-schedule" href="https://tonyonlineenglish.netlify.app/ycs" target="_blank" style="display: flex; align-items: center; gap: 12px;">
+      查詢你的課表
+      <img src="https://ik.imagekit.io/lql1uveoc/external-link.png?updatedAt=1754911187731" alt="external link icon" width="40" height="40" />
+    </a>
 
   </div>
 
-
-  <!-- =========================================
-       新增區塊：常見問題 FAQ (Accordion 折疊式)
-       ========================================= -->
-  <div class="extra-section">
-    <h2 class="faq-title">學生請假規範常見問題</h2>
-
-    <!-- FAQ 1 -->
-    <div class="faq-item">
-      <button class="faq-question">1. 什麼情況下會因請假或調課而有堂數扣除？ <span class="faq-icon">⊕</span></button>
-      <div class="faq-answer">
-        <div class="faq-content">
-          <p class="text-bold text-italic">
-            ❖24小時內提出請假或調課,<br>&nbsp;&nbsp;&nbsp;扣除0.5堂(週六/國定假日1堂）<br>
-            ❖12小時內提出請假或調課,<br>&nbsp;&nbsp;&nbsp;扣除1堂<br>
-            ❖<span class="text-red">週六課程</span>需上課前<span class="text-red">24小時前</span>提出請假或調課, 若未於 24 小時前提出，當堂課將視為已使用。
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <!-- FAQ 2 -->
-    <div class="faq-item">
-      <button class="faq-question">2. 適用時段為？ <span class="faq-icon">⊕</span></button>
-      <div class="faq-answer">
-        <div class="faq-content text-bold text-italic">
-          <p>如果上課時間為：</p>
-          <p>
-            *週一～週五:10 am~10 pm.<br>
-            *週六&國定假日- 整天
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <!-- FAQ 3 (原圖片 2.2) -->
-    <div class="faq-item">
-      <button class="faq-question">2.2 時常請假或缺席？ <span class="faq-icon">⊕</span></button>
-      <div class="faq-answer">
-        <div class="faq-content grey-box text-bold">
-          ⭐ 若請假或缺席過於頻繁，<br>
-          <span style="font-size: 1.2rem;">Tony線上美語家教將<span class="text-red">取消該時段課程</span>。</span>建議選擇更合適的固定時段上課，或透過線上系統預約課程。謝謝！
-        </div>
-      </div>
-    </div>
-
-    <!-- FAQ 4 (原圖片 3) -->
-    <div class="faq-item">
-      <button class="faq-question">3. 我因為生病,不舒服,然後於24或12小時內請假,而被扣除堂數,該怎麼辦？ <span class="faq-icon">⊕</span></button>
-      <div class="faq-answer">
-        <div class="faq-content">
-          <p class="text-italic">
-            若因身體不適或突發疾病而無法提前通知，導致課堂時數已被扣除，『請填寫下方表單提出申請』。我們將由專人進行審核，並於審核完成後主動通知您審核結果。
-          </p>
-          <p>
-            <a href="https://tonyonlineenglish.netlify.app/sickleave" target="_blank">
-              請點選：申請取消扣堂數表單 Application Form for Class Deduction Waiver Due to Illness (Bilingual)
-            </a>
-          </p>
-          <p class="text-italic" style="font-size: 0.85rem; margin-top: 1.5rem; line-height: 1.4;">
-            病假規範細節<br>
-            審查核准後:<br>
-            上課前,六小時內提出申請,不扣除堂數<br>
-            上課前,三小時內提出申請,扣除堂數0.5堂
-          </p>
-        </div>
-      </div>
-    </div>
-
-    <!-- FAQ 5 (原圖片 4) -->
-    <div class="faq-item">
-      <button class="faq-question">4. 週日可以上課嗎？ <span class="faq-icon">⊕</span></button>
-      <div class="faq-answer">
-        <div class="faq-content text-italic text-bold">
-          週日基本上不安排課程，但若有特殊需求，需提前預約並協調時間進行安排。或是線上預約系統會不定期開放週日時段。
-        </div>
-      </div>
-    </div>
-
-    <!-- FAQ 6 (原圖片 5) -->
-    <div class="faq-item">
-      <button class="faq-question">5. 實施後的成效如何？ <span class="faq-icon">⊕</span></button>
-      <div class="faq-answer">
-        <div class="faq-content text-italic text-bold" style="font-size: 1.2rem;">
-          🎉以上規範自2024年9月1日起開始試行，並已從學生及家長的回饋中取得顯著成效。🎉
-        </div>
-      </div>
-    </div>
-
-  </div>
-
-
-  <!-- =========================================
-       新增區塊：底部公告區 (Announcement)
-       ========================================= -->
-  <div class="extra-section">
-    <div class="announcement-box">
-      
-      <h2 class="text-blue">各位線上美語家教的同學及家長您好：</h2>
-      
-      <p class="text-bold">
-        目前正值考試季，包括國中會考、高中學測、技職統測、國家公職考試、全民英檢、多益雅思等考試。<span class="text-blue-light">因應學生和家長的強烈需求，要求每週安排至少兩堂課程</span>，因此目前部分學生僅能安排每週1次課程，或將課程安排於週六。
-      </p>
-      
-      <p class="text-bold">
-        此外，部分學生為上班族，需進修英文，且僅能在週六上課。<span class="text-blue-light">因此為保障您和所有學生的上課權益及學習成效</span>，<span class="text-red text-italic">並避免有濫用請假權益而影響其他學生上課需求情況發生。</span>
-      </p>
-
-      <h3 class="text-blue-light text-large" style="margin-top: 2rem; margin-bottom: 0;">Tony 線上美語家教</h3>
-      <p style="margin-top: 0;">訂定請假規範。<span class="text-bold">請嚴格遵守：</span></p>
-      
-      <p class="text-bold text-large">
-        適用對象：所有學生<br>
-        開始規範時間：<span class="text-red">即日起</span>
-      </p>
-
-      <hr class="hr-divider">
-
-      <p class="text-bold text-large">
-        - 適用時段 ：GMT+8 時區（Taipei)<br>
-        如果上課時間為：<br>
-        *週一～週五:10 am~10 pm.<br>
-        *週六& 國定假日- 整天
-      </p>
-
-      <hr class="hr-divider">
-
-      <p class="text-bold text-large text-italic">📌重要訊息：</p>
-      <p class="text-bold text-italic">
-        ❖24小時內提出請假或調課,<br>扣除0.5堂<br>
-        ❖12小時內提出請假或調課,<br>扣除1堂<br>
-        ❖<span class="text-red">週六課程需上課前24小時前提出請假或調課, 若未於 24 小時前提出，當堂課將視為已使用。</span>
-      </p>
-
-      <br><br>
-
-      <h2 class="text-blue">✅ 請務必於24小時前<br>完成請假手續。</h2>
-      
-      <p class="text-bold text-large" style="line-height: 1.5;">
-        ⭐ 若請假或缺席過於頻繁，<br>
-        <span class="text-blue-light" style="font-size: 1.3rem;">Tony線上美語家教</span>將<span class="text-magenta" style="font-size: 1.3rem;">取消</span>該時段的保留。建議選擇更合適的固定時段上課，或透過線上系統預約課程。謝謝！
-      </p>
-
-      <p class="text-bold text-italic text-green text-large">
-        🎉 以上規範自2024年9月1日起開始試行，並已從學生及家長的回饋中取得顯著成效。🎉
-      </p>
-
-      <p class="text-bold text-large" style="margin-top: 2rem;">
-        🫶 感謝您的理解與配合！ 🫶
-      </p>
-
-      <p class="text-bold">
-        有任何問題或需要停止課程請再與我聯繫。
-      </p>
-
-      <a href="https://tonyonlineenglish.netlify.app/25-50bk" target="_blank" class="btn-link">
-        線上預約課程
-      </a>
-
-    </div>
-  </div>
-
-
-  <!-- =========================================
-       JavaScript 互動腳本
-       ========================================= -->
   <script>
-    // 1. 自動捲動腳本 (原有)
-    window.addEventListener('load', function() {
-      const content = document.getElementById('main-content');
-      if (content) {
-        setTimeout(() => {
-          content.scrollIntoView({ behavior: 'smooth', block: 'start' });
-        }, 100);
-      }
-    });
+    // --- CHANGE 1: Added the new URL to the list ---
+    const urls = [
+      'https://appt.link/meet-with-tony-w5vuHAPR/TonyOnlineEnglish50',
+      'https://appt.link/meet-with-tony-lin-jsqoaDPU/TonyOnlineEnglish',
+      'https://appt.link/TonyOnlineEnglishTutoring3/web-conference/'
+    ];
 
-    // 2. 常見問題 Accordion 展開/收合控制腳本 (新增)
-    document.addEventListener("DOMContentLoaded", function() {
-      const faqQuestions = document.querySelectorAll(".faq-question");
+    const bookingLink = document.getElementById('booking-link-50');
+
+    bookingLink.addEventListener('click', function(event) {
+      event.preventDefault();
+      let clickCount = parseInt(localStorage.getItem('bookingLinkClickCount') || '0');
       
-      faqQuestions.forEach(question => {
-        question.addEventListener("click", function() {
-          const answer = this.nextElementSibling;
-          const icon = this.querySelector('.faq-icon');
-          
-          if (answer.style.maxHeight) {
-            // 收合
-            answer.style.maxHeight = null;
-            icon.textContent = "⊕";
-          } else {
-            // 展開 (保留其他開啟的也可，此處預設不自動收合其他項目)
-            answer.style.maxHeight = answer.scrollHeight + "px";
-            icon.innerHTML = "⊖";
-          }
-        });
-      });
+      // --- CHANGE 2: Changed from % 2 to % 3 to cycle through three links ---
+      const targetUrl = urls[clickCount % 3];
+      
+      clickCount++;
+      localStorage.setItem('bookingLinkClickCount', clickCount);
+      window.location.href = targetUrl;
     });
   </script>
 
