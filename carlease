@@ -1,0 +1,632 @@
+<!-- START: Parking Rental Management Widget V23.3 (Fix Image Overwrite) -->
+<div id="rental-management-container"></div>
+
+<script>
+    (function() {
+        // ------------------------------------------------------------------
+        // [1] GAS 網址 (維持不變)
+        // ------------------------------------------------------------------
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyO59uBVtnCTAOyCuiU0mG-vqq3lO_-O_BkiHlaEtIQAqObMgKwYmN0CHFmj4vR2U8p/exec";
+        // ------------------------------------------------------------------
+
+        const container = document.getElementById('rental-management-container');
+        if (!container) return;
+        
+        // 全域變數：用來暫存「新增表單」的檔案，解決覆蓋問題
+        let addFilesBuffer = [];
+
+        // Helper: Convert File to Base64
+        const readFileAsBase64 = (file) => {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve({
+                    data: reader.result,
+                    name: file.name,
+                    type: file.type
+                });
+                reader.onerror = error => reject(error);
+                reader.readAsDataURL(file);
+            });
+        };
+
+        // --- Auth Logic ---
+        async function checkPassword() {
+            const inputEl = document.getElementById("password-input");
+            const errorEl = document.getElementById("login-error");
+            const btnEl = document.getElementById("login-button");
+            const wrapper = document.getElementById("login-wrapper");
+            
+            const userPass = inputEl.value;
+            if (!userPass) return;
+
+            btnEl.textContent = "驗證中...";
+            btnEl.disabled = true;
+            errorEl.textContent = "";
+
+            try {
+                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: "POST",
+                    body: JSON.stringify({
+                        action: "verifyPassword",
+                        payload: { password: userPass }
+                    })
+                });
+                
+                const resJson = await response.json();
+
+                if (resJson.success) {
+                    initializeApp();
+                } else {
+                    throw new Error("密碼錯誤");
+                }
+            } catch (err) {
+                btnEl.textContent = "進入系統";
+                btnEl.disabled = false;
+                errorEl.textContent = "密碼錯誤或無法連線";
+                wrapper.classList.add("shake-error");
+                inputEl.value = "";
+                setTimeout(() => { wrapper.classList.remove("shake-error") }, 500);
+            }
+        }
+
+        function showLoginScreen(){
+            container.innerHTML=`<style>#rental-management-container .login-view{max-width:400px;margin:40px auto;background:#fff;padding:30px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,.1);text-align:center}#login-wrapper h3{margin-top:0;font-size:24px;color:#333}#password-input{width:100%;padding:12px;font-size:18px;border-radius:8px;border:1px solid #ccc;box-sizing:border-box;margin-top:20px;text-align:center}#login-button{width:100%;padding:12px;font-size:16px;font-weight:bold;color:#fff;background-color:#007bff;border:none;border-radius:8px;cursor:pointer;margin-top:20px}#login-button:hover{background-color:#0056b3}#login-button:disabled{background-color:#ccc;cursor:not-allowed;}#login-error{color:red;height:20px;margin-top:10px}@keyframes shake{10%,90%{transform:translate3d(-1px,0,0)}20%,80%{transform:translate3d(2px,0,0)}30%,50%,70%{transform:translate3d(-4px,0,0)}40%,60%{transform:translate3d(4px,0,0)}}.shake-error{animation:shake .5s cubic-bezier(.36,.07,.19,.97) both}</style><div class=login-view><div id=login-wrapper><h3>請輸入管理密碼</h3><input type=password id=password-input placeholder="Enter Password"><button id=login-button>進入系統</button><p id=login-error></p></div></div>`;
+            
+            document.getElementById("login-button").addEventListener("click", checkPassword);
+            document.getElementById("password-input").addEventListener("keyup", e => { e.key === "Enter" && checkPassword() });
+            document.getElementById("password-input").focus();
+        };
+        
+        // --- Main App ---
+        function initializeApp() {
+            container.innerHTML = `
+                <style>
+                    :root{--primary-color:#007bff;--secondary-color:#28a745;--purple-btn:#6f42c1;--font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;--text-color:#212529;--border-color:#dee2e6;--status-paid-bg:#d4edda;--status-paid-text:#155724;--status-pending-bg:#fff3cd;--status-pending-text:#856404;}
+                    #rental-management-container{font-family:var(--font-family);color:var(--text-color);padding:20px;background:#f8f9fa;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,.1);max-width:1440px;margin:20px auto;width:100%;line-height:1.6;}
+                    .form-section,.table-section{background:#fff;padding:20px;border-radius:8px;margin-bottom:25px;border:1px solid var(--border-color);width:100%}
+                    h2{margin:0;line-height:1.3;} .form-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:15px} .form-group{margin-bottom:15px;} .form-group label{display:block;margin-bottom:8px;font-weight:600} 
+                    input,select,textarea{width:100%;padding:10px;border:1px solid var(--border-color);border-radius:4px;box-sizing:border-box;font-size:1em} 
+                    textarea{line-height:1.6; resize:vertical;} 
+                    .app-button{background-color:var(--primary-color);color:white;border:none;padding:12px;border-radius:5px;font-size:1em;font-weight:600;cursor:pointer;width:100%} 
+                    .refresh-button{background-color:#6c757d;color:white;border:none;padding:8px 14px;border-radius:5px;font-size:0.9em;cursor:pointer;width:100%} 
+                    .filter-select{padding:12px;border:1px solid var(--border-color);border-radius:4px;font-size:1em;width:100%} 
+                    
+                    .results-table table{width:100%;border-collapse:collapse;margin-top:20px} 
+                    .results-table th,.results-table td{border:1px solid #dee2e6;padding:12px;text-align:left;vertical-align:top} 
+                    .results-table th{background-color:#e9ecef;vertical-align:middle} 
+                    .action-buttons-cell{display:flex;flex-wrap:wrap;gap:6px;align-items:center} 
+                    .action-button{background-color:var(--secondary-color);color:white;border:none;padding:5px 10px;border-radius:4px;font-size:.9em;cursor:pointer} 
+                    .status-toggle-btn{background-color:#17a2b8} 
+                    .status-tag{padding:4px 8px;border-radius:4px;font-weight:bold;font-size:.9em} 
+                    .status-paid{background-color:var(--status-paid-bg);color:var(--status-paid-text)} 
+                    .status-pending{background-color:var(--status-pending-bg);color:var(--status-pending-text)} 
+                    
+                    .note-content { font-size: 0.9em; color: #333; white-space: pre-wrap; word-break: break-word; }
+                    .toggle-note { cursor:pointer; color:var(--primary-color); font-weight:bold; text-decoration:none; display:inline-block; font-size: 0.9em; margin-top: 5px; }
+                    
+                    /* Thumbnail Styles */
+                    .table-thumbnail {
+                        width: 60px;
+                        height: 60px;
+                        object-fit: cover;
+                        border-radius: 6px;
+                        border: 1px solid #ddd;
+                        margin-right: 5px;
+                        transition: transform 0.2s;
+                        vertical-align: middle;
+                        background: #f8f9fa;
+                    }
+                    .table-thumbnail:hover {
+                        transform: scale(2.5);
+                        z-index: 100;
+                        position: relative;
+                        border: 2px solid var(--purple-btn);
+                        box-shadow: 0 4px 8px rgba(0,0,0,0.3);
+                    }
+                    .thumb-link { text-decoration: none; cursor: zoom-in; }
+
+                    .photo-btn { display: inline-block; background: var(--purple-btn); color: white; padding: 4px 8px; border-radius: 4px; text-decoration: none; font-size: 0.85em; margin-right:5px; margin-bottom:5px; }
+                    .photo-btn:hover { background: #5a32a3; }
+                    
+                    /* Preview Wrappers */
+                    .img-thumbnail-wrapper { display: inline-flex; flex-direction: column; align-items: center; margin: 5px; border: 1px solid #ddd; padding: 5px; background: #fff; border-radius: 4px; position: relative; }
+                    .remove-img-btn { background: #dc3545; color: white; border: none; padding: 2px 6px; border-radius: 3px; font-size: 0.8em; cursor: pointer; margin-top: 4px; }
+                    
+                    input[type="file"]::file-selector-button {
+                        background-color: var(--purple-btn); color: white; border: none; padding: 8px 12px; border-radius: 4px; cursor: pointer; margin-right: 10px; font-weight: bold; transition: background-color 0.3s;
+                    }
+                    input[type="file"]::file-selector-button:hover { background-color: #5a32a3; }
+
+                    .inline-editor-row{display:table-row} .inline-editor-cell{padding:0 !important} 
+                    .inline-editor-container{background-color:#fffbeb;padding:15px;width:100%;box-sizing:border-box;max-height:0;overflow:hidden;transition:max-height .4s ease-out} 
+                    .inline-editor-container.open{max-height:1500px;transition:max-height .5s ease-in;overflow-y:auto} 
+                    .inline-editor-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:20px} 
+                    .inline-editor-actions button{padding:8px 16px;border-radius:5px;border:none;cursor:pointer;font-weight:bold} 
+                    .inline-editor-actions .save-btn{background-color:var(--primary-color);color:white} 
+                    .inline-editor-actions .cancel-btn{background-color:#6c757d;color:white} 
+                    .building-xindu{color:#0056b3;font-weight:bold} .building-xiaoliangkou{color:#c82333;font-weight:bold}
+                    
+                    /* RESPONSIVE */
+                    @media (min-width: 768px) and (max-width: 992px) { 
+                        #rental-management-container { font-size: 1.2rem; }
+                        .results-table thead { display: none; }
+                        .results-table table, .results-table tbody { display: block; width: 100%; }
+                        .results-table tr { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; border: 1px solid var(--border-color); margin-bottom: 25px; padding: 15px; border-radius: 8px; background-color: #fff; }
+                        .results-table tr.inline-editor-row { display: block; }
+                        .results-table td { display: block; border: none; padding: 5px 0; border-bottom: 1px solid #f1f1f1; }
+                        .results-table td:last-child { border-bottom: none; }
+                        .results-table td::before { content: attr(data-label); font-weight: bold; display: block; margin-bottom: 3px; color: #555; font-size: 0.9em; }
+                        .results-table td[data-label="備註"] { grid-column: 1 / -1; border-top: 2px solid #eee; margin-top: 10px; padding-top: 10px; }
+                        .results-table td[data-label="操作"] { grid-column: 1 / -1; justify-self: end; border-top: 1px dashed #eee; padding-top: 10px; }
+                        .inline-editor-cell { display: block; width: 100%; }
+                    }
+
+                    @media (max-width: 767px) { 
+                        .results-table thead { display: none; }
+                        .results-table table, .results-table tbody { display: block; width: 100%; }
+                        .results-table tr { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; border: 1px solid var(--border-color); margin-bottom: 20px; padding: 10px; border-radius: 8px; background-color: #fff; }
+                        .results-table tr.inline-editor-row { display: block; }
+                        .results-table td { display: block; border: none; padding: 4px 0; width: 100%; word-break: break-word; }
+                        .results-table td::before { content: attr(data-label); font-weight: bold; display: block; margin-bottom: 2px; color: #666; font-size: 0.85em; }
+                        .results-table td[data-label="備註"] { grid-column: 1 / -1; border-top: 1px solid #eee; padding-top: 8px; margin-top: 5px; }
+                        .results-table td[data-label="操作"] { grid-column: 1 / -1; border-top: 1px dashed #eee; padding-top: 8px; }
+                        .inline-editor-row, .results-table .inline-editor-cell { display: block; width: 100%; } 
+                    }
+                </style>
+                <div class="form-section">
+                    <h2>新增車位出租紀錄</h2>
+                    <form id="addRentalForm">
+                        <div class="form-grid">
+                            <div class="form-group"><label>名稱</label><select name="buildingName" required><option>新都心</option><option>小倆口大廈</option></select></div>
+                            <div class="form-group"><label>承租人姓名</label><input type="text" name="tenantName" required></div>
+                            <div class="form-group"><label>承租人聯絡方式電話</label><input type="tel" name="tenantPhone" required></div>
+                            <div class="form-group"><label>承租開始日期</label><input type="date" name="startDate" required></div>
+                            <div class="form-group"><label>承租期間</label><select name="duration" required><option>一個月</option><option>六個月</option><option>12個月</option></select></div>
+                        </div>
+                        
+                        <div class="form-group" style="background: #f1f3f5; padding: 10px; border-radius: 5px;">
+                            <label style="color:var(--purple-btn); font-weight:bold;">上傳圖片 (最多3張)</label>
+                            <!-- 預覽區 -->
+                            <div id="add-img-previews" style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:10px; min-height:10px;"></div>
+                            
+                            <input type="file" id="imageFiles" accept="image/*" multiple>
+                            <small style="display:block;color:#666;margin-top:5px;">可分次選取，總計最多3張。</small>
+                        </div>
+
+                        <div class="form-group"><label for="note">備註</label><textarea name="note" rows="10"></textarea></div>
+                        <div style="margin-top:20px;"><button type="submit" class="app-button">新增紀錄</button></div>
+                    </form>
+                </div>
+                <div class="table-section">
+                    <div class="section-header" style="flex-direction: row; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+                        <h2 style="flex-grow: 1;">所有租賃紀錄</h2>
+                        <div style="display:flex; gap:10px; min-width: 300px;">
+                            <select id="filterBuilding" class="filter-select"></select>
+                            <button id="refreshBtn" class="refresh-button">重新整理</button>
+                        </div>
+                    </div>
+                    <div id="results" class="results-table"><p>正在從 Google Sheet 載入資料...</p></div>
+                </div>
+            `;
+            
+            const buildingSelect = document.querySelector('#addRentalForm select[name="buildingName"]');
+            const noteTextarea = document.querySelector('#addRentalForm textarea[name="note"]');
+            
+            const xinduDefaultNote = `新都心車位到114/10/01，\n費用有調整，\n\n半年優惠價格：$2400/月\n總計：$2400 × 6 = $14400\n\n一年優惠價格：$2200/月\n總計：$2200 × 12 = $26400\n\n一年租約的退費政策：\n如果您已經使用了半年的租期，我們將根據您的實際使用情況進行退費。退還半年優惠價格 $2400/月\n\n半年租約的退費政策：\n對於半年租約，我們將按照原租金 $2600/月進行退費比例計算。`;
+            const xiaoliangkouDefaultNote = `一年租約的退費政策：\n如果您已經使用了半年的租期，我們將根據您的實際使用情況進行退費。退還半年優惠價格 $2100/月\n\n半年租約的退費政策：\n對於半年租約，我們將按照原租金 $2300/月進行退費比例計算`;
+
+            function setDefaultNote() {
+                const selectedBuilding = buildingSelect.value;
+                if (selectedBuilding === '新都心') { noteTextarea.value = xinduDefaultNote; } 
+                else if (selectedBuilding === '小倆口大廈') { noteTextarea.value = xiaoliangkouDefaultNote; } 
+                else { noteTextarea.value = ''; }
+            }
+            buildingSelect.addEventListener('change', setDefaultNote);
+            setDefaultNote();
+
+            let allData = [];
+            async function callGoogleScript(a, e = {}) { try { document.body.style.cursor="wait"; const t = await fetch(GOOGLE_SCRIPT_URL,{method:"POST",body:JSON.stringify({action:a,payload:e})}); if (!t.ok) throw new Error("Network error!"); const n = await t.json(); if (!n.success) throw new Error(n.message || "Script error."); return n.data } catch (a) { alert(`發生錯誤: ${a.message}`); return null; } finally { document.body.style.cursor="default" } }
+            function formatDate(t) { return t && "string" == typeof t ? t.substring(0, 10).replace(/-/g, ".") : "" }
+            
+            const getDriveId = (url) => {
+                const match = url.match(/\/d\/(.+?)(\/|$)/) || url.match(/id=([^&]+)/);
+                return match ? match[1] : null;
+            };
+
+            // -----------------------------------------------------------
+            // NEW: Add Form Logic (Fixing Overwrite)
+            // -----------------------------------------------------------
+            const addFileInput = document.getElementById('imageFiles');
+            const addPreviewContainer = document.getElementById('add-img-previews');
+            
+            function renderAddPreviews() {
+                addPreviewContainer.innerHTML = '';
+                addFilesBuffer.forEach((file, index) => {
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        const div = document.createElement('div');
+                        div.className = 'img-thumbnail-wrapper';
+                        div.innerHTML = `
+                            <img src="${e.target.result}" style="width:60px;height:60px;object-fit:cover;border-radius:4px;">
+                            <button type="button" class="remove-img-btn" data-idx="${index}">刪除</button>
+                        `;
+                        addPreviewContainer.appendChild(div);
+                        
+                        div.querySelector('.remove-img-btn').addEventListener('click', () => {
+                            addFilesBuffer.splice(index, 1);
+                            renderAddPreviews();
+                        });
+                    };
+                    reader.readAsDataURL(file);
+                });
+            }
+
+            addFileInput.addEventListener('change', function(e) {
+                const newFiles = Array.from(e.target.files);
+                if (addFilesBuffer.length + newFiles.length > 3) {
+                    alert("圖片總數不能超過 3 張！");
+                    // Do not add if exceeding limit
+                } else {
+                    newFiles.forEach(f => addFilesBuffer.push(f));
+                    renderAddPreviews();
+                }
+                // Clear input so same file can be selected again or user can select more
+                this.value = '';
+            });
+            // -----------------------------------------------------------
+
+            function renderTable(filteredData = allData) {
+                const tableContainer = document.getElementById("results");
+                if (!filteredData || filteredData.length === 0) {
+                    tableContainer.innerHTML = "<p>目前沒有任何租賃紀錄。</p>";
+                    return;
+                }
+                const tableHTML = `<table><thead><tr><th>名稱</th><th>承租人</th><th>聯絡電話</th><th>狀態</th><th>開始日</th><th>期間</th><th>到期日</th><th>費用</th><th>圖片</th><th style="width:20%">備註</th><th>操作</th></tr></thead><tbody>${filteredData.map(row => {
+                    const id = row[0], building = row[1], tenant = row[2], phone = row[3], startDate = formatDate(row[4]), duration = row[5], expiryDate = formatDate(row[6]), fee = row[7] ? "$" + Math.round(Number(row[7])).toLocaleString("en-US") : "", avgRent = row[8] ? "$" + Math.round(Number(row[8])).toLocaleString("en-US") : "", status = row[9] || "提醒中";
+                    const note = row[10] || "";
+                    const imageString = row[11] || ""; 
+                    
+                    let noteHTML = "";
+                    if (note) {
+                         const limit = 30;
+                         const isLong = note.length > limit || note.split('\n').length > 3;
+                         if (isLong) {
+                             const shortNote = note.substring(0, limit) + "...";
+                             noteHTML = `<div class="note-content"><span class="short-note">${shortNote.replace(/\n/g, "<br>")}</span><span class="full-note" style="display:none;">${note.replace(/\n/g, "<br>")}</span><div class="toggle-note">顯示更多</div></div>`;
+                         } else {
+                             noteHTML = `<div class="note-content">${note.replace(/\n/g, "<br>")}</div>`;
+                         }
+                    }
+
+                    let imageHTML = "";
+                    if (imageString) {
+                        const urls = imageString.split(",").filter(u => u.trim() !== "");
+                        if(urls.length > 0 && urls[0].startsWith("Error")) {
+                            imageHTML = `<span style="color:red">上傳失敗</span>`;
+                        } else {
+                            imageHTML = urls.map((url, idx) => {
+                                const fileId = getDriveId(url);
+                                const btnHTML = `<a href="${url}" target="_blank" class="photo-btn">圖${idx+1}</a>`;
+                                if (fileId) {
+                                    const thumbLink = `https://drive.google.com/thumbnail?id=${fileId}&sz=w200`;
+                                    return `<a href="${url}" target="_blank" class="thumb-link"><img src="${thumbLink}" class="table-thumbnail" alt="圖${idx+1}" loading="lazy" onerror="this.parentElement.outerHTML='${btnHTML.replace(/"/g, "&quot;")}'"></a>`;
+                                } else {
+                                    return btnHTML;
+                                }
+                            }).join(" ");
+                        }
+                    } else {
+                        imageHTML = `<span style="color:#ccc;font-size:0.8em">無</span>`;
+                    }
+
+                    const isPaid = status === "已收款";
+                    const statusClass = isPaid ? "status-paid" : "status-pending";
+                    const buildingClass = building === "新都心" ? "building-xindu" : "building-xiaoliangkou";
+                    const toggleButtonText = isPaid ? "標為提醒中" : "標為已收款";
+                    
+                    return `<tr data-row-id=${id}>
+                        <td data-label=名稱><span class="${buildingClass}">${building}</span></td>
+                        <td data-label=承租人>${tenant}</td>
+                        <td data-label=聯絡電話>${phone}</td>
+                        <td data-label=狀態><span class="status-tag ${statusClass}">${status}</span></td>
+                        <td data-label=開始日>${startDate}</td>
+                        <td data-label=期間>${duration}</td>
+                        <td data-label=到期日>${expiryDate}</td>
+                        <td data-label=費用>${fee}</td>
+                        <td data-label=圖片>${imageHTML}</td>
+                        <td data-label=備註>${noteHTML}</td>
+                        <td data-label=操作><div class=action-buttons-cell><button class="action-button edit-btn">編輯</button><button class="action-button status-toggle-btn">${toggleButtonText}</button></div></td>
+                    </tr>`
+                }).join("")}</tbody></table>`;
+                tableContainer.innerHTML = tableHTML;
+            }
+
+            async function loadData() {
+                const refreshBtn = document.getElementById("refreshBtn");
+                if(refreshBtn) { refreshBtn.textContent = "整理中..."; refreshBtn.disabled = true; }
+                const response = await callGoogleScript("getRentalData");
+                if (response) {
+                    allData = response.sort((a, b) => new Date(b[4]) - new Date(a[4]));
+                    const buildings = [...new Set(allData.map(row => row[1]).filter(Boolean))];
+                    const filterSelect = document.getElementById('filterBuilding');
+                    const currentFilterValue = filterSelect.value;
+                    filterSelect.innerHTML = '<option value="">所有建築</option>' + buildings.map(b => `<option value="${b}">${b}</option>`).join('');
+                    filterSelect.value = currentFilterValue;
+                    applyFilter();
+                }
+                if(refreshBtn) { refreshBtn.textContent = "重新整理"; refreshBtn.disabled = false; }
+            }
+
+            function applyFilter() {
+                const filterValue = document.getElementById('filterBuilding').value;
+                const filteredData = filterValue ? allData.filter(row => row[1] === filterValue) : allData;
+                renderTable(filteredData);
+            }
+
+            // ADD SUBMIT
+            document.getElementById("addRentalForm").addEventListener("submit", async function(e) {
+                e.preventDefault();
+                const form = e.target, btn = form.querySelector("button");
+                
+                // Use the buffer instead of input.files
+                const files = addFilesBuffer; 
+                
+                btn.disabled = true; btn.textContent = "上傳中...";
+                
+                let imagesPayload = [];
+                if (files.length > 0) {
+                    try {
+                        imagesPayload = await Promise.all(files.map(file => readFileAsBase64(file)));
+                    } catch (err) {
+                        alert("圖片讀取失敗");
+                        btn.disabled = false; btn.textContent = "新增紀錄";
+                        return;
+                    }
+                }
+
+                const payload = { 
+                    buildingName:form.buildingName.value, 
+                    tenantName:form.tenantName.value, 
+                    tenantPhone:form.tenantPhone.value, 
+                    startDate:form.startDate.value, 
+                    duration:form.duration.value, 
+                    note:noteTextarea.value,
+                    images: imagesPayload
+                };
+
+                const response = await callGoogleScript("addNewRental", payload);
+                if (response) {
+                    alert(response);
+                    form.tenantName.value = ''; form.tenantPhone.value = ''; form.startDate.valueAsDate = new Date();
+                    form.buildingName.selectedIndex = 0; form.duration.selectedIndex = 0;
+                    
+                    // Clear Buffer and Preview
+                    addFilesBuffer = [];
+                    renderAddPreviews();
+                    addFileInput.value = '';
+                    
+                    setDefaultNote();
+                    await loadData();
+                }
+                btn.disabled = false; btn.textContent = "新增紀錄";
+            });
+
+            // ACTIONS
+            document.getElementById("results").addEventListener("click", function(e) {
+                const target = e.target;
+                
+                if (target.classList.contains("toggle-note")) { 
+                    e.preventDefault(); 
+                    const parent = target.closest(".note-content");
+                    const shortNote = parent.querySelector(".short-note");
+                    const fullNote = parent.querySelector(".full-note");
+                    
+                    if (fullNote.style.display === "none") {
+                        fullNote.style.display = "block";
+                        shortNote.style.display = "none";
+                        target.textContent = "收起";
+                    } else {
+                        fullNote.style.display = "none";
+                        shortNote.style.display = "block";
+                        target.textContent = "顯示更多";
+                    }
+                }
+
+                // Edit
+                if (target.classList.contains("edit-btn")) {
+                    document.querySelector(".inline-editor-row")?.remove();
+                    const row = target.closest("tr");
+                    const rowId = row.dataset.rowId;
+                    const data = allData.find(r => r[0] == rowId);
+                    if (!data) return;
+                    
+                    const imageString = data[11] || "";
+                    let existingUrls = imageString.split(",").filter(u => u.trim() !== "");
+                    
+                    let imgDisplayHTML = `<div id="edit-existing-images" style="margin-bottom:10px;display:flex;flex-wrap:wrap;">`;
+                    if(existingUrls.length > 0 && !existingUrls[0].startsWith("Error")) {
+                        existingUrls.forEach((url, i) => {
+                            const fileId = getDriveId(url);
+                            let innerHTML = `<a href="${url}" target="_blank">圖片 ${i+1}</a>`;
+                            if(fileId) {
+                                const thumbLink = `https://drive.google.com/thumbnail?id=${fileId}&sz=w200`;
+                                const btnHTML = `<a href="${url}" target="_blank">圖片 ${i+1}</a>`;
+                                innerHTML = `<a href="${url}" target="_blank"><img src="${thumbLink}" style="width:60px;height:60px;object-fit:cover;border-radius:4px;" onerror="this.parentElement.innerHTML='${btnHTML.replace(/"/g, "&quot;")}'"></a>`;
+                            }
+                            imgDisplayHTML += `
+                                <div class="img-thumbnail-wrapper" data-url="${url}">
+                                    ${innerHTML}
+                                    <button type="button" class="remove-img-btn">刪除</button>
+                                </div>
+                            `;
+                        });
+                    }
+                    imgDisplayHTML += `</div>`;
+
+                    const editorRow = document.createElement("tr");
+                    editorRow.className = "inline-editor-row";
+                    editorRow.innerHTML = `
+                    <td colspan=11 class=inline-editor-cell>
+                        <div class=inline-editor-container>
+                            <div class=form-grid>
+                                <div class=form-group><label>名稱</label><select name=edit-buildingName><option>新都心</option><option>小倆口大廈</option></select></div>
+                                <div class=form-group><label>承租人</label><input type=text name=edit-tenantName></div>
+                                <div class=form-group><label>電話</label><input type=tel name=edit-tenantPhone></div>
+                                <div class=form-group><label>開始日</label><input type=date name=edit-startDate></div>
+                                <div class=form-group><label>期間</label><select name=edit-duration><option>一個月</option><option>六個月</option><option>12個月</option></select></div>
+                                <div class=form-group><label>狀態</label><select name=edit-status><option>提醒中</option><option>已收款</option></select></div>
+                            </div>
+                            
+                            <div class="form-group" style="background:#fff3cd; padding:10px; border-radius:5px;">
+                                <label style="color:var(--purple-btn); font-weight:bold;">圖片管理 (總計上限 3 張)</label>
+                                ${imgDisplayHTML}
+                                <div id="edit-new-previews" style="display:flex;gap:10px;flex-wrap:wrap;margin-bottom:5px;"></div>
+                                <hr style="border:0;border-top:1px solid #ddd;margin:10px 0;">
+                                <label style="font-size:0.85em;color:#555;">新增圖片 (支援分次上傳)</label>
+                                <input type="file" id="edit-imageFiles" accept="image/*" multiple>
+                            </div>
+
+                            <div class=form-group><label>備註</label><textarea name=edit-note rows=6></textarea></div>
+                            <div class=inline-editor-actions><button class=cancel-btn>取消</button><button class=save-btn data-id=${rowId}>儲存變更</button></div>
+                        </div>
+                    </td>`;
+                    row.after(editorRow);
+                    const container = editorRow.querySelector('.inline-editor-container');
+                    
+                    container.querySelector("[name=edit-buildingName]").value = data[1]; 
+                    container.querySelector("[name=edit-tenantName]").value = data[2] || ""; 
+                    container.querySelector("[name=edit-tenantPhone]").value = data[3] || ""; 
+                    container.querySelector("[name=edit-startDate]").value = data[4].split("T")[0]; 
+                    container.querySelector("[name=edit-duration]").value = data[5]; 
+                    container.querySelector("[name=edit-status]").value = data[9] || "提醒中"; 
+                    container.querySelector("[name=edit-note]").value = data[10] || "";
+
+                    // EDIT LOGIC: Buffer for new files
+                    let editNewFilesBuffer = [];
+                    const existingContainer = container.querySelector("#edit-existing-images");
+                    const newPreviewContainer = container.querySelector("#edit-new-previews");
+                    const editFileInput = container.querySelector("#edit-imageFiles");
+
+                    // Render New Previews in Edit
+                    function renderEditNewPreviews() {
+                        newPreviewContainer.innerHTML = '';
+                        editNewFilesBuffer.forEach((file, index) => {
+                            const reader = new FileReader();
+                            reader.onload = (e) => {
+                                const div = document.createElement('div');
+                                div.className = 'img-thumbnail-wrapper';
+                                div.style.border = "1px dashed var(--purple-btn)";
+                                div.innerHTML = `
+                                    <img src="${e.target.result}" style="width:60px;height:60px;object-fit:cover;border-radius:4px;">
+                                    <button type="button" class="remove-img-btn">刪除</button>
+                                `;
+                                newPreviewContainer.appendChild(div);
+                                div.querySelector('.remove-img-btn').addEventListener('click', () => {
+                                    editNewFilesBuffer.splice(index, 1);
+                                    renderEditNewPreviews();
+                                });
+                            };
+                            reader.readAsDataURL(file);
+                        });
+                    }
+
+                    // Existing remove
+                    existingContainer.addEventListener("click", (evt) => {
+                        if(evt.target.classList.contains("remove-img-btn")) {
+                            evt.target.closest(".img-thumbnail-wrapper").remove();
+                        }
+                    });
+
+                    // New file input change
+                    editFileInput.addEventListener('change', function(e) {
+                        const existingCount = existingContainer.querySelectorAll(".img-thumbnail-wrapper").length;
+                        const newFiles = Array.from(e.target.files);
+                        
+                        if (existingCount + editNewFilesBuffer.length + newFiles.length > 3) {
+                            alert("圖片總數不能超過3張 (包含舊圖與新圖)");
+                        } else {
+                            newFiles.forEach(f => editNewFilesBuffer.push(f));
+                            renderEditNewPreviews();
+                        }
+                        this.value = '';
+                    });
+
+                    setTimeout(() => container.classList.add("open"), 10);
+                
+                    // SAVE Logic (Edit)
+                    container.querySelector('.save-btn').addEventListener('click', async (e) => {
+                        const btn = e.target;
+                        btn.disabled = true; btn.textContent = "儲存中...";
+                        
+                        const remainingWrappers = existingContainer.querySelectorAll(".img-thumbnail-wrapper");
+                        const keptImages = Array.from(remainingWrappers).map(w => w.dataset.url);
+
+                        if (keptImages.length + editNewFilesBuffer.length > 3) {
+                            alert("圖片總數不能超過3張，請先刪除舊圖或減少上傳數量。");
+                            btn.disabled = false; btn.textContent = "儲存變更";
+                            return;
+                        }
+
+                        let newImagesPayload = [];
+                        if (editNewFilesBuffer.length > 0) {
+                            try {
+                                newImagesPayload = await Promise.all(editNewFilesBuffer.map(file => readFileAsBase64(file)));
+                            } catch(err) {
+                                alert("圖片處理失敗"); btn.disabled = false; btn.textContent = "儲存變更"; return;
+                            }
+                        }
+
+                        const payload = { 
+                            id: parseInt(btn.dataset.id), 
+                            buildingName: container.querySelector("[name=edit-buildingName]").value, 
+                            tenantName: container.querySelector("[name=edit-tenantName]").value, 
+                            tenantPhone: container.querySelector("[name=edit-tenantPhone]").value, 
+                            startDate: container.querySelector("[name=edit-startDate]").value, 
+                            duration: container.querySelector("[name=edit-duration]").value, 
+                            status: container.querySelector("[name=edit-status]").value, 
+                            note: container.querySelector("[name=edit-note]").value,
+                            keptImages: keptImages,
+                            newImages: newImagesPayload
+                        };
+
+                        try {
+                            const res = await callGoogleScript("updateRentalData", payload);
+                            if (res) { 
+                                alert(res); 
+                                container.closest(".inline-editor-row").remove(); 
+                                loadData(); 
+                            }
+                        } catch(err) {
+                            console.error(err);
+                            alert("更新失敗: " + err.message);
+                        } finally {
+                            btn.disabled = false; btn.textContent = "儲存變更";
+                        }
+                    });
+                    
+                    // Cancel
+                    container.querySelector('.cancel-btn').addEventListener('click', () => {
+                        container.closest(".inline-editor-row").remove();
+                    });
+                }
+
+                if (target.classList.contains("status-toggle-btn")) {
+                    target.disabled = true; target.textContent = "更新中...";
+                    const rowId = target.closest("tr").dataset.rowId;
+                    const data = allData.find(r => r[0] == rowId);
+                    if (!data) return;
+                    const newStatus = (data[9] || "提醒中") === "已收款" ? "提醒中" : "已收款";
+                    const payload = { id: data[0], buildingName: data[1], tenantName: data[2], tenantPhone: data[3], startDate: data[4], duration: data[5], status: newStatus, note: data[10] };
+                    callGoogleScript("updateRentalData", payload).then(res => { if (res) { loadData(); } else { target.disabled = false; target.textContent = (newStatus === "已收款") ? "標為提醒中" : "標為已收款"; alert("狀態更新失敗。"); } });
+                }
+            });
+
+            document.getElementById('refreshBtn').addEventListener('click', loadData);
+            document.getElementById('filterBuilding').addEventListener('change', applyFilter);
+            document.getElementById('addRentalForm').startDate.valueAsDate = new Date();
+            loadData();
+        }
+        showLoginScreen();
+    })();
+</script>
+<!-- END: Parking Rental Management Widget V23.3 -->
