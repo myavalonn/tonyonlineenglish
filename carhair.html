@@ -1,0 +1,512 @@
+<!-- FINAL UI-ENHANCED VERSION (Secure Backend Verification) -->
+<div id="record-keeper-container"></div>
+<script>
+    (function() {
+        // ------------------------------------------------------------------
+        // Please paste your [existing] Web App URL (no need to redeploy)
+        // ------------------------------------------------------------------
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzDRz1eRryFXb-vDJpfVsbq-GULpDUoPKwx2Ojxga5BFdNIEBXXCEQVu_WRbB6wWBlZJg/exec";
+        // ------------------------------------------------------------------
+
+        const container = document.getElementById('record-keeper-container');
+        if (!container) return;
+
+        // --- [修改部分] 非同步密碼驗證函數 ---
+        async function checkPassword() {
+            const inputEl = document.getElementById("password-input");
+            const errorEl = document.getElementById("login-error");
+            const btnEl = document.getElementById("login-button");
+            const wrapper = document.getElementById("login-wrapper");
+            
+            const userPass = inputEl.value;
+            if (!userPass) return;
+
+            // UI 顯示驗證中
+            btnEl.textContent = "驗證中...";
+            btnEl.disabled = true;
+            errorEl.textContent = "";
+
+            try {
+                // 呼叫後端驗證
+                const response = await fetch(GOOGLE_SCRIPT_URL, {
+                    method: "POST",
+                    body: JSON.stringify({
+                        action: "verifyPassword",
+                        payload: { password: userPass }
+                    })
+                });
+                
+                const resJson = await response.json();
+
+                if (resJson.success) {
+                    initializeApp();
+                } else {
+                    throw new Error("密碼錯誤");
+                }
+            } catch (err) {
+                // 處理錯誤
+                btnEl.textContent = "解鎖";
+                btnEl.disabled = false;
+                errorEl.textContent = "密碼錯誤，請重試";
+                wrapper.classList.add("shake-error");
+                inputEl.value = "";
+                setTimeout(() => { wrapper.classList.remove("shake-error") }, 500);
+            }
+        }
+
+        function showLoginScreen() {
+            container.innerHTML = `<style>#record-keeper-container .login-view{max-width:400px;margin:40px auto;background:#fff;padding:30px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,.1);text-align:center}#login-wrapper h3{margin-top:0;font-size:24px;color:#333}#password-input{width:100%;padding:12px;font-size:18px;border-radius:8px;border:1px solid #ccc;box-sizing:border-box;margin-top:20px;text-align:center}#login-button{width:100%;padding:12px;font-size:16px;font-weight:bold;color:#fff;background-color:#007bff;border:none;border-radius:8px;cursor:pointer;margin-top:20px}#login-button:hover{background-color:#0056b3}#login-button:disabled{background-color:#ccc;cursor:not-allowed;}#login-error{color:red;height:20px;margin-top:10px}@keyframes shake{10%,90%{transform:translate3d(-1px,0,0)}20%,80%{transform:translate3d(2px,0,0)}30%,50%,70%{transform:translate3d(-4px,0,0)}40%,60%{transform:translate3d(4px,0,0)}}.shake-error{animation:shake .5s cubic-bezier(.36,.07,.19,.97) both}</style><div class=login-view><div id=login-wrapper><h3>請輸入密碼</h3><input type=password id=password-input placeholder="Enter Password"><button id=login-button>解鎖</button><p id=login-error></p></div></div>`;
+            
+            document.getElementById("login-button").addEventListener("click", checkPassword);
+            document.getElementById("password-input").addEventListener("keyup", e => {
+                e.key === "Enter" && checkPassword()
+            });
+            document.getElementById("password-input").focus();
+        }
+
+        function initializeApp() {
+            container.innerHTML = `
+            <style>
+                :root { --primary-color: #007bff; --primary-color-hover: #0056b3; --secondary-color: #28a745; --danger-color: #dc3545; --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; --text-color: #212529; --border-color: #dee2e6; font-size: 21px; }
+                #record-keeper-container { font-family: var(--font-family); color: var(--text-color); padding: 1.25em; border-radius: 0.75em; box-shadow: 0 0.25em 0.75em rgba(0,0,0,0.1); max-width: 60em; margin: 1.25em auto; box-sizing: border-box; }
+                .app-nav { display: flex; border-bottom: 1px solid var(--border-color); margin-bottom: 1.25em; }
+                .app-nav button { background: none; border: none; padding: 0.6em 1em; cursor: pointer; font-size: 1em; color: #6c757d; border-bottom: 3px solid transparent; }
+                .app-nav button.active { border-bottom-color: var(--primary-color); font-weight: 600; color: var(--primary-color); }
+                .app-section { display: none; } .app-section.active { display: block; }
+                .form-group { margin-bottom: 1em; } .form-group label { display: block; margin-bottom: 0.5em; font-weight: 600; }
+                input, select, textarea { width: 100%; padding: 0.6em; border: 1px solid var(--border-color); border-radius: 0.3em; box-sizing: border-box; font-size: 1em; }
+                .app-button { background-color: var(--primary-color); color: white; border: none; padding: 0.75em; width: 100%; border-radius: 0.5em; font-size: 1em; font-weight: 600; cursor: pointer; }
+                .action-button { background-color: #6c757d; color: white; border: none; padding: 0.3em 0.6em; border-radius: 0.3em; font-size: 0.8em; cursor: pointer; margin-right: 5px; margin-bottom: 5px; }
+                .action-button.edit-btn { background-color: var(--secondary-color); }
+                .action-button.photo-btn { background-color: var(--primary-color); }
+                .query-filters { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 0.6em; background-color: #f8f9fa; padding: 1em; border-radius: 0.5em; margin-bottom: 1.25em; }
+                .results-table table { width: 100%; border-collapse: collapse; margin-top: 1.25em; table-layout: fixed; }
+                .results-table th, .results-table td { border: 1px solid #dee2e6; padding: 0.75em; text-align: left; word-wrap: break-word; vertical-align: top; }
+                .results-table th { background-color: #f8f9fa; }
+                .price-cell { color: var(--danger-color); font-weight: bold; }
+                .photo-gallery a { display: inline-block; margin: 0 5px 5px 0; text-decoration: none; background: #e7f3ff; padding: 2px 6px; border-radius: 4px; color: var(--primary-color); }
+                .toggle-note { cursor: pointer; color: var(--primary-color); font-weight: bold; text-decoration: none; display: inline-block; margin-top: 5px; }
+                .big-square-button { background-color: var(--secondary-color); color: white; border: none; width: 10em; height: 10em; font-size: 1.25em; font-weight: bold; border-radius: 1.25em; cursor: pointer; display: flex; justify-content: center; align-items: center; margin: 1.25em auto; transition: all 0.2s; }
+                #section-haircut h2 { text-align: center; }
+                #car-expenses-summary { padding: 1em; margin-bottom: 1em; background-color: #e7f3ff; border: 1px solid #b3d7ff; border-radius: 0.5em; text-align: center; }
+                #car-expenses-summary h3 { margin: 0; color: #004085; font-size: 1.2em; }
+                .inline-editor-row { display: table-row; }
+                .inline-editor-container { background-color: #fdfaf1; padding: 1.5em; max-height: 0; overflow: hidden; transition: max-height 0.4s ease-out; }
+                .inline-editor-container.open { max-height: 90vh; overflow-y: auto; transition: max-height 0.5s ease-in; }
+                .inline-editor-actions { display: flex; justify-content: flex-end; gap: 0.5em; margin-top: 1.5em; }
+                .inline-editor-actions button { padding: 0.6em 1.2em; border-radius: 0.5em; border: none; cursor: pointer; font-weight: bold; }
+                .inline-editor-actions .save { background-color: var(--primary-color); color: white; }
+                .inline-editor-actions .cancel { background-color: #ccc; }
+
+                /* --- NEW STYLES FOR HAIRCUT INFO --- */
+                #haircutInfo { text-align: center; padding: 2em 1em; background: transparent; border: none; }
+                .haircut-label, .haircut-date { font-weight: bold; line-height: 1.3; }
+                .haircut-date { margin-bottom: 0.8em; }
+                .haircut-label { font-size: calc(1rem * 1.5); }
+                .haircut-date { font-size: calc(1rem * 1.5); }
+                @media (min-width: 769px) and (max-width: 992px) {
+                    .haircut-label, .haircut-date { font-size: calc(1rem * 2); }
+                }
+                @media (min-width: 993px) {
+                    .haircut-label, .haircut-date { font-size: calc(1rem * 3); }
+                }
+
+                /* --- STYLES FOR TABLET AND MOBILE --- */
+                @media (max-width: 992px) {
+                    .results-table table, .results-table thead, .results-table tbody, .results-table th, .results-table td, .results-table tr { display: block; }
+                    .results-table th { display: none; }
+                    .results-table tr { border: 1px solid var(--border-color); border-radius: 0.5em; margin-bottom: 1em; }
+                    .results-table td { display: flex; justify-content: flex-end; align-items: center; border: none; border-bottom: 1px solid #e9ecef; position: relative; padding-left: 50% !important; text-align: right; min-height: 2.5em; }
+                    .results-table tr td:last-child { border-bottom: 0; }
+                    .results-table td:before { content: attr(data-label); position: absolute; left: 0px; width: 45%; padding-left: 0.75em; font-weight: 600; text-align: left; }
+                    .inline-editor-row { display: block; }
+                    .results-table .inline-editor-cell { display: block; padding: 0 !important; }
+                    .inline-editor-actions { flex-direction: column; gap: 0.75em; }
+                    .inline-editor-actions button { width: 100%; }
+                    .results-table td[data-label="ID:"] { display: none; }
+                }
+            </style>
+            <div class="app-nav"><button id="nav-car" class="active">汽車費用</button><button id="nav-haircut">剪髮紀錄</button></div>
+            <div id="section-car" class="app-section active">
+                <h2>紀錄汽車費用</h2>
+                <form id="carExpenseForm">
+                    <div class="form-group"><label>車牌號碼:</label><select name="carPlate"><option value="BCX-8622">BCX-8***</option><option value="ALV-7506">ALV-7***</option></select></div>
+                    <div class="form-group"><label>日期與時間:</label><input type="datetime-local" name="dateTime" required></div>
+                    <div class="form-group"><label>費用項目:</label><select name="expenseItem"><option>報價（未修理）</option><option>汽車電瓶</option><option>牌照稅</option><option>燃料稅</option><option>任意險</option><option>強制險</option><option>強制險＋任意險</option><option>保養</option><option>汽車配件購買</option><option>加油</option><option>停車費</option><option>其他</option></select></div>
+                    <div class="form-group"><label>更換週期 (設定提醒):</label><select name="replacementCycle"><option value="未設定">未設定</option><option>三個月</option><option>六個月</option><option>一年</option><option>18個月</option><option>兩年</option><option>2.5年</option><option>三年</option></select></div>
+                    <div class="form-group"><label>金額:</label><input type="number" name="amount" required></div>
+                    <div class="form-group"><label>備註:</label><textarea name="note" rows="2"></textarea></div>
+                    <div class="form-group"><label>照片 (最多5張):</label><input type="file" name="photo" accept="image/*" multiple></div>
+                    <button type="submit" class="app-button">儲存紀錄</button>
+                </form>
+                <hr style="margin: 25px 0;">
+                <h2>費用查詢</h2>
+                <div class="query-filters">
+                    <div class="filter-item"><label>車輛</label><select id="filter-car"><option value="all">全部車輛</option><option value="BCX-8622">BCX-8***</option><option value="ALV-7506">ALV-7***</option></select></div>
+                    <div class="filter-item"><label>日期範圍</label><select id="filter-range"><option value="all">全部</option><option value="3m">最近三個月</option><option value="6m">最近六個月</option><option value="1y">最近一年</option></select></div>
+                    <div class="filter-item"><label>花費項目</label><select id="filter-item-type"><option value="all">全部項目</option><option>報價（未修理）</option><option>汽車電瓶</option><option>牌照稅</option><option>燃料稅</option><option>任意險</option><option>強制險</option><option>強制險＋任意險</option><option>保養</option><option>汽車配件購買</option><option>加油</option><option>停車費</option><option>其他</option></select></div>
+                    <div class="filter-item"><label>關鍵字</label><input type="text" id="filter-keyword" placeholder="搜尋備註..."></div>
+                </div>
+                <div id="car-expenses-summary"></div>
+                <div id="carExpensesResults" class="results-table"><p>讀取中...</p></div>
+            </div>
+            <div id="section-haircut" class="app-section">
+                <button id="recordHaircutBtn" class="big-square-button">今天<br>剪髮了！</button>
+                <h2>剪髮資訊</h2><div id="haircutInfo"></div>
+                <hr style="margin: 25px 0; border: 0; border-top: 1px solid #eee;">
+                <h2 style="margin-top:0;">歷史紀錄</h2>
+                <div id="haircutResults"></div>
+            </div>
+        `;
+
+            let allCarData = {
+                headers: [],
+                data: []
+            };
+            const findHeaderIndex = (headers, baseName) => headers.findIndex(h => h && h.trim().startsWith(baseName));
+            const maskCarPlate = plate => (plate === 'BCX-8622' ? 'BCX-8***' : (plate === 'ALV-7506' ? 'ALV-7***' : plate));
+            async function callGoogleScript(action, payload = {}) {
+                try {
+                    const response = await fetch(GOOGLE_SCRIPT_URL, {
+                        method: 'POST',
+                        body: JSON.stringify({
+                            action,
+                            payload
+                        })
+                    });
+                    if (!response.ok) throw new Error(`Network error! Status: ${response.status}`);
+                    const result = await response.json();
+                    if (!result.success) throw new Error(result.message || 'Script error.');
+                    return result.data;
+                } catch (error) {
+                    console.error('callGoogleScript Error:', error);
+                    alert(`與伺服器通訊時發生錯誤: ${error.message}`);
+                    return null;
+                }
+            }
+
+            function renderCarTable(dataToRender) {
+                const resultsDiv = document.getElementById('carExpensesResults');
+                if (!dataToRender || !dataToRender.data || dataToRender.data.length === 0) {
+                    resultsDiv.innerHTML = '<p>找不到符合條件的紀錄。</p>';
+                    return;
+                }
+                const {
+                    headers,
+                    data
+                } = dataToRender;
+                const columnsToDisplay = headers.map((header, index) => (data.some(row => row[index] !== null && row[index] !== '' && row[index] !== undefined) ? header : null)).filter(Boolean);
+                const idIndex = findHeaderIndex(columnsToDisplay, 'ID'),
+                    plateIndex = findHeaderIndex(columnsToDisplay, '車牌號碼'),
+                    dateIndex = findHeaderIndex(columnsToDisplay, '日期時間'),
+                    noteIndex = findHeaderIndex(columnsToDisplay, '備註'),
+                    amountIndex = findHeaderIndex(columnsToDisplay, '金額'),
+                    NOTE_TRUNCATE_LENGTH = 15;
+                if (idIndex === -1) {
+                    resultsDiv.innerHTML = `<p style="color:red;">錯誤：查詢結果中缺少 ID 欄位。</p>`;
+                    return;
+                }
+                const photoColumnIndices = headers.map((h, i) => h.trim().startsWith('照片') ? i : -1).filter(i => i !== -1);
+                let tableHtml = `<table><thead><tr>`;
+                const displayHeaders = columnsToDisplay.filter(h => h && !h.trim().startsWith('照片') && h.trim() !== '總金額');
+                tableHtml += displayHeaders.map(h => `<th>${h}</th>`).join('');
+                tableHtml += `<th>照片</th><th>操作</th></tr></thead><tbody>`;
+                tableHtml += data.map(row => {
+                    let rowHtml = `<tr data-row-id="${row[findHeaderIndex(headers, 'ID')]}">`;
+                    displayHeaders.forEach(header => {
+                        const originalIndex = findHeaderIndex(headers, header);
+                        let cell = (originalIndex > -1) ? row[originalIndex] : '',
+                            formattedCell = '',
+                            tdClass = '';
+                        if (originalIndex === noteIndex && cell && cell.length > NOTE_TRUNCATE_LENGTH) {
+                            const shortText = cell.substring(0, NOTE_TRUNCATE_LENGTH),
+                                fullText = cell.toString().replace(/\n/g, '<br>');
+                            formattedCell = `<div><span class="short-note">${shortText}...</span><span class="full-note" style="display:none;">${fullText}</span><a href="#" class="toggle-note">更多</a></div>`;
+                        } else {
+                            formattedCell = (cell || '').toString().replace(/\n/g, '<br>');
+                            if (originalIndex === plateIndex) formattedCell = maskCarPlate(cell);
+                            if (originalIndex === amountIndex && cell !== '') {
+                                formattedCell = `$${parseFloat(cell).toLocaleString()}`;
+                                tdClass += ' price-cell';
+                            }
+                            if (originalIndex === dateIndex && cell) {
+                                const d = new Date(cell);
+                                if (!isNaN(d)) formattedCell = `${d.getFullYear()}<br>${(d.getMonth() + 1).toString().padStart(2, '0')}/${d.getDate().toString().padStart(2, '0')}`;
+                            }
+                        }
+                        rowHtml += `<td data-label="${header}:" class="${tdClass}">${formattedCell}</td>`;
+                    });
+                    rowHtml += `<td data-label="照片:" class="photo-gallery-cell"><div class="photo-gallery">`;
+                    let photoCount = 0;
+                    photoColumnIndices.forEach(pIndex => {
+                        if (row[pIndex] && row[pIndex].startsWith('http')) {
+                            photoCount++;
+                            rowHtml += `<a href="${row[pIndex]}" target="_blank" rel="noopener noreferrer">圖片 ${photoCount}</a>`;
+                        }
+                    });
+                    rowHtml += `</div></td>`;
+                    rowHtml += `<td data-label="操作:" class="action-buttons-cell"><button class="action-button edit-btn" data-id="${row[findHeaderIndex(headers, 'ID')]}">編輯</button><button class="action-button photo-btn" data-id="${row[findHeaderIndex(headers, 'ID')]}" ${photoCount >= 5 ? 'disabled' : ''}>新增照片</button></td>`;
+                    rowHtml += '</tr>';
+                    return rowHtml;
+                }).join('');
+                resultsDiv.innerHTML = tableHtml + '</tbody></table>';
+            }
+
+            function applyCarFilters() {
+                if (!allCarData || !allCarData.headers) return;
+                const car = document.getElementById('filter-car').value,
+                    range = document.getElementById('filter-range').value,
+                    itemType = document.getElementById('filter-item-type').value,
+                    keyword = document.getElementById('filter-keyword').value.toLowerCase();
+                const headers = allCarData.headers;
+                const plateIndex = findHeaderIndex(headers, '車牌號碼'),
+                    dateIndex = findHeaderIndex(headers, '日期時間'),
+                    itemIndex = findHeaderIndex(headers, '費用項目'),
+                    noteIndex = findHeaderIndex(headers, '備註'),
+                    amountIndex = findHeaderIndex(headers, '金額');
+                let cutoffDate = null;
+                if (range === '3m') cutoffDate = new Date(new Date().setMonth(new Date().getMonth() - 3));
+                if (range === '6m') cutoffDate = new Date(new Date().setMonth(new Date().getMonth() - 6));
+                if (range === '1y') cutoffDate = new Date(new Date().setFullYear(new Date().getFullYear() - 1));
+                const filteredData = allCarData.data.filter(row => {
+                    const carMatch = car === 'all' || row[plateIndex] === car;
+                    const dateMatch = !cutoffDate || new Date(row[dateIndex]) >= cutoffDate;
+                    const itemMatch = itemType === 'all' || row[itemIndex] === itemType;
+                    const keywordMatch = !keyword || (noteIndex > -1 && row[noteIndex] && row[noteIndex].toLowerCase().includes(keyword));
+                    return carMatch && dateMatch && itemMatch && keywordMatch;
+                });
+                const summaryDiv = document.getElementById('car-expenses-summary');
+                if (filteredData.length > 0 && amountIndex > -1) {
+                    const totalAmount = filteredData.reduce((sum, row) => sum + (parseFloat(row[amountIndex]) || 0), 0);
+                    summaryDiv.innerHTML = `<h3>查詢結果總計： $${totalAmount.toLocaleString()}</h3>`;
+                } else {
+                    summaryDiv.innerHTML = '';
+                }
+                renderCarTable({
+                    headers: allCarData.headers,
+                    data: filteredData
+                });
+            }
+
+            async function refreshCarData() {
+                document.getElementById('carExpensesResults').innerHTML = '<p>讀取中...</p>';
+                const data = await callGoogleScript('queryCarExpenses');
+                if (data && data.headers) {
+                    allCarData = data;
+                    const dateIndex = findHeaderIndex(data.headers, '日期時間');
+                    if (dateIndex > -1) allCarData.data.sort((a, b) => new Date(b[dateIndex]) - new Date(a[dateIndex]));
+                    applyCarFilters();
+                } else {
+                    document.getElementById('carExpensesResults').innerHTML = '<p>無法載入汽車費用紀錄。</p>';
+                }
+            }
+
+            // --- UPDATED FUNCTION FOR HAIRCUT INFO ---
+            async function refreshHaircutData() {
+                const infoDiv = document.getElementById('haircutInfo'),
+                    resultsDiv = document.getElementById('haircutResults');
+                infoDiv.innerHTML = '讀取中...';
+                resultsDiv.innerHTML = '讀取中...';
+                const data = await callGoogleScript('queryHaircutRecords');
+                if (data && data.length > 0) {
+                    data.sort((a, b) => new Date(b[0]) - new Date(a[0]));
+                    const lastHaircutDate = new Date(data[0][0]),
+                        suggestedNextDate = new Date(data[0][1]),
+                        today = new Date();
+                    today.setHours(0, 0, 0, 0);
+
+                    const nextDateColor = (suggestedNextDate < today) ? 'var(--danger-color)' : 'var(--primary-color)';
+
+                    infoDiv.innerHTML = `
+                    <div class="haircut-label">上次剪髮日期:</div>
+                    <div class="haircut-date">${lastHaircutDate.toLocaleDateString('zh-TW')}</div>
+                    <div class="haircut-label">建議下次日期:</div>
+                    <div class="haircut-date" style="color: ${nextDateColor};">${suggestedNextDate.toLocaleDateString('zh-TW')}</div>
+                `;
+
+                    const dateOptions = {
+                        year: 'numeric',
+                        month: 'long',
+                        day: 'numeric',
+                        weekday: 'long'
+                    };
+                    resultsDiv.innerHTML = '<table>' + data.map(row => `<tr><td style="padding:5px;text-align:center;">${new Date(row[0]).toLocaleDateString('zh-TW', dateOptions)}</td></tr>`).join('') + '</table>';
+                } else {
+                    infoDiv.innerHTML = '<p>沒有任何剪髮紀錄。</p>';
+                    resultsDiv.innerHTML = '<p>沒有歷史紀錄。</p>';
+                }
+            }
+
+            document.getElementById('nav-car').addEventListener('click', () => {
+                document.getElementById('nav-car').classList.add('active');
+                document.getElementById('nav-haircut').classList.remove('active');
+                document.getElementById('section-car').classList.add('active');
+                document.getElementById('section-haircut').classList.remove('active');
+            });
+            document.getElementById('nav-haircut').addEventListener('click', () => {
+                document.getElementById('nav-haircut').classList.add('active');
+                document.getElementById('nav-car').classList.remove('active');
+                document.getElementById('section-haircut').classList.add('active');
+                document.getElementById('section-car').classList.remove('active');
+                refreshHaircutData();
+            });
+            document.getElementById('recordHaircutBtn').addEventListener('click', async (e) => {
+                const button = e.currentTarget;
+                button.innerHTML = '紀錄中...';
+                button.disabled = true;
+                const result = await callGoogleScript('recordHaircut');
+                if (result !== null) {
+                    alert('紀錄成功！');
+                    await refreshHaircutData();
+                }
+                button.innerHTML = '今天<br>剪髮了！';
+                button.disabled = false;
+            });
+            document.getElementById('carExpenseForm').addEventListener('submit', async (e) => {
+                e.preventDefault();
+                const button = e.target.querySelector('button[type="submit"]');
+                button.textContent = '儲存中...';
+                button.disabled = true;
+                const payload = {
+                    carPlate: e.target.carPlate.value,
+                    dateTime: e.target.dateTime.value,
+                    expenseItem: e.target.expenseItem.value,
+                    replacementCycle: e.target.replacementCycle.value,
+                    amount: e.target.amount.value,
+                    note: e.target.note.value,
+                    photos: []
+                };
+                const fileInput = e.target.querySelector('input[name="photo"]');
+                for (const file of fileInput.files) {
+                    payload.photos.push(await new Promise(resolve => {
+                        const reader = new FileReader();
+                        reader.onload = () => resolve({
+                            base64Data: reader.result.split(',')[1],
+                            filename: file.name,
+                            mimeType: file.type
+                        });
+                        reader.readAsDataURL(file);
+                    }));
+                }
+                const result = await callGoogleScript('recordCarExpense', payload);
+                if (result !== null) {
+                    alert('紀錄成功！');
+                    e.target.reset();
+                    document.querySelector('input[name="dateTime"]').value = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+                    await refreshCarData();
+                }
+                button.textContent = '儲存紀錄';
+                button.disabled = false;
+            });
+
+            container.addEventListener('click', async (e) => {
+                const target = e.target;
+                if (target.classList.contains('toggle-note')) {
+                    e.preventDefault();
+                    const noteContainer = target.parentElement;
+                    const shortNote = noteContainer.querySelector('.short-note');
+                    const fullNote = noteContainer.querySelector('.full-note');
+                    if (shortNote && fullNote) {
+                        const isHidden = fullNote.style.display === 'none';
+                        fullNote.style.display = isHidden ? 'inline' : 'none';
+                        shortNote.style.display = isHidden ? 'none' : 'inline';
+                        target.textContent = isHidden ? '更少' : '更多';
+                    }
+                } else if (target.matches('.cancel')) {
+                    target.closest('.inline-editor-row').remove();
+                } else if (target.classList.contains('edit-btn')) {
+                    document.querySelector('.inline-editor-row')?.remove();
+                    const clickedRow = target.closest('tr');
+                    const id = target.dataset.id;
+                    const headers = allCarData.headers;
+                    const record = allCarData.data.find(row => row[findHeaderIndex(headers, 'ID')] == id);
+                    if (record && clickedRow) {
+                        const plateIndex = findHeaderIndex(headers, '車牌號碼'),
+                            dateIndex = findHeaderIndex(headers, '日期時間'),
+                            itemIndex = findHeaderIndex(headers, '費用項目'),
+                            cycleIndex = findHeaderIndex(headers, '更換週期'),
+                            amountIndex = findHeaderIndex(headers, '金額'),
+                            noteIndex = findHeaderIndex(headers, '備註');
+                        const editorRow = document.createElement('tr');
+                        editorRow.className = 'inline-editor-row';
+                        editorRow.innerHTML = `<td colspan="${clickedRow.cells.length}" class="inline-editor-cell"><div class="inline-editor-container"><h3>編輯紀錄</h3><input type="hidden" name="edit-id" value="${id}"><div class="form-group"><label>車牌號碼:</label><select name="edit-carPlate"><option value="BCX-8622">BCX-8***</option><option value="ALV-7506">ALV-7***</option></select></div><div class="form-group"><label>日期與時間:</label><input type="datetime-local" name="edit-dateTime" required></div><div class="form-group"><label>費用項目:</label><select name="edit-expenseItem"><option>報價（未修理）</option><option>汽車電瓶</option><option>牌照稅</option><option>燃料稅</option><option>任意險</option><option>強制險</option><option>強制險＋任意險</option><option>保養</option><option>汽車配件購買</option><option>加油</option><option>停車費</option><option>其他</option></select></div><div class="form-group"><label>更換週期 (設定提醒):</label><select name="edit-replacementCycle"><option value="未設定">未設定</option><option>三個月</option><option>六個月</option><option>一年</option><option>18個月</option><option>兩年</option><option>2.5年</option><option>三年</option></select></div><div class="form-group"><label>金額:</label><input type="number" name="edit-amount" required></div><div class="form-group"><label>備註:</label><textarea name="edit-note" rows="3"></textarea></div><div class="inline-editor-actions"><button class="cancel">取消</button><button class="save">儲存</button></div></div></td>`;
+                        clickedRow.after(editorRow);
+                        const form = editorRow;
+                        if (plateIndex > -1) form.querySelector('[name="edit-carPlate"]').value = record[plateIndex];
+                        if (dateIndex > -1) {
+                            const date = new Date(record[dateIndex]);
+                            form.querySelector('[name="edit-dateTime"]').value = new Date(date.getTime() - date.getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+                        }
+                        if (itemIndex > -1) form.querySelector('[name="edit-expenseItem"]').value = record[itemIndex];
+                        if (cycleIndex > -1) form.querySelector('[name="edit-replacementCycle"]').value = record[cycleIndex] || '未設定';
+                        if (amountIndex > -1) form.querySelector('[name="edit-amount"]').value = record[amountIndex];
+                        if (noteIndex > -1) form.querySelector('[name="edit-note"]').value = record[noteIndex] || '';
+                        setTimeout(() => editorRow.querySelector('.inline-editor-container').classList.add('open'), 10);
+                    }
+                } else if (target.matches('.save')) {
+                    const button = target;
+                    button.textContent = '儲存中...';
+                    button.disabled = true;
+                    const editorRow = target.closest('.inline-editor-row');
+                    const payload = {
+                        id: editorRow.querySelector('[name="edit-id"]').value,
+                        carPlate: editorRow.querySelector('[name="edit-carPlate"]').value,
+                        dateTime: editorRow.querySelector('[name="edit-dateTime"]').value,
+                        expenseItem: editorRow.querySelector('[name="edit-expenseItem"]').value,
+                        replacementCycle: editorRow.querySelector('[name="edit-replacementCycle"]').value,
+                        amount: editorRow.querySelector('[name="edit-amount"]').value,
+                        note: editorRow.querySelector('[name="edit-note"]').value
+                    };
+                    const result = await callGoogleScript('updateCarExpense', payload);
+                    if (result !== null) {
+                        editorRow.remove();
+                        await refreshCarData();
+                    } else {
+                        button.textContent = '儲存';
+                        button.disabled = false;
+                    }
+                } else if (target.classList.contains('photo-btn')) {
+                    const id = target.dataset.id;
+                    const fileInput = document.createElement('input');
+                    fileInput.type = 'file';
+                    fileInput.accept = 'image/*';
+                    fileInput.style.display = 'none';
+                    fileInput.onchange = async () => {
+                        if (fileInput.files.length > 0) {
+                            target.textContent = '上傳中...';
+                            target.disabled = true;
+                            const photoPayload = await new Promise(resolve => {
+                                const reader = new FileReader();
+                                reader.onload = () => resolve({
+                                    base64Data: reader.result.split(',')[1],
+                                    filename: fileInput.files[0].name,
+                                    mimeType: fileInput.files[0].type
+                                });
+                                reader.readAsDataURL(fileInput.files[0]);
+                            });
+                            const result = await callGoogleScript('addPhotoToExpense', {
+                                id: id,
+                                photo: photoPayload
+                            });
+                            if (result !== null) await refreshCarData();
+                            else {
+                                target.textContent = '新增照片';
+                                target.disabled = false;
+                            }
+                        }
+                        document.body.removeChild(fileInput);
+                    };
+                    document.body.appendChild(fileInput);
+                    fileInput.click();
+                }
+            });
+
+            ['filter-car', 'filter-range', 'filter-item-type', 'filter-keyword'].forEach(id => document.getElementById(id).addEventListener(id === 'filter-keyword' ? 'input' : 'change', applyCarFilters));
+            document.querySelector('input[name="dateTime"]').value = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16);
+            refreshCarData();
+        }
+
+        showLoginScreen();
+    })();
+</script>
+<!-- END: My Record Keeper Widget -->
