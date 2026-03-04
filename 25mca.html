@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>點數計算規範 - Points & Duration Policy</title>
+  
+  <!-- 引入字體 -->
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Oswald:wght@400;500;600&display=swap" rel="stylesheet">
+  
+  <style>
+    /* === 核心變數設定 === */
+    :root {
+      --primary: #2c3e50; /* 海軍藍 */
+      --accent: #b08d55;  /* 古銅金 */
+      --light-bg: #f8f9fa;
+      --border-color: #aeb6bf;
+      --text-main: #2c3e50;
+      --bg-body: #e0e5ec;
+    }
+
+    /* === 基礎重置 === */
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--bg-body);
+      font-family: 'Noto Sans TC', sans-serif;
+      color: #333;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+      line-height: 1.6;
+    }
+
+    /* === 主要卡片容器 (RWD) === */
+    .policy-card {
+      background: #fff;
+      width: 100%;
+      max-width: 650px; /* 電腦版最大寬度 */
+      padding: 35px 30px;
+      border-radius: 12px;
+      box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* 頂部裝飾條 */
+    .policy-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 6px;
+      background: var(--primary);
+    }
+
+    /* === 標頭區塊 === */
+    .header-section {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      border-bottom: 2px solid var(--primary);
+      padding-bottom: 12px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .brand-text h1 {
+      font-size: clamp(24px, 5vw, 32px); /* 響應式字體大小 */
+      color: var(--primary);
+      margin-bottom: 5px;
+      line-height: 1.2;
+    }
+
+    .logo-row {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .brand-suffix {
+      font-family: 'Oswald', sans-serif;
+      font-weight: 500;
+      font-size: 15px;
+      color: #555;
+      letter-spacing: 0.5px;
+    }
+
+    .ticket-tag {
+      background: #999;
+      color: #fff;
+      font-family: 'Oswald', sans-serif;
+      font-size: 12px;
+      padding: 3px 8px;
+      border-radius: 4px;
+      letter-spacing: 1px;
+    }
+
+    /* === 生效日期橫幅 === */
+    .date-banner {
+      background: var(--accent);
+      color: #fff;
+      padding: 12px 20px;
+      border-radius: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 25px;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .date-banner .label {
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+
+    .date-banner .date-val {
+      font-family: 'Oswald', sans-serif;
+      font-size: 20px;
+      font-weight: 500;
+      letter-spacing: 1px;
+    }
+
+    /* === 比較網格 (標準 vs 短課程) === */
+    .comparison-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* RWD 網格 */
+      gap: 15px;
+      margin-bottom: 25px;
+    }
+
+    .class-box {
+      border-radius: 8px;
+      padding: 25px 15px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      position: relative;
+    }
+
+    /* 50分鐘盒子 */
+    .box-standard {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    .box-standard .label-sm {
+      font-size: 13px;
+      font-weight: 400;
+      opacity: 0.8;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+
+    .box-standard .number-font {
+      font-family: 'Oswald', sans-serif;
+      font-size: 48px;
+      font-weight: 600;
+      line-height: 1;
+    }
+
+    .box-standard .number-font span { font-size: 16px; font-weight: 400; }
+    
+    .box-standard .status-text {
+      color: var(--accent);
+      font-size: 18px;
+      font-weight: 700;
+      margin-top: 10px;
+    }
+
+    .box-standard .sub-text {
+      color: rgba(255,255,255,0.6);
+      font-size: 13px;
+      margin-top: 4px;
+    }
+
+    /* 25分鐘盒子 */
+    .box-short {
+      background: #fff;
+      border: 1px solid var(--border-color);
+    }
+
+    .box-short .label-sm {
+      font-size: 13px;
+      font-weight: 700;
+      color: #666;
+      letter-spacing: 1px;
+      margin-bottom: 10px;
+    }
+
+    .box-short .number-font {
+      font-family: 'Oswald', sans-serif;
+      font-size: 48px;
+      font-weight: 600;
+      color: var(--primary);
+      line-height: 1;
+    }
+
+    .box-short .number-font span { font-size: 16px; font-weight: 400; }
+
+    .box-short .status-text {
+      color: #c0392b;
+      font-size: 18px;
+      font-weight: 700;
+      margin-top: 10px;
+    }
+
+    .corner-black {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 16px;
+      height: 16px;
+      border-top: 5px solid var(--primary);
+      border-right: 5px solid var(--primary);
+      border-top-right-radius: 6px;
+    }
+
+    /* === 公式計算區塊 === */
+    .formula-box {
+      background: #f1f4f8;
+      padding: 20px;
+      border-radius: 8px;
+      border-left: 6px solid var(--primary);
+      margin-bottom: 25px;
+    }
+
+    .formula-title {
+      font-weight: 700;
+      color: #000000; /* 已修改為純黑色 */
+      font-size: 15px;
+      margin-bottom: 12px;
+      text-align: center;
+    }
+
+    .formula-content {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      flex-wrap: wrap; /* RWD 自動換行 */
+    }
+
+    .formula-item {
+      font-size: 16px;
+      font-weight: 700;
+    }
+
+    .formula-highlight {
+      font-family: 'Oswald', sans-serif;
+      font-size: 28px;
+      color: var(--primary);
+    }
+
+    .formula-result {
+      font-size: 18px;
+      color: #c0392b;
+    }
+
+    /* === 說明內文 === */
+    .explanation-area {
+      padding: 0 5px;
+    }
+
+    .explanation-area p {
+      font-size: 15px;
+      color: #444;
+      margin-bottom: 15px;
+      text-align: justify;
+    }
+
+    .explanation-area b {
+      color: var(--primary);
+    }
+
+    /* 強調純黑字體類別 */
+    .text-pure-black {
+      color: #000000;
+      font-weight: 700;
+    }
+
+    .divider {
+      border-top: 1px dashed #ccc;
+      margin: 20px 0;
+    }
+
+    .explanation-area .small-text {
+      font-size: 13px;
+      color: #777;
+    }
+
+    /* === 頁腳署名 === */
+    .footer-brand {
+      margin-top: 25px;
+      padding-top: 15px;
+      border-top: 2px solid #eee;
+      text-align: right;
+      font-weight: 700;
+      color: var(--primary);
+      font-size: 16px;
+      letter-spacing: 1px;
+    }
+
+    /* 手機版細節調整 */
+    @media (max-width: 400px) {
+      .formula-content {
+        flex-direction: column;
+        gap: 5px;
+      }
+      .policy-card {
+        padding: 25px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="policy-card">
+    
+    <!-- 標頭 -->
+    <div class="header-section">
+      <div class="brand-text">
+        <h1>點數計算規範</h1>
+        <div class="logo-row">
+           <span class="brand-suffix">POINTS & DURATION POLICY</span>
+           <span class="ticket-tag">REF: C-03</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 生效日期 -->
+    <div class="date-banner">
+      <span class="label">★ 生效日期 Effective Date</span>
+      <span class="date-val">2026.02.15</span>
+    </div>
+
+    <!-- 比較網格 -->
+    <div class="comparison-grid">
+      
+      <!-- 50 分鐘 -->
+      <div class="class-box box-standard">
+        <div class="label-sm">STANDARD CLASS</div>
+        <div class="number-font">50 <span>MIN</span></div>
+        <div class="status-text">點數維持不變</div>
+        <div class="sub-text">( 1 Session )</div>
+      </div>
+
+      <!-- 25 分鐘 -->
+      <div class="class-box box-short">
+        <div class="corner-black"></div>
+        <div class="label-sm">SHORT CLASS</div>
+        <div class="number-font">25 <span>MIN</span></div>
+        <div class="status-text">調整計算係數</div>
+      </div>
+
+    </div>
+
+    <!-- 公式區塊 -->
+    <div class="formula-box">
+      <!-- 已修改為純黑色 -->
+      <div class="formula-title">25分鐘課程點數計算公式</div>
+      <div class="formula-content">
+        <span class="formula-item text-main">( 一堂課點數 ÷ 2 )</span>
+        <span class="formula-highlight">× 1.33</span>
+        <span class="formula-item">=</span>
+        <span class="formula-item formula-result">實際扣除點數</span>
+      </div>
+    </div>
+
+    <!-- 內文說明 -->
+    <div class="explanation-area">
+      <p>
+        25 分鐘課程時間較短，但仍需保留一整個上課時段，因此自 <b>2026.02.15</b> 起，不再以時間完全對半計算。25分鐘課程將改為「點數制」以便計算，<span class="text-pure-black">國小生不受影響。</span> <!-- 已修改為純黑色 -->
+      </p>
+      
+      <div class="divider"></div>
+      
+      <p class="small-text">
+        本規範係為了維護所有學生的上課權益與整體課程安排之公平性，敬請理解。課程安排與點數如有調整，將另行提前通知。感謝您的理解與配合。
+      </p>
+    </div>
+
+    <!-- 頁腳署名 -->
+    <div class="footer-brand">
+      Tony線上美語家教
+    </div>
+
+  </div>
+
+</body>
+</html>
