@@ -15,7 +15,6 @@
       --accent: #b08d55;  /* 古銅金 */
       --light-bg: #f8f9fa;
       --border-color: #aeb6bf;
-      --text-main: #2c3e50;
       --bg-body: #e0e5ec;
     }
 
@@ -34,23 +33,22 @@
       justify-content: center;
       align-items: center;
       min-height: 100vh;
-      padding: 20px;
+      padding: 15px;
       line-height: 1.6;
     }
 
-    /* === 主要卡片容器 (RWD) === */
+    /* === 主要卡片容器 (手機版基礎設定) === */
     .policy-card {
       background: #fff;
       width: 100%;
-      max-width: 650px; /* 電腦版最大寬度 */
-      padding: 35px 30px;
+      max-width: 800px; /* 放寬最大寬度以容納大字體 */
+      padding: 30px 20px;
       border-radius: 12px;
       box-shadow: 0 15px 35px rgba(0,0,0,0.1);
       position: relative;
       overflow: hidden;
     }
 
-    /* 頂部裝飾條 */
     .policy-card::before {
       content: "";
       position: absolute;
@@ -74,7 +72,7 @@
     }
 
     .brand-text h1 {
-      font-size: clamp(24px, 5vw, 32px); /* 響應式字體大小 */
+      font-size: 28px;
       color: var(--primary);
       margin-bottom: 5px;
       line-height: 1.2;
@@ -99,8 +97,8 @@
       background: #999;
       color: #fff;
       font-family: 'Oswald', sans-serif;
-      font-size: 12px;
-      padding: 3px 8px;
+      font-size: 13px;
+      padding: 4px 10px;
       border-radius: 4px;
       letter-spacing: 1px;
     }
@@ -109,7 +107,7 @@
     .date-banner {
       background: var(--accent);
       color: #fff;
-      padding: 12px 20px;
+      padding: 15px 20px;
       border-radius: 6px;
       display: flex;
       justify-content: space-between;
@@ -120,14 +118,14 @@
     }
 
     .date-banner .label {
-      font-size: 15px;
+      font-size: 16px;
       font-weight: 700;
       letter-spacing: 0.5px;
     }
 
     .date-banner .date-val {
       font-family: 'Oswald', sans-serif;
-      font-size: 20px;
+      font-size: 22px;
       font-weight: 500;
       letter-spacing: 1px;
     }
@@ -135,14 +133,14 @@
     /* === 比較網格 (標準 vs 短課程) === */
     .comparison-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* RWD 網格 */
-      gap: 15px;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
       margin-bottom: 25px;
     }
 
     .class-box {
       border-radius: 8px;
-      padding: 25px 15px;
+      padding: 30px 20px;
       text-align: center;
       display: flex;
       flex-direction: column;
@@ -152,97 +150,71 @@
     }
 
     /* 50分鐘盒子 */
-    .box-standard {
-      background: var(--primary);
-      color: #fff;
-    }
+    .box-standard { background: var(--primary); color: #fff; }
+    .box-short { background: #fff; border: 2px solid var(--border-color); }
 
-    .box-standard .label-sm {
-      font-size: 13px;
-      font-weight: 400;
-      opacity: 0.8;
+    .box-standard .label-sm, .box-short .label-sm {
+      font-size: 15px; /* 手機版加大 */
+      font-weight: 700;
       letter-spacing: 1px;
       margin-bottom: 10px;
     }
 
-    .box-standard .number-font {
+    .box-short .label-sm { color: #666; }
+    .box-standard .label-sm { color: rgba(255,255,255,0.8); }
+
+    .box-standard .number-font, .box-short .number-font {
       font-family: 'Oswald', sans-serif;
-      font-size: 48px;
+      font-size: 56px; /* 手機版加大 */
       font-weight: 600;
       line-height: 1;
     }
 
-    .box-standard .number-font span { font-size: 16px; font-weight: 400; }
-    
-    .box-standard .status-text {
-      color: var(--accent);
-      font-size: 18px;
-      font-weight: 700;
-      margin-top: 10px;
+    .box-short .number-font { color: var(--primary); }
+
+    .box-standard .number-font span, .box-short .number-font span {
+      font-size: 18px; /* 手機版加大 */
+      font-weight: 400;
     }
+
+    .box-standard .status-text, .box-short .status-text {
+      font-size: 20px; /* 手機版加大 */
+      font-weight: 700;
+      margin-top: 12px;
+    }
+
+    .box-standard .status-text { color: var(--accent); }
+    .box-short .status-text { color: #c0392b; }
 
     .box-standard .sub-text {
-      color: rgba(255,255,255,0.6);
-      font-size: 13px;
-      margin-top: 4px;
-    }
-
-    /* 25分鐘盒子 */
-    .box-short {
-      background: #fff;
-      border: 1px solid var(--border-color);
-    }
-
-    .box-short .label-sm {
-      font-size: 13px;
-      font-weight: 700;
-      color: #666;
-      letter-spacing: 1px;
-      margin-bottom: 10px;
-    }
-
-    .box-short .number-font {
-      font-family: 'Oswald', sans-serif;
-      font-size: 48px;
-      font-weight: 600;
-      color: var(--primary);
-      line-height: 1;
-    }
-
-    .box-short .number-font span { font-size: 16px; font-weight: 400; }
-
-    .box-short .status-text {
-      color: #c0392b;
-      font-size: 18px;
-      font-weight: 700;
-      margin-top: 10px;
+      color: rgba(255,255,255,0.7);
+      font-size: 15px; /* 手機版加大 */
+      margin-top: 6px;
     }
 
     .corner-black {
       position: absolute;
-      top: 0;
-      right: 0;
-      width: 16px;
-      height: 16px;
-      border-top: 5px solid var(--primary);
-      border-right: 5px solid var(--primary);
+      top: 0; right: 0;
+      width: 18px; height: 18px;
+      border-top: 6px solid var(--primary);
+      border-right: 6px solid var(--primary);
       border-top-right-radius: 6px;
     }
 
     /* === 公式計算區塊 === */
     .formula-box {
       background: #f1f4f8;
-      padding: 20px;
+      padding: 25px;
       border-radius: 8px;
       border-left: 6px solid var(--primary);
-      margin-bottom: 25px;
+      margin-bottom: 30px;
     }
 
     .formula-title {
       font-weight: 700;
-      color: #000000; /* 已修改為純黑色 */
-      font-size: 15px;
-      margin-bottom: 12px;
+      color: #000000; /* 純黑色 */
+      font-size: 18px; /* 手機版加大 */
+      margin-bottom: 15px;
       text-align: center;
     }
 
@@ -250,79 +222,91 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 12px;
-      flex-wrap: wrap; /* RWD 自動換行 */
+      gap: 15px;
+      flex-wrap: wrap; 
     }
 
-    .formula-item {
-      font-size: 16px;
-      font-weight: 700;
-    }
-
-    .formula-highlight {
-      font-family: 'Oswald', sans-serif;
-      font-size: 28px;
-      color: var(--primary);
-    }
-
-    .formula-result {
-      font-size: 18px;
-      color: #c0392b;
-    }
+    .formula-item { font-size: 18px; font-weight: 700; } /* 手機版加大 */
+    .formula-highlight { font-family: 'Oswald', sans-serif; font-size: 34px; color: var(--primary); }
+    .formula-result { font-size: 22px; color: #c0392b; }
 
     /* === 說明內文 === */
-    .explanation-area {
-      padding: 0 5px;
-    }
+    .explanation-area { padding: 0 10px; }
 
     .explanation-area p {
-      font-size: 15px;
-      color: #444;
+      font-size: 16px; /* 手機版加大 */
+      color: #333;
       margin-bottom: 15px;
       text-align: justify;
+      line-height: 1.8;
     }
 
-    .explanation-area b {
-      color: var(--primary);
-    }
+    .explanation-area b { color: var(--primary); }
+    .text-pure-black { color: #000000; font-weight: 700; } /* 純黑色 */
 
-    /* 強調純黑字體類別 */
-    .text-pure-black {
-      color: #000000;
-      font-weight: 700;
-    }
-
-    .divider {
-      border-top: 1px dashed #ccc;
-      margin: 20px 0;
-    }
+    .divider { border-top: 1px dashed #ccc; margin: 25px 0; }
 
     .explanation-area .small-text {
-      font-size: 13px;
-      color: #777;
+      font-size: 14px; /* 手機版加大 */
+      color: #666;
+      line-height: 1.7;
     }
 
     /* === 頁腳署名 === */
     .footer-brand {
-      margin-top: 25px;
+      margin-top: 30px;
       padding-top: 15px;
       border-top: 2px solid #eee;
       text-align: right;
       font-weight: 700;
       color: var(--primary);
-      font-size: 16px;
+      font-size: 18px; /* 手機版加大 */
       letter-spacing: 1px;
     }
 
-    /* 手機版細節調整 */
+    /* =========================================================
+       平板與電腦版放大設定 (Tablet & Desktop Mode: min-width: 768px)
+       ========================================================= */
+    @media (min-width: 768px) {
+      body { padding: 40px 20px; }
+      .policy-card { padding: 45px 50px; }
+      
+      /* 標頭字體放大 */
+      .brand-text h1 { font-size: 38px; }
+      .brand-suffix { font-size: 18px; }
+      .ticket-tag { font-size: 15px; padding: 5px 12px; }
+
+      /* 日期橫幅放大 */
+      .date-banner { padding: 18px 25px; }
+      .date-banner .label { font-size: 20px; }
+      .date-banner .date-val { font-size: 26px; }
+
+      /* 方框與數字放大 */
+      .comparison-grid { gap: 30px; }
+      .class-box { padding: 40px 20px; }
+      .box-standard .label-sm, .box-short .label-sm { font-size: 18px; }
+      .box-standard .number-font, .box-short .number-font { font-size: 72px; }
+      .box-standard .number-font span, .box-short .number-font span { font-size: 24px; }
+      .box-standard .status-text, .box-short .status-text { font-size: 26px; }
+      .box-standard .sub-text { font-size: 18px; }
+
+      /* 公式區塊放大 */
+      .formula-box { padding: 35px; }
+      .formula-title { font-size: 22px; margin-bottom: 20px; }
+      .formula-item { font-size: 24px; }
+      .formula-highlight { font-size: 46px; }
+      .formula-result { font-size: 28px; }
+
+      /* 內文與底部放大 */
+      .explanation-area p { font-size: 20px; }
+      .explanation-area .small-text { font-size: 16px; }
+      .footer-brand { font-size: 22px; margin-top: 40px; }
+    }
+
+    /* 極窄手機螢幕 (小於400px時，公式換行處理) */
     @media (max-width: 400px) {
-      .formula-content {
-        flex-direction: column;
-        gap: 5px;
-      }
-      .policy-card {
-        padding: 25px 20px;
-      }
+      .formula-content { flex-direction: column; gap: 8px; }
+      .policy-card { padding: 25px 15px; }
     }
   </style>
 </head>
@@ -370,10 +354,10 @@
 
     <!-- 公式區塊 -->
     <div class="formula-box">
-      <!-- 已修改為純黑色 -->
+      <!-- 純黑色標題 -->
       <div class="formula-title">25分鐘課程點數計算公式</div>
       <div class="formula-content">
-        <span class="formula-item text-main">( 一堂課點數 ÷ 2 )</span>
+        <span class="formula-item">( 一堂課點數 ÷ 2 )</span>
         <span class="formula-highlight">× 1.33</span>
         <span class="formula-item">=</span>
         <span class="formula-item formula-result">實際扣除點數</span>
@@ -383,7 +367,7 @@
     <!-- 內文說明 -->
     <div class="explanation-area">
       <p>
-        25 分鐘課程時間較短，但仍需保留一整個上課時段，因此自 <b>2026.02.15</b> 起，不再以時間完全對半計算。25分鐘課程將改為「點數制」以便計算，<span class="text-pure-black">國小生不受影響。</span> <!-- 已修改為純黑色 -->
+        25 分鐘課程時間較短，但仍需保留一整個上課時段，因此自 <b>2026.02.15</b> 起，不再以時間完全對半計算。25分鐘課程將改為「點數制」以便計算，<span class="text-pure-black">國小生不受影響。</span>
       </p>
       
       <div class="divider"></div>
