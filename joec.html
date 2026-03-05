@@ -1,17 +1,28 @@
-<!-- SECURE EMAIL GATEWAY - JOE PLAN -->
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>內容鎖定</title>
+</head>
+<body>
+
 <div id="secure-container">
   <style>
     /* 登入介面的樣式 */
     #secure-login-box { 
+      /* 手機版設定：寬度 90% 避免死貼邊緣 */
+      width: 90%;
       max-width: 400px; 
       margin: 60px auto; 
-      padding: 40px 30px; 
+      padding: 40px 25px; 
       border: 1px solid #e2e8f0; 
       border-radius: 16px; 
       text-align: center; 
       box-shadow: 0 10px 25px rgba(0,0,0,0.08); 
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background: #ffffff;
+      box-sizing: border-box; /* 確保內距不影響寬度 */
     }
     #secure-login-box h3 {
       margin-top: 0;
@@ -30,7 +41,7 @@
       box-sizing: border-box; 
       border: 2px solid #e2e8f0; 
       border-radius: 10px; 
-      font-size: 16px; 
+      font-size: 16px; /* 16px 防 iOS 自動放大畫面 */
       transition: 0.2s;
       outline: none;
     }
@@ -53,6 +64,14 @@
     #secure-login-box button:hover { opacity: 0.9; }
     #secure-login-box button:disabled { background: #cbd5e1; cursor: not-allowed; }
     #secure-msg { color: #ef4444; margin-top: 15px; font-size: 14px; min-height: 20px; font-weight: bold;}
+
+    /* 電腦版微調 (讓大螢幕看起來更舒適) */
+    @media (min-width: 768px) {
+      #secure-login-box {
+        max-width: 450px;
+        padding: 50px 40px;
+      }
+    }
   </style>
   
   <div id="secure-login-box">
@@ -65,7 +84,7 @@
 </div>
 
 <script>
-  // ▼▼▼ 請將這裡換成你剛剛部署的 GAS 網址 ▼▼▼
+  // 保持你原本的 GAS 網址
   const GAS_URL = "https://script.google.com/macros/s/AKfycbxwGY6cu2Z_XfoJF38-YRhynO2JlRxfqMTsRt66ouuYXEw8bdgItjbNRrCTZWcGXy-u/exec"; 
 
   async function verifyEmail() {
@@ -89,20 +108,13 @@
       const data = await response.json();
 
       if (data.success) {
-        // 驗證成功！
         const container = document.getElementById("secure-container");
-        
-        // 1. 放入 HTML
         container.innerHTML = data.html;
-        
-        // 2. 重新執行 Script (雖然你的 HTML 主要是 CSS，但這是好習慣)
         executeScripts(container);
-        
       } else {
         msg.innerText = data.message;
         btn.disabled = false;
         btn.innerText = "解鎖內容";
-        // 錯誤時讓輸入框搖晃一下的簡單動畫效果 (可選)
         emailInput.style.borderColor = "#ef4444";
         setTimeout(() => emailInput.style.borderColor = "#e2e8f0", 500);
       }
@@ -124,10 +136,12 @@
     });
   }
   
-  // 讓使用者按 Enter 也能送出
   document.getElementById("email-input").addEventListener("keyup", function(event) {
     if (event.key === "Enter") {
         verifyEmail();
     }
   });
 </script>
+
+</body>
+</html>
