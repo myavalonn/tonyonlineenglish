@@ -1,0 +1,133 @@
+<!-- SECURE EMAIL GATEWAY - JOE PLAN -->
+<div id="secure-container">
+  <style>
+    /* 登入介面的樣式 */
+    #secure-login-box { 
+      max-width: 400px; 
+      margin: 60px auto; 
+      padding: 40px 30px; 
+      border: 1px solid #e2e8f0; 
+      border-radius: 16px; 
+      text-align: center; 
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08); 
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      background: #ffffff;
+    }
+    #secure-login-box h3 {
+      margin-top: 0;
+      color: #1e293b;
+      font-size: 22px;
+    }
+    #secure-login-box p {
+      color: #64748b;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+    #secure-login-box input { 
+      width: 100%; 
+      padding: 14px; 
+      margin-top: 10px; 
+      box-sizing: border-box; 
+      border: 2px solid #e2e8f0; 
+      border-radius: 10px; 
+      font-size: 16px; 
+      transition: 0.2s;
+      outline: none;
+    }
+    #secure-login-box input:focus {
+      border-color: #66ccff;
+    }
+    #secure-login-box button { 
+      width: 100%; 
+      padding: 14px; 
+      margin-top: 20px; 
+      background: linear-gradient(135deg, #66ccff, #34d399); 
+      color: white; 
+      border: none; 
+      border-radius: 10px; 
+      font-size: 18px; 
+      font-weight: bold;
+      cursor: pointer; 
+      transition: opacity 0.2s; 
+    }
+    #secure-login-box button:hover { opacity: 0.9; }
+    #secure-login-box button:disabled { background: #cbd5e1; cursor: not-allowed; }
+    #secure-msg { color: #ef4444; margin-top: 15px; font-size: 14px; min-height: 20px; font-weight: bold;}
+  </style>
+  
+  <div id="secure-login-box">
+    <h3>🔒 內容已鎖定</h3>
+    <p>請輸入提供的Email以查看方案詳情</p>
+    <input type="email" id="email-input" placeholder="請輸入提供的Email">
+    <button id="unlock-btn" onclick="verifyEmail()">解鎖內容</button>
+    <div id="secure-msg"></div>
+  </div>
+</div>
+
+<script>
+  // ▼▼▼ 請將這裡換成你剛剛部署的 GAS 網址 ▼▼▼
+  const GAS_URL = "https://script.google.com/macros/s/AKfycbxwGY6cu2Z_XfoJF38-YRhynO2JlRxfqMTsRt66ouuYXEw8bdgItjbNRrCTZWcGXy-u/exec"; 
+
+  async function verifyEmail() {
+    const emailInput = document.getElementById("email-input");
+    const email = emailInput.value;
+    const btn = document.getElementById("unlock-btn");
+    const msg = document.getElementById("secure-msg");
+
+    if (!email) { msg.innerText = "請輸入 Email"; return; }
+    if (!email.includes("@")) { msg.innerText = "Email 格式不正確"; return; }
+
+    btn.disabled = true;
+    btn.innerText = "驗證中...";
+    msg.innerText = "";
+
+    try {
+      const response = await fetch(GAS_URL, {
+        method: "POST",
+        body: JSON.stringify({ email: email })
+      });
+      const data = await response.json();
+
+      if (data.success) {
+        // 驗證成功！
+        const container = document.getElementById("secure-container");
+        
+        // 1. 放入 HTML
+        container.innerHTML = data.html;
+        
+        // 2. 重新執行 Script (雖然你的 HTML 主要是 CSS，但這是好習慣)
+        executeScripts(container);
+        
+      } else {
+        msg.innerText = data.message;
+        btn.disabled = false;
+        btn.innerText = "解鎖內容";
+        // 錯誤時讓輸入框搖晃一下的簡單動畫效果 (可選)
+        emailInput.style.borderColor = "#ef4444";
+        setTimeout(() => emailInput.style.borderColor = "#e2e8f0", 500);
+      }
+    } catch (e) {
+      console.error(e);
+      msg.innerText = "連線錯誤，請稍後再試";
+      btn.disabled = false;
+      btn.innerText = "解鎖內容";
+    }
+  }
+
+  function executeScripts(element) {
+    const scripts = element.querySelectorAll("script");
+    scripts.forEach(oldScript => {
+      const newScript = document.createElement("script");
+      Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
+      newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+      oldScript.parentNode.replaceChild(newScript, oldScript);
+    });
+  }
+  
+  // 讓使用者按 Enter 也能送出
+  document.getElementById("email-input").addEventListener("keyup", function(event) {
+    if (event.key === "Enter") {
+        verifyEmail();
+    }
+  });
+</script>
