@@ -1040,7 +1040,7 @@
   let isLoadingStepsDone = false;
   let isCalendarDataReady = false;
   let introCurrentIdx = 0;
-  const introAnimationSpeed = 700; 
+  const introAnimationSpeed = 400; 
 
   function runLoadingSteps() {
       const steps = document.querySelectorAll('.step');
@@ -1150,7 +1150,7 @@
 
       let count = 0;
       const maxFlickers = 12; 
-      const speed = 150;      
+      const speed = 100;      
 
       const interval = setInterval(() => {
           const mode = (count % 2 === 0) ? 'multi' : 'single';
