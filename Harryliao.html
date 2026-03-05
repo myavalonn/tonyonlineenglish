@@ -1,0 +1,182 @@
+<!-- SECURE EMAIL GATEWAY - 1-1 English Plan -->
+<div id="secure-container">
+  <style>
+    /* === 手機版 (預設) 樣式 === */
+    #secure-login-box { 
+      max-width: 420px; 
+      margin: 60px auto; 
+      padding: 40px 30px; 
+      border: 1px solid #e2e8f0; 
+      border-radius: 16px; 
+      text-align: center; 
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08); 
+      font-family: 'Noto Sans TC', sans-serif;
+      background: #ffffff;
+      scroll-margin-top: 100px; 
+    }
+    #secure-login-box h3 {
+      margin-top: 0;
+      color: #2a3d45; 
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+    #secure-login-box p {
+      color: #64748b;
+      font-size: 15px;
+      margin-bottom: 25px;
+    }
+    #secure-login-box input { 
+      width: 100%; 
+      padding: 14px; 
+      margin-top: 5px; 
+      box-sizing: border-box; 
+      border: 2px solid #e2e8f0; 
+      border-radius: 10px; 
+      font-size: 16px;
+      transition: 0.2s;
+      outline: none;
+    }
+    #secure-login-box input:focus {
+      border-color: #2a3d45;
+    }
+    #secure-login-box button { 
+      width: 100%; 
+      padding: 14px; 
+      margin-top: 20px; 
+      background-color: #2a3d45; 
+      color: white; 
+      border: none; 
+      border-radius: 10px; 
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer; 
+      transition: opacity 0.2s; 
+    }
+    #secure-login-box button:hover { opacity: 0.9; }
+    #secure-login-box button:disabled { background: #cbd5e1; cursor: not-allowed; }
+    #secure-msg { color: #f87171; margin-top: 15px; font-size: 14px; min-height: 20px; font-weight: bold;}
+
+    /* === ▼▼▼ 電腦版強制放大 (加入了 !important) ▼▼▼ === */
+    @media screen and (min-width: 768px) {
+      /* 1. 強制把框框變大、變寬 */
+      #secure-login-box {
+        max-width: 600px !important; 
+        padding: 60px 50px !important;
+      }
+      
+      /* 2. 標題強制變超大 (36px) */
+      #secure-login-box h3 {
+        font-size: 36px !important; 
+        margin-bottom: 20px !important;
+      }
+
+      /* 3. 描述文字強制變大 (20px) */
+      #secure-login-box p {
+        font-size: 20px !important; 
+        margin-bottom: 35px !important;
+      }
+
+      /* 4. 輸入框強制變大 */
+      #secure-login-box input {
+        font-size: 20px !important;
+        padding: 18px !important;
+      }
+
+      /* 5. 按鈕強制變大 */
+      #secure-login-box button {
+        font-size: 22px !important;
+        padding: 18px !important;
+      }
+
+      /* 6. 解鎖後的內容文字強制變大 */
+      #secure-container {
+        font-size: 18px !important;
+        line-height: 1.8 !important;
+      }
+    }
+  </style>
+  
+  <div id="secure-login-box">
+    <h3>🔒 私人課程方案</h3>
+    <p>此頁面受保護</p>
+    <input type="email" id="email-input" placeholder="請輸入提供的Email">
+    <button id="unlock-btn" onclick="verifyEmail()">解鎖內容</button>
+    <div id="secure-msg"></div>
+  </div>
+</div>
+
+<script>
+  // ▼▼▼ 請將這裡換成你剛剛部署的 GAS 網址 ▼▼▼
+  const GAS_URL = "https://script.google.com/macros/s/AKfycbzbDMqxb0GZw2Pa1pgcxcK4C3dzfCyfg4LhxwjlqHarMA-WHEtojLXWpBN-osMVArjECQ/exec"; 
+
+  // 自動捲動功能的設定 (維持不變)
+  document.addEventListener("DOMContentLoaded", function() {
+    setTimeout(function() {
+      const loginBox = document.getElementById("secure-login-box");
+      if (loginBox) {
+        loginBox.scrollIntoView({ behavior: "smooth", block: "center" });
+        document.getElementById("email-input").focus(); 
+      }
+    }, 500); 
+  });
+
+  async function verifyEmail() {
+    const emailInput = document.getElementById("email-input");
+    const email = emailInput.value;
+    const btn = document.getElementById("unlock-btn");
+    const msg = document.getElementById("secure-msg");
+
+    if (!email) { msg.innerText = "請輸入 Email"; return; }
+    if (!email.includes("@")) { msg.innerText = "Email 格式不正確"; return; }
+
+    btn.disabled = true;
+    btn.innerText = "驗證中...";
+    msg.innerText = "";
+
+    try {
+      const response = await fetch(GAS_URL, {
+        method: "POST",
+        body: JSON.stringify({ email: email })
+      });
+      const data = await response.json();
+
+      if (data.success) {
+        const container = document.getElementById("secure-container");
+        container.innerHTML = data.html;
+        
+        // 解鎖後自動捲動到最上方
+        container.scrollIntoView({ behavior: "smooth", block: "start" });
+
+        executeScripts(container);
+        
+      } else {
+        msg.innerText = data.message;
+        btn.disabled = false;
+        btn.innerText = "解鎖內容";
+        emailInput.style.borderColor = "#f87171";
+        setTimeout(() => emailInput.style.borderColor = "#e2e8f0", 500);
+      }
+    } catch (e) {
+      console.error(e);
+      msg.innerText = "連線錯誤，請稍後再試";
+      btn.disabled = false;
+      btn.innerText = "解鎖內容";
+    }
+  }
+
+  function executeScripts(element) {
+    const scripts = element.querySelectorAll("script");
+    scripts.forEach(oldScript => {
+      const newScript = document.createElement("script");
+      Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
+      newScript.appendChild(document.createTextNode(oldScript.innerHTML));
+      oldScript.parentNode.replaceChild(newScript, oldScript);
+    });
+  }
+  
+  document.getElementById("email-input").addEventListener("keyup", function(event) {
+    if (event.key === "Enter") {
+        verifyEmail();
+    }
+  });
+</script>
