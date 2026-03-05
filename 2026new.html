@@ -7,11 +7,9 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    /* 基礎樣式繼承 */
     #embedding-container { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #f0f2f5; padding: 20px 0; }
     .product-widget { max-width: 560px; width: 90%; margin: 40px auto; background-color: white; border-radius: 12px; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); overflow: hidden; }
     
-    /* 相簿樣式 */
     .image-gallery { position: relative; overflow: hidden; background-color: #eee; }
     .gallery-track { display: flex; transition: transform 0.5s ease-in-out; }
     .gallery-slide { min-width: 100%; box-sizing: border-box; }
@@ -22,7 +20,6 @@
     .product-info { padding: 32px; position: relative; }
     .product-info h1 { font-size: 28px; color: #333; margin: 0 0 10px 0; line-height: 1.3; font-weight: bold; }
     
-    /* 新版定價卡片設計 */
     .pricing-card {
         background: white;
         border: 1px solid #e5e7eb;
@@ -34,11 +31,9 @@
         align-items: center;
         cursor: pointer;
         transition: all 0.2s ease;
-        position: relative; /* 為了讓最優惠標籤定位 */
+        position: relative;
     }
     .pricing-card:hover { border-color: #3b82f6; }
-    
-    /* 選中狀態：紅框 + 淺紅底 */
     .pricing-card.selected { 
         border: 2.5px solid #d93025 !important; 
         background-color: #fff8f8 !important; 
@@ -46,11 +41,8 @@
 
     .plan-title { font-size: 22px; font-weight: 800; color: #000; }
     .price-text { font-size: 26px; font-weight: 900; color: #000; }
-    
-    /* 特選方案字體變紅 */
     .selected .price-text { color: #d93025; }
 
-    /* 最優惠標籤：放在右上角 */
     .promo-badge {
         position: absolute;
         top: -10px;
@@ -65,7 +57,6 @@
         z-index: 2;
     }
 
-    /* 每堂50分鐘：黑色粗體放大 */
     .session-info {
         font-size: 22px;
         font-weight: 900;
@@ -74,7 +65,6 @@
         margin: 25px 0;
     }
 
-    /* 購物車圖示與面板 */
     #add-to-cart-btn { width: 100%; background-color: #3b414a; color: white; border: none; padding: 18px 20px; font-size: 20px; font-weight: bold; border-radius: 8px; cursor: pointer; }
     .cart-icon-wrapper { position: absolute; top: 32px; right: 32px; font-size: 36px; cursor: pointer; color: #333; z-index: 10; }
     .cart-count { position: absolute; top: -8px; right: -12px; background-color: red; color: white; border-radius: 50%; width: 22px; height: 22px; font-size: 14px; font-weight: bold; display: flex; justify-content: center; align-items: center; transform: scale(0); transition: 0.2s; }
@@ -111,9 +101,13 @@
         <div class="product-info">
             <div id="cart-icon" class="cart-icon-wrapper">🛒<span id="cart-count" class="cart-count">0</span></div>
             <h1>Tony線上美語家教</h1>
-            <div class="subtitle-wrapper mb-4"><h2 class="text-xl text-gray-600">學費資訊</h2></div>
+            <div class="subtitle-wrapper mb-4"><h2 class="text-xl text-gray-400 font-bold">學費資訊</h2></div>
 
             <div id="plan-selection">
+                <div class="pricing-card" onclick="selectPlan('course-1', this)">
+                    <div class="plan-title">1堂課程</div>
+                    <div class="price-text">NT$ 800</div>
+                </div>
                 <div class="pricing-card" onclick="selectPlan('course-6', this)">
                     <div class="plan-title">6堂課程</div>
                     <div class="price-text">NT$ 4,200</div>
@@ -126,7 +120,6 @@
                     <div class="plan-title">16堂課程</div>
                     <div class="price-text">NT$ 10,000</div>
                 </div>
-                
                 <div class="pricing-card selected" onclick="selectPlan('course-20', this)">
                     <div class="promo-badge">★ 最優惠</div>
                     <div class="plan-title">20堂課程</div>
@@ -137,6 +130,7 @@
             <div class="session-info">每堂50分鐘</div>
 
             <select id="course-options" style="display:none;">
+                <option value="course-1">1堂課程 NT$ 800</option>
                 <option value="course-6">6堂課程 NT$ 4,200</option>
                 <option value="course-10">10堂課程 NT$ 6,600</option>
                 <option value="course-16">16堂課程 NT$ 10,000</option>
@@ -183,6 +177,7 @@
 
 <script>
     const products = [
+        { id: 'course-1', name: '1堂課程', price: 800 },
         { id: 'course-6', name: '6堂課程', price: 4200 },
         { id: 'course-10', name: '10堂課程', price: 6600 },
         { id: 'course-16', name: '16堂課程', price: 10000 },
@@ -231,7 +226,6 @@
         badge.classList.toggle('visible', count > 0);
     }
 
-    // 相簿控制
     let slideIdx = 0;
     const track = document.querySelector('.gallery-track');
     function moveSlide(n) {
@@ -251,7 +245,6 @@
         document.getElementById('cart-panel').classList.remove('open');
     };
 
-    // 表單提交
     document.getElementById('checkout-form').onsubmit = (e) => {
         e.preventDefault();
         const email = document.getElementById('email').value;
