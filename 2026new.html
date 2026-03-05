@@ -7,24 +7,35 @@
   <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    #embedding-container { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #f0f2f5; padding: 20px 0; }
-    .product-widget { max-width: 560px; width: 90%; margin: 40px auto; background-color: white; border-radius: 12px; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); overflow: hidden; }
-    
-    .image-gallery { position: relative; overflow: hidden; background-color: #eee; }
-    .gallery-track { display: flex; transition: transform 0.5s ease-in-out; }
-    .gallery-slide { min-width: 100%; box-sizing: border-box; }
-    .gallery-slide img { width: 100%; display: block; }
-    .prev, .next { cursor: pointer; position: absolute; top: 50%; width: auto; padding: 16px; margin-top: -22px; color: white; font-weight: bold; font-size: 20px; transition: 0.6s ease; border-radius: 0 3px 3px 0; user-select: none; background-color: rgba(0,0,0,0.3); z-index: 5; }
-    .next { right: 0; border-radius: 3px 0 0 3px; }
+    body { background-color: #f0f2f5; margin: 0; padding: 0; }
+    #embedding-container { font-family: 'Noto Sans TC', -apple-system, sans-serif; }
 
-    .product-info { padding: 32px; position: relative; }
-    .product-info h1 { font-size: 28px; color: #333; margin: 0 0 10px 0; line-height: 1.3; font-weight: bold; }
+    /* 手機版全寬度處理 */
+    .product-widget { 
+        max-width: 560px; 
+        width: 100%; 
+        margin: 0 auto; 
+        background-color: white; 
+        overflow: hidden; 
+    }
+
+    @media (min-width: 768px) {
+        .product-widget { margin: 40px auto; border-radius: 12px; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); }
+    }
+
+    .product-info { padding: 24px 16px; position: relative; }
     
+    /* 標題與文案樣式 */
+    .brand-title { font-size: 32px; font-weight: 900; color: #1a1a1a; margin-bottom: 8px; }
+    .brand-description { font-size: 16px; font-weight: 500; color: #4b5563; line-height: 1.6; margin-bottom: 24px; }
+    .highlight-text { color: #d93025; font-weight: 700; }
+
+    /* 定價卡片 */
     .pricing-card {
         background: white;
         border: 1px solid #e5e7eb;
-        border-radius: 16px;
-        padding: 24px;
+        border-radius: 12px;
+        padding: 20px 16px;
         margin-bottom: 12px;
         display: flex;
         justify-content: space-between;
@@ -33,54 +44,50 @@
         transition: all 0.2s ease;
         position: relative;
     }
-    .pricing-card:hover { border-color: #3b82f6; }
+    
     .pricing-card.selected { 
         border: 2.5px solid #d93025 !important; 
         background-color: #fff8f8 !important; 
     }
 
-    .plan-title { font-size: 22px; font-weight: 800; color: #000; }
-    .price-text { font-size: 26px; font-weight: 900; color: #000; }
+    .plan-title { font-size: 20px; font-weight: 800; color: #000; }
+    .price-text { font-size: 24px; font-weight: 900; color: #000; }
     .selected .price-text { color: #d93025; }
 
     .promo-badge {
         position: absolute;
         top: -10px;
-        right: 15px;
+        right: 12px;
         background-color: #d93025;
         color: white;
-        padding: 2px 12px;
+        padding: 2px 10px;
         border-radius: 20px;
-        font-size: 14px;
+        font-size: 12px;
         font-weight: bold;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.2);
         z-index: 2;
     }
 
     .session-info {
-        font-size: 22px;
+        font-size: 24px;
         font-weight: 900;
         color: #000;
         text-align: center;
         margin: 25px 0;
     }
 
-    #add-to-cart-btn { width: 100%; background-color: #3b414a; color: white; border: none; padding: 18px 20px; font-size: 20px; font-weight: bold; border-radius: 8px; cursor: pointer; }
-    .cart-icon-wrapper { position: absolute; top: 32px; right: 32px; font-size: 36px; cursor: pointer; color: #333; z-index: 10; }
-    .cart-count { position: absolute; top: -8px; right: -12px; background-color: red; color: white; border-radius: 50%; width: 22px; height: 22px; font-size: 14px; font-weight: bold; display: flex; justify-content: center; align-items: center; transform: scale(0); transition: 0.2s; }
-    .cart-count.visible { transform: scale(1); }
+    #add-to-cart-btn { width: 100%; background-color: #1a1a1a; color: white; border: none; padding: 20px; font-size: 20px; font-weight: bold; border-radius: 8px; cursor: pointer; }
     
+    /* 購物車面板 */
     .cart-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 1000; opacity: 0; visibility: hidden; transition: 0.5s; }
     .cart-overlay.open { opacity: 1; visibility: visible; }
-    .cart-panel { position: fixed; top: 0; right: -100%; width: 90%; max-width: 800px; height: 100%; background: #f9f9f9; z-index: 1001; transition: 0.5s ease-in-out; display: flex; flex-direction: column; }
+    .cart-panel { position: fixed; top: 0; right: -100%; width: 100%; max-width: 800px; height: 100%; background: #f9f9f9; z-index: 1001; transition: 0.5s ease-in-out; display: flex; flex-direction: column; }
     .cart-panel.open { right: 0; }
-    .cart-body { display: flex; flex-grow: 1; padding: 20px; gap: 40px; overflow-y: auto; }
-    .cart-left, .cart-right { flex-basis: 50%; background: white; padding: 20px; border-radius: 8px; border: 1px solid #e0e0e0; }
+    .cart-body { display: flex; flex-grow: 1; padding: 16px; gap: 20px; overflow-y: auto; flex-direction: column; }
+    .cart-left, .cart-right { background: white; padding: 20px; border-radius: 8px; border: 1px solid #e0e0e0; }
 
-    @media (max-width: 767px) {
-      .cart-body { flex-direction: column; }
-      .cart-panel { width: 100%; }
-      .pricing-card { padding: 18px; }
+    @media (min-width: 768px) {
+        .cart-body { flex-direction: row; padding: 32px; gap: 40px; }
+        .cart-panel { width: 90%; }
     }
   </style>
 </head>
@@ -89,19 +96,14 @@
 <div id="embedding-container">
   <div id="product-page">
     <div class="product-widget">
-        <div class="image-gallery">
-            <div class="gallery-track">
-                <div class="gallery-slide"><img src="https://ik.imagekit.io/lql1uveoc/%E5%AD%B8%E8%B2%BB%20tuition/Abstract%20Special%20Offer%20Announcement%20Free%20Facebook%20Post-3.png?updatedAt=1760025096237"></div>
-                <div class="gallery-slide"><img src="https://ik.imagekit.io/lql1uveoc/%E5%AD%B8%E8%B2%BB%20tuition/5.png?updatedAt=1760025404480"></div>
-            </div>
-            <a class="prev" id="prev-btn">&#10094;</a>
-            <a class="next" id="next-btn">&#10095;</a>
-        </div>
-
         <div class="product-info">
-            <div id="cart-icon" class="cart-icon-wrapper">🛒<span id="cart-count" class="cart-count">0</span></div>
-            <h1>Tony線上美語家教</h1>
-            <div class="subtitle-wrapper mb-4"><h2 class="text-xl text-gray-400 font-bold">學費資訊</h2></div>
+            <div id="cart-icon" class="absolute top-6 right-4 text-4xl cursor-pointer">🛒<span id="cart-count" class="absolute -top-1 -right-2 bg-red-600 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center scale-0 transition-transform">0</span></div>
+            
+            <h1 class="brand-title">Tony線上美語家教</h1>
+            <div class="brand-description">
+                升學檢定、口說寫作、商用觀光、外商面試<br>
+                <span class="highlight-text">提供您的全方位家教。聽說讀寫。</span>
+            </div>
 
             <div id="plan-selection">
                 <div class="pricing-card" onclick="selectPlan('course-1', this)">
@@ -145,7 +147,7 @@
     <div id="cart-panel" class="cart-panel">
         <div class="cart-body">
             <div class="cart-left">
-                <h3 class="text-xl font-bold mb-4">購物車 <button class="close-btn" id="close-cart-btn-main">×</button></h3>
+                <h3 class="text-xl font-bold mb-4">購物車 <button class="float-right" id="close-cart-btn-main">×</button></h3>
                 <div id="cart-items-container"></div>
                 <div class="mt-6 pt-4 border-t-2 border-black">
                     <div class="flex justify-between text-2xl font-bold">
@@ -156,17 +158,17 @@
             <div class="cart-right">
                 <h3 class="text-xl font-bold mb-4">結帳</h3>
                 <form id="checkout-form">
-                    <p class="mb-2">請輸入您的電子信箱。</p>
+                    <p class="mb-2">請輸入電子信箱。</p>
                     <input type="email" id="email" required class="w-full p-3 border rounded mb-4">
                     <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="block text-center font-bold text-green-600 mb-4">請加入Line: Myavalon</a>
-                    <button type="submit" class="w-full bg-slate-800 text-white p-4 rounded font-bold">確認</button>
+                    <button type="submit" class="w-full bg-black text-white p-4 rounded font-bold">確認結帳</button>
                 </form>
             </div>
         </div>
     </div>
   </div>
 
-  <div id="thank-you-page" style="display:none; padding:40px; background:white; max-width:800px; margin:40px auto; border-radius:12px; text-align:center;">
+  <div id="thank-you-page" style="display:none; padding:40px; background:white; text-align:center; min-height:100vh;">
       <h2 style="font-size:32px; color:#27ae60; font-weight:bold;">✓ 感謝您的訂購！</h2>
       <p id="ty-customer-email" class="my-4 text-gray-600"></p>
       <div id="ty-cart-items-container" class="my-4 border-y py-4"></div>
@@ -223,18 +225,10 @@
         document.getElementById('total-price').textContent = `NT$ ${total.toLocaleString()}`;
         const badge = document.getElementById('cart-count');
         badge.textContent = count;
-        badge.classList.toggle('visible', count > 0);
+        badge.classList.toggle('scale-100', count > 0);
+        badge.classList.toggle('scale-0', count === 0);
     }
 
-    let slideIdx = 0;
-    const track = document.querySelector('.gallery-track');
-    function moveSlide(n) {
-        slideIdx = (slideIdx + n + 2) % 2;
-        track.style.transform = `translateX(-${slideIdx * 100}%)`;
-    }
-
-    document.getElementById('next-btn').onclick = () => moveSlide(1);
-    document.getElementById('prev-btn').onclick = () => moveSlide(-1);
     document.getElementById('add-to-cart-btn').onclick = handleAddToCart;
     document.getElementById('cart-icon').onclick = () => {
         document.getElementById('cart-overlay').classList.add('open');
