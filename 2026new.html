@@ -6,52 +6,74 @@
   <title>Tony線上美語家教 - 課程方案</title>
   <style>
     /* CSS reset & Basic styles */
-    #embedding-container { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background-color: #f0f2f5; padding: 40px 0; }
-    .product-widget { max-width: 560px; width: 90%; margin: 0 auto; background-color: white; border-radius: 16px; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08); overflow: hidden; display: flex; flex-direction: column;}
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background-color: #fafafa; margin: 0; padding: 0;}
     
-    /* Widget Header (Mountain Background) */
-    .widget-header { position: relative; padding: 40px 32px; overflow: hidden; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
-    .widget-header-bg { position: absolute; inset: 0; background-image: url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/shutter-speed-3LXPDYb83MY-unsplash.jpg'); background-size: cover; background-position: center; filter: blur(3px) brightness(0.65); transform: scale(1.05); z-index: 1; }
-    .widget-header-content { position: relative; z-index: 3; color: white; }
-    .widget-header-content h1 { font-size: 30px; margin: 0 0 8px 0; font-weight: bold; letter-spacing: 1px; text-shadow: 0 2px 4px rgba(0,0,0,0.5); }
-    .widget-header-content h2 { font-size: 20px; margin: 0; font-weight: 400; opacity: 0.9; }
+    /* === 價目表方塊專屬樣式 === */
+    .pricing-block {
+        background-color: #ffffff;
+        border: 2px solid #f1f5f9;
+        border-radius: 24px;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+        transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        display: flex;
+        align-items: center;
+        position: relative;
+        cursor: pointer;
+    }
+    
+    .pricing-block:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+        border-color: #cbd5e1;
+    }
+    
+    /* 選中狀態 */
+    .pricing-block.selected {
+        border-color: #1e3a8a;
+        background-color: #eff6ff;
+        box-shadow: 0 6px 20px rgba(30, 58, 138, 0.15);
+    }
+    
+    /* 自訂圓形單選框 (Radio Icon) */
+    .custom-radio {
+        width: 26px;
+        height: 26px;
+        border: 2px solid #cbd5e1;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        transition: border-color 0.2s ease;
+        margin-left: 20px;
+        background-color: white;
+    }
+    
+    .custom-radio::after {
+        content: '';
+        width: 12px;
+        height: 12px;
+        background-color: #1e3a8a;
+        border-radius: 50%;
+        transform: scale(0);
+        transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    
+    .pricing-block.selected .custom-radio {
+        border-color: #1e3a8a;
+    }
+    
+    .pricing-block.selected .custom-radio::after {
+        transform: scale(1);
+    }
 
-    .product-info { padding: 32px; position: relative; background-color: #ffffff;}
-    
-    /* Option Selector (Radio Buttons) */
-    .option-selector { display: flex; flex-direction: column; gap: 12px; margin-bottom: 25px; }
-    .option-selector label.title-label { font-size: 18px; color: #555; font-weight: bold; margin-bottom: 4px; display: block;}
-    
-    .radio-options { display: flex; flex-direction: column; gap: 12px; }
-    .radio-option { display: flex; align-items: center; justify-content: space-between; padding: 16px 20px; border: 2px solid #e2e8f0; border-radius: 12px; cursor: pointer; transition: all 0.2s ease; background-color: #fff; }
-    .radio-option:hover { border-color: #cbd5e1; background-color: #f8fafc; }
-    /* Selected State deeply blue */
-    .radio-option.selected { border-color: #1e3a8a; background-color: #eff6ff; }
-    .radio-option input[type="radio"] { display: none; }
-    
-    .radio-content-left { display: flex; align-items: center; gap: 14px;}
-    .radio-circle { width: 22px; height: 22px; border: 2px solid #cbd5e1; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: border-color 0.2s ease;}
-    .radio-circle::after { content: ''; width: 10px; height: 10px; background-color: #1e3a8a; border-radius: 50%; transform: scale(0); transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1); }
-    .radio-option.selected .radio-circle { border-color: #1e3a8a; }
-    .radio-option.selected .radio-circle::after { transform: scale(1); }
-    
-    .radio-label { font-size: 18px; font-weight: 700; color: #334155; pointer-events: none;}
-    .radio-price { font-size: 18px; font-weight: 600; color: #64748b; pointer-events: none;}
-    .radio-option.selected .radio-label, .radio-option.selected .radio-price { color: #1e3a8a; }
-
-    /* Buttons */
-    #add-to-cart-btn { width: 100%; background-color: #1e3a8a; color: white; border: none; padding: 20px; font-size: 20px; font-weight: bold; border-radius: 12px; cursor: pointer; transition: background-color 0.3s ease, transform 0.1s ease; box-shadow: 0 4px 12px rgba(30, 58, 138, 0.25); }
-    #add-to-cart-btn:hover { background-color: #172554; }
-    #add-to-cart-btn:active { transform: scale(0.98); }
-
-    /* Floating Cart Button */
+    /* === 購物車與結帳側邊欄樣式 === */
     .floating-cart { position: fixed; bottom: 30px; right: 30px; background-color: #1e3a8a; color: white; width: 64px; height: 64px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 6px 20px rgba(0,0,0,0.3); cursor: pointer; z-index: 999; transition: transform 0.3s ease, background-color 0.3s ease; }
     .floating-cart:hover { transform: scale(1.05); background-color: #172554;}
     .floating-cart svg { width: 28px; height: 28px; fill: currentColor; }
     .cart-count { position: absolute; top: -2px; right: -2px; background-color: #e3001b; color: white; border-radius: 50%; width: 24px; height: 24px; font-size: 13px; font-weight: bold; display: flex; justify-content: center; align-items: center; border: 2px solid white; transition: transform 0.2s ease; transform: scale(0); }
     .cart-count.visible { transform: scale(1); }
 
-    /* Cart Panel & Overlay */
     .cart-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 1000; opacity: 0; visibility: hidden; transition: opacity 0.5s ease, visibility 0.5s ease; backdrop-filter: blur(2px); }
     .cart-overlay.open { opacity: 1; visibility: visible; }
     .cart-panel { position: fixed; top: 0; right: -100%; width: 90%; max-width: 800px; height: 100%; background-color: #f9f9f9; box-shadow: -5px 0 25px rgba(0,0,0,0.15); z-index: 1001; transition: right 0.4s cubic-bezier(0.25, 0.8, 0.25, 1); display: flex; flex-direction: column; }
@@ -104,20 +126,7 @@
     #continue-shopping-btn { display: inline-block; margin-top: 30px; padding: 14px 28px; background-color: #f1f5f9; color: #334155; text-decoration: none; border-radius: 8px; font-weight: bold; transition: background-color 0.2s; }
     #continue-shopping-btn:hover { background-color: #e2e8f0; }
 
-    @media (min-width: 768px) and (max-width: 1024px) {
-      .product-widget { max-width: 700px; margin: 50px auto; }
-      .product-info { padding: 45px; }
-      #add-to-cart-btn { font-size: 22px; padding: 22px; }
-      .thank-you-container { flex-direction: column; display: block; }
-    }
     @media (max-width: 767px) {
-      #embedding-container { padding: 20px 0; }
-      .product-widget { max-width: 400px; margin: 0 auto; }
-      .widget-header { padding: 30px 20px; }
-      .widget-header-content h1 { font-size: 24px; }
-      .product-info { padding: 24px; }
-      .option-selector label.title-label { font-size: 16px; }
-      #add-to-cart-btn { font-size: 18px; padding: 18px 20px; }
       .floating-cart { bottom: 20px; right: 20px; width: 56px; height: 56px; }
       .cart-panel { width: 100%; max-width: 100%; }
       .cart-body { flex-direction: column; gap: 20px; padding: 0 15px 15px 15px; }
@@ -129,8 +138,7 @@
 </head>
 <body>
 
-<!-- START OF COPY -->
-<div id="custom-pricing-container" style="width: 100%; min-width: 100%; background-color: #fafafa; font-family: 'Noto Sans TC', sans-serif; overflow-x: hidden;">
+<div id="product-page" style="width: 100%; min-width: 100%; background-color: #fafafa; font-family: 'Noto Sans TC', sans-serif; overflow-x: hidden;">
     
     <!-- Import Fonts & Tailwind -->
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
@@ -138,7 +146,6 @@
 
     <!-- HEADER SECTION -->
     <div class="w-full relative overflow-hidden bg-gray-900 flex items-center justify-center" style="border-bottom-left-radius: 50% 20px; border-bottom-right-radius: 50% 20px;">
-        
         <!-- Background Image & Overlay -->
         <div class="absolute inset-0 z-0">
             <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/shutter-speed-3LXPDYb83MY-unsplash.jpg" alt="Tony線上美語家教 背景" class="w-full h-full object-cover object-center" />
@@ -157,22 +164,39 @@
     </div>
 
     <!-- MAIN CONTENT SECTION -->
-    <div class="w-full max-w-5xl mx-auto px-4 -mt-10 pb-12 relative z-20">
+    <div id="custom-pricing-container" class="w-full max-w-5xl mx-auto px-4 -mt-10 pb-20 relative z-20">
         
         <!-- PRICING LIST -->
         <div class="flex flex-col gap-4 md:gap-5 max-w-md mx-auto w-full">
             
-            <!-- Plan 1 -->
-            <div class="pricing-block cursor-pointer bg-white border border-gray-100 rounded-[24px] flex items-stretch shadow-[0_4px_20px_rgba(0,0,0,0.06)] relative h-[110px] sm:h-[120px] transition-transform hover:scale-[1.02]" data-id="course-6">
-                <div class="absolute top-0 right-0 bg-gray-800 text-white text-xs sm:text-sm font-normal px-3 py-1.5 rounded-bl-[16px] rounded-tr-[23px] z-10 tracking-wider">
+            <!-- Plan 0: 1 Class -->
+            <div class="pricing-block h-[90px] sm:h-[100px]" data-id="course-1">
+                <div class="custom-radio z-10"></div>
+                <div class="w-[30%] flex flex-col justify-center items-center z-10">
+                    <div class="text-[20px] sm:text-[24px] font-normal text-gray-900 leading-[1.15] tracking-widest text-center pt-1">
+                        1堂<br>課程
+                    </div>
+                </div>
+                <div class="w-[50%] flex justify-center items-center z-10 flex-grow">
+                    <div class="text-[26px] sm:text-[30px] text-gray-900 pt-1 flex items-baseline justify-center gap-1.5">
+                        <span class="font-light text-[14px] sm:text-[16px] text-gray-500 tracking-normal">NT$</span>
+                        <span class="font-extrabold tracking-tighter">800</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Plan 1: 6 Classes -->
+            <div class="pricing-block h-[110px] sm:h-[120px]" data-id="course-6">
+                <div class="absolute top-0 right-0 bg-gray-800 text-white text-xs sm:text-sm font-normal px-3 py-1.5 rounded-bl-[16px] rounded-tr-[22px] z-10 tracking-wider">
                     -12.5%
                 </div>
-                <div class="w-[35%] flex flex-col justify-center items-center">
+                <div class="custom-radio z-10"></div>
+                <div class="w-[30%] flex flex-col justify-center items-center z-10">
                     <div class="text-[24px] sm:text-[28px] font-normal text-gray-900 leading-[1.15] tracking-widest text-center pt-2">
                         6堂<br>課程
                     </div>
                 </div>
-                <div class="w-[65%] flex justify-center items-center">
+                <div class="w-[50%] flex justify-center items-center z-10 flex-grow">
                     <div class="text-[28px] sm:text-[32px] text-gray-900 pt-2 flex items-baseline justify-center gap-1.5">
                         <span class="font-light text-[16px] sm:text-[18px] text-gray-500 tracking-normal">NT$</span>
                         <span class="font-extrabold tracking-tighter">4,200</span>
@@ -180,17 +204,18 @@
                 </div>
             </div>
 
-            <!-- Plan 2 -->
-            <div class="pricing-block cursor-pointer bg-white border border-gray-100 rounded-[24px] flex items-stretch shadow-[0_4px_20px_rgba(0,0,0,0.06)] relative h-[110px] sm:h-[120px] transition-transform hover:scale-[1.02]" data-id="course-10">
-                <div class="absolute top-0 right-0 bg-gray-800 text-white text-xs sm:text-sm font-normal px-3 py-1.5 rounded-bl-[16px] rounded-tr-[23px] z-10 tracking-wider">
+            <!-- Plan 2: 10 Classes -->
+            <div class="pricing-block h-[110px] sm:h-[120px]" data-id="course-10">
+                <div class="absolute top-0 right-0 bg-gray-800 text-white text-xs sm:text-sm font-normal px-3 py-1.5 rounded-bl-[16px] rounded-tr-[22px] z-10 tracking-wider">
                     -17.5%
                 </div>
-                <div class="w-[35%] flex flex-col justify-center items-center">
+                <div class="custom-radio z-10"></div>
+                <div class="w-[30%] flex flex-col justify-center items-center z-10">
                     <div class="text-[24px] sm:text-[28px] font-normal text-gray-900 leading-[1.15] tracking-widest text-center pt-2">
                         10堂<br>課程
                     </div>
                 </div>
-                <div class="w-[65%] flex justify-center items-center">
+                <div class="w-[50%] flex justify-center items-center z-10 flex-grow">
                     <div class="text-[28px] sm:text-[32px] text-gray-900 pt-2 flex items-baseline justify-center gap-1.5">
                         <span class="font-light text-[16px] sm:text-[18px] text-gray-500 tracking-normal">NT$</span>
                         <span class="font-extrabold tracking-tighter">6,600</span>
@@ -198,17 +223,18 @@
                 </div>
             </div>
 
-            <!-- Plan 3 -->
-            <div class="pricing-block cursor-pointer bg-white border border-gray-100 rounded-[24px] flex items-stretch shadow-[0_4px_20px_rgba(0,0,0,0.06)] relative h-[110px] sm:h-[120px] transition-transform hover:scale-[1.02]" data-id="course-16">
-                <div class="absolute top-0 right-0 bg-gray-800 text-white text-xs sm:text-sm font-normal px-3 py-1.5 rounded-bl-[16px] rounded-tr-[23px] z-10 tracking-wider">
+            <!-- Plan 3: 16 Classes -->
+            <div class="pricing-block h-[110px] sm:h-[120px]" data-id="course-16">
+                <div class="absolute top-0 right-0 bg-gray-800 text-white text-xs sm:text-sm font-normal px-3 py-1.5 rounded-bl-[16px] rounded-tr-[22px] z-10 tracking-wider">
                     -22%
                 </div>
-                <div class="w-[35%] flex flex-col justify-center items-center">
+                <div class="custom-radio z-10"></div>
+                <div class="w-[30%] flex flex-col justify-center items-center z-10">
                     <div class="text-[24px] sm:text-[28px] font-normal text-gray-900 leading-[1.15] tracking-widest text-center pt-2">
                         16堂<br>課程
                     </div>
                 </div>
-                <div class="w-[65%] flex justify-center items-center">
+                <div class="w-[50%] flex justify-center items-center z-10 flex-grow">
                     <div class="text-[28px] sm:text-[32px] text-gray-900 pt-2 flex items-baseline justify-center gap-1.5">
                         <span class="font-light text-[16px] sm:text-[18px] text-gray-500 tracking-normal">NT$</span>
                         <span class="font-extrabold tracking-tighter">10,000</span>
@@ -216,18 +242,19 @@
                 </div>
             </div>
 
-            <!-- Plan 4 (Best) -->
-            <div class="pricing-block cursor-pointer bg-blue-50 border-[3px] border-blue-900 rounded-[24px] flex items-stretch shadow-[0_6px_25px_rgba(30,58,138,0.15)] relative h-[110px] sm:h-[120px] transition-transform hover:scale-[1.02]" data-id="course-20">
+            <!-- Plan 4 (Best): 20 Classes (預設選中) -->
+            <div class="pricing-block selected h-[110px] sm:h-[120px]" data-id="course-20">
                 <div class="absolute top-0 right-0 bg-blue-900 text-white text-sm sm:text-base font-normal px-5 py-1.5 rounded-bl-[16px] rounded-tr-[20px] z-10 flex items-center tracking-wider">
                     <span class="absolute -top-6 -left-7 text-[40px] sm:text-[44px] drop-shadow-md z-20 origin-bottom -rotate-12">👑</span>
                     <span class="ml-1 relative z-10">最優惠</span>
                 </div>
-                <div class="w-[35%] flex flex-col justify-center items-center bg-transparent">
+                <div class="custom-radio z-10"></div>
+                <div class="w-[30%] flex flex-col justify-center items-center z-10">
                     <div class="text-[24px] sm:text-[28px] font-bold text-blue-900 leading-[1.15] tracking-widest text-center pt-3">
                         20堂<br>課程
                     </div>
                 </div>
-                <div class="w-[65%] flex justify-center items-center bg-transparent">
+                <div class="w-[50%] flex justify-center items-center z-10 flex-grow">
                     <div class="text-[30px] sm:text-[36px] text-blue-900 pt-3 flex items-baseline justify-center gap-1.5">
                         <span class="font-light text-[18px] sm:text-[20px] text-blue-700 tracking-normal">NT$</span>
                         <span class="font-black tracking-tighter">12,000</span>
@@ -237,18 +264,28 @@
 
         </div>
 
+        <!-- 立即購買按鈕 (緊接在價目表下方) -->
+        <div class="mt-6 max-w-md mx-auto w-full">
+            <button id="main-add-to-cart-btn" class="w-full bg-[#1e3a8a] text-white py-4 sm:py-5 px-6 rounded-2xl font-bold text-xl sm:text-2xl shadow-[0_8px_25px_rgba(30,58,138,0.3)] transform transition duration-200 hover:bg-[#172554] hover:-translate-y-1 active:scale-[0.98] active:translate-y-0 flex justify-center items-center gap-2">
+                加入購物車 | NT$ 12,000
+            </button>
+        </div>
+
         <!-- Class Info Row -->
-        <div class="max-w-md mx-auto flex justify-between items-center mt-4 px-2 text-sm">
+        <div class="max-w-md mx-auto flex justify-between items-center mt-6 px-2 text-sm">
             <div class="text-blue-600 font-medium italic">
-                
+                <a href="https://tonyonlineenglish.mydurable.com/allcourses" target="_blank" class="flex items-center gap-1 hover:underline">
+                    查看課程詳細介紹
+                    <svg style="width: 14px; height: 14px; fill: currentColor;" viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+                </a>
             </div>
-            <div class="text-black text-lg md:text-xl font-bold">
-                50分鐘/堂
+            <div class="text-gray-500 text-base font-medium">
+                每堂 50 分鐘
             </div>
         </div>
 
         <!-- Moved Statement -->
-        <div class="text-center mt-10">
+        <div class="text-center mt-12">
              <p class="text-gray-600 text-lg md:text-base leading-relaxed">
                 我將持續以穩定且高品質的授課方式，陪伴孩子在接下來的階段逐步提升英文能力與考試表現。
             </p>
@@ -260,42 +297,13 @@
 
     </div>
 
-</div>
-<!-- END OF COPY -->
-
-<div id="embedding-container">
-  <div id="product-page">
-    <div class="product-widget">
-        <!-- New Header with background image -->
-        <div class="widget-header">
-            <div class="widget-header-bg"></div>
-            <div class="widget-header-content">
-                <h1>Tony線上美語家教</h1>
-                <h2>學費資訊</h2>
-            </div>
-        </div>
-        
-        <div class="product-info">
-            <p style="margin: 0 0 25px 0; font-size: 16px;">
-                <a href="https://tonyonlineenglish.mydurable.com/allcourses" target="_blank" style="color: #1e3a8a; font-weight: bold; text-decoration: none; display: inline-flex; align-items: center; gap: 5px;">
-                    課程詳細介紹
-                    <svg style="width: 16px; height: 16px; fill: #1e3a8a;" viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
-                </a>
-            </p>
-            <div class="option-selector">
-                <label class="title-label">選擇課程方案 <span style="color: #1e3a8a; font-weight: normal; font-size: 14px;">(每堂50分鐘)</span></label>
-                <div id="course-options-container" class="radio-options"></div>
-            </div>
-            <button id="add-to-cart-btn"></button>
-        </div>
-    </div>
-    
     <!-- Floating Cart Button -->
     <div id="floating-cart" class="floating-cart">
         <svg viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-1.99.9-1.99 2s.89 2 1.99 2 2-.9 2-2-.9-2-2-2z"/></svg>
         <span id="cart-count" class="cart-count">0</span>
     </div>
 
+    <!-- 購物車側邊欄 -->
     <div id="cart-overlay" class="cart-overlay"></div>
     <div id="cart-panel" class="cart-panel">
         <div class="cart-body">
@@ -321,12 +329,14 @@
             </div>
         </div>
     </div>
-  </div>
-  <div id="thank-you-page" style="display:none;">
+</div> <!-- End of Product Page -->
+
+<!-- 感謝頁面 (隱藏) -->
+<div id="thank-you-page" style="display:none; width: 100%; min-height: 100vh; background-color: #f0f2f5;">
     <div class="thank-you-container">
         <div class="ty-left-panel">
             <div class="ty-checkmark">✓</div>
-            <h2 class="ty-header">感謝您的訂購！<span id="celebration-icon" style="font-size: 32px; margin-left: 5px;">🎉</span></h2>
+            <h2 class="ty-header">感謝您的訂購！<span style="font-size: 32px; margin-left: 5px;">🎉</span></h2>
             <p class="ty-message">您的訂單已成功建立。確認信已寄送至您的電子信箱，請檢查您的收件匣。</p>
             <div class="ty-order-details">
                 <div class="ty-detail-item"><span>訂單編號</span><span id="ty-order-id" style="color: #1e3a8a; font-weight: bold; font-size: 18px;"></span></div>
@@ -346,23 +356,24 @@
             <div class="cart-total" style="border-top-color: #e2e8f0;"><div class="total-row"><span>總計</span><span id="ty-total-price" style="color: #1e3a8a;">NT$0</span></div></div>
         </div>
     </div>
-  </div>
 </div>
 
 <script>
     const products =[
+        { id: 'course-1', name: '1堂課程', price: 800 },
         { id: 'course-6', name: '6堂課程', price: 4200 },
         { id: 'course-10', name: '10堂課程', price: 6600 },
         { id: 'course-16', name: '16堂課程', price: 10000 },
-        { id: 'course-20', name: '20堂課程', price: 12000 },
-        { id: 'course-1', name: '1堂課程', price: 800 } 
+        { id: 'course-20', name: '20堂課程', price: 12000 }
     ];
 
     let cart = {};
+    let selectedCourseId = 'course-20'; // 預設選中 20 堂課
 
     const productPage = document.getElementById("product-page"),
         thankYouPage = document.getElementById("thank-you-page"),
-        addToCartBtn = document.getElementById("add-to-cart-btn"),
+        mainAddToCartBtn = document.getElementById("main-add-to-cart-btn"),
+        pricingBlocks = document.querySelectorAll('.pricing-block'),
         cartCountSpan = document.getElementById("cart-count"),
         cartOverlay = document.getElementById("cart-overlay"),
         cartPanel = document.getElementById("cart-panel"),
@@ -374,57 +385,32 @@
         emailInput = document.getElementById("email"),
         continueShoppingBtn = document.getElementById("continue-shopping-btn");
 
-    function populateCourseOptions() {
-        const container = document.getElementById('course-options-container');
-        container.innerHTML = ''; 
-        
-        products.forEach((p, index) => {
-            if (p.id === 'course-1') return; // Skip 1 course in radio options if needed, or keep it. I will keep it as original logic unless specified. Wait, originally it was in the select list. I'll render all of them.
-            
-            const isSelected = index === 0;
-            const optionLabel = document.createElement("label");
-            optionLabel.className = `radio-option ${isSelected ? 'selected' : ''}`;
-            
-            optionLabel.innerHTML = `
-                <div class="radio-content-left">
-                    <div class="radio-circle"></div>
-                    <span class="radio-label">${p.name}</span>
-                </div>
-                <span class="radio-price">NT$ ${p.price.toLocaleString()}</span>
-                <input type="radio" name="course_selection" value="${p.id}" ${isSelected ? 'checked' : ''}>
-            `;
-            container.appendChild(optionLabel);
-        });
-
-        // Add Event Listeners for radio selection
-        const radios = container.querySelectorAll('input[type="radio"]');
-        radios.forEach(radio => {
-            radio.addEventListener('change', function() {
-                container.querySelectorAll('.radio-option').forEach(opt => opt.classList.remove('selected'));
-                if (this.checked) {
-                    this.closest('.radio-option').classList.add('selected');
-                    updateButton();
-                }
-            });
-        });
-    }
-
-    function getSelectedCourseId() {
-        const selectedRadio = document.querySelector('input[name="course_selection"]:checked');
-        return selectedRadio ? selectedRadio.value : products[0].id;
-    }
-
-    function updateButton() {
-        const selectedId = getSelectedCourseId();
-        const selectedProduct = products.find(p => p.id === selectedId);
+    // 更新下方「加入購物車」大按鈕的金額
+    function updateMainButton() {
+        const selectedProduct = products.find(p => p.id === selectedCourseId);
         if (selectedProduct) {
-            addToCartBtn.textContent = `NT$ ${selectedProduct.price.toLocaleString()} | 加入購物車`;
+            mainAddToCartBtn.innerHTML = `加入購物車 | NT$ ${selectedProduct.price.toLocaleString()}`;
         }
     }
 
+    // 處理價目方塊的點擊事件（單選邏輯）
+    pricingBlocks.forEach(block => {
+        block.addEventListener('click', function() {
+            // 移除所有方塊的選中狀態
+            pricingBlocks.forEach(b => b.classList.remove('selected'));
+            
+            // 將當前點擊的方塊設為選中狀態
+            this.classList.add('selected');
+            
+            // 更新目前選中的方案 ID 與按鈕金額
+            selectedCourseId = this.getAttribute('data-id');
+            updateMainButton();
+        });
+    });
+
+    // 點擊「加入購物車」按鈕
     function handleAddToCart() {
-        const selectedId = getSelectedCourseId();
-        const productToAdd = products.find(p => p.id === selectedId);
+        const productToAdd = products.find(p => p.id === selectedCourseId);
         
         if (productToAdd) {
             if (cart[productToAdd.id]) {
@@ -440,8 +426,11 @@
             }
         }
         updateCartDisplay();
+        
+        // 打開購物車側邊欄
         cartOverlay.classList.add("open");
         cartPanel.classList.add("open");
+        
         setTimeout(() => { emailInput.focus(); }, 400);
     }
 
@@ -485,6 +474,7 @@
         } else {
             cartItemsContainer.innerHTML = '<p style="color: #64748b; padding: 20px 0;">您的購物車是空的，快去選擇方案吧！</p>';
         }
+        
         cartCountSpan.innerText = totalItems;
         totalItems > 0 ? cartCountSpan.classList.add("visible") : cartCountSpan.classList.remove("visible");
         totalPriceSpan.innerText = `NT$ ${totalPrice.toLocaleString()}`;
@@ -496,7 +486,10 @@
             delete cart[productIdToRemove];
             updateCartDisplay();
             if (Object.keys(cart).length === 0) {
-                setTimeout(toggleCartPanel, 300);
+                setTimeout(() => {
+                    cartOverlay.classList.remove("open");
+                    cartPanel.classList.remove("open");
+                }, 300);
             }
         }
     }
@@ -535,6 +528,7 @@
         cartOverlay.classList.remove('open');
         cartPanel.classList.remove('open');
         thankYouPage.style.display = 'block';
+        window.scrollTo(0,0);
     }
 
     function handleCheckout(e) {
@@ -545,81 +539,4 @@
       const timestamp = new Date().toLocaleString("zh-TW",{year:"numeric",month:"long",day:"numeric",hour:"2-digit",minute:"2-digit"});
       const checkoutButton = checkoutForm.querySelector("button");
       
-      let productNames =[], totalPrice = 0, itemsForThankYouPage =[];
-      
-      Object.values(cart).forEach(item => { 
-          productNames.push(`${item.name} (x${item.quantity})`); 
-          totalPrice += (item.price * item.quantity); 
-          itemsForThankYouPage.push({name: item.name, price: item.price, quantity: item.quantity}); 
-      });
-      
-      const productNamesString = productNames.join(', ');
-      
-      checkoutButton.disabled = true; checkoutButton.innerText = "訂單處理中...";
-      
-      // Submit order details to thank you page
-      showThankYouPage({ email: email, items: itemsForThankYouPage, totalPrice: totalPrice, orderId: orderId, timestamp: timestamp });
-      
-      fetch("https://script.google.com/macros/s/AKfycbyU13Wivs341DMPupk9EKrL9u908zrHNOVqZUXri-hGezkk6qj_7loQGIf0GCfmvj_f/exec", { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded" }, body: new URLSearchParams({ orderId: orderId, email: email, productName: productNamesString, totalPrice: totalPrice, status: "未付款", imageUrls: "No Image" }) })
-      .then(response => { if (!response.ok) console.error("Error submitting order."); return response.text(); })
-      .then(data => { console.log("Order submitted."); cart = {}; updateCartDisplay(); })
-      .catch(e => { console.error("Fetch error:", e); })
-      .finally(() => { checkoutButton.disabled = false; checkoutButton.innerText = "送出訂單"; });
-    }
-
-    function toggleCartPanel() { 
-        cartOverlay.classList.toggle("open");
-        cartPanel.classList.toggle("open");
-    }
-    
-    function generateOrderId() { let e = "#"; for (let t = 0; t < 6; t++) e += "ABCDEFGHIJKLMNOPQRSTUVWXYZ01223456789".charAt(Math.floor(36 * Math.random())); return e }
-    
-    // Initializing the page
-    populateCourseOptions();
-    updateButton();
-    updateCartDisplay();
-    
-    // Attach Listeners
-    addToCartBtn.addEventListener("click", handleAddToCart);
-    floatingCartBtn.addEventListener("click", toggleCartPanel);
-    if (closeCartBtn) closeCartBtn.addEventListener("click", toggleCartPanel);
-    cartOverlay.addEventListener("click", toggleCartPanel);
-    if (checkoutForm) checkoutForm.addEventListener("submit", handleCheckout);
-    
-    if (cartItemsContainer) {
-        cartItemsContainer.addEventListener("click", handleRemoveClick);
-        cartItemsContainer.addEventListener("change", handleQtyChange);
-    }
-    
-    if (continueShoppingBtn) { 
-        continueShoppingBtn.addEventListener('click', (e) => { 
-            e.preventDefault(); 
-            thankYouPage.style.display = 'none'; 
-            productPage.style.display = 'block'; 
-            floatingCartBtn.style.display = 'flex';
-        }); 
-    }
-
-    // 點擊頂部價目表方案區塊時，選擇對應方案並自動往下滑動
-    const pricingBlocks = document.querySelectorAll('.pricing-block');
-    pricingBlocks.forEach(block => {
-        block.addEventListener('click', function() {
-            const courseId = this.getAttribute('data-id');
-            if (courseId) {
-                const radioInput = document.querySelector(`input[name="course_selection"][value="${courseId}"]`);
-                if (radioInput) {
-                    radioInput.checked = true;
-                    // Trigger the change event to update styles and button
-                    radioInput.dispatchEvent(new Event('change'));
-                }
-            }
-            const targetSection = document.getElementById('embedding-container');
-            if (targetSection) {
-                targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-            }
-        });
-    });
-
-</script>
-</body>
-</html>
+      let productNames =[], totalPrice = 0, itemsForThankYouPage =
