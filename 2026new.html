@@ -122,15 +122,12 @@
         <div class="absolute inset-0 bg-gradient-to-br from-blue-500 to-blue-700"></div>
         
         <div class="relative z-10 w-full max-w-4xl mx-auto px-4 pt-12 pb-20 text-center text-white">
-            <div class="inline-block bg-white/20 backdrop-blur-md px-6 py-2 rounded-full text-base md:text-sm font-bold mb-4 tracking-wide">
-                公告
-            </div>
             <!-- 手機版字體 text-3xl -->
             <h1 class="text-3xl md:text-4xl font-bold mb-3 leading-tight">
-                2026年課程最新資訊
+                Tony線上美語家教
             </h1>
-            <p class="text-blue-100 text-base md:text-lg opacity-90 font-light">
-                Tony｜線上美語家教 — 課程方案
+            <p class="text-blue-100 text-base md:text-lg opacity-90 font-light leading-relaxed">
+                升學 檢定 職場 公職 高考 免試 外商 觀光美語 <br class="md:hidden">展場英文 翻譯
             </p>
         </div>
     </div>
@@ -138,25 +135,15 @@
     <!-- MAIN CONTENT SECTION -->
     <div class="w-full max-w-5xl mx-auto px-4 -mt-10 pb-12 relative z-20">
         
-        <!-- Intro Card -->
-        <div class="bg-white rounded-xl shadow-sm border border-gray-100 p-6 mb-8">
-            <!-- 手機版字體 text-2xl -->
-            <h2 class="text-2xl md:text-2xl font-bold mb-6 text-gray-800">親愛的家長您好 ，</h2>
-            
-            <div class="border-l-4 border-blue-500 bg-gray-50 p-5 rounded-r-lg">
-                <!-- 手機版字體 text-lg -->
-                <p class="text-gray-800 text-lg md:text-base font-medium leading-relaxed">
-                    自 2026年1月1日 起，您可依需求選擇課程方案：
-                </p>
-            </div>
-        </div>
-
         <!-- PRICING GRID -->
         <div class="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-4">
             
             <!-- Plan 1 -->
-            <div class="bg-white border border-gray-200 rounded-xl p-4 flex flex-col items-center text-center shadow-sm">
-                <div class="mb-1">
+            <div class="pricing-block cursor-pointer bg-white border border-gray-200 rounded-xl p-4 flex flex-col items-center text-center shadow-sm relative" data-id="course-6">
+                <div class="absolute -top-3 -right-2 bg-black text-white text-xs md:text-sm font-bold px-2 py-1 rounded-full shadow-md">
+                    -12.5%
+                </div>
+                <div class="mb-1 mt-2">
                     <span class="text-2xl md:text-xl font-bold text-blue-600">6</span>
                     <span class="text-lg md:text-base text-blue-600 font-medium">堂課程</span>
                 </div>
@@ -164,8 +151,11 @@
             </div>
 
             <!-- Plan 2 -->
-            <div class="bg-white border border-gray-200 rounded-xl p-4 flex flex-col items-center text-center shadow-sm">
-                <div class="mb-1">
+            <div class="pricing-block cursor-pointer bg-white border border-gray-200 rounded-xl p-4 flex flex-col items-center text-center shadow-sm relative" data-id="course-10">
+                <div class="absolute -top-3 -right-2 bg-black text-white text-xs md:text-sm font-bold px-2 py-1 rounded-full shadow-md">
+                    -17.5%
+                </div>
+                <div class="mb-1 mt-2">
                     <span class="text-2xl md:text-xl font-bold text-blue-600">10</span>
                     <span class="text-lg md:text-base text-blue-600 font-medium">堂課程</span>
                 </div>
@@ -173,8 +163,11 @@
             </div>
 
             <!-- Plan 3 -->
-            <div class="bg-white border border-gray-200 rounded-xl p-4 flex flex-col items-center text-center shadow-sm">
-                <div class="mb-1">
+            <div class="pricing-block cursor-pointer bg-white border border-gray-200 rounded-xl p-4 flex flex-col items-center text-center shadow-sm relative" data-id="course-16">
+                <div class="absolute -top-3 -right-2 bg-black text-white text-xs md:text-sm font-bold px-2 py-1 rounded-full shadow-md">
+                    -22%
+                </div>
+                <div class="mb-1 mt-2">
                     <span class="text-2xl md:text-xl font-bold text-blue-600">16</span>
                     <span class="text-lg md:text-base text-blue-600 font-medium">堂課程</span>
                 </div>
@@ -182,8 +175,8 @@
             </div>
 
             <!-- Plan 4 (Best) -->
-            <div class="bg-white border-2 border-blue-500 rounded-xl p-4 flex flex-col items-center text-center shadow-md relative">
-                <div class="absolute -top-3 bg-blue-600 text-white text-xs font-bold px-3 py-1 rounded-full">
+            <div class="pricing-block cursor-pointer bg-white border-2 border-blue-500 rounded-xl p-4 flex flex-col items-center text-center shadow-md relative" data-id="course-20">
+                <div class="absolute -top-3 bg-black text-white text-xs md:text-sm font-bold px-3 py-1 rounded-full shadow-md">
                     ★ 最優惠
                 </div>
                 <div class="mb-1 mt-2">
@@ -200,7 +193,7 @@
             <div class="text-blue-600 font-medium italic">
                 
             </div>
-            <div class="text-gray-500">
+            <div class="text-black text-lg md:text-xl font-bold">
                 50分鐘/堂
             </div>
         </div>
@@ -447,7 +440,6 @@
                     optionsHtml += `<option value="${i}" ${item.quantity === i ? 'selected' : ''}>${i}</option>`;
                 }
 
-                // 修正：增加 .qty-wrapper 的 CSS 與 data-id 確保正確抓取
                 const itemHtml = `
                     <div class="cart-item">
                         <div class="cart-item-info">
@@ -475,7 +467,6 @@
         totalPriceSpan.innerText = `NT$ ${totalPrice.toLocaleString()}`;
     }
 
-    // 修正：完全分開處理事件
     function handleRemoveClick(e) {
         if (e.target.classList.contains("remove-item-btn")) {
             const productIdToRemove = e.target.dataset.id;
@@ -562,7 +553,6 @@
     cartOverlay.addEventListener("click", toggleCartPanel);
     if (checkoutForm) checkoutForm.addEventListener("submit", handleCheckout);
     
-    // 修正：分別綁定 Click 與 Change 事件，解決手機版相容性問題
     if (cartItemsContainer) {
         cartItemsContainer.addEventListener("click", handleRemoveClick);
         cartItemsContainer.addEventListener("change", handleQtyChange);
@@ -579,6 +569,22 @@
         showSlide(currentSlide + 1);
     });
     galleryTrack.addEventListener('click', stopSlideshow);
+
+    // 點擊方案區塊時，選擇對應方案並滾動至購物車區塊
+    const pricingBlocks = document.querySelectorAll('.pricing-block');
+    pricingBlocks.forEach(block => {
+        block.addEventListener('click', function() {
+            const courseId = this.getAttribute('data-id');
+            if (courseId && courseOptionsSelect) {
+                courseOptionsSelect.value = courseId;
+                updateButton();
+            }
+            const targetSection = document.getElementById('embedding-container');
+            if (targetSection) {
+                targetSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        });
+    });
 
 </script>
 </body>
