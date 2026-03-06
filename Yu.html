@@ -11,128 +11,147 @@
             --fail-bg: #ffebee;
             --warning-bg: #fff8e1;
             --cta-bg: #2c3e50;
-            --special-text: #e74c3c;
+            --special-red: #e74c3c;
+            --tony-blue: #007bff; /* 指定藍色 */
         }
         body {
             font-family: -apple-system, "Noto Sans TC", "Microsoft JhengHei", sans-serif;
-            line-height: 1.5;
-            background-color: #f4f7f9; /* Soft grey background for desktop */
+            line-height: 1.4;
+            background-color: #f8f9fa;
             margin: 0;
             padding: 0;
         }
         
-        /* Main Container: Full width on mobile, centered 1200px on desktop */
         .page-wrapper {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
             background: #ffffff;
             min-height: 100vh;
-            padding: 20px;
-            box-shadow: 0 0 20px rgba(0,0,0,0.05);
+            padding: 20px 40px;
+            box-shadow: 0 0 30px rgba(0,0,0,0.05);
         }
 
-        /* Logo Area */
         .header-logos {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
+            padding: 15px 0;
+            border-bottom: 2px solid #eee;
         }
-        .gept-logo { height: 40px; }
-        .user-logo { height: 55px; border-radius: 5px; }
+        .gept-logo { height: 50px; width: auto; }
+        .user-logo { height: 70px; width: auto; border-radius: 8px; }
 
-        h1 { text-align: center; font-size: 2.5rem; margin: 20px 0 10px 0; color: #000; }
+        h1 { text-align: center; font-size: 3rem; margin: 30px 0 10px 0; color: #000; font-weight: 900; }
         
         .student-info {
             text-align: center;
             background: #f8f9fa;
-            border-radius: 15px;
-            padding: 20px;
-            margin-bottom: 30px;
-            border: 1px solid #eee;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 40px;
+            border: 1px solid #ddd;
         }
-        .student-name { font-size: 1.8rem; font-weight: bold; display: block; color: #000; }
-        .student-detail { font-size: 1.3rem; color: #555; }
+        .student-name { font-size: 2.2rem; font-weight: bold; display: block; color: #000; }
+        .student-detail { font-size: 1.5rem; color: #444; margin-top: 5px; }
 
-        /* GRID SYSTEM: This is the magic for Desktop vs Mobile */
         .main-grid {
             display: grid;
-            grid-template-columns: 1fr; /* Stacked by default (Mobile) */
-            gap: 40px;
+            grid-template-columns: 1fr;
+            gap: 30px;
         }
 
-        /* Tablet & Desktop Layout */
         @media (min-width: 992px) {
             .main-grid {
-                grid-template-columns: 1fr 1.2fr; /* Side-by-side on Desktop */
+                grid-template-columns: 1fr 1.2fr;
+                gap: 50px;
             }
         }
 
-        /* Score Cards Styles */
+        /* 測驗紀錄 */
+        h2 { font-size: 2rem; margin-top: 0; color: #000; border-left: 12px solid #3498db; padding-left: 15px; margin-bottom: 25px; }
         .card {
-            border-radius: 18px;
-            padding: 25px;
+            border-radius: 20px;
+            padding: 30px;
             margin-bottom: 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            border: 1px solid rgba(0,0,0,0.05);
+            border: 1px solid rgba(0,0,0,0.08);
         }
         .bg-pass { background: var(--success-bg); }
         .bg-fail { background: var(--fail-bg); }
         .bg-challenge { background: var(--warning-bg); }
-        .info-box .title { font-size: 1.4rem; font-weight: bold; display: block; color: #000; }
-        .info-box .score { font-size: 1.8rem; font-weight: 900; color: var(--text-black); }
+
+        .info-box .title { font-size: 1.6rem; font-weight: bold; display: block; color: #000; }
+        .info-box .score { font-size: 2rem; font-weight: 900; color: var(--text-black); }
+
         .status-badge { 
-            font-size: 1.4rem; font-weight: 900; color: var(--text-black);
-            padding: 10px 20px; border-radius: 12px; background: rgba(255,255,255,0.7);
+            font-size: 1.5rem; font-weight: 900; color: var(--text-black);
+            padding: 12px 25px; border-radius: 15px; background: rgba(255,255,255,0.8);
+            white-space: nowrap; flex-shrink: 0;
         }
 
-        /* Advice Cards Styles */
-        h2 { font-size: 1.8rem; margin-top: 0; color: #000; border-left: 10px solid #3498db; padding-left: 12px; }
+        /* 學習規劃建議 */
         .advice-card {
-            padding: 25px;
-            border-radius: 18px;
-            margin-bottom: 15px;
-            font-size: 1.35rem; 
-            font-weight: 500;
+            padding: 30px;
+            border-radius: 20px;
+            margin-bottom: 20px;
+            font-size: 1.65rem; /* 手機大字體 */
+            font-weight: 600;
             color: var(--text-black);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.03);
         }
+        
+        @media (min-width: 992px) {
+            .advice-card { font-size: 1.5rem; }
+        }
+
         .advice-1 { background-color: #e3f2fd; } 
         .advice-2 { background-color: #f3e5f5; } 
         .advice-3 { background-color: #e0f2f1; } 
         .advice-4 { background-color: #fff3e0; } 
-        .special-phrase { color: var(--special-text); font-weight: 800; }
+        
+        /* 特定文字顏色樣式 */
+        .highlight-blue { color: var(--tony-blue); font-weight: 800; }
+        .special-phrase { color: var(--special-red); font-weight: 800; }
 
-        /* Full Width CTA Button */
+        /* 體驗課程按鈕 */
         .cta-box {
-            margin-top: 30px;
+            margin-top: 40px;
             text-decoration: none;
             display: flex;
             flex-direction: column;
             align-items: center;
             background: var(--cta-bg);
             color: #ffffff;
-            border-radius: 20px;
-            padding: 30px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
-            grid-column: 1 / -1; /* Make it span full width on desktop grid */
+            border-radius: 25px;
+            padding: 40px;
+            text-align: center;
+            grid-column: 1 / -1;
         }
-        .cta-title { font-size: 1.8rem; font-weight: bold; }
-        .cta-subtitle { font-size: 1.3rem; opacity: 0.9; margin-top: 5px; }
-        .cta-icon { font-size: 3rem; margin-bottom: 10px; }
+        .cta-title { font-size: 2.2rem; font-weight: bold; }
+        .cta-subtitle { font-size: 1.5rem; opacity: 0.9; margin-top: 10px; }
+        .cta-icon { font-size: 4rem; margin-bottom: 15px; }
 
+        /* 頁尾 */
         .footer {
             text-align: center;
-            font-size: 2.2rem;
+            font-size: 2.5rem;
             font-weight: 900;
-            color: #000;
-            padding: 50px 0;
+            padding: 60px 0;
             background: #f1f3f5;
-            border-radius: 20px;
-            margin-top: 40px;
+            border-radius: 25px;
+            margin-top: 50px;
+        }
+
+        @media (max-width: 600px) {
+            .page-wrapper { padding: 15px; }
+            h1 { font-size: 2rem; }
+            .student-name { font-size: 1.8rem; }
+            .info-box .title { font-size: 1.3rem; }
+            .info-box .score { font-size: 1.5rem; }
+            .status-badge { font-size: 1.2rem; padding: 8px 15px; }
+            .footer { font-size: 2rem; }
         }
     </style>
 </head>
@@ -152,7 +171,6 @@
     </div>
 
     <div class="main-grid">
-        
         <div class="score-column">
             <h2>🏆 測驗紀錄</h2>
             <div class="card bg-pass">
@@ -182,22 +200,10 @@
 
         <div class="advice-column">
             <h2>💡 學習規劃建議</h2>
-            
-            <div class="advice-card advice-1">
-                <b>1. 寫作衝刺：</b>目前寫作 47 分缺口較大，應優先練習「單句重組」，這是小四生通過複試最關鍵的練習。
-            </div>
-
-            <div class="advice-card advice-2">
-                <b>2. 口說臨場感：</b>搭配 <b>Tony線上美語家教</b> 提供的線上口說模擬測驗，最能營造真實考場氣氛。
-            </div>
-
-            <div class="advice-card advice-3">
-                <b>3. 中級單字儲備：</b>中級單字量較大，不需急於求成，建議每日累積 10 個核心單字，建立長線實力。
-            </div>
-
-            <div class="advice-card advice-4">
-                <b>4. 證書優先：</b><span class="special-phrase">五次考照展現極佳韌性</span>，建議在兩年有效期內優先補考「初級說寫」，正式取得證書！
-            </div>
+            <div class="advice-card advice-1"><b>1. 寫作衝刺：</b>目前寫作 47 分缺口較大，應優先練習「單句重組」，這是通過複試關鍵。</div>
+            <div class="advice-card advice-2"><b>2. 口說臨場感：</b>搭配 <span class="highlight-blue">Tony線上美語家教</span> 提供的線上模擬測驗，最能營造真實考場氣氛。</div>
+            <div class="advice-card advice-3"><b>3. 中級單字儲備：</b>不急於求成，建議每日累積 10 個核心單字，建立長線實力。</div>
+            <div class="advice-card advice-4"><b>4. 證書優先：</b><span class="special-phrase">五次考照展現極佳韌性</span>，建議補考「初級說寫」，優先取得證書！</div>
         </div>
 
         <a href="https://tonyonlineenglish.netlify.app/exper" class="cta-box">
@@ -208,7 +214,7 @@
     </div>
 
     <div class="footer">
-        Tony 線上美語家教
+        <span class="highlight-blue">Tony 線上美語家教</span>
     </div>
 </div>
 
