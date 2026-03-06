@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        body { font-family: 'Noto Sans TC', sans-serif; background-color: #fafafa; }
+        body { font-family: 'Noto Sans TC', sans-serif; background-color: #fafafa; font-weight: 400; }
         
         /* 基礎卡片樣式 */
         .pricing-block {
@@ -24,7 +24,7 @@
             border: 1px solid #d4af37 !important;
         }
 
-        /* 普通方案選中：3px 藍色邊框 */
+        /* 普通方案選中：藍色邊框 (不加粗字體) */
         .pricing-block.selected {
             border: 3px solid #1e3a8a !important;
             background-color: #f8faff !important;
@@ -33,12 +33,12 @@
             z-index: 10;
         }
 
-        /* 20堂課選中：加粗 4px 金色邊框 */
+        /* 20堂課選中：金色邊框加粗 */
         .pricing-block.selected.plan-best-border {
             border: 4px solid #d4af37 !important;
         }
 
-        /* 手機版 20 堂課換行邏輯：未選中不換行，選中才換行 */
+        /* 手機版 20 堂課斷行邏輯 */
         .toggle-br { display: none; }
         @media (max-width: 639px) {
             .selected .toggle-br { display: block; }
@@ -61,7 +61,7 @@
 
         .buy-now-btn {
             display: none; width: 100%; background-color: #1e3a8a; color: white;
-            padding: 16px 0; font-weight: 900; font-size: 1.125rem; border: none;
+            padding: 16px 0; font-weight: 400; font-size: 1.125rem; border: none;
             border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;
         }
         .selected.plan-best-border .buy-now-btn { 
@@ -90,7 +90,7 @@
             <div class="absolute inset-0 bg-black/50"></div>
         </div>
         <div class="relative z-10 w-full max-w-4xl mx-auto px-4 pt-16 pb-24 text-center text-white">
-            <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 drop-shadow-md">Tony線上美語家教</h1>
+            <h1 class="text-3xl md:text-4xl lg:text-5xl font-normal mb-4 drop-shadow-md">Tony線上美語家教</h1>
             <p class="text-gray-100 text-base md:text-lg lg:text-xl font-light">升學 檢定 職場 公職 高考 免試 外商 觀光美語 <br class="md:hidden">展場英文 翻譯</p>
         </div>
     </div>
@@ -101,8 +101,8 @@
             <div class="pricing-block" data-id="course-1" data-name="1堂課程" data-price="800">
                 <div class="flex items-stretch h-[110px] sm:h-[120px] px-6">
                     <div class="w-[15%] flex items-center"><div class="radio-circle"><div class="radio-dot"></div></div></div>
-                    <div class="w-[35%] flex flex-col justify-center text-[24px] font-bold text-gray-900">1堂課程</div>
-                    <div class="w-[50%] flex justify-end items-center text-[28px] sm:text-[32px] font-extrabold text-gray-900">
+                    <div class="w-[35%] flex flex-col justify-center text-[24px] font-normal text-gray-900">1堂課程</div>
+                    <div class="w-[50%] flex justify-end items-center text-[28px] sm:text-[32px] font-normal text-gray-900">
                         <span class="text-lg font-light text-gray-400 mr-1">NT$</span>800
                     </div>
                 </div>
@@ -111,11 +111,11 @@
 
             <!-- 6堂 -->
             <div class="pricing-block" data-id="course-6" data-name="6堂課程" data-price="4200">
-                <div class="absolute top-0 right-0 bg-red-600 text-white text-xs px-3 py-1 rounded-bl-lg font-bold">-12.5%</div>
+                <div class="absolute top-0 right-0 bg-red-600 text-white text-xs px-3 py-1 rounded-bl-lg font-normal">-12.5%</div>
                 <div class="flex items-stretch h-[110px] sm:h-[120px] px-6">
                     <div class="w-[15%] flex items-center"><div class="radio-circle"><div class="radio-dot"></div></div></div>
-                    <div class="w-[35%] flex flex-col justify-center text-[24px] font-bold text-gray-900">6堂課程</div>
-                    <div class="w-[50%] flex justify-end items-center text-[28px] sm:text-[32px] font-extrabold text-gray-900">
+                    <div class="w-[35%] flex flex-col justify-center text-[24px] font-normal text-gray-900">6堂課程</div>
+                    <div class="w-[50%] flex justify-end items-center text-[28px] sm:text-[32px] font-normal text-gray-900">
                         <span class="text-lg font-light text-gray-400 mr-1">NT$</span>4,200
                     </div>
                 </div>
@@ -124,11 +124,11 @@
 
             <!-- 10堂 -->
             <div class="pricing-block" data-id="course-10" data-name="10堂課程" data-price="6600">
-                <div class="absolute top-0 right-0 bg-red-600 text-white text-xs px-3 py-1 rounded-bl-lg font-bold">-17.5%</div>
+                <div class="absolute top-0 right-0 bg-red-600 text-white text-xs px-3 py-1 rounded-bl-lg font-normal">-17.5%</div>
                 <div class="flex items-stretch h-[110px] sm:h-[120px] px-6">
                     <div class="w-[15%] flex items-center"><div class="radio-circle"><div class="radio-dot"></div></div></div>
-                    <div class="w-[35%] flex flex-col justify-center text-[24px] font-bold text-gray-900">10堂課程</div>
-                    <div class="w-[50%] flex justify-end items-center text-[28px] sm:text-[32px] font-extrabold text-gray-900">
+                    <div class="w-[35%] flex flex-col justify-center text-[24px] font-normal text-gray-900">10堂課程</div>
+                    <div class="w-[50%] flex justify-end items-center text-[28px] sm:text-[32px] font-normal text-gray-900">
                         <span class="text-lg font-light text-gray-400 mr-1">NT$</span>6,600
                     </div>
                 </div>
@@ -137,32 +137,32 @@
 
             <!-- 16堂 -->
             <div class="pricing-block" data-id="course-16" data-name="16堂課程" data-price="10000">
-                <div class="absolute top-0 right-0 bg-red-600 text-white text-xs px-3 py-1 rounded-bl-lg font-bold">-22%</div>
+                <div class="absolute top-0 right-0 bg-red-600 text-white text-xs px-3 py-1 rounded-bl-lg font-normal">-22%</div>
                 <div class="flex items-stretch h-[110px] sm:h-[120px] px-6">
                     <div class="w-[15%] flex items-center"><div class="radio-circle"><div class="radio-dot"></div></div></div>
-                    <div class="w-[35%] flex flex-col justify-center text-[24px] font-bold text-gray-900">16堂課程</div>
-                    <div class="w-[50%] flex justify-end items-center text-[28px] sm:text-[32px] font-extrabold text-gray-900">
+                    <div class="w-[35%] flex flex-col justify-center text-[24px] font-normal text-gray-900">16堂課程</div>
+                    <div class="w-[50%] flex justify-end items-center text-[28px] sm:text-[32px] font-normal text-gray-900">
                         <span class="text-lg font-light text-gray-400 mr-1">NT$</span>10,000
                     </div>
                 </div>
                 <button class="buy-now-btn">立即購買</button>
             </div>
 
-            <!-- 20堂 (條件式斷行) -->
+            <!-- 20堂 (金額不放大) -->
             <div class="pricing-block plan-best-border" data-id="course-20" data-name="20堂課程" data-price="12000">
-                <div class="absolute top-0 right-0 bg-red-600 text-white text-xs px-3 py-1 rounded-bl-lg font-bold z-50">-25%</div>
+                <div class="absolute top-0 right-0 bg-red-600 text-white text-xs px-3 py-1 rounded-bl-lg font-normal z-50">-25%</div>
                 <div class="absolute top-0 right-[52px] z-40">
-                    <div class="relative bg-blue-900 text-white text-sm px-6 py-2 rounded-bl-2xl font-black shadow-md flex items-center">
+                    <div class="relative bg-blue-900 text-white text-sm px-6 py-2 rounded-bl-2xl font-normal shadow-md flex items-center">
                         <span class="absolute -left-12 -top-10 text-6xl drop-shadow-xl transform -rotate-12 pointer-events-none">👑</span>
                         <span>最優惠</span>
                     </div>
                 </div>
                 <div class="flex items-stretch h-[110px] sm:h-[120px] px-6">
                     <div class="w-[15%] flex items-center"><div class="radio-circle"><div class="radio-dot"></div></div></div>
-                    <div class="w-[35%] flex flex-col justify-center text-[24px] font-black text-black leading-tight whitespace-nowrap sm:whitespace-normal">
+                    <div class="w-[35%] flex flex-col justify-center text-[24px] font-normal text-black leading-tight whitespace-nowrap sm:whitespace-normal">
                         20堂<br class="toggle-br">課程
                     </div>
-                    <div class="w-[50%] flex justify-end items-center text-[32px] sm:text-[42px] font-black text-blue-900">
+                    <div class="w-[50%] flex justify-end items-center text-[28px] sm:text-[32px] font-normal text-blue-900">
                         <span class="text-xl font-light text-blue-500 mr-1">NT$</span>12,000
                     </div>
                 </div>
@@ -172,17 +172,17 @@
 
         <!-- 連結(左)與50分鐘資訊(右) -->
         <div class="max-w-md mx-auto flex justify-between items-center mt-8 px-2">
-            <a href="https://tonyonlineenglish.mydurable.com/allcourses" target="_blank" class="inline-flex items-center gap-2 text-[#1e3a8a] font-black text-lg hover:underline">
+            <a href="https://tonyonlineenglish.mydurable.com/allcourses" target="_blank" class="inline-flex items-center gap-2 text-[#1e3a8a] font-normal text-lg hover:underline">
                 課程詳細介紹
                 <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
             </a>
-            <div class="text-black text-2xl font-black">50分鐘/堂</div>
+            <div class="text-black text-2xl font-normal">50分鐘/堂</div>
         </div>
 
         <div class="text-center mt-12">
              <p class="text-gray-600 text-lg leading-relaxed max-w-lg mx-auto">我將持續以穩定且高品質的授課方式，陪伴孩子在接下來的階段逐步提升英文能力與考試表現。</p>
         </div>
-        <div class="border-t border-gray-200 pt-8 mt-12 text-gray-500 font-bold text-center sm:text-left">Tony | 線上美語家教</div>
+        <div class="border-t border-gray-200 pt-8 mt-12 text-gray-500 font-normal text-center sm:text-left">Tony | 線上美語家教</div>
     </div>
 </div>
 
@@ -190,16 +190,16 @@
 <div id="checkout-modal" class="modal-overlay">
     <div class="bg-white w-full max-w-md rounded-3xl p-8 shadow-2xl relative">
         <button id="close-modal" class="absolute top-4 right-4 text-gray-400 text-3xl">&times;</button>
-        <h3 class="text-2xl font-black text-gray-900 mb-2">確認訂購項目</h3>
-        <p id="modal-item-name" class="text-blue-900 font-black text-xl mb-6"></p>
+        <h3 class="text-2xl font-normal text-gray-900 mb-2">確認訂購項目</h3>
+        <p id="modal-item-name" class="text-blue-900 font-normal text-xl mb-6"></p>
         <form id="order-form" class="space-y-4">
             <div>
-                <label class="block text-sm font-bold text-gray-700 mb-1">電子信箱</label>
+                <label class="block text-sm font-normal text-gray-700 mb-1">電子信箱</label>
                 <input type="email" id="email" required placeholder="example@email.com" class="w-full px-4 py-4 border-2 border-gray-100 rounded-2xl focus:border-blue-900 outline-none transition-all">
             </div>
-            <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="flex items-center justify-center gap-2 w-full py-4 bg-[#00B900] text-white rounded-2xl font-black">點此加入官方 Line: Myavalon</a>
-            <button type="submit" id="submit-btn" class="w-full py-5 bg-blue-900 text-white rounded-2xl font-black text-xl shadow-xl hover:bg-blue-800 transition-all transform hover:scale-[1.02]">確認送出訂單</button>
-            <p class="text-center text-gray-600 font-bold text-sm mt-4">轉帳/Line Pay/iPassMoney</p>
+            <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="flex items-center justify-center gap-2 w-full py-4 bg-[#00B900] text-white rounded-2xl font-normal">點此加入官方 Line: Myavalon</a>
+            <button type="submit" id="submit-btn" class="w-full py-5 bg-blue-900 text-white rounded-2xl font-normal text-xl shadow-xl hover:bg-blue-800 transition-all transform hover:scale-[1.02]">確認送出訂單</button>
+            <p class="text-center text-gray-600 font-normal text-sm mt-4">轉帳/Line Pay/iPassMoney</p>
         </form>
     </div>
 </div>
@@ -209,30 +209,30 @@
     <div class="ty-container">
         <div class="flex-1 p-10">
             <div class="text-[#10b981] text-6xl mb-4">✓</div>
-            <h2 class="text-3xl font-black text-gray-900 mb-4">感謝您的訂購！ 🎉</h2>
+            <h2 class="text-3xl font-normal text-gray-900 mb-4">感謝您的訂購！ 🎉</h2>
             <p class="text-gray-600 mb-8">您的訂單已成功建立。確認信已寄送至您的信箱。</p>
             <div class="space-y-4 border-t border-gray-100 pt-6">
-                <div class="flex justify-between items-center"><span class="text-gray-500">訂單編號</span><span id="ty-order-id" class="text-[#1e3a8a] font-bold text-lg"></span></div>
+                <div class="flex justify-between items-center"><span class="text-gray-500">訂單編號</span><span id="ty-order-id" class="text-[#1e3a8a] font-normal text-lg"></span></div>
                 <div class="flex justify-between items-center"><span class="text-gray-500">訂單時間</span><span id="ty-timestamp" class="text-gray-800"></span></div>
                 <div class="flex justify-between items-center"><span class="text-gray-500">電子信箱</span><span id="ty-customer-email" class="text-gray-800"></span></div>
             </div>
             <div class="mt-10 bg-blue-50 p-6 rounded-2xl">
-                <p class="text-gray-900 font-bold mb-4">請加入LINE聯絡付款事宜</p>
+                <p class="text-gray-900 font-normal mb-4">請加入LINE聯絡付款事宜</p>
                 <div class="flex flex-col gap-2">
                     <div class="flex items-center gap-2">
                         <span class="text-gray-600">Line ID:</span>
-                        <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="text-2xl font-black text-[#00B900] underline">Myavalon (點此)</a>
+                        <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="text-2xl font-normal text-[#00B900] underline">Myavalon (點此)</a>
                     </div>
-                    <p class="text-gray-900 font-bold mt-2">轉帳/Line Pay/iPassMoney</p>
+                    <p class="text-gray-900 font-normal mt-2">轉帳/Line Pay/iPassMoney</p>
                 </div>
             </div>
-            <button onclick="location.reload()" class="mt-10 w-full py-4 bg-gray-100 text-gray-600 rounded-xl font-bold">返回前頁</button>
+            <button onclick="location.reload()" class="mt-10 w-full py-4 bg-gray-100 text-gray-600 rounded-xl font-normal">返回前頁</button>
         </div>
         <div class="w-full md:w-[380px] bg-gray-50 p-10 border-l border-gray-100">
-            <h3 class="text-xl font-black text-gray-900 mb-6 border-b-2 border-gray-200 pb-4">訂單摘要</h3>
+            <h3 class="text-xl font-normal text-gray-900 mb-6 border-b-2 border-gray-200 pb-4">訂單摘要</h3>
             <div id="ty-summary-list" class="space-y-6"></div>
             <div class="mt-8 pt-6 border-t-2 border-gray-200 flex justify-between items-center">
-                <span class="text-xl font-black">總計</span><span id="ty-total-price" class="text-2xl font-black text-[#1e3a8a]"></span>
+                <span class="text-xl font-normal">總計</span><span id="ty-total-price" class="text-2xl font-normal text-[#1e3a8a]"></span>
             </div>
         </div>
     </div>
@@ -243,6 +243,7 @@
     const blocks = document.querySelectorAll('.pricing-block');
     const modal = document.getElementById('checkout-modal');
 
+    // 精確隨機邏輯：3 英 + 2 數
     function generateOrderId() {
         const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         const numbers = "0123456789";
@@ -277,13 +278,14 @@
         const email = document.getElementById('email').value;
         const orderId = generateOrderId();
         const timestamp = new Date().toLocaleString("zh-TW", { year: "numeric", month: "long", day: "numeric", hour: "2-digit", minute: "2-digit" });
-        const imageUrl = "https://ik.imagekit.io/lql1uveoc/%E5%AD%B8%E8%B2%BB%20tuition/%E6%88%AA%E5%9C%96%202026-03-06%20%E4%B8%8B%E5%8D%884.49.39.png";
+        const imageUrl = "https://ik.imagekit.io/lql1uveoc/%E5%AD%B8%E8%B2%BB%20tuition/%E6%88%AA%E5%9C%96%202026-03-06%20%E4%B8%8B%E5%8D%883.28.45.png";
 
+        // LIGHTNING FAST
         document.getElementById('ty-order-id').innerText = orderId;
         document.getElementById('ty-timestamp').innerText = timestamp;
         document.getElementById('ty-customer-email').innerText = email;
         document.getElementById('ty-total-price').innerText = "NT$ " + parseInt(selectedPlan.price).toLocaleString();
-        document.getElementById('ty-summary-list').innerHTML = `<div class="flex justify-between"><div><div class="font-bold">${selectedPlan.name}</div><div class="text-sm text-gray-500">50分鐘 x 1</div></div><div class="font-bold text-[#1e3a8a]">NT$ ${parseInt(selectedPlan.price).toLocaleString()}</div></div>`;
+        document.getElementById('ty-summary-list').innerHTML = `<div class="flex justify-between"><div><div class="font-normal">${selectedPlan.name}</div><div class="text-sm text-gray-500">50分鐘 x 1</div></div><div class="font-normal text-[#1e3a8a]">NT$ ${parseInt(selectedPlan.price).toLocaleString()}</div></div>`;
         
         modal.classList.remove('open');
         document.getElementById('product-page-container').style.display = 'none';
