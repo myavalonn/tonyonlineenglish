@@ -11,6 +11,7 @@
             --fail-bg: #ffebee;
             --warning-bg: #fff8e1;
             --cta-bg: #2c3e50;
+            --special-text: #e74c3c;
         }
         body {
             font-family: -apple-system, "Noto Sans TC", "Microsoft JhengHei", sans-serif;
@@ -24,7 +25,18 @@
             margin: 0 auto;
             background: #ffffff;
         }
-        h1 { text-align: center; font-size: 2.2rem; margin: 10px 0 5px 0; color: #000; }
+        
+        /* Logo 區域 */
+        .header-logos {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 5px;
+        }
+        .gept-logo { height: 40px; width: auto; }
+        .user-logo { height: 50px; width: auto; border-radius: 5px; }
+
+        h1 { text-align: center; font-size: 2rem; margin: 5px 0 10px 0; color: #000; }
         
         /* 學生資訊 */
         .student-info {
@@ -38,7 +50,7 @@
         .student-name { font-size: 1.6rem; font-weight: bold; display: block; color: #000; }
         .student-detail { font-size: 1.2rem; color: #555; }
 
-        /* 成績卡片佈局 */
+        /* 成績卡片 */
         .card {
             border-radius: 18px;
             padding: 20px;
@@ -65,7 +77,7 @@
             border: 1px solid rgba(0,0,0,0.1);
         }
 
-        /* 建議卡片區 */
+        /* 建議卡片 */
         h2 { font-size: 1.7rem; margin-top: 35px; color: #000; border-left: 10px solid #3498db; padding-left: 12px; }
         .advice-card {
             padding: 22px;
@@ -73,7 +85,7 @@
             margin-bottom: 12px;
             font-size: 1.3rem; 
             font-weight: 500;
-            color: var(--text-black); /* 建議文字改為純黑 */
+            color: var(--text-black);
             box-shadow: 0 2px 4px rgba(0,0,0,0.02);
             border: 1px solid rgba(0,0,0,0.05);
         }
@@ -81,6 +93,7 @@
         .advice-2 { background-color: #f3e5f5; } 
         .advice-3 { background-color: #e0f2f1; } 
         .advice-4 { background-color: #fff3e0; } 
+        .special-phrase { color: var(--special-text); font-weight: 800; }
 
         /* 體驗課程按鈕 */
         .cta-box {
@@ -113,6 +126,11 @@
 <body>
 
 <div class="container">
+    <div class="header-logos">
+        <img src="https://ik.imagekit.io/lql1uveoc/Front%20Page/GEPT_logo.svg.png?updatedAt=1756611596300" alt="GEPT Logo" class="gept-logo">
+        <img src="https://ik.imagekit.io/lql1uveoc/IMG_9614.PNG?updatedAt=1750437382543" alt="Tony Logo" class="user-logo">
+    </div>
+
     <h1>GEPT 成績分析</h1>
     
     <div class="student-info">
@@ -159,13 +177,13 @@
     </div>
 
     <div class="advice-card advice-4">
-        <b>4. 證書優先：</b>五次考照展現極佳韌性，建議在兩年有效期內優先補考「初級說寫」，正式取得證書！
+        <b>4. 證書優先：</b><span class="special-phrase">五次考照展現極佳韌性</span>，建議在兩年有效期內優先補考「初級說寫」，正式取得證書！
     </div>
 
     <a href="https://tonyonlineenglish.netlify.app/exper" class="cta-box">
         <span class="cta-icon">👉</span>
         <span class="cta-title">25 / 50 分鐘 體驗課程</span>
-        <span class="cta-subtitle">點選圖示：預約專業線上體驗課程</span>
+        <span class="cta-subtitle">點選圖示：預約專業線上英語測驗</span>
     </a>
 
     <div class="footer">
