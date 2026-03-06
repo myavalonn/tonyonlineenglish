@@ -53,13 +53,11 @@
         .selected .radio-dot { transform: scale(1); }
         .selected.plan-best-border .radio-dot { background-color: #d4af37; }
 
-        /* 按鈕樣式 */
         .buy-now-btn {
             display: none; width: 100%; background-color: #1e3a8a; color: white;
             padding: 16px 0; font-weight: 900; font-size: 1.125rem; border: none;
             border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;
         }
-        /* 20堂選中按鈕：金底黑字 */
         .selected.plan-best-border .buy-now-btn { 
             background-color: #d4af37 !important; 
             color: #000000 !important; 
@@ -144,24 +142,21 @@
                 <button class="buy-now-btn">立即購買</button>
             </div>
 
-            <!-- 20堂 (修正：20堂文字變純黑 + 按鈕金底黑字) -->
+            <!-- 20堂 (手機版斷行修正) -->
             <div class="pricing-block plan-best-border" data-id="course-20" data-name="20堂課程" data-price="12000">
-                
-                <!-- 紅色趴數標籤 -->
                 <div class="absolute top-0 right-0 bg-red-600 text-white text-xs px-3 py-1 rounded-bl-lg font-bold z-50">-25%</div>
-
-                <!-- 藍色最優惠標籤 -->
                 <div class="absolute top-0 right-[52px] z-40">
                     <div class="relative bg-blue-900 text-white text-sm px-6 py-2 rounded-bl-2xl font-black shadow-md flex items-center">
                         <span class="absolute -left-12 -top-10 text-6xl drop-shadow-xl transform -rotate-12 pointer-events-none">👑</span>
                         <span>最優惠</span>
                     </div>
                 </div>
-
                 <div class="flex items-stretch h-[110px] sm:h-[120px] px-6">
                     <div class="w-[15%] flex items-center"><div class="radio-circle"><div class="radio-dot"></div></div></div>
-                    <!-- 文字顏色改為純黑，與金色邊框更和諧 -->
-                    <div class="w-[35%] flex flex-col justify-center text-[24px] font-black text-black">20堂課程</div>
+                    <!-- 加入斷行標籤，僅在手機版顯示 -->
+                    <div class="w-[35%] flex flex-col justify-center text-[24px] font-black text-black leading-tight">
+                        20堂<br class="block sm:hidden">課程
+                    </div>
                     <div class="w-[50%] flex justify-end items-center text-[32px] sm:text-[42px] font-black text-blue-900">
                         <span class="text-xl font-light text-blue-500 mr-1">NT$</span>12,000
                     </div>
@@ -170,7 +165,7 @@
             </div>
         </div>
 
-        <!-- 連結(左)與50分鐘資訊(右) -->
+        <!-- 連結與50分鐘資訊 -->
         <div class="max-w-md mx-auto flex justify-between items-center mt-8 px-2">
             <a href="https://tonyonlineenglish.mydurable.com/allcourses" target="_blank" class="inline-flex items-center gap-2 text-[#1e3a8a] font-black text-lg hover:underline">
                 課程詳細介紹
@@ -186,7 +181,7 @@
     </div>
 </div>
 
-<!-- 結帳彈窗 -->
+<!-- 結帳彈窗 (新增付款資訊) -->
 <div id="checkout-modal" class="modal-overlay">
     <div class="bg-white w-full max-w-md rounded-3xl p-8 shadow-2xl relative">
         <button id="close-modal" class="absolute top-4 right-4 text-gray-400 text-3xl">&times;</button>
@@ -199,11 +194,13 @@
             </div>
             <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="flex items-center justify-center gap-2 w-full py-4 bg-[#00B900] text-white rounded-2xl font-black">點此加入官方 Line: Myavalon</a>
             <button type="submit" id="submit-btn" class="w-full py-5 bg-blue-900 text-white rounded-2xl font-black text-xl shadow-xl hover:bg-blue-800 transition-all transform hover:scale-[1.02]">確認送出訂單</button>
+            <!-- 彈窗底部新增內容 -->
+            <p class="text-center text-gray-600 font-bold text-sm mt-4">轉帳/Line Pay/iPassMoney</p>
         </form>
     </div>
 </div>
 
-<!-- 感謝頁面 -->
+<!-- 感謝頁面 (修正內容) -->
 <div id="thank-you-page" class="hidden fixed inset-0 bg-[#f0f2f5] z-[2000] overflow-y-auto py-10 px-4">
     <div class="ty-container">
         <div class="flex-1 p-10">
@@ -215,9 +212,16 @@
                 <div class="flex justify-between items-center"><span class="text-gray-500">訂單時間</span><span id="ty-timestamp" class="text-gray-800"></span></div>
                 <div class="flex justify-between items-center"><span class="text-gray-500">電子信箱</span><span id="ty-customer-email" class="text-gray-800"></span></div>
             </div>
+            <!-- 感謝頁付款區域優化 -->
             <div class="mt-10 bg-blue-50 p-6 rounded-2xl">
-                <p class="text-gray-600 text-sm">請加入 LINE 聯繫付款事宜：</p>
-                <div class="mt-4 flex items-center gap-2"><span class="text-gray-500">Line ID:</span><a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="text-2xl font-black text-[#00B900]">Myavalon</a></div>
+                <p class="text-gray-900 font-bold mb-4">請加入LINE聯絡付款事宜</p>
+                <div class="flex flex-col gap-2">
+                    <div class="flex items-center gap-2">
+                        <span class="text-gray-600">Line ID:</span>
+                        <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="text-2xl font-black text-[#00B900] underline">Myavalon (點此)</a>
+                    </div>
+                    <p class="text-gray-900 font-bold mt-2">轉帳/Line Pay/iPassMoney</p>
+                </div>
             </div>
             <button onclick="location.reload()" class="mt-10 w-full py-4 bg-gray-100 text-gray-600 rounded-xl font-bold">返回前頁</button>
         </div>
