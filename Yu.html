@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GEPT 成績分析 - 陳若瑀</title>
+    <style>
+        :root {
+            --text-black: #000000;
+            --success-bg: #e8f5e9;
+            --fail-bg: #ffebee;
+            --warning-bg: #fff8e1;
+            --cta-bg: #2c3e50;
+        }
+        body {
+            font-family: -apple-system, "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+            line-height: 1.5;
+            background-color: #ffffff;
+            margin: 0;
+            padding: 10px;
+        }
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background: #ffffff;
+        }
+        h1 { text-align: center; font-size: 2.2rem; margin: 10px 0 5px 0; color: #000; }
+        
+        /* 學生資訊 */
+        .student-info {
+            text-align: center;
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 25px;
+            border: 1px solid #eee;
+        }
+        .student-name { font-size: 1.6rem; font-weight: bold; display: block; color: #000; }
+        .student-detail { font-size: 1.2rem; color: #555; }
+
+        /* 成績卡片佈局 */
+        .card {
+            border-radius: 18px;
+            padding: 20px;
+            margin-bottom: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        .bg-pass { background: var(--success-bg); }
+        .bg-fail { background: var(--fail-bg); }
+        .bg-challenge { background: var(--warning-bg); }
+
+        .info-box .title { font-size: 1.4rem; font-weight: bold; display: block; color: #000; }
+        .info-box .score { font-size: 1.6rem; font-weight: 900; color: var(--text-black); }
+        
+        .status-badge { 
+            font-size: 1.3rem; 
+            font-weight: 900; 
+            color: var(--text-black);
+            padding: 8px 15px; 
+            border-radius: 12px; 
+            background: rgba(255,255,255,0.7);
+            border: 1px solid rgba(0,0,0,0.1);
+        }
+
+        /* 建議卡片區 */
+        h2 { font-size: 1.7rem; margin-top: 35px; color: #000; border-left: 10px solid #3498db; padding-left: 12px; }
+        .advice-card {
+            padding: 22px;
+            border-radius: 18px;
+            margin-bottom: 12px;
+            font-size: 1.3rem; 
+            font-weight: 500;
+            color: var(--text-black); /* 建議文字改為純黑 */
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            border: 1px solid rgba(0,0,0,0.05);
+        }
+        .advice-1 { background-color: #e3f2fd; } 
+        .advice-2 { background-color: #f3e5f5; } 
+        .advice-3 { background-color: #e0f2f1; } 
+        .advice-4 { background-color: #fff3e0; } 
+
+        /* 體驗課程按鈕 */
+        .cta-box {
+            margin: 30px 0;
+            text-decoration: none;
+            display: block;
+            background: var(--cta-bg);
+            color: #ffffff;
+            border-radius: 20px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        }
+        .cta-title { font-size: 1.6rem; font-weight: bold; display: block; margin-bottom: 5px; }
+        .cta-subtitle { font-size: 1.2rem; opacity: 0.9; }
+        .cta-icon { font-size: 2.5rem; display: block; margin-bottom: 10px; }
+
+        .footer {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 900;
+            color: #000;
+            padding: 35px 0;
+            background: #f1f3f5;
+            border-radius: 20px;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>GEPT 成績分析</h1>
+    
+    <div class="student-info">
+        <span class="student-name">考生：陳若瑀</span>
+        <span class="student-detail">國小四年級 / 已累計參加 5 次測驗</span>
+    </div>
+
+    <div class="card bg-pass">
+        <div class="info-box">
+            <span class="title">初級 聽力/閱讀</span>
+            <span class="score">得分：92 / 88</span>
+        </div>
+        <div class="status-badge">✅ 通過</div>
+    </div>
+
+    <div class="card bg-fail">
+        <div class="info-box">
+            <span class="title">初級 口說/寫作</span>
+            <span class="score">得分：75 / 47</span>
+        </div>
+        <div class="status-badge">未過</div>
+    </div>
+
+    <div class="card bg-challenge">
+        <div class="info-box">
+            <span class="title">中級 聽力/閱讀 (挑戰)</span>
+            <span class="score">得分：58 / 31</span>
+        </div>
+        <div class="status-badge">未過</div>
+    </div>
+
+    <h2>💡 學習規劃建議</h2>
+    
+    <div class="advice-card advice-1">
+        <b>1. 寫作衝刺：</b>目前寫作 47 分缺口較大，應優先練習「單句重組」，這是小四生通過複試最關鍵的練習。
+    </div>
+
+    <div class="advice-card advice-2">
+        <b>2. 口說臨場感：</b>搭配 <b>Tony線上美語家教</b> 提供的線上口說模擬測驗，最能營造真實考場氣氛。
+    </div>
+
+    <div class="advice-card advice-3">
+        <b>3. 中級單字儲備：</b>中級單字量較大，不需急於求成，建議每日累積 10 個核心單字，建立長線實力。
+    </div>
+
+    <div class="advice-card advice-4">
+        <b>4. 證書優先：</b>五次考照展現極佳韌性，建議在兩年有效期內優先補考「初級說寫」，正式取得證書！
+    </div>
+
+    <a href="https://tonyonlineenglish.netlify.app/exper" class="cta-box">
+        <span class="cta-icon">👉</span>
+        <span class="cta-title">25 / 50 分鐘 體驗課程</span>
+        <span class="cta-subtitle">點選圖示：預約專業線上體驗課程</span>
+    </a>
+
+    <div class="footer">
+        Tony 線上美語家教
+    </div>
+</div>
+
+</body>
+</html>
