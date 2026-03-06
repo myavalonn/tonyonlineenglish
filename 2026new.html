@@ -24,7 +24,7 @@
             border: 1px solid #d4af37 !important;
         }
 
-        /* 普通方案選中：藍色邊框 */
+        /* 普通方案選中：2px 藍色邊框 */
         .pricing-block.selected {
             border: 3px solid #1e3a8a !important;
             background-color: #f8faff !important;
@@ -35,7 +35,7 @@
 
         /* 20堂課選中：加粗 4px 金色邊框 */
         .pricing-block.selected.plan-best-border {
-            border: 4px solid #d4af37 !important;
+            border: 4px solid #d4af37 !important; /* 強調金色身分 */
         }
 
         /* 自定義 Radio */
@@ -44,7 +44,7 @@
             display: flex; align-items: center; justify-content: center;
         }
         .selected .radio-circle { border-color: #1e3a8a; border-width: 3px; }
-        .selected.plan-best-border .radio-circle { border-color: #d4af37; }
+        .selected.plan-best-border .radio-circle { border-color: #d4af37; } /* 20堂選中Radio也變金 */
 
         .radio-dot {
             width: 12px; height: 12px; background-color: #1e3a8a; border-radius: 50%;
@@ -53,17 +53,12 @@
         .selected .radio-dot { transform: scale(1); }
         .selected.plan-best-border .radio-dot { background-color: #d4af37; }
 
-        /* 按鈕樣式 */
         .buy-now-btn {
             display: none; width: 100%; background-color: #1e3a8a; color: white;
             padding: 16px 0; font-weight: 900; font-size: 1.125rem; border: none;
             border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;
         }
-        /* 20堂課選中：金底黑字按鈕 */
-        .selected.plan-best-border .buy-now-btn { 
-            background-color: #d4af37 !important; 
-            color: black !important; 
-        }
+        .selected.plan-best-border .buy-now-btn { background-color: #d4af37; } /* 按鈕也變金 */
         .selected .buy-now-btn { display: block; }
 
         .modal-overlay {
@@ -144,13 +139,13 @@
                 <button class="buy-now-btn">立即購買</button>
             </div>
 
-            <!-- 20堂 (金色模式：文字改黑色、按鈕改金底黑字) -->
+            <!-- 20堂 (金色細邊框 + 雙標籤並列) -->
             <div class="pricing-block plan-best-border" data-id="course-20" data-name="20堂課程" data-price="12000">
                 
                 <!-- 紅色趴數標籤 -->
                 <div class="absolute top-0 right-0 bg-red-600 text-white text-xs px-3 py-1 rounded-bl-lg font-bold z-50">-25%</div>
 
-                <!-- 藍色最優惠標籤 -->
+                <!-- 藍色最優惠標籤 (向左平移以並列) -->
                 <div class="absolute top-0 right-[52px] z-40">
                     <div class="relative bg-blue-900 text-white text-sm px-6 py-2 rounded-bl-2xl font-black shadow-md flex items-center">
                         <span class="absolute -left-12 -top-10 text-6xl drop-shadow-xl transform -rotate-12 pointer-events-none">👑</span>
@@ -160,10 +155,9 @@
 
                 <div class="flex items-stretch h-[110px] sm:h-[120px] px-6">
                     <div class="w-[15%] flex items-center"><div class="radio-circle"><div class="radio-dot"></div></div></div>
-                    <!-- 文字改為純黑色 -->
-                    <div class="w-[35%] flex flex-col justify-center text-[24px] font-black text-black">20堂課程</div>
-                    <div class="w-[50%] flex justify-end items-center text-[32px] sm:text-[42px] font-black text-black">
-                        <span class="text-xl font-light text-gray-500 mr-1">NT$</span>12,000
+                    <div class="w-[35%] flex flex-col justify-center text-[24px] font-black text-blue-900">20堂課程</div>
+                    <div class="w-[50%] flex justify-end items-center text-[32px] sm:text-[42px] font-black text-blue-900">
+                        <span class="text-xl font-light text-blue-500 mr-1">NT$</span>12,000
                     </div>
                 </div>
                 <button class="buy-now-btn">立即購買</button>
@@ -236,7 +230,7 @@
     const blocks = document.querySelectorAll('.pricing-block');
     const modal = document.getElementById('checkout-modal');
 
-    // 訂單編號：3隨機英 + 2隨機數
+    // 訂單編號邏輯：3英 + 2數
     function generateOrderId() {
         const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         const numbers = "0123456789";
