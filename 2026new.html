@@ -9,60 +9,64 @@
     <style>
         body { font-family: 'Noto Sans TC', sans-serif; background-color: #fafafa; }
         
+        /* 基礎卡片樣式 */
         .pricing-block {
             position: relative;
-            background-color: white;
-            border: 2px solid #f3f4f6;
+            background-color: white !important;
+            border: 2px solid #f1f5f9;
             border-radius: 24px;
-            transition: all 0.3s ease;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
-            overflow: hidden; /* 防止按鈕超出卡片 */
         }
 
-        /* 20堂課底色與邊框校對 */
-        .plan-best {
-            background-color: #eff6ff !important;
-            border: 3px solid #1e3a8a !important;
+        /* 20堂課：初始細金色邊框 */
+        .plan-best-border {
+            border: 1px solid #d4af37 !important;
         }
 
-        /* 選中狀態 */
+        /* 普通方案選中：2px 藍色邊框 */
         .pricing-block.selected {
-            border-color: #1e3a8a !important;
-            background-color: #eff6ff !important;
-            transform: scale(1.02);
-            box-shadow: 0 10px 25px rgba(30, 58, 138, 0.1);
+            border: 3px solid #1e3a8a !important;
+            background-color: #f8faff !important;
+            transform: translateY(-4px);
+            box-shadow: 0 20px 25px -5px rgba(30, 58, 138, 0.15), 0 10px 10px -5px rgba(30, 58, 138, 0.1) !important;
+            z-index: 10;
         }
 
+        /* 20堂課選中：加粗 4px 金色邊框 */
+        .pricing-block.selected.plan-best-border {
+            border: 4px solid #d4af37 !important; /* 強調金色身分 */
+        }
+
+        /* 自定義 Radio */
         .radio-circle {
-            width: 28px;
-            height: 28px;
-            border: 2px solid #cbd5e1;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            width: 28px; height: 28px; border: 2px solid #cbd5e1; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
         }
         .selected .radio-circle { border-color: #1e3a8a; border-width: 3px; }
+        .selected.plan-best-border .radio-circle { border-color: #d4af37; } /* 20堂選中Radio也變金 */
+
         .radio-dot {
             width: 12px; height: 12px; background-color: #1e3a8a; border-radius: 50%;
             transform: scale(0); transition: transform 0.2s ease;
         }
         .selected .radio-dot { transform: scale(1); }
+        .selected.plan-best-border .radio-dot { background-color: #d4af37; }
 
         .buy-now-btn {
             display: none; width: 100%; background-color: #1e3a8a; color: white;
             padding: 16px 0; font-weight: 900; font-size: 1.125rem; border: none;
+            border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;
         }
+        .selected.plan-best-border .buy-now-btn { background-color: #d4af37; } /* 按鈕也變金 */
         .selected .buy-now-btn { display: block; }
 
-        /* 彈窗樣式 */
         .modal-overlay {
             display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.6);
             backdrop-filter: blur(4px); z-index: 1000; align-items: center; justify-content: center; padding: 20px;
         }
         .modal-overlay.open { display: flex; }
 
-        /* 感謝頁面結構與原版一致 */
         .ty-container { display: flex; flex-direction: column; gap: 20px; max-width: 900px; margin: 0 auto; background: white; border-radius: 24px; overflow: hidden; box-shadow: 0 20px 50px rgba(0,0,0,0.1); }
         @media (min-width: 768px) { .ty-container { flex-direction: row; } }
     </style>
@@ -84,7 +88,6 @@
 
     <div class="w-full max-w-5xl mx-auto px-4 -mt-10 pb-12 relative z-20">
         <div id="pricing-list" class="flex flex-col gap-5 max-w-md mx-auto w-full">
-            
             <!-- 1堂 -->
             <div class="pricing-block" data-id="course-1" data-name="1堂課程" data-price="800">
                 <div class="flex items-stretch h-[110px] sm:h-[120px] px-6">
@@ -99,7 +102,7 @@
 
             <!-- 6堂 -->
             <div class="pricing-block" data-id="course-6" data-name="6堂課程" data-price="4200">
-                <div class="absolute top-0 right-0 bg-gray-800 text-white text-xs px-3 py-1 rounded-bl-lg">-12.5%</div>
+                <div class="absolute top-0 right-0 bg-red-600 text-white text-xs px-3 py-1 rounded-bl-lg font-bold">-12.5%</div>
                 <div class="flex items-stretch h-[110px] sm:h-[120px] px-6">
                     <div class="w-[15%] flex items-center"><div class="radio-circle"><div class="radio-dot"></div></div></div>
                     <div class="w-[35%] flex flex-col justify-center text-[24px] font-bold text-gray-900">6堂課程</div>
@@ -112,7 +115,7 @@
 
             <!-- 10堂 -->
             <div class="pricing-block" data-id="course-10" data-name="10堂課程" data-price="6600">
-                <div class="absolute top-0 right-0 bg-gray-800 text-white text-xs px-3 py-1 rounded-bl-lg">-17.5%</div>
+                <div class="absolute top-0 right-0 bg-red-600 text-white text-xs px-3 py-1 rounded-bl-lg font-bold">-17.5%</div>
                 <div class="flex items-stretch h-[110px] sm:h-[120px] px-6">
                     <div class="w-[15%] flex items-center"><div class="radio-circle"><div class="radio-dot"></div></div></div>
                     <div class="w-[35%] flex flex-col justify-center text-[24px] font-bold text-gray-900">10堂課程</div>
@@ -123,12 +126,33 @@
                 <button class="buy-now-btn">立即購買</button>
             </div>
 
-            <!-- 20堂 (最優惠方案 - 皇冠在文字左邊，不遮擋) -->
-            <div class="pricing-block plan-best" data-id="course-20" data-name="20堂課程" data-price="12000">
-                <div class="absolute top-0 right-0 z-10 bg-blue-900 text-white text-sm px-4 py-2 rounded-bl-2xl font-black flex items-center gap-1">
-                    <span>👑</span>
-                    <span>最優惠</span>
+            <!-- 16堂 -->
+            <div class="pricing-block" data-id="course-16" data-name="16堂課程" data-price="10000">
+                <div class="absolute top-0 right-0 bg-red-600 text-white text-xs px-3 py-1 rounded-bl-lg font-bold">-22%</div>
+                <div class="flex items-stretch h-[110px] sm:h-[120px] px-6">
+                    <div class="w-[15%] flex items-center"><div class="radio-circle"><div class="radio-dot"></div></div></div>
+                    <div class="w-[35%] flex flex-col justify-center text-[24px] font-bold text-gray-900">16堂課程</div>
+                    <div class="w-[50%] flex justify-end items-center text-[28px] sm:text-[32px] font-extrabold text-gray-900">
+                        <span class="text-lg font-light text-gray-400 mr-1">NT$</span>10,000
+                    </div>
                 </div>
+                <button class="buy-now-btn">立即購買</button>
+            </div>
+
+            <!-- 20堂 (金色細邊框 + 雙標籤並列) -->
+            <div class="pricing-block plan-best-border" data-id="course-20" data-name="20堂課程" data-price="12000">
+                
+                <!-- 紅色趴數標籤 -->
+                <div class="absolute top-0 right-0 bg-red-600 text-white text-xs px-3 py-1 rounded-bl-lg font-bold z-50">-25%</div>
+
+                <!-- 藍色最優惠標籤 (向左平移以並列) -->
+                <div class="absolute top-0 right-[52px] z-40">
+                    <div class="relative bg-blue-900 text-white text-sm px-6 py-2 rounded-bl-2xl font-black shadow-md flex items-center">
+                        <span class="absolute -left-12 -top-10 text-6xl drop-shadow-xl transform -rotate-12 pointer-events-none">👑</span>
+                        <span>最優惠</span>
+                    </div>
+                </div>
+
                 <div class="flex items-stretch h-[110px] sm:h-[120px] px-6">
                     <div class="w-[15%] flex items-center"><div class="radio-circle"><div class="radio-dot"></div></div></div>
                     <div class="w-[35%] flex flex-col justify-center text-[24px] font-black text-blue-900">20堂課程</div>
@@ -140,8 +164,8 @@
             </div>
         </div>
 
-        <!-- 連結與50分鐘資訊 (連結在左邊，50分鐘在右邊) -->
-        <div class="max-w-md mx-auto flex justify-between items-center mt-6 px-2">
+        <!-- 連結(左)與50分鐘資訊(右) -->
+        <div class="max-w-md mx-auto flex justify-between items-center mt-8 px-2">
             <a href="https://tonyonlineenglish.mydurable.com/allcourses" target="_blank" class="inline-flex items-center gap-2 text-[#1e3a8a] font-black text-lg hover:underline">
                 課程詳細介紹
                 <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
@@ -152,8 +176,7 @@
         <div class="text-center mt-12">
              <p class="text-gray-600 text-lg leading-relaxed max-w-lg mx-auto">我將持續以穩定且高品質的授課方式，陪伴孩子在接下來的階段逐步提升英文能力與考試表現。</p>
         </div>
-
-        <div class="border-t border-gray-200 pt-8 mt-12 text-gray-500 font-bold">Tony | 線上美語家教</div>
+        <div class="border-t border-gray-200 pt-8 mt-12 text-gray-500 font-bold text-center sm:text-left">Tony | 線上美語家教</div>
     </div>
 </div>
 
@@ -168,48 +191,35 @@
                 <label class="block text-sm font-bold text-gray-700 mb-1">電子信箱</label>
                 <input type="email" id="email" required placeholder="example@email.com" class="w-full px-4 py-4 border-2 border-gray-100 rounded-2xl focus:border-blue-900 outline-none transition-all">
             </div>
-            <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="flex items-center justify-center gap-2 w-full py-4 bg-[#00B900] text-white rounded-2xl font-black shadow-md">點此加入官方 Line: Myavalon</a>
-            <button type="submit" id="submit-btn" class="w-full py-5 bg-blue-900 text-white rounded-2xl font-black text-xl shadow-xl hover:bg-blue-800">確認送出訂單</button>
+            <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="flex items-center justify-center gap-2 w-full py-4 bg-[#00B900] text-white rounded-2xl font-black">點此加入官方 Line: Myavalon</a>
+            <button type="submit" id="submit-btn" class="w-full py-5 bg-blue-900 text-white rounded-2xl font-black text-xl shadow-xl hover:bg-blue-800 transition-all transform hover:scale-[1.02]">確認送出訂單</button>
         </form>
     </div>
 </div>
 
-<!-- 完整資訊感謝頁面 (恢復原版豐富資訊) -->
+<!-- 感謝頁面 -->
 <div id="thank-you-page" class="hidden fixed inset-0 bg-[#f0f2f5] z-[2000] overflow-y-auto py-10 px-4">
     <div class="ty-container">
-        <!-- 左面板：訂單狀態與聯繫 -->
         <div class="flex-1 p-10">
             <div class="text-[#10b981] text-6xl mb-4">✓</div>
             <h2 class="text-3xl font-black text-gray-900 mb-4">感謝您的訂購！ 🎉</h2>
-            <p class="text-gray-600 mb-8">您的訂單已成功建立。確認信已寄送至您的信箱，請檢查您的收件匣。</p>
-            
+            <p class="text-gray-600 mb-8">您的訂單已成功建立。確認信已寄送至您的信箱。</p>
             <div class="space-y-4 border-t border-gray-100 pt-6">
                 <div class="flex justify-between items-center"><span class="text-gray-500">訂單編號</span><span id="ty-order-id" class="text-[#1e3a8a] font-bold text-lg"></span></div>
                 <div class="flex justify-between items-center"><span class="text-gray-500">訂單時間</span><span id="ty-timestamp" class="text-gray-800"></span></div>
                 <div class="flex justify-between items-center"><span class="text-gray-500">電子信箱</span><span id="ty-customer-email" class="text-gray-800"></span></div>
             </div>
-
-            <div class="mt-10 bg-blue-50 p-6 rounded-2xl border border-blue-100">
-                <h3 class="font-bold text-gray-900 mb-2">後續付款步驟</h3>
-                <p class="text-gray-600 text-sm">請加入 LINE 聯繫付款事宜 (銀行轉帳/Line Pay/iPassMoney)：</p>
-                <div class="mt-4 flex items-center gap-2">
-                    <span class="text-gray-500">Line ID:</span>
-                    <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="text-2xl font-black text-[#00B900] hover:underline">Myavalon</a>
-                </div>
+            <div class="mt-10 bg-blue-50 p-6 rounded-2xl">
+                <p class="text-gray-600 text-sm">請加入 LINE 聯繫付款事宜：</p>
+                <div class="mt-4 flex items-center gap-2"><span class="text-gray-500">Line ID:</span><a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="text-2xl font-black text-[#00B900]">Myavalon</a></div>
             </div>
-            
-            <button onclick="location.reload()" class="mt-10 w-full py-4 bg-gray-100 text-gray-600 rounded-xl font-bold hover:bg-gray-200 transition-all">返回前頁</button>
+            <button onclick="location.reload()" class="mt-10 w-full py-4 bg-gray-100 text-gray-600 rounded-xl font-bold">返回前頁</button>
         </div>
-        
-        <!-- 右面板：訂單摘要 -->
         <div class="w-full md:w-[380px] bg-gray-50 p-10 border-l border-gray-100">
             <h3 class="text-xl font-black text-gray-900 mb-6 border-b-2 border-gray-200 pb-4">訂單摘要</h3>
-            <div id="ty-summary-list" class="space-y-6">
-                <!-- 項目將由 JS 插入 -->
-            </div>
+            <div id="ty-summary-list" class="space-y-6"></div>
             <div class="mt-8 pt-6 border-t-2 border-gray-200 flex justify-between items-center">
-                <span class="text-xl font-black">總計</span>
-                <span id="ty-total-price" class="text-2xl font-black text-[#1e3a8a]"></span>
+                <span class="text-xl font-black">總計</span><span id="ty-total-price" class="text-2xl font-black text-[#1e3a8a]"></span>
             </div>
         </div>
     </div>
@@ -220,15 +230,14 @@
     const blocks = document.querySelectorAll('.pricing-block');
     const modal = document.getElementById('checkout-modal');
 
-    // 隨機訂單編號邏輯：3英 + 2數
+    // 訂單編號邏輯：3英 + 2數
     function generateOrderId() {
         const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
         const numbers = "0123456789";
-        let res = "";
-        for (let i = 0; i < 3; i++) res += letters.charAt(Math.floor(Math.random() * letters.length));
-        for (let i = 0; i < 2; i++) res += numbers.charAt(Math.floor(Math.random() * numbers.length));
-        // 打亂順序使其更隨機
-        return "#" + res.split('').sort(() => 0.5 - Math.random()).join('');
+        let l = ""; let n = "";
+        for (let i = 0; i < 3; i++) l += letters.charAt(Math.floor(Math.random() * letters.length));
+        for (let i = 0; i < 2; i++) n += numbers.charAt(Math.floor(Math.random() * numbers.length));
+        return "#" + (l + n).split('').sort(() => 0.5 - Math.random()).join('');
     }
 
     blocks.forEach(block => {
@@ -254,39 +263,28 @@
     document.getElementById('order-form').onsubmit = function(e) {
         e.preventDefault();
         const email = document.getElementById('email').value;
-        const submitBtn = document.getElementById('submit-btn');
         const orderId = generateOrderId();
-        const now = new Date();
-        const timestamp = now.toLocaleString("zh-TW", { year: "numeric", month: "long", day: "numeric", hour: "2-digit", minute: "2-digit" });
+        const timestamp = new Date().toLocaleString("zh-TW", { year: "numeric", month: "long", day: "numeric", hour: "2-digit", minute: "2-digit" });
+        const imageUrl = "https://ik.imagekit.io/lql1uveoc/%E5%AD%B8%E8%B2%BB%20tuition/%E6%88%AA%E5%9C%96%202026-03-06%20%E4%B8%8B%E5%8D%883.28.45.png";
 
-        submitBtn.disabled = true;
-        submitBtn.innerText = "提交中...";
+        // LIGHTNING FAST
+        document.getElementById('ty-order-id').innerText = orderId;
+        document.getElementById('ty-timestamp').innerText = timestamp;
+        document.getElementById('ty-customer-email').innerText = email;
+        document.getElementById('ty-total-price').innerText = "NT$ " + parseInt(selectedPlan.price).toLocaleString();
+        document.getElementById('ty-summary-list').innerHTML = `<div class="flex justify-between"><div><div class="font-bold">${selectedPlan.name}</div><div class="text-sm text-gray-500">50分鐘 x 1</div></div><div class="font-bold text-[#1e3a8a]">NT$ ${parseInt(selectedPlan.price).toLocaleString()}</div></div>`;
+        
+        modal.classList.remove('open');
+        document.getElementById('product-page-container').style.display = 'none';
+        document.getElementById('thank-you-page').classList.remove('hidden');
+        window.scrollTo(0,0);
 
+        // 背景傳輸
         fetch("https://script.google.com/macros/s/AKfycbyU13Wivs341DMPupk9EKrL9u908zrHNOVqZUXri-hGezkk6qj_7loQGIf0GCfmvj_f/exec", {
             method: "POST",
+            mode: "no-cors",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: new URLSearchParams({ orderId, email, productName: selectedPlan.name, totalPrice: selectedPlan.price, status: "未付款" })
-        }).then(() => {
-            // 填充感謝頁面資訊
-            document.getElementById('ty-order-id').innerText = orderId;
-            document.getElementById('ty-timestamp').innerText = timestamp;
-            document.getElementById('ty-customer-email').innerText = email;
-            document.getElementById('ty-total-price').innerText = "NT$ " + parseInt(selectedPlan.price).toLocaleString();
-            
-            document.getElementById('ty-summary-list').innerHTML = `
-                <div class="flex justify-between items-start">
-                    <div>
-                        <div class="font-bold text-gray-800">${selectedPlan.name}</div>
-                        <div class="text-sm text-gray-500">每堂50分鐘 x 1</div>
-                    </div>
-                    <div class="font-bold text-[#1e3a8a]">NT$ ${parseInt(selectedPlan.price).toLocaleString()}</div>
-                </div>
-            `;
-
-            modal.classList.remove('open');
-            document.getElementById('product-page-container').style.display = 'none';
-            document.getElementById('thank-you-page').classList.remove('hidden');
-            window.scrollTo(0,0);
+            body: new URLSearchParams({ orderId, email, productName: selectedPlan.name, totalPrice: selectedPlan.price, status: "未付款", imageUrls: imageUrl })
         });
     };
 </script>
