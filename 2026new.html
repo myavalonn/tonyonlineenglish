@@ -144,8 +144,10 @@
         <div class="flex flex-col gap-4 md:gap-5 max-w-md mx-auto w-full">
             
             <!-- Plan 1 -->
-            <div class="pricing-block cursor-pointer bg-white border border-gray-100 rounded-[24px] flex items-stretch shadow-[0_4px_20px_rgba(0,0,0,0.06)] relative overflow-hidden h-[110px] sm:h-[120px] transition-transform hover:scale-[1.02]" data-id="course-6">
-                <div class="absolute top-0 right-0 bg-gray-800 text-white text-xs sm:text-sm font-normal px-3 py-1.5 rounded-bl-[16px] z-10 tracking-wider">
+            <!-- 移除了 overflow-hidden，確保內部絕對定位的元素可以自由突出 -->
+            <div class="pricing-block cursor-pointer bg-white border border-gray-100 rounded-[24px] flex items-stretch shadow-[0_4px_20px_rgba(0,0,0,0.06)] relative h-[110px] sm:h-[120px] transition-transform hover:scale-[1.02]" data-id="course-6">
+                <!-- 標籤加上 rounded-tr-[23px] 以吻合父層框線圓角 -->
+                <div class="absolute top-0 right-0 bg-gray-800 text-white text-xs sm:text-sm font-normal px-3 py-1.5 rounded-bl-[16px] rounded-tr-[23px] z-10 tracking-wider">
                     -12.5%
                 </div>
                 <div class="w-[35%] flex flex-col justify-center items-center">
@@ -154,15 +156,17 @@
                     </div>
                 </div>
                 <div class="w-[65%] flex justify-center items-center">
-                    <div class="text-[28px] sm:text-[32px] font-normal text-gray-900 tracking-wider pt-2">
-                        NT$ 4,200
+                    <!-- NT$ 拆解為細體、數字加粗並縮小間距 (tracking-tighter) -->
+                    <div class="text-[28px] sm:text-[32px] text-gray-900 pt-2 flex items-baseline justify-center gap-1.5">
+                        <span class="font-normal text-[20px] sm:text-[22px] tracking-normal">NT$</span>
+                        <span class="font-bold tracking-tighter">4,200</span>
                     </div>
                 </div>
             </div>
 
             <!-- Plan 2 -->
-            <div class="pricing-block cursor-pointer bg-white border border-gray-100 rounded-[24px] flex items-stretch shadow-[0_4px_20px_rgba(0,0,0,0.06)] relative overflow-hidden h-[110px] sm:h-[120px] transition-transform hover:scale-[1.02]" data-id="course-10">
-                <div class="absolute top-0 right-0 bg-gray-800 text-white text-xs sm:text-sm font-normal px-3 py-1.5 rounded-bl-[16px] z-10 tracking-wider">
+            <div class="pricing-block cursor-pointer bg-white border border-gray-100 rounded-[24px] flex items-stretch shadow-[0_4px_20px_rgba(0,0,0,0.06)] relative h-[110px] sm:h-[120px] transition-transform hover:scale-[1.02]" data-id="course-10">
+                <div class="absolute top-0 right-0 bg-gray-800 text-white text-xs sm:text-sm font-normal px-3 py-1.5 rounded-bl-[16px] rounded-tr-[23px] z-10 tracking-wider">
                     -17.5%
                 </div>
                 <div class="w-[35%] flex flex-col justify-center items-center">
@@ -171,15 +175,16 @@
                     </div>
                 </div>
                 <div class="w-[65%] flex justify-center items-center">
-                    <div class="text-[28px] sm:text-[32px] font-normal text-gray-900 tracking-wider pt-2">
-                        NT$ 6,600
+                    <div class="text-[28px] sm:text-[32px] text-gray-900 pt-2 flex items-baseline justify-center gap-1.5">
+                        <span class="font-normal text-[20px] sm:text-[22px] tracking-normal">NT$</span>
+                        <span class="font-bold tracking-tighter">6,600</span>
                     </div>
                 </div>
             </div>
 
             <!-- Plan 3 -->
-            <div class="pricing-block cursor-pointer bg-white border border-gray-100 rounded-[24px] flex items-stretch shadow-[0_4px_20px_rgba(0,0,0,0.06)] relative overflow-hidden h-[110px] sm:h-[120px] transition-transform hover:scale-[1.02]" data-id="course-16">
-                <div class="absolute top-0 right-0 bg-gray-800 text-white text-xs sm:text-sm font-normal px-3 py-1.5 rounded-bl-[16px] z-10 tracking-wider">
+            <div class="pricing-block cursor-pointer bg-white border border-gray-100 rounded-[24px] flex items-stretch shadow-[0_4px_20px_rgba(0,0,0,0.06)] relative h-[110px] sm:h-[120px] transition-transform hover:scale-[1.02]" data-id="course-16">
+                <div class="absolute top-0 right-0 bg-gray-800 text-white text-xs sm:text-sm font-normal px-3 py-1.5 rounded-bl-[16px] rounded-tr-[23px] z-10 tracking-wider">
                     -22%
                 </div>
                 <div class="w-[35%] flex flex-col justify-center items-center">
@@ -188,25 +193,32 @@
                     </div>
                 </div>
                 <div class="w-[65%] flex justify-center items-center">
-                    <div class="text-[28px] sm:text-[32px] font-normal text-gray-900 tracking-wider pt-2">
-                        NT$ 10,000
+                    <div class="text-[28px] sm:text-[32px] text-gray-900 pt-2 flex items-baseline justify-center gap-1.5">
+                        <span class="font-normal text-[20px] sm:text-[22px] tracking-normal">NT$</span>
+                        <span class="font-bold tracking-tighter">10,000</span>
                     </div>
                 </div>
             </div>
 
             <!-- Plan 4 (Best) -->
-            <div class="pricing-block cursor-pointer bg-[#fff5f5] border-[3px] border-[#e3001b] rounded-[24px] overflow-hidden flex items-stretch shadow-[0_6px_25px_rgba(227,0,27,0.15)] relative h-[110px] sm:h-[120px] transition-transform hover:scale-[1.02]" data-id="course-20">
-                <div class="absolute top-0 right-0 bg-[#e3001b] text-white text-sm sm:text-base font-normal px-4 py-1.5 rounded-bl-[16px] z-10 flex items-center gap-1 tracking-wider">
-                    👑 最優惠
+            <!-- 改為深藍色系 (bg-blue-50/border-blue-900) -->
+            <div class="pricing-block cursor-pointer bg-blue-50 border-[3px] border-blue-900 rounded-[24px] flex items-stretch shadow-[0_6px_25px_rgba(30,58,138,0.15)] relative h-[110px] sm:h-[120px] transition-transform hover:scale-[1.02]" data-id="course-20">
+                <!-- 標籤也改為深藍底色，並將皇冠以 absolute 拉出 -->
+                <div class="absolute top-0 right-0 bg-blue-900 text-white text-sm sm:text-base font-normal px-5 py-1.5 rounded-bl-[16px] rounded-tr-[20px] z-10 flex items-center tracking-wider">
+                    <!-- 皇冠放大兩倍 (text-[40px]) 並定位至左上方超出框線，加上些微傾斜 (-rotate-12) -->
+                    <span class="absolute -top-6 -left-7 text-[40px] sm:text-[44px] drop-shadow-md z-20 origin-bottom -rotate-12">👑</span>
+                    <span class="ml-1 relative z-10">最優惠</span>
                 </div>
                 <div class="w-[35%] flex flex-col justify-center items-center bg-transparent">
-                    <div class="text-[24px] sm:text-[28px] font-normal text-gray-900 leading-[1.15] tracking-widest text-center pt-3">
+                    <!-- 文字深藍色＋粗體 -->
+                    <div class="text-[24px] sm:text-[28px] font-bold text-blue-900 leading-[1.15] tracking-widest text-center pt-3">
                         20堂<br>課程
                     </div>
                 </div>
                 <div class="w-[65%] flex justify-center items-center bg-transparent">
-                    <div class="text-[30px] sm:text-[36px] font-normal text-[#e3001b] tracking-wider pt-3">
-                        NT$ 12,000
+                    <div class="text-[30px] sm:text-[36px] text-blue-900 pt-3 flex items-baseline justify-center gap-1.5">
+                        <span class="font-normal text-[22px] sm:text-[24px] tracking-normal">NT$</span>
+                        <span class="font-bold tracking-tighter">12,000</span>
                     </div>
                 </div>
             </div>
