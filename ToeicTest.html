@@ -9,33 +9,42 @@
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
         body { font-family: 'Inter', sans-serif; background-color: #f8fafc; }
         
-        /* --- 平板 (Tablet) 2 倍大 --- */
+        /* --- Desktop (桌機模式) 3 倍大 --- */
+        @media (min-width: 1024px) {
+            .max-w-5xl { max-width: 80% !important; }
+            #question-text { font-size: 3.5rem !important; line-height: 1.2; margin-bottom: 3.5rem !important; font-weight: 700; }
+            .option-text { font-size: 2.5rem !important; font-weight: 500; }
+            .option-btn { padding: 2.5rem 3rem !important; margin-bottom: 1.5rem !important; border-width: 3px !important; }
+            #next-btn, #prev-btn { font-size: 1.8rem !important; padding: 1.5rem 3.5rem !important; border-radius: 20px; }
+            #question-number { width: 4.5rem; height: 4.5rem; font-size: 2.5rem; }
+        }
+
+        /* --- Tablet (平板) 字體 2 倍，題號 2.5 倍大 --- */
         @media (min-width: 768px) and (max-width: 1023px) {
             #quiz-card { padding: 3rem !important; }
             #question-text { font-size: 2.2rem !important; line-height: 1.3; margin-bottom: 2.5rem !important; }
-            .option-text { font-size: 1.6rem !important; font-weight: 500; }
+            .option-text { font-size: 1.6rem !important; }
             .option-btn { padding: 1.5rem 2rem !important; margin-bottom: 1.25rem !important; }
             #next-btn, #prev-btn { font-size: 1.3rem !important; padding: 1.2rem 2.5rem !important; }
-            #question-number { width: 3rem; height: 3rem; font-size: 1.5rem; }
+            /* 題號放大 2.5 倍 */
+            #question-number { 
+                width: 5rem !important; 
+                height: 5rem !important; 
+                font-size: 2.5rem !important; 
+                border-radius: 12px !important;
+            }
         }
 
-        /* --- 桌機 (Desktop) 1.5 倍大 --- */
-        @media (min-width: 1024px) {
-            #question-text { font-size: 1.85rem !important; line-height: 1.4; margin-bottom: 2rem !important; }
-            .option-text { font-size: 1.35rem !important; }
-            .option-btn { padding: 1.2rem 1.5rem !important; }
-            #next-btn, #prev-btn { font-size: 1.1rem !important; padding: 1rem 2rem !important; }
-        }
-
-        /* --- 手機 (Mobile) 緊湊佈局 --- */
+        /* --- Mobile (手機) 緊密佈局 --- */
         @media (max-width: 640px) {
             #quiz-card { padding: 1rem !important; }
             #question-text { font-size: 1.15rem; margin-bottom: 0.75rem; line-height: 1.4; }
             #options-grid { gap: 0.35rem !important; } 
-            .option-btn { padding: 0.5rem 0.75rem !important; margin-bottom: 0 !important; }
-            .option-text { font-size: 0.95rem; }
-            #controls-area { margin-top: 0.5rem !important; padding-top: 0.5rem !important; border-top: 1px solid #e2e8f0; }
-            #next-btn, #prev-btn { padding: 0.5rem 1rem !important; font-size: 0.8rem !important; }
+            .option-btn { padding: 0.6rem 0.8rem !important; margin-bottom: 0 !important; }
+            .option-text { font-size: 1rem; }
+            #controls-area { margin-top: 0.6rem !important; padding-top: 0.6rem !important; border-top: 1px solid #e2e8f0; }
+            #next-btn, #prev-btn { padding: 0.6rem 1.2rem !important; font-size: 0.85rem !important; }
+            #question-number { width: 2.5rem; height: 2.5rem; font-size: 1.2rem; }
         }
 
         .fade-in { animation: fadeIn 0.4s ease-out; }
@@ -56,49 +65,49 @@
         </div>
     </header>
 
-    <main class="flex-grow flex items-center justify-center p-2 md:p-4">
+    <main class="flex-grow flex items-center justify-center p-2 md:p-6">
         <div class="max-w-5xl w-full">
             
-            <div id="reg-card" class="bg-white rounded-2xl shadow-xl p-8 md:p-12 border border-slate-200 fade-in text-center">
-                <h2 class="text-2xl md:text-3xl font-bold mb-4 text-slate-800">TOEIC 多益測驗</h2>
-                <div class="space-y-4 text-left max-w-md mx-auto">
+            <div id="reg-card" class="bg-white rounded-3xl shadow-xl p-10 md:p-20 border border-slate-200 fade-in text-center">
+                <h2 class="text-3xl md:text-5xl font-bold mb-6 text-slate-800">TOEIC 多益測驗</h2>
+                <div class="space-y-6 text-left max-w-2xl mx-auto">
                     <div>
-                        <label class="block font-bold text-slate-700 mb-1">姓名 (Full Name)</label>
-                        <input type="text" id="user-name" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none">
+                        <label class="block font-bold text-slate-700 mb-2 md:text-2xl">姓名 (Full Name)</label>
+                        <input type="text" id="user-name" class="w-full p-5 bg-slate-50 border border-slate-200 rounded-2xl md:text-xl outline-none">
                     </div>
                     <div>
-                        <label class="block font-bold text-slate-700 mb-1">電子郵件 (Email Address)</label>
-                        <input type="email" id="user-id" class="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-indigo-500 outline-none">
+                        <label class="block font-bold text-slate-700 mb-2 md:text-2xl">電子郵件 (Email Address)</label>
+                        <input type="email" id="user-id" class="w-full p-5 bg-slate-50 border border-slate-200 rounded-2xl md:text-xl outline-none">
                     </div>
-                    <button onclick="startTest()" class="w-full bg-indigo-600 text-white py-4 rounded-xl font-bold text-lg hover:bg-indigo-700 transition-all mt-4">開始測驗</button>
+                    <button onclick="startTest()" class="w-full bg-indigo-600 text-white py-5 rounded-2xl font-bold text-xl md:text-3xl hover:bg-indigo-700 transition-all mt-6 shadow-lg">開始測驗</button>
                 </div>
             </div>
 
-            <div id="quiz-card" class="hidden bg-white rounded-2xl shadow-xl border border-slate-200 p-6 md:p-10 fade-in">
+            <div id="quiz-card" class="hidden bg-white rounded-3xl shadow-2xl border border-slate-200 p-8 md:p-16 fade-in">
                 <div class="flex flex-col">
-                    <div class="flex items-center gap-2 mb-4">
-                        <span id="question-number" class="flex items-center justify-center rounded-lg bg-indigo-600 text-white font-bold">1</span>
-                        <div class="h-px flex-grow bg-slate-100"></div>
+                    <div class="flex items-center gap-4 mb-6">
+                        <span id="question-number" class="flex items-center justify-center bg-indigo-600 text-white font-bold shrink-0">1</span>
+                        <div class="h-1 flex-grow bg-slate-100 rounded-full"></div>
                     </div>
-                    <h2 id="question-text" class="font-medium text-slate-800"></h2>
-                    <div id="options-grid" class="flex flex-col gap-2"></div>
+                    <h2 id="question-text" class="text-slate-800"></h2>
+                    <div id="options-grid" class="flex flex-col"></div>
                 </div>
-                <div id="controls-area" class="flex justify-between items-center mt-6">
-                    <button id="prev-btn" onclick="prevQuestion()" class="text-slate-400 font-bold disabled:opacity-0 uppercase">PREV</button>
-                    <button id="next-btn" onclick="nextQuestion()" class="bg-slate-900 text-white rounded-xl font-bold uppercase shadow-md">
+                <div id="controls-area" class="flex justify-between items-center mt-10">
+                    <button id="prev-btn" onclick="prevQuestion()" class="text-slate-400 font-bold disabled:opacity-0 uppercase tracking-widest">PREV</button>
+                    <button id="next-btn" onclick="nextQuestion()" class="bg-slate-900 text-white rounded-2xl font-bold uppercase shadow-xl transition-transform active:scale-95">
                         <span id="next-text">NEXT</span>
                     </button>
                 </div>
             </div>
 
-            <div id="result-card" class="hidden bg-white rounded-3xl shadow-2xl p-12 text-center fade-in">
+            <div id="result-card" class="hidden bg-white rounded-3xl shadow-2xl p-16 text-center fade-in">
                 <div id="loading-results">
-                    <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600 mx-auto mb-4"></div>
-                    <p>提交中...</p>
+                    <div class="animate-spin rounded-full h-16 w-16 border-b-4 border-indigo-600 mx-auto mb-6"></div>
+                    <p class="text-2xl font-bold">提交中...</p>
                 </div>
                 <div id="confirmation-msg" class="hidden">
-                    <h2 class="text-2xl font-bold mb-4">提交完成</h2>
-                    <p>測驗分析已發送至您的信箱。</p>
+                    <h2 class="text-4xl font-bold mb-6 text-green-600">提交完成</h2>
+                    <p class="text-2xl">測驗分析已發送至您的信箱，請查收。</p>
                 </div>
             </div>
         </div>
@@ -113,7 +122,7 @@
         function startTest() {
             userName = document.getElementById('user-name').value.trim();
             userId = document.getElementById('user-id').value.trim();
-            if(!userName || !userId.includes('@')) return alert("請輸入資訊。");
+            if(!userName || !userId.includes('@')) return alert("請輸入正確姓名與 Email。");
             document.getElementById('reg-card').classList.add('hidden');
             document.getElementById('quiz-header').classList.remove('hidden');
             document.getElementById('quiz-card').classList.remove('hidden');
@@ -131,7 +140,7 @@
             grid.innerHTML = '';
             q.options.forEach((opt, i) => {
                 const active = answers[currentIndex] === i;
-                grid.innerHTML += `<button onclick="select(${i})" class="option-btn w-full flex items-center border-2 text-left transition-all ${active ? 'border-indigo-600 bg-indigo-50' : 'border-slate-100'}"><span class="option-text ${active ? 'font-bold text-indigo-900' : 'text-slate-600'}">${opt}</span></button>`;
+                grid.innerHTML += `<button onclick="select(${i})" class="option-btn w-full flex items-center border-2 text-left transition-all ${active ? 'border-indigo-600 bg-indigo-50' : 'border-slate-100 hover:border-indigo-200'}"><span class="option-text ${active ? 'font-bold text-indigo-900' : 'text-slate-600'}">${opt}</span></button>`;
             });
             document.getElementById('prev-btn').disabled = currentIndex === 0;
             document.getElementById('next-text').innerText = currentIndex === 29 ? 'SUBMIT' : 'NEXT';
