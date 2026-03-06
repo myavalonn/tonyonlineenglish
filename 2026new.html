@@ -7,10 +7,9 @@
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        /* 背景更換為淺藍灰色，讓白色卡片對比更鮮明 */
         body { font-family: 'Noto Sans TC', sans-serif; background-color: #f1f5f9; }
         
-        /* 基礎卡片：增加基礎陰影與更清晰的邊框 */
+        /* 基礎卡片樣式 */
         .pricing-block {
             position: relative;
             background-color: white !important;
@@ -18,28 +17,22 @@
             border-radius: 24px;
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             cursor: pointer;
-            /* 基礎陰影 */
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
         }
 
-        /* 懸停效果：微升並加深陰影 */
         .pricing-block:hover {
             transform: translateY(-2px);
-            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            box-shadow: 0 15px 20px -5px rgba(0, 0, 0, 0.1);
             border-color: #cbd5e1;
         }
 
-        /* 20堂課：預設金色邊框 */
-        .plan-best-border {
-            border: 2px solid #d4af37 !important;
-        }
+        /* 20堂課預設邊框 */
+        .plan-best-border { border: 2px solid #d4af37 !important; }
 
         /* 選中狀態：強力對比與深藍色投影 */
         .pricing-block.selected {
             border: 4px solid #1e3a8a !important;
-            background-color: #ffffff !important;
             transform: translateY(-6px);
-            /* 深色立體投影 */
             box-shadow: 0 25px 30px -10px rgba(30, 58, 138, 0.3) !important;
             z-index: 10;
         }
@@ -50,13 +43,14 @@
             box-shadow: 0 25px 30px -10px rgba(212, 175, 55, 0.4) !important;
         }
 
-        /* 手機版 20 堂課換行邏輯 */
+        /* 手機版強制換行邏輯：僅在選中且是手機版時生效 */
         .toggle-br { display: none; }
         @media (max-width: 639px) {
             .selected .toggle-br { display: block; }
+            .selected .plan-label { white-space: normal !important; }
         }
 
-        /* 自定義 Radio：提高顏色對比 */
+        /* Radio 樣式 */
         .radio-circle {
             width: 28px; height: 28px; border: 2px solid #94a3b8; border-radius: 50%;
             display: flex; align-items: center; justify-content: center; background: #fff;
@@ -71,15 +65,13 @@
         .selected .radio-dot { transform: scale(1); }
         .selected.plan-best-border .radio-dot { background-color: #d4af37; }
 
+        /* 立即購買按鈕 */
         .buy-now-btn {
             display: none; width: 100%; background-color: #1e3a8a; color: white;
             padding: 16px 0; font-weight: 900; font-size: 1.25rem; border: none;
             border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;
         }
-        .selected.plan-best-border .buy-now-btn { 
-            background-color: #d4af37 !important; 
-            color: #000000 !important; 
-        } 
+        .selected.plan-best-border .buy-now-btn { background-color: #d4af37 !important; color: #000; } 
         .selected .buy-now-btn { display: block; }
 
         .modal-overlay {
@@ -95,27 +87,28 @@
 <body>
 
 <div id="product-page-container">
-    <!-- HEADER -->
+    <!-- HEADER (保持不變) -->
     <div class="w-full relative overflow-hidden bg-gray-900 flex items-center justify-center" style="border-bottom-left-radius: 50% 20px; border-bottom-right-radius: 50% 20px;">
         <div class="absolute inset-0 z-0">
             <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/shutter-speed-3LXPDYb83MY-unsplash.jpg" class="w-full h-full object-cover" />
             <div class="absolute inset-0 bg-black/50"></div>
         </div>
         <div class="relative z-10 w-full max-w-4xl mx-auto px-4 pt-16 pb-24 text-center text-white">
-            <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-4 drop-shadow-md">Tony線上美語家教</h1>
+            <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">Tony線上美語家教</h1>
             <p class="text-gray-100 text-base md:text-lg lg:text-xl font-light">升學 檢定 職場 公職 高考 免試 外商 觀光美語 <br class="md:hidden">展場英文 翻譯</p>
         </div>
     </div>
 
     <div class="w-full max-w-5xl mx-auto px-4 -mt-10 pb-12 relative z-20">
-        <div id="pricing-list" class="flex flex-col gap-6 max-w-md mx-auto w-full">
+        <div id="pricing-list" class="flex flex-col gap-5 max-w-md mx-auto w-full">
+            
             <!-- 1堂 -->
             <div class="pricing-block" data-id="course-1" data-name="1堂課程" data-price="800">
                 <div class="flex items-stretch h-[110px] sm:h-[120px] px-6">
                     <div class="w-[15%] flex items-center"><div class="radio-circle"><div class="radio-dot"></div></div></div>
-                    <div class="w-[35%] flex flex-col justify-center text-[24px] font-black text-gray-900">1堂課程</div>
+                    <div class="w-[35%] flex flex-col justify-center text-[24px] font-black text-gray-900 leading-tight plan-label">1堂<br class="toggle-br">課程</div>
                     <div class="w-[50%] flex justify-end items-center text-[28px] sm:text-[32px] font-black text-gray-900">
-                        <span class="text-lg font-bold text-gray-400 mr-1">NT$</span>800
+                        <span class="text-lg font-black text-black mr-1">NT$</span>800
                     </div>
                 </div>
                 <button class="buy-now-btn">立即購買</button>
@@ -123,12 +116,12 @@
 
             <!-- 6堂 -->
             <div class="pricing-block" data-id="course-6" data-name="6堂課程" data-price="4200">
-                <div class="absolute top-0 right-0 bg-red-600 text-white text-xs px-3 py-1 rounded-bl-lg font-bold shadow-sm">-12.5%</div>
+                <div class="absolute top-0 right-0 bg-red-600 text-white text-xs px-3 py-1 rounded-bl-lg font-bold">-12.5%</div>
                 <div class="flex items-stretch h-[110px] sm:h-[120px] px-6">
                     <div class="w-[15%] flex items-center"><div class="radio-circle"><div class="radio-dot"></div></div></div>
-                    <div class="w-[35%] flex flex-col justify-center text-[24px] font-black text-gray-900">6堂課程</div>
+                    <div class="w-[35%] flex flex-col justify-center text-[24px] font-black text-gray-900 leading-tight plan-label">6堂<br class="toggle-br">課程</div>
                     <div class="w-[50%] flex justify-end items-center text-[28px] sm:text-[32px] font-black text-gray-900">
-                        <span class="text-lg font-bold text-gray-400 mr-1">NT$</span>4,200
+                        <span class="text-lg font-black text-black mr-1">NT$</span>4,200
                     </div>
                 </div>
                 <button class="buy-now-btn">立即購買</button>
@@ -136,12 +129,12 @@
 
             <!-- 10堂 -->
             <div class="pricing-block" data-id="course-10" data-name="10堂課程" data-price="6600">
-                <div class="absolute top-0 right-0 bg-red-600 text-white text-xs px-3 py-1 rounded-bl-lg font-bold shadow-sm">-17.5%</div>
+                <div class="absolute top-0 right-0 bg-red-600 text-white text-xs px-3 py-1 rounded-bl-lg font-bold">-17.5%</div>
                 <div class="flex items-stretch h-[110px] sm:h-[120px] px-6">
                     <div class="w-[15%] flex items-center"><div class="radio-circle"><div class="radio-dot"></div></div></div>
-                    <div class="w-[35%] flex flex-col justify-center text-[24px] font-black text-gray-900">10堂課程</div>
+                    <div class="w-[35%] flex flex-col justify-center text-[24px] font-black text-gray-900 leading-tight plan-label">10堂<br class="toggle-br">課程</div>
                     <div class="w-[50%] flex justify-end items-center text-[28px] sm:text-[32px] font-black text-gray-900">
-                        <span class="text-lg font-bold text-gray-400 mr-1">NT$</span>6,600
+                        <span class="text-lg font-black text-black mr-1">NT$</span>6,600
                     </div>
                 </div>
                 <button class="buy-now-btn">立即購買</button>
@@ -149,41 +142,39 @@
 
             <!-- 16堂 -->
             <div class="pricing-block" data-id="course-16" data-name="16堂課程" data-price="10000">
-                <div class="absolute top-0 right-0 bg-red-600 text-white text-xs px-3 py-1 rounded-bl-lg font-bold shadow-sm">-22%</div>
+                <div class="absolute top-0 right-0 bg-red-600 text-white text-xs px-3 py-1 rounded-bl-lg font-bold">-22%</div>
                 <div class="flex items-stretch h-[110px] sm:h-[120px] px-6">
                     <div class="w-[15%] flex items-center"><div class="radio-circle"><div class="radio-dot"></div></div></div>
-                    <div class="w-[35%] flex flex-col justify-center text-[24px] font-black text-gray-900">16堂課程</div>
+                    <div class="w-[35%] flex flex-col justify-center text-[24px] font-black text-gray-900 leading-tight plan-label">16堂<br class="toggle-br">課程</div>
                     <div class="w-[50%] flex justify-end items-center text-[28px] sm:text-[32px] font-black text-gray-900">
-                        <span class="text-lg font-bold text-gray-400 mr-1">NT$</span>10,000
+                        <span class="text-lg font-black text-black mr-1">NT$</span>10,000
                     </div>
                 </div>
                 <button class="buy-now-btn">立即購買</button>
             </div>
 
-            <!-- 20堂 -->
+            <!-- 20堂 (價格調整) -->
             <div class="pricing-block plan-best-border" data-id="course-20" data-name="20堂課程" data-price="12000">
-                <div class="absolute top-0 right-0 bg-red-600 text-white text-xs px-3 py-1 rounded-bl-lg font-bold z-50 shadow-md">-25%</div>
+                <div class="absolute top-0 right-0 bg-red-600 text-white text-xs px-3 py-1 rounded-bl-lg font-bold z-50">-25%</div>
                 <div class="absolute top-0 right-[52px] z-40">
-                    <div class="relative bg-blue-900 text-white text-sm px-6 py-2 rounded-bl-2xl font-black shadow-lg flex items-center">
+                    <div class="relative bg-blue-900 text-white text-sm px-6 py-2 rounded-bl-2xl font-black shadow-md flex items-center">
                         <span class="absolute -left-12 -top-10 text-6xl drop-shadow-xl transform -rotate-12 pointer-events-none">👑</span>
                         <span>最優惠</span>
                     </div>
                 </div>
                 <div class="flex items-stretch h-[110px] sm:h-[120px] px-6">
                     <div class="w-[15%] flex items-center"><div class="radio-circle"><div class="radio-dot"></div></div></div>
-                    <div class="w-[35%] flex flex-col justify-center text-[24px] font-black text-black leading-tight whitespace-nowrap sm:whitespace-normal">
-                        20堂<br class="toggle-br">課程
-                    </div>
-                    <div class="w-[50%] flex justify-end items-center text-[32px] sm:text-[42px] font-black text-blue-900">
-                        <span class="text-1g font-bold text-blue-500 mr-1">NT$</span>12,000
+                    <div class="w-[35%] flex flex-col justify-center text-[24px] font-black text-black leading-tight plan-label">20堂<br class="toggle-br">課程</div>
+                    <div class="w-[50%] flex justify-end items-center text-[28px] sm:text-[32px] font-black text-blue-900">
+                        <span class="text-lg font-black text-black mr-1">NT$</span>12,000
                     </div>
                 </div>
                 <button class="buy-now-btn">立即購買</button>
             </div>
         </div>
 
-        <!-- 資訊區 -->
-        <div class="max-w-md mx-auto flex justify-between items-center mt-10 px-2">
+        <!-- 連結與50分鐘資訊 -->
+        <div class="max-w-md mx-auto flex justify-between items-center mt-8 px-2">
             <a href="https://tonyonlineenglish.mydurable.com/allcourses" target="_blank" class="inline-flex items-center gap-2 text-[#1e3a8a] font-black text-lg hover:underline">
                 課程詳細介紹
                 <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
@@ -198,7 +189,7 @@
     </div>
 </div>
 
-<!-- 彈窗與後續代碼保持不變... -->
+<!-- (彈窗與 JS 邏輯不變，已整合) -->
 <div id="checkout-modal" class="modal-overlay">
     <div class="bg-white w-full max-w-md rounded-3xl p-8 shadow-2xl relative">
         <button id="close-modal" class="absolute top-4 right-4 text-gray-400 text-3xl">&times;</button>
