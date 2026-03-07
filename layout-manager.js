@@ -1,21 +1,30 @@
 // layout-manager.js
 document.addEventListener("DOMContentLoaded", function() {
-    // 1. 插入通用的 CSS 樣式
+    // 1. Insert CSS Styles
     const style = document.createElement('style');
     style.textContent = `
-        /* Header 主體 */
+        /* Header Body - Fixed to relative to stop overlapping */
         .tony-banner {
-            position: absolute; top: 0; left: 0; z-index: 1000;
-            width: 100%; height: 140px; background-color: #060b1c;
-            display: flex; align-items: center; justify-content: space-between;
-            padding: 0 25px; box-sizing: border-box; border-bottom: 1px solid #1a2a4a;
+            position: relative; 
+            top: 0; 
+            left: 0; 
+            z-index: 1000;
+            width: 100%; 
+            height: 140px; 
+            background-color: #060b1c;
+            display: flex; 
+            align-items: center; 
+            justify-content: space-between;
+            padding: 0 25px; 
+            box-sizing: border-box; 
+            border-bottom: 1px solid #1a2a4a;
         }
 
-        /* Logo 樣式：再次放大 */
+        /* Logo Style */
         .logo-box { height: 112px; flex-shrink: 0; transition: 0.3s; }
         .logo-box img { height: 100%; width: auto; display: block; }
 
-        /* 右側社群按鈕 */
+        /* Navigation Links */
         .nav-links { display: flex; align-items: center; gap: 12px; }
         .pill-btn {
             color: white; border: 1px solid rgba(255,255,255,0.6);
@@ -28,14 +37,16 @@ document.addEventListener("DOMContentLoaded", function() {
         .social-icon { height: 22px; width: auto; display: block; }
         .hamburger-icon { font-size: 36px; color: #FFFFFF; cursor: pointer; display: flex; align-items: center; margin-right: 20px; }
 
-        /* --- 側邊選單樣式 --- */
+        /* --- Side Menu Logic --- */
         .side-menu {
             position: fixed; top: 0; left: -320px; width: 320px; height: 100%;
             background: #060b1c; z-index: 2000; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             padding: 40px 20px; box-shadow: 10px 0 20px rgba(0,0,0,0.5);
             display: flex; flex-direction: column; gap: 15px;
+            pointer-events: none; /* Prevents blocking clicks when closed */
         }
-        .side-menu.open { left: 0; }
+        .side-menu.open { left: 0; pointer-events: auto; }
+        
         .menu-overlay {
             position: fixed; inset: 0; background: rgba(0,0,0,0.7);
             z-index: 1999; display: none; backdrop-filter: blur(4px);
@@ -52,14 +63,10 @@ document.addEventListener("DOMContentLoaded", function() {
         .menu-link:hover { background: rgba(255,255,255,0.15); border-left: 4px solid #d4af37; padding-left: 25px; }
         .menu-link span { display: block; font-size: 12px; color: #94a3b8; font-weight: 400; margin-top: 4px; }
 
-        /* --- 墊高層樣式 (解決白色縫隙關鍵) --- */
-        .tony-spacer { width: 100%; height: 140px; background-color: #060b1c; }
-
-        /* 手機版優化 */
+        /* Mobile Optimization */
         @media (max-width: 500px) {
             .tony-banner { height: 110px; padding: 0 15px; }
             .logo-box { height: 85px; }
-            .tony-spacer { height: 110px; } /* 手機版墊高層同步縮小 */
             .pill-btn span { display: none; }
             .pill-btn { padding: 12px; border-radius: 50%; width: 45px; height: 45px; justify-content: center; }
             .hamburger-icon { font-size: 30px; margin-right: 10px; }
@@ -67,7 +74,7 @@ document.addEventListener("DOMContentLoaded", function() {
     `;
     document.head.appendChild(style);
 
-    // 2. 定義 Header、Side Menu 與 Spacer 的 HTML 結構
+    // 2. Define HTML Structure (Spacer removed)
     const menuHTML = `
         <div class="menu-overlay" id="menu-overlay"></div>
         
@@ -108,12 +115,11 @@ document.addEventListener("DOMContentLoaded", function() {
                 </a>
             </nav>
         </header>
-        <div class="tony-spacer"></div>
     `;
 
     document.body.insertAdjacentHTML('afterbegin', menuHTML);
 
-    // 3. 選單開關邏輯
+    // 3. Toggle Logic
     const hamburger = document.getElementById('global-hamburger');
     const sideMenu = document.getElementById('side-menu');
     const overlay = document.getElementById('menu-overlay');
