@@ -2,8 +2,7 @@
 <html lang="zh-TW">
 <head>
   <title>課程預約 - Tony Online English</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="layout-manager.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <style>
     :root {
       --primary-blue: linear-gradient(135deg, #1e3a8a, #3b82f6);
@@ -16,7 +15,7 @@
     body {
       margin: 0;
       padding: 0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       background-color: #f8fafc;
       display: flex;
       justify-content: center;
@@ -26,9 +25,9 @@
       display: flex; 
       flex-direction: column; 
       align-items: center;
-      padding: 40px 20px; /* 給左右留一點留白，按鈕才不會貼邊 */
+      padding: 30px 15px; /* 縮小外部留白，讓按鈕變寬 */
       width: 100%;
-      max-width: 800px; /* 電腦版最大寬度 */
+      max-width: 600px; /* 限制電腦版寬度以免過長 */
       box-sizing: border-box;
     }
 
@@ -37,64 +36,60 @@
       display: flex;
       justify-content: center;
       align-items: center;
-      font-weight: 600;
+      font-weight: 700; /* 加粗字體提升可讀性 */
       color: white;
-      border-radius: 999px;
+      border-radius: 16px; /* 稍微方一點的圓角通常看起來更專業 */
       text-decoration: none;
-      margin-bottom: 20px;
-      padding: 16px 30px; /* 縮減內距，讓按鈕變瘦 */
-      width: 90%; /* 手機版佔比，確保左右有空隙 */
-      font-size: 1.15rem;
+      margin-bottom: 18px;
+      padding: 22px 20px; /* 增加高度，方便手指點擊 */
+      width: 100%; /* 寬度撐滿 container */
+      font-size: 1.4rem; /* 放大手機版文字 */
       letter-spacing: 0.05rem;
-      transition: all 0.3s ease;
-      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.15);
       opacity: 0;
-      transform: translateY(20px);
-      animation: fadeIn 0.6s forwards;
+      transform: translateY(15px);
+      animation: fadeIn 0.5s forwards;
       box-sizing: border-box;
     }
 
     .slide-button img {
-      margin-left: 10px;
-      width: 24px; /* 手機版圖示縮小一點更精緻 */
-      height: 24px;
+      margin-left: 12px;
+      width: 32px; /* 放大圖示 */
+      height: 32px;
     }
 
     /* 漸層與背景 */
     .btn-50 {
       background: linear-gradient(-45deg, #1e3a8a, #3b82f6, #0ea5e9, #1e3a8a);
       background-size: 300% 300%;
-      animation: gradientFlow 8s ease infinite, fadeIn 0.6s forwards;
+      animation: gradientFlow 6s ease infinite, fadeIn 0.5s forwards;
     }
     .btn-25 { background: var(--secondary-orange); }
     .btn-rules { background: var(--accent-purple); }
     .btn-schedule { background: var(--neutral-slate); }
 
-    /* Interaction */
-    .slide-button:hover {
-      transform: scale(1.02) translateY(-2px);
-      filter: brightness(1.1);
-    }
-
-    .slide-button:active {
-      transform: scale(0.98);
-    }
-
-    /* NEW 標籤優化：在手機上縮小一點 */
+    /* NEW 標籤：放大並調整位置 */
     .btn-schedule::after {
       content: 'NEW';
       position: absolute;
-      top: -5px;
-      right: 15px;
+      top: -10px;
+      right: 10px;
       background-color: var(--success-green);
       color: white;
-      padding: 3px 8px;
-      border-radius: 4px;
-      font-size: 0.65rem;
-      font-weight: 800;
-      transform: rotate(5deg);
-      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+      padding: 5px 12px;
+      border-radius: 8px;
+      font-size: 0.8rem;
+      font-weight: 900;
+      transform: rotate(3deg);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    /* 按鈕點擊反饋 */
+    .slide-button:active {
+      transform: scale(0.96);
+      filter: brightness(0.9);
     }
 
     @keyframes fadeIn {
@@ -107,24 +102,20 @@
       100% { background-position: 0% 50%; }
     }
 
-    /* 螢幕大於 768px 時的電腦版樣式 */
+    /* 電腦版微調 */
     @media (min-width: 768px) {
+      .container { padding-top: 60px; }
       .slide-button {
-        width: 100%; /* 回到較寬的狀態 */
-        font-size: 1.6rem;
-        padding: 24px 50px;
-      }
-      .slide-button img {
-        width: 32px;
-        height: 32px;
+        font-size: 1.8rem;
+        padding: 30px 40px;
       }
     }
 
-    /* 按鈕出現延遲 */
+    /* 出現延遲 */
     .slide-button:nth-child(1) { animation-delay: 0.1s; }
-    .slide-button:nth-child(2) { animation-delay: 0.25s; }
-    .slide-button:nth-child(3) { animation-delay: 0.4s; }
-    .slide-button:nth-child(4) { animation-delay: 0.55s; }
+    .slide-button:nth-child(2) { animation-delay: 0.2s; }
+    .slide-button:nth-child(3) { animation-delay: 0.3s; }
+    .slide-button:nth-child(4) { animation-delay: 0.4s; }
   </style>
 </head>
 <body>
