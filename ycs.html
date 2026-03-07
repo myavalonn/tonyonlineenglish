@@ -680,6 +680,21 @@
             .progress-label { font-size: 10px; }
             .progress-student-name { font-size: 1.3em; }
         }
+        /* --- iPad 專用安全補丁：修正左側白條 --- */
+@media screen and (min-width: 900px) and (max-width: 1199px) and (orientation: landscape) {
+    body {
+        margin: 0 !important;
+        padding-left: 0 !important; /* 強制消除 layout-manager 可能造成的推移 */
+        background-color: #f9f9f9 !important; /* 把背景漆成一致的顏色 */
+    }
+    #tony-schedule-container {
+        max-width: 100% !important; /* 讓容器橫向撐滿 */
+        width: 100% !important;
+        margin: 0 auto !important;
+        padding-left: 40px !important; /* 內部留白，確保文字不貼邊 */
+        padding-right: 40px !important;
+    }
+}
     </style>
 </head>
 <body>
