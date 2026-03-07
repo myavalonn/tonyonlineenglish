@@ -4,6 +4,15 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const style = document.createElement('style');
     style.textContent = `
+        /* --- 強制修正 iPad 橫向白條與基礎設定 --- */
+        html, body {
+            margin: 0 !important;
+            padding: 0 !important;
+            background-color: #f9f9f9 !important; /* 確保底色一致，不漏白 */
+            width: 100% !important;
+            overflow-x: hidden !important;
+        }
+
         /* Banner 基礎設定 - 確保不換行 */
         .tony-banner {
             position: relative;
@@ -16,13 +25,13 @@ document.addEventListener("DOMContentLoaded", function() {
             padding: 0 20px;
             box-sizing: border-box;
             z-index: 1000;
-            overflow: hidden; /* 防止內容溢出 */
+            overflow: hidden;
         }
 
         .logo-box { height: 112px; flex-shrink: 0; }
         .logo-box img { height: 100%; width: auto; display: block; }
 
-        /* 右側按鈕區：強制不換行，微調間距 */
+        /* 右側按鈕區 */
         .nav-links { 
             display: flex; 
             align-items: center; 
@@ -67,20 +76,31 @@ document.addEventListener("DOMContentLoaded", function() {
         .menu-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 99998; display: none; }
         .menu-overlay.open { display: block; }
 
-        /* --- 手機版極限優化：解決按鈕擠壓問題 --- */
+        /* --- iPad 橫向模式專用：修正白條與 Logo 位置 --- */
+        @media screen and (min-width: 900px) and (max-width: 1199px) and (orientation: landscape) {
+            .tony-banner {
+                padding: 0 40px !important; /* 增加邊距讓 Logo 不要太貼邊 */
+            }
+            #tony-schedule-container {
+                max-width: 100% !important;
+                width: 100% !important;
+                margin: 0 !important;
+                padding: 20px 40px !important;
+            }
+        }
+
+        /* --- 手機版優化 --- */
         @media (max-width: 600px) {
             .tony-banner { height: 100px; padding: 0 10px; }
-            .logo-box { height: 70px; } /* 手機版縮小 Logo 釋放空間 */
-            
-            .nav-links { gap: 6px; } /* 縮小按鈕間距 */
-            
+            .logo-box { height: 70px; }
+            .nav-links { gap: 6px; }
             .pill-btn { 
                 padding: 10px; 
                 width: 42px; height: 42px; 
                 justify-content: center; 
                 border-radius: 50%; 
             }
-            .pill-btn span { display: none; } /* 手機版絕對不顯示文字 */
+            .pill-btn span { display: none; }
             .social-icon { height: 20px; }
             .hamburger-icon { font-size: 32px !important; }
         }
