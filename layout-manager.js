@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     const style = document.createElement('style');
     style.textContent = `
-        /* Banner 基礎設定 */
+        /* Banner 基礎設定 - 確保不換行 */
         .tony-banner {
             position: relative;
             width: 100%;
@@ -13,34 +13,44 @@ document.addEventListener("DOMContentLoaded", function() {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            padding: 0 25px;
+            padding: 0 20px;
             box-sizing: border-box;
             z-index: 1000;
+            overflow: hidden; /* 防止內容溢出 */
         }
 
         .logo-box { height: 112px; flex-shrink: 0; }
         .logo-box img { height: 100%; width: auto; display: block; }
 
-        /* 右側社群按鈕與漢堡 */
-        .nav-links { display: flex; align-items: center; gap: 15px; }
+        /* 右側按鈕區：強制不換行，微調間距 */
+        .nav-links { 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            flex-shrink: 0; 
+            flex-wrap: nowrap; 
+        }
         
         .pill-btn {
             color: white; border: 1px solid rgba(255,255,255,0.6);
-            padding: 12px 22px; border-radius: 50px;
-            text-decoration: none; font-size: 18px; /* 加大按鈕字體 */
-            display: flex; align-items: center; gap: 10px;
-            transition: 0.3s; white-space: nowrap; font-family: 'Noto Sans TC', sans-serif;
+            padding: 10px 18px; border-radius: 50px;
+            text-decoration: none; font-size: 18px;
+            display: flex; align-items: center; gap: 8px;
+            transition: 0.3s; white-space: nowrap; 
+            font-family: 'Noto Sans TC', sans-serif;
+            flex-shrink: 0;
         }
-        .social-icon { height: 26px; width: auto; display: block; } /* 加大社群圖示 */
+        .social-icon { height: 22px; width: auto; display: block; }
         
         .hamburger-icon { 
-            font-size: 45px !important; 
+            font-size: 40px !important; 
             color: white; 
             cursor: pointer; 
-            margin-right: 15px;
+            margin-right: 5px;
+            flex-shrink: 0;
         }
 
-        /* --- 側邊選單文字加大 --- */
+        /* --- 側邊選單樣式 --- */
         .side-menu {
             position: fixed; top: 0; left: -320px; width: 320px; height: 100vh;
             background: #060b1c; z-index: 99999; transition: 0.4s;
@@ -48,32 +58,31 @@ document.addEventListener("DOMContentLoaded", function() {
             visibility: hidden;
         }
         .side-menu.open { left: 0; visibility: visible; }
-
         .menu-link {
-            color: white; text-decoration: none; 
-            font-size: 26px !important; /* 選單大標題加大 */
-            font-weight: 700; padding: 18px; 
-            background: rgba(255,255,255,0.05); border-radius: 12px;
-            display: block; margin-bottom: 15px;
+            color: white; text-decoration: none; font-size: 26px !important;
+            font-weight: 700; padding: 18px; background: rgba(255,255,255,0.05);
+            border-radius: 12px; display: block; margin-bottom: 15px;
         }
-        .menu-link span {
-            display: block; font-size: 16px !important; /* 選單說明加大 */
-            color: #94a3b8; margin-top: 6px;
-        }
-
-        .menu-overlay {
-            position: fixed; inset: 0; background: rgba(0,0,0,0.7);
-            z-index: 99998; display: none; backdrop-filter: blur(4px);
-        }
+        .menu-link span { display: block; font-size: 16px !important; color: #94a3b8; margin-top: 6px; }
+        .menu-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 99998; display: none; }
         .menu-overlay.open { display: block; }
 
-        /* iPad & 手機版適配 */
-        @media (max-width: 768px) {
-            .tony-banner { height: 110px; padding: 0 15px; }
-            .logo-box { height: 85px; }
-            .pill-btn span { display: none; } /* 手機版隱藏按鈕文字，只留圖示 */
-            .pill-btn { padding: 12px; border-radius: 50%; width: 48px; height: 48px; justify-content: center; }
-            .hamburger-icon { font-size: 38px !important; }
+        /* --- 手機版極限優化：解決按鈕擠壓問題 --- */
+        @media (max-width: 600px) {
+            .tony-banner { height: 100px; padding: 0 10px; }
+            .logo-box { height: 70px; } /* 手機版縮小 Logo 釋放空間 */
+            
+            .nav-links { gap: 6px; } /* 縮小按鈕間距 */
+            
+            .pill-btn { 
+                padding: 10px; 
+                width: 42px; height: 42px; 
+                justify-content: center; 
+                border-radius: 50%; 
+            }
+            .pill-btn span { display: none; } /* 手機版絕對不顯示文字 */
+            .social-icon { height: 20px; }
+            .hamburger-icon { font-size: 32px !important; }
         }
     `;
     document.head.appendChild(style);
@@ -83,18 +92,9 @@ document.addEventListener("DOMContentLoaded", function() {
         <nav class="side-menu" id="side-menu">
             <div id="menu-close" style="color:white; font-size:50px; cursor:pointer; align-self:flex-end; margin-bottom:20px;">&times;</div>
             <a href="index.html" class="menu-link">回首頁</a>
-            <a href="https://tonyonlineenglish.netlify.app/ycs" target="_blank" class="menu-link">
-                你的課表查詢
-                <span>即時查看課程安排狀況</span>
-            </a>
-            <a href="https://tonyonlineenglish.netlify.app/exper" target="_blank" class="menu-link">
-                預約體驗課程
-                <span>25 / 50 分鐘線上試聽</span>
-            </a>
-            <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="menu-link" style="color: #00B900;">
-                LINE 直接聯絡
-                <span>ID: Myavalon</span>
-            </a>
+            <a href="https://tonyonlineenglish.netlify.app/ycs" target="_blank" class="menu-link">你的課表查詢<span>即時查看課程安排狀況</span></a>
+            <a href="https://tonyonlineenglish.netlify.app/exper" target="_blank" class="menu-link">預約體驗課程<span>25 / 50 分鐘線上試聽</span></a>
+            <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="menu-link" style="color: #00B900;">LINE 直接聯絡<span>ID: Myavalon</span></a>
         </nav>
 
         <header class="tony-banner" id="tony-unique-header">
