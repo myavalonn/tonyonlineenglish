@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>全民英檢初級口說能力測驗</title>
+  <style>
+    /* --- 完全保留原始 CSS --- */
+    * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; } 
+    html { scroll-padding-top: 20px; }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; line-height: 1.6; padding: 0; margin: 0;  background: #f8f9fa; }
+    .container { width: 100%; max-width: 100%; margin: 0 auto; background: white; padding: 25px; min-height: 100vh; box-shadow: none; }
+    .speaking-test-header { margin-bottom: 20px; padding-bottom: 15px; border-bottom: 2px solid #f0f0f0; }
+    .speaking-test-header h1 { font-size: 1.6em; color: #2c3e50; margin-bottom: 10px; line-height: 1.4; display: flex; flex-wrap: wrap; align-items: center; gap: 10px; }
+    .title-wrapper { display: inline-flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+    .speaking-test-header h1 .main-title { background: linear-gradient(45deg, #ff9800, #f57c00); color: white; padding: 6px 12px; border-radius: 8px; white-space: nowrap; font-size: 0.9em; box-shadow: 0 2px 5px rgba(245, 124, 0, 0.3); }
+    .highlight-title { font-weight: 900; color: black; }
+    .teacher-info { font-size: 0.85em; color: #555; display: flex; align-items: center; font-weight: normal; }
+    .teacher-name { color: #0056b3; font-family: cursive; margin-right: 5px; font-weight: bold; }
+    .header-icon { height: 3.5em; vertical-align: middle; }
+    .speaking-test-header p { font-size: 0.95em; color: #666; margin-bottom: 15px; line-height: 1.5; }
+    .round-selection { margin-top: 10px; }
+    .round-selection-label { font-weight: 700; color: #333; margin-bottom: 10px; display: block; font-size: 1.1em; }
+    .round-buttons { display: flex; flex-wrap: wrap; gap: 12px; }
+    .round-button { flex: 1 0 14%; min-width: 45px; height: 50px; display: flex; justify-content: center; align-items: center; border: 1px solid #e0e0e0; border-radius: 12px; background-color: #fff; color: #333; font-weight: bold; font-size: 1.2em; cursor: pointer; transition: all 0.2s ease; box-shadow: 0 2px 4px rgba(0,0,0,0.05); }
+    .round-button.selected { background-color: #007bff; color: #fff; border-color: #007bff; box-shadow: 0 4px 8px rgba(0, 123, 255, 0.3); transform: translateY(-2px); }
+    .round-button:hover:not(.selected) { background-color: #f0f8ff; border-color: #4ca1ff; }
+    .top-controls { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; background: #f8f9fa; padding: 10px 15px; border-radius: 15px; }
+    .font-buttons { display: flex; gap: 10px; }
+    .font-buttons button { background:none; border:none; padding:0; cursor:pointer; }
+    .font-buttons img { height: 30px; opacity: 0.7; transition: opacity 0.2s; }
+    .timer { font-size: 2.5rem; font-weight: 800; color: #e74c3c; min-width: 60px; text-align: right; font-variant-numeric: tabular-nums; }
+    .label { font-size: 1.1rem; color: #007bff; text-align: center; font-weight: bold; margin: 5px 0; min-height: 1.5em; }
+    
+    /* Start Button & Hover 完全保留 */
+    .action-buttons { margin: 20px 0; display: flex; justify-content: center; width: 100%; }
+    #startButton { display: flex; flex-direction: column; align-items: center; justify-content: center; background: #ffffff; border: 2px dashed #e0e0e0; border-radius: 20px; padding: 40px 20px; width: 100%; max-width: 600px; cursor: pointer; transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1); box-shadow: 0 4px 6px rgba(0,0,0,0.02); }
+    #startButton:hover { border-color: #4caf50; background-color: #f9fff9; transform: translateY(-3px); box-shadow: 0 10px 20px rgba(76, 175, 80, 0.15); }
+    .start-icon { height: 5em; margin-bottom: 15px; filter: drop-shadow(0 5px 5px rgba(0,0,0,0.1)); }
+    .start-text { font-size: 2em; font-weight: 900; background: linear-gradient(90deg, #ff6b6b 0%, #4ca1ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; color: transparent; display: inline-block; line-height: 1.4; padding-bottom: 15px; }
+    .start-cta-badge { display: flex; align-items: center; gap: 10px; background: #f0f0f0; padding: 10px 25px; border-radius: 50px; font-weight: bold; font-size: 1.2rem; color: #333; border: 1px solid #ddd; transition: all 0.3s; margin-top: 10px; }
+    .start-cta-badge img { height: 35px; width: auto; }
+    #startButton:hover .start-cta-badge { background: #4caf50; color: white; border-color: #4caf50; box-shadow: 0 4px 10px rgba(76, 175, 80, 0.3); }
+
+    #passagesContainer { display: none; }
+    .passage-row { padding: 20px; margin-bottom: 15px; border-radius: 12px; white-space: pre-wrap; line-height: 1.9; box-shadow: 0 2px 5px rgba(0,0,0,0.05); background-color: #fff; border: 1px solid #eee; }
+    .passage-row.even { background-color: #fffde7; border: 1px solid #fff59d; }
+    .dynamic-content { font-size: 1.4rem; text-align: center; margin: 20px 0; min-height: 100px; display: flex; align-items: center; justify-content: center; flex-direction: column; white-space: pre-wrap; font-weight: bold; line-height: 1.5; color: #333; }
+    .status-wrapper { display: none; justify-content: center; align-items: center; gap: 15px; margin-top: 20px; min-height: 60px; background: #f1f3f4; border-radius: 50px; padding: 10px 20px; }
+    .bottom-controls { display: flex; justify-content: center; margin-top: 20px; }
+    .bottom-controls button { background: #ffebee; border: 1px solid #ffcdd2; padding: 10px 25px; cursor: pointer; display: flex; align-items: center; gap: 10px; font-weight: bold; font-size: 1rem; color: #c62828; border-radius: 30px; }
+    
+    .form-container { margin-top: 50px; padding: 30px; border: none; border-radius: 20px; background-color: #ffffff; box-shadow: 0 10px 30px rgba(0,0,0,0.08); position: relative; max-width: 600px; margin-left: auto; margin-right: auto; }
+    .submit-btn { width: 100%; padding: 15px; font-size: 1.2rem; font-weight: bold; color: white; background: linear-gradient(135deg, #28a745 0%, #218838 100%); border: none; border-radius: 50px; cursor: pointer; margin-top: 15px; }
+    
+    .animation-overlay { position: absolute; top:0; left:0; width:100%; height:100%; background: rgba(255,255,255,0.98); display:none; flex-direction:column; align-items:center; justify-content:center; z-index:5; border-radius: 20px; text-align:center; padding: 20px; }
+    .animation-overlay.visible { display: flex; }
+
+    /* --- 功能輔助 CSS --- */
+    .progress-container { width: 80%; height: 10px; background: #eee; border-radius: 5px; margin-top: 15px; overflow: hidden; }
+    .progress-bar { width: 0%; height: 100%; background: #28a745; transition: width 0.3s; }
+    .success-info { margin-top: 10px; font-weight: bold; color: #333; }
+    .success-email-text { font-size: 0.9em; color: #666; word-break: break-all; margin-top: 5px; font-weight: normal; }
+    .close-btn { position: absolute; top: 15px; right: 20px; background: none; border: none; font-size: 2rem; font-weight: bold; color: #aaa; cursor: pointer; line-height: 1; }
+    .close-btn:hover { color: #333; }
+    .form-group { margin-bottom: 20px; }
+    .form-group label { display: block; margin-bottom: 8px; font-weight: bold; color: #333; font-size: 1rem; }
+    .form-group input { width: 100%; padding: 12px; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; }
+    
+    @media (max-width: 767px) { 
+        .success-email-text { font-size: 0.7em; } 
+        .round-button { flex: 1 0 28%; height: 45px; }
+        .speaking-test-header p { font-size: 0.55em !important; }
+        .form-group label { font-size: 1.1rem; }
+    }
+    @media (min-width: 768px) { 
+        .round-button { height: 80px; font-size: 1.8em; } 
+        #startButton { max-width: 100%; padding: 80px 40px; } 
+        .start-icon { height: 10em; } .start-text { font-size: 4em; } 
+        .start-cta-badge { padding: 20px 60px; font-size: 2rem; border-radius: 100px; } 
+    }
+    /* Tablet styles */
+    @media (min-width: 768px) and (max-width: 1023px) {
+        .form-group label { font-size: 1.5rem; }
+        .form-group input { font-size: 1.5rem; padding: 18px; }
+    }
+    /* Desktop styles */
+    @media (min-width: 1024px) {
+        .form-group label { font-size: 2rem; }
+        .form-group input { font-size: 2rem; padding: 24px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="speaking-test-header">
+      <h1>
+        <span class="title-wrapper">
+            <span class="main-title">全民英檢<span class="highlight-title">初級口說</span>能力測驗</span>
+            <span class="teacher-info"><span class="teacher-name">Tony</span> 線上美語家教</span>
+        </span>
+        <img src="https://ik.imagekit.io/lql1uveoc/Speaking%20Test/IMG_5039.png" class="header-icon">
+      </h1>
+      <p>Practice your speaking skills with 6 comprehensive test rounds</p>
+      <div class="round-selection">
+        <span class="round-selection-label">Select Round 請下滑按下開始</span>
+        <div class="round-buttons" id="roundButtons"></div>
+      </div>
+    </div>
+
+    <!-- Controls -->
+    <div class="top-controls">
+      <div class="font-buttons">
+        <button onclick="changeFontSize(1)"><img src="https://ik.imagekit.io/lql1uveoc/Speaking%20Test/IMG_3684.png"></button>
+        <button onclick="changeFontSize(-1)"><img src="https://ik.imagekit.io/lql1uveoc/Speaking%20Test/IMG_3683.png"></button>
+      </div>
+      <div class="timer" id="timerDisplay">0</div>
+    </div>
+    <div class="label" id="stageLabel"></div>
+
+    <!-- Start Card -->
+    <div class="action-buttons">
+      <button id="startButton" onclick="startTest()">
+          <img src="https://ik.imagekit.io/lql1uveoc/Speaking%20Test/IMG_5039.png" class="start-icon">
+          <span class="start-text">請戴上耳機作答</span>
+          <div class="start-cta-badge">
+              <img src="https://ik.imagekit.io/lql1uveoc/Speaking%20Test/click.png">
+              <img src="https://ik.imagekit.io/lql1uveoc/Speaking%20Test/IMG_3682.png">
+              <span>Start 請點選</span>
+          </div>
+      </button>
+    </div>
+
+    <div id="dynamicContentDisplay" class="dynamic-content" style="display: none;"></div>
+    <div id="passagesContainer"></div>
+    <div class="status-wrapper" id="statusWrapper">
+        <div id="statusMessage"></div>
+        <canvas id="waveCanvas" width="160" height="40"></canvas>
+    </div>
+
+    <audio id="instructionAudio" preload="auto"></audio>
+    <div class="bottom-controls" style="display:none;"><button id="stopButton" onclick="stopRecordingByUser()" disabled>Stop</button></div>
+
+    <!-- Form -->
+    <div id="submission-form-container" class="form-container">
+        <div class="animation-overlay" id="uploadAnimation"></div>
+        <h3>填寫資訊提交錄音</h3>
+        <form id="contactForm">
+            <div class="form-group"><label>Name 姓名*</label><input type="text" id="userName" required></div>
+            <div class="form-group"><label>Line (可空白)</label><input type="text" id="userLine"></div>
+            <div class="form-group"><label>Email*</label><input type="email" id="userEmail" required></div>
+            <button type="submit" class="submit-btn">提交錄音</button>
+        </form>
+    </div>
+  </div>
+
+  <script>
+    let fontSize = 32;
+    function changeFontSize(delta) { fontSize += delta; applyFonts(); }
+    function applyFonts() {
+        document.querySelectorAll('p, .dynamic-content').forEach(el => el.style.fontSize = fontSize + 'px');
+        document.querySelectorAll('.passage-row').forEach(el => el.style.fontSize = (fontSize * 0.8) + 'px');
+    }
+
+    let mediaRecorder, audioChunks = [], activeTimers = [], isRecordingStoppedByUser = false;
+    let audioContext, analyser, microphone, visualizerAnimationId;
+    const waveCanvas = document.getElementById('waveCanvas'), waveCtx = waveCanvas.getContext('2d');
+
+    const APPS_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwNLJW5kw3HAM4EAY6rJvW4wvKSakQoXM2e-x5aBTgut06z1XbtgCL6PliF2Vfo5EDmKQ/exec";
+
+    const stageLabel = document.getElementById('stageLabel'),
+          timerDisplay = document.getElementById('timerDisplay'),
+          instructionAudio = document.getElementById('instructionAudio'),
+          startButton = document.getElementById('startButton'),
+          statusMessage = document.getElementById('statusMessage'),
+          statusWrapper = document.getElementById('statusWrapper'),
+          dynamicContentDisplay = document.getElementById('dynamicContentDisplay'),
+          passagesContainer = document.getElementById('passagesContainer'),
+          contactForm = document.getElementById('contactForm'),
+          uploadAnimation = document.getElementById('uploadAnimation'),
+          startWrapper = document.querySelector('.action-buttons'); 
+
+    let processedBlob = null, selectedRound = 1;
+
+    instructionAudio.onended = () => { if (mediaRecorder && mediaRecorder.state === "recording") mediaRecorder.stop(); };
+
+    function clearActiveTimers() { activeTimers.forEach(id => clearTimeout(id)); activeTimers.forEach(id => clearInterval(id)); activeTimers = []; }
+    
+    function initVisualizer(stream) {
+        if (!audioContext) audioContext = new (window.AudioContext || window.webkitAudioContext)();
+        analyser = audioContext.createAnalyser();
+        microphone = audioContext.createMediaStreamSource(stream);
+        microphone.connect(analyser);
+        analyser.fftSize = 128;
+        const bufferLength = analyser.frequencyBinCount;
+        const dataArray = new Uint8Array(bufferLength);
+        waveCanvas.style.display = 'block'; 
+        function draw() {
+            visualizerAnimationId = requestAnimationFrame(draw);
+            analyser.getByteFrequencyData(dataArray); 
+            waveCtx.clearRect(0, 0, waveCanvas.width, waveCanvas.height);
+            waveCtx.fillStyle = '#BD00FF';
+            let x = 0;
+            for(let i = 0; i < bufferLength; i++) {
+                let barHeight = (dataArray[i] / 255) * waveCanvas.height;
+                waveCtx.fillRect(x, (waveCanvas.height - barHeight)/2, 2, barHeight);
+                x += 3;
+            }
+        }
+        draw();
+    }
+
+    async function startTest() {
+        startWrapper.style.display = 'none';
+        statusWrapper.style.display = 'flex';
+        instructionAudio.src = {
+            1: "https://ik.imagekit.io/lql1uveoc/GEPT%20%E5%88%9D%E7%B4%9A%E5%8F%A3%E8%AA%AA%E6%B8%AC%E9%A9%97%20%E5%85%AD%E5%9B%9E/1",
+            2: "https://ik.imagekit.io/lql1uveoc/GEPT%20%E5%88%9D%E7%B4%9A%E5%8F%A3%E8%AA%AA%E6%B8%AC%E9%A9%97%20%E5%85%AD%E5%9B%9E/%E5%85%A8%E6%B0%91%E8%8B%B1%E6%AA%A2%E5%88%9D%E7%B4%9A%E5%8F%A3%E8%AA%AA6-2B%20%E7%AC%AC%E4%BA%8C%E5%9B%9E.mp3",
+            3: "https://ik.imagekit.io/lql1uveoc/GEPT%20%E5%88%9D%E7%B4%9A%E5%8F%A3%E8%AA%AA%E6%B8%AC%E9%A9%97%20%E5%85%AD%E5%9B%9E/%E5%85%A8%E6%B0%91%E8%8B%B1%E6%AA%A2%E5%88%9D%E7%B4%9A%E5%8F%A3%E8%AA%AA6-3B%20%E7%AC%AC%E4%B8%89%E5%9B%9E.mp3",
+            4: "https://ik.imagekit.io/lql1uveoc/GEPT%20%E5%88%9D%E7%B4%9A%E5%8F%A3%E8%AA%AA%E6%B8%AC%E9%A9%97%20%E5%85%AD%E5%9B%9E/%E5%85%A8%E6%B0%91%E8%8B%B1%E6%AA%A2%E5%88%9D%E7%B4%9A%E5%8F%A3%E8%AA%AA6-4B%20%E7%AC%AC4%E5%9B%9E.mp3",
+            5: "https://ik.imagekit.io/lql1uveoc/GEPT%20%E5%88%9D%E7%B4%9A%E5%8F%A3%E8%AA%AA%E6%B8%AC%E9%A9%97%20%E5%85%AD%E5%9B%9E/%E5%85%A8%E6%B0%91%E8%8B%B1%E6%AA%A2%E5%88%9D%E7%B4%9A%E5%8F%A3%E8%AA%AA6-5B%20%E7%AC%AC%E4%BA%94%E5%9B%9E.mp3",
+            6: "https://ik.imagekit.io/lql1uveoc/GEPT%20%E5%88%9D%E7%B4%9A%E5%8F%A3%E8%AA%AA%E6%B8%AC%E9%A9%97%20%E5%85%AD%E5%9B%9E/%E5%85%A8%E6%B0%91%E8%8B%B1%E6%AA%A2%E5%88%9D%E7%B4%9A%E5%8F%A3%E8%AA%AA6-6B%20%E7%AC%AC%E5%85%AD%E5%9B%9E.mp3"
+        }[selectedRound];
+        clearActiveTimers(); hideAllContent();
+        try {
+            const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+            initVisualizer(stream);
+            mediaRecorder = new MediaRecorder(stream);
+            audioChunks = []; 
+            mediaRecorder.ondataavailable = e => audioChunks.push(e.data);
+            mediaRecorder.onstop = () => {
+                cancelAnimationFrame(visualizerAnimationId); waveCanvas.style.display = 'none';
+                processedBlob = new Blob(audioChunks, { type: 'audio/mp4' });
+                statusMessage.textContent = "測驗結束，請提交錄音。";
+                document.getElementById('submission-form-container').scrollIntoView({ behavior: 'smooth' });
+            };
+            mediaRecorder.start(); instructionAudio.play(); runFullTestSequence();
+        } catch (err) { alert("請允許麥克風權限"); }
+    }
+
+    function hideAllContent() { dynamicContentDisplay.style.display = 'none'; passagesContainer.style.display = 'none'; }
+    function setDynamicContent(c, h=false) { dynamicContentDisplay.style.display='flex'; if(h) dynamicContentDisplay.innerHTML=c; else dynamicContentDisplay.textContent=c; applyFonts(); }
+    function countdownTimer(duration, initialLabel, endCallback) {
+        let seconds = duration; timerDisplay.textContent = seconds; stageLabel.textContent = initialLabel;
+        const intervalId = setInterval(() => {
+            seconds--; timerDisplay.textContent = seconds;
+            if (seconds <= 0) { clearInterval(intervalId); if (endCallback) endCallback(); }
+        }, 1000);
+        activeTimers.push(intervalId);
+    }
+
+    function runFullTestSequence() {
+        let roundConfig = {};
+        if (selectedRound === 1) { roundConfig = { introDelay: 19, part1End: 133, part2Intro: 134, readingStart: 177, recordingPreMessage: 238, recordingStart: 241, part2End: 301, part3Intro: 303, part3End: 341, questions: [ { show: 344, ans: 356, label: "Question 1", ansLabel: "Q1請作答" }, { show: 375, ans: 389, label: "Question 2", ansLabel: "Q2請作答" }, { show: 409, ans: 424, label: "Question 3", ansLabel: "Q3請作答" }, { show: 441, ans: 452, label: "Question 4", ansLabel: "Q4請作答" }, { show: 469, ans: 481, label: "Question 5", ansLabel: "Q5請作答" }, { show: 498, ans: 515, label: "Question 6", ansLabel: "Q6請作答" }, { show: 532, ans: 550, label: "Question 7", ansLabel: "Q7請作答" } ] };
+        } else if (selectedRound === 2) { roundConfig = { introDelay: 19, part1End: 133, part2Intro: 134, readingStart: 170, recordingPreMessage: 231, recordingStart: 235, part2End: 296, part3Intro: 304, part3End: 335, questions: [ { show: 336, ans: 353, label: "Question 1", ansLabel: "Q1請作答" }, { show: 370, ans: 385, label: "Question 2", ansLabel: "Q2請作答" }, { show: 401, ans: 416, label: "Question 3", ansLabel: "Q3請作答" }, { show: 433, ans: 445, label: "Question 4", ansLabel: "Q4請作答" }, { show: 462, ans: 476, label: "Question 5", ansLabel: "Q5請作答" }, { show: 492, ans: 508, label: "Question 6", ansLabel: "Q6請作答" }, { show: 525, ans: 538, label: "Question 7", ansLabel: "Q7請作答" } ], finalInfoShow: 563, finalCountdownStart: 568 };
+        } else if (selectedRound === 3) { roundConfig = { introDelay: 19, part1End: 149, part2Intro: 150, readingStart: 187, recordingPreMessage: 247, recordingStart: 252, part2End: 312, part3Intro: 321, part3End: 351, questions: [ { show: 352, ans: 362, label: "Question 1", ansLabel: "Q1請作答" }, { show: 378, ans: 396, label: "Question 2", ansLabel: "Q2請作答" }, { show: 413, ans: 425, label: "Question 3", ansLabel: "Q3請作答" }, { show: 442, ans: 451, label: "Question 4", ansLabel: "Q4請作答" }, { show: 467, ans: 478, label: "Question 5", ansLabel: "Q5請作答" }, { show: 494, ans: 522, label: "Question 6", ansLabel: "Q6請作答" }, { show: 538, ans: 558, label: "Question 7", ansLabel: "Q7請作答" } ] };
+        } else if (selectedRound === 4) { roundConfig = { introDelay: 19, part1End: 145, part2Intro: 145, readingStart: 182, recordingPreMessage: 242, recordingStart: 246, part2End: 306, part3Intro: 315, part3End: 346, questions: [ { show: 348, ans: 363, label: "Question 1", ansLabel: "Q1請作答" }, { show: 379, ans: 393, label: "Question 2", ansLabel: "Q2請作答" }, { show: 410, ans: 420, label: "Question 3", ansLabel: "Q3請作答" }, { show: 436, ans: 448, label: "Question 4", ansLabel: "Q4請作答" }, { show: 465, ans: 478, label: "Question 5", ansLabel: "Q5請作答" }, { show: 495, ans: 512, label: "Question 6", ansLabel: "Q6請作答" }, { show: 528, ans: 554, label: "Question 7", ansLabel: "Q7請作答" } ] };
+        } else if (selectedRound === 5) { roundConfig = { introDelay: 19, part1End: 148, part2Intro: 148, readingStart: 183, recordingPreMessage: 244, recordingStart: 249, part2End: 309, part3Intro: 318, part3End: 349, questions: [ { show: 350, ans: 366, label: "Question 1", ansLabel: "Q1請作答" }, { show: 383, ans: 397, label: "Question 2", ansLabel: "Q2請作答" }, { show: 414, ans: 425, label: "Question 3", ansLabel: "Q3請作答" }, { show: 441, ans: 452, label: "Question 4", ansLabel: "Q4請作答" }, { show: 469, ans: 479, label: "Question 5", ansLabel: "Q5請作答" }, { show: 496, ans: 510, label: "Question 6", ansLabel: "Q6請作答" }, { show: 527, ans: 544, label: "Question 7", ansLabel: "Q7請作答" } ], finalInfoShow: 572, finalCountdownStart: 575 };
+        } else if (selectedRound === 6) { roundConfig = { introDelay: 18, part1End: 146, part2Intro: 146, readingStart: 179, recordingPreMessage: 239, recordingStart: 244, part2End: 304, part3Intro: 312, part3End: 343, questions: [ { show: 345, ans: 354, label: "Question 1", ansLabel: "Q1請作答" }, { show: 370, ans: 380, label: "Question 2", ansLabel: "Q2請作答" }, { show: 397, ans: 408, label: "Question 3", ansLabel: "Q3請作答" }, { show: 425, ans: 438, label: "Question 4", ansLabel: "Q4請作答" }, { show: 455, ans: 466, label: "Question 5", ansLabel: "Q5請作答" }, { show: 482, ans: 501, label: "Question 6", ansLabel: "Q6請作答" }, { show: 519, ans: 541, label: "Question 7", ansLabel: "Q7請作答" } ], endMsgTime: 556, finalInfoShow: 565, finalCountdownStart: 571, stopTime: 588 };}
+
+        setDynamicContent("請在15秒內完成並唸出下列⾃我介紹的句⼦，請開始：\nMy registration number is 231256, and my seat number is 2258.");
+        stageLabel.textContent = "自我介紹";
+        activeTimers.push(setTimeout(() => { countdownTimer(15, '準備開始', () => { dynamicContentDisplay.style.display = 'none'; activeTimers.push(setTimeout(() => { setDynamicContent("第一部分共五題。聽完兩次後，請立即複誦一次。"); stageLabel.textContent = "Part 1"; }, 100)); }); }, roundConfig.introDelay * 1000));
+        activeTimers.push(setTimeout(() => { setDynamicContent("第二部份：朗讀句子與短文。"); stageLabel.textContent = "Part 2"; }, roundConfig.part2Intro * 1000));
+        activeTimers.push(setTimeout(() => { displayPassageContent(selectedRound); countdownTimer(60, '閱讀時間', () => { stageLabel.textContent = "準備..."; }); }, roundConfig.readingStart * 1000));
+        activeTimers.push(setTimeout(() => { statusMessage.textContent = "請開始朗讀"; }, roundConfig.recordingPreMessage * 1000));
+        activeTimers.push(setTimeout(() => { countdownTimer(60, '朗讀中', () => {}); statusMessage.textContent = "🎤 Recording..."; }, roundConfig.recordingStart * 1000));
+        activeTimers.push(setTimeout(() => { passagesContainer.style.display = 'none'; setDynamicContent("第三部份：回答問題。"); stageLabel.textContent = "Part 3"; }, roundConfig.part3Intro * 1000));
+        const waveGif = 'https://ik.imagekit.io/lql1uveoc/GEPT%20%E5%88%9D%E7%B4%9A%E5%8F%A3%E8%AA%AA%E6%B8%AC%E9%A9%97%20%E5%85%AD%E5%9B%9E/audio-editing.gif';
+        roundConfig.questions.forEach((q, idx) => {
+            activeTimers.push(setTimeout(() => { setDynamicContent(`<div class="question-phase"><span class="question-text">${q.label}</span><img src="${waveGif}" style="height:80px;"></div>`, true); }, q.show * 1000));
+            activeTimers.push(setTimeout(() => {
+                setDynamicContent(`<div class="answer-text" style="color:#007bff; font-size:2em;">${q.ansLabel}</div>`, true);
+                countdownTimer(15, "請作答", () => { if (selectedRound === 1 && idx === roundConfig.questions.length - 1) setDynamicContent("My registration number is 231256, and my seat number is 2258."); else dynamicContentDisplay.style.display = 'none'; });
+            }, q.ans * 1000));
+        });
+    }
+
+    function closeUploadAnimation() { uploadAnimation.classList.remove('visible'); }
+
+    contactForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const userInfo = { name: document.getElementById('userName').value, line: document.getElementById('userLine').value, email: document.getElementById('userEmail').value };
+        uploadAnimation.innerHTML = `<img src="https://ik.imagekit.io/lql1uveoc/Upload%20files%20Animations/upload-2.gif?updatedAt=1761541965813" alt="Uploading"><p>上傳中... Uploading</p><div class="progress-container"><div class="progress-bar" id="progressBar"></div></div>`;
+        uploadAnimation.classList.add('visible');
+        let progress = 0; const progBar = document.getElementById('progressBar');
+        const progInterval = setInterval(() => { if (progress < 90) { progress += Math.random() * 12; if (progress > 90) progress = 90; progBar.style.width = progress + '%'; } }, 200);
+        try {
+            const reader = new FileReader(); reader.readAsDataURL(processedBlob);
+            reader.onloadend = async () => {
+                const base64Data = reader.result.split(',')[1];
+                const res = await fetch(APPS_SCRIPT_URL, { method: "POST", body: JSON.stringify({ filename: `R${selectedRound}_${userInfo.name}.mp4`, data: base64Data, name: userInfo.name, email: userInfo.email, line: userInfo.line, round: selectedRound }) });
+                const result = await res.json();
+                clearInterval(progInterval); progBar.style.width = '100%';
+                setTimeout(() => {
+                    uploadAnimation.innerHTML = `
+                        <button class="close-btn" onclick="closeUploadAnimation()">✖</button>
+                        <img src="https://ik.imagekit.io/lql1uveoc/Upload%20files%20Animations/verified.gif?updatedAt=1761541965780" style="max-width:80px;">
+                        <div class="success-info">
+                            <p style="margin:5px 0;">Upload Successfully</p>
+                            <p style="margin:5px 0;">Name: ${userInfo.name}</p>
+                            <p style="margin:5px 0; color:#007bff; font-size:1.5em; font-weight:900;">ID: ${result.submissionId || '#---'}</p>
+                            <p class="success-email-text">確認信已傳至: ${userInfo.email}</p>
+                        </div>
+                    `;
+                    contactForm.reset();
+                }, 500);
+            };
+        } catch (error) { alert("上傳失敗"); uploadAnimation.classList.remove('visible'); }
+    });
+
+    function displayPassageContent(round) {
+        passagesContainer.style.display = 'block'; passagesContainer.innerHTML = '';
+        const data = {
+            1: ["1. Let’s get it done by the afternoon.", "2. She lives on this island, not that one.", "3. I prefer to travel in the desert and enjoy the special sight.", "4. This kind of product is only developed in the factory.", "5. What an amazing childhood!", "6. Diana was a picky girl. She threw out all the things she didn’t like to eat. One day, she spotted an old man eating food that was thrown away by a restaurant. She looked at him, but she couldn’t believe her eyes. After that, she kept thinking about the man. Such an experience influenced her life. She never wasted any food."],
+            2: ["1: Could you speak more slowly?", "2: My father irons his shirts and trousers every morning.", "3: The boy has to see a dentist on January 21.", "4: There is a beautiful bridge in the small town.", "5: You are planning to climb a mountain, aren't you?", "6: When you are down, what do you do to make yourself feel better? First, you can try to clean your space. It can wipe away your stress. Second, you may listen to some great music. They can calm you down. Third, you can drink more water or eat something healthy. Finally, the most important but simple way is to take several deep breaths."],
+            3: ["1. He dropped the cup, and it broke into pieces.", "2. If you decide to join us, just give me a call.", "3. Excuse me. I need to get off at the next stop.", "4. Who would like to tell me the answer to this question?", "5. You can choose any color you like.", "6. Here’s our plan for tomorrow. I will go to the bakery and buy a cake for Dad. You will have to buy him a present. Remember to ask the clerk to wrap it up nicely. We will light the candles on the cake and sing him a happy birthday song. He will be surprised."],
+            4: ["1. This song was sung by many popular singer.", "2. The girl cried out as soon as she saw the cockroach.", "3. Tell me what you want, I’ll get it for you.", "4. Will you be free to join us for dinner tomorrow night?", "5. Please do not talk during the test.", "6. Susan is in seventh grade. This is her first year in junior high school. She is worried because her parents keep telling her that life in junior high school is very different from life in elementary school. There are more subjects to study and the tests are more difficult."],
+            5: ["1: Something’s wrong with that sign on the door.", "2: Passengers are not allowed to eat or drink on the MRT train.", "3: My sister is always reading and sending messages on her smartphone.", "4: How can you believe such a silly story?", "5: We'd better hurry or we will be late for school.", "6: Do girls have to wear skirts to school? This question led to a lot of discussion on the Internet. Many people thought that girls have the right to wear either pants or skirts. Schools should not make wearing skirts a rule. However, others think it is reasonable."],
+            6: ["1: Respect others and you can get along well with anyone.", "2: Traveling is a great way to relax and gain knowledge.", "3: Could you please give me another chance?", "4: Nowadays, teenagers do not like to be told what to do.", "5: Many people were hurt in that terrible accident.", "6: Once upon a time, there was a pretty girl named Cinderella. She was sad because she was not allowed to attend the prince's party. A fairy appeared and made Cinderella's wish come true. She went to the party and danced with the handsome prince. They lived happily ever after."]
+        }[round];
+        data.forEach((text, i) => { const div = document.createElement('div'); div.className = 'passage-row' + (i % 2 ? ' even' : ''); div.textContent = text; passagesContainer.appendChild(div); });
+        applyFonts();
+    }
+
+    function generateRoundButtons() {
+        const container = document.getElementById('roundButtons');
+        for (let i = 1; i <= 6; i++) {
+            const btn = document.createElement('div');
+            btn.className = 'round-button' + (i === 1 ? ' selected' : '');
+            btn.textContent = i;
+            btn.onclick = () => { document.querySelectorAll('.round-button').forEach(b => b.classList.remove('selected')); btn.classList.add('selected'); selectedRound = i; };
+            container.appendChild(btn);
+        }
+    }
+
+    document.addEventListener('DOMContentLoaded', () => { 
+        generateRoundButtons(); 
+        applyFonts();
+        setTimeout(() => {
+            const titleElement = document.querySelector('.speaking-test-header h1');
+            if (titleElement) {
+                // **修改部分：針對不同裝置調整滾動邏輯**
+                if (window.innerWidth < 768) {
+                    // 手機版：計算元素位置並留出 15px 的間距
+                    const offsetTop = titleElement.getBoundingClientRect().top + window.scrollY;
+                    window.scrollTo({
+                        top: offsetTop - 15, // 滾動到標題上方 15px 的位置
+                        behavior: 'smooth'
+                    });
+                } else {
+                    // 平板和桌機版：維持原有對齊頂部的行為
+                    titleElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }
+            }
+        }, 100);
+    });
+  </script>
+</body>
+</html>
