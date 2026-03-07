@@ -1,261 +1,156 @@
 <!DOCTYPE html>
-<html>
+<html lang="zh-TW">
 <head>
-  <title>課程預約</title>
+  <title>課程預約 - Tony Online English</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
+    :root {
+      --primary-blue: linear-gradient(135deg, #1e3a8a, #3b82f6);
+      --secondary-orange: linear-gradient(135deg, #ea580c, #fb923c);
+      --accent-purple: linear-gradient(135deg, #6d28d9, #a78bfa);
+      --neutral-slate: linear-gradient(135deg, #334155, #64748b);
+      --success-green: #22c55e;
+    }
+
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background-color: #f8fafc;
+      display: flex;
+      justify-content: center;
+    }
+
+    .container {
+      display: flex; 
+      flex-direction: column; 
+      align-items: center;
+      padding: 40px 20px; /* 給左右留一點留白，按鈕才不會貼邊 */
+      width: 100%;
+      max-width: 800px; /* 電腦版最大寬度 */
+      box-sizing: border-box;
+    }
+
     .slide-button {
       position: relative;
       display: flex;
       justify-content: center;
       align-items: center;
-      font-weight: bold;
+      font-weight: 600;
       color: white;
       border-radius: 999px;
-      white-space: nowrap;
-      overflow: hidden;
+      text-decoration: none;
+      margin-bottom: 20px;
+      padding: 16px 30px; /* 縮減內距，讓按鈕變瘦 */
+      width: 90%; /* 手機版佔比，確保左右有空隙 */
+      font-size: 1.15rem;
+      letter-spacing: 0.05rem;
+      transition: all 0.3s ease;
+      box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.1);
       opacity: 0;
       transform: translateY(20px);
-      animation: fadeIn 1s forwards;
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
-      text-decoration: none;
-      margin-bottom: 28px;
-      padding: 24px 48px;
-      min-width: 400px;
-      font-size: 1rem;
-      max-width: 95vw;
-      transition: background 0.5s ease, transform 0.3s ease;
-      z-index: 0;
+      animation: fadeIn 0.6s forwards;
+      box-sizing: border-box;
     }
 
-    .slide-button::before {
-      content: "";
-      position: absolute;
-      top: -4px; left: -4px; right: -4px; bottom: -4px;
-      border-radius: 999px;
-      z-index: -1;
+    .slide-button img {
+      margin-left: 10px;
+      width: 24px; /* 手機版圖示縮小一點更精緻 */
+      height: 24px;
     }
-    
-    /* --- ADJUSTMENT: Blue & Green Gradient --- */
 
-    /* New animated background with blue and green */
+    /* 漸層與背景 */
     .btn-50 {
-      background: linear-gradient(135deg, #021B79, #0575E6, #69F0AE, #021B79);
-      background-size: 400% 400%;
-      animation: futuristicFlow 15s ease infinite, fadeIn 1s forwards;
+      background: linear-gradient(-45deg, #1e3a8a, #3b82f6, #0ea5e9, #1e3a8a);
+      background-size: 300% 300%;
+      animation: gradientFlow 8s ease infinite, fadeIn 0.6s forwards;
     }
+    .btn-25 { background: var(--secondary-orange); }
+    .btn-rules { background: var(--accent-purple); }
+    .btn-schedule { background: var(--neutral-slate); }
 
-    /* New glow effect to match the green and blue theme */
-    .btn-50::before {
-      background: linear-gradient(270deg, #69F0AE, #0575E6, #69F0AE);
-      background-size: 200% 200%;
-      animation: glowFuturistic 6s linear infinite;
-      color: #69F0AE; /* This color is used by the drop-shadow filter */
-    }
-
-    /* --- END ADJUSTMENT --- */
-
-    .btn-25::before {
-      background: linear-gradient(270deg, #CC4B00, #FF8000, #CC4B00);
-      background-size: 200% 200%;
-      animation: glowOrange 5s linear infinite;
-      color: #FF8000;
-    }
-
-    .btn-rules::before {
-      background: linear-gradient(270deg, #8a63e7, #a45fff, #8a63e7);
-      background-size: 200% 200%;
-      animation: glowPurple 5s linear infinite;
-      color: #a45fff;
-    }
-
-    /* New style for the fourth bar: R74 G74 B246 */
-    .btn-schedule::before {
-      background: linear-gradient(270deg, rgb(74, 74, 246), rgb(120, 120, 255), rgb(74, 74, 246));
-      background-size: 200% 200%;
-      animation: glowSchedule 5s linear infinite; /* Define a new glow animation */
-      color: rgb(74, 74, 246);
-    }
-    
-    /* New "New" tag for the schedule button */
-    .btn-schedule::after {
-      content: 'New';
-      position: absolute;
-      top: 10px; /* Adjust vertical position */
-      right: 15px; /* Adjust horizontal position */
-      background-color: #4CAF50; /* Green background */
-      color: white;
-      padding: 4px 10px;
-      border-radius: 5px;
-      font-size: 0.7em;
-      font-weight: bold;
-      transform: rotate(15deg); /* Slightly rotated */
-      box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-      z-index: 1;
-    }
-
-
-    .btn-25 { background: linear-gradient(90deg, #FF7A00, #FFA931); }
-    .btn-rules { background: linear-gradient(90deg, #6f42c1, #9d50bb); }
-    /* Background for the new schedule button */
-    .btn-schedule { background: linear-gradient(90deg, rgb(74, 74, 246), rgb(100, 100, 255)); }
-
-
-    .slide-button:nth-child(1) { animation-delay: 0.1s; }
-    .slide-button:nth-child(2) { animation-delay: 0.4s; }
-    .slide-button:nth-child(3) { animation-delay: 0.7s; }
-    .slide-button:nth-child(4) { animation-delay: 1.0s; } /* Animation delay for the fourth button */
-
+    /* Interaction */
     .slide-button:hover {
-      transform: scale(1.05);
+      transform: scale(1.02) translateY(-2px);
       filter: brightness(1.1);
     }
 
     .slide-button:active {
-      transform: scale(0.97);
-      filter: brightness(0.9);
+      transform: scale(0.98);
+    }
+
+    /* NEW 標籤優化：在手機上縮小一點 */
+    .btn-schedule::after {
+      content: 'NEW';
+      position: absolute;
+      top: -5px;
+      right: 15px;
+      background-color: var(--success-green);
+      color: white;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 0.65rem;
+      font-weight: 800;
+      transform: rotate(5deg);
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
     }
 
     @keyframes fadeIn {
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
-    }
-    
-    @keyframes futuristicFlow {
-        0%{background-position:0% 50%}
-        50%{background-position:100% 50%}
-        100%{background-position:0% 50%}
+      to { opacity: 1; transform: translateY(0); }
     }
 
-    @keyframes glowFuturistic {
-      0%, 100% {
-        background-position: 0% 50%;
-        filter: drop-shadow(0 0 8px currentColor);
-      }
-      50% {
-        background-position: 100% 50%;
-        filter: drop-shadow(0 0 16px currentColor);
-      }
+    @keyframes gradientFlow {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
     }
 
-    @keyframes glowOrange {
-      0%, 100% {
-        background-position: 0% 50%;
-        filter: drop-shadow(0 0 8px currentColor);
-      }
-      50% {
-        background-position: 100% 50%;
-        filter: drop-shadow(0 0 14px currentColor);
-      }
-    }
-
-    @keyframes glowPurple {
-      0%, 100% {
-        background-position: 0% 50%;
-        filter: drop-shadow(0 0 10px currentColor);
-      }
-      50% {
-        background-position: 100% 50%;
-        filter: drop-shadow(0 0 16px currentColor);
-      }
-    }
-
-    /* New glow animation for the schedule button */
-    @keyframes glowSchedule {
-      0%, 100% {
-        background-position: 0% 50%;
-        filter: drop-shadow(0 0 8px currentColor);
-      }
-      50% {
-        background-position: 100% 50%;
-        filter: drop-shadow(0 0 14px currentColor);
-      }
-    }
-
-
-    @media (min-width: 1025px) {
+    /* 螢幕大於 768px 時的電腦版樣式 */
+    @media (min-width: 768px) {
       .slide-button {
-        font-size: 2.25rem;
-        min-width: 780px;
-        padding: 30px 60px;
+        width: 100%; /* 回到較寬的狀態 */
+        font-size: 1.6rem;
+        padding: 24px 50px;
       }
-      /* Adjust tag position for larger screens */
-      .btn-schedule::after {
-        top: 15px;
-        right: 25px;
-        padding: 6px 14px;
-        font-size: 0.8em;
-      }
-    }
-
-    @media (min-width: 481px) and (max-width: 1024px) {
-      .slide-button {
-        font-size: 2.2rem;
-        min-width: 620px;
-        padding: 28px 56px;
-      }
-      /* Adjust tag position for medium screens */
-      .btn-schedule::after {
-        top: 12px;
-        right: 20px;
-        padding: 5px 12px;
-        font-size: 0.75em;
-      }
-    }
-
-    @media (max-width: 480px) {
-      .slide-button {
-        font-size: 1.7rem;
-        padding: 24px 20px;
-        width: 92vw;
-        max-width: none;
-        min-width: unset;
-      }
-
       .slide-button img {
-        width: 45px !important;
-        height: 45px !important;
-      }
-      /* Adjust tag position for small screens */
-      .btn-schedule::after {
-        top: 8px;
-        right: 10px;
-        padding: 3px 8px;
-        font-size: 0.6em;
+        width: 32px;
+        height: 32px;
       }
     }
+
+    /* 按鈕出現延遲 */
+    .slide-button:nth-child(1) { animation-delay: 0.1s; }
+    .slide-button:nth-child(2) { animation-delay: 0.25s; }
+    .slide-button:nth-child(3) { animation-delay: 0.4s; }
+    .slide-button:nth-child(4) { animation-delay: 0.55s; }
   </style>
 </head>
 <body>
-  <div style="display: flex; flex-direction: column; align-items: center;">
-    
-    <a id="booking-link-50" class="slide-button btn-50" href="#" style="display: flex; align-items: center; gap: 12px;">
-      預約50分鐘課程
-      <img src="https://ik.imagekit.io/lql1uveoc/external-link.png?updatedAt=1754911187731" alt="external link icon" width="40" height="40" />
+
+  <div class="container">
+    <a id="booking-link-50" class="slide-button btn-50" href="#">
+      預約 50 分鐘課程
+      <img src="https://ik.imagekit.io/lql1uveoc/external-link.png?updatedAt=1754911187731" alt="icon" />
     </a>
 
-    <a class="slide-button btn-25" href="https://koalendar.com/e/TonyOnlineEnglish/" target="_blank" style="display: flex; align-items: center; gap: 12px;">
-      預約25分鐘課程 
-      <img src="https://ik.imagekit.io/lql1uveoc/Schedule%20information/info.png?updatedAt=1761978562177" width="40" height="40" />
+    <a class="slide-button btn-25" href="https://koalendar.com/e/TonyOnlineEnglish/" target="_blank">
+      預約 25 分鐘課程
+      <img src="https://ik.imagekit.io/lql1uveoc/Schedule%20information/info.png?updatedAt=1761978562177" alt="icon" />
     </a>
 
-    <a class="slide-button btn-rules" href="https://tonyonlineenglish.netlify.app/regulations" target="_blank" style="display: flex; align-items: center; gap: 12px;">
+    <a class="slide-button btn-rules" href="https://tonyonlineenglish.netlify.app/regulations" target="_blank">
       學生請假調課規範
-      <img src="https://ik.imagekit.io/lql1uveoc/external-link.png?updatedAt=1754911187731" alt="external link icon" width="40" height="40" />
+      <img src="https://ik.imagekit.io/lql1uveoc/external-link.png?updatedAt=1754911187731" alt="icon" />
     </a>
 
-    <!-- Fourth bar added below -->
-    <a class="slide-button btn-schedule" href="https://tonyonlineenglish.netlify.app/ycs" target="_blank" style="display: flex; align-items: center; gap: 12px;">
+    <a class="slide-button btn-schedule" href="https://tonyonlineenglish.netlify.app/ycs" target="_blank">
       查詢你的課表
-      <img src="https://ik.imagekit.io/lql1uveoc/external-link.png?updatedAt=1754911187731" alt="external link icon" width="40" height="40" />
+      <img src="https://ik.imagekit.io/lql1uveoc/external-link.png?updatedAt=1754911187731" alt="icon" />
     </a>
-
   </div>
 
   <script>
-    // --- CHANGE 1: Added the new URL to the list ---
     const urls = [
       'https://appt.link/meet-with-tony-w5vuHAPR/TonyOnlineEnglish50',
       'https://appt.link/meet-with-tony-lin-jsqoaDPU/TonyOnlineEnglish',
@@ -267,10 +162,7 @@
     bookingLink.addEventListener('click', function(event) {
       event.preventDefault();
       let clickCount = parseInt(localStorage.getItem('bookingLinkClickCount') || '0');
-      
-      // --- CHANGE 2: Changed from % 2 to % 3 to cycle through three links ---
       const targetUrl = urls[clickCount % 3];
-      
       clickCount++;
       localStorage.setItem('bookingLinkClickCount', clickCount);
       window.location.href = targetUrl;
