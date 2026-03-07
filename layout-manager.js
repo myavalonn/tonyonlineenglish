@@ -1,31 +1,44 @@
-// layout-manager.js
+// layout-manager.js - 終極修正版：解決 iPad 直/橫放白條問題
 document.addEventListener("DOMContentLoaded", function() {
     if (document.getElementById('tony-unique-header')) return;
 
     const style = document.createElement('style');
     style.textContent = `
-        /* --- 強制修正 iPad 橫向白條與基礎設定 --- */
+        /* --- 1. 全局強制修正：剷除所有潛在白邊 --- */
+        :root {
+            --tony-dark: #060b1c;
+            --tony-light: #f9f9f9;
+        }
+
         html, body {
             margin: 0 !important;
             padding: 0 !important;
-            background-color: #f9f9f9 !important; /* 確保底色一致，不漏白 */
-            width: 100% !important;
+            width: 100vw !important;
+            max-width: 100% !important;
             overflow-x: hidden !important;
+            position: relative !important;
+            background-color: var(--tony-light) !important;
+            left: 0 !important;
+            -webkit-text-size-adjust: 100%;
         }
 
-        /* Banner 基礎設定 - 確保不換行 */
+        /* --- 2. Banner 基礎設定：確保深藍色橫向漆滿 --- */
         .tony-banner {
             position: relative;
-            width: 100%;
+            width: 100% !important;
             height: 140px;
-            background-color: #060b1c;
+            background-color: var(--tony-dark);
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 0 20px;
+            padding-left: max(20px, env(safe-area-inset-left)); /* 遵循 iOS 安全區域 */
+            padding-right: max(20px, env(safe-area-inset-right));
             box-sizing: border-box;
             z-index: 1000;
             overflow: hidden;
+            margin: 0 !important;
+            left: 0 !important;
         }
 
         .logo-box { height: 112px; flex-shrink: 0; }
@@ -59,10 +72,10 @@ document.addEventListener("DOMContentLoaded", function() {
             flex-shrink: 0;
         }
 
-        /* --- 側邊選單樣式 --- */
+        /* --- 3. 側邊選單樣式 --- */
         .side-menu {
             position: fixed; top: 0; left: -320px; width: 320px; height: 100vh;
-            background: #060b1c; z-index: 99999; transition: 0.4s;
+            background: var(--tony-dark); z-index: 99999; transition: 0.4s;
             padding: 40px 20px; display: flex; flex-direction: column;
             visibility: hidden;
         }
@@ -76,20 +89,27 @@ document.addEventListener("DOMContentLoaded", function() {
         .menu-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 99998; display: none; }
         .menu-overlay.open { display: block; }
 
-        /* --- iPad 橫向模式專用：修正白條與 Logo 位置 --- */
-        @media screen and (min-width: 900px) and (max-width: 1199px) and (orientation: landscape) {
-            .tony-banner {
-                padding: 0 40px !important; /* 增加邊距讓 Logo 不要太貼邊 */
-            }
+        /* --- 4. iPad 專屬補丁 (橫放與直放) --- */
+        @media screen and (min-width: 768px) and (max-width: 1199px) {
             #tony-schedule-container {
-                max-width: 100% !important;
                 width: 100% !important;
+                max-width: 100% !important;
                 margin: 0 !important;
-                padding: 20px 40px !important;
+                padding-left: 30px !important;
+                padding-right: 30px !important;
+                left: 0 !important;
+            }
+            /* 強制背景色滲透，防止白條 */
+            body::before {
+                content: "";
+                position: fixed;
+                top: 0; left: 0; width: 100%; height: 140px;
+                background-color: var(--tony-dark);
+                z-index: -1;
             }
         }
 
-        /* --- 手機版優化 --- */
+        /* --- 5. 手機版優化 --- */
         @media (max-width: 600px) {
             .tony-banner { height: 100px; padding: 0 10px; }
             .logo-box { height: 70px; }
