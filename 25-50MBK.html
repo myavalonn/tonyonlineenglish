@@ -5,6 +5,7 @@
   <script src="layout-manager.js" defer></script>
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <style>
+    /* 1. 質感漸層色票 */
     :root {
       --primary-blue: linear-gradient(135deg, #1e3a8a, #3b82f6);
       --secondary-orange: linear-gradient(135deg, #ea580c, #fb923c);
@@ -13,38 +14,43 @@
       --success-green: #22c55e;
     }
 
+    /* 2. 核心排版重置：防止被外部 layout-manager 擠壓 */
     body {
-      margin: 0;
-      padding: 0;
+      margin: 0 !important;
+      padding: 0 !important;
+      /* 取消原本的 flex，避免與側邊欄衝突 */
+      display: block !important; 
+      width: 100% !important;
+      background-color: transparent; /* 讓背景融入你的主網站 */
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background-color: #f8fafc;
-      display: flex;
-      justify-content: center;
     }
 
+    /* 3. 容器設定：確保橫向撐滿但有最大限制 */
     .container {
-      display: flex; 
-      flex-direction: column; 
-      align-items: center;
-      padding: 30px 15px; /* 縮小外部留白，讓按鈕變寬 */
-      width: 100%;
-      max-width: 600px; /* 限制電腦版寬度以免過長 */
-      box-sizing: border-box;
+      display: flex !important; 
+      flex-direction: column !important; 
+      align-items: center !important;
+      width: 100% !important; 
+      max-width: 600px; /* 電腦版最大寬度 */
+      margin: 0 auto !important; /* 強制水平置中 */
+      padding: 30px 15px !important; /* 左右留白 15px，避免貼邊 */
+      box-sizing: border-box !important;
     }
 
+    /* 4. 專業感按鈕設計 */
     .slide-button {
       position: relative;
       display: flex;
       justify-content: center;
       align-items: center;
-      font-weight: 700; /* 加粗字體提升可讀性 */
+      font-weight: 700;
       color: white;
-      border-radius: 16px; /* 稍微方一點的圓角通常看起來更專業 */
+      border-radius: 16px; /* 現代感方圓角 */
       text-decoration: none;
-      margin-bottom: 18px;
-      padding: 22px 20px; /* 增加高度，方便手指點擊 */
-      width: 100%; /* 寬度撐滿 container */
-      font-size: 1.4rem; /* 放大手機版文字 */
+      margin-bottom: 20px;
+      padding: 22px 15px; 
+      width: 100% !important; /* 強制按鈕寬度撐滿 container */
+      font-size: 1.35rem; 
       letter-spacing: 0.05rem;
       transition: all 0.2s ease;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
@@ -55,13 +61,15 @@
       box-sizing: border-box;
     }
 
+    /* 讓圖示大小固定，不會因為螢幕變小被壓扁 */
     .slide-button img {
       margin-left: 12px;
-      width: 32px; /* 放大圖示 */
-      height: 32px;
+      width: 28px;
+      height: 28px;
+      flex-shrink: 0; 
     }
 
-    /* 漸層與背景 */
+    /* 5. 個別按鈕色彩與動態 */
     .btn-50 {
       background: linear-gradient(-45deg, #1e3a8a, #3b82f6, #0ea5e9, #1e3a8a);
       background-size: 300% 300%;
@@ -71,12 +79,12 @@
     .btn-rules { background: var(--accent-purple); }
     .btn-schedule { background: var(--neutral-slate); }
 
-    /* NEW 標籤：放大並調整位置 */
+    /* 6. NEW 標籤優化 */
     .btn-schedule::after {
       content: 'NEW';
       position: absolute;
       top: -10px;
-      right: 10px;
+      right: 15px;
       background-color: var(--success-green);
       color: white;
       padding: 5px 12px;
@@ -87,12 +95,13 @@
       box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     }
 
-    /* 按鈕點擊反饋 */
+    /* 點擊反饋 */
     .slide-button:active {
       transform: scale(0.96);
       filter: brightness(0.9);
     }
 
+    /* 7. 動畫設定 */
     @keyframes fadeIn {
       to { opacity: 1; transform: translateY(0); }
     }
@@ -103,16 +112,17 @@
       100% { background-position: 0% 50%; }
     }
 
-    /* 電腦版微調 */
+    /* 8. 電腦版字體微調放大 */
     @media (min-width: 768px) {
-      .container { padding-top: 60px; }
+      .container { padding-top: 50px !important; }
       .slide-button {
-        font-size: 1.8rem;
-        padding: 30px 40px;
+        font-size: 1.6rem;
+        padding: 26px 30px;
       }
+      .slide-button img { width: 32px; height: 32px; }
     }
 
-    /* 出現延遲 */
+    /* 進場動畫延遲 */
     .slide-button:nth-child(1) { animation-delay: 0.1s; }
     .slide-button:nth-child(2) { animation-delay: 0.2s; }
     .slide-button:nth-child(3) { animation-delay: 0.3s; }
