@@ -1,6 +1,18 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
+    <style>
+  /* 強制修正：不管外層怎麼擠，body 都要置左靠滿 */
+  html, body { 
+    margin: 0 !important; 
+    padding: 0 !important; 
+    margin-left: 0 !important; 
+    padding-left: 0 !important;
+    left: 0 !important;
+    position: relative !important;
+    width: 100% !important;
+  }
+</style>
     <meta charset="UTF-8">
     <!-- CRITICAL FIX: This meta tag makes RWD work on Netlify and mobile browsers -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
