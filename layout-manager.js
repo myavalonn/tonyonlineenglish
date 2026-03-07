@@ -1,16 +1,21 @@
 // layout-manager.js
 document.addEventListener("DOMContentLoaded", function() {
-    // 1. 插入通用的 CSS 樣式 (包含導覽列與側邊選單)
+    // 1. 插入通用的 CSS 樣式
     const style = document.createElement('style');
     style.textContent = `
+        /* Header 主體 */
         .tony-banner {
             position: absolute; top: 0; left: 0; z-index: 1000;
             width: 100%; height: 140px; background-color: #060b1c;
             display: flex; align-items: center; justify-content: space-between;
             padding: 0 25px; box-sizing: border-box; border-bottom: 1px solid #1a2a4a;
         }
+
+        /* Logo 樣式：再次放大 */
         .logo-box { height: 112px; flex-shrink: 0; transition: 0.3s; }
         .logo-box img { height: 100%; width: auto; display: block; }
+
+        /* 右側社群按鈕 */
         .nav-links { display: flex; align-items: center; gap: 12px; }
         .pill-btn {
             color: white; border: 1px solid rgba(255,255,255,0.6);
@@ -19,15 +24,16 @@ document.addEventListener("DOMContentLoaded", function() {
             display: flex; align-items: center; gap: 8px;
             transition: 0.3s; white-space: nowrap; font-family: 'Noto Sans TC', sans-serif;
         }
+        .pill-btn:hover { background-color: rgba(255,255,255,0.1); }
         .social-icon { height: 22px; width: auto; display: block; }
         .hamburger-icon { font-size: 36px; color: #FFFFFF; cursor: pointer; display: flex; align-items: center; margin-right: 20px; }
 
         /* --- 側邊選單樣式 --- */
         .side-menu {
-            position: fixed; top: 0; left: -300px; width: 300px; height: 100%;
+            position: fixed; top: 0; left: -320px; width: 320px; height: 100%;
             background: #060b1c; z-index: 2000; transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             padding: 40px 20px; box-shadow: 10px 0 20px rgba(0,0,0,0.5);
-            display: flex; flex-direction: column; gap: 20px;
+            display: flex; flex-direction: column; gap: 15px;
         }
         .side-menu.open { left: 0; }
         .menu-overlay {
@@ -35,26 +41,33 @@ document.addEventListener("DOMContentLoaded", function() {
             z-index: 1999; display: none; backdrop-filter: blur(4px);
         }
         .menu-overlay.open { display: block; }
-        .menu-close { color: white; font-size: 40px; align-self: flex-end; cursor: pointer; margin-bottom: 20px; }
+        .menu-close { color: white; font-size: 45px; align-self: flex-end; cursor: pointer; line-height: 1; margin-bottom: 10px; }
         
         .menu-link {
-            color: white; text-decoration: none; font-size: 20px; font-weight: 700;
+            color: white; text-decoration: none; font-size: 19px; font-weight: 700;
             padding: 15px 20px; border-radius: 12px; background: rgba(255,255,255,0.05);
             transition: 0.3s; border-left: 4px solid transparent;
+            display: block;
         }
-        .menu-link:hover { background: rgba(255,255,255,0.15); border-left: 4px solid #d4af37; padding-left: 30px; }
+        .menu-link:hover { background: rgba(255,255,255,0.15); border-left: 4px solid #d4af37; padding-left: 25px; }
         .menu-link span { display: block; font-size: 12px; color: #94a3b8; font-weight: 400; margin-top: 4px; }
 
+        /* --- 墊高層樣式 (解決白色縫隙關鍵) --- */
+        .tony-spacer { width: 100%; height: 140px; background-color: #060b1c; }
+
+        /* 手機版優化 */
         @media (max-width: 500px) {
-            .tony-banner { height: 110px; }
+            .tony-banner { height: 110px; padding: 0 15px; }
             .logo-box { height: 85px; }
+            .tony-spacer { height: 110px; } /* 手機版墊高層同步縮小 */
             .pill-btn span { display: none; }
             .pill-btn { padding: 12px; border-radius: 50%; width: 45px; height: 45px; justify-content: center; }
+            .hamburger-icon { font-size: 30px; margin-right: 10px; }
         }
     `;
     document.head.appendChild(style);
 
-    // 2. 定義 Header 與 Side Menu HTML 結構
+    // 2. 定義 Header、Side Menu 與 Spacer 的 HTML 結構
     const menuHTML = `
         <div class="menu-overlay" id="menu-overlay"></div>
         
@@ -95,7 +108,7 @@ document.addEventListener("DOMContentLoaded", function() {
                 </a>
             </nav>
         </header>
-        <div style="height: 140px;"></div>
+        <div class="tony-spacer"></div>
     `;
 
     document.body.insertAdjacentHTML('afterbegin', menuHTML);
@@ -111,7 +124,7 @@ document.addEventListener("DOMContentLoaded", function() {
         overlay.classList.toggle('open');
     }
 
-    hamburger.addEventListener('click', toggleMenu);
-    closeBtn.addEventListener('click', toggleMenu);
-    overlay.addEventListener('click', toggleMenu);
+    if(hamburger) hamburger.addEventListener('click', toggleMenu);
+    if(closeBtn) closeBtn.addEventListener('click', toggleMenu);
+    if(overlay) overlay.addEventListener('click', toggleMenu);
 });
