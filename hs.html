@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>普通高中學測專業培訓 - Tony線上美語家教</title>
+    <title>高中學測英文專業培訓 - Tony線上美語家教</title>
     <style>
         :root {
             --primary-blue: #2980b9;
-            --accent-gold: #f39c12;
+            --accent-orange: #f39c12; /* 橘色 */
             --bg-light: #f4f7f6;
             --text-main: #2c3e50;
         }
@@ -23,40 +23,40 @@
             background-color: #ffffff;
             color: var(--text-main);
             line-height: 1.8;
+            word-break: break-all;
         }
 
-        /* 響應式容器 */
         .wrapper {
             max-width: 1000px;
             margin: 0 auto;
             padding: 20px;
         }
 
-        /* 標題圖片：使用您提供的 URL */
         .banner {
             width: 100%;
             height: auto;
             border-radius: 20px;
             box-shadow: 0 15px 35px rgba(0,0,0,0.15);
-            margin-bottom: 50px;
+            margin-bottom: 40px;
             display: block;
         }
 
-        /* 主標題設計 */
         h1 {
             color: var(--primary-blue);
-            font-size: 3.8rem; /* 確保超大字體 */
+            font-size: 3.5rem; 
             text-align: center;
             margin-bottom: 40px;
             font-weight: 800;
+            line-height: 1.3;
         }
 
-        h1::before {
-            content: "✔️ ";
-            color: #27ae60;
+        .brand-name {
+            display: block;
+            font-size: 0.7em;
+            color: #555;
+            margin-top: 10px;
         }
 
-        /* 內容區塊 */
         .content-card {
             background: var(--bg-light);
             padding: 40px;
@@ -68,7 +68,7 @@
             display: flex;
             align-items: flex-start;
             margin-bottom: 25px;
-            font-size: 1.8rem; /* 桌面端保持清晰大字 */
+            font-size: 1.8rem;
         }
 
         .icon {
@@ -76,13 +76,17 @@
             font-size: 2rem;
         }
 
-        .highlight {
-            color: var(--accent-gold);
+        /* 橘底白字標籤樣式 */
+        .orange-badge {
+            background-color: var(--accent-orange);
+            color: #ffffff;
+            padding: 2px 12px;
+            border-radius: 8px;
             font-weight: bold;
-            text-decoration: underline;
+            display: inline-block;
+            margin-right: 5px;
         }
 
-        /* 特色區塊布局 */
         .features {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
@@ -99,7 +103,6 @@
             font-size: 1.6rem;
         }
 
-        /* 底部聯絡按鈕 */
         .footer-action {
             text-align: center;
             background: #e1f5fe;
@@ -112,33 +115,28 @@
             display: inline-block;
             background-color: #00c300;
             color: white;
-            padding: 20px 50px;
+            padding: 20px 40px;
             border-radius: 60px;
             text-decoration: none;
             font-weight: bold;
-            font-size: 2rem; /* 超顯眼按鈕 */
+            font-size: 2rem;
             box-shadow: 0 8px 20px rgba(0, 195, 0, 0.3);
             transition: all 0.3s ease;
         }
 
-        .line-btn:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 12px 25px rgba(0, 195, 0, 0.4);
-        }
-
-        /* 針對不同裝置的 RWD 調整 */
+        /* 手機模式優化 */
         @media (max-width: 768px) {
             h1 { font-size: 2.8rem; }
-            .info-row { font-size: 1.5rem; }
-            .feature-item { font-size: 1.4rem; }
-            .line-btn { font-size: 1.6rem; padding: 15px 35px; }
+            .info-row { font-size: 1.6rem; }
+            .feature-item { font-size: 1.5rem; margin-bottom: 15px; }
+            .line-btn { font-size: 1.5rem; padding: 15px 30px; width: 90%; }
+            .content-card { padding: 20px; }
         }
 
         @media (max-width: 480px) {
             h1 { font-size: 2.2rem; }
-            .wrapper { padding: 10px; }
-            .content-card { padding: 25px; }
-            .info-row { font-size: 1.3rem; }
+            .info-row { font-size: 1.4rem; }
+            .orange-badge { padding: 1px 8px; }
         }
     </style>
 </head>
@@ -148,47 +146,46 @@
     <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-07%20%E4%B8%8B%E5%8D%885.26.04.png" 
          alt="學測英語培訓背景" class="banner">
 
-    <h1>普通高中學測</h1>
+    <h1>
+        ✔️ 普通高中學測
+        <span class="brand-name">Tony線上美語家教</span>
+    </h1>
 
     <div class="content-card">
         <div class="info-row">
             <span class="icon">⭐</span>
-            <div><strong>適合對象：</strong> 普通高中生，目標鎖定學測英語頂標。</div>
+            <div><strong>適合對象：</strong> 高中生，目標鎖定學測英文。（加強，前標，頂標）</div>
         </div>
         <div class="info-row">
             <span class="icon">⭐</span>
-            <div><strong>課程目標：</strong> 掌握全方位解題策略，精準突破閱讀、寫作與聽力瓶頸。</div>
+            <div><strong>課程目標：</strong> 強化應試策略，全面提升閱讀、寫作與聽力實力。</div>
         </div>
         <div class="info-row">
             <span class="icon">⭐</span>
-            <div><strong>核心學習內容：</strong>
-                <ul style="list-style: none; margin-top: 15px; padding-left: 10px;">
+            <div><strong>核心學習重點：</strong>
+                <ul style="list-style: none; margin-top: 15px;">
+                    <li style="margin-bottom: 15px;">• <span class="orange-badge">閱讀理解</span>：快速擷取關鍵資訊、結構分析</li>
+                    <li style="margin-bottom: 15px;">• <span class="orange-badge">寫作加強</span>：高階句型應用與範文架構解析</li>
                     <li style="margin-bottom: 15px;">• 學測高頻詞彙與必考語法精準複習</li>
-                    <li style="margin-bottom: 15px;">• <span class="highlight">閱讀理解神技：</span> 鎖定關鍵資訊、深度邏輯架構分析</li>
-                    <li style="margin-bottom: 15px;">• <span class="highlight">滿級分寫作：</span> 實戰範文解析與高階句型應用</li>
-                    <li style="margin-bottom: 15px;">• 定期全真模擬測驗：訓練心理素質與時間控管</li>
+                    <li style="margin-bottom: 15px;">• 定期模擬演練：訓練心理素質與時間控管</li>
                 </ul>
             </div>
         </div>
-        <div class="info-row">
-            <span class="icon">⭐</span>
-            <div><strong>教學方法：</strong> 實戰演練 + 考點深度拆解，專注於弱點強化與提分。</div>
-        </div>
     </div>
 
-    <h2 style="text-align:center; font-size: 2.2rem; margin: 50px 0 20px;">為何選擇 Tony 線上英語？</h2>
+    <h2 style="text-align:center; font-size: 2.2rem; margin: 40px 0;">為何選擇 Tony 線上英語？</h2>
     
     <div class="features">
-        <div class="feature-item">✅ <strong>彈性高效：</strong> 隨時隨地上課，將通勤時間轉化為學習效率。</div>
-        <div class="feature-item">✅ <strong>個人化指導：</strong> 針對學生個別需求，動態調整教學節奏。</div>
-        <div class="feature-item">✅ <strong>專業教材：</strong> 緊扣最新考試趨勢，重點一目了然，不走冤枉路。</div>
-        <div class="feature-item">✅ <strong>雙軌並重：</strong> 兼顧考試技巧與英語實力，成就真正的英語力。</div>
+        <div class="feature-item">✅ <strong>彈性學習：</strong> 居家上課，時間自由安排，效率最高。</div>
+        <div class="feature-item">✅ <strong>精緻教學：</strong> 根據學生程度與目標，動態調整進度。</div>
+        <div class="feature-item">✅ <strong>專業教材：</strong> 緊扣最新命題趨勢，重點一目了然。</div>
+        <div class="feature-item">✅ <strong>全方位提升：</strong> 技巧與實力並重，穩定達成理想目標。</div>
     </div>
 
     <div class="footer-action">
-        <h3 style="font-size: 2rem; margin-bottom: 25px;">📩 突破瓶頸，就從這一刻開始！</h3>
-        <a href="https://line.me/ti/p/T9YdimtG8_" class="line-btn" target="_blank">點我加 Line 諮詢：myavalon</a>
-        <p style="margin-top: 25px; font-size: 1.4rem; color: #555;">Email: TonyOnlineEnglish@gmail.com</p>
+        <h3 style="font-size: 1.8rem; margin-bottom: 25px;">📩 立即預約，開啟您的學測衝刺計畫！</h3>
+        <a href="https://line.me/ti/p/T9YdimtG8_" class="line-btn" target="_blank">點我加 Line：myavalon</a>
+        <p style="margin-top: 25px; font-size: 1.2rem; color: #666;">TonyOnlineEnglish@gmail.com</p>
     </div>
 </div>
 
