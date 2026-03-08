@@ -124,14 +124,18 @@
     .formula-highlight { font-family: 'Oswald', sans-serif; font-size: 34px; color: var(--primary); }
     .formula-result { font-size: 22px; color: #c0392b; font-weight: 700; }
 
-    .explanation-area p { font-size: 16px; color: #333; margin-bottom: 15px; text-align: justify; line-height: 1.8; }
-    
-    /* === 這裡是你要求的放大設定 === */
+    /* === 說明文字區塊：統一放大與字體一致 === */
+    .explanation-area p, 
     .explanation-area .small-text { 
-      font-size: 18px; /* 手機版放大到 18px */
-      color: #444;    /* 顏色稍微加深比較好讀 */
+      font-size: 20px; /* 手機版統一放大到 20px */
+      color: #333;
+      margin-bottom: 15px;
+      text-align: justify;
       line-height: 1.8;
-      font-weight: 400;
+    }
+    
+    .explanation-area .small-text {
+      color: #444; /* 稍微深一點確保易讀 */
     }
 
     .divider { border-top: 1px dashed #ccc; margin: 25px 0; }
@@ -142,10 +146,12 @@
       .policy-card { padding: 45px 50px; }
       .brand-text h1 { font-size: 38px; }
       .box-standard .number-font, .box-short .number-font { font-size: 72px; }
-      .explanation-area p { font-size: 22px; }
       
-      /* 電腦版/平板版放大到 22px */
-      .explanation-area .small-text { font-size: 22px; }
+      /* 電腦版/平板版統一放大到 24px */
+      .explanation-area p, 
+      .explanation-area .small-text { 
+        font-size: 24px; 
+      }
       
       .footer-brand { font-size: 22px; }
     }
@@ -197,10 +203,11 @@
       <p>
         25 分鐘課程時間較短，但仍需保留一整個上課時段，因此自 <b>2026.02.15</b> 起，不再以時間完全對半計算。25分鐘課程將改為「點數制」以便計算，<span style="color:#000; font-weight:700;">國小生不受影響。</span>
       </p>
+      
       <div class="divider"></div>
       
       <p class="small-text">
-        本規範適用於購買50分鐘/堂的課程及為了維護所有學生的上課權益與整體課程安排之公平性，敬請理解。課程安排與點數如有調整，將另行提前通知。感謝您的理解與配合。
+        本規範係為了維護所有學生的上課權益與整體課程安排之公平性，敬請理解。課程安排與點數如有調整，將另行提前通知。感謝您的理解與配合。
       </p>
     </div>
 
