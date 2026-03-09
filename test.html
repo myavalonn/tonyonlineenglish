@@ -379,7 +379,7 @@
       .mini-cal-day { font-size: 1.1rem; }
     }
     
-    /* 滿版購物車 Mobile View */
+    /* 手機版滿版設計 Mobile View */
     @media (max-width: 768px) {
       .hero h1 { font-size: 2rem; }
       .steps-container { font-size: 1.1rem; padding: 20px; margin: -20px 20px 30px; gap: 18px; }
@@ -388,10 +388,8 @@
       .course-block { padding: 30px 10px; } 
       .course-block h2 { font-size: 1.3rem; margin-bottom: 10px; }
       .course-block .price { font-size: 1.2rem; }
-      .ty-detail-item span:first-child { white-space: nowrap; margin-right: 15px; flex-shrink: 0; }
-      .ty-detail-item span:last-child { text-align: right; word-break: break-all;}
       
-      /* Email Popup Full Width & Height on Mobile */
+      /* Email Popup Full Width */
       .email-popup-content {
         width: 100%;
         height: 100%;
@@ -403,6 +401,28 @@
         padding: 30px 20px;
         box-sizing: border-box;
       }
+
+      /* Thank You Widget 完全滿版 (移除兩側留白) */
+      #thank-you-page {
+        padding: 20px 0; /* 移除左右邊界 padding */
+      }
+      .thank-you-container {
+        border-radius: 0; /* 移除圓角貼齊螢幕 */
+        border-left: none;
+        border-right: none;
+        box-shadow: none;
+      }
+      .ty-left-panel, .ty-right-panel {
+        padding: 30px 20px; /* 內部 padding 縮小，給予內容更多空間 */
+      }
+      .ty-header {
+        font-size: 24px; /* 手機版標題略縮 */
+      }
+      .ty-checkmark {
+        font-size: 36px;
+      }
+      .ty-detail-item span:first-child { white-space: nowrap; margin-right: 15px; flex-shrink: 0; }
+      .ty-detail-item span:last-child { text-align: right; word-break: break-all; }
     }
   </style>
 </head>
@@ -679,7 +699,7 @@
 
     function formatTime12H(timeStr) {
         if(!timeStr) return ""; 
-        const [h, m] = timeStr.split(':'); 
+        const[h, m] = timeStr.split(':'); 
         let hour = parseInt(h); 
         const suffix = hour >= 12 ? 'PM' : 'AM'; 
         hour = hour % 12 || 12; 
