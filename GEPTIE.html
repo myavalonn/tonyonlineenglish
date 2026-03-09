@@ -1,34 +1,35 @@
 <div id="assignment-login-container" style="width: 100%; display: block; font-family: sans-serif;">
   
   <style>
-    /* Ensure the box doesn't get squeezed on mobile */
     #assignment-login-container {
       width: 100%;
       display: block;
-      padding: 10px; /* Gives a tiny bit of breathing room on the very edge of screens */
+      padding: 15px;
       box-sizing: border-box;
     }
 
-    /* === Login Box Styles (Mobile First) === */
+    /* === MOBILE MODE (Default) === */
+    /* Making the "Content Widget" 3x more prominent */
     #assign-login-box { 
       width: 100%; 
-      max-width: 450px; 
+      max-width: 550px; 
       margin: 40px auto; 
-      padding: 30px 20px; /* Slightly reduced horizontal padding for small screens */
-      border: 1px solid #cbd5e1; 
-      border-radius: 12px; 
+      padding: 60px 30px; /* 3x deeper padding */
+      border: 2px solid #cbd5e1; 
+      border-radius: 20px; 
       text-align: center; 
-      box-shadow: 0 8px 20px rgba(0,0,0,0.06); 
+      box-shadow: 0 12px 30px rgba(0,0,0,0.1); 
       background: #ffffff;
       box-sizing: border-box; 
     }
     
+    /* 3x Larger Header/Text content for mobile */
     #assign-login-box h3 {
       margin-top: 0;
       color: #1e3a8a;
-      font-size: 22px;
-      margin-bottom: 15px;
-      line-height: 1.4;
+      font-size: 38px; /* Roughly 3x the standard base size */
+      margin-bottom: 25px;
+      line-height: 1.3;
     }
     
     .title-line {
@@ -38,84 +39,85 @@
 
     #assign-login-box p {
       color: #64748b;
-      font-size: 15px; /* Slightly larger for readability */
-      margin-bottom: 20px;
+      font-size: 24px; /* 3x Larger description */
+      margin-bottom: 40px;
     }
     
-    /* Fixed Input Field for Mobile */
+    /* 2x Larger Email Column for mobile */
     #assign-email-input { 
       width: 100%; 
-      display: block; /* Ensures it takes up its own line */
-      padding: 14px; /* Increased padding for better tap target */
+      display: block;
+      padding: 25px; /* 2x Height */
       box-sizing: border-box; 
-      border: 2px solid #e2e8f0; 
-      border-radius: 8px; 
-      font-size: 16px; /* 16px prevents iOS from auto-zooming on focus */
+      border: 3px solid #e2e8f0; 
+      border-radius: 12px; 
+      font-size: 22px; /* Large readable text */
       outline: none;
       text-align: center;
       transition: 0.3s;
-      margin-bottom: 10px;
+      margin-bottom: 20px;
     }
     #assign-email-input:focus { border-color: #4a90e2; }
     
+    /* 2x Larger Button for mobile */
     #assign-unlock-btn { 
       width: 100%; 
-      padding: 14px; 
-      margin-top: 5px; 
+      padding: 25px; 
       background-color: #4a90e2; 
       color: white; 
       border: none; 
-      border-radius: 8px; 
-      font-size: 16px; 
+      border-radius: 12px; 
+      font-size: 24px; 
       font-weight: bold;
       cursor: pointer; 
       transition: background 0.3s; 
     }
     #assign-unlock-btn:hover { background-color: #357abd; }
-    #assign-unlock-btn:disabled { background: #94a3b8; cursor: wait; }
     
     #assign-msg { 
       color: #ef4444; 
-      margin-top: 15px; 
-      font-size: 14px; 
-      min-height: 20px; 
+      margin-top: 20px; 
+      font-size: 20px; 
+      min-height: 25px; 
       font-weight: bold;
     }
 
-    /* === Tablet & Desktop (min-width: 768px) === */
+    /* === TABLET & DESKTOP MODE (min-width: 768px) === */
+    /* Doubling the size of the widget content here */
     @media (min-width: 768px) {
       #assign-login-box {
-        max-width: 700px; 
-        padding: 60px 50px; 
+        max-width: 900px; 
+        padding: 100px 80px; 
+        border-radius: 30px;
       }
       
       #assign-login-box h3 {
-        font-size: 40px; 
-        margin-bottom: 25px;
-      }
-      
-      #assign-login-box p {
-        font-size: 24px; 
+        font-size: 64px; /* 2x larger than previous desktop version */
         margin-bottom: 40px;
       }
       
+      #assign-login-box p {
+        font-size: 36px; /* 2x larger description */
+        margin-bottom: 60px;
+      }
+      
       #assign-email-input {
-        font-size: 28px; 
-        padding: 20px;
-        border-radius: 12px;
-        border-width: 3px;
+        font-size: 40px; 
+        padding: 35px;
+        border-radius: 18px;
+        border-width: 5px;
       }
       
       #assign-unlock-btn {
-        font-size: 30px; 
-        padding: 20px;
-        border-radius: 12px;
-        margin-top: 30px;
+        font-size: 42px; 
+        padding: 35px;
+        border-radius: 18px;
+        margin-top: 40px;
       }
       
       #assign-msg {
-        font-size: 20px; 
-        margin-top: 25px;
+        font-size: 30px; 
+        margin-top: 40px;
       }
     }
   </style>
@@ -148,6 +150,7 @@
     if (!email.includes("@")) { msg.innerText = "Email 格式不正確"; return; }
 
     btn.disabled = true;
+    const originalBtnText = btn.innerText;
     btn.innerText = "驗證權限中...";
     msg.innerText = "";
 
@@ -172,7 +175,7 @@
       } else {
         msg.innerText = data.message;
         btn.disabled = false;
-        btn.innerText = "查看作業題目";
+        btn.innerText = originalBtnText;
       }
     } catch (e) {
       console.error(e);
