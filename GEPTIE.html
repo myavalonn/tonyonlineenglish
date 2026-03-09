@@ -1,125 +1,84 @@
 <div id="assignment-login-container" style="width: 100%; display: block; font-family: sans-serif;">
   
   <style>
-    #assignment-login-container {
-      width: 100%;
-      display: block;
-      padding: 15px;
+    /* Global Reset */
+    #assignment-login-container * {
       box-sizing: border-box;
     }
 
-    /* === MOBILE MODE (Default) === */
-    /* Making the "Content Widget" 3x more prominent */
-    #assign-login-box { 
-      width: 100%; 
-      max-width: 550px; 
-      margin: 40px auto; 
-      padding: 60px 30px; /* 3x deeper padding */
-      border: 2px solid #cbd5e1; 
-      border-radius: 20px; 
-      text-align: center; 
-      box-shadow: 0 12px 30px rgba(0,0,0,0.1); 
-      background: #ffffff;
-      box-sizing: border-box; 
-    }
-    
-    /* 3x Larger Header/Text content for mobile */
-    #assign-login-box h3 {
-      margin-top: 0;
-      color: #1e3a8a;
-      font-size: 38px; /* Roughly 3x the standard base size */
-      margin-bottom: 25px;
-      line-height: 1.3;
-    }
-    
-    .title-line {
-      display: block;
+    #assignment-login-container {
       width: 100%;
-    }
-
-    #assign-login-box p {
-      color: #64748b;
-      font-size: 24px; /* 3x Larger description */
-      margin-bottom: 40px;
-    }
-    
-    /* 2x Larger Email Column for mobile */
-    #assign-email-input { 
-      width: 100%; 
       display: block;
-      padding: 25px; /* 2x Height */
-      box-sizing: border-box; 
-      border: 3px solid #e2e8f0; 
-      border-radius: 12px; 
-      font-size: 22px; /* Large readable text */
-      outline: none;
-      text-align: center;
-      transition: 0.3s;
-      margin-bottom: 20px;
-    }
-    #assign-email-input:focus { border-color: #4a90e2; }
-    
-    /* 2x Larger Button for mobile */
-    #assign-unlock-btn { 
-      width: 100%; 
-      padding: 25px; 
-      background-color: #4a90e2; 
-      color: white; 
-      border: none; 
-      border-radius: 12px; 
-      font-size: 24px; 
-      font-weight: bold;
-      cursor: pointer; 
-      transition: background 0.3s; 
-    }
-    #assign-unlock-btn:hover { background-color: #357abd; }
-    
-    #assign-msg { 
-      color: #ef4444; 
-      margin-top: 20px; 
-      font-size: 20px; 
-      min-height: 25px; 
-      font-weight: bold;
+      padding: 10px;
     }
 
-    /* === TABLET & DESKTOP MODE (min-width: 768px) === */
-    /* Doubling the size of the widget content here */
-    @media (min-width: 768px) {
-      #assign-login-box {
-        max-width: 900px; 
-        padding: 100px 80px; 
-        border-radius: 30px;
+    /* === 1. CELLPHONE MODE (max-width: 480px) === */
+    /* Widget 5x bigger effect, Column 2x bigger */
+    @media (max-width: 480px) {
+      #assign-login-box { 
+        width: 100% !important; 
+        margin: 20px auto !important;
+        padding: 120px 40px !important; /* Massive padding for 5x feel */
+        border: 4px solid #1e3a8a !important;
+        border-radius: 40px !important;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.15) !important;
       }
+      #assign-login-box h3 { font-size: 55px !important; margin-bottom: 40px !important; }
+      #assign-login-box p { font-size: 32px !important; margin-bottom: 60px !important; }
       
-      #assign-login-box h3 {
-        font-size: 64px; /* 2x larger than previous desktop version */
-        margin-bottom: 40px;
+      #assign-email-input { 
+        height: 100px !important; /* 2x height */
+        font-size: 34px !important; 
+        padding: 20px !important; 
+        border: 4px solid #e2e8f0 !important;
+        margin-bottom: 30px !important;
       }
-      
-      #assign-login-box p {
-        font-size: 36px; /* 2x larger description */
-        margin-bottom: 60px;
-      }
-      
-      #assign-email-input {
-        font-size: 40px; 
-        padding: 35px;
-        border-radius: 18px;
-        border-width: 5px;
-      }
-      
-      #assign-unlock-btn {
-        font-size: 42px; 
-        padding: 35px;
-        border-radius: 18px;
-        margin-top: 40px;
-      }
-      
-      #assign-msg {
-        font-size: 30px; 
-        margin-top: 40px;
-      }
+      #assign-unlock-btn { height: 100px !important; font-size: 36px !important; border-radius: 20px !important; }
+      #assign-msg { font-size: 26px !important; }
     }
+
+    /* === 2. TABLET MODE (481px to 1024px) === */
+    /* Content Widget 3x bigger */
+    @media (min-width: 481px) and (max-width: 1024px) {
+      #assign-login-box {
+        max-width: 85% !important;
+        padding: 90px 60px !important; 
+        border: 3px solid #cbd5e1 !important;
+        border-radius: 30px !important;
+      }
+      #assign-login-box h3 { font-size: 50px !important; }
+      #assign-login-box p { font-size: 30px !important; }
+      #assign-email-input { font-size: 32px !important; padding: 30px !important; }
+      #assign-unlock-btn { font-size: 32px !important; padding: 30px !important; }
+      #assign-msg { font-size: 24px !important; }
+    }
+
+    /* === 3. DESKTOP MODE (min-width: 1025px) === */
+    /* Content Widget 2.5x bigger than standard */
+    @media (min-width: 1025px) {
+      #assign-login-box { 
+        max-width: 750px !important; 
+        padding: 70px 50px !important; 
+        border: 2px solid #cbd5e1 !important;
+        border-radius: 20px !important;
+        box-shadow: 0 10px 30px rgba(0,0,0,0.08) !important;
+      }
+      #assign-login-box h3 { font-size: 42px !important; }
+      #assign-login-box p { font-size: 24px !important; }
+      #assign-email-input { font-size: 28px !important; padding: 25px !important; }
+      #assign-unlock-btn { font-size: 28px !important; padding: 25px !important; }
+      #assign-msg { font-size: 20px !important; }
+    }
+
+    /* Shared styles for consistency */
+    #assign-login-box { text-align: center; background: #ffffff; margin: 50px auto; }
+    #assign-login-box h3 { color: #1e3a8a; line-height: 1.3; margin-top: 0; }
+    #assign-login-box p { color: #64748b; }
+    #assign-email-input { width: 100%; border-radius: 12px; outline: none; text-align: center; transition: 0.3s; }
+    #assign-email-input:focus { border-color: #4a90e2; }
+    #assign-unlock-btn { width: 100%; background-color: #4a90e2; color: white; border: none; font-weight: bold; cursor: pointer; transition: 0.3s; }
+    #assign-unlock-btn:hover { background-color: #357abd; }
+    .title-line { display: block; width: 100%; }
   </style>
 
   <div id="assign-login-box">
@@ -127,9 +86,7 @@
       <span class="title-line">全民英檢中級寫作</span>
       <span class="title-line">學員專屬作業區</span>
     </h3>
-    
     <p>請輸入您的 Email 以開啟作業下載列表</p>
-    
     <input type="email" id="assign-email-input" placeholder="name@example.com" inputmode="email">
     <button id="assign-unlock-btn" onclick="verifyAssignmentEmail()">查看作業題目</button>
     <div id="assign-msg"></div>
@@ -150,8 +107,7 @@
     if (!email.includes("@")) { msg.innerText = "Email 格式不正確"; return; }
 
     btn.disabled = true;
-    const originalBtnText = btn.innerText;
-    btn.innerText = "驗證權限中...";
+    btn.innerText = "驗證中...";
     msg.innerText = "";
 
     let userIp = "未知";
@@ -169,23 +125,16 @@
       const data = await response.json();
 
       if (data.success) {
-        const container = document.getElementById("assignment-login-container");
-        container.innerHTML = data.html;
-        container.style.maxWidth = "100%"; 
+        document.getElementById("assignment-login-container").innerHTML = data.html;
       } else {
         msg.innerText = data.message;
         btn.disabled = false;
-        btn.innerText = originalBtnText;
+        btn.innerText = "查看作業題目";
       }
     } catch (e) {
-      console.error(e);
-      msg.innerText = "連線失敗，請稍後再試";
+      msg.innerText = "連線失敗";
       btn.disabled = false;
       btn.innerText = "查看作業題目";
     }
   }
-  
-  document.getElementById("assign-email-input").addEventListener("keyup", function(event) {
-    if (event.key === "Enter") { verifyAssignmentEmail(); }
-  });
 </script>
