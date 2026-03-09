@@ -313,9 +313,12 @@
     }
     .mini-cal-header button {
         background: none; border: none; font-size: 1.2rem; cursor: pointer; color: #007bff; padding: 0 10px;
-        transition: transform 0.2s;
+        transition: transform 0.2s, opacity 0.2s;
     }
     .mini-cal-header button:active { transform: scale(0.8); }
+    /* 超過限制時按鈕反灰失效 */
+    .mini-cal-header button.disabled { opacity: 0.2; cursor: default; pointer-events: none; }
+    
     .mini-cal-weekdays {
         display: grid; grid-template-columns: repeat(7, 1fr);
         text-align: center; padding: 10px 0; font-size: 0.85rem; color: #888; font-weight: bold;
@@ -332,8 +335,9 @@
     .mini-cal-day:not(.disabled):not(.empty):hover {
         background: #eefaff; border-color: #b8daff;
     }
+    /* 過去日期及超過20天的日期一律反灰失效 */
     .mini-cal-day.disabled {
-        color: #ccc; cursor: not-allowed; font-weight: normal;
+        color: #ccc; cursor: not-allowed; font-weight: normal; pointer-events: none; background: #fcfcfc;
     }
     .mini-cal-day.today {
         color: #007bff; border: 1px solid #007bff;
@@ -574,6 +578,9 @@
     // 全新：快取系統，已讀取的資料不用重讀
     let cachedSlots = {};
     let userHasManuallyClicked = false;
+    
+    // ★ 核心修復：嚴格限制只能點選未來 20 天以內 ★
+    const MAX_DAYS_LIMIT = 20;
 
     function directCheckout(id) {
       currentCheckoutItem = products.find(p => p.id === id);
@@ -699,7 +706,7 @@
 
     function formatTime12H(timeStr) {
         if(!timeStr) return ""; 
-        const[h, m] = timeStr.split(':'); 
+        const [h, m] = timeStr.split(':'); 
         let hour = parseInt(h); 
         const suffix = hour >= 12 ? 'PM' : 'AM'; 
         hour = hour % 12 || 12; 
@@ -722,9 +729,9 @@
         container.innerHTML = `
             <div class="mini-cal-wrapper">
                 <div class="mini-cal-header">
-                    <button onclick="changeMiniMonth(-1)">❮</button>
+                    <button id="cal-prev-btn" onclick="changeMiniMonth(-1)">❮</button>
                     <span id="mini-cal-title"></span>
-                    <button onclick="changeMiniMonth(1)">❯</button>
+                    <button id="cal-next-btn" onclick="changeMiniMonth(1)">❯</button>
                 </div>
                 <div class="mini-cal-weekdays">
                     <span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span>
@@ -746,10 +753,33 @@
         const month = miniCalDate.getMonth();
         document.getElementById('mini-cal-title').innerText = `${year}年 ${month + 1}月`;
 
-        const firstDay = new Date(year, month, 1).getDay();
-        const daysInMonth = new Date(year, month + 1, 0).getDate();
+        // 取得「今天」和「最高上限(第20天)」的日期物件，用來鎖死不給亂點
         const today = new Date();
         today.setHours(0,0,0,0);
+        
+        const maxDate = new Date(today);
+        maxDate.setDate(maxDate.getDate() + MAX_DAYS_LIMIT);
+
+        // 控制翻頁按鈕是否鎖死
+        const prevBtn = document.getElementById('cal-prev-btn');
+        const nextBtn = document.getElementById('cal-next-btn');
+
+        // 當前月 = 今天所在的月，鎖死「上一月」
+        if (year === today.getFullYear() && month === today.getMonth()) {
+            prevBtn.classList.add('disabled');
+        } else {
+            prevBtn.classList.remove('disabled');
+        }
+
+        // 當前月 = 第20天所在的月，鎖死「下一月」
+        if (year === maxDate.getFullYear() && month === maxDate.getMonth()) {
+            nextBtn.classList.add('disabled');
+        } else {
+            nextBtn.classList.remove('disabled');
+        }
+
+        const firstDay = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
 
         let html = '';
         for(let i = 0; i < firstDay; i++) {
@@ -761,13 +791,16 @@
             const cellDateStr = fmtDate(cellDate);
 
             let classes = "mini-cal-day";
-            if (cellDate < today) classes += " disabled";
-            if (cellDateStr === selectedMiniDate) classes += " selected";
-            if (cellDate.getTime() === today.getTime()) classes += " today";
-
-            if (cellDate < today) {
+            
+            // ★ 防線：如果比今天早，或者超過了 20 天以後，一律徹底反灰鎖死
+            if (cellDate < today || cellDate > maxDate) {
+                classes += " disabled";
                 html += `<div class="${classes}">${d}</div>`;
             } else {
+                if (cellDateStr === selectedMiniDate) classes += " selected";
+                if (cellDate.getTime() === today.getTime()) classes += " today";
+
+                // 只有在範圍內的合法日期才允許點擊觸發
                 html += `<div class="${classes}" onclick="handleMiniDateClick('${cellDateStr}')">${d}</div>`;
             }
         }
@@ -779,7 +812,7 @@
         renderMiniCalendar();
     }
 
-    // 背景分批抓取資料邏輯
+    // 背景分批抓取資料邏輯，最高就讀到第 20 天
     async function fetchBatchSlots(offset, days, isInitial) {
         const baseDate = new Date();
         baseDate.setDate(baseDate.getDate() + offset);
@@ -808,7 +841,7 @@
             // 判斷並自動選取最近有空的一天
             checkAndAutoSelect();
 
-            // 觸發下一個背景抓取階段
+            // 觸發下一個背景抓取階段，嚴格停在 20 天以內 (0-20 天共21天)
             if (isInitial) {
                 // 讀完 0~2 天後，接著讀取第 3~6 天 (共 4 天)
                 fetchBatchSlots(3, 4, false);
@@ -819,6 +852,7 @@
                 // 讀完 7~13 天後，接著讀取最後的 14~20 天 (共 7 天)
                 fetchBatchSlots(14, 7, false);
             }
+            // 到達第 14 階段後 (14+7-1 = 20) 就停止載入。
 
         } catch (e) {
             console.error("Batch fetch failed:", e);
@@ -858,7 +892,7 @@
         }
     }
 
-    // 當使用者「手動」點擊某一天
+    // 當使用者「手動」點擊某一天 (超過 20 天的日期已無法被點擊)
     async function handleMiniDateClick(dateStr) {
         userHasManuallyClicked = true;
         selectedMiniDate = dateStr;
@@ -868,7 +902,7 @@
             // 如果這天已經被背景讀取過了，零延遲瞬間顯示！
             renderSlotsForDate(dateStr);
         } else {
-            // 如果點擊了尚未讀取的日期，單獨為這天發送請求 (避免讓用戶乾等)
+            // 如果點擊了尚未讀取的日期，單獨為這天發送請求
             const slotsBox = document.getElementById('mini-cal-slots-content');
             slotsBox.innerHTML = '<div style="text-align:center; padding: 20px; color: #666;">⏳ 正在為您查詢該日時段...</div>';
 
