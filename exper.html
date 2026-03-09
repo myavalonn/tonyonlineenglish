@@ -30,8 +30,8 @@
     /* --- HERO SECTION --- */
     .hero {
       position: relative;
-      height: 60vh;
-      min-height: 400px;
+      height: 30vh; /* 高度減半 */
+      min-height: 250px; /* 最小高度減半 */
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -39,18 +39,15 @@
       text-align: center;
       color: white;
       overflow: hidden;
-      background-color: #222; /* 加入底色避免滑入時看到空白 */
+      background-color: #222;
     }
     .hero-bg {
       position: absolute;
       top: -20px; left: -20px; right: -20px; bottom: -20px;
-      /* 高畫質背景圖 */
       background: url('https://images.unsplash.com/photo-1488190211105-8b0e65b80b4e?q=80&w=2000&auto=format&fit=crop') no-repeat center center;
       background-size: cover;
-      /* 模糊與暗化處理 */
       filter: blur(8px) brightness(0.4);
       z-index: 0;
-      /* 背景圖從左側滑入 */
       animation: slideInLeftBg 1.2s ease-out forwards;
     }
     .hero-content {
@@ -61,7 +58,6 @@
       font-size: 3rem;
       margin-bottom: 10px;
       text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
-      /* 標題從右側滑入並發光一次 */
       animation: slideInRightGlow 1.8s ease-out forwards;
     }
     .hero p {
@@ -69,11 +65,9 @@
       font-style: italic;
       margin: 0;
       text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
-      /* 副標題從上方滑入 */
       animation: slideInTopText 1.2s ease-out forwards;
     }
 
-    /* --- HERO ANIMATIONS KEYFRAMES --- */
     @keyframes slideInLeftBg {
       0% { transform: translateX(-100%); opacity: 0; }
       100% { transform: translateX(0); opacity: 1; }
@@ -89,9 +83,9 @@
       100% { transform: translateY(0); opacity: 1; }
     }
 
-    /* --- SIMPLIFIED TEXT STEPS --- */
-    .steps-text-section {
-      max-width: 600px;
+    /* --- STEPS LIST (參考圖片排版) --- */
+    .steps-container {
+      max-width: 800px;
       margin: -40px auto 40px;
       padding: 30px 40px;
       background: white;
@@ -99,53 +93,78 @@
       box-shadow: 0 4px 15px rgba(0,0,0,0.1);
       position: relative;
       z-index: 10;
-      text-align: left;
-      font-size: 1.1rem;
-      line-height: 1.8;
-    }
-    .steps-text-section p {
-      margin: 15px 0;
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+      font-size: 1.6rem; /* Desktop 大字體 */
       color: #333;
     }
-    .steps-text-section strong {
-      color: #000;
-      font-weight: 700;
+    .step-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
     }
-    .steps-text-section a {
-      color: var(--accent-blue);
+    .step-number {
+      background-color: #000;
+      color: #fff;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      flex-shrink: 0;
+      font-size: 1.2rem;
+    }
+    .step-text {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      word-break: break-word;
+    }
+    .line-text {
+      color: var(--line-green);
+      font-weight: bold;
       text-decoration: none;
     }
-    .steps-text-section a:hover {
-      text-decoration: underline;
+    .step-icon {
+      height: 1.2em;
+      vertical-align: middle;
+      cursor: pointer;
     }
-    .inline-icon { height: 1.2em; vertical-align: middle; margin-left: 5px; }
 
     /* --- COURSE PROMPT --- */
     .course-prompt {
       text-align: center;
-      margin-top: 50px;
+      margin: 40px auto 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      color: #555;
     }
-    .course-prompt h2 {
-      font-size: 1.8rem;
-      margin-bottom: 15px;
-      color: var(--primary-color);
+    .prompt-text {
+      font-size: 1.1rem; /* 縮小字體 */
+      font-weight: bold;
     }
-    .down-arrow {
+    .inline-arrow {
       color: var(--accent-blue);
-      animation: bounce 2s infinite;
+      animation: bounceInline 2s infinite;
     }
-    @keyframes bounce {
+    @keyframes bounceInline {
       0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-      40% { transform: translateY(-10px); }
-      60% { transform: translateY(-5px); }
+      40% { transform: translateY(-4px); }
+      60% { transform: translateY(-2px); }
     }
 
     /* --- PRODUCT BLOCKS --- */
     .product-grid {
       max-width: 900px;
-      margin: 20px auto 40px;
+      margin: 0 auto 40px;
       display: grid;
-      grid-template-columns: 1fr 1fr;
+      grid-template-columns: 1fr 1fr; /* 桌面預設為兩排 */
       gap: 30px;
       padding: 0 20px;
     }
@@ -203,14 +222,32 @@
     #email-popup-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; display: none; align-items: center; justify-content: center; }
     .popup-content { background: white; padding: 30px; border-radius: 12px; width: 90%; max-width: 400px; text-align: center; }
     
-    /* --- MOBILE RESPONSIVE --- */
+    /* --- RESPONSIVE ADJUSTMENTS --- */
+    @media (max-width: 1024px) {
+      .steps-container { font-size: 1.4rem; padding: 25px 30px; } /* Tablet 保持大字體 */
+    }
     @media (max-width: 768px) {
       .hero h1 { font-size: 2rem; }
-      .steps-text-section { margin: -20px 20px 30px; padding: 20px; }
-      .product-grid { grid-template-columns: 1fr; }
+      .steps-container { 
+        font-size: 1.1rem; /* 手機版字體 */
+        padding: 20px; 
+        margin: -20px 20px 30px; 
+        gap: 18px; 
+      }
+      .step-number { width: 30px; height: 30px; font-size: 1rem; }
+      
+      /* 手機版 25/50 mins 左右並排設計 */
+      .product-grid { 
+        grid-template-columns: 1fr 1fr; /* 強制保持左右兩排 */
+        gap: 10px; /* 縮小間距以適應螢幕 */
+        padding: 0 15px;
+      }
+      .course-block { padding: 20px 10px; }
+      .course-block h2 { font-size: 1.2rem; margin-bottom: 5px; }
+      .course-block p { font-size: 0.8rem; margin-bottom: 10px; }
+      .course-block .price { font-size: 1.2rem; }
     }
 
-    /* Utility Styles */
     .tony-highlight { color: blue; font-weight: bold; font-style: italic; }
     .error-container { color: #d9534f; padding: 20px; }
   </style>
@@ -227,22 +264,35 @@
   </header>
 
   <main id="product-page">
-    <!-- STEPS (TEXT ONLY) -->
-    <section class="steps-text-section">
-      <p><strong>1. 加入 Line：</strong> <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank"><strong>Myavalon</strong> <img class="inline-icon" src="https://ik.imagekit.io/lql1uveoc/line.png?updatedAt=1761926064215" alt="Line"></a></p>
-      <p><strong>2. Email 聯繫：</strong> <strong>TonyOnlineEnglish@gmail.com</strong></p>
-      <p><strong>3. 填寫問卷：</strong> <a href="https://docs.google.com/forms/d/e/1FAIpQLSfk2FL_YLvCUVIJ4l03NyfoofHPxzWXP-MbODb9V5dEHWpHRw/viewform?usp=header" target="_blank"><strong>只需 1 分鐘了解需求</strong> <img class="inline-icon" src="https://ik.imagekit.io/lql1uveoc/external-link.png?updatedAt=1754911187731" alt="Link"></a></p>
+    <!-- STEPS (參考圖片版面) -->
+    <section class="steps-container">
+      <div class="step-item">
+        <div class="step-number">1</div>
+        <div class="step-text">
+          加入Line: <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="line-text">Myavalon</a> 
+          <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank"><img class="step-icon" src="https://ik.imagekit.io/lql1uveoc/line.png?updatedAt=1761926064215" alt="Line"></a>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-number">2</div>
+        <div class="step-text">或是 Email: TonyOnlineEnglish@gmail.com</div>
+      </div>
+      <div class="step-item">
+        <div class="step-number">3</div>
+        <div class="step-text">
+          完成 學習需求問卷 
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSfk2FL_YLvCUVIJ4l03NyfoofHPxzWXP-MbODb9V5dEHWpHRw/viewform?usp=header" target="_blank"><img class="step-icon" src="https://ik.imagekit.io/lql1uveoc/external-link.png?updatedAt=1754911187731" alt="Link"></a>
+        </div>
+      </div>
     </section>
 
-    <!-- PROMPT -->
+    <!-- PROMPT (字體縮小並放在後方) -->
     <div class="course-prompt">
-      <h2>點選體驗課程</h2>
-      <div class="down-arrow">
-        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="12" y1="5" x2="12" y2="19"></line>
-          <polyline points="19 12 12 19 5 12"></polyline>
-        </svg>
-      </div>
+      <span class="prompt-text">點選體驗課程</span>
+      <svg class="inline-arrow" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="12" y1="5" x2="12" y2="19"></line>
+        <polyline points="19 12 12 19 5 12"></polyline>
+      </svg>
     </div>
 
     <!-- PRODUCT BLOCKS (Clicking opens checkout directly) -->
@@ -283,7 +333,6 @@
     <div style="max-width: 600px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
       <h2 style="color: green;">✓ 感謝您的訂購！</h2>
       
-      <!-- Confirmation Image -->
       <img src="https://ik.imagekit.io/lql1uveoc/Abstract%20Special%20Offer%20Announcement%20Free%20Facebook%20Post.png?updatedAt=1754673537869" alt="Confirmation Promotion" style="width: 100%; max-width: 400px; margin: 20px auto; border-radius: 8px;">
       
       <p>訂單編號: <span id="ty-order-id" style="font-weight:bold; color:blue;"></span></p>
@@ -294,7 +343,6 @@
       <div style="background:#fff3cd; padding:15px; border-radius:8px; margin: 20px 0;">
         ⚠️ 預約課程只保留2小時，請儘速聯繫 <span class="tony-highlight">Tony線上美語家教</span> 繳費。
       </div>
-      <!-- 改回原本網頁按鈕 -->
       <a href="javascript:void(0)" onclick="returnToOriginalPage()" style="color: blue; text-decoration: underline; font-weight: bold;">回到頁面</a>
     </div>
   </div>
@@ -307,7 +355,6 @@
     
     let currentCheckoutItem = null;
 
-    // 開啟結帳視窗
     function directCheckout(id) {
       currentCheckoutItem = products.find(p => p.id === id);
       if (currentCheckoutItem) {
@@ -347,7 +394,9 @@
       const linksList = document.getElementById("ty-booking-links-list");
       linksList.innerHTML = `<a href="${currentCheckoutItem.bookingLink}" target="_blank" style="display:block; background:blue; color:white; padding:10px; margin:10px 0; border-radius:5px; text-decoration:none;">前往預約：${currentCheckoutItem.name}</a>`;
 
-      // 傳送資料至 Google Apps Script
+      const imgUrl = "https://ik.imagekit.io/lql1uveoc/Abstract%20Special%20Offer%20Announcement%20Free%20Facebook%20Post.png?updatedAt=1754673537869";
+
+      // 同時放入不同的參數名稱(image, imageUrl, confirmationImage) 確保您的 GAS 可以抓到
       fetch("https://script.google.com/macros/s/AKfycbyU13Wivs341DMPupk9EKrL9u908zrHNOVqZUXri-hGezkk6qj_7loQGIf0GCfmvj_f/exec", {
         method: "POST",
         mode: "no-cors",
@@ -358,22 +407,20 @@
           productName: productName, 
           totalPrice: total, 
           status: "未付款",
-          confirmationImage: "https://ik.imagekit.io/lql1uveoc/Abstract%20Special%20Offer%20Announcement%20Free%20Facebook%20Post.png?updatedAt=1754673537869"
+          image: imgUrl,
+          imageUrl: imgUrl,
+          confirmationImage: imgUrl
         })
       });
 
       currentCheckoutItem = null;
     }
 
-    // 回到原始頁面函數 (不重新載入網頁)
+    // 回到原始頁面函數
     function returnToOriginalPage() {
-      // 將 Thank You 頁面隱藏
       document.getElementById("thank-you-page").style.display = "none";
-      // 清除 Email 輸入框的紀錄以便下次訂購
       document.getElementById("popup-email-input").value = "";
-      // 把原來的購買畫面顯示回來
       document.getElementById("product-page").style.display = "block";
-      // 網頁滑動至頂端
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   </script>
