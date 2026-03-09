@@ -5,16 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tony線上美語家教</title>
     <style>
-        body, html { margin: 0; padding: 0; font-family: "Microsoft JhengHei", sans-serif; }
+        body, html { margin: 0; padding: 0; font-family: "Microsoft JhengHei", sans-serif; background-color: #fff; }
         
-        /* 核心 Hero 區塊 */
+        /* The Hero Section with your new photo */
         .hero {
             height: 100vh;
-            /* 使用 Unsplash 提供的亞洲學生線上學習圖片，保證連結有效 */
-            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
-                        url('https://images.unsplash.com/photo-1522202176988-66273c2fd55f?ixlib=rb-4.0.3&auto=format&fit=crop&w=1500&q=80');
+            /* Dark overlay helps the white text stand out against the photo */
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
+                        url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/1DE8F5F9-4E48-4960-84F7-A5B1B98B4954.jpg');
             background-size: cover;
             background-position: center;
+            background-repeat: no-repeat;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -24,33 +25,41 @@
         }
 
         .hero h1 {
-            font-size: 5rem; /* 您要的極大字體 */
+            font-size: 5rem;
             font-weight: 900;
             margin-bottom: 30px;
-            text-shadow: 2px 4px 10px rgba(0,0,0,0.8);
+            text-shadow: 2px 4px 15px rgba(0,0,0,0.7);
+            line-height: 1.2;
         }
 
         .btn-main {
-            padding: 20px 60px;
-            font-size: 1.5rem;
+            padding: 18px 50px;
+            font-size: 1.4rem;
             background-color: #3498db;
             color: white;
             text-decoration: none;
             border-radius: 50px;
             font-weight: bold;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.4);
-            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            transition: all 0.3s ease;
         }
 
-        .btn-main:hover { transform: scale(1.05); background-color: #2980b9; }
+        .btn-main:hover { 
+            transform: translateY(-3px); 
+            background-color: #2980b9;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+        }
 
-        /* 優勢區塊 */
-        .info-section { padding: 80px 20px; text-align: center; max-width: 1000px; margin: auto; }
+        .info-section { padding: 80px 20px; text-align: center; max-width: 1100px; margin: auto; }
         .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-top: 40px; }
-        .card { padding: 30px; border-radius: 15px; background: #f9f9f9; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
-        .card h3 { color: #3498db; }
+        .card { padding: 40px 20px; border-radius: 20px; background: #ffffff; border: 1px solid #eee; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .card h3 { color: #3498db; font-size: 1.5rem; margin-bottom: 15px; }
+        .card p { color: #666; line-height: 1.6; }
 
-        @media (max-width: 768px) { .hero h1 { font-size: 2.8rem; } }
+        @media (max-width: 768px) { 
+            .hero h1 { font-size: 3rem; }
+            .btn-main { padding: 15px 40px; font-size: 1.1rem; }
+        }
     </style>
 </head>
 <body>
