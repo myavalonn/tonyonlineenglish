@@ -30,8 +30,8 @@
     /* --- HERO SECTION --- */
     .hero {
       position: relative;
-      height: 30vh; /* 高度為原始 60vh 的一半 */
-      min-height: 200px; /* 最小高度進一步壓縮 */
+      height: 30vh; 
+      min-height: 200px; 
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -44,10 +44,8 @@
     .hero-bg {
       position: absolute;
       top: -20px; left: -20px; right: -20px; bottom: -20px;
-      /* 換上新圖片 */
       background: url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/samantha-borges-EeS69TTPQ18-unsplash.jpg?updatedAt=1772773838628') no-repeat center center;
       background-size: cover;
-      /* 僅模糊，不暗化 */
       filter: blur(6px);
       z-index: 0;
       animation: slideInLeftBg 1.2s ease-out forwards;
@@ -59,7 +57,6 @@
     .hero h1 {
       font-size: 3rem;
       margin-bottom: 10px;
-      /* 因為背景不暗化，加深文字陰影確保可讀性 */
       text-shadow: 2px 2px 8px rgba(0,0,0,0.8), 0 0 10px rgba(0,0,0,0.6);
       animation: slideInRightGlow 1.8s ease-out forwards;
     }
@@ -86,7 +83,7 @@
       100% { transform: translateY(0); opacity: 1; }
     }
 
-    /* --- STEPS LIST (參考圖片排版) --- */
+    /* --- STEPS LIST --- */
     .steps-container {
       max-width: 800px;
       margin: -40px auto 40px;
@@ -99,7 +96,7 @@
       display: flex;
       flex-direction: column;
       gap: 25px;
-      font-size: 1.6rem; /* Desktop 大字體 */
+      font-size: 1.6rem;
       color: #333;
     }
     .step-item {
@@ -149,7 +146,7 @@
       color: #555;
     }
     .prompt-text {
-      font-size: 1.1rem; /* 縮小字體 */
+      font-size: 1.1rem;
       font-weight: bold;
     }
     .inline-arrow {
@@ -167,7 +164,7 @@
       max-width: 900px;
       margin: 0 auto 40px;
       display: grid;
-      grid-template-columns: 1fr 1fr; /* 桌面預設為兩排 */
+      grid-template-columns: 1fr 1fr;
       gap: 30px;
       padding: 0 20px;
     }
@@ -187,8 +184,7 @@
       border-color: var(--accent-blue); 
       transform: translateY(-5px);
     }
-    .course-block h2 { font-size: 1.8rem; margin-bottom: 10px; }
-    .course-block p { color: #666; margin-bottom: 20px; }
+    .course-block h2 { font-size: 1.8rem; margin-bottom: 15px; }
     .course-block .price {
       font-size: 2rem;
       font-weight: bold;
@@ -207,52 +203,140 @@
       box-shadow: 0 4px 15px rgba(0,0,0,0.1);
     }
 
-    /* --- DIRECT CHECKOUT POPUP --- */
-    .email-input-field { width: 100%; padding: 12px; margin: 15px 0; border: 1px solid #ccc; border-radius: 6px; font-size: 16px; box-sizing: border-box;}
-    .checkout-btn {
-      background: var(--primary-color);
-      color: white;
-      border: none;
-      padding: 15px 30px;
-      font-size: 1.1rem;
-      font-weight: bold;
-      border-radius: 8px;
-      cursor: pointer;
-      width: 100%;
+    /* --- EMAIL POPUP WITH PAYMENT INFO --- */
+    #email-popup-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background-color: rgba(0, 0, 0, 0.7); z-index: 2000;
+      display: none; justify-content: center; align-items: center;
+      opacity: 0; transition: opacity 0.3s ease-in-out;
     }
-    .checkout-btn:hover { background: #525964; }
+    #email-popup-overlay.visible { display: flex; opacity: 1; }
+    .email-popup-content {
+      background-color: white; padding: 40px; border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2); position: relative;
+      width: 90%; max-width: 500px; text-align: center;
+      transform: scale(0.9); transition: transform 0.3s ease-in-out;
+    }
+    #email-popup-overlay.visible .email-popup-content { transform: scale(1); }
     
-    #email-popup-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; display: none; align-items: center; justify-content: center; }
-    .popup-content { background: white; padding: 30px; border-radius: 12px; width: 90%; max-width: 400px; text-align: center; }
+    .email-popup-content h3 { font-size: 22px; color: #333; margin-top: 0; margin-bottom: 15px; }
+    .email-popup-content input[type="email"] {
+      width: 100%; padding: 15px; font-size: 18px;
+      border: 1px solid #ccc; border-radius: 8px;
+      box-sizing: border-box; text-align: center; margin-bottom: 20px;
+    }
+    #popup-checkout-btn {
+      width: 100%; background-color: #3b414a; color: white; border: none;
+      padding: 15px; font-size: 20px; font-weight: bold; border-radius: 8px;
+      cursor: pointer; transition: background-color 0.3s ease;
+    }
+    #popup-checkout-btn:hover { background-color: #525964; }
     
+    /* 4倍放大的取消按鈕 */
+    .large-cancel-btn {
+      font-size: 24px; /* 放大字體 */
+      font-weight: bold;
+      color: #888;
+      background: none;
+      border: none;
+      margin-top: 25px;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+    .large-cancel-btn:hover { color: #555; }
+
+    /* 付款資訊區塊 (來自您原先的設計) */
+    .payment-info-section { margin-top: 25px; padding-top: 20px; border-top: 1px solid #eee; text-align: left; }
+    .payment-info-section h4 { margin: 0 0 10px 0; font-size: 18px; color: #333; }
+    .payment-method { 
+      background-color: #f9f9f9; border: 1px solid #ddd; 
+      border-radius: 6px; padding: 15px; display: flex; 
+      align-items: center; gap: 15px; font-size: 16px; color: #333;
+    }
+    .icon-circle { 
+      border: 2px solid black; border-radius: 50%; width: 18px; height: 18px; 
+      display: flex; justify-content: center; align-items: center; flex-shrink: 0; 
+    }
+    .icon-circle div { width: 8px; height: 8px; background-color: black; border-radius: 50%; }
+    .tls-info { text-align: center; color: #888; font-size: 12px; margin-top: 15px; }
+
+    .error-container { color: #d9534f; font-size: 18px; padding: 20px; line-height: 1.6; }
+
+    /* --- THANK YOU PAGE (恢復原始設計) --- */
+    #thank-you-page { display: none; padding: 40px 20px; box-sizing: border-box; }
+    .thank-you-container { 
+      max-width: 900px; width: 100%; margin: 0 auto; 
+      background-color: #f9f9f9; border: 1px solid #e0e0e0; 
+      display: flex; flex-direction: column; border-radius: 12px; overflow: hidden;
+    }
+    .ty-left-panel { background-color: white; padding: 40px; }
+    .ty-right-panel { background-color: #f9f9f9; padding: 40px; border-top: 1px solid #eee; }
+    
+    .ty-checkmark { font-size: 48px; color: #27ae60; }
+    .ty-header { display: flex; align-items: center; gap: 15px; font-size: 28px; color: #333; margin: 15px 0; }
+    .ty-message { color: #555; line-height: 1.6; font-size: 1.1rem; }
+    .ty-order-details { margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; }
+    .ty-detail-item { display: flex; justify-content: space-between; padding: 8px 0; font-size: 16px; align-items: flex-start; }
+    
+    .ty-summary-header { font-size: 22px; color: #555; margin: 0 0 20px 0; border-bottom: 1px solid #ddd; padding-bottom: 10px;}
+    .ty-order-item { padding-bottom: 15px; border-bottom: 1px solid #eee; }
+    .ty-item-details { display: flex; justify-content: space-between; align-items: flex-start; gap: 15px; font-size: 18px;}
+    .ty-item-info { font-weight: bold; color: #333; }
+    .ty-item-price { font-weight: bold; white-space: nowrap; color: #333;}
+    .cart-total { margin-top: 20px; padding-top: 20px; border-top: 2px solid #333; }
+    .cart-total .total-row { display: flex; justify-content: space-between; font-size: 22px; font-weight: bold; color: #000; }
+
+    /* Confetti Animation */
+    #celebration-icon { font-size: 1.5em; position: relative; }
+    @keyframes confetti-fall { 
+      0% { transform: translateY(-100%) rotate(0deg); opacity: 1; } 
+      100% { transform: translateY(100px) rotate(360deg); opacity: 0; } 
+    }
+    .celebration-icon::before, .celebration-icon::after { 
+      content: '🎊'; position: absolute; top: -20px; left: 0; 
+      font-size: 20px; opacity: 0; animation: confetti-fall 2s ease-in-out infinite; 
+    }
+    .celebration-icon::after { content: '🎉'; left: 20px; animation-delay: 0.5s; }
+    
+    #ty-order-id { font-size: 1.5em; color: var(--accent-blue); font-weight: bold; }
+    .ty-booking-link { 
+      display: block; background-color: var(--accent-blue); color: white !important; 
+      padding: 15px 20px; border-radius: 8px; text-decoration: none; text-align: center; 
+      font-weight: bold; font-size: 1.1rem; margin-top: 15px; margin-bottom: 10px; 
+      transition: background-color 0.3s ease; 
+    }
+    .ty-booking-link:hover { background-color: #0056b3; }
+    .ty-line-link { color: var(--line-green); font-weight: bold; text-decoration: none; font-size: 1.1rem; }
+
+    /* Warning Box */
+    .payment-warning-box {
+        background-color: #fff3cd; color: #856404; padding: 20px;
+        border-radius: 8px; margin-top: 25px; border: 1px solid #ffeeba;
+        text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    }
+    .payment-warning-text { margin: 0; font-weight: bold; font-size: 16px; line-height: 1.4; }
+    .tony-highlight { color: #0000FF !important; font-style: italic !important; font-weight: bold !important; }
+
     /* --- RESPONSIVE ADJUSTMENTS --- */
-    @media (max-width: 1024px) {
-      .steps-container { font-size: 1.4rem; padding: 25px 30px; } /* Tablet 保持大字體 */
+    @media (min-width: 768px) {
+      .thank-you-container { flex-direction: row; }
+      .ty-left-panel { flex-basis: 60%; border-right: 1px solid #eee; }
+      .ty-right-panel { flex-basis: 40%; border-top: none; }
+      .ty-detail-item { font-size: 20px; padding: 12px 0; }
+      .steps-container { font-size: 1.4rem; padding: 25px 30px; }
     }
     @media (max-width: 768px) {
       .hero h1 { font-size: 2rem; }
-      .steps-container { 
-        font-size: 1.1rem; /* 手機版字體 */
-        padding: 20px; 
-        margin: -20px 20px 30px; 
-        gap: 18px; 
-      }
+      .steps-container { font-size: 1.1rem; padding: 20px; margin: -20px 20px 30px; gap: 18px; }
       .step-number { width: 30px; height: 30px; font-size: 1rem; }
-      
-      /* 手機版 25/50 mins 左右並排設計 */
-      .product-grid { 
-        grid-template-columns: 1fr 1fr; /* 強制保持左右兩排 */
-        gap: 10px; /* 縮小間距以適應螢幕 */
-        padding: 0 15px;
-      }
-      .course-block { padding: 20px 10px; }
-      .course-block h2 { font-size: 1.2rem; margin-bottom: 5px; }
-      .course-block p { font-size: 0.8rem; margin-bottom: 10px; }
+      .product-grid { grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 15px; }
+      .course-block { padding: 30px 10px; } 
+      .course-block h2 { font-size: 1.3rem; margin-bottom: 10px; }
       .course-block .price { font-size: 1.2rem; }
+      
+      .ty-detail-item span:first-child { white-space: nowrap; margin-right: 15px; flex-shrink: 0; }
+      .ty-detail-item span:last-child { text-align: right; word-break: break-all;}
     }
-
-    .tony-highlight { color: blue; font-weight: bold; font-style: italic; }
-    .error-container { color: #d9534f; padding: 20px; }
   </style>
 </head>
 <body>
@@ -267,7 +351,7 @@
   </header>
 
   <main id="product-page">
-    <!-- STEPS (參考圖片版面) -->
+    <!-- STEPS -->
     <section class="steps-container">
       <div class="step-item">
         <div class="step-number">1</div>
@@ -289,7 +373,7 @@
       </div>
     </section>
 
-    <!-- PROMPT (字體縮小並放在後方) -->
+    <!-- PROMPT -->
     <div class="course-prompt">
       <span class="prompt-text">點選體驗課程</span>
       <svg class="inline-arrow" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -298,22 +382,20 @@
       </svg>
     </div>
 
-    <!-- PRODUCT BLOCKS (Clicking opens checkout directly) -->
+    <!-- PRODUCT BLOCKS -->
     <section class="product-grid">
       <div class="course-block" onclick="directCheckout('trial-25')">
         <h2>25 分鐘</h2>
-        <p>適合快速口說練習</p>
         <div class="price">NT$ 350</div>
       </div>
 
       <div class="course-block" onclick="directCheckout('trial-50')">
         <h2>50 分鐘</h2>
-        <p>完整課程深度學習</p>
         <div class="price">NT$ 550</div>
       </div>
     </section>
 
-    <!-- PROMO IMAGE UNDER THE BOXES -->
+    <!-- PROMO IMAGE -->
     <div class="promo-image-container">
       <img src="https://ik.imagekit.io/lql1uveoc/Abstract%20Special%20Offer%20Announcement%20Free%20Facebook%20Post.png?updatedAt=1754673537869" alt="Special Offer">
     </div>
@@ -321,32 +403,77 @@
 
   <!-- DIRECT EMAIL CHECKOUT POPUP -->
   <div id="email-popup-overlay">
-    <div class="popup-content">
-      <h3 id="popup-product-title" style="color: var(--accent-blue); margin-bottom: 10px;"></h3>
-      <h3 style="margin-top: 0;">請輸入您的電子信箱</h3>
-      <input type="email" id="popup-email-input" class="email-input-field" style="text-align:center;" placeholder="example@gmail.com">
-      <button class="checkout-btn" onclick="handleCheckout()">確認結帳</button>
-      <button style="margin-top:15px; background:none; border:none; color:grey; cursor:pointer;" onclick="closeEmailPopup()">取消</button>
-      <p style="font-size:12px; color:#666; margin-top:15px;">付款方式：銀行轉帳或是 Line Pay (iPass Money)</p>
+    <div class="email-popup-content">
+      <div id="popup-inner-content">
+        <h3 id="popup-product-title" style="color: var(--accent-blue);"></h3>
+        <h3>請輸入您的電子信箱</h3>
+        <input type="email" id="popup-email-input" placeholder="example@gmail.com" required>
+        
+        <button id="popup-checkout-btn" onclick="handleCheckout()">確認結帳</button>
+        
+        <!-- 放大的取消按鈕 -->
+        <button class="large-cancel-btn" onclick="closeEmailPopup()">取消</button>
+        
+        <!-- 付款資訊區塊 (與原設計相同) -->
+        <div class="payment-info-section">
+          <h4>付款資訊</h4>
+          <div class="payment-method">
+            <div class="icon-circle"><div></div></div>
+            <span>銀行轉帳或是Line Pay 付款 (iPass Money)</span>
+          </div>
+        </div>
+        <p class="tls-info">所有數據都透過安全 TLS 連線進行加密傳輸</p>
+      </div>
     </div>
   </div>
 
   <!-- THANK YOU PAGE -->
-  <div id="thank-you-page" style="display:none; padding: 40px 20px; text-align: center;">
-    <div style="max-width: 600px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
-      <h2 style="color: green;">✓ 感謝您的訂購！</h2>
-      
-      <img src="https://ik.imagekit.io/lql1uveoc/Abstract%20Special%20Offer%20Announcement%20Free%20Facebook%20Post.png?updatedAt=1754673537869" alt="Confirmation Promotion" style="width: 100%; max-width: 400px; margin: 20px auto; border-radius: 8px;">
-      
-      <p>訂單編號: <span id="ty-order-id" style="font-weight:bold; color:blue;"></span></p>
-      <div id="ty-booking-container" style="margin: 20px 0;">
-        <p>請點擊下方專屬連結預約時間：</p>
-        <div id="ty-booking-links-list"></div>
-      </div>
-      <div style="background:#fff3cd; padding:15px; border-radius:8px; margin: 20px 0;">
-        ⚠️ 預約課程只保留2小時，請儘速聯繫 <span class="tony-highlight">Tony線上美語家教</span> 繳費。
-      </div>
-      <a href="javascript:void(0)" onclick="returnToOriginalPage()" style="color: blue; text-decoration: underline; font-weight: bold;">回到頁面</a>
+  <div id="thank-you-page">
+    <div class="thank-you-container">
+        <!-- 左側：成功訊息與訂單資訊 -->
+        <div class="ty-left-panel">
+            <div class="ty-checkmark">✓</div>
+            <h2 class="ty-header">感謝您的訂購！<span id="celebration-icon" class="celebration-icon">🎉</span></h2>
+            <p class="ty-message">您的訂單已成功建立。確認信已寄送至您的電子信箱，請檢查您的收件匣。</p>
+            
+            <div class="ty-order-details">
+                <div class="ty-detail-item"><span>訂單編號</span><span id="ty-order-id"></span></div>
+                <div class="ty-detail-item"><span>訂單時間</span><span id="ty-order-timestamp"></span></div>
+                <div class="ty-detail-item"><span>電子信箱</span><span id="ty-customer-email"></span></div>
+            </div>
+
+            <div id="ty-booking-container" style="margin-top: 30px;">
+                <h3 style="color: #333;">下一步：預約課程</h3>
+                <p style="color: #555;">請點擊下方專屬連結，預約您的上課時間：</p>
+                <div id="ty-booking-links-list"></div>
+            </div>
+
+            <div class="payment-warning-box">
+                <p class="payment-warning-text">
+                    ⚠️ 預約課程只保留2小時, 請聯繫<br>
+                    <span class="tony-highlight">Tony線上美語家教</span>
+                    繳納課程費用。
+                </p>
+            </div>
+            
+            <div class="payment-instructions" style="margin-top: 30px;">
+                <h3 style="color: #333; margin-bottom: 10px;">如何付款:</h3>
+                <p><a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="ty-line-link">請點選加入Line: myavalon</a></p>
+            </div>
+            
+            <div style="margin-top: 30px; text-align: center;">
+              <a href="javascript:void(0)" onclick="returnToOriginalPage()" style="color: blue; text-decoration: underline; font-weight: bold; font-size: 18px;">回到頁面</a>
+            </div>
+        </div>
+        
+        <!-- 右側：訂單摘要 -->
+        <div class="ty-right-panel">
+            <h3 class="ty-summary-header">訂單摘要</h3>
+            <div id="ty-cart-items-container"></div>
+            <div class="cart-total">
+                <div class="total-row"><span>總計</span><span id="ty-total-price">NT$0</span></div>
+            </div>
+        </div>
     </div>
   </div>
 
@@ -355,73 +482,140 @@
       { id: 'trial-25', name: '體驗課程 25 分鐘', price: 350, bookingLink: 'https://tonyonlineenglish.netlify.app//25mbk' },
       { id: 'trial-50', name: '體驗課程 50 分鐘', price: 550, bookingLink: 'https://tonyonlineenglish.netlify.app/booking' }
     ];
+    const logoUrl = "https://ik.imagekit.io/lql1uveoc/Abstract%20Special%20Offer%20Announcement%20Free%20Facebook%20Post.png?updatedAt=1754673537869";
     
     let currentCheckoutItem = null;
 
     function directCheckout(id) {
       currentCheckoutItem = products.find(p => p.id === id);
       if (currentCheckoutItem) {
+        // 恢復彈出視窗初始狀態
+        const popupContent = document.getElementById('popup-inner-content');
+        if(popupContent.querySelector('.error-container')) {
+          popupContent.innerHTML = `
+            <h3 id="popup-product-title" style="color: var(--accent-blue);"></h3>
+            <h3>請輸入您的電子信箱</h3>
+            <input type="email" id="popup-email-input" placeholder="example@gmail.com" required>
+            <button id="popup-checkout-btn" onclick="handleCheckout()">確認結帳</button>
+            <button class="large-cancel-btn" onclick="closeEmailPopup()">取消</button>
+            <div class="payment-info-section">
+              <h4>付款資訊</h4>
+              <div class="payment-method">
+                <div class="icon-circle"><div></div></div>
+                <span>銀行轉帳或是Line Pay 付款 (iPass Money)</span>
+              </div>
+            </div>
+            <p class="tls-info">所有數據都透過安全 TLS 連線進行加密傳輸</p>
+          `;
+        }
         document.getElementById("popup-product-title").innerText = `預約 ${currentCheckoutItem.name}`;
-        document.getElementById("email-popup-overlay").style.display = "flex";
+        const overlay = document.getElementById("email-popup-overlay");
+        overlay.style.display = "flex";
+        // 觸發漸變動畫
+        setTimeout(() => { overlay.classList.add('visible'); }, 10);
       }
     }
 
     function closeEmailPopup() { 
-      document.getElementById("email-popup-overlay").style.display = "none"; 
-      currentCheckoutItem = null;
+      const overlay = document.getElementById("email-popup-overlay");
+      overlay.classList.remove('visible');
+      setTimeout(() => { overlay.style.display = "none"; currentCheckoutItem = null; }, 300);
+    }
+
+    function generateOrderId() { 
+      let e = "#"; 
+      for (let t = 0; t < 5; t++) e += "ABCDEFGHIJKLMNOPQRSTUVWXYZ01223456789".charAt(Math.floor(36 * Math.random())); 
+      return e; 
     }
 
     function handleCheckout() {
       const email = document.getElementById("popup-email-input").value;
       if (!email.includes("@")) return alert("請輸入有效的信箱");
 
-      const blacklist =["8888@gmail.com", "z0970957377@gmail.com"];
-      if (blacklist.includes(email.toLowerCase().trim())) {
-        document.querySelector(".popup-content").innerHTML = `<div class="error-container">你無法下訂單，請聯繫 <span class="tony-highlight">Tony線上美語家教</span></div>`;
-        return;
+      const blacklist =["8888@gmail.com", "z0970957377@gmail.com", "blockthisperson@gmail.com"];
+      const cleanEmail = email.toLowerCase().trim();
+
+      // 原本您的黑名單錯誤邏輯
+      if (blacklist.includes(cleanEmail)) {
+          const errorHtml = `你已經上過一堂體驗課程或其他原因無法下訂單 ，請聯繫 <span class="tony-highlight">Tony線上美語家教</span> Thanks. (<a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" style="color: #00B900; font-weight: bold; text-decoration: underline;">Line</a>)`;
+          const popupContent = document.getElementById('popup-inner-content');
+          popupContent.innerHTML = `<div class="error-container">${errorHtml}</div>`;
+          return;
       }
 
       if (!currentCheckoutItem) return;
 
-      const orderId = "#" + Math.random().toString(36).substr(2, 5).toUpperCase();
+      const orderId = generateOrderId();
+      const timestamp = new Date().toLocaleString("zh-TW", {year:"numeric", month:"long", day:"numeric", hour:"2-digit", minute:"2-digit"});
       const productName = currentCheckoutItem.name;
       const total = currentCheckoutItem.price;
 
-      // 切換至 Thank You 頁面
-      document.getElementById("product-page").style.display = "none";
-      document.getElementById("email-popup-overlay").style.display = "none";
-      document.getElementById("thank-you-page").style.display = "block";
-      document.getElementById("ty-order-id").innerText = orderId;
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      closeEmailPopup();
       
-      const linksList = document.getElementById("ty-booking-links-list");
-      linksList.innerHTML = `<a href="${currentCheckoutItem.bookingLink}" target="_blank" style="display:block; background:blue; color:white; padding:10px; margin:10px 0; border-radius:5px; text-decoration:none;">前往預約：${currentCheckoutItem.name}</a>`;
+      // 呼叫顯示 Thank You 頁面的功能
+      showThankYouPage({ 
+          email: email, 
+          item: currentCheckoutItem, 
+          orderId: orderId, 
+          timestamp: timestamp 
+      });
 
-      const imgUrl = "https://ik.imagekit.io/lql1uveoc/Abstract%20Special%20Offer%20Announcement%20Free%20Facebook%20Post.png?updatedAt=1754673537869";
-
+      // 送出訂單給 GAS (包含 imageUrls: logoUrl)
       fetch("https://script.google.com/macros/s/AKfycbyU13Wivs341DMPupk9EKrL9u908zrHNOVqZUXri-hGezkk6qj_7loQGIf0GCfmvj_f/exec", {
         method: "POST",
         mode: "no-cors",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
         body: new URLSearchParams({ 
-          orderId, 
-          email, 
+          orderId: orderId, 
+          email: email, 
           productName: productName, 
           totalPrice: total, 
           status: "未付款",
-          image: imgUrl,
-          imageUrl: imgUrl,
-          confirmationImage: imgUrl
+          imageUrls: logoUrl
         })
       });
 
       currentCheckoutItem = null;
     }
 
-    // 回到原始頁面函數
+    function showThankYouPage(orderData) {
+        document.getElementById("product-page").style.display = "none";
+        document.getElementById("thank-you-page").style.display = "block";
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        // 填寫訂單資訊
+        document.getElementById('ty-order-id').innerText = orderData.orderId;
+        document.getElementById('ty-order-timestamp').innerText = orderData.timestamp;
+        
+        const tyCustomerEmail = document.getElementById('ty-customer-email');
+        const emailParts = orderData.email.split('@');
+        if (emailParts.length === 2) {
+            tyCustomerEmail.innerHTML = `${emailParts[0]}<wbr>@${emailParts[1]}`;
+        } else {
+            tyCustomerEmail.innerText = orderData.email;
+        }
+
+        // 填寫預約連結
+        const linksList = document.getElementById("ty-booking-links-list");
+        linksList.innerHTML = `<a href="${orderData.item.bookingLink}" target="_blank" class="ty-booking-link">點此預約：${orderData.item.name}</a>`;
+
+        // 填寫右側訂單摘要
+        const tyCartContainer = document.getElementById('ty-cart-items-container');
+        tyCartContainer.innerHTML = `
+          <div class="ty-order-item">
+            <div class="ty-item-details">
+              <div class="ty-item-info">${orderData.item.name}</div>
+              <div class="ty-item-price">NT$ ${orderData.item.price.toLocaleString()}</div>
+            </div>
+          </div>
+        `;
+        document.getElementById('ty-total-price').innerText = `NT$ ${orderData.item.price.toLocaleString()}`;
+    }
+
     function returnToOriginalPage() {
       document.getElementById("thank-you-page").style.display = "none";
-      document.getElementById("popup-email-input").value = "";
+      const emailInput = document.getElementById("popup-email-input");
+      if(emailInput) emailInput.value = "";
       document.getElementById("product-page").style.display = "block";
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
