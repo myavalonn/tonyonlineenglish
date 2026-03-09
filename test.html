@@ -348,14 +348,25 @@
     }
     
     .time-grid {
-      display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(105px, 1fr));
       gap: 12px;
     }
+    
     .time-slot-badge {
-      background: #fff; color: #007bff; padding: 12px 10px; text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff; color: #007bff; padding: 12px 10px;
       border-radius: 8px; font-size: 0.95rem; cursor: default; font-weight: bold;
       border: 1px solid #b8daff; box-shadow: 0 1px 3px rgba(0,0,0,0.05);
     }
+    
+    .slot-clock-icon {
+      width: 16px;
+      height: 16px;
+      margin-right: 6px;
+    }
+
     .tony-highlight { color: #0000FF !important; font-style: italic !important; font-weight: bold !important; }
 
     /* --- RESPONSIVE ADJUSTMENTS --- */
@@ -367,6 +378,8 @@
       .steps-container { font-size: 1.4rem; padding: 25px 30px; }
       .mini-cal-day { font-size: 1.1rem; }
     }
+    
+    /* 滿版購物車 Mobile View */
     @media (max-width: 768px) {
       .hero h1 { font-size: 2rem; }
       .steps-container { font-size: 1.1rem; padding: 20px; margin: -20px 20px 30px; gap: 18px; }
@@ -377,6 +390,19 @@
       .course-block .price { font-size: 1.2rem; }
       .ty-detail-item span:first-child { white-space: nowrap; margin-right: 15px; flex-shrink: 0; }
       .ty-detail-item span:last-child { text-align: right; word-break: break-all;}
+      
+      /* Email Popup Full Width & Height on Mobile */
+      .email-popup-content {
+        width: 100%;
+        height: 100%;
+        max-width: 100%;
+        border-radius: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 30px 20px;
+        box-sizing: border-box;
+      }
     }
   </style>
 </head>
@@ -524,6 +550,10 @@
     let previewGasUrl = "";
     let miniCalDate = new Date();
     let selectedMiniDate = "";
+    
+    // 全新：快取系統，已讀取的資料不用重讀
+    let cachedSlots = {};
+    let userHasManuallyClicked = false;
 
     function directCheckout(id) {
       currentCheckoutItem = products.find(p => p.id === id);
@@ -618,7 +648,7 @@
         document.getElementById("product-page").style.display = "none";
         document.getElementById("thank-you-page").style.display = "block";
         
-        // ★ 核心修復點：這行能確保畫面「瞬間」跳到最上面，讓客戶第一眼看到感謝訂購！
+        // 畫面瞬間跳到最上方，讓使用者清楚看到結帳完成
         window.scrollTo(0, 0);
 
         document.getElementById('ty-order-id').innerText = orderData.orderId;
@@ -643,11 +673,10 @@
         `;
         document.getElementById('ty-total-price').innerText = `NT$ ${orderData.item.price.toLocaleString()}`;
 
-        // 載入日曆初始化 UI
+        // 初始化並啟動智慧型日曆加載
         initMiniCalendar(orderData.item.gasUrl);
     }
 
-    // ====== 正確的 12 小時制時間轉換函數 ======
     function formatTime12H(timeStr) {
         if(!timeStr) return ""; 
         const [h, m] = timeStr.split(':'); 
@@ -657,11 +686,17 @@
         return `${hour}:${m} ${suffix}`;
     }
 
-    // --- 全新輕量級互動式日曆 --- //
+    function fmtDate(d) {
+        return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, '0') + "-" + String(d.getDate()).padStart(2, '0');
+    }
+
+    // --- 全新輕量級互動式日曆 (支援快取與背景分段加載) --- //
     function initMiniCalendar(gasUrl) {
         previewGasUrl = gasUrl;
         miniCalDate = new Date();
-        selectedMiniDate = ""; // 尚未選取
+        selectedMiniDate = ""; 
+        cachedSlots = {};
+        userHasManuallyClicked = false;
 
         const container = document.getElementById('calendar-preview-container');
         container.innerHTML = `
@@ -676,11 +711,14 @@
                 </div>
                 <div class="mini-cal-days" id="mini-cal-days"></div>
                 <div class="mini-cal-slots-box" id="mini-cal-slots-content">
-                    <div style="text-align:center; color:#999; margin-top:10px;">請點選上方日期查詢時段</div>
+                    <div style="text-align:center; color:#666; margin-top:10px;">⏳ 正在自動為您尋找最近的可用時段...</div>
                 </div>
             </div>
         `;
+        
         renderMiniCalendar();
+        // 1. 優先請求第 0-2 天 (前 3 天)
+        fetchBatchSlots(0, 3, true);
     }
 
     function renderMiniCalendar() {
@@ -700,7 +738,7 @@
 
         for(let d = 1; d <= daysInMonth; d++) {
             const cellDate = new Date(year, month, d);
-            const cellDateStr = cellDate.getFullYear() + "-" + String(cellDate.getMonth()+1).padStart(2,'0') + "-" + String(cellDate.getDate()).padStart(2,'0');
+            const cellDateStr = fmtDate(cellDate);
 
             let classes = "mini-cal-day";
             if (cellDate < today) classes += " disabled";
@@ -721,30 +759,130 @@
         renderMiniCalendar();
     }
 
-    // ★ 核心機制：點擊特定日期時，才去撈那「1天」的資料，速度超快！
-    async function handleMiniDateClick(dateStr) {
-        selectedMiniDate = dateStr;
-        renderMiniCalendar(); // 更新藍色選取圈圈
-
-        const slotsBox = document.getElementById('mini-cal-slots-content');
-        slotsBox.innerHTML = '<div style="text-align:center; padding: 20px; color: #666;">⏳ 正在查詢...</div>';
+    // 背景分批抓取資料邏輯
+    async function fetchBatchSlots(offset, days, isInitial) {
+        const baseDate = new Date();
+        baseDate.setDate(baseDate.getDate() + offset);
+        const startStr = fmtDate(baseDate);
 
         try {
-            const fetchUrl = `${previewGasUrl}?action=getBatchSlots&startDate=${dateStr}&days=1`;
+            const fetchUrl = `${previewGasUrl}?action=getBatchSlots&startDate=${startStr}&days=${days}`;
             const res = await fetch(fetchUrl);
             const data = await res.json();
 
-            const dayData = data[dateStr];
-            if (dayData && dayData.slots && dayData.slots.length > 0) {
-                const times = dayData.slots.map(s => s.time).sort();
-                slotsBox.innerHTML = `<div class="time-grid">` +
-                    times.map(t => `<div class="time-slot-badge">${formatTime12H(t)}</div>`).join('') +
-                    `</div>`;
-            } else {
-                slotsBox.innerHTML = '<div style="text-align:center; padding: 20px; color: #999;">本日無可用時段</div>';
+            // 標記這些天數為已抓取
+            for(let i = 0; i < days; i++) {
+                let d = new Date(baseDate);
+                d.setDate(d.getDate() + i);
+                let dStr = fmtDate(d);
+                if (!cachedSlots[dStr]) cachedSlots[dStr] = { slots:[] };
             }
-        } catch(e) {
-            slotsBox.innerHTML = '<div style="text-align:center; padding: 20px; color: #d9534f;">⚠️ 查詢失敗，請稍後重試</div>';
+
+            // 將真實資料合併入快取
+            if (data && typeof data === 'object') {
+                Object.keys(data).forEach(key => {
+                    cachedSlots[key] = data[key];
+                });
+            }
+
+            // 判斷並自動選取最近有空的一天
+            checkAndAutoSelect();
+
+            // 觸發下一個背景抓取階段
+            if (isInitial) {
+                // 讀完 0~2 天後，接著讀取第 3~6 天 (共 4 天)
+                fetchBatchSlots(3, 4, false);
+            } else if (offset === 3) {
+                // 讀完 3~6 天後，接著讀取第 7~13 天 (共 7 天)
+                fetchBatchSlots(7, 7, false);
+            } else if (offset === 7) {
+                // 讀完 7~13 天後，接著讀取最後的 14~20 天 (共 7 天)
+                fetchBatchSlots(14, 7, false);
+            }
+
+        } catch (e) {
+            console.error("Batch fetch failed:", e);
+            if (isInitial) {
+                document.getElementById('mini-cal-slots-content').innerHTML = '<div style="text-align:center; padding: 20px; color: #d9534f;">⚠️ 載入失敗，請手動點選日期重試</div>';
+            }
+        }
+    }
+
+    // 檢查快取，如果還沒選擇日期或當前選的日期沒空檔，自動幫用戶選最近有空的那一天
+    function checkAndAutoSelect() {
+        if (userHasManuallyClicked) return; // 尊重使用者手動點擊的意願
+
+        // 如果目前已選取的日期有空檔，就不覆蓋
+        if (selectedMiniDate && cachedSlots[selectedMiniDate] && cachedSlots[selectedMiniDate].slots && cachedSlots[selectedMiniDate].slots.length > 0) {
+            return;
+        }
+
+        const todayStr = fmtDate(new Date());
+        const sortedDates = Object.keys(cachedSlots).sort();
+
+        for (let dStr of sortedDates) {
+            if (dStr < todayStr) continue;
+            if (cachedSlots[dStr] && cachedSlots[dStr].slots && cachedSlots[dStr].slots.length > 0) {
+                selectedMiniDate = dStr;
+                renderMiniCalendar();
+                renderSlotsForDate(dStr);
+                return; // 找到就停止
+            }
+        }
+
+        // 如果目前抓回來的資料完全沒空檔，預設選取今天並顯示無時段 (等待下一批資料覆蓋)
+        if (!selectedMiniDate) {
+            selectedMiniDate = todayStr;
+            renderMiniCalendar();
+            renderSlotsForDate(todayStr);
+        }
+    }
+
+    // 當使用者「手動」點擊某一天
+    async function handleMiniDateClick(dateStr) {
+        userHasManuallyClicked = true;
+        selectedMiniDate = dateStr;
+        renderMiniCalendar(); 
+
+        if (cachedSlots[dateStr]) {
+            // 如果這天已經被背景讀取過了，零延遲瞬間顯示！
+            renderSlotsForDate(dateStr);
+        } else {
+            // 如果點擊了尚未讀取的日期，單獨為這天發送請求 (避免讓用戶乾等)
+            const slotsBox = document.getElementById('mini-cal-slots-content');
+            slotsBox.innerHTML = '<div style="text-align:center; padding: 20px; color: #666;">⏳ 正在為您查詢該日時段...</div>';
+
+            try {
+                const fetchUrl = `${previewGasUrl}?action=getBatchSlots&startDate=${dateStr}&days=1`;
+                const res = await fetch(fetchUrl);
+                const data = await res.json();
+                
+                cachedSlots[dateStr] = data[dateStr] || { slots:[] };
+                renderSlotsForDate(dateStr);
+            } catch (e) {
+                slotsBox.innerHTML = '<div style="text-align:center; padding: 20px; color: #d9534f;">⚠️ 查詢失敗，請稍後重試</div>';
+            }
+        }
+    }
+
+    // 將時段內容繪製到畫面上
+    function renderSlotsForDate(dateStr) {
+        if (selectedMiniDate !== dateStr) return; // 避免異步回傳覆蓋當前畫面
+
+        const slotsBox = document.getElementById('mini-cal-slots-content');
+        const dayData = cachedSlots[dateStr];
+
+        if (dayData && dayData.slots && dayData.slots.length > 0) {
+            const times = dayData.slots.map(s => s.time).sort();
+            
+            // 替每個時段加入指定的時鐘 Icon
+            const clockIcon = '<img src="https://ik.imagekit.io/lql1uveoc/Booking%20Website%20%E9%A0%90%E7%B4%84/clock-2.png" class="slot-clock-icon" alt="clock">';
+            
+            slotsBox.innerHTML = `<div class="time-grid">` +
+                times.map(t => `<div class="time-slot-badge">${clockIcon}${formatTime12H(t)}</div>`).join('') +
+                `</div>`;
+        } else {
+            slotsBox.innerHTML = '<div style="text-align:center; padding: 20px; color: #999;">本日無可用時段</div>';
         }
     }
 
