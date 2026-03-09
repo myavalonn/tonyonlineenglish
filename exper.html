@@ -232,9 +232,8 @@
     }
     #popup-checkout-btn:hover { background-color: #525964; }
     
-    /* 4倍放大的取消按鈕 */
     .large-cancel-btn {
-      font-size: 24px; /* 放大字體 */
+      font-size: 24px; 
       font-weight: bold;
       color: #888;
       background: none;
@@ -245,7 +244,6 @@
     }
     .large-cancel-btn:hover { color: #555; }
 
-    /* 付款資訊區塊 (來自您原先的設計) */
     .payment-info-section { margin-top: 25px; padding-top: 20px; border-top: 1px solid #eee; text-align: left; }
     .payment-info-section h4 { margin: 0 0 10px 0; font-size: 18px; color: #333; }
     .payment-method { 
@@ -259,10 +257,9 @@
     }
     .icon-circle div { width: 8px; height: 8px; background-color: black; border-radius: 50%; }
     .tls-info { text-align: center; color: #888; font-size: 12px; margin-top: 15px; }
-
     .error-container { color: #d9534f; font-size: 18px; padding: 20px; line-height: 1.6; }
 
-    /* --- THANK YOU PAGE (恢復原始設計) --- */
+    /* --- THANK YOU PAGE --- */
     #thank-you-page { display: none; padding: 40px 20px; box-sizing: border-box; }
     .thank-you-container { 
       max-width: 900px; width: 100%; margin: 0 auto; 
@@ -286,7 +283,6 @@
     .cart-total { margin-top: 20px; padding-top: 20px; border-top: 2px solid #333; }
     .cart-total .total-row { display: flex; justify-content: space-between; font-size: 22px; font-weight: bold; color: #000; }
 
-    /* Confetti Animation */
     #celebration-icon { font-size: 1.5em; position: relative; }
     @keyframes confetti-fall { 
       0% { transform: translateY(-100%) rotate(0deg); opacity: 1; } 
@@ -299,22 +295,82 @@
     .celebration-icon::after { content: '🎉'; left: 20px; animation-delay: 0.5s; }
     
     #ty-order-id { font-size: 1.5em; color: var(--accent-blue); font-weight: bold; }
-    .ty-booking-link { 
-      display: block; background-color: var(--accent-blue); color: white !important; 
-      padding: 15px 20px; border-radius: 8px; text-decoration: none; text-align: center; 
-      font-weight: bold; font-size: 1.1rem; margin-top: 15px; margin-bottom: 10px; 
-      transition: background-color 0.3s ease; 
-    }
-    .ty-booking-link:hover { background-color: #0056b3; }
     .ty-line-link { color: var(--line-green); font-weight: bold; text-decoration: none; font-size: 1.1rem; }
 
-    /* Warning Box */
-    .payment-warning-box {
-        background-color: #fff3cd; color: #856404; padding: 20px;
-        border-radius: 8px; margin-top: 25px; border: 1px solid #ffeeba;
-        text-align: center; box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+    /* --- NEW MINI CALENDAR STYLES --- */
+    .mini-cal-wrapper {
+        border: 1px solid #e0e0e0;
+        border-radius: 12px;
+        background: #fff;
+        overflow: hidden;
+        margin-top: 15px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.03);
     }
-    .payment-warning-text { margin: 0; font-weight: bold; font-size: 16px; line-height: 1.4; }
+    .mini-cal-header {
+        display: flex; justify-content: space-between; align-items: center;
+        padding: 15px; background: #f8f9fa; border-bottom: 1px solid #eee;
+        font-weight: bold; font-size: 1.1rem; color: #333;
+    }
+    .mini-cal-header button {
+        background: none; border: none; font-size: 1.2rem; cursor: pointer; color: #007bff; padding: 0 10px;
+        transition: transform 0.2s, opacity 0.2s;
+    }
+    .mini-cal-header button:active { transform: scale(0.8); }
+    /* 超過限制時按鈕反灰失效 */
+    .mini-cal-header button.disabled { opacity: 0.2; cursor: default; pointer-events: none; }
+    
+    .mini-cal-weekdays {
+        display: grid; grid-template-columns: repeat(7, 1fr);
+        text-align: center; padding: 10px 0; font-size: 0.85rem; color: #888; font-weight: bold;
+    }
+    .mini-cal-days {
+        display: grid; grid-template-columns: repeat(7, 1fr);
+        gap: 6px; padding: 10px; text-align: center;
+    }
+    .mini-cal-day {
+        aspect-ratio: 1; display: flex; justify-content: center; align-items: center;
+        border-radius: 8px; font-weight: bold; cursor: pointer; color: #333; transition: 0.2s;
+        border: 1px solid transparent; font-size: 1rem;
+    }
+    .mini-cal-day:not(.disabled):not(.empty):hover {
+        background: #eefaff; border-color: #b8daff;
+    }
+    /* 過去日期及超過20天的日期一律反灰失效 */
+    .mini-cal-day.disabled {
+        color: #ccc; cursor: not-allowed; font-weight: normal; pointer-events: none; background: #fcfcfc;
+    }
+    .mini-cal-day.today {
+        color: #007bff; border: 1px solid #007bff;
+    }
+    .mini-cal-day.selected {
+        background: #007bff !important; color: #fff !important; box-shadow: 0 2px 6px rgba(0,123,255,0.4); border-color: transparent;
+    }
+    .mini-cal-day.empty { pointer-events: none; }
+    
+    .mini-cal-slots-box {
+        padding: 20px; border-top: 1px solid #eee; background: #fafbfc; min-height: 80px;
+    }
+    
+    .time-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(105px, 1fr));
+      gap: 12px;
+    }
+    
+    .time-slot-badge {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #fff; color: #007bff; padding: 12px 10px;
+      border-radius: 8px; font-size: 0.95rem; cursor: default; font-weight: bold;
+      border: 1px solid #b8daff; box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    
+    .slot-clock-icon {
+      width: 16px;
+      height: 16px;
+      margin-right: 6px;
+    }
+
     .tony-highlight { color: #0000FF !important; font-style: italic !important; font-weight: bold !important; }
 
     /* --- RESPONSIVE ADJUSTMENTS --- */
@@ -324,7 +380,10 @@
       .ty-right-panel { flex-basis: 40%; border-top: none; }
       .ty-detail-item { font-size: 20px; padding: 12px 0; }
       .steps-container { font-size: 1.4rem; padding: 25px 30px; }
+      .mini-cal-day { font-size: 1.1rem; }
     }
+    
+    /* 手機版滿版設計 Mobile View */
     @media (max-width: 768px) {
       .hero h1 { font-size: 2rem; }
       .steps-container { font-size: 1.1rem; padding: 20px; margin: -20px 20px 30px; gap: 18px; }
@@ -334,8 +393,40 @@
       .course-block h2 { font-size: 1.3rem; margin-bottom: 10px; }
       .course-block .price { font-size: 1.2rem; }
       
+      /* Email Popup Full Width */
+      .email-popup-content {
+        width: 100%;
+        height: 100%;
+        max-width: 100%;
+        border-radius: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 30px 20px;
+        box-sizing: border-box;
+      }
+
+      /* Thank You Widget 完全滿版 (移除兩側留白) */
+      #thank-you-page {
+        padding: 20px 0; /* 移除左右邊界 padding */
+      }
+      .thank-you-container {
+        border-radius: 0; /* 移除圓角貼齊螢幕 */
+        border-left: none;
+        border-right: none;
+        box-shadow: none;
+      }
+      .ty-left-panel, .ty-right-panel {
+        padding: 30px 20px; /* 內部 padding 縮小，給予內容更多空間 */
+      }
+      .ty-header {
+        font-size: 24px; /* 手機版標題略縮 */
+      }
+      .ty-checkmark {
+        font-size: 36px;
+      }
       .ty-detail-item span:first-child { white-space: nowrap; margin-right: 15px; flex-shrink: 0; }
-      .ty-detail-item span:last-child { text-align: right; word-break: break-all;}
+      .ty-detail-item span:last-child { text-align: right; word-break: break-all; }
     }
   </style>
 </head>
@@ -414,7 +505,7 @@
         <!-- 放大的取消按鈕 -->
         <button class="large-cancel-btn" onclick="closeEmailPopup()">取消</button>
         
-        <!-- 付款資訊區塊 (與原設計相同) -->
+        <!-- 付款資訊區塊 -->
         <div class="payment-info-section">
           <h4>付款資訊</h4>
           <div class="payment-method">
@@ -442,23 +533,18 @@
                 <div class="ty-detail-item"><span>電子信箱</span><span id="ty-customer-email"></span></div>
             </div>
 
+            <!-- 動態載入日曆預覽區 -->
             <div id="ty-booking-container" style="margin-top: 30px;">
-                <h3 style="color: #333;">下一步：預約課程</h3>
-                <p style="color: #555;">請點擊下方專屬連結，預約您的上課時間：</p>
-                <div id="ty-booking-links-list"></div>
-            </div>
-
-            <div class="payment-warning-box">
-                <p class="payment-warning-text">
-                    ⚠️ 預約課程只保留2小時, 請聯繫<br>
-                    <span class="tony-highlight">Tony線上美語家教</span>
-                    繳納課程費用。
-                </p>
+                <h3 style="color: #333; margin-bottom: 5px;">可預約時段預覽</h3>
+                <p style="color: #666; font-size: 0.95rem; margin-top: 0;">點擊日期即可查詢當日時段 (僅供參考，請聯繫老師預約)：</p>
+                <div id="calendar-preview-container">
+                    <!-- 新版互動式日曆將在此處渲染 -->
+                </div>
             </div>
             
             <div class="payment-instructions" style="margin-top: 30px;">
-                <h3 style="color: #333; margin-bottom: 10px;">如何付款:</h3>
-                <p><a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="ty-line-link">請點選加入Line: myavalon</a></p>
+                <h3 style="color: #333; margin-bottom: 10px;">如何付款與劃位:</h3>
+                <p><a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="ty-line-link">請點選加入Line: myavalon</a> 確認付款資訊與正式預約</p>
             </div>
             
             <div style="margin-top: 30px; text-align: center;">
@@ -479,12 +565,22 @@
 
   <script>
     const products =[
-      { id: 'trial-25', name: '體驗課程 25 分鐘', price: 350, bookingLink: 'https://tonyonlineenglish.netlify.app//25mbk' },
-      { id: 'trial-50', name: '體驗課程 50 分鐘', price: 550, bookingLink: 'https://tonyonlineenglish.netlify.app/booking' }
+      { id: 'trial-25', name: '體驗課程 25 分鐘', price: 350, gasUrl: 'https://script.google.com/macros/s/AKfycbyZMqL135r1VvRL7pdW6EB6nmeLja-MhQt95ri5xa9j9Z810WfMb7_Vm156MPFn8t5Q/exec' },
+      { id: 'trial-50', name: '體驗課程 50 分鐘', price: 550, gasUrl: 'https://script.google.com/macros/s/AKfycbyWvhW6fp_ohPEvPK226KtNiQLCyAVMl77zV0Hq0k_TcEk3F1ni9qVcJystGUovVjTMGQ/exec' }
     ];
     const logoUrl = "https://ik.imagekit.io/lql1uveoc/Abstract%20Special%20Offer%20Announcement%20Free%20Facebook%20Post.png?updatedAt=1754673537869";
     
     let currentCheckoutItem = null;
+    let previewGasUrl = "";
+    let miniCalDate = new Date();
+    let selectedMiniDate = "";
+    
+    // 全新：快取系統，已讀取的資料不用重讀
+    let cachedSlots = {};
+    let userHasManuallyClicked = false;
+    
+    // ★ 核心修復：嚴格限制只能點選未來 20 天以內 ★
+    const MAX_DAYS_LIMIT = 20;
 
     function directCheckout(id) {
       currentCheckoutItem = products.find(p => p.id === id);
@@ -511,7 +607,6 @@
         document.getElementById("popup-product-title").innerText = `預約 ${currentCheckoutItem.name}`;
         const overlay = document.getElementById("email-popup-overlay");
         overlay.style.display = "flex";
-        // 觸發漸變動畫
         setTimeout(() => { overlay.classList.add('visible'); }, 10);
       }
     }
@@ -535,7 +630,6 @@
       const blacklist =["8888@gmail.com", "z0970957377@gmail.com", "blockthisperson@gmail.com"];
       const cleanEmail = email.toLowerCase().trim();
 
-      // 原本您的黑名單錯誤邏輯
       if (blacklist.includes(cleanEmail)) {
           const errorHtml = `你已經上過一堂體驗課程或其他原因無法下訂單 ，請聯繫 <span class="tony-highlight">Tony線上美語家教</span> Thanks. (<a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" style="color: #00B900; font-weight: bold; text-decoration: underline;">Line</a>)`;
           const popupContent = document.getElementById('popup-inner-content');
@@ -552,7 +646,6 @@
 
       closeEmailPopup();
       
-      // 呼叫顯示 Thank You 頁面的功能
       showThankYouPage({ 
           email: email, 
           item: currentCheckoutItem, 
@@ -560,7 +653,7 @@
           timestamp: timestamp 
       });
 
-      // 送出訂單給 GAS (包含 imageUrls: logoUrl)
+      // 傳送購買資訊給您的訂單系統
       fetch("https://script.google.com/macros/s/AKfycbyU13Wivs341DMPupk9EKrL9u908zrHNOVqZUXri-hGezkk6qj_7loQGIf0GCfmvj_f/exec", {
         method: "POST",
         mode: "no-cors",
@@ -581,9 +674,10 @@
     function showThankYouPage(orderData) {
         document.getElementById("product-page").style.display = "none";
         document.getElementById("thank-you-page").style.display = "block";
-        window.scrollTo({ top: 0, behavior: 'smooth' });
+        
+        // 畫面瞬間跳到最上方，讓使用者清楚看到結帳完成
+        window.scrollTo(0, 0);
 
-        // 填寫訂單資訊
         document.getElementById('ty-order-id').innerText = orderData.orderId;
         document.getElementById('ty-order-timestamp').innerText = orderData.timestamp;
         
@@ -595,11 +689,6 @@
             tyCustomerEmail.innerText = orderData.email;
         }
 
-        // 填寫預約連結
-        const linksList = document.getElementById("ty-booking-links-list");
-        linksList.innerHTML = `<a href="${orderData.item.bookingLink}" target="_blank" class="ty-booking-link">點此預約：${orderData.item.name}</a>`;
-
-        // 填寫右側訂單摘要
         const tyCartContainer = document.getElementById('ty-cart-items-container');
         tyCartContainer.innerHTML = `
           <div class="ty-order-item">
@@ -610,6 +699,245 @@
           </div>
         `;
         document.getElementById('ty-total-price').innerText = `NT$ ${orderData.item.price.toLocaleString()}`;
+
+        // 初始化並啟動智慧型日曆加載
+        initMiniCalendar(orderData.item.gasUrl);
+    }
+
+    function formatTime12H(timeStr) {
+        if(!timeStr) return ""; 
+        const [h, m] = timeStr.split(':'); 
+        let hour = parseInt(h); 
+        const suffix = hour >= 12 ? 'PM' : 'AM'; 
+        hour = hour % 12 || 12; 
+        return `${hour}:${m} ${suffix}`;
+    }
+
+    function fmtDate(d) {
+        return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, '0') + "-" + String(d.getDate()).padStart(2, '0');
+    }
+
+    // --- 全新輕量級互動式日曆 (支援快取與背景分段加載) --- //
+    function initMiniCalendar(gasUrl) {
+        previewGasUrl = gasUrl;
+        miniCalDate = new Date();
+        selectedMiniDate = ""; 
+        cachedSlots = {};
+        userHasManuallyClicked = false;
+
+        const container = document.getElementById('calendar-preview-container');
+        container.innerHTML = `
+            <div class="mini-cal-wrapper">
+                <div class="mini-cal-header">
+                    <button id="cal-prev-btn" onclick="changeMiniMonth(-1)">❮</button>
+                    <span id="mini-cal-title"></span>
+                    <button id="cal-next-btn" onclick="changeMiniMonth(1)">❯</button>
+                </div>
+                <div class="mini-cal-weekdays">
+                    <span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span>
+                </div>
+                <div class="mini-cal-days" id="mini-cal-days"></div>
+                <div class="mini-cal-slots-box" id="mini-cal-slots-content">
+                    <div style="text-align:center; color:#666; margin-top:10px;">⏳ 正在自動為您尋找最近的可用時段...</div>
+                </div>
+            </div>
+        `;
+        
+        renderMiniCalendar();
+        // 1. 優先請求第 0-2 天 (前 3 天)
+        fetchBatchSlots(0, 3, true);
+    }
+
+    function renderMiniCalendar() {
+        const year = miniCalDate.getFullYear();
+        const month = miniCalDate.getMonth();
+        document.getElementById('mini-cal-title').innerText = `${year}年 ${month + 1}月`;
+
+        // 取得「今天」和「最高上限(第20天)」的日期物件，用來鎖死不給亂點
+        const today = new Date();
+        today.setHours(0,0,0,0);
+        
+        const maxDate = new Date(today);
+        maxDate.setDate(maxDate.getDate() + MAX_DAYS_LIMIT);
+
+        // 控制翻頁按鈕是否鎖死
+        const prevBtn = document.getElementById('cal-prev-btn');
+        const nextBtn = document.getElementById('cal-next-btn');
+
+        // 當前月 = 今天所在的月，鎖死「上一月」
+        if (year === today.getFullYear() && month === today.getMonth()) {
+            prevBtn.classList.add('disabled');
+        } else {
+            prevBtn.classList.remove('disabled');
+        }
+
+        // 當前月 = 第20天所在的月，鎖死「下一月」
+        if (year === maxDate.getFullYear() && month === maxDate.getMonth()) {
+            nextBtn.classList.add('disabled');
+        } else {
+            nextBtn.classList.remove('disabled');
+        }
+
+        const firstDay = new Date(year, month, 1).getDay();
+        const daysInMonth = new Date(year, month + 1, 0).getDate();
+
+        let html = '';
+        for(let i = 0; i < firstDay; i++) {
+            html += `<div class="mini-cal-day empty"></div>`;
+        }
+
+        for(let d = 1; d <= daysInMonth; d++) {
+            const cellDate = new Date(year, month, d);
+            const cellDateStr = fmtDate(cellDate);
+
+            let classes = "mini-cal-day";
+            
+            // ★ 防線：如果比今天早，或者超過了 20 天以後，一律徹底反灰鎖死
+            if (cellDate < today || cellDate > maxDate) {
+                classes += " disabled";
+                html += `<div class="${classes}">${d}</div>`;
+            } else {
+                if (cellDateStr === selectedMiniDate) classes += " selected";
+                if (cellDate.getTime() === today.getTime()) classes += " today";
+
+                // 只有在範圍內的合法日期才允許點擊觸發
+                html += `<div class="${classes}" onclick="handleMiniDateClick('${cellDateStr}')">${d}</div>`;
+            }
+        }
+        document.getElementById('mini-cal-days').innerHTML = html;
+    }
+
+    function changeMiniMonth(offset) {
+        miniCalDate.setMonth(miniCalDate.getMonth() + offset);
+        renderMiniCalendar();
+    }
+
+    // 背景分批抓取資料邏輯，最高就讀到第 20 天
+    async function fetchBatchSlots(offset, days, isInitial) {
+        const baseDate = new Date();
+        baseDate.setDate(baseDate.getDate() + offset);
+        const startStr = fmtDate(baseDate);
+
+        try {
+            const fetchUrl = `${previewGasUrl}?action=getBatchSlots&startDate=${startStr}&days=${days}`;
+            const res = await fetch(fetchUrl);
+            const data = await res.json();
+
+            // 標記這些天數為已抓取
+            for(let i = 0; i < days; i++) {
+                let d = new Date(baseDate);
+                d.setDate(d.getDate() + i);
+                let dStr = fmtDate(d);
+                if (!cachedSlots[dStr]) cachedSlots[dStr] = { slots:[] };
+            }
+
+            // 將真實資料合併入快取
+            if (data && typeof data === 'object') {
+                Object.keys(data).forEach(key => {
+                    cachedSlots[key] = data[key];
+                });
+            }
+
+            // 判斷並自動選取最近有空的一天
+            checkAndAutoSelect();
+
+            // 觸發下一個背景抓取階段，嚴格停在 20 天以內 (0-20 天共21天)
+            if (isInitial) {
+                // 讀完 0~2 天後，接著讀取第 3~6 天 (共 4 天)
+                fetchBatchSlots(3, 4, false);
+            } else if (offset === 3) {
+                // 讀完 3~6 天後，接著讀取第 7~13 天 (共 7 天)
+                fetchBatchSlots(7, 7, false);
+            } else if (offset === 7) {
+                // 讀完 7~13 天後，接著讀取最後的 14~20 天 (共 7 天)
+                fetchBatchSlots(14, 7, false);
+            }
+            // 到達第 14 階段後 (14+7-1 = 20) 就停止載入。
+
+        } catch (e) {
+            console.error("Batch fetch failed:", e);
+            if (isInitial) {
+                document.getElementById('mini-cal-slots-content').innerHTML = '<div style="text-align:center; padding: 20px; color: #d9534f;">⚠️ 載入失敗，請手動點選日期重試</div>';
+            }
+        }
+    }
+
+    // 檢查快取，如果還沒選擇日期或當前選的日期沒空檔，自動幫用戶選最近有空的那一天
+    function checkAndAutoSelect() {
+        if (userHasManuallyClicked) return; // 尊重使用者手動點擊的意願
+
+        // 如果目前已選取的日期有空檔，就不覆蓋
+        if (selectedMiniDate && cachedSlots[selectedMiniDate] && cachedSlots[selectedMiniDate].slots && cachedSlots[selectedMiniDate].slots.length > 0) {
+            return;
+        }
+
+        const todayStr = fmtDate(new Date());
+        const sortedDates = Object.keys(cachedSlots).sort();
+
+        for (let dStr of sortedDates) {
+            if (dStr < todayStr) continue;
+            if (cachedSlots[dStr] && cachedSlots[dStr].slots && cachedSlots[dStr].slots.length > 0) {
+                selectedMiniDate = dStr;
+                renderMiniCalendar();
+                renderSlotsForDate(dStr);
+                return; // 找到就停止
+            }
+        }
+
+        // 如果目前抓回來的資料完全沒空檔，預設選取今天並顯示無時段 (等待下一批資料覆蓋)
+        if (!selectedMiniDate) {
+            selectedMiniDate = todayStr;
+            renderMiniCalendar();
+            renderSlotsForDate(todayStr);
+        }
+    }
+
+    // 當使用者「手動」點擊某一天 (超過 20 天的日期已無法被點擊)
+    async function handleMiniDateClick(dateStr) {
+        userHasManuallyClicked = true;
+        selectedMiniDate = dateStr;
+        renderMiniCalendar(); 
+
+        if (cachedSlots[dateStr]) {
+            // 如果這天已經被背景讀取過了，零延遲瞬間顯示！
+            renderSlotsForDate(dateStr);
+        } else {
+            // 如果點擊了尚未讀取的日期，單獨為這天發送請求
+            const slotsBox = document.getElementById('mini-cal-slots-content');
+            slotsBox.innerHTML = '<div style="text-align:center; padding: 20px; color: #666;">⏳ 正在為您查詢該日時段...</div>';
+
+            try {
+                const fetchUrl = `${previewGasUrl}?action=getBatchSlots&startDate=${dateStr}&days=1`;
+                const res = await fetch(fetchUrl);
+                const data = await res.json();
+                
+                cachedSlots[dateStr] = data[dateStr] || { slots:[] };
+                renderSlotsForDate(dateStr);
+            } catch (e) {
+                slotsBox.innerHTML = '<div style="text-align:center; padding: 20px; color: #d9534f;">⚠️ 查詢失敗，請稍後重試</div>';
+            }
+        }
+    }
+
+    // 將時段內容繪製到畫面上
+    function renderSlotsForDate(dateStr) {
+        if (selectedMiniDate !== dateStr) return; // 避免異步回傳覆蓋當前畫面
+
+        const slotsBox = document.getElementById('mini-cal-slots-content');
+        const dayData = cachedSlots[dateStr];
+
+        if (dayData && dayData.slots && dayData.slots.length > 0) {
+            const times = dayData.slots.map(s => s.time).sort();
+            
+            // 替每個時段加入指定的時鐘 Icon
+            const clockIcon = '<img src="https://ik.imagekit.io/lql1uveoc/Booking%20Website%20%E9%A0%90%E7%B4%84/clock-2.png" class="slot-clock-icon" alt="clock">';
+            
+            slotsBox.innerHTML = `<div class="time-grid">` +
+                times.map(t => `<div class="time-slot-badge">${clockIcon}${formatTime12H(t)}</div>`).join('') +
+                `</div>`;
+        } else {
+            slotsBox.innerHTML = '<div style="text-align:center; padding: 20px; color: #999;">本日無可用時段</div>';
+        }
     }
 
     function returnToOriginalPage() {
@@ -617,7 +945,7 @@
       const emailInput = document.getElementById("popup-email-input");
       if(emailInput) emailInput.value = "";
       document.getElementById("product-page").style.display = "block";
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      window.scrollTo(0, 0);
     }
   </script>
 </body>
