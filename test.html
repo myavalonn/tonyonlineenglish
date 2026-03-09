@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <title>預約體驗課程-Tony線上美語家教</title>
+  <meta property="og:title" content="預約體驗課程-Tony線上美語家教">
+  <meta property="og:description" content="預約體驗課程25/50 分鐘線上體驗課熱烈預約中！完成問卷即可安排專屬學習進度，快點擊加入 LINE 聯繫 Tony 老師。">
+  <meta property="og:image" content="https://ik.imagekit.io/lql1uveoc/Abstract%20Special%20Offer%20Announcement%20Free%20Facebook%20Post.png?updatedAt=1754673537869">
+  <meta property="og:url" content="https://tonyonlineenglish.netlify.app/booking">
+  <meta property="og:type" content="website">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <script src="layout-manager.js"></script>
+
+  <style>
+    :root {
+      --primary-color: #3b414a;
+      --accent-blue: #007bff;
+      --line-green: #00B900;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: #f8f9fa;
+      margin: 0;
+      padding: 0;
+      color: #333;
+    }
+
+    /* --- HERO SECTION --- */
+    .hero {
+      position: relative;
+      height: 30vh; 
+      min-height: 200px; 
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      color: white;
+      overflow: hidden;
+      background-color: #222;
+    }
+    .hero-bg {
+      position: absolute;
+      top: -20px; left: -20px; right: -20px; bottom: -20px;
+      background: url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/samantha-borges-EeS69TTPQ18-unsplash.jpg?updatedAt=1772773838628') no-repeat center center;
+      background-size: cover;
+      filter: blur(6px);
+      z-index: 0;
+      animation: slideInLeftBg 1.2s ease-out forwards;
+    }
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+    .hero h1 {
+      font-size: 3rem;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.8), 0 0 10px rgba(0,0,0,0.6);
+      animation: slideInRightGlow 1.8s ease-out forwards;
+    }
+    .hero p {
+      font-size: 1.5rem;
+      font-style: italic;
+      margin: 0;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.8), 0 0 10px rgba(0,0,0,0.6);
+      animation: slideInTopText 1.2s ease-out forwards;
+    }
+
+    @keyframes slideInLeftBg {
+      0% { transform: translateX(-100%); opacity: 0; }
+      100% { transform: translateX(0); opacity: 1; }
+    }
+    @keyframes slideInRightGlow {
+      0% { transform: translateX(100vw); opacity: 0; text-shadow: 2px 2px 8px rgba(0,0,0,0); }
+      60% { transform: translateX(0); opacity: 1; text-shadow: 2px 2px 8px rgba(0,0,0,0.8); }
+      80% { text-shadow: 0 0 15px #fff, 0 0 30px var(--accent-blue), 0 0 45px var(--accent-blue); transform: scale(1.02); }
+      100% { transform: translateX(0) scale(1); opacity: 1; text-shadow: 2px 2px 8px rgba(0,0,0,0.8), 0 0 10px rgba(0,0,0,0.6); }
+    }
+    @keyframes slideInTopText {
+      0% { transform: translateY(-50px); opacity: 0; }
+      100% { transform: translateY(0); opacity: 1; }
+    }
+
+    /* --- STEPS LIST --- */
+    .steps-container {
+      max-width: 800px;
+      margin: -40px auto 40px;
+      padding: 30px 40px;
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      position: relative;
+      z-index: 10;
+      display: flex;
+      flex-direction: column;
+      gap: 25px;
+      font-size: 1.6rem;
+      color: #333;
+    }
+    .step-item {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+    .step-number {
+      background-color: #000;
+      color: #fff;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      flex-shrink: 0;
+      font-size: 1.2rem;
+    }
+    .step-text {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      word-break: break-word;
+    }
+    .line-text {
+      color: var(--line-green);
+      font-weight: bold;
+      text-decoration: none;
+    }
+    .step-icon {
+      height: 1.2em;
+      vertical-align: middle;
+      cursor: pointer;
+    }
+
+    /* --- COURSE PROMPT --- */
+    .course-prompt {
+      text-align: center;
+      margin: 40px auto 20px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      color: #555;
+    }
+    .prompt-text {
+      font-size: 1.1rem;
+      font-weight: bold;
+    }
+    .inline-arrow {
+      color: var(--accent-blue);
+      animation: bounceInline 2s infinite;
+    }
+    @keyframes bounceInline {
+      0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+      40% { transform: translateY(-4px); }
+      60% { transform: translateY(-2px); }
+    }
+
+    /* --- PRODUCT BLOCKS --- */
+    .product-grid {
+      max-width: 900px;
+      margin: 0 auto 40px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      padding: 0 20px;
+    }
+    .course-block {
+      background: white;
+      border-radius: 16px;
+      padding: 50px 20px;
+      text-align: center;
+      border: 2px solid #eee;
+      transition: border-color 0.3s, transform 0.2s;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      cursor: pointer;
+    }
+    .course-block:hover { 
+      border-color: var(--accent-blue); 
+      transform: translateY(-5px);
+    }
+    .course-block h2 { font-size: 1.8rem; margin-bottom: 15px; }
+    .course-block .price {
+      font-size: 2rem;
+      font-weight: bold;
+      color: var(--accent-blue);
+    }
+
+    /* --- PROMO IMAGE --- */
+    .promo-image-container {
+      text-align: center;
+      margin: 40px 20px 60px;
+    }
+    .promo-image-container img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    }
+
+    /* --- EMAIL POPUP WITH PAYMENT INFO --- */
+    #email-popup-overlay {
+      position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background-color: rgba(0, 0, 0, 0.7); z-index: 2000;
+      display: none; justify-content: center; align-items: center;
+      opacity: 0; transition: opacity 0.3s ease-in-out;
+    }
+    #email-popup-overlay.visible { display: flex; opacity: 1; }
+    .email-popup-content {
+      background-color: white; padding: 40px; border-radius: 12px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2); position: relative;
+      width: 90%; max-width: 500px; text-align: center;
+      transform: scale(0.9); transition: transform 0.3s ease-in-out;
+    }
+    #email-popup-overlay.visible .email-popup-content { transform: scale(1); }
+    
+    .email-popup-content h3 { font-size: 22px; color: #333; margin-top: 0; margin-bottom: 15px; }
+    .email-popup-content input[type="email"] {
+      width: 100%; padding: 15px; font-size: 18px;
+      border: 1px solid #ccc; border-radius: 8px;
+      box-sizing: border-box; text-align: center; margin-bottom: 20px;
+    }
+    #popup-checkout-btn {
+      width: 100%; background-color: #3b414a; color: white; border: none;
+      padding: 15px; font-size: 20px; font-weight: bold; border-radius: 8px;
+      cursor: pointer; transition: background-color 0.3s ease;
+    }
+    #popup-checkout-btn:hover { background-color: #525964; }
+    
+    .large-cancel-btn {
+      font-size: 24px; 
+      font-weight: bold;
+      color: #888;
+      background: none;
+      border: none;
+      margin-top: 25px;
+      cursor: pointer;
+      text-decoration: underline;
+    }
+    .large-cancel-btn:hover { color: #555; }
+
+    .payment-info-section { margin-top: 25px; padding-top: 20px; border-top: 1px solid #eee; text-align: left; }
+    .payment-info-section h4 { margin: 0 0 10px 0; font-size: 18px; color: #333; }
+    .payment-method { 
+      background-color: #f9f9f9; border: 1px solid #ddd; 
+      border-radius: 6px; padding: 15px; display: flex; 
+      align-items: center; gap: 15px; font-size: 16px; color: #333;
+    }
+    .icon-circle { 
+      border: 2px solid black; border-radius: 50%; width: 18px; height: 18px; 
+      display: flex; justify-content: center; align-items: center; flex-shrink: 0; 
+    }
+    .icon-circle div { width: 8px; height: 8px; background-color: black; border-radius: 50%; }
+    .tls-info { text-align: center; color: #888; font-size: 12px; margin-top: 15px; }
+    .error-container { color: #d9534f; font-size: 18px; padding: 20px; line-height: 1.6; }
+
+    /* --- THANK YOU PAGE --- */
+    #thank-you-page { display: none; padding: 40px 20px; box-sizing: border-box; }
+    .thank-you-container { 
+      max-width: 900px; width: 100%; margin: 0 auto; 
+      background-color: #f9f9f9; border: 1px solid #e0e0e0; 
+      display: flex; flex-direction: column; border-radius: 12px; overflow: hidden;
+    }
+    .ty-left-panel { background-color: white; padding: 40px; }
+    .ty-right-panel { background-color: #f9f9f9; padding: 40px; border-top: 1px solid #eee; }
+    
+    .ty-checkmark { font-size: 48px; color: #27ae60; }
+    .ty-header { display: flex; align-items: center; gap: 15px; font-size: 28px; color: #333; margin: 15px 0; }
+    .ty-message { color: #555; line-height: 1.6; font-size: 1.1rem; }
+    .ty-order-details { margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; }
+    .ty-detail-item { display: flex; justify-content: space-between; padding: 8px 0; font-size: 16px; align-items: flex-start; }
+    
+    .ty-summary-header { font-size: 22px; color: #555; margin: 0 0 20px 0; border-bottom: 1px solid #ddd; padding-bottom: 10px;}
+    .ty-order-item { padding-bottom: 15px; border-bottom: 1px solid #eee; }
+    .ty-item-details { display: flex; justify-content: space-between; align-items: flex-start; gap: 15px; font-size: 18px;}
+    .ty-item-info { font-weight: bold; color: #333; }
+    .ty-item-price { font-weight: bold; white-space: nowrap; color: #333;}
+    .cart-total { margin-top: 20px; padding-top: 20px; border-top: 2px solid #333; }
+    .cart-total .total-row { display: flex; justify-content: space-between; font-size: 22px; font-weight: bold; color: #000; }
+
+    #celebration-icon { font-size: 1.5em; position: relative; }
+    @keyframes confetti-fall { 
+      0% { transform: translateY(-100%) rotate(0deg); opacity: 1; } 
+      100% { transform: translateY(100px) rotate(360deg); opacity: 0; } 
+    }
+    .celebration-icon::before, .celebration-icon::after { 
+      content: '🎊'; position: absolute; top: -20px; left: 0; 
+      font-size: 20px; opacity: 0; animation: confetti-fall 2s ease-in-out infinite; 
+    }
+    .celebration-icon::after { content: '🎉'; left: 20px; animation-delay: 0.5s; }
+    
+    #ty-order-id { font-size: 1.5em; color: var(--accent-blue); font-weight: bold; }
+    .ty-line-link { color: var(--line-green); font-weight: bold; text-decoration: none; font-size: 1.1rem; }
+
+    /* --- CALENDAR PREVIEW STYLES --- */
+    .calendar-wrapper { border: 1px solid #ddd; border-radius: 8px; overflow: hidden; margin-top: 15px; background: white;}
+    .date-tabs { 
+      display: flex; overflow-x: auto; background: #f1f1f1; 
+      padding: 12px; gap: 10px; scrollbar-width: thin;
+    }
+    .date-tabs::-webkit-scrollbar { height: 6px; }
+    .date-tabs::-webkit-scrollbar-thumb { background-color: #ccc; border-radius: 10px; }
+    .date-tab {
+      background: white; border: 1px solid #ccc; padding: 8px 16px;
+      border-radius: 20px; cursor: pointer; white-space: nowrap;
+      font-weight: bold; color: #555; transition: 0.2s;
+    }
+    .date-tab.active { background: var(--accent-blue); color: white; border-color: var(--accent-blue); }
+    .time-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+      gap: 12px; padding: 20px; background: white;
+      max-height: 250px; overflow-y: auto;
+    }
+    .time-slot-badge {
+      background: #eefaff; color: #007bff; padding: 12px 10px; text-align: center;
+      border-radius: 8px; font-size: 0.95rem; cursor: default; font-weight: bold;
+      border: 1px solid #b8daff;
+    }
+    .tony-highlight { color: #0000FF !important; font-style: italic !important; font-weight: bold !important; }
+
+    /* --- RESPONSIVE ADJUSTMENTS --- */
+    @media (min-width: 768px) {
+      .thank-you-container { flex-direction: row; }
+      .ty-left-panel { flex-basis: 60%; border-right: 1px solid #eee; }
+      .ty-right-panel { flex-basis: 40%; border-top: none; }
+      .ty-detail-item { font-size: 20px; padding: 12px 0; }
+      .steps-container { font-size: 1.4rem; padding: 25px 30px; }
+    }
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 2rem; }
+      .steps-container { font-size: 1.1rem; padding: 20px; margin: -20px 20px 30px; gap: 18px; }
+      .step-number { width: 30px; height: 30px; font-size: 1rem; }
+      .product-grid { grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 15px; }
+      .course-block { padding: 30px 10px; } 
+      .course-block h2 { font-size: 1.3rem; margin-bottom: 10px; }
+      .course-block .price { font-size: 1.2rem; }
+      .ty-detail-item span:first-child { white-space: nowrap; margin-right: 15px; flex-shrink: 0; }
+      .ty-detail-item span:last-child { text-align: right; word-break: break-all;}
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HERO SECTION -->
+  <header class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <h1>Tony線上美語家教</h1>
+      <p>English is the Future!</p>
+    </div>
+  </header>
+
+  <main id="product-page">
+    <!-- STEPS -->
+    <section class="steps-container">
+      <div class="step-item">
+        <div class="step-number">1</div>
+        <div class="step-text">
+          加入Line: <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="line-text">Myavalon</a> 
+          <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank"><img class="step-icon" src="https://ik.imagekit.io/lql1uveoc/line.png?updatedAt=1761926064215" alt="Line"></a>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-number">2</div>
+        <div class="step-text">或是 Email: TonyOnlineEnglish@gmail.com</div>
+      </div>
+      <div class="step-item">
+        <div class="step-number">3</div>
+        <div class="step-text">
+          完成 學習需求問卷 
+          <a href="https://docs.google.com/forms/d/e/1FAIpQLSfk2FL_YLvCUVIJ4l03NyfoofHPxzWXP-MbODb9V5dEHWpHRw/viewform?usp=header" target="_blank"><img class="step-icon" src="https://ik.imagekit.io/lql1uveoc/external-link.png?updatedAt=1754911187731" alt="Link"></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROMPT -->
+    <div class="course-prompt">
+      <span class="prompt-text">點選體驗課程</span>
+      <svg class="inline-arrow" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <line x1="12" y1="5" x2="12" y2="19"></line>
+        <polyline points="19 12 12 19 5 12"></polyline>
+      </svg>
+    </div>
+
+    <!-- PRODUCT BLOCKS -->
+    <section class="product-grid">
+      <div class="course-block" onclick="directCheckout('trial-25')">
+        <h2>25 分鐘</h2>
+        <div class="price">NT$ 350</div>
+      </div>
+
+      <div class="course-block" onclick="directCheckout('trial-50')">
+        <h2>50 分鐘</h2>
+        <div class="price">NT$ 550</div>
+      </div>
+    </section>
+
+    <!-- PROMO IMAGE -->
+    <div class="promo-image-container">
+      <img src="https://ik.imagekit.io/lql1uveoc/Abstract%20Special%20Offer%20Announcement%20Free%20Facebook%20Post.png?updatedAt=1754673537869" alt="Special Offer">
+    </div>
+  </main>
+
+  <!-- DIRECT EMAIL CHECKOUT POPUP -->
+  <div id="email-popup-overlay">
+    <div class="email-popup-content">
+      <div id="popup-inner-content">
+        <h3 id="popup-product-title" style="color: var(--accent-blue);"></h3>
+        <h3>請輸入您的電子信箱</h3>
+        <input type="email" id="popup-email-input" placeholder="example@gmail.com" required>
+        
+        <button id="popup-checkout-btn" onclick="handleCheckout()">確認結帳</button>
+        
+        <!-- 放大的取消按鈕 -->
+        <button class="large-cancel-btn" onclick="closeEmailPopup()">取消</button>
+        
+        <!-- 付款資訊區塊 -->
+        <div class="payment-info-section">
+          <h4>付款資訊</h4>
+          <div class="payment-method">
+            <div class="icon-circle"><div></div></div>
+            <span>銀行轉帳或是Line Pay 付款 (iPass Money)</span>
+          </div>
+        </div>
+        <p class="tls-info">所有數據都透過安全 TLS 連線進行加密傳輸</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- THANK YOU PAGE -->
+  <div id="thank-you-page">
+    <div class="thank-you-container">
+        <!-- 左側：成功訊息與訂單資訊 -->
+        <div class="ty-left-panel">
+            <div class="ty-checkmark">✓</div>
+            <h2 class="ty-header">感謝您的訂購！<span id="celebration-icon" class="celebration-icon">🎉</span></h2>
+            <p class="ty-message">您的訂單已成功建立。確認信已寄送至您的電子信箱，請檢查您的收件匣。</p>
+            
+            <div class="ty-order-details">
+                <div class="ty-detail-item"><span>訂單編號</span><span id="ty-order-id"></span></div>
+                <div class="ty-detail-item"><span>訂單時間</span><span id="ty-order-timestamp"></span></div>
+                <div class="ty-detail-item"><span>電子信箱</span><span id="ty-customer-email"></span></div>
+            </div>
+
+            <!-- 動態載入日曆預覽區 -->
+            <div id="ty-booking-container" style="margin-top: 30px;">
+                <h3 style="color: #333; margin-bottom: 5px;">可預約時段預覽</h3>
+                <p style="color: #666; font-size: 0.95rem; margin-top: 0;">以下為未來 20 天的可用時段 (僅供預覽參考，請於付款後聯繫老師預約)：</p>
+                <div id="calendar-preview-container">
+                    <!-- Javascript 將在此處渲染日曆 -->
+                </div>
+            </div>
+            
+            <div class="payment-instructions" style="margin-top: 30px;">
+                <h3 style="color: #333; margin-bottom: 10px;">如何付款與劃位:</h3>
+                <p><a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="ty-line-link">請點選加入Line: myavalon</a> 確認付款資訊與正式預約</p>
+            </div>
+            
+            <div style="margin-top: 30px; text-align: center;">
+              <a href="javascript:void(0)" onclick="returnToOriginalPage()" style="color: blue; text-decoration: underline; font-weight: bold; font-size: 18px;">回到頁面</a>
+            </div>
+        </div>
+        
+        <!-- 右側：訂單摘要 -->
+        <div class="ty-right-panel">
+            <h3 class="ty-summary-header">訂單摘要</h3>
+            <div id="ty-cart-items-container"></div>
+            <div class="cart-total">
+                <div class="total-row"><span>總計</span><span id="ty-total-price">NT$0</span></div>
+            </div>
+        </div>
+    </div>
+  </div>
+
+  <script>
+    // 替換為 GAS 的預覽網址
+    const products =[
+      { id: 'trial-25', name: '體驗課程 25 分鐘', price: 350, gasUrl: 'https://script.google.com/macros/s/AKfycbyZMqL135r1VvRL7pdW6EB6nmeLja-MhQt95ri5xa9j9Z810WfMb7_Vm156MPFn8t5Q/exec' },
+      { id: 'trial-50', name: '體驗課程 50 分鐘', price: 550, gasUrl: 'https://script.google.com/macros/s/AKfycbyWvhW6fp_ohPEvPK226KtNiQLCyAVMl77zV0Hq0k_TcEk3F1ni9qVcJystGUovVjTMGQ/exec' }
+    ];
+    const logoUrl = "https://ik.imagekit.io/lql1uveoc/Abstract%20Special%20Offer%20Announcement%20Free%20Facebook%20Post.png?updatedAt=1754673537869";
+    
+    let currentCheckoutItem = null;
+    let currentSlotsData =[];
+
+    function directCheckout(id) {
+      currentCheckoutItem = products.find(p => p.id === id);
+      if (currentCheckoutItem) {
+        // 恢復彈出視窗初始狀態
+        const popupContent = document.getElementById('popup-inner-content');
+        if(popupContent.querySelector('.error-container')) {
+          popupContent.innerHTML = `
+            <h3 id="popup-product-title" style="color: var(--accent-blue);"></h3>
+            <h3>請輸入您的電子信箱</h3>
+            <input type="email" id="popup-email-input" placeholder="example@gmail.com" required>
+            <button id="popup-checkout-btn" onclick="handleCheckout()">確認結帳</button>
+            <button class="large-cancel-btn" onclick="closeEmailPopup()">取消</button>
+            <div class="payment-info-section">
+              <h4>付款資訊</h4>
+              <div class="payment-method">
+                <div class="icon-circle"><div></div></div>
+                <span>銀行轉帳或是Line Pay 付款 (iPass Money)</span>
+              </div>
+            </div>
+            <p class="tls-info">所有數據都透過安全 TLS 連線進行加密傳輸</p>
+          `;
+        }
+        document.getElementById("popup-product-title").innerText = `預約 ${currentCheckoutItem.name}`;
+        const overlay = document.getElementById("email-popup-overlay");
+        overlay.style.display = "flex";
+        setTimeout(() => { overlay.classList.add('visible'); }, 10);
+      }
+    }
+
+    function closeEmailPopup() { 
+      const overlay = document.getElementById("email-popup-overlay");
+      overlay.classList.remove('visible');
+      setTimeout(() => { overlay.style.display = "none"; currentCheckoutItem = null; }, 300);
+    }
+
+    function generateOrderId() { 
+      let e = "#"; 
+      for (let t = 0; t < 5; t++) e += "ABCDEFGHIJKLMNOPQRSTUVWXYZ01223456789".charAt(Math.floor(36 * Math.random())); 
+      return e; 
+    }
+
+    function handleCheckout() {
+      const email = document.getElementById("popup-email-input").value;
+      if (!email.includes("@")) return alert("請輸入有效的信箱");
+
+      const blacklist =["8888@gmail.com", "z0970957377@gmail.com", "blockthisperson@gmail.com"];
+      const cleanEmail = email.toLowerCase().trim();
+
+      if (blacklist.includes(cleanEmail)) {
+          const errorHtml = `你已經上過一堂體驗課程或其他原因無法下訂單 ，請聯繫 <span class="tony-highlight">Tony線上美語家教</span> Thanks. (<a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" style="color: #00B900; font-weight: bold; text-decoration: underline;">Line</a>)`;
+          const popupContent = document.getElementById('popup-inner-content');
+          popupContent.innerHTML = `<div class="error-container">${errorHtml}</div>`;
+          return;
+      }
+
+      if (!currentCheckoutItem) return;
+
+      const orderId = generateOrderId();
+      const timestamp = new Date().toLocaleString("zh-TW", {year:"numeric", month:"long", day:"numeric", hour:"2-digit", minute:"2-digit"});
+      const productName = currentCheckoutItem.name;
+      const total = currentCheckoutItem.price;
+
+      closeEmailPopup();
+      
+      showThankYouPage({ 
+          email: email, 
+          item: currentCheckoutItem, 
+          orderId: orderId, 
+          timestamp: timestamp 
+      });
+
+      // 傳送購買資訊給您的訂單系統
+      fetch("https://script.google.com/macros/s/AKfycbyU13Wivs341DMPupk9EKrL9u908zrHNOVqZUXri-hGezkk6qj_7loQGIf0GCfmvj_f/exec", {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({ 
+          orderId: orderId, 
+          email: email, 
+          productName: productName, 
+          totalPrice: total, 
+          status: "未付款",
+          imageUrls: logoUrl
+        })
+      });
+
+      currentCheckoutItem = null;
+    }
+
+    function showThankYouPage(orderData) {
+        document.getElementById("product-page").style.display = "none";
+        document.getElementById("thank-you-page").style.display = "block";
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+
+        document.getElementById('ty-order-id').innerText = orderData.orderId;
+        document.getElementById('ty-order-timestamp').innerText = orderData.timestamp;
+        
+        const tyCustomerEmail = document.getElementById('ty-customer-email');
+        const emailParts = orderData.email.split('@');
+        if (emailParts.length === 2) {
+            tyCustomerEmail.innerHTML = `${emailParts[0]}<wbr>@${emailParts[1]}`;
+        } else {
+            tyCustomerEmail.innerText = orderData.email;
+        }
+
+        const tyCartContainer = document.getElementById('ty-cart-items-container');
+        tyCartContainer.innerHTML = `
+          <div class="ty-order-item">
+            <div class="ty-item-details">
+              <div class="ty-item-info">${orderData.item.name}</div>
+              <div class="ty-item-price">NT$ ${orderData.item.price.toLocaleString()}</div>
+            </div>
+          </div>
+        `;
+        document.getElementById('ty-total-price').innerText = `NT$ ${orderData.item.price.toLocaleString()}`;
+
+        // 開始呼叫正確的 API 載入時段
+        loadCalendar(orderData.item.gasUrl);
+    }
+
+    // ====== 從舊網站提取的正確 12 小時制時間轉換函數 ======
+    function formatTime12H(timeStr) {
+        if(!timeStr) return ""; 
+        const [h, m] = timeStr.split(':'); 
+        let hour = parseInt(h); 
+        const suffix = hour >= 12 ? 'PM' : 'AM'; 
+        hour = hour % 12 || 12; 
+        return `${hour}:${m} ${suffix}`;
+    }
+
+    // --- CALENDAR PREVIEW LOGIC --- //
+    async function loadCalendar(gasUrl) {
+      const container = document.getElementById('calendar-preview-container');
+      container.innerHTML = '<div style="text-align:center; padding: 30px; color: #666; background:#fff; border-radius:8px; border:1px solid #ddd;">⏳ 正在為您載入最新時段...</div>';
+      
+      try {
+        // ★ 核心修復點：這就是您舊網站裡面的通關密語 ★
+        const today = new Date();
+        const startStr = today.getFullYear() + "-" + String(today.getMonth() + 1).padStart(2, '0') + "-" + String(today.getDate()).padStart(2, '0');
+        
+        // 將參數掛到原本的 gasUrl 後面
+        const fetchUrl = `${gasUrl}?action=getBatchSlots&startDate=${startStr}&days=20`;
+
+        const res = await fetch(fetchUrl);
+        const data = await res.json();
+        
+        currentSlotsData = normalizeSlotsData(data);
+        
+        if(!currentSlotsData || currentSlotsData.length === 0) {
+            container.innerHTML = '<div style="text-align:center; padding: 20px; color: #666; background:#fff; border-radius:8px; border:1px solid #ddd;">目前未來 20 天無可用時段</div>';
+            return;
+        }
+        
+        renderCalendarUI(container, currentSlotsData);
+      } catch (err) {
+        console.error("Fetch calendar error:", err);
+        container.innerHTML = `<div style="text-align:center; padding: 20px; color: #d9534f; background:#fff; border-radius:8px; border:1px solid #ddd;">⚠️ 暫時無法載入時段，請直接與老師聯繫。</div>`;
+      }
+    }
+
+    // ★ 核心修復點：針對您專屬的 JSON 結構量身打造解析方式 ★
+    // 您 API 的結構是： { "2026-03-09": { slots:[{time: "10:00", ...}] }, "2026-03-10": {...} }
+    function normalizeSlotsData(data) {
+        if (!data || typeof data !== 'object') return [];
+
+        const result =[];
+        // 取出所有日期並排序
+        const dates = Object.keys(data).sort(); 
+
+        const chiDayNames =["日", "一", "二", "三", "四", "五", "六"];
+
+        dates.forEach(dateStr => {
+            const dayData = data[dateStr];
+            
+            // 如果該天裡面有 slots 陣列，且長度大於 0
+            if (dayData && dayData.slots && dayData.slots.length > 0) {
+                
+                // 1. 整理出該天的所有時間 (例如: "10:00")
+                const times = dayData.slots.map(s => s.time).sort();
+
+                // 2. 把日期轉成比較好看的格式 (例如: 03/10 (二) )
+                const d = new Date(dateStr);
+                const mm = String(d.getMonth() + 1).padStart(2, '0');
+                const dd = String(d.getDate()).padStart(2, '0');
+                const weekDay = chiDayNames[d.getDay()];
+                const displayDate = `${mm}/${dd} (${weekDay})`;
+
+                if (times.length > 0) {
+                    result.push({
+                        date: displayDate,
+                        slots: times
+                    });
+                }
+            }
+        });
+
+        return result;
+    }
+
+    function renderCalendarUI(container, data) {
+        let html = '<div class="calendar-wrapper">';
+        
+        // 渲染日期標籤
+        html += '<div class="date-tabs">';
+        data.forEach((day, index) => {
+            const displayDate = day.date; // 格式化好的日期 (MM/DD)
+            const activeClass = index === 0 ? 'active' : '';
+            html += `<button class="date-tab ${activeClass}" onclick="selectDate(${index})">${displayDate}</button>`;
+        });
+        html += '</div>';
+
+        // 渲染對應日期的時段內容
+        html += '<div id="time-slots-view" class="time-grid">';
+        html += generateTimeSlotsHtml(data[0].slots);
+        html += '</div></div>';
+
+        container.innerHTML = html;
+    }
+
+    window.selectDate = function(index) {
+        document.querySelectorAll('.date-tab').forEach((tab, i) => {
+            tab.classList.toggle('active', i === index);
+        });
+        const view = document.getElementById('time-slots-view');
+        if(view && currentSlotsData[index]) {
+            view.innerHTML = generateTimeSlotsHtml(currentSlotsData[index].slots);
+        }
+    }
+
+    function generateTimeSlotsHtml(slots) {
+        if(!slots || slots.length === 0) return '<p style="grid-column: 1/-1; text-align:center; color:#999; margin:0;">本日無可用時段</p>';
+        // 這裡套用上方定義的 12 小時制格式 (例如: 02:00 PM)
+        return slots.map(time => `<div class="time-slot-badge">${formatTime12H(time)}</div>`).join('');
+    }
+
+    function returnToOriginalPage() {
+      document.getElementById("thank-you-page").style.display = "none";
+      const emailInput = document.getElementById("popup-email-input");
+      if(emailInput) emailInput.value = "";
+      document.getElementById("product-page").style.display = "block";
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+  </script>
+</body>
+</html>
