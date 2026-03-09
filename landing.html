@@ -7,10 +7,9 @@
     <style>
         body, html { margin: 0; padding: 0; font-family: "Microsoft JhengHei", sans-serif; background-color: #fff; }
         
-        /* The Hero Section with your new photo */
+        /* Hero Section set to 50% of the viewport height */
         .hero {
-            height: 100vh;
-            /* Dark overlay helps the white text stand out against the photo */
+            height: 50vh; 
             background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
                         url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/1DE8F5F9-4E48-4960-84F7-A5B1B98B4954.jpg');
             background-size: cover;
@@ -25,16 +24,16 @@
         }
 
         .hero h1 {
-            font-size: 5rem;
+            font-size: 3.5rem; /* Slightly smaller to fit the half-height better */
             font-weight: 900;
-            margin-bottom: 30px;
+            margin-bottom: 20px;
             text-shadow: 2px 4px 15px rgba(0,0,0,0.7);
-            line-height: 1.2;
+            line-height: 1.1;
         }
 
         .btn-main {
-            padding: 18px 50px;
-            font-size: 1.4rem;
+            padding: 15px 40px;
+            font-size: 1.2rem;
             background-color: #3498db;
             color: white;
             text-decoration: none;
@@ -45,20 +44,20 @@
         }
 
         .btn-main:hover { 
-            transform: translateY(-3px); 
+            transform: translateY(-2px); 
             background-color: #2980b9;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
         }
 
-        .info-section { padding: 80px 20px; text-align: center; max-width: 1100px; margin: auto; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-top: 40px; }
-        .card { padding: 40px 20px; border-radius: 20px; background: #ffffff; border: 1px solid #eee; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
-        .card h3 { color: #3498db; font-size: 1.5rem; margin-bottom: 15px; }
-        .card p { color: #666; line-height: 1.6; }
+        /* Content Section */
+        .info-section { padding: 60px 20px; text-align: center; max-width: 1100px; margin: auto; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin-top: 30px; }
+        .card { padding: 30px 20px; border-radius: 15px; background: #ffffff; border: 1px solid #eee; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
+        .card h3 { color: #3498db; margin-bottom: 10px; }
+        .card p { color: #666; font-size: 0.95rem; }
 
         @media (max-width: 768px) { 
-            .hero h1 { font-size: 3rem; }
-            .btn-main { padding: 15px 40px; font-size: 1.1rem; }
+            .hero { height: 40vh; } /* Even shorter on mobile for better UX */
+            .hero h1 { font-size: 2.2rem; }
         }
     </style>
 </head>
