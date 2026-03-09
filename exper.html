@@ -2,158 +2,411 @@
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8">
+  <title>預約體驗課程-Tony線上美語家教</title>
+  <meta property="og:title" content="預約體驗課程-Tony線上美語家教">
+  <meta property="og:description" content="預約體驗課程25/50 分鐘線上體驗課熱烈預約中！完成問卷即可安排專屬學習進度，快點擊加入 LINE 聯繫 Tony 老師。">
+  <meta property="og:image" content="https://ik.imagekit.io/lql1uveoc/Abstract%20Special%20Offer%20Announcement%20Free%20Facebook%20Post.png?updatedAt=1754673537869">
+  <meta property="og:url" content="https://tonyonlineenglish.netlify.app/booking">
+  <meta property="og:type" content="website">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Tony線上美語家教</title>
   
+  <script src="layout-manager.js"></script>
+
   <style>
+    :root {
+      --primary-color: #3b414a;
+      --accent-blue: #007bff;
+      --line-green: #00B900;
+    }
+
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-      background: #fff;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      background: #f8f9fa;
       margin: 0;
       padding: 0;
       color: #333;
-      overflow-x: hidden;
     }
 
-    /* ---------- Hero Section ---------- */
+    /* --- HERO SECTION --- */
     .hero {
       position: relative;
-      height: 250px;
+      height: 60vh;
+      min-height: 400px;
+      background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
+                  url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/20191209online.jpg') no-repeat center center;
+      background-size: cover;
       display: flex;
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      color: white;
       text-align: center;
+      color: white;
     }
-    .hero-bg {
+    .hero h1 {
+      font-size: 3rem;
+      margin-bottom: 10px;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+    }
+    .hero p {
+      font-size: 1.5rem;
+      font-style: italic;
+      margin: 0;
+      text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    }
+
+    /* --- SIMPLIFIED STEPS --- */
+    .steps-section {
+      max-width: 1000px;
+      margin: -40px auto 40px;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+      position: relative;
+      z-index: 10;
+    }
+    .step-card {
+      background: white;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      text-align: center;
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.2s;
+    }
+    .step-card:hover { transform: translateY(-5px); }
+    .step-num {
+      width: 40px;
+      height: 40px;
+      background: #000;
+      color: #fff;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin: 0 auto 15px;
+      font-weight: bold;
+    }
+    .step-card h3 { margin: 10px 0; font-size: 1.2rem; }
+    .step-card p { font-size: 0.95rem; color: #666; margin: 0; }
+    .inline-icon { height: 1.2em; vertical-align: middle; margin-left: 5px; }
+
+    /* --- PRODUCT BLOCKS --- */
+    .product-grid {
+      max-width: 900px;
+      margin: 40px auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 30px;
+      padding: 0 20px;
+    }
+    .course-block {
+      background: white;
+      border-radius: 16px;
+      padding: 40px 20px;
+      text-align: center;
+      border: 2px solid #eee;
+      transition: border-color 0.3s;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .course-block:hover { border-color: var(--accent-blue); }
+    .course-block h2 { font-size: 1.8rem; margin-bottom: 10px; }
+    .course-block .price {
+      font-size: 2rem;
+      font-weight: bold;
+      color: var(--accent-blue);
+      margin-bottom: 25px;
+    }
+    .add-btn {
+      background: var(--primary-color);
+      color: white;
+      border: none;
+      padding: 15px 30px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      border-radius: 8px;
+      cursor: pointer;
+      width: 100%;
+    }
+    .add-btn:hover { background: #525964; }
+
+    /* --- CART ICON --- */
+    .cart-float {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: white;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+      cursor: pointer;
+      z-index: 100;
+      font-size: 24px;
+    }
+    .cart-count {
       position: absolute;
-      top: 0; left: 0; width: 100%; height: 100%;
-      background: url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/20191209online.jpg') center/cover;
-      filter: blur(5px) brightness(0.7);
-      transform: scale(1.1);
-      z-index: -1;
+      top: 0;
+      right: 0;
+      background: red;
+      color: white;
+      font-size: 12px;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      transform: scale(0);
+      transition: transform 0.2s;
     }
-    .hero-title { font-size: 2rem; margin: 0; font-weight: bold; }
-    .hero-subtitle { font-size: 1.2rem; margin-top: 8px; font-style: italic; }
+    .cart-count.visible { transform: scale(1); }
 
-    /* ---------- 步驟區 (簡化) ---------- */
-    .steps-container { max-width: 600px; margin: 20px auto; padding: 0 20px; }
-    .step-item { display: flex; align-items: center; margin-bottom: 10px; font-size: 1rem; }
-    .step-num { background: #000; color: #fff; width: 22px; height: 22px; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin-right: 10px; font-size: 0.8rem; flex-shrink: 0; }
-    .step-item a { color: inherit; text-decoration: none; display: flex; align-items: center; gap: 5px; }
-    .step-item img { height: 1.1em; }
-    .myavalon-text { color: #28a745; font-weight: bold; }
+    /* --- BOTTOM IMAGE --- */
+    .footer-image {
+      max-width: 200px;
+      margin: 60px auto;
+      display: block;
+      border-radius: 12px;
+      cursor: pointer;
+    }
 
-    /* ---------- 雙方格購物車 ---------- */
-    .booking-section { max-width: 600px; margin: 30px auto; text-align: center; padding: 0 20px; }
-    .booking-header { font-size: 1.2rem; font-weight: bold; margin-bottom: 15px; }
-    .grid-container { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-    .course-card { border: 2px solid #3b414a; border-radius: 10px; padding: 20px 5px; cursor: pointer; background: #fff; transition: 0.2s; }
-    .course-card:hover { border-color: #007bff; background: #f9f9f9; }
-    .course-time { font-size: 1rem; font-weight: bold; display: block; margin-bottom: 5px; }
-    .course-price { color: #007bff; font-weight: bold; font-size: 1.1rem; }
-
-    /* ---------- 結帳面板 (Cart Panel) ---------- */
+    /* --- OVERLAYS & PANELS (Existing Logic) --- */
     .cart-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; display: none; }
-    .cart-overlay.open { display: block; }
-    .cart-panel { position: fixed; top: 0; right: -100%; width: 100%; max-width: 400px; height: 100%; background: #fff; z-index: 1001; transition: 0.4s; display: flex; flex-direction: column; box-shadow: -5px 0 15px rgba(0,0,0,0.1); }
+    .cart-panel { position: fixed; top: 0; right: -100%; width: 100%; max-width: 500px; height: 100%; background: white; z-index: 1001; transition: 0.4s; padding: 20px; box-sizing: border-box; overflow-y: auto; }
     .cart-panel.open { right: 0; }
-    .cart-header { padding: 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
-    .cart-body { padding: 20px; overflow-y: auto; flex-grow: 1; }
-    
-    input[type="email"] { width: 100%; padding: 12px; margin: 15px 0; border: 1px solid #ccc; border-radius: 5px; font-size: 16px; box-sizing: border-box; }
-    .checkout-btn { width: 100%; background: #3b414a; color: #fff; border: none; padding: 15px; font-size: 18px; font-weight: bold; border-radius: 5px; cursor: pointer; }
-    .line-link { display: block; text-align: center; color: #00B900; font-weight: bold; text-decoration: none; margin: 15px 0; }
+    .cart-overlay.open { display: block; }
 
-    /* ---------- 底部圖片 ---------- */
-    .footer-image { width: 100%; max-width: 500px; display: block; margin: 40px auto; border-radius: 10px; padding: 0 20px; box-sizing: border-box; }
+    /* --- THANK YOU & FORM STYLES --- */
+    .cart-item { display: flex; justify-content: space-between; padding: 15px 0; border-bottom: 1px solid #eee; }
+    .email-input-field { width: 100%; padding: 12px; margin: 15px 0; border: 1px solid #ccc; border-radius: 6px; font-size: 16px; cursor: pointer; }
+    .line-link { display: block; color: var(--line-green); text-align: center; font-weight: bold; text-decoration: none; margin: 10px 0; }
+    
+    #email-popup-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); z-index: 2000; display: none; align-items: center; justify-content: center; }
+    .popup-content { background: white; padding: 30px; border-radius: 12px; width: 90%; max-width: 400px; text-align: center; }
+    
+    /* --- MOBILE RESPONSIVE --- */
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 2rem; }
+      .steps-section { grid-template-columns: 1fr; margin-top: 20px; }
+      .product-grid { grid-template-columns: 1fr; }
+    }
+
+    /* Utility Styles */
+    .tony-highlight { color: blue; font-weight: bold; font-style: italic; }
+    .error-container { color: #d9534f; padding: 20px; }
   </style>
 </head>
 <body>
 
+  <!-- HERO SECTION -->
   <header class="hero">
-    <div class="hero-bg"></div>
-    <h1 class="hero-title">Tony線上美語家教</h1>
-    <div class="hero-subtitle">English is the future.</div>
+    <h1>Tony線上美語家教</h1>
+    <p>English is the future.</p>
   </header>
 
-  <div class="steps-container">
-    <div class="step-item"><div class="step-num">1</div><a href="https://line.me/ti/p/T9YdimtG8_" target="_blank">加入Line: <span class="myavalon-text">Myavalon</span> <img src="https://ik.imagekit.io/lql1uveoc/line.png"></a></div>
-    <div class="step-item"><div class="step-num">2</div><span>或是 Email: TonyOnlineEnglish@gmail.com</span></div>
-    <div class="step-item"><div class="step-num">3</div><a href="https://docs.google.com/forms/d/e/1FAIpQLSfk2FL_YLvCUVIJ4l03NyfoofHPxzWXP-MbODb9V5dEHWpHRw/viewform" target="_blank">完成 學習需求問卷 <img src="https://ik.imagekit.io/lql1uveoc/external-link.png"></a></div>
+  <!-- FLOATING CART -->
+  <div id="cart-icon" class="cart-float">
+    🛒<span id="cart-count" class="cart-count">0</span>
   </div>
 
-  <div class="booking-section">
-    <div class="booking-header">點選體驗課程</div>
-    <div class="grid-container">
-      <div class="course-card" onclick="addToCart('trial-25', '體驗課程25分鐘', 350)">
-        <span class="course-time">25分鐘</span>
-        <span class="course-price">NT$350</span>
+  <main id="product-page">
+    <!-- SIMPLIFIED STEPS -->
+    <section class="steps-section">
+      <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="step-card">
+        <div class="step-num">1</div>
+        <h3>加入 Line</h3>
+        <p>Myavalon <img class="inline-icon" src="https://ik.imagekit.io/lql1uveoc/line.png?updatedAt=1761926064215" alt="Line"></p>
+      </a>
+      <div class="step-card">
+        <div class="step-num">2</div>
+        <h3>Email 聯繫</h3>
+        <p>TonyOnlineEnglish@gmail.com</p>
       </div>
-      <div class="course-card" onclick="addToCart('trial-50', '體驗課程50分鐘', 550)">
-        <span class="course-time">50分鐘</span>
-        <span class="course-price">NT$550</span>
-      </div>
-    </div>
-  </div>
+      <a href="https://docs.google.com/forms/d/e/1FAIpQLSfk2FL_YLvCUVIJ4l03NyfoofHPxzWXP-MbODb9V5dEHWpHRw/viewform?usp=header" target="_blank" class="step-card">
+        <div class="step-num">3</div>
+        <h3>填寫問卷</h3>
+        <p>只需 1 分鐘了解需求 <img class="inline-icon" src="https://ik.imagekit.io/lql1uveoc/external-link.png?updatedAt=1754911187731" alt="Link"></p>
+      </a>
+    </section>
 
-  <div id="cart-overlay" class="cart-overlay" onclick="toggleCart()"></div>
+    <!-- PRODUCT BLOCKS -->
+    <section class="product-grid">
+      <div class="course-block">
+        <div>
+          <h2>25 分鐘</h2>
+          <p>適合快速口說練習</p>
+        </div>
+        <div>
+          <div class="price">NT$ 350</div>
+          <button class="add-btn" onclick="handleAddToCart('trial-25')">加入購物車</button>
+        </div>
+      </div>
+
+      <div class="course-block">
+        <div>
+          <h2>50 分鐘</h2>
+          <p>完整課程深度學習</p>
+        </div>
+        <div>
+          <div class="price">NT$ 550</div>
+          <button class="add-btn" onclick="handleAddToCart('trial-50')">加入購物車</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- SHOPPING CART PICTURE AT BOTTOM -->
+    <img src="https://ik.imagekit.io/lql1uveoc/download.png?updatedAt=1754884133014" class="footer-image" alt="Shop Icon" onclick="toggleCartPanel()">
+  </main>
+
+  <!-- CART PANEL -->
+  <div id="cart-overlay" class="cart-overlay" onclick="toggleCartPanel()"></div>
   <div id="cart-panel" class="cart-panel">
-    <div class="cart-header">
-      <h3 style="margin:0">您的課程組合</h3>
-      <button onclick="toggleCart()" style="background:none; border:none; font-size:24px; cursor:pointer">×</button>
+    <h2>購物車 <button onclick="toggleCartPanel()" style="float:right; border:none; background:none; font-size:24px; cursor:pointer;">&times;</button></h2>
+    <div id="cart-items-container"></div>
+    <div style="margin-top:20px; font-size:1.5rem; font-weight:bold;">
+      總計: <span id="total-price">NT$0</span>
     </div>
-    <div class="cart-body">
-      <div id="cart-items"></div>
-      <hr>
-      <p><strong>總計：<span id="total-price">NT$0</span></strong></p>
-      
-      <div style="margin-top:30px">
-        <h3 style="margin-bottom:5px">結帳資訊</h3>
-        <p style="font-size:14px; color:666">請輸入您的電子信箱：</p>
-        <input type="email" id="customer-email" placeholder="example@gmail.com">
-        <a class="line-link" href="https://line.me/ti/p/T9YdimtG8_" target="_blank">請務必加入 Line: Myavalon</a>
-        <button class="checkout-btn" onclick="processCheckout()">確認購買</button>
-      </div>
+    <hr>
+    <h3>結帳資訊</h3>
+    <input type="email" id="email" class="email-input-field" readonly placeholder="點擊輸入電子信箱" onclick="openEmailPopup()">
+    <a class="line-link" href="https://line.me/ti/p/T9YdimtG8_" target="_blank">請加入Line: Myavalon</a>
+    <p style="font-size:12px; color:#666;">付款方式：銀行轉帳或是 Line Pay (iPass Money)</p>
+  </div>
+
+  <!-- EMAIL POPUP -->
+  <div id="email-popup-overlay">
+    <div class="popup-content">
+      <h3>請輸入您的電子信箱</h3>
+      <input type="email" id="popup-email-input" class="email-input-field" style="text-align:center;" placeholder="example@gmail.com">
+      <button class="add-btn" onclick="handleCheckout()">確認結帳</button>
+      <button style="margin-top:10px; background:none; border:none; color:grey; cursor:pointer;" onclick="closeEmailPopup()">取消</button>
     </div>
   </div>
 
-  <img class="footer-image" src="https://ik.imagekit.io/lql1uveoc/Abstract%20Special%20Offer%20Announcement%20Free%20Facebook%20Post.png">
+  <!-- THANK YOU PAGE -->
+  <div id="thank-you-page" style="display:none; padding: 40px 20px; text-align: center;">
+    <div style="max-width: 600px; margin: 0 auto; background: white; padding: 30px; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+      <h2 style="color: green;">✓ 感謝您的訂購！</h2>
+      <p>訂單編號: <span id="ty-order-id" style="font-weight:bold; color:blue;"></span></p>
+      <div id="ty-booking-container" style="margin: 20px 0;">
+        <p>請點擊下方專屬連結預約時間：</p>
+        <div id="ty-booking-links-list"></div>
+      </div>
+      <div style="background:#fff3cd; padding:15px; border-radius:8px; margin: 20px 0;">
+        ⚠️ 預約課程只保留2小時，請儘速聯繫 <span class="tony-highlight">Tony線上美語家教</span> 繳費。
+      </div>
+      <a href="javascript:location.reload()" style="color: blue; text-decoration: none;">回首頁</a>
+    </div>
+  </div>
 
   <script>
-    let cart = null;
+    const products = [
+      { id: 'trial-25', name: '體驗課程25分鐘', price: 350, bookingLink: 'https://tonyonlineenglish.netlify.app//25mbk' },
+      { id: 'trial-50', name: '體驗課程50分鐘', price: 550, bookingLink: 'https://tonyonlineenglish.netlify.app/booking' }
+    ];
+    const logoUrl = "https://ik.imagekit.io/lql1uveoc/Abstract%20Special%20Offer%20Announcement%20Free%20Facebook%20Post.png?updatedAt=1754673537869";
+    let cart = {};
 
-    function toggleCart() {
-      document.getElementById('cart-overlay').classList.toggle('open');
-      document.getElementById('cart-panel').classList.toggle('open');
+    function handleAddToCart(id) {
+      const productToAdd = products.find(p => p.id === id);
+      if (productToAdd && !cart[productToAdd.id]) {
+        cart[productToAdd.id] = { ...productToAdd };
+      }
+      updateCartDisplay();
+      toggleCartPanel(true);
     }
 
-    function addToCart(id, name, price) {
-      cart = { id, name, price }; // 簡化為一次選一個課程
-      document.getElementById('cart-items').innerHTML = `
-        <div style="display:flex; justify-content:space-between; margin-bottom:10px">
-          <span>${name}</span>
-          <strong>NT$ ${price}</strong>
-        </div>`;
-      document.getElementById('total-price').innerText = `NT$ ${price}`;
+    function updateCartDisplay() {
+      const container = document.getElementById("cart-items-container");
+      const countSpan = document.getElementById("cart-count");
+      const totalSpan = document.getElementById("total-price");
       
-      toggleCart(); // 打開結帳面板
-      setTimeout(() => {
-        document.getElementById('customer-email').focus(); // 自動聚焦到 Email 欄位
-      }, 500);
+      let items = Object.values(cart);
+      container.innerHTML = items.length ? "" : "<p>購物車是空的</p>";
+      
+      let total = 0;
+      items.forEach(item => {
+        total += item.price;
+        container.innerHTML += `
+          <div class="cart-item">
+            <span>${item.name}</span>
+            <span>NT$ ${item.price} <button onclick="removeItem('${item.id}')" style="color:red; border:none; background:none; cursor:pointer;">移除</button></span>
+          </div>`;
+      });
+
+      countSpan.innerText = items.length;
+      countSpan.classList.toggle("visible", items.length > 0);
+      totalSpan.innerText = `NT$ ${total.toLocaleString()}`;
     }
 
-    function processCheckout() {
-      const email = document.getElementById('customer-email').value;
-      if (!email || !email.includes('@')) {
-        alert('請輸入有效的電子信箱');
+    function removeItem(id) {
+      delete cart[id];
+      updateCartDisplay();
+    }
+
+    function toggleCartPanel(forceOpen = false) {
+      const panel = document.getElementById("cart-panel");
+      const overlay = document.getElementById("cart-overlay");
+      if (forceOpen) {
+        panel.classList.add("open");
+        overlay.classList.add("open");
+      } else {
+        panel.classList.toggle("open");
+        overlay.classList.toggle("open");
+      }
+    }
+
+    function openEmailPopup() { document.getElementById("email-popup-overlay").style.display = "flex"; }
+    function closeEmailPopup() { document.getElementById("email-popup-overlay").style.display = "none"; }
+
+    function handleCheckout() {
+      const email = document.getElementById("popup-email-input").value;
+      if (!email.includes("@")) return alert("請輸入有效的信箱");
+
+      const blacklist = ["8888@gmail.com", "z0970957377@gmail.com"];
+      if (blacklist.includes(email.toLowerCase().trim())) {
+        document.querySelector(".popup-content").innerHTML = `<div class="error-container">你無法下訂單，請聯繫 <span class="tony-highlight">Tony線上美語家教</span></div>`;
         return;
       }
-      alert('訂單已送出！我們會將確認信寄至：' + email + '\n請記得加入 Line 以完成預約。');
-      // 這裡可串接原本的 GAS 傳送邏輯
-    }
-  </script>
 
+      const orderId = "#" + Math.random().toString(36).substr(2, 5).toUpperCase();
+      const productNames = Object.values(cart).map(i => i.name).join(", ");
+      const total = Object.values(cart).reduce((sum, i) => sum + i.price, 0);
+
+      // Show Thank You
+      document.getElementById("product-page").style.display = "none";
+      document.getElementById("cart-panel").classList.remove("open");
+      document.getElementById("cart-overlay").classList.remove("open");
+      document.getElementById("thank-you-page").style.display = "block";
+      document.getElementById("ty-order-id").innerText = orderId;
+      
+      const linksList = document.getElementById("ty-booking-links-list");
+      linksList.innerHTML = "";
+      Object.values(cart).forEach(item => {
+        linksList.innerHTML += `<a href="${item.bookingLink}" target="_blank" style="display:block; background:blue; color:white; padding:10px; margin:10px 0; border-radius:5px; text-decoration:none;">預約 ${item.name}</a>`;
+      });
+
+      // Google Script Submit
+      fetch("https://script.google.com/macros/s/AKfycbyU13Wivs341DMPupk9EKrL9u908zrHNOVqZUXri-hGezkk6qj_7loQGIf0GCfmvj_f/exec", {
+        method: "POST",
+        mode: "no-cors",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({ orderId, email, productName: productNames, totalPrice: total, status: "未付款" })
+      });
+
+      cart = {};
+      updateCartDisplay();
+      closeEmailPopup();
+    }
+
+    document.getElementById("cart-icon").onclick = () => toggleCartPanel();
+  </script>
 </body>
 </html>
