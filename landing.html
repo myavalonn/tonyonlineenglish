@@ -5,11 +5,28 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tony線上美語家教</title>
     <style>
-        body, html { margin: 0; padding: 0; font-family: "Microsoft JhengHei", sans-serif; background-color: #fff; }
+        body, html { margin: 0; padding: 0; font-family: "Microsoft JhengHei", sans-serif; background-color: #fff; overflow-x: hidden; }
         
-        /* Hero Section set to 50% of the viewport height */
+        /* Photo Slide-in from Right Animation */
+        @keyframes slideInPhoto {
+            from { background-position: 150% center; opacity: 0; }
+            to { background-position: center; opacity: 1; }
+        }
+
+        /* Text Slide-in from Left Animation */
+        @keyframes slideInLeft {
+            from { transform: translateX(-100px); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+
+        /* Glow Animation for Title */
+        @keyframes textGlow {
+            from { text-shadow: 0 0 10px rgba(255,255,255,0.2), 2px 4px 15px rgba(0,0,0,0.7); }
+            to { text-shadow: 0 0 25px rgba(255,255,255,0.8), 2px 4px 15px rgba(0,0,0,0.7); }
+        }
+
         .hero {
-            height: 50vh; 
+            height: 100vh;
             background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
                         url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/1DE8F5F9-4E48-4960-84F7-A5B1B98B4954.jpg');
             background-size: cover;
@@ -21,19 +38,49 @@
             align-items: center;
             text-align: center;
             color: white;
+            animation: slideInPhoto 1.5s ease-out forwards;
+        }
+
+        .hero-content {
+            animation: slideInLeft 1.2s ease-out forwards;
         }
 
         .hero h1 {
-            font-size: 3.5rem; /* Slightly smaller to fit the half-height better */
+            font-size: 5rem;
             font-weight: 900;
-            margin-bottom: 20px;
-            text-shadow: 2px 4px 15px rgba(0,0,0,0.7);
-            line-height: 1.1;
+            margin-bottom: 10px;
+            line-height: 1.2;
+            animation: textGlow 2s ease-in-out infinite alternate;
+        }
+
+        /* Tony Stylized: Italic, Blue/Purple Gradient, and Glow */
+        .tony-name {
+            font-style: italic;
+            background: linear-gradient(45deg, #3498db, #9b59b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 0 8px rgba(255,255,255,0.6));
+            padding-right: 10px;
+        }
+
+        .sub-text {
+            font-size: 1.8rem;
+            font-weight: 400;
+            margin-bottom: 5px;
+            letter-spacing: 2px;
+            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            font-style: italic;
+            margin-bottom: 30px;
+            color: #e0e0e0;
         }
 
         .btn-main {
-            padding: 15px 40px;
-            font-size: 1.2rem;
+            padding: 18px 50px;
+            font-size: 1.4rem;
             background-color: #3498db;
             color: white;
             text-decoration: none;
@@ -44,28 +91,33 @@
         }
 
         .btn-main:hover { 
-            transform: translateY(-2px); 
+            transform: translateY(-3px); 
             background-color: #2980b9;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
         }
 
-        /* Content Section */
-        .info-section { padding: 60px 20px; text-align: center; max-width: 1100px; margin: auto; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin-top: 30px; }
-        .card { padding: 30px 20px; border-radius: 15px; background: #ffffff; border: 1px solid #eee; box-shadow: 0 5px 20px rgba(0,0,0,0.05); }
-        .card h3 { color: #3498db; margin-bottom: 10px; }
-        .card p { color: #666; font-size: 0.95rem; }
+        .info-section { padding: 80px 20px; text-align: center; max-width: 1100px; margin: auto; }
+        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-top: 40px; }
+        .card { padding: 40px 20px; border-radius: 20px; background: #ffffff; border: 1px solid #eee; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .card h3 { color: #3498db; font-size: 1.5rem; margin-bottom: 15px; }
 
         @media (max-width: 768px) { 
-            .hero { height: 40vh; } /* Even shorter on mobile for better UX */
-            .hero h1 { font-size: 2.2rem; }
+            .hero h1 { font-size: 3rem; }
+            .sub-text { font-size: 1.2rem; }
+            .btn-main { padding: 15px 40px; font-size: 1.1rem; }
         }
     </style>
 </head>
 <body>
 
     <header class="hero">
-        <h1>Tony<br>線上美語家教</h1>
-        <a href="#courses" class="btn-main">顯示所有課程</a>
+        <div class="hero-content">
+            <h1><span class="tony-name">Tony</span>線上美語家教</h1>
+            <div class="sub-text">Tony Online English Tutoring</div>
+            <div class="tagline">English is the Future</div>
+            <br>
+            <a href="#courses" class="btn-main">顯示所有課程</a>
+        </div>
     </header>
 
     <section class="info-section">
