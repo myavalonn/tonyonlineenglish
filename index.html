@@ -95,8 +95,8 @@
         /* ====== 3. 左上角「課程詳細介紹」連結按鈕 ====== */
         .course-intro-btn {
             position: absolute;
-            /* 🚀 電腦版位置：從 110px 往下移到 140px，避開 Header */
-            top: 140px; 
+            /* 🚀 電腦版位置：往下移到 220px，避開頂部 Header Logo */
+            top: 220px; 
             left: 30px;
             z-index: 100;
             text-decoration: none;
@@ -133,8 +133,8 @@
         /* 針對平板與手機模式的專屬調整 */
         @media (max-width: 1024px) {
             .course-intro-btn {
-                /* 🚀 平板模式：從 85px 往下移到 110px */
-                top: 110px; 
+                /* 🚀 平板模式：往下移到 180px，避開頂部 Header Logo */
+                top: 180px; 
                 left: 20px;
                 padding: 10px 24px;
             }
@@ -142,8 +142,8 @@
 
         @media (max-width: 768px) {
             .course-intro-btn {
-                /* 🚀 手機模式：從 65px 往下移到 90px，確保不被 Header 擋住 */
-                top: 90px; 
+                /* 🚀 手機模式：往下移到 140px，確保不被 Header 擋住 */
+                top: 140px; 
                 left: 15px;
                 padding: 8px 18px;
                 font-size: 0.95rem; 
