@@ -45,8 +45,7 @@
             font-family: "Microsoft JhengHei", sans-serif; 
             color: white; 
             overflow-x: hidden; 
-            /* 多出 200px 空間，確保網頁可以滾動，才能觸發 Header 隱藏 */
-            min-height: calc(100vh + 200px); 
+            min-height: 100vh; 
         }
 
         /* 英雄區塊容器 */
@@ -93,12 +92,8 @@
             box-sizing: border-box;
         }
 
-        /* ====== 3. 左上角「課程詳細介紹」連結按鈕 ====== */
+        /* ====== 3. 「課程詳細介紹」連結按鈕 (已移除絕對定位，自然融入 flex 排版) ====== */
         .course-intro-btn {
-            position: absolute;
-            /* 🚀 電腦版位置：從 110px 往下移到 140px，避開 Header */
-            top: 140px; 
-            left: 30px;
             z-index: 100;
             text-decoration: none;
             color: white;
@@ -134,18 +129,12 @@
         /* 針對平板與手機模式的專屬調整 */
         @media (max-width: 1024px) {
             .course-intro-btn {
-                /* 🚀 平板模式：從 85px 往下移到 110px */
-                top: 110px; 
-                left: 20px;
                 padding: 10px 24px;
             }
         }
 
         @media (max-width: 768px) {
             .course-intro-btn {
-                /* 🚀 手機模式：從 65px 往下移到 90px，確保不被 Header 擋住 */
-                top: 90px; 
-                left: 15px;
                 padding: 8px 18px;
                 font-size: 0.95rem; 
             }
@@ -212,6 +201,7 @@
             display: flex; 
             flex-wrap: wrap; 
             justify-content: center; 
+            align-items: center;
             gap: 8px; 
             max-width: 95vw;
         }
@@ -264,12 +254,6 @@
 <body>
 
     <div class="hero">
-        <!-- 💡 左上角課程詳細介紹按鈕 -->
-        <a href="https://tonyonlineenglish.netlify.app/allcourses" class="course-intro-btn">
-            課程詳細介紹
-            <img src="https://ik.imagekit.io/lql1uveoc/tap-4.png?updatedAt=1771239128743" alt="Click Here" class="tap-icon">
-        </a>
-
         <div class="hero-content">
             <!-- 上方標籤 -->
             <div class="tags-container tags-top">
@@ -281,6 +265,12 @@
                 <span class="tag">全民英檢</span>
                 <span class="tag">多益</span>
                 <span class="tag">FLPT外語能力測驗</span>
+                
+                <!-- 💡 課程詳細介紹按鈕已完全移動至此處 -->
+                <a href="https://tonyonlineenglish.netlify.app/allcourses" class="course-intro-btn">
+                    課程詳細介紹
+                    <img src="https://ik.imagekit.io/lql1uveoc/tap-4.png?updatedAt=1771239128743" alt="Click Here" class="tap-icon">
+                </a>
             </div>
 
             <!-- 標題群組 -->
@@ -309,20 +299,5 @@
     <!-- 💡 原本的排版腳本 -->
     <script src="layout-manager.js"></script>
 
-    <!-- 🚀 自動往下微滾動，以觸發隱藏 Header 的邏輯 -->
-    <script>
-        (function() {
-            window.addEventListener('load', () => {
-                // 將延遲時間設為 2000 毫秒 (2秒)，讓 Header 停留 2 秒後再隱藏
-                setTimeout(() => {
-                    const scrollOffset = window.innerWidth > 1024 ? 180 : 100;
-                    window.scrollTo({
-                        top: scrollOffset,
-                        behavior: 'smooth'
-                    });
-                }, 2000); 
-            });
-        })();
-    </script>
 </body>
 </html>
