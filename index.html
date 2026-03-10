@@ -45,8 +45,7 @@
             font-family: "Microsoft JhengHei", sans-serif; 
             color: white; 
             overflow-x: hidden; 
-            /* 多出 200px 空間，確保網頁可以滾動，才能觸發 Header 隱藏 */
-            min-height: calc(100vh + 200px); 
+            min-height: 100vh; 
         }
 
         /* 英雄區塊容器 */
@@ -309,20 +308,5 @@
     <!-- 💡 原本的排版腳本 -->
     <script src="layout-manager.js"></script>
 
-    <!-- 🚀 自動往下微滾動，以觸發隱藏 Header 的邏輯 -->
-    <script>
-        (function() {
-            window.addEventListener('load', () => {
-                // 將延遲時間設為 2000 毫秒 (2秒)，讓 Header 停留 2 秒後再隱藏
-                setTimeout(() => {
-                    const scrollOffset = window.innerWidth > 1024 ? 180 : 100;
-                    window.scrollTo({
-                        top: scrollOffset,
-                        behavior: 'smooth'
-                    });
-                }, 2000); 
-            });
-        })();
-    </script>
 </body>
 </html>
