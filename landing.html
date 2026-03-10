@@ -2,87 +2,209 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tony線上美語家教</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Tony 線上美語預約時段</title>
+    <!-- 引入 Google 手寫字體讓 Tony 更接近圖片質感 -->
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
     <style>
-        body, html { margin: 0; padding: 0; font-family: "Microsoft JhengHei", sans-serif; background-color: #000; color: white; overflow-x: hidden; }
+        /* 套用您指定的深色背景與基礎設定 */
+        html { 
+            background-color: #060b1c !important; 
+            margin: 0; 
+            padding: 0; 
+        }
         
+        body { 
+            margin: 0; 
+            padding: 0; 
+            font-family: "Microsoft JhengHei", sans-serif; 
+            color: white; 
+            overflow-x: hidden; /* 防止動畫時出現左右捲軸 */
+        }
+
+        /* 英雄區塊容器 */
         .hero {
+            position: relative;
             height: 100vh;
+            width: 100vw;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
-            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
+            overflow: hidden;
+        }
+
+        /* ====== 1. 照片從左側滑入 ====== */
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; 
+            width: 100%; height: 100%;
+            /* 背景加入深色遮罩，讓文字更清晰 */
+            background: linear-gradient(rgba(6, 11, 28, 0.7), rgba(6, 11, 28, 0.8)), 
                         url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/1DE8F5F9-4E48-4960-84F7-A5B1B98B4954.jpg');
             background-size: cover;
             background-position: center;
+            z-index: -1;
+            /* 初始位置在畫面最左側之外 */
+            transform: translateX(-100%);
+            animation: slideInPhotoLeft 1s cubic-bezier(0.25, 1, 0.5, 1) forwards;
         }
 
-        /* 動畫設定 */
-        @keyframes slideRight { from { transform: translateX(100px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-        @keyframes slideLeft { from { transform: translateX(-100px); opacity: 0; } to { transform: translateX(0); opacity: 1; } }
-        @keyframes slideDown { from { transform: translateY(-50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
-        @keyframes slideUp { from { transform: translateY(50px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+        .hero-content { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            width: 100%; 
+            padding: 0 10px;
+            box-sizing: border-box;
+            z-index: 1;
+        }
 
-        .hero-content { display: flex; flex-direction: column; align-items: center; width: 100%; }
+        /* ====== 2. 標題群組從右側滑入 (包含主標題與新加的句子) ====== */
+        .title-group {
+            /* 初始位置在畫面最右側之外 */
+            transform: translateX(100vw); 
+            opacity: 0;
+            animation: slideInTextRight 1s cubic-bezier(0.25, 1, 0.5, 1) 0.3s forwards; /* 延遲0.3秒進場 */
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 2.5vh 0; /* 與上下標籤的間距 */
+        }
 
-        /* 主標題：從右進場 */
+        /* 單行最大化主標題 */
         .main-title {
-            animation: slideRight 1s ease-out forwards;
-            font-size: 3.5rem;
-            margin: 20px 0;
-            white-space: nowrap;
+            /* 使用 vw (視窗寬度) 讓字體剛好撐滿螢幕，不換行 */
+            font-size: clamp(2rem, 9.5vw, 6rem); 
+            font-weight: 900;
+            margin: 0;
+            white-space: nowrap; /* 強制不換行 */
+            letter-spacing: 2px;
+            line-height: 1.2;
         }
-        .tony-name { color: #4e54c8; font-family: cursive; font-weight: bold; margin-right: 15px; }
 
-        /* 標籤容器 */
-        .tags-container { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; max-width: 800px; padding: 10px; }
-        
+        /* 參考圖片樣式：Tony 使用亮藍色與手寫風格 */
+        .tony-name { 
+            /* 顏色調亮一階，從 #4e54c8 改為 #6B73FF */
+            color: #6B73FF; 
+            font-family: 'Pacifico', 'Comic Sans MS', 'Brush Script MT', cursive; 
+            font-weight: normal; 
+            margin-right: 2vw; 
+            padding-right: 0.5vw;
+            text-shadow: 0px 0px 10px rgba(107, 115, 255, 0.6); /* 微微發光增加質感 */
+        }
+
+        /* 新增：副標題與句子樣式 */
+        .subtitle-italic {
+            font-size: clamp(1rem, 4.5vw, 2rem);
+            font-style: italic;
+            font-weight: 400;
+            color: #f1f1f1;
+            margin: 10px 0 5px 0;
+            letter-spacing: 1px;
+        }
+
+        .slogan-text {
+            font-size: clamp(0.9rem, 4vw, 1.8rem);
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.8); /* 稍微調淡一點以襯托主標題 */
+            margin: 4px 0;
+            letter-spacing: 1.5px;
+        }
+
+        /* ====== 3. 標籤區域與動畫 ====== */
+        .tags-container {
+            display: flex; 
+            flex-wrap: wrap; 
+            justify-content: center; 
+            gap: 8px; 
+            max-width: 95vw;
+        }
+
         .tag {
-            font-size: 0.9rem;
+            font-size: clamp(0.75rem, 3.5vw, 1rem);
             background: rgba(255, 255, 255, 0.1);
-            padding: 6px 15px;
+            padding: 6px 14px;
             border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            white-space: nowrap;
+            backdrop-filter: blur(5px); /* 毛玻璃效果 */
         }
 
-        .tags-top { animation: slideDown 1s ease-out forwards; margin-bottom: 10px; }
-        .tags-bottom { animation: slideUp 1s ease-out forwards; margin-top: 10px; }
+        /* 上方標籤從上方落下 */
+        .tags-top { 
+            transform: translateY(-50px); 
+            opacity: 0;
+            animation: slideInTop 1s ease-out 0.6s forwards; /* 延遲0.6秒進場 */
+        }
 
-        /* 額外元素：從左進場 */
-        .sub-text { animation: slideLeft 1s ease-out forwards; font-size: 1.2rem; margin-top: 20px; }
+        /* 下方標籤從下方升起 */
+        .tags-bottom { 
+            transform: translateY(50px); 
+            opacity: 0;
+            animation: slideInBottom 1s ease-out 0.6s forwards; /* 延遲0.6秒進場 */
+        }
 
-        @media (max-width: 768px) {
-            .main-title { font-size: 1.8rem; }
-            .tag { font-size: 0.75rem; padding: 4px 10px; }
+        /* ====== 動畫定義 ====== */
+        @keyframes slideInPhotoLeft { 
+            from { transform: translateX(-100%); } 
+            to { transform: translateX(0); } 
+        }
+        @keyframes slideInTextRight { 
+            from { transform: translateX(100vw); opacity: 0; } 
+            to { transform: translateX(0); opacity: 1; } 
+        }
+        @keyframes slideInTop { 
+            from { transform: translateY(-50px); opacity: 0; } 
+            to { transform: translateY(0); opacity: 1; } 
+        }
+        @keyframes slideInBottom { 
+            from { transform: translateY(50px); opacity: 0; } 
+            to { transform: translateY(0); opacity: 1; } 
         }
     </style>
 </head>
 <body>
 
-    <header class="hero">
+    <div class="hero">
         <div class="hero-content">
-            <!-- 上方標籤 -->
+            <!-- 上方標籤 (從上方滑入) -->
             <div class="tags-container tags-top">
-                <span class="tag">升學</span><span class="tag">檢定</span><span class="tag">全民英檢</span>
-                <span class="tag">多益</span><span class="tag">FLPT外語能力測驗</span><span class="tag">高中學測</span><span class="tag">技高統測</span>
+                <span class="tag">升學</span>
+                <span class="tag">檢定</span>
+                <span class="tag">全民英檢</span>
+                <span class="tag">多益</span>
+                <span class="tag">FLPT外語能力測驗</span>
+                <span class="tag">高中學測</span>
+                <span class="tag">技高統測</span>
             </div>
 
-            <!-- 主標題 -->
-            <h1 class="main-title"><span class="tony-name">Tony</span>線上美語家教</h1>
+            <!-- 標題群組 (從右方滑入) -->
+            <div class="title-group">
+                <!-- 主標題 -->
+                <h1 class="main-title"><span class="tony-name">Tony</span>線上美語家教</h1>
+                
+                <!-- 新增的副標題與句子 -->
+                <div class="subtitle-italic">Tony Online English Tutoring</div>
+                <div class="slogan-text">English is the Future.</div>
+                <div class="slogan-text">Let's get your English Boosted.</div>
+            </div>
 
-            <!-- 下方標籤 -->
+            <!-- 下方標籤 (從下方滑入) -->
             <div class="tags-container tags-bottom">
-                <span class="tag">作文</span><span class="tag">聽說讀寫</span><span class="tag">觀光美語</span>
-                <span class="tag">展場英文</span><span class="tag">客製化</span><span class="tag">職場</span>
-                <span class="tag">公職</span><span class="tag">英文面試</span>
+                <span class="tag">作文</span>
+                <span class="tag">聽說讀寫</span>
+                <span class="tag">觀光美語</span>
+                <span class="tag">展場英文</span>
+                <span class="tag">客製化</span>
+                <span class="tag">職場</span>
+                <span class="tag">公職</span>
+                <span class="tag">英文面試</span>
             </div>
-            
-            <div class="sub-text">專業的一對一客製化英語學習服務</div>
         </div>
-    </header>
+    </div>
 
 </body>
 </html>
