@@ -47,7 +47,6 @@
             background-size: cover;
             background-position: center;
             z-index: -1;
-            /* 初始位置在畫面最左側之外 */
             transform: translateX(-100%);
             animation: slideInPhotoLeft 1s cubic-bezier(0.25, 1, 0.5, 1) forwards;
         }
@@ -62,41 +61,62 @@
             z-index: 1;
         }
 
-        /* ====== 2. 標題群組從右側滑入 (包含主標題與新加的句子) ====== */
+        /* ====== 2. 左上角「課程介紹」連結按鈕 (等待2秒出現) ====== */
+        .course-intro-btn {
+            position: absolute;
+            top: 30px;
+            left: 30px;
+            z-index: 100;
+            text-decoration: none;
+            color: white;
+            font-size: clamp(0.9rem, 3.5vw, 1.1rem);
+            /* 顏色稍微帶一點 Tony 的藍色調，與一般 tag 區分 */
+            background: rgba(107, 115, 255, 0.25); 
+            padding: 8px 20px;
+            border-radius: 25px;
+            border: 1px solid rgba(107, 115, 255, 0.6);
+            backdrop-filter: blur(5px);
+            opacity: 0; /* 初始隱藏 */
+            /* 延遲 2s 執行 popInTopLeft 動畫 */
+            animation: popInTopLeft 0.8s cubic-bezier(0.25, 1, 0.5, 1) 2s forwards;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+        }
+
+        .course-intro-btn:hover {
+            background-color: rgba(107, 115, 255, 0.6);
+            box-shadow: 0 0 12px rgba(107, 115, 255, 0.8);
+            transform: scale(1.05); /* 游標經過時微微放大 */
+        }
+
+        /* ====== 3. 標題群組從右側滑入 ====== */
         .title-group {
-            /* 初始位置在畫面最右側之外 */
             transform: translateX(100vw); 
             opacity: 0;
-            animation: slideInTextRight 1s cubic-bezier(0.25, 1, 0.5, 1) 0.3s forwards; /* 延遲0.3秒進場 */
+            animation: slideInTextRight 1s cubic-bezier(0.25, 1, 0.5, 1) 0.3s forwards;
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin: 2.5vh 0; /* 與上下標籤的間距 */
+            margin: 2.5vh 0;
         }
 
-        /* 單行最大化主標題 */
         .main-title {
-            /* 使用 vw (視窗寬度) 讓字體剛好撐滿螢幕，不換行 */
             font-size: clamp(2rem, 9.5vw, 6rem); 
             font-weight: 900;
             margin: 0;
-            white-space: nowrap; /* 強制不換行 */
+            white-space: nowrap; 
             letter-spacing: 2px;
             line-height: 1.2;
         }
 
-        /* 參考圖片樣式：Tony 使用亮藍色與手寫風格 */
         .tony-name { 
-            /* 顏色調亮一階，從 #4e54c8 改為 #6B73FF */
             color: #6B73FF; 
             font-family: 'Pacifico', 'Comic Sans MS', 'Brush Script MT', cursive; 
             font-weight: normal; 
             margin-right: 2vw; 
             padding-right: 0.5vw;
-            text-shadow: 0px 0px 10px rgba(107, 115, 255, 0.6); /* 微微發光增加質感 */
+            text-shadow: 0px 0px 10px rgba(107, 115, 255, 0.6); 
         }
 
-        /* 新增：副標題與句子樣式 */
         .subtitle-italic {
             font-size: clamp(1rem, 4.5vw, 2rem);
             font-style: italic;
@@ -109,12 +129,12 @@
         .slogan-text {
             font-size: clamp(0.9rem, 4vw, 1.8rem);
             font-weight: 300;
-            color: rgba(255, 255, 255, 0.8); /* 稍微調淡一點以襯托主標題 */
+            color: rgba(255, 255, 255, 0.8);
             margin: 4px 0;
             letter-spacing: 1.5px;
         }
 
-        /* ====== 3. 標籤區域與動畫 ====== */
+        /* ====== 4. 標籤區域與動畫 ====== */
         .tags-container {
             display: flex; 
             flex-wrap: wrap; 
@@ -130,21 +150,19 @@
             border-radius: 20px;
             border: 1px solid rgba(255, 255, 255, 0.25);
             white-space: nowrap;
-            backdrop-filter: blur(5px); /* 毛玻璃效果 */
+            backdrop-filter: blur(5px);
         }
 
-        /* 上方標籤從上方落下 */
         .tags-top { 
             transform: translateY(-50px); 
             opacity: 0;
-            animation: slideInTop 1s ease-out 0.6s forwards; /* 延遲0.6秒進場 */
+            animation: slideInTop 1s ease-out 0.6s forwards; 
         }
 
-        /* 下方標籤從下方升起 */
         .tags-bottom { 
             transform: translateY(50px); 
             opacity: 0;
-            animation: slideInBottom 1s ease-out 0.6s forwards; /* 延遲0.6秒進場 */
+            animation: slideInBottom 1s ease-out 0.6s forwards; 
         }
 
         /* ====== 動畫定義 ====== */
@@ -164,38 +182,45 @@
             from { transform: translateY(50px); opacity: 0; } 
             to { transform: translateY(0); opacity: 1; } 
         }
+        /* 左上角按鈕專屬滑入動畫 */
+        @keyframes popInTopLeft {
+            from { transform: translate(-20px, -20px); opacity: 0; }
+            to { transform: translate(0, 0); opacity: 1; }
+        }
     </style>
 </head>
 <body>
 
     <div class="hero">
+        <!-- 💡 左上角課程介紹按鈕 (等待 2 秒後滑入) -->
+        <a href="https://tonyonlineenglish.netlify.app" class="course-intro-btn">課程介紹</a>
+
         <div class="hero-content">
-            <!-- 上方標籤 (從上方滑入) -->
+            <!-- 上方標籤 (新增了：國中會考) -->
             <div class="tags-container tags-top">
                 <span class="tag">升學</span>
                 <span class="tag">檢定</span>
+                <span class="tag">國中會考</span>
+                <span class="tag">高中學測</span>
+                <span class="tag">技高統測</span>
                 <span class="tag">全民英檢</span>
                 <span class="tag">多益</span>
                 <span class="tag">FLPT外語能力測驗</span>
-                <span class="tag">高中學測</span>
-                <span class="tag">技高統測</span>
             </div>
 
-            <!-- 標題群組 (從右方滑入) -->
+            <!-- 標題群組 -->
             <div class="title-group">
-                <!-- 主標題 -->
                 <h1 class="main-title"><span class="tony-name">Tony</span>線上美語家教</h1>
-                
-                <!-- 新增的副標題與句子 -->
                 <div class="subtitle-italic">Tony Online English Tutoring</div>
                 <div class="slogan-text">English is the Future.</div>
                 <div class="slogan-text">Let's get your English Boosted.</div>
             </div>
 
-            <!-- 下方標籤 (從下方滑入) -->
+            <!-- 下方標籤 (新增了：國小英文) -->
             <div class="tags-container tags-bottom">
-                <span class="tag">作文</span>
+                <span class="tag">國小英文</span>
                 <span class="tag">聽說讀寫</span>
+                <span class="tag">作文</span>
                 <span class="tag">觀光美語</span>
                 <span class="tag">展場英文</span>
                 <span class="tag">客製化</span>
@@ -206,5 +231,7 @@
         </div>
     </div>
 
+    <!-- 💡 layout-manager.js 放在 body 結尾前確保元素皆已載入 -->
+    <script src="layout-manager.js"></script>
 </body>
 </html>
