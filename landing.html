@@ -33,7 +33,7 @@
             align-items: center;
             text-align: center;
             overflow: hidden;
-            /* 🚀 確保外層有全站白底時，這個區塊依然強制是深色底 */
+            /* 確保外層有全站白底時，這個區塊依然強制是深色底 */
             background-color: #060b1c !important; 
         }
 
@@ -48,7 +48,7 @@
                         url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/1DE8F5F9-4E48-4960-84F7-A5B1B98B4954.jpg');
             background-size: cover;
             background-position: center;
-            /* 🚀 修改：Z-index 設為 1，防止退到全站白色背景後面 */
+            /* Z-index 設為 1，防止退到全站白色背景後面 */
             z-index: 1;
             transform: translateX(-100%);
             animation: slideInPhotoLeft 1s cubic-bezier(0.25, 1, 0.5, 1) forwards;
@@ -56,7 +56,7 @@
 
         /* ====== 2. 內容區塊 ====== */
         .hero-content { 
-            /* 🚀 修改：必須設定 relative，且 Z-index 設為 2，確保白字蓋在背景圖上 */
+            /* 必須設定 relative，且 Z-index 設為 2，確保白字蓋在背景圖上 */
             position: relative;
             z-index: 2;
             display: flex; 
@@ -67,32 +67,50 @@
             box-sizing: border-box;
         }
 
-        /* ====== 3. 左上角「課程介紹」連結按鈕 (等待2秒出現) ====== */
+        /* ====== 3. 左上角「課程詳細介紹」連結按鈕 (等待2秒出現) ====== */
         .course-intro-btn {
             position: absolute;
-            top: 30px;
+            top: 110px; /* 避開頂部 Header */
             left: 30px;
-            /* 確保按鈕層級最高，可以點擊 */
             z-index: 100;
             text-decoration: none;
             color: white;
-            font-size: clamp(0.9rem, 3.5vw, 1.1rem);
-            /* 顏色稍微帶一點 Tony 的藍色調，與一般 tag 區分 */
-            background: rgba(107, 115, 255, 0.25); 
-            padding: 8px 20px;
-            border-radius: 25px;
-            border: 1px solid rgba(107, 115, 255, 0.6);
-            backdrop-filter: blur(5px);
+            /* 🚀 讓字體變大、加粗，使其更吸睛 */
+            font-size: clamp(1rem, 4vw, 1.25rem);
+            font-weight: bold;
+            /* 🚀 換上吸睛的漸層背景 */
+            background: linear-gradient(135deg, #4e54c8, #6B73FF); 
+            padding: 12px 28px;
+            border-radius: 40px; /* 🚀 更圓潤的膠囊形狀 (Pill shape) */
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 6px 15px rgba(107, 115, 255, 0.6);
             opacity: 0; /* 初始隱藏 */
-            /* 延遲 2s 執行 popInTopLeft 動畫 */
             animation: popInTopLeft 0.8s cubic-bezier(0.25, 1, 0.5, 1) 2s forwards;
-            transition: background-color 0.3s ease, box-shadow 0.3s ease, transform 0.2s ease;
+            transition: all 0.3s ease;
+            
+            /* 🚀 Flex 排版讓文字與圖示對齊 */
+            display: flex;
+            align-items: center;
+            gap: 10px; 
         }
 
         .course-intro-btn:hover {
-            background-color: rgba(107, 115, 255, 0.6);
-            box-shadow: 0 0 12px rgba(107, 115, 255, 0.8);
-            transform: scale(1.05); /* 游標經過時微微放大 */
+            background: linear-gradient(135deg, #6B73FF, #4e54c8);
+            box-shadow: 0 8px 25px rgba(107, 115, 255, 0.9);
+            transform: scale(1.06); /* 游標經過時稍微放大 */
+        }
+
+        /* 🚀 點擊圖示 (Tap Icon) 樣式與浮動動畫 */
+        .tap-icon {
+            width: 26px;
+            height: 26px;
+            object-fit: contain;
+            animation: floatIcon 1.5s infinite ease-in-out alternate;
+        }
+
+        @keyframes floatIcon {
+            from { transform: translateY(0); }
+            to { transform: translateY(-4px) scale(1.05); }
         }
 
         /* ====== 4. 標題群組從右側滑入 ====== */
@@ -139,6 +157,8 @@
             color: rgba(255, 255, 255, 0.8);
             margin: 4px 0;
             letter-spacing: 1.5px;
+            /* 🚀 強制設定為斜體 (Italicized) */
+            font-style: italic; 
         }
 
         /* ====== 5. 標籤區域與動畫 ====== */
@@ -199,11 +219,14 @@
 <body>
 
     <div class="hero">
-        <!-- 💡 左上角課程介紹按鈕 (等待 2 秒後滑入) -->
-        <a href="https://tonyonlineenglish.netlify.app" class="course-intro-btn">課程介紹</a>
+        <!-- 💡 左上角課程詳細介紹按鈕 (等待 2 秒後滑入，並加入小手圖標) -->
+        <a href="https://tonyonlineenglish.netlify.app" class="course-intro-btn">
+            課程詳細介紹
+            <img src="https://ik.imagekit.io/lql1uveoc/tap-4.png?updatedAt=1771239128743" alt="Click Here" class="tap-icon">
+        </a>
 
         <div class="hero-content">
-            <!-- 上方標籤 (包含：國中會考) -->
+            <!-- 上方標籤 -->
             <div class="tags-container tags-top">
                 <span class="tag">升學</span>
                 <span class="tag">檢定</span>
@@ -219,11 +242,12 @@
             <div class="title-group">
                 <h1 class="main-title"><span class="tony-name">Tony</span>線上美語家教</h1>
                 <div class="subtitle-italic">Tony Online English Tutoring</div>
+                <!-- 🚀 下方兩句皆已變成斜體 -->
                 <div class="slogan-text">English is the Future.</div>
                 <div class="slogan-text">Let's get your English Boosted.</div>
             </div>
 
-            <!-- 下方標籤 (包含：國小英文) -->
+            <!-- 下方標籤 -->
             <div class="tags-container tags-bottom">
                 <span class="tag">國小英文</span>
                 <span class="tag">聽說讀寫</span>
@@ -238,7 +262,49 @@
         </div>
     </div>
 
-    <!-- 💡 layout-manager.js 放在 body 結尾前確保元素皆已載入 -->
+    <!-- 💡 原本的排版腳本 -->
     <script src="layout-manager.js"></script>
+
+    <!-- 🚀 處理上方導覽列(Header) 滑動隱藏/顯示的腳本 -->
+    <script>
+        let topHeader = null;
+
+        function initHeaderScroll() {
+            // 動態尋找您的 header，應對 layout-manager.js 可能較晚生成元素的情況
+            if (!topHeader) {
+                topHeader = document.querySelector('header') || document.querySelector('.navbar') || document.querySelector('nav');
+                
+                if (topHeader) {
+                    // 強制將 header 設定為固定在最上方，並加上平滑過渡動畫
+                    topHeader.style.position = 'fixed';
+                    topHeader.style.top = '0';
+                    topHeader.style.left = '0';
+                    topHeader.style.width = '100%';
+                    topHeader.style.zIndex = '9999';
+                    topHeader.style.transition = 'transform 0.4s cubic-bezier(0.25, 1, 0.5, 1)';
+                }
+            }
+        }
+
+        // 監聽滾動事件
+        window.addEventListener('scroll', () => {
+            initHeaderScroll();
+            if (topHeader) {
+                // 當視窗往下滾動超過 50px 時，將 header 往上平移隱藏
+                if (window.scrollY > 50) {
+                    topHeader.style.transform = 'translateY(-100%)';
+                } else {
+                    // 滾回頂部時 (scrollY <= 50)，讓 header 重新降下顯示
+                    topHeader.style.transform = 'translateY(0)';
+                }
+            }
+        });
+
+        // 頁面載入後自動檢查一次
+        setTimeout(initHeaderScroll, 500);
+        
+        // 為了防止 layout-manager.js 載入過慢，設定一個定時器幫忙尋找 Header 元素
+        setInterval(initHeaderScroll, 2000); 
+    </script>
 </body>
 </html>
