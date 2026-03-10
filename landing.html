@@ -12,7 +12,6 @@
             background-color: #060b1c !important; 
             margin: 0; 
             padding: 0; 
-            /* 🚀 加入平滑滾動 (參考您的程式碼) */
             scroll-behavior: smooth; 
         }
         
@@ -22,16 +21,17 @@
             font-family: "Microsoft JhengHei", sans-serif; 
             color: white; 
             overflow-x: hidden; 
-            /* 🚀 關鍵修正：多出 200px 空間，確保網頁可以滾動，才能觸發 Header 隱藏 */
+            /* 多出 200px 空間，確保網頁可以滾動，才能觸發 Header 隱藏 */
             min-height: calc(100vh + 200px); 
         }
 
         /* 英雄區塊容器 */
         .hero {
-            /* 🚀 關鍵修正：改為 sticky (黏貼定位) */
-            /* 這樣當網頁自動往下滾動時，背景跟文字都會牢牢黏在畫面上不跑位，但能成功騙過系統隱藏 Header */
-            position: sticky;
+            /* 🚀 關鍵修正：改為 fixed (固定定位) */
+            /* 徹底解決 sticky 失效導致按鈕被捲到畫面外的問題 */
+            position: fixed;
             top: 0;
+            left: 0;
             height: 100vh;
             width: 100vw;
             display: flex;
@@ -49,7 +49,6 @@
             position: absolute;
             top: 0; left: 0; 
             width: 100%; height: 100%;
-            /* 背景加入深色遮罩，讓文字更清晰 */
             background: linear-gradient(rgba(6, 11, 28, 0.7), rgba(6, 11, 28, 0.8)), 
                         url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/1DE8F5F9-4E48-4960-84F7-A5B1B98B4954.jpg');
             background-size: cover;
@@ -73,16 +72,15 @@
 
         /* ====== 3. 左上角「課程詳細介紹」連結按鈕 ====== */
         .course-intro-btn {
+            /* 因為外層改為 fixed，這裡的 absolute 會完美相對於螢幕固定 */
             position: absolute;
-            top: 110px; 
+            top: 110px; /* 電腦版位置 */
             left: 30px;
             z-index: 100;
             text-decoration: none;
             color: white;
-            /* 字體變大、加粗，使其更吸睛 */
             font-size: clamp(1rem, 4vw, 1.25rem);
             font-weight: bold;
-            /* 吸睛的漸層背景與膠囊形狀 (Pill shape) */
             background: linear-gradient(135deg, #4e54c8, #6B73FF); 
             padding: 12px 28px;
             border-radius: 40px; 
@@ -108,6 +106,28 @@
             height: 26px;
             object-fit: contain;
             animation: floatIcon 1.5s infinite ease-in-out alternate;
+        }
+
+        /* 🚀 針對平板與手機模式的專屬調整：將按鈕位置拉高 */
+        @media (max-width: 1024px) {
+            .course-intro-btn {
+                top: 85px; /* 平板模式稍微拉高 */
+                left: 20px;
+                padding: 10px 24px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .course-intro-btn {
+                top: 65px; /* 🚀 手機模式：大幅拉高，避開擋住視線 */
+                left: 15px;
+                padding: 8px 18px;
+                font-size: 0.95rem; /* 字體微調讓版面更精緻 */
+            }
+            .tap-icon {
+                width: 22px;
+                height: 22px;
+            }
         }
 
         @keyframes floatIcon {
@@ -159,7 +179,6 @@
             color: rgba(255, 255, 255, 0.8);
             margin: 4px 0;
             letter-spacing: 1.5px;
-            /* 斜體設定 */
             font-style: italic; 
         }
 
@@ -265,18 +284,17 @@
     <!-- 💡 原本的排版腳本 -->
     <script src="layout-manager.js"></script>
 
-    <!-- 🚀 完美還原您提供的 Header 隱藏邏輯：載入後自動往下微滾動 -->
+    <!-- 🚀 自動往下微滾動，以觸發隱藏 Header 的邏輯 -->
     <script>
         (function() {
             window.addEventListener('load', () => {
                 setTimeout(() => {
-                    // 根據設備寬度決定自動下滑的幅度，與您提供的程式碼完全相同
                     const scrollOffset = window.innerWidth > 1024 ? 180 : 100;
                     window.scrollTo({
                         top: scrollOffset,
                         behavior: 'smooth'
                     });
-                }, 500); // 延遲 0.5 秒，讓頁面先載好再動，觸發 layout-manager.js 隱藏導覽列
+                }, 500); 
             });
         })();
     </script>
