@@ -7,109 +7,80 @@
     <style>
         body, html { margin: 0; padding: 0; font-family: "Microsoft JhengHei", sans-serif; background-color: #fff; overflow-x: hidden; }
         
-        /* Photo Slide-in from Right Animation */
-        @keyframes slideInPhoto {
-            from { background-position: 150% center; opacity: 0; }
-            to { background-position: center; opacity: 1; }
-        }
-
-        /* Text Slide-in from Left Animation */
-        @keyframes slideInLeft {
-            from { transform: translateX(-100px); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
-        }
-
-        /* Glow Animation for Title */
-        @keyframes textGlow {
-            from { text-shadow: 0 0 10px rgba(255,255,255,0.2), 2px 4px 15px rgba(0,0,0,0.7); }
-            to { text-shadow: 0 0 25px rgba(255,255,255,0.8), 2px 4px 15px rgba(0,0,0,0.7); }
-        }
-
         .hero {
             height: 100vh;
-            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
+            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)), 
                         url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/1DE8F5F9-4E48-4960-84F7-A5B1B98B4954.jpg');
             background-size: cover;
             background-position: center;
-            background-repeat: no-repeat;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
             text-align: center;
             color: white;
-            animation: slideInPhoto 1.5s ease-out forwards;
         }
 
-        .hero-content {
-            animation: slideInLeft 1.2s ease-out forwards;
-            padding: 0 10px; /* 增加一點邊距防止文字貼邊 */
-        }
+        .hero-content { padding: 0 20px; }
 
+        /* 標題與 Tony 顏色優化 */
         .hero h1 {
-            font-size: 5rem;
+            font-size: 4.5rem;
             font-weight: 900;
-            margin-bottom: 10px;
-            line-height: 1.2;
-            animation: textGlow 2s ease-in-out infinite alternate;
+            margin-bottom: 15px;
+            white-space: nowrap;
         }
 
-        /* Tony Stylized: Italic, Blue/Purple Gradient, and Glow */
         .tony-name {
-            font-style: italic;
-            background: linear-gradient(45deg, #3498db, #9b59b6);
+            /* 換成亮金色漸層，在深色背景上極度顯眼且高級 */
+            background: linear-gradient(to right, #FFD700, #FFEA00);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 8px rgba(255,255,255,0.6));
-            padding-right: 10px;
-        }
-
-        .sub-text {
-            font-size: 1.8rem;
-            font-weight: 400;
-            margin-bottom: 5px;
-            letter-spacing: 2px;
-            text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
-        }
-
-        .tagline {
-            font-size: 1.2rem;
             font-style: italic;
+            margin-right: 15px;
+            filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.5));
+        }
+
+        .sub-text { font-size: 1.5rem; margin-bottom: 20px; }
+
+        /* 新增課程標籤區塊設計 */
+        .tags-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
             margin-bottom: 30px;
-            color: #e0e0e0;
+            max-width: 600px;
+        }
+
+        .tag {
+            font-size: 0.9rem;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 5px 12px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            letter-spacing: 1px;
+            backdrop-filter: blur(5px);
         }
 
         .btn-main {
-            padding: 18px 50px;
-            font-size: 1.4rem;
+            padding: 15px 40px;
+            font-size: 1.2rem;
             background-color: #3498db;
             color: white;
             text-decoration: none;
             border-radius: 50px;
             font-weight: bold;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-            transition: all 0.3s ease;
+            transition: 0.3s;
         }
 
-        .btn-main:hover { 
-            transform: translateY(-3px); 
-            background-color: #2980b9;
-            box-shadow: 0 6px 20px rgba(0,0,0,0.4);
-        }
+        .btn-main:hover { background-color: #2980b9; transform: translateY(-3px); }
 
-        .info-section { padding: 80px 20px; text-align: center; max-width: 1100px; margin: auto; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; margin-top: 40px; }
-        .card { padding: 40px 20px; border-radius: 20px; background: #ffffff; border: 1px solid #eee; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
-        .card h3 { color: #3498db; font-size: 1.5rem; margin-bottom: 15px; }
-
-        @media (max-width: 768px) { 
-            /* 手機版設定：字體變小且強制不換行 */
-            .hero h1 { 
-                font-size: 2.2rem; 
-                white-space: nowrap; 
-            }
-            .sub-text { font-size: 1.2rem; }
-            .btn-main { padding: 15px 40px; font-size: 1.1rem; }
+        /* RWD 調整 */
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2.2rem; }
+            .sub-text { font-size: 1rem; }
+            .tag { font-size: 0.75rem; padding: 4px 8px; }
         }
     </style>
 </head>
@@ -119,29 +90,17 @@
         <div class="hero-content">
             <h1><span class="tony-name">Tony</span>線上美語家教</h1>
             <div class="sub-text">Tony Online English Tutoring</div>
-            <div class="tagline">English is the Future</div>
-            <br>
+            
+            <!-- 課程標籤清單 -->
+            <div class="tags-container">
+                <span class="tag">升學</span><span class="tag">檢定</span><span class="tag">全民英檢</span>
+                <span class="tag">多益</span><span class="tag">FLPT外語能力測驗</span><span class="tag">高中學測</span>
+                <span class="tag">技高統測</span><span class="tag">作文</span><span class="tag">聽說讀寫</span>
+            </div>
+
             <a href="#courses" class="btn-main">顯示所有課程</a>
         </div>
     </header>
-
-    <section class="info-section">
-        <h2>課程優勢</h2>
-        <div class="grid">
-            <div class="card">
-                <h3>🗓️ 專業線上預約</h3>
-                <p>24小時隨時預約，彈性安排課程時段。</p>
-            </div>
-            <div class="card">
-                <h3>📹 課程全程錄影</h3>
-                <p>提供錄影檔方便課後無限次複習。</p>
-            </div>
-            <div class="card">
-                <h3>💳 會員訂閱制</h3>
-                <p>穩定的學習步調，更優惠的長期學費。</p>
-            </div>
-        </div>
-    </section>
 
 </body>
 </html>
