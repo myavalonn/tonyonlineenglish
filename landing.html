@@ -27,8 +27,7 @@
 
         /* 英雄區塊容器 */
         .hero {
-            /* 🚀 關鍵修正：改為 fixed (固定定位) */
-            /* 徹底解決 sticky 失效導致按鈕被捲到畫面外的問題 */
+            /* 🚀 使用 fixed (固定定位) 徹底解決被捲到畫面外的問題 */
             position: fixed;
             top: 0;
             left: 0;
@@ -72,7 +71,6 @@
 
         /* ====== 3. 左上角「課程詳細介紹」連結按鈕 ====== */
         .course-intro-btn {
-            /* 因為外層改為 fixed，這裡的 absolute 會完美相對於螢幕固定 */
             position: absolute;
             top: 110px; /* 電腦版位置 */
             left: 30px;
@@ -119,10 +117,10 @@
 
         @media (max-width: 768px) {
             .course-intro-btn {
-                top: 65px; /* 🚀 手機模式：大幅拉高，避開擋住視線 */
+                top: 65px; /* 手機模式：大幅拉高，避開擋住視線 */
                 left: 15px;
                 padding: 8px 18px;
-                font-size: 0.95rem; /* 字體微調讓版面更精緻 */
+                font-size: 0.95rem; 
             }
             .tap-icon {
                 width: 22px;
@@ -288,13 +286,14 @@
     <script>
         (function() {
             window.addEventListener('load', () => {
+                // 💡 將延遲時間改為 2000 毫秒 (2秒)，讓 Header 停留 2 秒後再隱藏
                 setTimeout(() => {
                     const scrollOffset = window.innerWidth > 1024 ? 180 : 100;
                     window.scrollTo({
                         top: scrollOffset,
                         behavior: 'smooth'
                     });
-                }, 500); 
+                }, 2000); 
             });
         })();
     </script>
