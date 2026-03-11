@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>網址輸入錯誤 - Tony Online English</title>
+    <style>
+        /* 基本樣式 */
+        body {
+            font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #fcfcfc;
+            text-align: center;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            width: 100%;
+        }
+        /* Logo 樣式 */
+        .logo-link img {
+            max-width: 250px; /* 增加 Logo 大小 */
+            height: auto;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .logo-link img:hover {
+            transform: scale(1.05);
+        }
+        /* 文字與超連結樣式 */
+        h2 {
+            color: #333;
+            margin-top: 40px;
+            font-size: 28px; /* 加大標題 */
+        }
+        p {
+            color: #666;
+            line-height: 1.8;
+            font-size: 20px; /* 加大內文 */
+            margin: 20px 0;
+        }
+        .site-link {
+            color: #0056b3;
+            text-decoration: none;
+            font-weight: bold;
+            word-break: break-all;
+            display: inline-block;
+            margin-top: 10px;
+            font-size: 18px;
+        }
+        .site-link:hover {
+            text-decoration: underline;
+        }
+        .footer-note {
+            margin-top: 50px;
+            font-weight: bold;
+            color: #2c3e50;
+            font-size: 24px; /* 加大結語 */
+        }
+
+        /* 手機版優化 (Cellphone Mode) */
+        @media (max-width: 480px) {
+            h2 {
+                font-size: 32px; /* 手機版標題更大 */
+            }
+            p {
+                font-size: 22px; /* 手機版內文更大，方便閱讀 */
+            }
+            .footer-note {
+                font-size: 26px;
+            }
+            .logo-link img {
+                max-width: 80%; /* 手機版 Logo 佔比調整 */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- 藍色 Logo 連結 -->
+        <a href="https://tonyonlineenglish.netlify.app" class="logo-link">
+            <img src="https://ik.imagekit.io/lql1uveoc/IMG_9614.PNG?updatedAt=1750437382543" alt="Tony Online English Logo">
+        </a>
+        
+        <h2>網址可能輸入錯誤喔！</h2>
+        
+        <p>
+            或者是這個網址不存在，<br>
+            請點選藍色 Logo 回到首頁，或是點擊下方網址：<br><br>
+            <strong>Tony線上美語家教：</strong><br>
+            <a href="https://tonyonlineenglish.netlify.app" class="site-link">https://tonyonlineenglish.netlify.app</a>
+        </p>
+        
+        <p class="footer-note">期待課堂上見喔！</p>
+    </div>
+
+    <!-- 載入版面管理腳本 -->
+    <script src="layout-manager.js"></script>
+
+</body>
+</html>
