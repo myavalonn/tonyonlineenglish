@@ -3,168 +3,159 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>技術型高中統測英文專班 | Tony Online English</title>
     
-    <title>技術型高中統測英文專班 | Tony Online English 專業一對一</title>
-    <meta name="description" content="專為技術型高中（高職）生設計的統測英文課程。涵蓋單字文法、閱讀測驗、英文作文強化。一對一線上教學，助你精準鎖定考點得分！">
-
-    <meta property="og:title" content="統測英文突破關鍵 - Tony Online English">
-    <meta property="og:description" content="一對一彈性學習，專業英文作文指導，立即預約體驗課程！">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://tonyonlineenglish.netlify.app/exper">
+    <meta name="description" content="專為高職生設計的統測英文課程。一對一線上教學，精準鎖定考點得分！">
     <meta property="og:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-12%20%E4%B8%8B%E5%8D%8811.49.28.png">
-    
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-12%20%E4%B8%8B%E5%8D%8811.49.28.png">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     
     <style>
-        body { 
-            background-color: #1a1a1a; 
-            color: #ffffff; 
-            -webkit-font-smoothing: antialiased;
-        }
+        body { background-color: #121212; color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+        
+        /* 強制處理斷行問題 */
+        .no-orphan { display: inline-block; white-space: nowrap; }
+        
+        /* Hero 區塊 */
         .hero-bg { 
-            background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-12%20%E4%B8%8B%E5%8D%8811.49.28.png'); 
-            background-size: cover; 
-            background-position: center; 
+            background: linear-gradient(rgba(0,0,0,0.8), rgba(0,0,0,0.8)), url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-12%20%E4%B8%8B%E5%8D%8811.49.28.png'); 
+            background-size: cover; background-position: center; 
         }
-        .info-card { 
-            background-color: #262626; 
-            border: 1px solid #3f3f46; 
+
+        /* 卡片在平板與桌機的寬度控制 */
+        .custom-card {
+            background: #1e1e1e;
+            border: 1px solid #333;
+            transition: all 0.3s ease;
+            max-width: 450px; /* 防止平板上橫向拉太長變得很醜 */
+            margin: 0 auto;
         }
-        .writing-highlight { 
-            color: #00d2ff; 
-            font-weight: bold; 
-            text-shadow: 0 0 10px rgba(0, 210, 255, 0.4);
+
+        /* 教學特色玻璃質感 */
+        .feature-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
         }
+
         html { scroll-behavior: smooth; }
     </style>
 </head>
-<body class="overflow-x-hidden">
+<body>
 
-    <header class="hero-bg min-h-[75vh] flex items-center justify-center text-center px-4 md:px-6">
-        <div class="max-w-4xl w-full">
-            <h1 class="text-4xl md:text-6xl font-bold mb-6 text-orange-500 leading-tight">
-                <span class="inline-block">技術型高中</span> <span class="inline-block">- 統測英文</span>
+    <header class="hero-bg min-h-[60vh] flex items-center justify-center text-center px-4">
+        <div class="w-full max-w-2xl">
+            <h1 class="text-3xl md:text-5xl lg:text-6 font-bold text-orange-500 mb-4 leading-tight">
+                <span class="no-orphan">技術型高中</span><br class="md:hidden">
+                <span class="no-orphan">- 統測英文</span>
             </h1>
-            <p class="text-lg md:text-2xl mb-10 text-gray-300 leading-relaxed px-2">
-                <span class="inline-block">掌握統測考試範圍，</span><span class="inline-block">提升基礎英文能力與應試技巧</span>
+            <p class="text-base md:text-xl text-gray-400 mb-8">
+                <span class="no-orphan">掌握統測範圍，</span><span class="no-orphan">提升基礎與技巧</span>
             </p>
-            <a href="#target-section" class="inline-block bg-orange-500 hover:bg-orange-600 text-white px-10 md:px-12 py-3 md:py-4 rounded-full font-bold text-lg md:text-xl transition duration-300 shadow-lg">
+            <a href="#target-section" class="bg-orange-500 hover:bg-orange-600 text-white px-8 py-3 rounded-full font-bold transition transform active:scale-95">
                 了解更多
             </a>
         </div>
     </header>
 
-    <main class="max-w-6xl mx-auto px-5 py-16 md:py-20">
+    <main class="max-w-6xl mx-auto px-4 py-12">
         
-        <div id="target-section" class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 mb-12">
-            
-            <div class="info-card p-8 md:p-10 rounded-3xl hover:border-orange-500 transition-all duration-300">
-                <div class="flex items-center mb-6">
-                    <div class="bg-orange-500/10 p-4 rounded-xl mr-5">
-                        <i class="fas fa-user-graduate text-orange-500 text-3xl"></i>
-                    </div>
-                    <h2 class="text-white text-2xl font-bold">適合對象</h2>
+        <div id="target-section" class="flex flex-wrap justify-center gap-6 mb-16">
+            <div class="custom-card w-full lg:flex-1 p-8 rounded-3xl">
+                <div class="flex items-center mb-4 text-orange-500">
+                    <i class="fas fa-user-graduate text-2xl mr-3"></i>
+                    <h2 class="text-xl font-bold">適合對象</h2>
                 </div>
-                <p class="text-gray-300 leading-relaxed text-lg">
-                    <span class="inline-block">技術型高中（高職）學生，</span><span class="inline-block">準備統測英文科之考生。</span>
+                <p class="text-gray-300 text-lg leading-relaxed">
+                    <span class="no-orphan">技術型高中（高職）學生，</span><br>
+                    <span class="no-orphan">準備統測英文科之考生。</span>
                 </p>
             </div>
 
-            <div class="info-card p-8 md:p-10 rounded-3xl hover:border-orange-500 transition-all duration-300">
-                <div class="flex items-center mb-6">
-                    <div class="bg-orange-500/10 p-4 rounded-xl mr-5">
-                        <i class="fas fa-bullseye text-orange-500 text-3xl"></i>
-                    </div>
-                    <h2 class="text-white text-2xl font-bold">課程目標</h2>
+            <div class="custom-card w-full lg:flex-1 p-8 rounded-3xl">
+                <div class="flex items-center mb-4 text-orange-500">
+                    <i class="fas fa-bullseye text-2xl mr-3"></i>
+                    <h2 class="text-xl font-bold">課程目標</h2>
                 </div>
-                <p class="text-gray-300 leading-relaxed text-lg">
-                    <span class="inline-block">全面掌握統測範圍，</span><span class="inline-block">強化基礎，</span><span class="inline-block">精準鎖定考點得分。</span>
+                <p class="text-gray-300 text-lg leading-relaxed">
+                    <span class="no-orphan">全面掌握統測範圍，</span><span class="no-orphan">強化基礎，</span><br>
+                    <span class="no-orphan">精準鎖定考點得分。</span>
                 </p>
             </div>
         </div>
 
-        <div class="info-card p-8 md:p-12 rounded-[2.5rem] mb-24 border-orange-500/20 shadow-[0_0_40px_rgba(249,115,22,0.05)]">
-            <h2 class="text-3xl font-bold mb-10 text-center text-white">
-                四大核心 <span class="text-orange-500">學習內容</span>
-            </h2>
-            
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                <div class="bg-zinc-800/60 p-6 rounded-2xl border border-zinc-700/50 hover:border-orange-500 transition-all group">
-                    <i class="fas fa-spell-check text-4xl text-orange-400 mb-5 group-hover:scale-110 transition-transform"></i>
-                    <h3 class="text-xl font-bold mb-3 text-white">生活化單字</h3>
-                    <p class="text-gray-400 text-sm md:text-base leading-relaxed">生活與職場所需核心字彙與文法應用</p>
+        <div class="bg-zinc-900/50 p-6 md:p-10 rounded-[2.5rem] border border-zinc-800 mb-20">
+            <h2 class="text-2xl font-bold text-center mb-10">四大核心學習內容</h2>
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                <div class="text-center p-4">
+                    <i class="fas fa-spell-check text-3xl text-orange-400 mb-3"></i>
+                    <h3 class="font-bold text-sm md:text-base">生活化單字</h3>
                 </div>
-                
-                <div class="bg-zinc-800/60 p-6 rounded-2xl border border-zinc-700/50 hover:border-orange-500 transition-all group">
-                    <i class="fas fa-book-reader text-4xl text-orange-400 mb-5 group-hover:scale-110 transition-transform"></i>
-                    <h3 class="text-xl font-bold mb-3 text-white">閱讀測驗</h3>
-                    <p class="text-gray-400 text-sm md:text-base leading-relaxed">攻克短文、廣告等多樣題型，提升語感</p>
+                <div class="text-center p-4">
+                    <i class="fas fa-book-open text-3xl text-orange-400 mb-3"></i>
+                    <h3 class="font-bold text-sm md:text-base">閱讀測驗</h3>
                 </div>
-                
-                <div class="bg-gradient-to-br from-zinc-800 to-zinc-900 p-6 rounded-2xl border border-[#00d2ff]/40 hover:border-[#00d2ff] transition-all group relative overflow-hidden shadow-[0_0_15px_rgba(0,210,255,0.1)]">
-                    <div class="absolute top-0 right-0 bg-[#00d2ff]/20 text-[#00d2ff] text-xs font-bold px-4 py-1.5 rounded-bl-xl">重點強化</div>
-                    <i class="fas fa-pen-nib text-4xl text-[#00d2ff] mb-5 group-hover:scale-110 transition-transform"></i>
-                    <h3 class="text-xl font-bold mb-3 text-white"><span class="writing-highlight inline-block">英文作文</span></h3>
-                    <p class="text-gray-300 text-sm md:text-base leading-relaxed">常見考題分析與實作，建立滿分架構</p>
+                <div class="text-center p-4 border-2 border-cyan-500/30 rounded-2xl bg-cyan-500/5">
+                    <i class="fas fa-pen-fancy text-3xl text-cyan-400 mb-3"></i>
+                    <h3 class="font-bold text-sm md:text-base text-cyan-300">英文作文</h3>
                 </div>
-                
-                <div class="bg-zinc-800/60 p-6 rounded-2xl border border-zinc-700/50 hover:border-orange-500 transition-all group">
-                    <i class="fas fa-headphones-alt text-4xl text-orange-400 mb-5 group-hover:scale-110 transition-transform"></i>
-                    <h3 class="text-xl font-bold mb-3 text-white">聽力理解</h3>
-                    <p class="text-gray-400 text-sm md:text-base leading-relaxed">模擬真實考試情境，提升反應與答題速度</p>
+                <div class="text-center p-4">
+                    <i class="fas fa-headset text-3xl text-orange-400 mb-3"></i>
+                    <h3 class="font-bold text-sm md:text-base">聽力理解</h3>
                 </div>
             </div>
         </div>
 
-        <section class="mb-24 text-center">
-            <h2 class="text-3xl font-bold mb-12 md:mb-16">教學特色</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 md:gap-6 max-w-4xl mx-auto text-left">
-                <div class="flex items-center p-5 md:p-6 bg-zinc-800/40 rounded-2xl border border-zinc-700/50">
-                    <i class="fas fa-check-circle text-green-500 text-xl md:text-2xl mr-4 md:mr-5 shrink-0"></i>
-                    <span class="text-lg md:text-xl"><span class="inline-block">彈性學習：</span><span class="inline-block">在家上課，時間自由安排</span></span>
+        <section class="mb-20">
+            <h2 class="text-xl font-bold text-center mb-8 text-gray-500 tracking-widest uppercase">教學特色</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4 max-w-4xl mx-auto">
+                <div class="feature-item flex items-center p-5 rounded-2xl">
+                    <div class="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center mr-4 shrink-0">
+                        <i class="fas fa-check text-green-500"></i>
+                    </div>
+                    <span class="text-base md:text-lg">彈性學習：在家上課時間自由</span>
                 </div>
-                <div class="flex items-center p-5 md:p-6 bg-zinc-800/40 rounded-2xl border border-zinc-700/50">
-                    <i class="fas fa-check-circle text-green-500 text-xl md:text-2xl mr-4 md:mr-5 shrink-0"></i>
-                    <span class="text-lg md:text-xl"><span class="inline-block">一對一指導：</span><span class="inline-block">根據學生需求調整內容</span></span>
+                <div class="feature-item flex items-center p-5 rounded-2xl">
+                    <div class="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center mr-4 shrink-0">
+                        <i class="fas fa-check text-green-500"></i>
+                    </div>
+                    <span class="text-base md:text-lg">一對一指導：針對弱點強化內容</span>
                 </div>
-                <div class="flex items-center p-5 md:p-6 bg-zinc-800/40 rounded-2xl border border-zinc-700/50">
-                    <i class="fas fa-check-circle text-green-500 text-xl md:text-2xl mr-4 md:mr-5 shrink-0"></i>
-                    <span class="text-lg md:text-xl"><span class="inline-block">系統化教材：</span><span class="inline-block">依考試要求精心設計</span></span>
+                <div class="feature-item flex items-center p-5 rounded-2xl">
+                    <div class="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center mr-4 shrink-0">
+                        <i class="fas fa-check text-green-500"></i>
+                    </div>
+                    <span class="text-base md:text-lg">系統化教材：鎖定統測必考點</span>
                 </div>
-                <div class="flex items-center p-5 md:p-6 bg-zinc-800/40 rounded-2xl border border-zinc-700/50">
-                    <i class="fas fa-check-circle text-green-500 text-xl md:text-2xl mr-4 md:mr-5 shrink-0"></i>
-                    <span class="text-lg md:text-xl"><span class="inline-block">高效提升：</span><span class="inline-block">應試技巧與實用英語並重</span></span>
+                <div class="feature-item flex items-center p-5 rounded-2xl">
+                    <div class="w-10 h-10 bg-green-500/20 rounded-full flex items-center justify-center mr-4 shrink-0">
+                        <i class="fas fa-check text-green-500"></i>
+                    </div>
+                    <span class="text-base md:text-lg">高效提升：應試與實用英語並重</span>
                 </div>
             </div>
         </section>
 
-        <section id="contact" class="text-center">
-            <div class="bg-gradient-to-br from-zinc-800 to-zinc-950 p-8 md:p-20 rounded-[2rem] md:rounded-[3rem] border border-zinc-700 shadow-2xl">
-                <h2 class="text-2xl md:text-4xl font-bold mb-8 md:mb-10">突破英文學習瓶頸</h2>
-                
-                <div class="mb-10 md:mb-12">
-                    <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="inline-flex items-center gap-3 md:gap-4 text-xl md:text-2xl hover:text-green-400 transition-all group">
-                        <i class="fab fa-line text-4xl md:text-5xl text-[#06C755] group-hover:scale-110 transition"></i>
-                        <span class="font-bold border-b border-zinc-700 group-hover:border-green-400">Line: myavalon</span>
+        <section class="text-center">
+            <div class="bg-gradient-to-b from-orange-600/20 to-transparent p-10 rounded-[3rem] border border-orange-500/20">
+                <h2 class="text-2xl md:text-3xl font-bold mb-8">突破英文學習瓶頸</h2>
+                <div class="mb-8">
+                    <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="inline-flex items-center gap-3 text-xl font-bold hover:text-green-400">
+                        <i class="fab fa-line text-4xl text-[#06C755]"></i>
+                        <span>Line: myavalon</span>
                     </a>
                 </div>
-
-                <div>
-                    <a href="https://tonyonlineenglish.netlify.app/exper" target="_blank" class="inline-block bg-orange-500 hover:bg-orange-600 text-white px-8 md:px-14 py-4 md:py-6 rounded-xl md:rounded-2xl font-bold text-lg md:text-2xl shadow-xl transition-all w-full sm:w-auto">
-                        立即預約體驗課程
-                    </a>
-                </div>
+                <a href="https://tonyonlineenglish.netlify.app/exper" target="_blank" class="inline-block bg-orange-500 hover:bg-orange-600 text-white px-10 py-4 rounded-2xl font-bold text-xl shadow-2xl active:scale-95 transition">
+                    立即預約體驗課程
+                </a>
             </div>
         </section>
 
     </main>
 
-    <footer class="py-10 text-center text-gray-600 border-t border-zinc-900">
-        <p class="font-bold text-zinc-500 uppercase tracking-widest text-sm">Tony Online English</p>
+    <footer class="py-10 text-center text-gray-600">
+        <p class="text-xs tracking-widest">TONY ONLINE ENGLISH &copy; 2026</p>
     </footer>
 
     <script src="layout-manager.js"></script>
