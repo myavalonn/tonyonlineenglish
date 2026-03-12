@@ -132,6 +132,7 @@ document.addEventListener("DOMContentLoaded", function() {
         <nav class="side-menu" id="side-menu">
             <div id="menu-close" style="color:white; font-size:50px; cursor:pointer; align-self:flex-end; margin-bottom:20px;">&times;</div>
             <a href="index.html" class="menu-link">回首頁</a>
+            <a href="https://tonyonlineenglish.netlify.app/allcourses" target="_blank" class="menu-link">課程詳細介紹<span>升學 檢定 職場 公職 客製化</span></a>
             <a href="https://tonyonlineenglish.netlify.app/ycs" target="_blank" class="menu-link">你的課表查詢<span>即時查看課程安排狀況</span></a>
             <a href="https://tonyonlineenglish.netlify.app/exper" target="_blank" class="menu-link">預約體驗課程<span>25 / 50 分鐘線上試聽</span></a>
             <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="menu-link" style="color: #00B900;">LINE 直接聯絡<span>ID: Myavalon</span></a>
