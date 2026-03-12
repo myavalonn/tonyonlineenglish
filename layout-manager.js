@@ -1,4 +1,4 @@
-// layout-manager.js - 終極修正版：解決 iPad 直/橫放白條問題
+// layout-manager.js - 終極修正版：解決 iPad 直/橫放白條問題 (包含文字換行與寬度修正)
 document.addEventListener("DOMContentLoaded", function() {
     if (document.getElementById('tony-unique-header')) return;
 
@@ -13,12 +13,10 @@ document.addEventListener("DOMContentLoaded", function() {
         html, body {
             margin: 0 !important;
             padding: 0 !important;
-            width: 100vw !important;
+            width: 100% !important; /* 從 100vw 改為 100% 徹底解決 iPad 左側白邊/位移問題 */
             max-width: 100% !important;
             overflow-x: hidden !important;
-            position: relative !important;
             background-color: var(--tony-light) !important;
-            left: 0 !important;
             -webkit-text-size-adjust: 100%;
         }
 
@@ -38,7 +36,6 @@ document.addEventListener("DOMContentLoaded", function() {
             z-index: 1000;
             overflow: hidden;
             margin: 0 !important;
-            left: 0 !important;
         }
 
         .logo-box { height: 112px; flex-shrink: 0; }
@@ -74,18 +71,24 @@ document.addEventListener("DOMContentLoaded", function() {
 
         /* --- 3. 側邊選單樣式 --- */
         .side-menu {
-            position: fixed; top: 0; left: -320px; width: 320px; height: 100vh;
+            position: fixed; top: 0; left: -320px; width: 320px; max-width: 85%; height: 100vh;
             background: var(--tony-dark); z-index: 99999; transition: 0.4s;
             padding: 40px 20px; display: flex; flex-direction: column;
             visibility: hidden;
+            box-sizing: border-box;
         }
         .side-menu.open { left: 0; visibility: visible; }
         .menu-link {
             color: white; text-decoration: none; font-size: 26px !important;
             font-weight: 700; padding: 18px; background: rgba(255,255,255,0.05);
             border-radius: 12px; display: block; margin-bottom: 15px;
+            white-space: normal; /* 防止過長文字撐開選單 */
+            word-wrap: break-word;
         }
-        .menu-link span { display: block; font-size: 16px !important; color: #94a3b8; margin-top: 6px; }
+        .menu-link span { 
+            display: block; font-size: 16px !important; color: #94a3b8; margin-top: 6px; 
+            line-height: 1.4; white-space: normal; 
+        }
         .menu-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 99998; display: none; }
         .menu-overlay.open { display: block; }
 
@@ -97,7 +100,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 margin: 0 !important;
                 padding-left: 30px !important;
                 padding-right: 30px !important;
-                left: 0 !important;
             }
             /* 強制背景色滲透，防止白條 */
             body::before {
@@ -132,6 +134,7 @@ document.addEventListener("DOMContentLoaded", function() {
         <nav class="side-menu" id="side-menu">
             <div id="menu-close" style="color:white; font-size:50px; cursor:pointer; align-self:flex-end; margin-bottom:20px;">&times;</div>
             <a href="index.html" class="menu-link">回首頁</a>
+            <a href="https://tonyonlineenglish.netlify.app/allcourses" target="_blank" class="menu-link">課程詳細介紹<span>升學 檢定 職場 公職 客製化</span></a>
             <a href="https://tonyonlineenglish.netlify.app/ycs" target="_blank" class="menu-link">你的課表查詢<span>即時查看課程安排狀況</span></a>
             <a href="https://tonyonlineenglish.netlify.app/exper" target="_blank" class="menu-link">預約體驗課程<span>25 / 50 分鐘線上試聽</span></a>
             <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="menu-link" style="color: #00B900;">LINE 直接聯絡<span>ID: Myavalon</span></a>
