@@ -29,7 +29,7 @@
             --dark-text: #000000;    
             --white: #FFFFFF;
             
-            /* 加入的其他點綴色彩 (Add some other color) */
+            /* 加入的其他點綴色彩 */
             --accent-blue: #2563EB;
             --accent-red: #DC2626;
             --accent-green: #16A34A;
@@ -56,24 +56,27 @@
             content: ''; width: 80px; height: 6px; background: var(--dark-text); display: block; margin: 15px auto 0;
         }
 
-        /* --- Hero Section (背景亮化、無黃色遮蓋) --- */
+        /* 控制手機版強制換行的 Class */
+        .mobile-break { display: none; }
+
+        /* --- Hero Section --- */
         .hero {
             position: relative;
-            /* 使用白色半透明漸層讓背景圖片變亮，確保純黑文字絕對清晰 */
-            background: linear-gradient(to right, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.6)), 
+            /* 將右側漸層透明度調高（0.1），讓背景女生圖片非常清晰 */
+            background: linear-gradient(to right, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.6) 40%, rgba(255, 255, 255, 0.1) 100%), 
                         url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/young-businesswoman-making-notes.jpg?updatedAt=1773303772470') center/cover;
-            padding: 120px 20px 80px; text-align: center; overflow: hidden;
+            padding: 120px 20px 80px; text-align: left; overflow: hidden; /* 改為靠左對齊以適應背景圖片 */
             border-bottom: 8px solid var(--brand-yellow);
         }
         
-        .hero .container { position: relative; z-index: 10; }
+        .hero .container { position: relative; z-index: 10; max-width: 1000px; }
 
         /* 右上方疊加圖片 (全面縮小) */
         .hero-overlay {
             position: absolute;
             top: 20px;
             right: 20px;
-            width: 80px; /* 手機版縮小 */
+            width: 80px; 
             height: 80px;
             border-radius: 50%;
             z-index: 2;
@@ -82,14 +85,15 @@
             box-shadow: 4px 4px 0px rgba(0,0,0,1);
         }
 
-        .hero h1 { font-size: 3.5rem; margin-bottom: 20px; letter-spacing: 2px; }
-        .hero h2 { font-size: 2rem; margin-bottom: 40px; }
+        .hero h1 { font-size: 3rem; margin-bottom: 10px; letter-spacing: 2px; line-height: 1.2; text-shadow: 2px 2px 0px #fff; }
+        .hero-subtext p { font-size: 1.2rem; font-weight: 900; margin-bottom: 5px; text-shadow: 1px 1px 0px #fff; }
+        .hero-subtext { margin-bottom: 30px; }
         
-        .hero-buttons { display: flex; flex-direction: column; gap: 15px; justify-content: center; align-items: center; flex-wrap: wrap; }
+        .hero-buttons { display: flex; flex-direction: column; gap: 15px; justify-content: flex-start; align-items: flex-start; flex-wrap: wrap; }
         .cta-btn { 
             display: inline-flex; align-items: center; justify-content: center; gap: 10px; 
             padding: 16px 35px; font-size: 1.25rem; font-weight: 900; border-radius: 50px; 
-            transition: all 0.2s ease; width: 100%; max-width: 320px; 
+            transition: all 0.2s ease; width: 100%; max-width: 320px; text-align: center;
             border: 3px solid var(--dark-text);
         }
         
@@ -116,7 +120,6 @@
         .target-card h3 { font-size: 1.3rem; margin-bottom: 10px; }
         .target-card p { font-size: 1.05rem; font-weight: 700; }
 
-        /* 為每張卡片加上其他色彩點綴 */
         .border-blue { border-top-color: var(--accent-blue); }
         .border-blue i { color: var(--accent-blue); }
         .border-red { border-top-color: var(--accent-red); }
@@ -138,8 +141,7 @@
         .target-list strong { font-size: 1.3rem; margin-right: 5px; background: var(--dark-text); color: var(--brand-yellow); padding: 2px 8px; border-radius: 4px; }
 
         /* --- Course Levels (題型分析) --- */
-        .levels-bg { background: var(--white); border-top: 4px dashed var(--dark-text); border-bottom: 4px dashed var(--dark-text); }
-        .course-grid-container { display: grid; grid-template-columns: repeat(1, 1fr); gap: 25px; }
+        .levels-bg { background: var(--white); border-top: 4px dashed var(--dark-text); border-bottom: 4px dashed var(--dark-text); overflow-x: hidden; }
         
         .level-card { 
             background: var(--white); border-radius: 20px; 
@@ -163,7 +165,6 @@
         .level-body { padding: 25px 20px; flex-grow: 1; }
         .level-body h4 { margin-bottom: 12px; font-size: 1.25rem; display: flex; align-items: center; gap: 10px; }
         
-        /* 強制副標題圖示的點綴色 */
         .theme-blue h4 i { color: var(--accent-blue); }
         .theme-red h4 i { color: var(--accent-red); }
         .theme-green h4 i { color: var(--accent-green); }
@@ -187,7 +188,9 @@
 
         /* --- CTA Bottom --- */
         .cta-section { background: var(--white); text-align: center; padding: 60px 20px 80px 20px; }
+        .cta-bottom-title { font-size: 2.2rem; margin-bottom: 30px; line-height: 1.3; }
         .contact-links { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+        
         .contact-btn { 
             display: flex; align-items: center; justify-content: center; gap: 10px; 
             padding: 16px 35px; border-radius: 50px; font-size: 1.25rem; font-weight: 900; 
@@ -199,23 +202,59 @@
         .contact-btn.line:hover { box-shadow: 2px 2px 0px rgba(0,0,0,1); color: var(--white); }
 
         /* =========================================
-           RESPONSIVE LOGIC
+           RESPONSIVE LOGIC (Mobile Swipe & Breaks)
            ========================================= */
 
+        /* 📱 Mobile Mode (max-width: 767px) */
+        @media (max-width: 767px) {
+            .mobile-break { display: block; } /* 顯示手機版強制換行 */
+            .hero { text-align: center; } /* 手機版排版置中 */
+            .hero h1 { font-size: 2.8rem; }
+            .hero-buttons { justify-content: center; align-items: center; }
+            
+            .cta-bottom-title { font-size: 1.5rem; } /* 手機版縮小字體 */
+            
+            /* 手機版題型分析：滑動與邊緣突出 */
+            .mobile-swipe-container {
+                display: flex;
+                overflow-x: auto;
+                scroll-snap-type: x mandatory;
+                gap: 15px;
+                padding: 10px 20px 30px 20px;
+                margin-left: -20px;
+                margin-right: -20px;
+                -ms-overflow-style: none; /* IE and Edge */
+                scrollbar-width: none; /* Firefox */
+            }
+            .mobile-swipe-container::-webkit-scrollbar { display: none; /* Chrome, Safari */ }
+            .mobile-swipe-container .level-card {
+                flex: 0 0 82%; /* 讓右側邊緣突出，提示可滑動 */
+                scroll-snap-align: center;
+            }
+            .swipe-hint { display: block; text-align: center; font-weight: 900; margin-bottom: 15px; color: var(--accent-blue); animation: bounce-x 2s infinite; }
+        }
+
+        /* 💻 Desktop Mode (768px and up) */
         @media (min-width: 768px) {
             .hero-overlay { width: 130px; height: 130px; top: 30px; right: 5%; }
-            .hero h1 { font-size: 4.5rem; }
+            .hero h1 { font-size: 4rem; }
+            .hero-subtext p { font-size: 1.5rem; }
             .hero-buttons { flex-direction: row; }
             .target-grid { grid-template-columns: repeat(2, 1fr); }
-            .course-grid-container { grid-template-columns: repeat(2, 1fr); }
+            
+            /* 電腦版題型分析：網格排列 */
+            .mobile-swipe-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 25px; }
+            .swipe-hint { display: none; } /* 電腦版隱藏滑動提示 */
         }
 
         @media (min-width: 1024px) {
             .hero-overlay { width: 150px; height: 150px; top: 40px; right: 10%; }
-            .hero h1 { font-size: 5.5rem; }
+            .hero h1 { font-size: 5rem; }
             .target-grid { grid-template-columns: repeat(4, 1fr); }
-            .course-grid-container { grid-template-columns: repeat(4, 1fr); }
+            .mobile-swipe-container { grid-template-columns: repeat(4, 1fr); }
         }
+
+        @keyframes bounce-x { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(10px); } }
     </style>
 </head>
 <body>
@@ -226,8 +265,12 @@
         <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-13%20%E4%B8%8B%E5%8D%8810.24.32.png" alt="Tony 線上美語" class="hero-overlay">
         
         <div class="container">
-            <h1>多語無國界</h1>
-            <h2>The Sky is the Limit</h2>
+            <!-- 手機版強制換行：FLPT外語能力測驗 -->
+            <h1>FLPT<br class="mobile-break"> 外語能力測驗</h1>
+            <div class="hero-subtext">
+                <p>| 多語無國界 未來不設限</p>
+                <p>The Sky is the Limit.</p>
+            </div>
             
             <div class="hero-buttons">
                 <a href="#introduction" class="cta-btn btn-secondary">
@@ -288,9 +331,14 @@
     <section class="section-padding levels-bg">
         <div class="container">
             <h2 class="section-title">FLPT 英文測驗題型分析</h2>
-            <p style="text-align: center; font-size: 1.2rem; font-weight: 900; margin-bottom: 30px;">很多學生準備語言考試時，最大的問題是：不熟悉題型、不了解命題邏輯、練習方法不正確。因此本課程會進行完整 FLPT題型解析訓練。</p>
+            <p style="text-align: center; font-size: 1.2rem; font-weight: 900; margin-bottom: 20px;">很多學生準備語言考試時，最大的問題是：不熟悉題型、不了解命題邏輯、練習方法不正確。因此本課程會進行完整 FLPT題型解析訓練。</p>
             
-            <div class="course-grid-container">
+            <!-- 手機版專屬滑動提示 -->
+            <div class="swipe-hint">
+                <i class="fas fa-arrows-alt-h"></i> 👉 左右滑動查看所有題型
+            </div>
+
+            <div class="mobile-swipe-container">
                 
                 <!-- Listening -->
                 <div class="level-card theme-blue">
@@ -401,16 +449,21 @@
     <!-- Call to Action Section -->
     <section class="cta-section">
         <div class="container">
-            <h2 style="font-size: 2.2rem; margin-bottom: 30px;">提升英語能力，取得專業語言證照！</h2>
+            <!-- 手機版強制雙行與縮小 -->
+            <h2 class="cta-bottom-title">提升英語能力，<br class="mobile-break">取得專業語言證照！</h2>
             
-            <div class="hero-buttons">
-                <a href="https://tonyonlineenglish.netlify.app/exper" class="cta-btn btn-primary" target="_blank">
-                    預約體驗課程 25/50分鐘
+            <div class="hero-buttons" style="flex-direction: row; justify-content: center; align-items: center;">
+                
+                <!-- 按鈕內部分為兩行：上方標題，下方分鐘數 -->
+                <a href="https://tonyonlineenglish.netlify.app/exper" class="cta-btn btn-primary" target="_blank" style="flex-direction: column; gap: 2px; padding: 12px 35px;">
+                    <span style="font-size: 1.25rem;">預約體驗課程</span>
+                    <span style="font-size: 0.95rem; font-weight: 700;">25/50分鐘</span>
                 </a>
                 
                 <a href="https://line.me/ti/p/T9YdimtG8_" class="contact-btn line" target="_blank">
                     <i class="fab fa-line" style="font-size: 1.8rem;"></i> LINE: myavalon
                 </a>
+                
             </div>
         </div>
     </section>
