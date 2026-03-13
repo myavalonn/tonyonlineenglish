@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- 4. SEO Title (瀏覽器分頁上顯示的網頁標題) -->
+    <title>趨勢解讀：英文學習的新現實 | Tony線上美語家教</title>
+
+    <!-- 2. SEO Description (Google 搜尋時顯示的網頁描述) -->
+    <meta name="description" content="拋棄過時語法教條，文法題佔比大減，單字片語才是核心！Tony線上美語家教提供點數制學習系統，針對選擇題精準擊破，全面提升核心詞彙與直覺式閱讀理解。">
+
+    <!-- 3. Message Preview Picture (貼到 Line, FB, iMessage 時的預覽小圖與文字) -->
+    <meta property="og:title" content="趨勢解讀：英文學習的新現實 | Tony線上美語家教">
+    <meta property="og:description" content="拋棄過時語法教條，文法題佔比大減，單字片語才是核心！Tony線上美語家教針對選擇題精準擊破，全面提升核心詞彙與直覺式閱讀理解。">
+    <meta property="og:url" content="https://tonyonlineenglish.netlify.app/exper">
+    <meta property="og:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-13%20%E4%B8%8B%E5%8D%881.40.09.png?updatedAt=1773380419567">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-13%20%E4%B8%8B%E5%8D%881.40.09.png?updatedAt=1773380419567">
+
+    <!-- 1. 載入 Layout Manager -->
+    <script src="layout-manager.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
+        html { scroll-behavior: smooth; }
+        body { 
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: #fcfcfc; 
+            color: #1e293b; 
+            margin: 0;
+            line-height: 1.6;
+        }
+
+        /* Hero Section 背景修正 (保證所有設備皆可視) */
+        .hero-bg { 
+            background: linear-gradient(rgba(15, 23, 42, 0.65), rgba(15, 23, 42, 0.65)), 
+                        url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-13%20%E4%B8%8B%E5%8D%881.40.09.png?updatedAt=1773380419567'); 
+            background-size: cover; 
+            background-position: center center; 
+            /* 預設為 scroll，保護手機與平板不跑版 */
+            background-attachment: scroll; 
+        }
+
+        @media (min-width: 1024px) {
+            .hero-bg { background-attachment: fixed; }
+        }
+
+        @supports (-webkit-touch-callout: none) {
+            .hero-bg { background-attachment: scroll !important; }
+        }
+
+        /* --- 側邊懸浮標籤樣式 (改為紫色主題) --- */
+        #writing-tab {
+            position: fixed;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: #9333ea; /* Purple 600 */
+            color: white;
+            padding: 12px 6px;
+            font-size: 14px;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            cursor: pointer;
+            border-radius: 0 8px 8px 0;
+            font-weight: 900;
+            letter-spacing: 1px;
+            z-index: 1000;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+            transition: all 0.3s;
+        }
+        #writing-tab:hover { background-color: #7e22ce; padding-left: 10px; }
+
+        @media (min-width: 768px) {
+            #writing-tab {
+                padding: 20px 10px;
+                font-size: 16px;
+                letter-spacing: 2px;
+                border-radius: 0 12px 12px 0;
+            }
+            #writing-tab:hover { padding-left: 15px; }
+        }
+
+        /* --- 展開視窗樣式 --- */
+        #writing-panel {
+            position: fixed;
+            left: -100%; 
+            top: 50%;
+            transform: translateY(-50%);
+            width: 90%;
+            max-width: 450px;
+            background: white;
+            z-index: 1001;
+            box-shadow: 10px 0 30px rgba(0,0,0,0.2);
+            border-radius: 0 2rem 2rem 0;
+            transition: left 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 2px solid #9333ea;
+            overflow: hidden;
+        }
+        #writing-panel.active { left: 0; }
+
+        #overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            z-index: 999;
+        }
+        #overlay.active { display: block; }
+        
+        /* CTA 按鈕主色調 (綠色) */
+        .cta-button { background-color: #10b981; } /* Emerald 500 */
+        .cta-button:hover { background-color: #059669; }
+    </style>
+</head>
+<body>
+
+    <!-- 側邊懸浮按鈕：點數制學習系統 -->
+    <div id="writing-tab" onclick="togglePanel()">
+        <i class="fas fa-gem mb-1 md:mb-2 text-sm md:text-base text-pink-300"></i> 點數制系統
+    </div>
+
+    <div id="overlay" onclick="togglePanel()"></div>
+
+    <!-- 展開面板：點數制學習系統詳細內容 -->
+    <div id="writing-panel" class="p-6 md:p-8">
+        <button onclick="togglePanel()" class="absolute top-4 right-6 text-2xl font-bold text-slate-400 hover:text-slate-900">✕</button>
+        <div class="inline-block bg-purple-600 text-white px-4 py-1 rounded-full text-xs font-bold mb-4">⭐ 彈性進階</div>
+        <h2 class="text-2xl font-black text-slate-900 mb-2">點數制學習系統</h2>
+        
+        <p class="font-black text-pink-600 mb-4 border-l-4 border-pink-500 pl-2">
+            時間要花在刀口上，而不是耗在冗長的課堂裡。
+        </p>
+
+        <ul class="text-slate-700 mb-6 leading-relaxed space-y-4 font-medium">
+            <li>
+                <strong class="text-purple-700"><i class="fas fa-laptop-house mr-1"></i> 線上一對一家教</strong><br>
+                在專注力最高的時候，針對單字與閱讀痛點進行精準突破。
+            </li>
+            <li>
+                <strong class="text-purple-700"><i class="fas fa-sliders-h mr-1"></i> 點數制自主規劃</strong><br>
+                根據個人學習步調彈性調整，將點數花在最需要加強的弱點上。
+            </li>
+        </ul>
+        
+        <a href="https://tonyonlineenglish.netlify.app/exper" target="_blank" class="w-full block text-center bg-purple-600 text-white py-4 rounded-xl font-black hover:bg-purple-700 transition">
+            立即預約體驗
+        </a>
+    </div>
+
+    <!-- 頂部 Hero Section -->
+    <header class="hero-bg min-h-[75vh] flex items-center justify-center text-center px-4">
+        <div class="max-w-4xl">
+            <span class="inline-block px-5 py-2 border-2 border-pink-400 text-pink-300 font-bold rounded-full mb-6 tracking-widest bg-black/30 backdrop-blur-sm">趨勢解讀</span>
+            <h1 class="text-4xl md:text-6xl lg:text-7xl font-black text-white mb-8 leading-tight">英文學習的新現實</h1>
+            <p class="text-xl md:text-2xl text-green-300 font-bold mb-12 drop-shadow-md">文法題佔比大減，單字片語才是真正的核心主力</p>
+            <a href="#content-start" class="cta-button text-white px-12 py-5 rounded-2xl font-bold text-xl inline-block shadow-lg hover:scale-105 transition duration-300">
+                深入了解趨勢
+            </a>
+        </div>
+    </header>
+
+    <main id="content-start" class="w-full max-w-6xl mx-auto px-4 md:px-8 py-16 md:py-24">
+        
+        <!-- 導言區塊 -->
+        <div class="max-w-4xl mx-auto mb-20 text-center">
+            <p class="text-[17px] md:text-xl font-bold text-slate-700 leading-relaxed mb-8">
+                翻開近年的考題，純粹考文法規則的題目比例已降至新低。取而代之的是海量的長篇文章與複合式選擇題。
+            </p>
+            <div class="bg-slate-50 border border-slate-200 rounded-3xl p-6 md:p-10 text-left shadow-sm">
+                <div class="mb-6">
+                    <h3 class="text-xl md:text-2xl font-black text-purple-700 mb-2"><i class="fas fa-key text-pink-500 mr-2"></i> 關鍵不在懂公式，而在識字率：</h3>
+                    <p class="text-slate-600 text-lg font-medium">當單字量與片語儲備不足時，文法再好也無法支撐閱讀速度。</p>
+                </div>
+                <hr class="border-slate-200 mb-6">
+                <div>
+                    <h3 class="text-xl md:text-2xl font-black text-green-600 mb-2"><i class="fas fa-bolt text-pink-500 mr-2"></i> 從分析題目轉向直覺反應：</h3>
+                    <p class="text-slate-600 text-lg font-medium">強者不再推敲語法，而是透過高頻率的單字接觸，建立如同母語般的直覺。</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 在這裡，學習者將獲得... -->
+        <section class="mb-24">
+            <h2 class="text-3xl md:text-4xl font-black text-center mb-14 flex items-center justify-center gap-3">
+                <i class="fas fa-gift text-pink-500"></i> 在這裡，學習者將獲得
+            </h2>
+
+            <div class="space-y-8 max-w-4xl mx-auto">
+                <!-- Point 1 -->
+                <div class="bg-white p-6 md:p-10 rounded-2xl shadow-lg border-t-[6px] border-green-500 relative overflow-hidden">
+                    <h3 class="text-2xl md:text-3xl font-black text-slate-800 mb-6 flex items-center gap-3">
+                        <span class="bg-green-100 text-green-600 w-12 h-12 flex items-center justify-center rounded-full text-2xl shrink-0">1</span> 
+                        核心詞彙的深度與廣度
+                    </h3>
+                    <ul class="space-y-4 text-lg text-slate-700 font-medium pl-2 md:pl-16">
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check-circle text-green-500 mt-1"></i>
+                            <span><strong class="text-green-700">不只是背單字：</strong>掌握單字在不同情境下的衍生義與常用片語組合，這才是攻克長篇閱讀的唯一捷徑。</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <i class="fas fa-check-circle text-green-500 mt-1"></i>
+                            <span><strong class="text-green-700">高效率提取：</strong>透過系統化的整理，縮短大腦從看到單字到理解意義的毫秒差。</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Point 2 -->
+                <div class="bg-white p-6 md:p-10 rounded-2xl shadow-lg border-t-[6px] border-purple-500 relative overflow-hidden">
+                    <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6">
+                        <h3 class="text-2xl md:text-3xl font-black text-slate-800 flex items-center gap-3">
+                            <span class="bg-purple-100 text-purple-600 w-12 h-12 flex items-center justify-center rounded-full text-2xl shrink-0">2</span> 
+                            閱讀理解：跳脫公式化的拆解
+                        </h3>
+                        <!-- 客戶指定：橘底白字標籤 -->
+                        <span class="bg-orange-500 text-white font-bold px-4 py-2 rounded-lg text-sm md:text-base shrink-0 shadow-md">
+                            閱讀理解｜核心考點｜單字精衝
+                        </span>
+                    </div>
+                    <p class="text-lg text-slate-700 font-medium pl-2 md:pl-16 leading-relaxed">
+                        拋棄傳統神技的幻想，回歸閱讀本質。<strong class="text-purple-700">訓練在大篇幅文字中，一眼抓出關鍵訊息與段落邏輯。</strong>
+                    </p>
+                </div>
+
+                <!-- Point 3 -->
+                <div class="bg-white p-6 md:p-10 rounded-2xl shadow-lg border-t-[6px] border-pink-500 relative overflow-hidden">
+                    <h3 class="text-2xl md:text-3xl font-black text-slate-800 mb-6 flex items-center gap-3">
+                        <span class="bg-pink-100 text-pink-600 w-12 h-12 flex items-center justify-center rounded-full text-2xl shrink-0">3</span> 
+                        100% 針對選擇題型
+                    </h3>
+                    <p class="text-lg text-slate-700 font-medium pl-2 md:pl-16 leading-relaxed">
+                        <strong class="text-pink-600">考點精準擊破：</strong>既然考題只有選擇題，學習重心就該放在如何過濾錯誤選項、辨識關鍵訊息。<strong class="text-slate-900 border-b-2 border-pink-300">這是最純粹的分數提升。</strong>
+                    </p>
+                </div>
+            </div>
+        </section>
+
+        <!-- 適合對象 -->
+        <section class="mb-24">
+            <h2 class="text-3xl md:text-4xl font-black text-center mb-10 flex items-center justify-center gap-3">
+                <i class="fas fa-users text-purple-600"></i> 適合對象
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl mx-auto">
+                
+                <!-- 卡片 1 (Green) -->
+                <div class="bg-green-50 px-6 py-10 rounded-[2rem] text-center border border-green-200 hover:-translate-y-2 transition duration-300">
+                    <i class="fas fa-seedling text-5xl text-green-500 mb-6 block"></i>
+                    <h3 class="text-2xl font-black text-slate-800 mb-4 tracking-wider">升國一</h3>
+                    <p class="text-slate-600 font-bold leading-relaxed">提前建立單字儲備量<br>與國小基礎完美銜接。</p>
+                </div>
+
+                <!-- 卡片 2 (Purple) -->
+                <div class="bg-purple-50 px-6 py-10 rounded-[2rem] text-center border border-purple-200 hover:-translate-y-2 transition duration-300">
+                    <i class="fas fa-book-open text-5xl text-purple-500 mb-6 block"></i>
+                    <h3 class="text-2xl font-black text-slate-800 mb-4 tracking-wider">國一 / 國二</h3>
+                    <p class="text-slate-600 font-bold leading-relaxed">穩紮穩打學校進度<br>將零散的片語系統化。</p>
+                </div>
+
+                <!-- 卡片 3 (Pink) -->
+                <div class="bg-pink-50 px-6 py-10 rounded-[2rem] text-center border border-pink-200 hover:-translate-y-2 transition duration-300">
+                    <i class="fas fa-fire text-5xl text-pink-500 mb-6 block"></i>
+                    <h3 class="text-2xl font-black text-slate-800 mb-4 tracking-wider">國三</h3>
+                    <p class="text-slate-600 font-bold leading-relaxed">進入會考衝刺模式<br>針對弱點強化，提升答對率。</p>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- CTA 區塊 -->
+        <section class="text-center mt-16 px-1 sm:px-4 md:px-0">
+            <p class="text-xl md:text-3xl font-black text-slate-800 mb-10 max-w-3xl mx-auto leading-relaxed">
+                英文實力的厚度，取決於對單字片語的掌握度。<br>
+                <span class="text-pink-600">拋棄過時的語法教條，把時間留給最重要的詞彙量與閱讀感。</span>
+            </p>
+
+            <div class="bg-white p-8 md:p-16 border-[4px] md:border-[6px] border-emerald-500 rounded-[2rem] md:rounded-[3rem] shadow-xl max-w-4xl mx-auto w-full relative overflow-hidden">
+                <!-- 裝飾背景色塊 -->
+                <div class="absolute -top-10 -right-10 w-32 h-32 bg-pink-100 rounded-full blur-3xl opacity-60"></div>
+                <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-purple-100 rounded-full blur-3xl opacity-60"></div>
+                
+                <h2 class="text-2xl md:text-4xl font-black mb-8 md:mb-10 relative z-10 text-slate-900">準備好迎接挑戰了嗎？</h2>
+                <div class="flex flex-col items-center gap-6 mb-8 md:mb-10 w-full relative z-10">
+                    
+                    <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="flex flex-row items-center justify-center gap-2 md:gap-4 text-2xl sm:text-3xl md:text-4xl font-black text-[#00b359] transition hover:opacity-80 whitespace-nowrap">
+                        <i class="fab fa-line text-4xl sm:text-5xl md:text-6xl"></i>
+                        <span>LINE: myavalon</span>
+                    </a>
+                    
+                </div>
+                <a href="https://tonyonlineenglish.netlify.app/exper" target="_blank" class="cta-button w-full sm:w-auto inline-block text-white px-8 md:px-14 py-4 md:py-6 rounded-2xl font-black text-xl md:text-2xl shadow-lg hover:scale-105 transition relative z-10">
+                    📩 預約體驗課程
+                </a>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="py-10 text-center text-slate-400 font-bold text-sm md:text-base border-t border-slate-200 bg-white mt-12">
+        <p>© 2026 Tony線上美語家教 | 點數制學習系統</p>
+    </footer>
+
+    <script>
+        function togglePanel() {
+            const panel = document.getElementById('writing-panel');
+            const overlay = document.getElementById('overlay');
+            panel.classList.toggle('active');
+            overlay.classList.toggle('active');
+        }
+    </script>
+
+</body>
+</html>
