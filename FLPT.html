@@ -29,7 +29,7 @@
             --dark-text: #000000;    
             --white: #FFFFFF;
             
-            /* 加入的其他點綴色彩 */
+            /* 加入的其他點綴色彩 (對應 FLPT 字母顏色) */
             --accent-blue: #2563EB;
             --accent-red: #DC2626;
             --accent-green: #16A34A;
@@ -56,22 +56,37 @@
             content: ''; width: 80px; height: 6px; background: var(--dark-text); display: block; margin: 15px auto 0;
         }
 
+        /* --- FLPT 專屬四色字體樣式 --- */
+        .c-f { color: var(--accent-red) !important; }
+        .c-l { color: var(--brand-yellow) !important; }
+        .c-p { color: var(--accent-blue) !important; }
+        .c-t { color: var(--accent-green) !important; }
+
+        /* 為了配合黑色美學並讓黃色字體可讀，為標題的彩色字加上粗黑描邊與陰影 */
+        h1 .color-letter, h2 .color-letter {
+            -webkit-text-stroke: 1px var(--dark-text);
+            text-shadow: 2px 2px 0px var(--dark-text);
+        }
+        /* 內文中的彩色字較小，加上微弱陰影即可 */
+        p .color-letter {
+            text-shadow: 1px 1px 0px rgba(0,0,0,0.5);
+        }
+
         /* 控制手機版強制換行的 Class */
         .mobile-break { display: none; }
 
         /* --- Hero Section --- */
         .hero {
             position: relative;
-            /* 將右側漸層透明度調高（0.1），讓背景女生圖片非常清晰 */
             background: linear-gradient(to right, rgba(255, 255, 255, 0.95) 0%, rgba(255, 255, 255, 0.6) 40%, rgba(255, 255, 255, 0.1) 100%), 
                         url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/young-businesswoman-making-notes.jpg?updatedAt=1773303772470') center/cover;
-            padding: 120px 20px 80px; text-align: left; overflow: hidden; /* 改為靠左對齊以適應背景圖片 */
+            padding: 120px 20px 80px; text-align: left; overflow: hidden; 
             border-bottom: 8px solid var(--brand-yellow);
         }
         
         .hero .container { position: relative; z-index: 10; max-width: 1000px; }
 
-        /* 右上方疊加圖片 (全面縮小) */
+        /* 右上方疊加圖片 */
         .hero-overlay {
             position: absolute;
             top: 20px;
@@ -97,16 +112,9 @@
             border: 3px solid var(--dark-text);
         }
         
-        /* 按鈕設計：強烈的純黑與鮮黃對比 */
-        .btn-primary { 
-            background: var(--brand-yellow); 
-            box-shadow: 4px 4px 0px rgba(0,0,0,1); 
-        }
+        .btn-primary { background: var(--brand-yellow); box-shadow: 4px 4px 0px rgba(0,0,0,1); }
         .btn-primary:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0px rgba(0,0,0,1); }
-        .btn-secondary { 
-            background: var(--white); 
-            box-shadow: 4px 4px 0px rgba(0,0,0,1); 
-        }
+        .btn-secondary { background: var(--white); box-shadow: 4px 4px 0px rgba(0,0,0,1); }
         .btn-secondary:hover { background: #F1F5F9; transform: translate(2px, 2px); box-shadow: 2px 2px 0px rgba(0,0,0,1); }
 
         /* --- Target Grid (Why Choose Us) --- */
@@ -208,11 +216,18 @@
         /* 📱 Mobile Mode (max-width: 767px) */
         @media (max-width: 767px) {
             .mobile-break { display: block; } /* 顯示手機版強制換行 */
-            .hero { text-align: center; } /* 手機版排版置中 */
-            .hero h1 { font-size: 2.8rem; }
-            .hero-buttons { justify-content: center; align-items: center; }
+            .hero { text-align: center; } 
             
-            .cta-bottom-title { font-size: 1.5rem; } /* 手機版縮小字體 */
+            /* 控制 Hero 區塊的縮放與確保不換到第三行 */
+            .hero h1 { font-size: 2.8rem; } 
+            .hero-title-2nd { 
+                display: block; 
+                font-size: 2.1rem; /* 縮小字體以確保單行容納 */
+                white-space: nowrap; /* 強制不准換行到第三行 */
+            }
+
+            .hero-buttons { justify-content: center; align-items: center; }
+            .cta-bottom-title { font-size: 1.5rem; } 
             
             /* 手機版題型分析：滑動與邊緣突出 */
             .mobile-swipe-container {
@@ -223,12 +238,12 @@
                 padding: 10px 20px 30px 20px;
                 margin-left: -20px;
                 margin-right: -20px;
-                -ms-overflow-style: none; /* IE and Edge */
-                scrollbar-width: none; /* Firefox */
+                -ms-overflow-style: none;
+                scrollbar-width: none;
             }
-            .mobile-swipe-container::-webkit-scrollbar { display: none; /* Chrome, Safari */ }
+            .mobile-swipe-container::-webkit-scrollbar { display: none; }
             .mobile-swipe-container .level-card {
-                flex: 0 0 82%; /* 讓右側邊緣突出，提示可滑動 */
+                flex: 0 0 82%; 
                 scroll-snap-align: center;
             }
             .swipe-hint { display: block; text-align: center; font-weight: 900; margin-bottom: 15px; color: var(--accent-blue); animation: bounce-x 2s infinite; }
@@ -242,9 +257,8 @@
             .hero-buttons { flex-direction: row; }
             .target-grid { grid-template-columns: repeat(2, 1fr); }
             
-            /* 電腦版題型分析：網格排列 */
             .mobile-swipe-container { display: grid; grid-template-columns: repeat(2, 1fr); gap: 25px; }
-            .swipe-hint { display: none; } /* 電腦版隱藏滑動提示 */
+            .swipe-hint { display: none; } 
         }
 
         @media (min-width: 1024px) {
@@ -265,8 +279,11 @@
         <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-13%20%E4%B8%8B%E5%8D%8810.24.32.png" alt="Tony 線上美語" class="hero-overlay">
         
         <div class="container">
-            <!-- 手機版強制換行：FLPT外語能力測驗 -->
-            <h1>FLPT<br class="mobile-break"> 外語能力測驗</h1>
+            <!-- 手機版強制雙行與 FLPT 獨立上色 -->
+            <h1>
+                <span class="c-f color-letter">F</span><span class="c-l color-letter">L</span><span class="c-p color-letter">P</span><span class="c-t color-letter">T</span><br class="mobile-break"> 
+                <span class="hero-title-2nd">外語能力測驗</span>
+            </h1>
             <div class="hero-subtext">
                 <p>| 多語無國界 未來不設限</p>
                 <p>The Sky is the Limit.</p>
@@ -285,14 +302,16 @@
 
     <!-- Why Choose Us -->
     <section class="section-padding container" id="introduction">
-        <h2 class="section-title">為什麼選擇 Tony線上美語家教？</h2>
+        <!-- 手機版強制分兩行：為什麼選擇 (第一行) / Tony線上美語家教？ (第二行) -->
+        <h2 class="section-title">為什麼選擇<br class="mobile-break"> Tony線上美語家教？</h2>
         <p style="text-align: center; font-size: 1.2rem; font-weight: 900; margin-bottom: 30px;">透過系統化訓練與專業題型解析，幫助學生全面提升實力。</p>
         
         <div class="target-grid">
             <div class="target-card border-blue">
                 <i class="fas fa-magnifying-glass-chart"></i>
                 <h3>專業考試題型分析</h3>
-                <p>深入解析 FLPT 命題方向與常見題型，幫助學生掌握考試核心重點。</p>
+                <!-- 內文中的 FLPT 上色 -->
+                <p>深入解析 <span class="c-f color-letter">F</span><span class="c-l color-letter">L</span><span class="c-p color-letter">P</span><span class="c-t color-letter">T</span> 命題方向與常見題型，幫助學生掌握考試核心重點。</p>
             </div>
             <div class="target-card border-red">
                 <i class="fas fa-chalkboard-user"></i>
@@ -330,8 +349,11 @@
     <!-- FLPT Test Format Analysis -->
     <section class="section-padding levels-bg">
         <div class="container">
-            <h2 class="section-title">FLPT 英文測驗題型分析</h2>
-            <p style="text-align: center; font-size: 1.2rem; font-weight: 900; margin-bottom: 20px;">很多學生準備語言考試時，最大的問題是：不熟悉題型、不了解命題邏輯、練習方法不正確。因此本課程會進行完整 FLPT題型解析訓練。</p>
+            <!-- 手機版強制分兩行：FLPT英文測驗 (第一行) / 題型分析 (第二行) -->
+            <h2 class="section-title">
+                <span class="c-f color-letter">F</span><span class="c-l color-letter">L</span><span class="c-p color-letter">P</span><span class="c-t color-letter">T</span> 英文測驗<br class="mobile-break">題型分析
+            </h2>
+            <p style="text-align: center; font-size: 1.2rem; font-weight: 900; margin-bottom: 20px;">很多學生準備語言考試時，最大的問題是：不熟悉題型、不了解命題邏輯、練習方法不正確。因此本課程會進行完整 <span class="c-f color-letter">F</span><span class="c-l color-letter">L</span><span class="c-p color-letter">P</span><span class="c-t color-letter">T</span> 題型解析訓練。</p>
             
             <!-- 手機版專屬滑動提示 -->
             <div class="swipe-hint">
