@@ -49,7 +49,6 @@
         }
 
         html {
-            /* 全面放大基礎字級 */
             font-size: 18px; 
         }
 
@@ -57,6 +56,7 @@
             background-color: var(--bg-color);
             color: var(--dark-text);
             line-height: 1.7;
+            overflow-x: hidden;
         }
 
         h1, h2, h3, h4, h5 {
@@ -182,52 +182,103 @@
         }
         .target-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 25px;
+            grid-template-columns: repeat(2, 1fr); /* Mobile: 2x2 Grid */
+            gap: 15px;
         }
         .target-card {
             background: var(--white);
-            padding: 35px 25px;
+            padding: 25px 10px;
             border-radius: 16px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.05);
             text-align: center;
             border-top: 5px solid var(--secondary-blue);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
         .target-card i {
-            font-size: 3rem;
+            font-size: 2.5rem;
             color: var(--secondary-blue);
-            margin-bottom: 20px;
+            margin-bottom: 12px;
         }
         .target-card h3 {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
+            font-size: 1.25rem;
+            margin-bottom: 0;
+        }
+        
+        .target-list {
+            margin-top: 30px;
+            background: var(--white);
+            padding: 25px 20px;
+            border-radius: 16px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+        .target-list ol {
+            padding-left: 20px;
+        }
+        .target-list li {
+            margin-bottom: 15px;
+            color: var(--gray-text);
+        }
+        .target-list li:last-child {
+            margin-bottom: 0;
+        }
+        .target-list strong {
+            color: var(--primary-blue);
+            font-size: 1.25rem;
         }
 
-        /* --- Course Levels (Vertical Stack on Mobile, Grid on Desktop) --- */
+        /* --- Course Levels & Contents (Horizontal Scrollers) --- */
         .levels-container {
             background: var(--light-blue);
             padding: 90px 0;
         }
-        
-        .levels-grid {
-            display: grid;
-            grid-template-columns: 1fr; /* Default Mobile: Vertical Stack */
-            gap: 30px;
+
+        .swipe-hint {
+            text-align: center;
+            color: var(--primary-blue);
+            margin-bottom: 25px;
+            font-size: 1.15rem;
+            font-weight: 700;
+            display: block; /* Visible on mobile/tablet */
+            animation: bounce-x 2s infinite;
+        }
+        @keyframes bounce-x {
+            0%, 100% { transform: translateX(0); }
+            50% { transform: translateX(10px); }
         }
 
-        .level-card {
+        .scroller-wrapper {
+            display: flex;
+            gap: 20px;
+            overflow-x: auto;
+            padding: 10px 20px 40px 20px;
+            scroll-snap-type: x mandatory;
+            -ms-overflow-style: none; 
+            scrollbar-width: none;
+            margin-left: -20px; 
+            margin-right: -20px;
+        }
+        .scroller-wrapper::-webkit-scrollbar {
+            display: none;
+        }
+
+        .level-card, .content-card {
             background: var(--white);
             border-radius: 20px;
             box-shadow: 0 15px 30px -5px rgba(0,0,0,0.1);
+            flex: 0 0 88vw; /* Mobile Edge Peeking */
+            scroll-snap-align: center;
             display: flex;
             flex-direction: column;
             overflow: hidden;
-            border-bottom: 8px solid;
             transition: transform 0.3s;
         }
-        .level-card:hover {
-            transform: translateY(-5px);
-        }
+        .level-card { border-bottom: 8px solid; }
+        .content-card { padding: 35px 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); border-radius: 16px; }
+        
+        .level-card:hover, .content-card:hover { transform: translateY(-5px); }
 
         /* Certificate Integrated Header Style */
         .cert-header {
@@ -270,22 +321,22 @@
         .theme-brown { border-bottom-color: var(--brown-cert); }
         .theme-brown .cert-title { color: var(--dark-text); }
         .theme-brown .color-dot { background: var(--brown-cert); }
-        .theme-brown .cert-score { color: var(--brown-cert); }
+        .theme-brown .cert-score, .theme-brown .author { color: var(--brown-cert); }
         
         .theme-green { border-bottom-color: var(--green-cert); }
         .theme-green .cert-title { color: var(--dark-text); }
         .theme-green .color-dot { background: var(--green-cert); }
-        .theme-green .cert-score { color: var(--green-cert); }
+        .theme-green .cert-score, .theme-green .author { color: var(--green-cert); }
 
         .theme-blue { border-bottom-color: var(--blue-cert); }
         .theme-blue .cert-title { color: var(--dark-text); }
         .theme-blue .color-dot { background: var(--blue-cert); }
-        .theme-blue .cert-score { color: var(--blue-cert); }
+        .theme-blue .cert-score, .theme-blue .author { color: var(--blue-cert); }
 
         .theme-gold { border-bottom-color: var(--gold-cert); }
         .theme-gold .cert-title { color: var(--dark-text); }
         .theme-gold .color-dot { background: var(--gold-cert); }
-        .theme-gold .cert-score { color: var(--gold-cert); }
+        .theme-gold .cert-score, .theme-gold .author { color: var(--gold-cert); }
 
         /* Level Body Details */
         .level-body {
@@ -358,48 +409,10 @@
             display: block;
             text-align: right;
             font-weight: 700;
-            color: var(--primary-blue);
             margin-top: 6px;
         }
 
-        /* --- Course Content (Horizontal Swipe on Mobile) --- */
-        .swipe-hint {
-            text-align: center;
-            color: var(--primary-blue);
-            margin-bottom: 25px;
-            font-size: 1.15rem;
-            font-weight: 700;
-            display: none; /* Default hidden */
-            animation: bounce-x 2s infinite;
-        }
-        @keyframes bounce-x {
-            0%, 100% { transform: translateX(0); }
-            50% { transform: translateX(10px); }
-        }
-
-        .content-scroller {
-            display: flex;
-            gap: 20px;
-            overflow-x: auto;
-            padding: 10px 20px 40px 20px;
-            scroll-snap-type: x mandatory;
-            -ms-overflow-style: none; 
-            scrollbar-width: none;
-            margin-left: -20px; /* offset container padding */
-            margin-right: -20px;
-        }
-        .content-scroller::-webkit-scrollbar {
-            display: none;
-        }
-        
-        .content-card {
-            background: var(--white);
-            border-radius: 16px;
-            padding: 35px 25px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08);
-            flex: 0 0 88vw; /* Edge peeking on mobile */
-            scroll-snap-align: center;
-        }
+        /* Course Content Specifics */
         .icon-wrapper {
             width: 70px;
             height: 70px;
@@ -453,7 +466,7 @@
             background: linear-gradient(135deg, var(--primary-blue), var(--dark-text));
             color: var(--white);
             text-align: center;
-            padding: 100px 20px;
+            padding: 100px 20px 0 20px; /* modified padding to fit full-width image nicely */
         }
         .cta-section h2 {
             color: var(--white);
@@ -462,7 +475,6 @@
             line-height: 1.3;
         }
         
-        /* New Form Link Box substituting the scarcity text */
         .form-link-box {
             display: inline-block;
             background: rgba(255, 255, 255, 0.15);
@@ -510,41 +522,62 @@
             transform: translateY(-3px);
             box-shadow: 0 10px 20px rgba(0,0,0,0.2);
         }
+        
+        /* Mobile Full Width Line Snapshot Image */
+        .snapshot-wrapper {
+            margin-top: 60px;
+            text-align: center;
+        }
         .snapshot-pic {
-            margin-top: 50px;
-            max-width: 100%;
+            width: calc(100% + 40px); /* Fill the screen horizontally ignoring container padding */
+            margin-left: -20px;
+            margin-right: -20px;
+            max-width: none;
             height: auto;
-            border-radius: 16px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.4);
-            max-height: 280px;
-            object-fit: cover;
+            border-radius: 0;
+            display: block;
+            box-shadow: 0 -10px 20px rgba(0,0,0,0.15); /* Keep soft top shadow for dimension */
         }
 
         /* --- Responsive Queries --- */
+        
+        /* Tablet & iPad Mode (768px ~ 1023px) */
         @media (min-width: 768px) {
             .hero h1 { font-size: 4rem; }
-            .levels-grid {
-                grid-template-columns: repeat(2, 1fr);
+            .target-grid { grid-template-columns: repeat(4, 1fr); gap: 20px; }
+            .target-list { padding: 30px 40px; }
+            .two-col { grid-template-columns: 1fr 1fr; }
+            
+            /* Restore picture styling for tablet/desktop */
+            .snapshot-pic {
+                width: 100%;
+                max-width: 320px;
+                margin-left: auto;
+                margin-right: auto;
+                border-radius: 16px;
+                box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+                margin-bottom: 60px; /* add spacing at the very bottom */
             }
-            .two-col {
-                grid-template-columns: 1fr 1fr;
-            }
+            .cta-section { padding-bottom: 40px; } /* restore bottom padding */
         }
         
-        @media (max-width: 1023px) {
-            /* 顯示手機版獨有的滑動提示 */
-            .content-section .swipe-hint {
-                display: block;
+        @media (min-width: 768px) and (max-width: 1023px) {
+            .scroller-wrapper .level-card,
+            .scroller-wrapper .content-card {
+                /* iPad Mode: Show exactly 2 cards per view */
+                flex: 0 0 calc(50% - 10px);
             }
         }
 
+        /* Desktop Mode (1024px and up) */
         @media (min-width: 1024px) {
             .hero h1 { font-size: 4.5rem; }
-            .levels-grid {
-                grid-template-columns: repeat(4, 1fr);
-            }
-            /* Reset Content Scroller for Desktop */
-            .content-scroller {
+            
+            /* Hide swipe hint text */
+            .swipe-hint { display: none; }
+            
+            /* Transform Scroller into Grid */
+            .scroller-wrapper {
                 display: grid;
                 grid-template-columns: repeat(4, 1fr);
                 overflow-x: visible;
@@ -552,7 +585,7 @@
                 margin-left: 0;
                 margin-right: 0;
             }
-            .content-card {
+            .level-card, .content-card {
                 flex: auto;
             }
         }
@@ -567,13 +600,13 @@
             <p>系統化提升聽力與閱讀能力，快速掌握考試技巧，突破你的多益成績！全方位為你打造專屬的高分計畫。</p>
             
             <div class="hero-buttons">
-                <!-- 學習需求填寫 (Link to Google Form) -->
+                <!-- 學習需求填寫 (Link to Google Form, Icon removed) -->
                 <a href="https://docs.google.com/forms/d/e/1FAIpQLSeOHw3g4K5rFMeiP3vWscLYeU9K4xn-whgahQOeJSnmG6EqnQ/viewform?usp=header" class="cta-btn btn-primary" target="_blank">
-                    <i class="fas fa-edit"></i> 📝 學習需求填寫
+                    📝 學習需求填寫
                 </a>
-                <!-- 課程介紹分級 (Anchor to Levels Section) -->
+                <!-- 課程介紹分級 (Anchor to Levels Section, Icon removed) -->
                 <a href="#course-levels" class="cta-btn btn-secondary">
-                    <i class="fas fa-book-open"></i> 📖 課程介紹（分級）
+                    📖 課程介紹（分級）
                 </a>
             </div>
         </div>
@@ -582,40 +615,51 @@
     <!-- Suitable For -->
     <section class="section-padding container">
         <h2 class="section-title">本課程適合對象</h2>
+        
+        <!-- Icons Grid (2x2 on Mobile, 4x1 on Desktop) -->
         <div class="target-grid">
             <div class="target-card">
                 <i class="fas fa-user-tie"></i>
                 <h3>職場上班族</h3>
-                <p>想提升職場英語溝通能力，應對國際商務環境。</p>
             </div>
             <div class="target-card">
                 <i class="fas fa-user-graduate"></i>
                 <h3>在校學生</h3>
-                <p>計畫取得 TOEIC 亮眼成績，為畢業或升學鋪路。</p>
             </div>
             <div class="target-card">
                 <i class="fas fa-briefcase"></i>
                 <h3>求職與升遷</h3>
-                <p>需要多益高分成績作為外商申請工作或公司升遷門檻。</p>
             </div>
             <div class="target-card">
                 <i class="fas fa-book-reader"></i>
                 <h3>零基礎學習者</h3>
-                <p>想從基礎開始，循序漸進系統化學習 TOEIC 的學員。</p>
             </div>
+        </div>
+
+        <!-- Unified Details List Below -->
+        <div class="target-list">
+            <ol>
+                <li><strong>職場上班族</strong>：想提升職場英語溝通能力，應對國際商務環境。</li>
+                <li><strong>在校學生</strong>：計畫取得 TOEIC 亮眼成績，為畢業或升學鋪路。</li>
+                <li><strong>求職與升遷</strong>：需要多益高分成績作為外商申請工作或公司升遷門檻。</li>
+                <li><strong>零基礎學習者</strong>：想從基礎開始，循序漸進系統化學習 TOEIC 的學員。</li>
+            </ol>
         </div>
     </section>
 
-    <!-- Course Levels & Feedbacks (Vertical on Mobile, Grid on Desktop) -->
+    <!-- Course Levels & Feedbacks (Swipeable on Mobile/iPad) -->
     <section class="levels-container" id="course-levels">
         <div class="container">
             <h2 class="section-title">四大課程與學員見證</h2>
             
-            <div class="levels-grid">
+            <div class="swipe-hint">
+                <i class="fas fa-arrows-alt-h"></i> 👉 左右滑動查看各級課程
+            </div>
+            
+            <div class="scroller-wrapper">
                 
                 <!-- Level 1 (Brown Theme) -->
                 <div class="level-card theme-brown">
-                    <!-- Integrated Certificate Graphic Header -->
                     <div class="cert-header">
                         <div class="cert-title"><span class="color-dot"></span> 棕色證書</div>
                         <div class="cert-score">220 - 465</div>
@@ -637,15 +681,15 @@
                             <div class="feedback-title">🏆 學員提分案例</div>
                             <div class="student-review">
                                 <span class="quote">「文法基礎變穩了，成功拿到綠色證書！」</span>
-                                <span class="author">- 王同學, 突破480分</span>
+                                <span class="author">- Alex, 突破480分</span>
                             </div>
                             <div class="student-review">
                                 <span class="quote">「原本連聽力單字都聽不懂，現在能抓到關鍵字了！」</span>
-                                <span class="author">- 林小姐, 進步150分</span>
+                                <span class="author">- Emma, 進步150分</span>
                             </div>
                             <div class="student-review">
                                 <span class="quote">「從頭開始學，老師很有耐心，順利破門檻！」</span>
-                                <span class="author">- 張先生, 達到450分</span>
+                                <span class="author">- Lucas, 達到450分</span>
                             </div>
                         </div>
                     </div>
@@ -653,7 +697,6 @@
 
                 <!-- Level 2 (Green Theme) -->
                 <div class="level-card theme-green">
-                    <!-- Integrated Certificate Graphic Header -->
                     <div class="cert-header">
                         <div class="cert-title"><span class="color-dot"></span> 綠色證書</div>
                         <div class="cert-score">470 - 725</div>
@@ -675,15 +718,15 @@
                             <div class="feedback-title">🏆 學員提分案例</div>
                             <div class="student-review">
                                 <span class="quote">「閱讀解題速度大幅提升，終於寫得完題目！」</span>
-                                <span class="author">- 陳同學, 突破750分</span>
+                                <span class="author">- Sarah, 突破750分</span>
                             </div>
                             <div class="student-review">
                                 <span class="quote">「商業情境字彙讓我工作也用得到，拿到藍色證書。」</span>
-                                <span class="author">- 吳先生, 進步210分</span>
+                                <span class="author">- Ryan, 進步210分</span>
                             </div>
                             <div class="student-review">
                                 <span class="quote">「聽力關鍵字技巧超級實用，分數拉高很多！」</span>
-                                <span class="author">- 李小姐, 達到735分</span>
+                                <span class="author">- Chloe, 達到735分</span>
                             </div>
                         </div>
                     </div>
@@ -691,7 +734,6 @@
 
                 <!-- Level 3 (Blue Theme) -->
                 <div class="level-card theme-blue">
-                    <!-- Integrated Certificate Graphic Header -->
                     <div class="cert-header">
                         <div class="cert-title"><span class="color-dot"></span> 藍色證書</div>
                         <div class="cert-score">730 - 855</div>
@@ -713,15 +755,15 @@
                             <div class="feedback-title">🏆 學員提分案例</div>
                             <div class="student-review">
                                 <span class="quote">「長篇文章解析很透徹，不再害怕最後的閱讀測驗。」</span>
-                                <span class="author">- 蔡同學, 突破820分</span>
+                                <span class="author">- Kevin, 突破820分</span>
                             </div>
                             <div class="student-review">
                                 <span class="quote">「突破了卡關很久的700分，朝向金色證書邁進！」</span>
-                                <span class="author">- 鄭先生, 進步120分</span>
+                                <span class="author">- Olivia, 進步120分</span>
                             </div>
                             <div class="student-review">
                                 <span class="quote">「聽力細節掌握度變高，英澳口音不再是夢魘。」</span>
-                                <span class="author">- 謝小姐, 達到850分</span>
+                                <span class="author">- Daniel, 達到850分</span>
                             </div>
                         </div>
                     </div>
@@ -729,7 +771,6 @@
 
                 <!-- Level 4 (Gold Theme) -->
                 <div class="level-card theme-gold">
-                    <!-- Integrated Certificate Graphic Header -->
                     <div class="cert-header">
                         <div class="cert-title"><span class="color-dot"></span> 金色證書</div>
                         <div class="cert-score">860 - 990</div>
@@ -751,15 +792,15 @@
                             <div class="feedback-title">🏆 學員提分案例</div>
                             <div class="student-review">
                                 <span class="quote">「感謝老師的高階技巧，讓我考出920分進入外商！」</span>
-                                <span class="author">- 郭先生, 突破920分</span>
+                                <span class="author">- Jason, 突破920分</span>
                             </div>
                             <div class="student-review">
                                 <span class="quote">「不僅是為了考試，職場英文表達也變得流利自信。」</span>
-                                <span class="author">- 洪小姐, 達到895分</span>
+                                <span class="author">- Emily, 達到895分</span>
                             </div>
                             <div class="student-review">
                                 <span class="quote">「考前模擬試題跟實戰很像，寫作和口說啟發很大。」</span>
-                                <span class="author">- 劉同學, 達到940分</span>
+                                <span class="author">- Michael, 達到940分</span>
                             </div>
                         </div>
                     </div>
@@ -769,15 +810,15 @@
         </div>
     </section>
 
-    <!-- Course Content Details (Horizontal Swipe on Mobile) -->
-    <section class="section-padding content-section container">
+    <!-- Course Content Details (Swipeable on Mobile/iPad) -->
+    <section class="section-padding container">
         <h2 class="section-title">全方位課程內容</h2>
         
         <div class="swipe-hint">
             <i class="fas fa-arrows-alt-h"></i> 👉 左右滑動查看所有學習內容
         </div>
 
-        <div class="content-scroller">
+        <div class="scroller-wrapper">
             <div class="content-card">
                 <div class="icon-wrapper"><i class="fas fa-headphones"></i></div>
                 <h3>Listening 聽力訓練</h3>
@@ -838,10 +879,8 @@
             </div>
             
             <div class="list-block">
-                <!-- Cleaned up Study Materials based on instructions -->
                 <h3>📚 學習資源優勢</h3>
                 <p style="margin-bottom: 25px; color: var(--gray-text);">我們不僅提供優質的課堂體驗，更附贈豐富的課後支援，讓學習不間斷：</p>
-                
                 <div class="feature-item"><i class="fas fa-file-alt"></i> 提供完整課後電子筆記，方便複習重點</div>
                 <div class="feature-item"><i class="fas fa-video"></i> 提供專屬課程錄影影片，考前無限次複習</div>
             </div>
@@ -852,7 +891,6 @@
     <section class="cta-section" id="cta">
         <div class="container">
             
-            <!-- Replace scarcity text with Form Link Box -->
             <a href="https://docs.google.com/forms/d/e/1FAIpQLSeOHw3g4K5rFMeiP3vWscLYeU9K4xn-whgahQOeJSnmG6EqnQ/viewform?usp=header" class="form-link-box" target="_blank">
                 <i class="fas fa-file-signature"></i> 📝 點此立即填寫學習需求表
             </a>
@@ -875,10 +913,9 @@
                 </a>
             </div>
 
-            <!-- Optional: Showing the snapshot pic provided by user -->
-            <div style="margin-top: 60px; text-align: center;">
+            <div class="snapshot-wrapper">
                 <p style="font-size: 1.1rem; color: #CBD5E1; margin-bottom: 15px;">掃描或點擊 LINE 與老師討論學習目標</p>
-                <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-13%20%E4%B8%8B%E5%8D%885.05.02.png?updatedAt=1773393129945" alt="Line Message Snapshot" class="snapshot-pic" style="max-width: 320px;">
+                <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-13%20%E4%B8%8B%E5%8D%885.05.02.png?updatedAt=1773393129945" alt="Line Message Snapshot" class="snapshot-pic">
             </div>
         </div>
     </section>
