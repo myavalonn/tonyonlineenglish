@@ -10,7 +10,6 @@
     <meta name="description" content="系統化提升聽力與閱讀能力，突破你的多益成績！Tony線上美語家教提供量身打造的各級數TOEIC課程，從基礎班到金色證書衝刺班，快速掌握考試技巧。">
     <meta property="og:title" content="多益TOEIC各級數-Tony線上美語家教">
     <meta property="og:description" content="系統化提升聽力與閱讀能力，突破你的多益成績！Tony線上美語家教提供量身打造的各級數TOEIC課程，從基礎班到金色證書衝刺班，快速掌握考試技巧。">
-    <!-- 加入 ImageKit 裁切參數強制轉為 LINE 完美顯示的 1.91:1 長寬比 -->
     <meta property="og:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-13%20%E4%B8%8B%E5%8D%885.05.02.png?updatedAt=1773393129945&tr=w-1200,h-630,fo-auto">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-13%20%E4%B8%8B%E5%8D%885.05.02.png?updatedAt=1773393129945&tr=w-1200,h-630,fo-auto">
@@ -42,62 +41,23 @@
         }
 
         /* --- Global Styles --- */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Inter', 'Noto Sans TC', sans-serif;
-        }
-
-        html {
-            font-size: 18px; 
-        }
-
-        body {
-            background-color: var(--bg-color);
-            color: var(--dark-text);
-            line-height: 1.7;
-            overflow-x: hidden;
-        }
-
-        h1, h2, h3, h4, h5 {
-            color: var(--dark-text);
-            font-weight: 700;
-        }
-
-        p, li {
-            font-size: 1.15rem;
-        }
-
-        a {
-            text-decoration: none;
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', 'Noto Sans TC', sans-serif; }
+        html { font-size: 18px; }
+        body { background-color: var(--bg-color); color: var(--dark-text); line-height: 1.7; overflow-x: hidden; }
+        h1, h2, h3, h4, h5 { color: var(--dark-text); font-weight: 700; }
+        p, li { font-size: 1.15rem; }
+        a { text-decoration: none; }
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
         /* --- Mobile-First Spacing Setup --- */
         .section-padding { padding: 50px 0; }
-        .levels-container { padding: 50px 0; }
+        .levels-container { padding: 50px 0; background: var(--light-blue); }
         
         .section-title {
-            text-align: center;
-            font-size: 2rem;
-            margin-bottom: 30px;
-            position: relative;
-            color: var(--dark-text);
+            text-align: center; font-size: 2rem; margin-bottom: 30px; position: relative; color: var(--dark-text);
         }
         .section-title::after {
-            content: '';
-            width: 80px;
-            height: 5px;
-            background: var(--primary-blue);
-            display: block;
-            margin: 15px auto 0;
-            border-radius: 3px;
+            content: ''; width: 80px; height: 5px; background: var(--primary-blue); display: block; margin: 15px auto 0; border-radius: 3px;
         }
 
         /* --- Hero Section --- */
@@ -105,70 +65,18 @@
             position: relative;
             background: linear-gradient(to right, rgba(15, 23, 42, 0.85), rgba(29, 78, 216, 0.7)), 
                         url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-13%20%E4%B8%8B%E5%8D%885.05.02.png?updatedAt=1773393129945') center/cover;
-            padding: 80px 20px 60px;
-            text-align: center;
-            color: var(--white);
-            overflow: hidden;
+            padding: 80px 20px 60px; text-align: center; color: var(--white); overflow: hidden;
         }
-        .hero h1 {
-            color: var(--white);
-            font-size: 2.8rem;
-            margin-bottom: 20px;
-            text-shadow: 0 4px 6px rgba(0,0,0,0.3);
-            line-height: 1.3;
-        }
-        .hero p {
-            font-size: 1.2rem;
-            max-width: 650px;
-            margin: 0 auto 30px auto;
-            color: #E2E8F0;
-        }
+        .hero h1 { font-size: 2.8rem; margin-bottom: 20px; text-shadow: 0 4px 6px rgba(0,0,0,0.3); line-height: 1.3; }
+        .hero p { font-size: 1.2rem; max-width: 650px; margin: 0 auto 30px auto; color: #E2E8F0; }
         
-        .hero-buttons {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .cta-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            padding: 16px 35px;
-            font-size: 1.25rem;
-            font-weight: 700;
-            border-radius: 50px;
-            transition: all 0.3s ease;
-            width: 100%;
-            max-width: 320px;
-        }
+        .hero-buttons { display: flex; flex-direction: column; gap: 15px; justify-content: center; align-items: center; }
+        .cta-btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 16px 35px; font-size: 1.25rem; font-weight: 700; border-radius: 50px; transition: all 0.3s ease; width: 100%; max-width: 320px; }
         
-        .btn-primary {
-            background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%);
-            color: var(--white);
-            box-shadow: 0 10px 15px -3px rgba(245, 158, 11, 0.4);
-            animation: pulse 2s infinite;
-        }
-        .btn-primary:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 15px 25px -3px rgba(245, 158, 11, 0.6);
-            color: var(--white);
-        }
-
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.15);
-            color: var(--white);
-            border: 2px solid rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(5px);
-        }
-        .btn-secondary:hover {
-            background: var(--white);
-            color: var(--primary-blue);
-            transform: translateY(-3px);
-        }
+        .btn-primary { background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%); color: var(--white); box-shadow: 0 10px 15px -3px rgba(245, 158, 11, 0.4); animation: pulse 2s infinite; }
+        .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 15px 25px -3px rgba(245, 158, 11, 0.6); color: var(--white); }
+        .btn-secondary { background: rgba(255, 255, 255, 0.15); color: var(--white); border: 2px solid rgba(255, 255, 255, 0.8); backdrop-filter: blur(5px); }
+        .btn-secondary:hover { background: var(--white); color: var(--primary-blue); transform: translateY(-3px); }
 
         @keyframes pulse {
             0% { box-shadow: 0 0 0 0 rgba(245, 158, 11, 0.7); }
@@ -177,153 +85,27 @@
         }
 
         /* --- Target Audience Section --- */
-        .target-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr); 
-            gap: 15px;
-        }
-        .target-card {
-            background: var(--white);
-            padding: 25px 10px;
-            border-radius: 16px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            text-align: center;
-            border-top: 5px solid var(--secondary-blue);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-        }
-        .target-card i {
-            font-size: 2.5rem;
-            color: var(--secondary-blue);
-            margin-bottom: 12px;
-        }
-        .target-card h3 {
-            font-size: 1.25rem;
-            margin-bottom: 0;
-        }
+        .target-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+        .target-card { background: var(--white); padding: 25px 10px; border-radius: 16px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); text-align: center; border-top: 5px solid var(--secondary-blue); display: flex; flex-direction: column; justify-content: center; align-items: center; }
+        .target-card i { font-size: 2.5rem; color: var(--secondary-blue); margin-bottom: 12px; }
+        .target-card h3 { font-size: 1.25rem; margin-bottom: 0; }
         
-        .target-list {
-            margin-top: 25px;
-            background: var(--white);
-            padding: 25px 20px;
-            border-radius: 16px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-        }
-        .target-list ol {
-            padding-left: 20px;
-        }
-        .target-list li {
-            margin-bottom: 12px;
-            color: var(--gray-text);
-        }
-        .target-list li:last-child {
-            margin-bottom: 0;
-        }
-        .target-list strong {
-            color: var(--primary-blue);
-            font-size: 1.25rem;
-        }
+        .target-list { margin-top: 25px; background: var(--white); padding: 25px 20px; border-radius: 16px; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+        .target-list ol { padding-left: 20px; }
+        .target-list li { margin-bottom: 12px; color: var(--gray-text); }
+        .target-list li:last-child { margin-bottom: 0; }
+        .target-list strong { color: var(--primary-blue); font-size: 1.25rem; }
 
-        /* --- Course Levels & Contents (Horizontal Scrollers) --- */
-        .levels-container {
-            background: var(--light-blue);
-        }
-
-        .swipe-hint {
-            text-align: center;
-            color: var(--primary-blue);
-            margin-bottom: 20px;
-            font-size: 1.15rem;
-            font-weight: 700;
-            display: block; 
-            animation: bounce-x 2s infinite;
-        }
-        @keyframes bounce-x {
-            0%, 100% { transform: translateX(0); }
-            50% { transform: translateX(10px); }
-        }
-
-        .scroller-wrapper {
-            display: flex;
-            gap: 20px;
-            overflow-x: auto;
-            padding: 10px 20px 30px 20px;
-            scroll-snap-type: x mandatory;
-            -ms-overflow-style: none; 
-            scrollbar-width: none;
-            margin-left: -20px; 
-            margin-right: -20px;
-        }
-        .scroller-wrapper::-webkit-scrollbar {
-            display: none;
-        }
-
-        .level-card, .content-card {
-            background: var(--white);
-            border-radius: 20px;
-            box-shadow: 0 15px 30px -5px rgba(0,0,0,0.1);
-            flex: 0 0 78vw; /* Makes next card peek out prominently */
-            scroll-snap-align: center;
-            display: flex;
-            flex-direction: column;
-            overflow: hidden;
-            transition: transform 0.3s;
-        }
+        /* --- Course Levels Base Styles --- */
+        .level-card { background: var(--white); border-radius: 20px; box-shadow: 0 15px 30px -5px rgba(0,0,0,0.1); display: flex; flex-direction: column; overflow: hidden; transition: transform 0.3s; border-top: 5px solid; }
+        .level-card:hover { transform: translateY(-5px); }
         
-        /* Clean top border instead of ugly thick left border */
-        .level-card { 
-            border-top: 5px solid; 
-        }
-        .content-card { 
-            padding: 35px 25px; 
-            box-shadow: 0 10px 25px rgba(0,0,0,0.08); 
-            border-radius: 16px; 
-        }
-        
-        .level-card:hover, .content-card:hover { transform: translateY(-5px); }
+        .cert-header { padding: 30px 20px 20px; text-align: center; background: #FAFAFA; border-bottom: 1px solid #E2E8F0; }
+        .cert-title { display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 1.3rem; font-weight: 700; margin-bottom: 10px; }
+        .color-dot { width: 18px; height: 18px; border-radius: 50%; display: inline-block; box-shadow: inset 0 -2px 4px rgba(0,0,0,0.2); }
+        .cert-score { font-size: 3.2rem; font-weight: 900; line-height: 1; margin-bottom: 10px; font-family: 'Inter', sans-serif; letter-spacing: -1px; }
+        .cert-desc { font-size: 1.2rem; font-weight: 600; color: var(--dark-text); }
 
-        /* Certificate Integrated Header Style */
-        .cert-header {
-            padding: 30px 20px 20px;
-            text-align: center;
-            background: #FAFAFA;
-            border-bottom: 1px solid #E2E8F0;
-        }
-        .cert-title {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            font-size: 1.3rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
-        .color-dot {
-            width: 18px;
-            height: 18px;
-            border-radius: 50%;
-            display: inline-block;
-            box-shadow: inset 0 -2px 4px rgba(0,0,0,0.2);
-        }
-        
-        /* Font size reduced for mobile mode */
-        .cert-score {
-            font-size: 2.2rem; 
-            font-weight: 900;
-            line-height: 1;
-            margin-bottom: 10px;
-            font-family: 'Inter', sans-serif;
-            letter-spacing: -1px;
-        }
-        .cert-desc {
-            font-size: 1.2rem;
-            font-weight: 600;
-            color: var(--dark-text);
-        }
-
-        /* Theme Colors for Cards (Applying Clean Top Border) */
         .theme-brown { border-top-color: var(--brown-cert); }
         .theme-brown .cert-title { color: var(--dark-text); }
         .theme-brown .color-dot { background: var(--brown-cert); }
@@ -344,211 +126,109 @@
         .theme-gold .color-dot { background: var(--gold-cert); }
         .theme-gold .cert-score, .theme-gold .author { color: var(--gold-cert); }
 
-        /* Level Body Details */
-        .level-body {
-            padding: 25px 20px;
-            flex-grow: 1;
-        }
-        .level-body h3 {
-            font-size: 1.6rem;
-            margin-bottom: 15px;
-            text-align: center;
-            color: var(--dark-text);
-        }
-        .level-body h4 {
-            color: var(--primary-blue);
-            margin-bottom: 12px;
-            font-size: 1.2rem;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .level-body ul {
-            list-style: none;
-            margin-bottom: 20px;
-        }
-        .level-body ul li {
-            position: relative;
-            padding-left: 30px;
-            margin-bottom: 8px;
-            color: var(--gray-text);
-        }
-        .level-body ul li::before {
-            content: '✔';
-            position: absolute;
-            left: 0;
-            color: var(--primary-blue);
-            font-weight: bold;
-        }
+        .level-body { padding: 25px 20px; flex-grow: 1; }
+        .level-body h3 { font-size: 1.6rem; margin-bottom: 15px; text-align: center; color: var(--dark-text); }
+        .level-body h4 { color: var(--primary-blue); margin-bottom: 12px; font-size: 1.2rem; display: flex; align-items: center; gap: 10px; }
+        .level-body ul { list-style: none; margin-bottom: 20px; }
+        .level-body ul li { position: relative; padding-left: 30px; margin-bottom: 8px; color: var(--gray-text); }
+        .level-body ul li::before { content: '✔'; position: absolute; left: 0; color: var(--primary-blue); font-weight: bold; }
 
-        /* Feedback inside Level Cards */
-        .feedback-box {
-            background: var(--light-blue);
-            border-radius: 12px;
-            padding: 20px;
-            margin-top: 20px;
-            border-left: 5px solid var(--secondary-blue);
-        }
-        .feedback-title {
-            font-size: 1.1rem;
-            font-weight: 700;
-            color: var(--dark-text);
-            margin-bottom: 15px;
-        }
-        .student-review {
-            font-size: 1.05rem;
-            margin-bottom: 12px;
-            padding-bottom: 12px;
-            border-bottom: 1px dashed #CBD5E1;
-        }
-        .student-review:last-child {
-            margin-bottom: 0;
-            padding-bottom: 0;
-            border-bottom: none;
-        }
-        .student-review .quote {
-            font-style: italic;
-            color: var(--gray-text);
-            display: block;
-        }
-        .student-review .author {
-            display: block;
-            text-align: right;
-            font-weight: 700;
-            margin-top: 4px;
-        }
+        .feedback-box { background: var(--light-blue); border-radius: 12px; padding: 20px; margin-top: 20px; border-left: 5px solid var(--secondary-blue); }
+        .feedback-title { font-size: 1.1rem; font-weight: 700; color: var(--dark-text); margin-bottom: 15px; }
+        .student-review { font-size: 1.05rem; margin-bottom: 12px; padding-bottom: 12px; border-bottom: 1px dashed #CBD5E1; }
+        .student-review:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+        .student-review .quote { font-style: italic; color: var(--gray-text); display: block; }
+        .student-review .author { display: block; text-align: right; font-weight: 700; margin-top: 4px; }
 
-        /* Course Content Specifics */
-        .icon-wrapper {
-            width: 60px;
-            height: 60px;
-            background: var(--light-blue);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 1.8rem;
-            color: var(--primary-blue);
-            margin-bottom: 20px;
-        }
-        .content-card h3 {
-            font-size: 1.5rem;
-        }
+        /* Course Mobile Details Expanded Section */
+        .mobile-more-info { text-align: center; margin-top: 25px; display: none; }
+        .btn-toggle-course { background: var(--white); color: var(--primary-blue); border: 2px solid var(--primary-blue); padding: 12px 25px; border-radius: 50px; font-weight: 700; font-size: 1.1rem; cursor: pointer; transition: 0.3s; width: 100%; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        .btn-toggle-course:active { background: var(--primary-blue); color: var(--white); }
+        
+        .mobile-detailed-list { display: none; flex-direction: column; gap: 20px; margin-top: 25px; }
+        .mobile-detail-card { background: var(--white); border-radius: 16px; padding: 25px 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); border-top: 5px solid; }
+
+        /* Content Horizontal Scroller Base */
+        .swipe-hint { text-align: center; color: var(--primary-blue); margin-bottom: 20px; font-size: 1.15rem; font-weight: 700; display: block; animation: bounce-x 2s infinite; }
+        @keyframes bounce-x { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(10px); } }
+        
+        .content-scroller { display: flex; gap: 20px; overflow-x: auto; padding: 10px 20px 30px 20px; scroll-snap-type: x mandatory; -ms-overflow-style: none; scrollbar-width: none; margin-left: -20px; margin-right: -20px; }
+        .content-scroller::-webkit-scrollbar { display: none; }
+        .content-card { background: var(--white); border-radius: 16px; padding: 35px 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); flex: 0 0 78vw; scroll-snap-align: center; transition: transform 0.3s; border-top: 5px solid transparent; }
+        .content-card:hover { transform: translateY(-5px); }
+        
+        .icon-wrapper { width: 60px; height: 60px; background: var(--light-blue); border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 1.8rem; color: var(--primary-blue); margin-bottom: 20px; }
+        .content-card h3 { font-size: 1.5rem; }
 
         /* --- Features & Materials --- */
-        .two-col {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 30px;
-        }
-        .list-block {
-            background: var(--white);
-            padding: 35px 25px;
-            border-radius: 20px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-        }
-        .list-block h3 {
-            margin-bottom: 20px;
-            color: var(--primary-blue);
-            font-size: 1.6rem;
-        }
-        .feature-item {
-            display: flex;
-            align-items: center;
-            margin-bottom: 15px;
-            font-size: 1.15rem;
-            color: var(--dark-text);
-        }
-        .feature-item i {
-            color: var(--gold-cert);
-            margin-right: 15px;
-            font-size: 1.4rem;
-            min-width: 30px;
-            text-align: center;
-        }
+        .two-col { display: grid; grid-template-columns: 1fr; gap: 30px; }
+        .list-block { background: var(--white); padding: 35px 25px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .list-block h3 { margin-bottom: 20px; color: var(--primary-blue); font-size: 1.6rem; }
+        .feature-item { display: flex; align-items: center; margin-bottom: 15px; font-size: 1.15rem; color: var(--dark-text); }
+        .feature-item i { color: var(--gold-cert); margin-right: 15px; font-size: 1.4rem; min-width: 30px; text-align: center; }
 
         /* --- CTA Bottom --- */
-        .cta-section {
-            background: linear-gradient(135deg, var(--primary-blue), var(--dark-text));
-            color: var(--white);
-            text-align: center;
-            padding: 60px 20px 0 20px; 
-        }
-        .cta-section h2 {
-            color: var(--white);
-            font-size: 2.2rem;
-            margin-bottom: 20px;
-            line-height: 1.3;
-        }
+        .cta-section { background: linear-gradient(135deg, var(--primary-blue), var(--dark-text)); color: var(--white); text-align: center; padding: 60px 20px 0 20px; }
+        .cta-section h2 { color: var(--white); font-size: 2.2rem; margin-bottom: 20px; line-height: 1.3; }
+        .form-link-box { display: inline-block; background: rgba(255, 255, 255, 0.15); border: 2px solid var(--gold-cert); padding: 12px 30px; border-radius: 50px; font-weight: 700; font-size: 1.25rem; color: var(--gold-cert); margin-bottom: 25px; transition: 0.3s; text-decoration: none; }
+        .form-link-box:hover { background: var(--gold-cert); color: var(--white); transform: scale(1.05); }
+        .contact-links { display: flex; justify-content: center; gap: 15px; margin-top: 30px; flex-wrap: wrap; }
+        .contact-btn { display: flex; align-items: center; gap: 10px; padding: 12px 25px; border-radius: 12px; font-size: 1.15rem; font-weight: 700; transition: 0.3s; background: var(--white); color: var(--dark-text); }
+        .contact-btn.line { background: #00B900; color: var(--white); }
+        .contact-btn:hover { opacity: 0.9; transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.2); }
         
-        .form-link-box {
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.15);
-            border: 2px solid var(--gold-cert);
-            padding: 12px 30px;
-            border-radius: 50px;
-            font-weight: 700;
-            font-size: 1.25rem;
-            color: var(--gold-cert);
-            margin-bottom: 25px;
-            transition: 0.3s;
-            text-decoration: none;
-        }
-        .form-link-box:hover {
-            background: var(--gold-cert);
-            color: var(--white);
-            transform: scale(1.05);
+        .snapshot-wrapper { margin-top: 40px; text-align: center; }
+        .snapshot-pic { width: calc(100% + 40px); margin-left: -20px; margin-right: -20px; max-width: none; height: auto; border-radius: 0; display: block; box-shadow: 0 -10px 20px rgba(0,0,0,0.15); }
+
+        /* =========================================
+           RESPONSIVE LOGIC
+           ========================================= */
+
+        /* 📱 Mobile Mode (max-width: 767px) - 2x2 Grid for Courses */
+        @media (max-width: 767px) {
+            .course-grid-container {
+                display: grid;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+            .course-grid-container .level-card { border-radius: 16px; }
+            /* Compact Text for 2x2 Grid */
+            .course-grid-container .cert-header { padding: 15px 10px; }
+            .course-grid-container .cert-title { font-size: 0.95rem; }
+            .course-grid-container .cert-score { font-size: 1.6rem; margin-bottom: 5px; } /* 縮小分數 */
+            .course-grid-container .cert-desc { font-size: 0.85rem; }
+            .course-grid-container .level-body { padding: 15px 10px 10px; }
+            .course-grid-container .level-body h3 { font-size: 1.1rem; margin-bottom: 0; }
+            
+            /* Hide details from the grid cards, show toggle button */
+            .desktop-details { display: none; }
+            .mobile-more-info { display: block; }
+            #course-swipe-hint { display: none; } /* No swipe hint for grid */
         }
 
-        .contact-links {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 30px;
-            flex-wrap: wrap;
-        }
-        .contact-btn {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            padding: 12px 25px;
-            border-radius: 12px;
-            font-size: 1.15rem;
-            font-weight: 700;
-            transition: 0.3s;
-            background: var(--white);
-            color: var(--dark-text);
-        }
-        .contact-btn.line {
-            background: #00B900;
-            color: var(--white);
-        }
-        .contact-btn:hover {
-            opacity: 0.9;
-            transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
-        }
-        
-        /* Mobile Full Width Line Snapshot Image */
-        .snapshot-wrapper {
-            margin-top: 40px;
-            text-align: center;
-        }
-        .snapshot-pic {
-            width: calc(100% + 40px); 
-            margin-left: -20px;
-            margin-right: -20px;
-            max-width: none;
-            height: auto;
-            border-radius: 0;
-            display: block;
-            box-shadow: 0 -10px 20px rgba(0,0,0,0.15); 
+        /* 💊 Tablet & iPad Mode (768px ~ 1023px) - Horizontal Scroll */
+        @media (min-width: 768px) and (max-width: 1023px) {
+            .section-padding { padding: 80px 0; }
+            .levels-container { padding: 80px 0; }
+            .course-grid-container {
+                display: flex; gap: 20px; overflow-x: auto; padding: 10px 20px 30px 20px; scroll-snap-type: x mandatory; margin-left: -20px; margin-right: -20px; -ms-overflow-style: none; scrollbar-width: none;
+            }
+            .course-grid-container::-webkit-scrollbar { display: none; }
+            .course-grid-container .level-card { flex: 0 0 42vw; scroll-snap-align: center; } /* 剛好兩張卡片 */
+            .content-scroller .content-card { flex: 0 0 42vw; }
+            
+            .desktop-details { display: block; }
+            .mobile-more-info { display: none !important; }
+            .mobile-detailed-list { display: none !important; }
+            #course-swipe-hint { display: block; }
+            
+            .target-grid { grid-template-columns: repeat(4, 1fr); gap: 20px; }
+            .two-col { grid-template-columns: 1fr 1fr; gap: 30px; }
+            .snapshot-pic { width: 100%; max-width: 320px; margin-left: auto; margin-right: auto; border-radius: 16px; margin-bottom: 60px; }
         }
 
-        /* --- Responsive Queries --- */
-        
-        /* Tablet & iPad Mode (768px ~ 1023px) */
-        @media (min-width: 768px) {
+        /* 💻 Desktop Mode (1024px and up) - 4 Column Grid */
+        @media (min-width: 1024px) {
             .section-padding { padding: 90px 0; }
             .levels-container { padding: 90px 0; }
             .section-title { font-size: 2.5rem; margin-bottom: 50px; }
@@ -559,65 +239,24 @@
             .hero p { margin: 0 auto 40px auto; }
             .hero-buttons { flex-direction: row; gap: 20px; }
             
-            .cert-score { font-size: 3.2rem; } /* Restore big fonts for tablets/desktop */
-            .level-body { padding: 30px 25px; }
+            .course-grid-container { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+            .desktop-details { display: block; }
+            .mobile-more-info { display: none !important; }
+            .mobile-detailed-list { display: none !important; }
+            .swipe-hint { display: none; }
+            
+            .content-scroller { display: grid; grid-template-columns: repeat(4, 1fr); padding: 0; margin-left: 0; margin-right: 0; overflow-x: visible; }
+            .content-card { flex: auto; }
             
             .target-grid { grid-template-columns: repeat(4, 1fr); gap: 20px; }
             .target-list { padding: 30px 40px; margin-top: 30px; }
-            .target-list li { margin-bottom: 15px; }
-            
             .two-col { grid-template-columns: 1fr 1fr; gap: 40px; }
             .list-block { padding: 45px 35px; }
-            .list-block h3 { font-size: 1.8rem; margin-bottom: 25px; }
-            .feature-item { margin-bottom: 20px; }
             
             .cta-section { padding: 100px 20px 40px; }
             .cta-section h2 { font-size: 2.8rem; margin-bottom: 25px; }
-            .form-link-box { margin-bottom: 35px; }
             .contact-links { margin-top: 50px; gap: 20px; }
-            .contact-btn { padding: 15px 30px; font-size: 1.2rem; }
-            
-            .snapshot-wrapper { margin-top: 60px; }
-            .snapshot-pic {
-                width: 100%;
-                max-width: 320px;
-                margin-left: auto;
-                margin-right: auto;
-                border-radius: 16px;
-                box-shadow: 0 15px 35px rgba(0,0,0,0.4);
-                margin-bottom: 60px; 
-            }
-        }
-        
-        @media (min-width: 768px) and (max-width: 1023px) {
-            .scroller-wrapper .level-card,
-            .scroller-wrapper .content-card {
-                /* iPad Mode: Exactly 2 cards fully visible */
-                flex: 0 0 42vw; 
-            }
-            .swipe-hint {
-                display: block; 
-            }
-        }
-
-        /* Desktop Mode (1024px and up) */
-        @media (min-width: 1024px) {
-            .hero h1 { font-size: 4.5rem; }
-            
-            .swipe-hint { display: none; }
-            
-            /* Transform Scroller into Grid */
-            .scroller-wrapper {
-                display: grid;
-                grid-template-columns: repeat(4, 1fr);
-                overflow-x: visible;
-                padding: 0;
-                margin-left: 0;
-                margin-right: 0;
-            }
-            .level-card, .content-card {
-                flex: auto;
-            }
+            .snapshot-pic { width: 100%; max-width: 320px; margin-left: auto; margin-right: auto; border-radius: 16px; margin-bottom: 60px; }
         }
     </style>
 </head>
@@ -630,11 +269,10 @@
             <p>系統化提升聽力與閱讀能力，快速掌握考試技巧，突破你的多益成績！全方位為你打造專屬的高分計畫。</p>
             
             <div class="hero-buttons">
-                <!-- 學習需求填寫 -->
+                <!-- 學習需求填寫 (Clean emoji only) -->
                 <a href="https://docs.google.com/forms/d/e/1FAIpQLSeOHw3g4K5rFMeiP3vWscLYeU9K4xn-whgahQOeJSnmG6EqnQ/viewform?usp=header" class="cta-btn btn-primary" target="_blank">
                     📝 學習需求填寫
                 </a>
-                <!-- 課程介紹分級 -->
                 <a href="#course-levels" class="cta-btn btn-secondary">
                     📖 課程介紹（分級）
                 </a>
@@ -646,7 +284,6 @@
     <section class="section-padding container">
         <h2 class="section-title">本課程適合對象</h2>
         
-        <!-- Icons Grid -->
         <div class="target-grid">
             <div class="target-card">
                 <i class="fas fa-user-tie"></i>
@@ -666,7 +303,6 @@
             </div>
         </div>
 
-        <!-- Unified Details List Below -->
         <div class="target-list">
             <ol>
                 <li><strong>職場上班族</strong>：想提升職場英語溝通能力，應對國際商務環境。</li>
@@ -677,170 +313,255 @@
         </div>
     </section>
 
-    <!-- Course Levels & Feedbacks (Swipeable on Mobile/iPad) -->
+    <!-- Course Levels Section (2x2 Grid on Mobile, Swipe on Tablet, 4x1 on Desktop) -->
     <section class="levels-container" id="course-levels">
         <div class="container">
             <h2 class="section-title">四大課程與學員見證</h2>
             
-            <div class="swipe-hint">
+            <!-- Tablet swipe hint only -->
+            <div class="swipe-hint" id="course-swipe-hint">
                 <i class="fas fa-arrows-alt-h"></i> 👉 左右滑動查看各級課程
             </div>
             
-            <div class="scroller-wrapper">
+            <div class="course-grid-container">
                 
-                <!-- Level 1 (Brown Theme) -->
+                <!-- Level 1 -->
                 <div class="level-card theme-brown">
                     <div class="cert-header">
                         <div class="cert-title"><span class="color-dot"></span> 棕色證書</div>
                         <div class="cert-score">220 - 465</div>
                         <div class="cert-desc">基礎英文能力</div>
                     </div>
-                    
                     <div class="level-body">
                         <h3>Level 1 基礎班</h3>
-                        <h4><i class="fas fa-book-open"></i> 學習重點</h4>
-                        <ul>
-                            <li>基礎文法與句型解析</li>
-                            <li>常見 TOEIC 核心單字</li>
-                            <li>基本閱讀理解能力</li>
-                            <li>基礎聽力語感訓練</li>
-                        </ul>
-                        
-                        <!-- Feedbacks -->
-                        <div class="feedback-box">
-                            <div class="feedback-title">🏆 學員提分案例</div>
-                            <div class="student-review">
-                                <span class="quote">「文法基礎變穩了，成功拿到綠色證書！」</span>
-                                <span class="author">- Alex, 突破480分</span>
-                            </div>
-                            <div class="student-review">
-                                <span class="quote">「原本連聽力單字都聽不懂，現在能抓到關鍵字了！」</span>
-                                <span class="author">- Emma, 進步150分</span>
-                            </div>
-                            <div class="student-review">
-                                <span class="quote">「從頭開始學，老師很有耐心，順利破門檻！」</span>
-                                <span class="author">- Lucas, 達到450分</span>
+                        <!-- Desktop/Tablet Details inside the card -->
+                        <div class="desktop-details">
+                            <h4><i class="fas fa-book-open"></i> 學習重點</h4>
+                            <ul>
+                                <li>基礎文法與句型解析</li>
+                                <li>常見 TOEIC 核心單字</li>
+                                <li>基本閱讀理解能力</li>
+                                <li>基礎聽力語感訓練</li>
+                            </ul>
+                            <div class="feedback-box">
+                                <div class="feedback-title">🏆 學員提分案例</div>
+                                <div class="student-review">
+                                    <span class="quote">「文法基礎變穩了，成功拿到綠色證書！」</span>
+                                    <span class="author">- Alex, 突破480分</span>
+                                </div>
+                                <div class="student-review">
+                                    <span class="quote">「原本連聽力單字都聽不懂，現在能抓到關鍵字了！」</span>
+                                    <span class="author">- Emma, 進步150分</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Level 2 (Green Theme) -->
+                <!-- Level 2 -->
                 <div class="level-card theme-green">
                     <div class="cert-header">
                         <div class="cert-title"><span class="color-dot"></span> 綠色證書</div>
                         <div class="cert-score">470 - 725</div>
                         <div class="cert-desc">中等職場溝通</div>
                     </div>
-
                     <div class="level-body">
                         <h3>Level 2 進階班</h3>
-                        <h4><i class="fas fa-layer-group"></i> 學習重點</h4>
-                        <ul>
-                            <li>精準閱讀題型解析</li>
-                            <li>聽力關鍵字抓取技巧</li>
-                            <li>多益常見商業情境</li>
-                            <li>解題速度與節奏訓練</li>
-                        </ul>
-
-                        <!-- Feedbacks -->
-                        <div class="feedback-box">
-                            <div class="feedback-title">🏆 學員提分案例</div>
-                            <div class="student-review">
-                                <span class="quote">「閱讀解題速度大幅提升，終於寫得完題目！」</span>
-                                <span class="author">- Sarah, 突破750分</span>
-                            </div>
-                            <div class="student-review">
-                                <span class="quote">「商業情境字彙讓我工作也用得到，拿到藍色證書。」</span>
-                                <span class="author">- Ryan, 進步210分</span>
-                            </div>
-                            <div class="student-review">
-                                <span class="quote">「聽力關鍵字技巧超級實用，分數拉高很多！」</span>
-                                <span class="author">- Chloe, 達到735分</span>
+                        <div class="desktop-details">
+                            <h4><i class="fas fa-layer-group"></i> 學習重點</h4>
+                            <ul>
+                                <li>精準閱讀題型解析</li>
+                                <li>聽力關鍵字抓取技巧</li>
+                                <li>多益常見商業情境</li>
+                                <li>解題速度與節奏訓練</li>
+                            </ul>
+                            <div class="feedback-box">
+                                <div class="feedback-title">🏆 學員提分案例</div>
+                                <div class="student-review">
+                                    <span class="quote">「閱讀解題速度大幅提升，終於寫得完題目！」</span>
+                                    <span class="author">- Sarah, 突破750分</span>
+                                </div>
+                                <div class="student-review">
+                                    <span class="quote">「聽力關鍵字技巧超級實用，分數拉高很多！」</span>
+                                    <span class="author">- Chloe, 達到735分</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Level 3 (Blue Theme) -->
+                <!-- Level 3 -->
                 <div class="level-card theme-blue">
                     <div class="cert-header">
                         <div class="cert-title"><span class="color-dot"></span> 藍色證書</div>
                         <div class="cert-score">730 - 855</div>
                         <div class="cert-desc">熟練職場英語</div>
                     </div>
-
                     <div class="level-body">
                         <h3>Level 3 高分班</h3>
-                        <h4><i class="fas fa-chart-line"></i> 學習重點</h4>
-                        <ul>
-                            <li>高難度閱讀文章拆解</li>
-                            <li>聽力細節陷阱解析</li>
-                            <li>長篇多段落文章統整</li>
-                            <li>高分解題盲點突破</li>
-                        </ul>
-
-                        <!-- Feedbacks -->
-                        <div class="feedback-box">
-                            <div class="feedback-title">🏆 學員提分案例</div>
-                            <div class="student-review">
-                                <span class="quote">「長篇文章解析很透徹，不再害怕最後的閱讀測驗。」</span>
-                                <span class="author">- Kevin, 突破820分</span>
-                            </div>
-                            <div class="student-review">
-                                <span class="quote">「突破了卡關很久的700分，朝向金色證書邁進！」</span>
-                                <span class="author">- Olivia, 進步120分</span>
-                            </div>
-                            <div class="student-review">
-                                <span class="quote">「聽力細節掌握度變高，英澳口音不再是夢魘。」</span>
-                                <span class="author">- Daniel, 達到850分</span>
+                        <div class="desktop-details">
+                            <h4><i class="fas fa-chart-line"></i> 學習重點</h4>
+                            <ul>
+                                <li>高難度閱讀文章拆解</li>
+                                <li>聽力細節陷阱解析</li>
+                                <li>長篇多段落文章統整</li>
+                                <li>高分解題盲點突破</li>
+                            </ul>
+                            <div class="feedback-box">
+                                <div class="feedback-title">🏆 學員提分案例</div>
+                                <div class="student-review">
+                                    <span class="quote">「長篇文章解析很透徹，不再害怕最後的閱讀測驗。」</span>
+                                    <span class="author">- Kevin, 突破820分</span>
+                                </div>
+                                <div class="student-review">
+                                    <span class="quote">「聽力細節掌握度變高，英澳口音不再是夢魘。」</span>
+                                    <span class="author">- Daniel, 達到850分</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- Level 4 (Gold Theme) -->
+                <!-- Level 4 -->
                 <div class="level-card theme-gold">
                     <div class="cert-header">
                         <div class="cert-title"><span class="color-dot"></span> 金色證書</div>
                         <div class="cert-score">860 - 990</div>
                         <div class="cert-desc">高階英語能力</div>
                     </div>
-
                     <div class="level-body">
                         <h3>Level 4 衝刺班</h3>
-                        <h4><i class="fas fa-trophy"></i> 學習重點</h4>
-                        <ul>
-                            <li>外商求職高階閱讀分析</li>
-                            <li>進階聽力語速與理解</li>
-                            <li>職場英語進階表達</li>
-                            <li>高階商業英文實戰應用</li>
-                        </ul>
-
-                        <!-- Feedbacks -->
-                        <div class="feedback-box">
-                            <div class="feedback-title">🏆 學員提分案例</div>
-                            <div class="student-review">
-                                <span class="quote">「感謝老師的高階技巧，讓我考出920分進入外商！」</span>
-                                <span class="author">- Jason, 突破920分</span>
-                            </div>
-                            <div class="student-review">
-                                <span class="quote">「不僅是為了考試，職場英文表達也變得流利自信。」</span>
-                                <span class="author">- Emily, 達到895分</span>
-                            </div>
-                            <div class="student-review">
-                                <span class="quote">「考前模擬試題跟實戰很像，寫作和口說啟發很大。」</span>
-                                <span class="author">- Michael, 達到940分</span>
+                        <div class="desktop-details">
+                            <h4><i class="fas fa-trophy"></i> 學習重點</h4>
+                            <ul>
+                                <li>外商求職高階閱讀分析</li>
+                                <li>進階聽力語速與理解</li>
+                                <li>職場英語進階表達</li>
+                                <li>高階商業英文實戰應用</li>
+                            </ul>
+                            <div class="feedback-box">
+                                <div class="feedback-title">🏆 學員提分案例</div>
+                                <div class="student-review">
+                                    <span class="quote">「感謝老師的高階技巧，讓我考出920分進入外商！」</span>
+                                    <span class="author">- Jason, 突破920分</span>
+                                </div>
+                                <div class="student-review">
+                                    <span class="quote">「考前模擬試題跟實戰很像，寫作和口說啟發很大。」</span>
+                                    <span class="author">- Michael, 達到940分</span>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
 
             </div>
+
+            <!-- Mobile Only: Expand More Info Button & Detailed Lists -->
+            <div class="mobile-more-info">
+                <button id="btn-toggle-course" class="btn-toggle-course" onclick="toggleCourseDetails()">
+                    👇 點擊展開各級課程詳細重點
+                </button>
+            </div>
+
+            <div class="mobile-detailed-list" id="mobile-detailed-list">
+                <!-- Mobile Details: Level 1 -->
+                <div class="mobile-detail-card theme-brown">
+                    <h3 style="text-align:center; color: var(--dark-text); font-size: 1.4rem; margin-bottom: 20px;">🟤 Level 1 基礎班 (220-465)</h3>
+                    <h4 style="color: var(--primary-blue); margin-bottom: 12px; font-size: 1.15rem;"><i class="fas fa-book-open"></i> 學習重點</h4>
+                    <ul style="list-style: none; padding-left: 0; margin-bottom: 25px;">
+                        <li style="position: relative; padding-left: 25px; margin-bottom: 8px; color: var(--gray-text);"><span style="position: absolute; left: 0; color: var(--primary-blue); font-weight:bold;">✔</span>基礎文法與句型解析</li>
+                        <li style="position: relative; padding-left: 25px; margin-bottom: 8px; color: var(--gray-text);"><span style="position: absolute; left: 0; color: var(--primary-blue); font-weight:bold;">✔</span>常見 TOEIC 核心單字</li>
+                        <li style="position: relative; padding-left: 25px; margin-bottom: 8px; color: var(--gray-text);"><span style="position: absolute; left: 0; color: var(--primary-blue); font-weight:bold;">✔</span>基本閱讀理解能力</li>
+                        <li style="position: relative; padding-left: 25px; margin-bottom: 8px; color: var(--gray-text);"><span style="position: absolute; left: 0; color: var(--primary-blue); font-weight:bold;">✔</span>基礎聽力語感訓練</li>
+                    </ul>
+                    <div class="feedback-box" style="margin-top: 0;">
+                        <div class="feedback-title">🏆 學員提分案例</div>
+                        <div class="student-review">
+                            <span class="quote">「文法基礎變穩了，成功拿到綠色證書！」</span>
+                            <span class="author" style="color: var(--brown-cert);">- Alex, 突破480分</span>
+                        </div>
+                        <div class="student-review">
+                            <span class="quote">「原本連聽力單字都聽不懂，現在能抓到關鍵字了！」</span>
+                            <span class="author" style="color: var(--brown-cert);">- Emma, 進步150分</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Mobile Details: Level 2 -->
+                <div class="mobile-detail-card theme-green">
+                    <h3 style="text-align:center; color: var(--dark-text); font-size: 1.4rem; margin-bottom: 20px;">🟢 Level 2 進階班 (470-725)</h3>
+                    <h4 style="color: var(--primary-blue); margin-bottom: 12px; font-size: 1.15rem;"><i class="fas fa-layer-group"></i> 學習重點</h4>
+                    <ul style="list-style: none; padding-left: 0; margin-bottom: 25px;">
+                        <li style="position: relative; padding-left: 25px; margin-bottom: 8px; color: var(--gray-text);"><span style="position: absolute; left: 0; color: var(--primary-blue); font-weight:bold;">✔</span>精準閱讀題型解析</li>
+                        <li style="position: relative; padding-left: 25px; margin-bottom: 8px; color: var(--gray-text);"><span style="position: absolute; left: 0; color: var(--primary-blue); font-weight:bold;">✔</span>聽力關鍵字抓取技巧</li>
+                        <li style="position: relative; padding-left: 25px; margin-bottom: 8px; color: var(--gray-text);"><span style="position: absolute; left: 0; color: var(--primary-blue); font-weight:bold;">✔</span>多益常見商業情境</li>
+                        <li style="position: relative; padding-left: 25px; margin-bottom: 8px; color: var(--gray-text);"><span style="position: absolute; left: 0; color: var(--primary-blue); font-weight:bold;">✔</span>解題速度與節奏訓練</li>
+                    </ul>
+                    <div class="feedback-box" style="margin-top: 0;">
+                        <div class="feedback-title">🏆 學員提分案例</div>
+                        <div class="student-review">
+                            <span class="quote">「閱讀解題速度大幅提升，終於寫得完題目！」</span>
+                            <span class="author" style="color: var(--green-cert);">- Sarah, 突破750分</span>
+                        </div>
+                        <div class="student-review">
+                            <span class="quote">「聽力關鍵字技巧超級實用，分數拉高很多！」</span>
+                            <span class="author" style="color: var(--green-cert);">- Chloe, 達到735分</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mobile Details: Level 3 -->
+                <div class="mobile-detail-card theme-blue">
+                    <h3 style="text-align:center; color: var(--dark-text); font-size: 1.4rem; margin-bottom: 20px;">🔵 Level 3 高分班 (730-855)</h3>
+                    <h4 style="color: var(--primary-blue); margin-bottom: 12px; font-size: 1.15rem;"><i class="fas fa-chart-line"></i> 學習重點</h4>
+                    <ul style="list-style: none; padding-left: 0; margin-bottom: 25px;">
+                        <li style="position: relative; padding-left: 25px; margin-bottom: 8px; color: var(--gray-text);"><span style="position: absolute; left: 0; color: var(--primary-blue); font-weight:bold;">✔</span>高難度閱讀文章拆解</li>
+                        <li style="position: relative; padding-left: 25px; margin-bottom: 8px; color: var(--gray-text);"><span style="position: absolute; left: 0; color: var(--primary-blue); font-weight:bold;">✔</span>聽力細節陷阱解析</li>
+                        <li style="position: relative; padding-left: 25px; margin-bottom: 8px; color: var(--gray-text);"><span style="position: absolute; left: 0; color: var(--primary-blue); font-weight:bold;">✔</span>長篇多段落文章統整</li>
+                        <li style="position: relative; padding-left: 25px; margin-bottom: 8px; color: var(--gray-text);"><span style="position: absolute; left: 0; color: var(--primary-blue); font-weight:bold;">✔</span>高分解題盲點突破</li>
+                    </ul>
+                    <div class="feedback-box" style="margin-top: 0;">
+                        <div class="feedback-title">🏆 學員提分案例</div>
+                        <div class="student-review">
+                            <span class="quote">「長篇文章解析很透徹，不再害怕最後的閱讀測驗。」</span>
+                            <span class="author" style="color: var(--blue-cert);">- Kevin, 突破820分</span>
+                        </div>
+                        <div class="student-review">
+                            <span class="quote">「聽力細節掌握度變高，英澳口音不再是夢魘。」</span>
+                            <span class="author" style="color: var(--blue-cert);">- Daniel, 達到850分</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mobile Details: Level 4 -->
+                <div class="mobile-detail-card theme-gold">
+                    <h3 style="text-align:center; color: var(--dark-text); font-size: 1.4rem; margin-bottom: 20px;">🟡 Level 4 衝刺班 (860-990)</h3>
+                    <h4 style="color: var(--primary-blue); margin-bottom: 12px; font-size: 1.15rem;"><i class="fas fa-trophy"></i> 學習重點</h4>
+                    <ul style="list-style: none; padding-left: 0; margin-bottom: 25px;">
+                        <li style="position: relative; padding-left: 25px; margin-bottom: 8px; color: var(--gray-text);"><span style="position: absolute; left: 0; color: var(--primary-blue); font-weight:bold;">✔</span>外商求職高階閱讀分析</li>
+                        <li style="position: relative; padding-left: 25px; margin-bottom: 8px; color: var(--gray-text);"><span style="position: absolute; left: 0; color: var(--primary-blue); font-weight:bold;">✔</span>進階聽力語速與理解</li>
+                        <li style="position: relative; padding-left: 25px; margin-bottom: 8px; color: var(--gray-text);"><span style="position: absolute; left: 0; color: var(--primary-blue); font-weight:bold;">✔</span>職場英語進階表達</li>
+                        <li style="position: relative; padding-left: 25px; margin-bottom: 8px; color: var(--gray-text);"><span style="position: absolute; left: 0; color: var(--primary-blue); font-weight:bold;">✔</span>高階商業英文實戰應用</li>
+                    </ul>
+                    <div class="feedback-box" style="margin-top: 0;">
+                        <div class="feedback-title">🏆 學員提分案例</div>
+                        <div class="student-review">
+                            <span class="quote">「感謝老師的高階技巧，讓我考出920分進入外商！」</span>
+                            <span class="author" style="color: var(--gold-cert);">- Jason, 突破920分</span>
+                        </div>
+                        <div class="student-review">
+                            <span class="quote">「考前模擬試題跟實戰很像，寫作和口說啟發很大。」</span>
+                            <span class="author" style="color: var(--gold-cert);">- Michael, 達到940分</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- End Mobile Only Details -->
+
         </div>
     </section>
 
-    <!-- Course Content Details (Swipeable on Mobile/iPad) -->
+    <!-- Course Content Details (Swipeable on Mobile/Tablet) -->
     <section class="section-padding container">
         <h2 class="section-title">全方位課程內容</h2>
         
@@ -848,7 +569,7 @@
             <i class="fas fa-arrows-alt-h"></i> 👉 左右滑動查看所有學習內容
         </div>
 
-        <div class="scroller-wrapper">
+        <div class="content-scroller">
             <div class="content-card">
                 <div class="icon-wrapper"><i class="fas fa-headphones"></i></div>
                 <h3>Listening 聽力訓練</h3>
@@ -921,7 +642,6 @@
     <section class="cta-section" id="cta">
         <div class="container">
             
-            <!-- 刪除了多餘的 Icon，只保留 emoji -->
             <a href="https://docs.google.com/forms/d/e/1FAIpQLSeOHw3g4K5rFMeiP3vWscLYeU9K4xn-whgahQOeJSnmG6EqnQ/viewform?usp=header" class="form-link-box" target="_blank">
                 📝 點此立即填寫學習需求表
             </a>
@@ -955,5 +675,21 @@
         &copy; 2026 Tony線上美語家教. All Rights Reserved.
     </footer>
 
+    <!-- JavaScript for Mobile More Info Toggle -->
+    <script>
+        function toggleCourseDetails() {
+            var details = document.getElementById('mobile-detailed-list');
+            var btn = document.getElementById('btn-toggle-course');
+            if (details.style.display === 'none' || details.style.display === '') {
+                details.style.display = 'flex';
+                btn.innerHTML = '👆 收起課程詳細資訊';
+            } else {
+                details.style.display = 'none';
+                btn.innerHTML = '👇 點擊展開各級課程詳細重點';
+                // 讓畫面稍微捲回課程區塊頂部
+                document.getElementById('course-levels').scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+    </script>
 </body>
 </html>
