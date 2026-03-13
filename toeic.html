@@ -10,9 +10,10 @@
     <meta name="description" content="系統化提升聽力與閱讀能力，突破你的多益成績！Tony線上美語家教提供量身打造的各級數TOEIC課程，從基礎班到金色證書衝刺班，快速掌握考試技巧。">
     <meta property="og:title" content="多益TOEIC各級數-Tony線上美語家教">
     <meta property="og:description" content="系統化提升聽力與閱讀能力，突破你的多益成績！Tony線上美語家教提供量身打造的各級數TOEIC課程，從基礎班到金色證書衝刺班，快速掌握考試技巧。">
-    <meta property="og:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-13%20%E4%B8%8B%E5%8D%885.05.02.png?updatedAt=1773393129945">
+    <!-- 加入 ImageKit 裁切參數 (tr=w-1200,h-630,fo-auto) 強制轉為 LINE 完美顯示的 1.91:1 長寬比 -->
+    <meta property="og:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-13%20%E4%B8%8B%E5%8D%885.05.02.png?updatedAt=1773393129945&tr=w-1200,h-630,fo-auto">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-13%20%E4%B8%8B%E5%8D%885.05.02.png?updatedAt=1773393129945">
+    <meta name="twitter:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-13%20%E4%B8%8B%E5%8D%885.05.02.png?updatedAt=1773393129945&tr=w-1200,h-630,fo-auto">
 
     <!-- 1. Layout Manager Script -->
     <script src="layout-manager.js"></script>
@@ -182,7 +183,7 @@
         }
         .target-grid {
             display: grid;
-            grid-template-columns: repeat(2, 1fr); /* Mobile: 2x2 Grid */
+            grid-template-columns: repeat(2, 1fr); 
             gap: 15px;
         }
         .target-card {
@@ -241,7 +242,7 @@
             margin-bottom: 25px;
             font-size: 1.15rem;
             font-weight: 700;
-            display: block; /* Visible on mobile/tablet */
+            display: block; 
             animation: bounce-x 2s infinite;
         }
         @keyframes bounce-x {
@@ -264,19 +265,28 @@
             display: none;
         }
 
+        /* CARD FLEX BASE - Set to 78vw to make Peeking VERY OBVIOUS on mobile */
         .level-card, .content-card {
             background: var(--white);
             border-radius: 20px;
             box-shadow: 0 15px 30px -5px rgba(0,0,0,0.1);
-            flex: 0 0 88vw; /* Mobile Edge Peeking */
+            flex: 0 0 78vw; /* Makes next card peek out prominently */
             scroll-snap-align: center;
             display: flex;
             flex-direction: column;
             overflow: hidden;
             transition: transform 0.3s;
         }
-        .level-card { border-bottom: 8px solid; }
-        .content-card { padding: 35px 25px; box-shadow: 0 10px 25px rgba(0,0,0,0.08); border-radius: 16px; }
+        
+        /* Changed from Bottom Border to Left Border per user request */
+        .level-card { 
+            border-left: 10px solid; 
+        }
+        .content-card { 
+            padding: 35px 25px; 
+            box-shadow: 0 10px 25px rgba(0,0,0,0.08); 
+            border-radius: 16px; 
+        }
         
         .level-card:hover, .content-card:hover { transform: translateY(-5px); }
 
@@ -317,23 +327,23 @@
             color: var(--dark-text);
         }
 
-        /* Theme Colors for Cards */
-        .theme-brown { border-bottom-color: var(--brown-cert); }
+        /* Theme Colors for Cards (Applying Left Border Color) */
+        .theme-brown { border-left-color: var(--brown-cert); }
         .theme-brown .cert-title { color: var(--dark-text); }
         .theme-brown .color-dot { background: var(--brown-cert); }
         .theme-brown .cert-score, .theme-brown .author { color: var(--brown-cert); }
         
-        .theme-green { border-bottom-color: var(--green-cert); }
+        .theme-green { border-left-color: var(--green-cert); }
         .theme-green .cert-title { color: var(--dark-text); }
         .theme-green .color-dot { background: var(--green-cert); }
         .theme-green .cert-score, .theme-green .author { color: var(--green-cert); }
 
-        .theme-blue { border-bottom-color: var(--blue-cert); }
+        .theme-blue { border-left-color: var(--blue-cert); }
         .theme-blue .cert-title { color: var(--dark-text); }
         .theme-blue .color-dot { background: var(--blue-cert); }
         .theme-blue .cert-score, .theme-blue .author { color: var(--blue-cert); }
 
-        .theme-gold { border-bottom-color: var(--gold-cert); }
+        .theme-gold { border-left-color: var(--gold-cert); }
         .theme-gold .cert-title { color: var(--dark-text); }
         .theme-gold .color-dot { background: var(--gold-cert); }
         .theme-gold .cert-score, .theme-gold .author { color: var(--gold-cert); }
@@ -466,7 +476,7 @@
             background: linear-gradient(135deg, var(--primary-blue), var(--dark-text));
             color: var(--white);
             text-align: center;
-            padding: 100px 20px 0 20px; /* modified padding to fit full-width image nicely */
+            padding: 100px 20px 0 20px; 
         }
         .cta-section h2 {
             color: var(--white);
@@ -529,14 +539,14 @@
             text-align: center;
         }
         .snapshot-pic {
-            width: calc(100% + 40px); /* Fill the screen horizontally ignoring container padding */
+            width: calc(100% + 40px); 
             margin-left: -20px;
             margin-right: -20px;
             max-width: none;
             height: auto;
             border-radius: 0;
             display: block;
-            box-shadow: 0 -10px 20px rgba(0,0,0,0.15); /* Keep soft top shadow for dimension */
+            box-shadow: 0 -10px 20px rgba(0,0,0,0.15); 
         }
 
         /* --- Responsive Queries --- */
@@ -548,7 +558,6 @@
             .target-list { padding: 30px 40px; }
             .two-col { grid-template-columns: 1fr 1fr; }
             
-            /* Restore picture styling for tablet/desktop */
             .snapshot-pic {
                 width: 100%;
                 max-width: 320px;
@@ -556,16 +565,19 @@
                 margin-right: auto;
                 border-radius: 16px;
                 box-shadow: 0 15px 35px rgba(0,0,0,0.4);
-                margin-bottom: 60px; /* add spacing at the very bottom */
+                margin-bottom: 60px; 
             }
-            .cta-section { padding-bottom: 40px; } /* restore bottom padding */
+            .cta-section { padding-bottom: 40px; } 
         }
         
         @media (min-width: 768px) and (max-width: 1023px) {
             .scroller-wrapper .level-card,
             .scroller-wrapper .content-card {
-                /* iPad Mode: Show exactly 2 cards per view */
-                flex: 0 0 calc(50% - 10px);
+                /* iPad Mode: Exactly 2 cards fully visible (84vw total), leaving ~10vw for the 3rd card to visibly peek out */
+                flex: 0 0 42vw; 
+            }
+            .swipe-hint {
+                display: block; /* explicitly display swipe hint on Tablet too */
             }
         }
 
@@ -600,11 +612,11 @@
             <p>系統化提升聽力與閱讀能力，快速掌握考試技巧，突破你的多益成績！全方位為你打造專屬的高分計畫。</p>
             
             <div class="hero-buttons">
-                <!-- 學習需求填寫 (Link to Google Form, Icon removed) -->
+                <!-- 學習需求填寫 (Icon removed) -->
                 <a href="https://docs.google.com/forms/d/e/1FAIpQLSeOHw3g4K5rFMeiP3vWscLYeU9K4xn-whgahQOeJSnmG6EqnQ/viewform?usp=header" class="cta-btn btn-primary" target="_blank">
                     📝 學習需求填寫
                 </a>
-                <!-- 課程介紹分級 (Anchor to Levels Section, Icon removed) -->
+                <!-- 課程介紹分級 (Icon removed) -->
                 <a href="#course-levels" class="cta-btn btn-secondary">
                     📖 課程介紹（分級）
                 </a>
