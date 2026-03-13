@@ -50,6 +50,9 @@
         a { text-decoration: none; }
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
 
+        /* 手機版專屬斷行 */
+        .mobile-only { display: none; }
+
         /* --- Mobile-First Spacing Setup --- */
         .section-padding { padding: 50px 0; }
         .levels-container { padding: 50px 0; background: var(--light-blue); }
@@ -68,10 +71,10 @@
                         url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-13%20%E4%B8%8B%E5%8D%885.05.02.png?updatedAt=1773393129945') center/cover;
             padding: 80px 20px 60px; text-align: center; color: var(--white); overflow: hidden;
         }
-        .hero h1 { font-size: 2.8rem; margin-bottom: 20px; text-shadow: 0 4px 6px rgba(0,0,0,0.3); line-height: 1.3; }
+        .hero h1 { color: var(--white); font-size: 2.8rem; margin-bottom: 20px; text-shadow: 0 4px 6px rgba(0,0,0,0.3); line-height: 1.3; }
         .hero p { font-size: 1.2rem; max-width: 650px; margin: 0 auto 30px auto; color: #E2E8F0; }
         
-        .hero-buttons { display: flex; flex-direction: column; gap: 15px; justify-content: center; align-items: center; }
+        .hero-buttons { display: flex; flex-direction: column; gap: 15px; justify-content: center; align-items: center; flex-wrap: wrap; }
         .cta-btn { display: inline-flex; align-items: center; justify-content: center; gap: 10px; padding: 16px 35px; font-size: 1.25rem; font-weight: 700; border-radius: 50px; transition: all 0.3s ease; width: 100%; max-width: 320px; }
         
         .btn-primary { background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%); color: var(--white); box-shadow: 0 10px 15px -3px rgba(245, 158, 11, 0.4); animation: pulse 2s infinite; }
@@ -188,15 +191,16 @@
            RESPONSIVE LOGIC
            ========================================= */
 
-        /* 📱 Mobile Mode (max-width: 767px) - 2x2 Grid for Courses */
+        /* 📱 Mobile Mode (max-width: 767px) */
         @media (max-width: 767px) {
+            .mobile-only { display: block; } /* 顯示手機版斷行 */
+            
             .course-grid-container {
                 display: grid;
                 grid-template-columns: repeat(2, 1fr);
                 gap: 12px;
             }
             .course-grid-container .level-card { border-radius: 16px; }
-            /* Compact Text for 2x2 Grid */
             .course-grid-container .cert-header { padding: 15px 10px; }
             .course-grid-container .cert-title { font-size: 0.95rem; }
             .course-grid-container .cert-score { font-size: 1.6rem; margin-bottom: 5px; } 
@@ -204,16 +208,17 @@
             .course-grid-container .level-body { padding: 15px 10px 10px; }
             .course-grid-container .level-body h3 { font-size: 1.1rem; margin-bottom: 0; }
             
-            /* Hide details from the grid cards, show toggle button */
             .desktop-details { display: none; }
             .mobile-more-info { display: block; }
             #course-swipe-hint { display: none; }
         }
 
-        /* 💊 Tablet & iPad Mode (768px ~ 1023px) - Horizontal Scroll */
+        /* 💊 Tablet & iPad Mode (768px ~ 1023px) */
         @media (min-width: 768px) and (max-width: 1023px) {
             .section-padding { padding: 80px 0; }
             .levels-container { padding: 80px 0; }
+            .hero-buttons { flex-direction: row; }
+            
             .course-grid-container {
                 display: flex; gap: 20px; overflow-x: auto; padding: 10px 20px 30px 20px; scroll-snap-type: x mandatory; margin-left: -20px; margin-right: -20px; -ms-overflow-style: none; scrollbar-width: none;
             }
@@ -231,7 +236,7 @@
             .snapshot-pic { width: 100%; max-width: 320px; margin-left: auto; margin-right: auto; border-radius: 16px; margin-bottom: 60px; }
         }
 
-        /* 💻 Desktop Mode (1024px and up) - 4 Column Grid */
+        /* 💻 Desktop Mode (1024px and up) */
         @media (min-width: 1024px) {
             .section-padding { padding: 90px 0; }
             .levels-container { padding: 90px 0; }
@@ -269,14 +274,20 @@
     <!-- Hero Section -->
     <section class="hero">
         <div class="container">
-            <h1>TOEIC® 多益高分課程</h1>
+            <!-- 運用 mobile-only 類別讓手機版自動斷行 -->
+            <h1>TOEIC®<br class="mobile-only"> 多益課程</h1>
             <p>系統化提升聽力與閱讀能力，快速掌握考試技巧，突破你的多益成績！全方位為你打造專屬的高分計畫。</p>
             
             <div class="hero-buttons">
-                <!-- 學習需求填寫 (Clean emoji only) -->
-                <a href="https://docs.google.com/forms/d/e/1FAIpQLSeOHw3g4K5rFMeiP3vWscLYeU9K4xn-whgahQOeJSnmG6EqnQ/viewform?usp=header" class="cta-btn btn-primary" target="_blank">
+                <!-- 預約體驗課程為主 CTA (金色) -->
+                <a href="https://tonyonlineenglish.netlify.app/exper" class="cta-btn btn-primary" target="_blank">
+                    👉 預約體驗課程
+                </a>
+                <!-- 學習需求填寫改為次要按鈕 (白框) -->
+                <a href="https://docs.google.com/forms/d/e/1FAIpQLSeOHw3g4K5rFMeiP3vWscLYeU9K4xn-whgahQOeJSnmG6EqnQ/viewform?usp=header" class="cta-btn btn-secondary" target="_blank">
                     📝 學習需求填寫
                 </a>
+                <!-- 課程介紹分級維持次要按鈕 (白框) -->
                 <a href="#course-levels" class="cta-btn btn-secondary">
                     📖 課程介紹（分級）
                 </a>
