@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function() {
         html, body {
             margin: 0 !important;
             padding: 0 !important;
-            width: 100% !important; /* 從 100vw 改為 100% 徹底解決 iPad 左側白邊/位移問題 */
+            width: 100% !important; 
             max-width: 100% !important;
             overflow-x: hidden !important;
             background-color: var(--tony-light) !important;
@@ -30,7 +30,7 @@ document.addEventListener("DOMContentLoaded", function() {
             align-items: center;
             justify-content: space-between;
             padding: 0 20px;
-            padding-left: max(20px, env(safe-area-inset-left)); /* 遵循 iOS 安全區域 */
+            padding-left: max(20px, env(safe-area-inset-left)); 
             padding-right: max(20px, env(safe-area-inset-right));
             box-sizing: border-box;
             z-index: 1000;
@@ -71,20 +71,29 @@ document.addEventListener("DOMContentLoaded", function() {
 
         /* --- 3. 側邊選單樣式 --- */
         .side-menu {
-            position: fixed; top: 0; left: -320px; width: 320px; max-width: 85%; height: 100vh;
-            background: var(--tony-dark); z-index: 99999; transition: 0.4s;
-            padding: 40px 20px; display: flex; flex-direction: column;
+            position: fixed; 
+            top: 0; 
+            bottom: 0; /* 修正1：捨棄 100vh，改用 bottom: 0 完美貼合手機螢幕真實邊界 */
+            left: -320px; 
+            width: 320px; 
+            max-width: 85%; 
+            background: var(--tony-dark); 
+            z-index: 99999; 
+            transition: left 0.4s ease; /* 確保只有左右位移產生動畫 */
+            padding: 40px 20px 80px 20px; /* 修正2：增加底部 padding，防止手機系統導覽列擋住最後一個按鈕 */
             visibility: hidden;
             box-sizing: border-box;
-            overflow-y: auto; /* 新增：解決手機版選單太長無法往下滑動的問題 */
-            -webkit-overflow-scrolling: touch; /* 新增：讓 iOS 滑動更順暢 */
+            overflow-y: auto !important; /* 強制啟動內部垂直滾動 */
+            overscroll-behavior: contain; /* 修正3：阻止滑動穿透到背景網頁 */
+            -webkit-overflow-scrolling: touch; /* 讓 iOS 滑動平滑順暢 */
+            display: block; /* 修正4：捨棄 flex 佈局，解決手機瀏覽器計算內部高度的 Bug */
         }
         .side-menu.open { left: 0; visibility: visible; }
         .menu-link {
             color: white; text-decoration: none; font-size: 26px !important;
             font-weight: 700; padding: 18px; background: rgba(255,255,255,0.05);
             border-radius: 12px; display: block; margin-bottom: 15px;
-            white-space: normal; /* 防止過長文字撐開選單 */
+            white-space: normal; 
             word-wrap: break-word;
         }
         .menu-link span { 
@@ -92,14 +101,14 @@ document.addEventListener("DOMContentLoaded", function() {
             line-height: 1.4; white-space: normal; 
         }
 
-        /* 新增：課程詳細介紹 - 高對比強調樣式 */
+        /* 課程詳細介紹 - 高對比強調樣式 */
         .highlight-course {
-            background: #FFD700 !important; /* 亮黃色背景 */
-            color: #000 !important; /* 黑色文字形成強烈對比 */
+            background: #FFD700 !important; 
+            color: #000 !important; 
             box-shadow: 0 4px 12px rgba(255, 215, 0, 0.2);
         }
         .highlight-course span {
-            color: #333 !important; /* 副標題深灰色 */
+            color: #333 !important; 
             font-weight: 700;
         }
 
@@ -115,7 +124,6 @@ document.addEventListener("DOMContentLoaded", function() {
                 padding-left: 30px !important;
                 padding-right: 30px !important;
             }
-            /* 強制背景色滲透，防止白條 */
             body::before {
                 content: "";
                 position: fixed;
@@ -146,10 +154,11 @@ document.addEventListener("DOMContentLoaded", function() {
     const menuHTML = `
         <div class="menu-overlay" id="menu-overlay"></div>
         <nav class="side-menu" id="side-menu">
-            <!-- 補上 flex-shrink: 0 防止 X 按鈕在小螢幕被擠壓 -->
-            <div id="menu-close" style="color:white; font-size:50px; cursor:pointer; align-self:flex-end; margin-bottom:20px; flex-shrink:0;">&times;</div>
+            <!-- 配合 display: block，將叉叉按鈕改為靠右對齊 -->
+            <div style="text-align: right; margin-bottom: 20px;">
+                <span id="menu-close" style="color:white; font-size:50px; cursor:pointer; line-height: 1;">&times;</span>
+            </div>
             <a href="index.html" class="menu-link">回首頁</a>
-            <!-- 加上 highlight-course 類別 -->
             <a href="https://tonyonlineenglish.netlify.app/allcourses" target="_blank" class="menu-link highlight-course">課程詳細介紹<span>升學 檢定 職場 公職 客製化</span></a>
             <a href="https://tonyonlineenglish.netlify.app/ycs" target="_blank" class="menu-link">你的課表查詢<span>即時查看課程安排狀況</span></a>
             <a href="https://tonyonlineenglish.netlify.app/exper" target="_blank" class="menu-link">預約體驗課程<span>25 / 50 分鐘線上試聽</span></a>
@@ -186,8 +195,16 @@ document.addEventListener("DOMContentLoaded", function() {
     const closeBtn = document.getElementById('menu-close');
 
     function toggleMenu() {
-        sideMenu.classList.toggle('open');
+        const isOpen = sideMenu.classList.toggle('open');
         overlay.classList.toggle('open');
+        
+        // 修正5： Body Scroll Lock
+        // 當選單打開時鎖定背景禁止滑動，讓瀏覽器「別無選擇」只能滑動你的選單
+        if (isOpen) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
     }
 
     hamburger.addEventListener('click', toggleMenu);
