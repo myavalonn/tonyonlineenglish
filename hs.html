@@ -36,11 +36,20 @@
 
         /* Hero Section 背景修正 */
         .hero-bg { 
-            background: linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.75)), 
+            background: linear-gradient(rgba(15, 23, 42, 0.70), rgba(15, 23, 42, 0.70)), 
                         url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-07%20%E4%B8%8B%E5%8D%885.26.04.png?updatedAt=1772875573021'); 
             background-size: cover; 
             background-position: center; 
-            background-attachment: fixed;
+            
+            /* 預設為 scroll，解決手機版圖片無限放大變全藍的問題 */
+            background-attachment: scroll; 
+        }
+
+        /* 只有在螢幕寬度大於 768px (平板與電腦版) 時，才開啟 fixed 視差效果 */
+        @media (min-width: 768px) {
+            .hero-bg {
+                background-attachment: fixed;
+            }
         }
 
         /* --- 側邊懸浮標籤樣式 --- */
