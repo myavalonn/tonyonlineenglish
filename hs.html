@@ -3,18 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>普通高中學測英文 | Tony Online English</title>
     
-    <title>普通高中學測英文 | Tony Online English 專業一對一線上家教</title>
-    <meta name="description" content="Tony Online English 提供專業高中學測英文指導，深耕圖文論述、翻譯技巧與混合題型，協助學生掌握 Level 3-5 關鍵詞彙，穩定達成頂標目標。">
-    <meta name="keywords" content="學測英文,高中英文家教,英文寫作,混合題型,Tony Online English,英文補習,線上英文">
-    <meta name="author" content="Tony Online English">
-
-    <meta property="og:title" content="普通高中學測英文 | Tony Online English">
-    <meta property="og:description" content="掌握一字多義、混合題與圖文論述，穩拿高分關鍵。預約體驗課程！">
-    <meta property="og:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-07%20%E4%B8%8B%E5%8D%885.26.04.png?updatedAt=1772875573021">
-    <meta property="og:url" content="https://tonyonlineenglish.netlify.app/">
-    <meta property="og:type" content="website">
-
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
@@ -29,7 +19,7 @@
             line-height: 1.6;
         }
 
-        /* Hero 背景 - 已修正編碼 */
+        /* Hero Section 背景修正 */
         .hero-bg { 
             background: linear-gradient(rgba(15, 23, 42, 0.75), rgba(15, 23, 42, 0.75)), 
                         url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-07%20%E4%B8%8B%E5%8D%885.26.04.png?updatedAt=1772875573021'); 
@@ -38,47 +28,83 @@
             background-attachment: fixed;
         }
 
-        /* 側邊標籤 */
+        /* --- 側邊懸浮標籤樣式 --- */
         #writing-tab {
-            position: fixed; left: 0; top: 50%; transform: translateY(-50%);
-            background-color: #2563eb; color: white; padding: 20px 10px;
-            writing-mode: vertical-rl; text-orientation: mixed; cursor: pointer;
-            border-radius: 0 12px 12px 0; font-weight: 900; z-index: 1000;
-            box-shadow: 2px 2px 10px rgba(0,0,0,0.2); transition: 0.3s;
+            position: fixed;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: #2563eb;
+            color: white;
+            padding: 20px 10px;
+            writing-mode: vertical-rl;
+            text-orientation: mixed;
+            cursor: pointer;
+            border-radius: 0 12px 12px 0;
+            font-weight: 900;
+            letter-spacing: 2px;
+            z-index: 1000;
+            box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+            transition: all 0.3s;
         }
+        #writing-tab:hover { background-color: #1d4ed8; padding-left: 15px; }
 
-        /* 側邊面板 */
+        /* --- 展開視窗樣式 --- */
         #writing-panel {
-            position: fixed; left: -100%; top: 50%; transform: translateY(-50%);
-            width: 90%; max-width: 450px; background: white; z-index: 1001;
-            box-shadow: 10px 0 30px rgba(0,0,0,0.2); border-radius: 0 2rem 2rem 0;
-            transition: left 0.5s cubic-bezier(0.16, 1, 0.3, 1); border: 2px solid #2563eb;
+            position: fixed;
+            left: -100%; /* 初始隱藏在左側外 */
+            top: 50%;
+            transform: translateY(-50%);
+            width: 90%;
+            max-width: 450px;
+            background: white;
+            z-index: 1001;
+            box-shadow: 10px 0 30px rgba(0,0,0,0.2);
+            border-radius: 0 2rem 2rem 0;
+            transition: left 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+            border: 2px solid #2563eb;
+            overflow: hidden;
         }
         #writing-panel.active { left: 0; }
 
+        /* 背景遮罩 */
         #overlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.5); display: none; z-index: 999;
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: none;
+            z-index: 999;
         }
         #overlay.active { display: block; }
 
         .card-wrapper {
-            background: white; border-radius: 1.5rem; padding: 2.5rem 2rem;
-            border: 1px solid #e2e8f0; display: flex; flex-direction: column;
-            align-items: center; text-align: center; height: 100%;
+            background: white;
+            border-radius: 1.5rem;
+            padding: 2.5rem 2rem;
+            border: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            height: 100%;
         }
 
         .responsive-grid {
-            display: grid; gap: 2rem;
+            display: grid;
+            gap: 2rem;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
         }
 
         .features {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 1.5rem; margin-bottom: 3rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
         }
         .feature-item {
-            background: white; padding: 1.25rem; border-radius: 1rem;
+            background: white;
+            padding: 1.25rem;
+            border-radius: 1rem;
             border-left: 4px solid #2563eb;
         }
 
@@ -95,21 +121,34 @@
 
     <div id="writing-panel" class="p-8">
         <button onclick="togglePanel()" class="absolute top-4 right-6 text-2xl font-bold text-slate-400 hover:text-slate-900">✕</button>
+        
         <div class="inline-block bg-blue-600 text-white px-4 py-1 rounded-full text-xs font-bold mb-4">⭐ 特殊專欄</div>
         <h2 class="text-2xl font-black text-slate-900 mb-4">英文寫作加強班</h2>
         <p class="text-slate-600 mb-8 leading-relaxed">
-            針對學測非選擇題進行系統化強化。我們深耕 圖文論述 與 翻譯技巧，帶領學生運用高級句型與精準 轉承詞。
+            針對學測非選擇題進行系統化強化。我們深耕 圖文論述 與 翻譯技巧，帶領學生運用高級句型與精準 轉承詞。適合目標鎖定學測英文頂標的學生。
         </p>
-        <a href="https://tonyonlineenglish.netlify.app/exper" class="w-full block text-center bg-blue-600 text-white py-4 rounded-xl font-black">
+        
+        <div class="bg-blue-50 p-6 rounded-2xl text-center mb-8 border border-blue-100">
+            <div class="text-3xl mb-2">✍️</div>
+            <p class="font-bold text-slate-800">構思 • 句型 • 實作</p>
+        </div>
+
+        <a href="https://tonyonlineenglish.netlify.app/exper" class="w-full block text-center bg-blue-600 text-white py-4 rounded-xl font-black hover:bg-blue-700 transition">
             預約寫作試聽
         </a>
     </div>
 
     <header class="hero-bg min-h-[75vh] flex items-center justify-center text-center px-4">
         <div class="max-w-4xl">
-            <h1 class="text-4xl md:text-7xl font-black text-white mb-8">普通高中學測英文</h1>
-            <p class="text-xl md:text-2xl text-blue-100 mb-12">掌握一字多義、混合題與圖文論述，穩拿 高分關鍵</p>
-            <a href="#content-start" class="cta-button text-white px-12 py-5 rounded-2xl font-bold text-2xl shadow-lg hover:scale-105 transition">了解更多</a>
+            <h1 class="text-4xl md:text-7xl font-black text-white mb-8 leading-tight">
+                普通高中學測英文
+            </h1>
+            <p class="text-xl md:text-2xl text-blue-100 font-medium mb-12 opacity-90">
+                掌握一字多義、混合題與圖文論述，穩拿 高分關鍵
+            </p>
+            <a href="#content-start" class="cta-button text-white px-12 py-5 rounded-2xl font-bold text-2xl inline-block shadow-lg hover:scale-105 transition">
+                了解更多
+            </a>
         </div>
     </header>
 
@@ -117,14 +156,14 @@
         
         <section class="mb-24">
             <h2 class="text-3xl font-black text-center mb-12">🎯 適合對象</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto text-center">
-                <div class="bg-blue-50 p-10 rounded-[2.5rem] border-2 border-blue-100">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+                <div class="bg-blue-50 p-10 rounded-[2.5rem] border-2 border-blue-100 text-center">
                     <i class="fas fa-school text-5xl text-blue-600 mb-6 block"></i>
-                    <p class="text-2xl font-bold">適合 加強學校進度<br>英文程度的普通高中學生</p>
+                    <p class="text-2xl font-bold text-slate-800">適合 加強學校進度<br>英文程度的普通高中學生</p>
                 </div>
-                <div class="bg-blue-50 p-10 rounded-[2.5rem] border-2 border-blue-100">
+                <div class="bg-blue-50 p-10 rounded-[2.5rem] border-2 border-blue-100 text-center">
                     <i class="fas fa-user-graduate text-5xl text-blue-600 mb-6 block"></i>
-                    <p class="text-2xl font-bold">準備普通高中學測英文<br>需要 突破瓶頸 的考生</p>
+                    <p class="text-2xl font-bold text-slate-800">準備普通高中學測英文<br>需要 突破瓶頸 的考生</p>
                 </div>
             </div>
         </section>
@@ -133,18 +172,22 @@
             <h2 class="text-3xl font-black text-center mb-12">🚀 核心考點全解析</h2>
             <div class="responsive-grid">
                 <div class="card-wrapper">
+                    <div class="bg-blue-100 text-blue-600 rounded-full p-4 mb-6"><i class="fas fa-language text-3xl"></i></div>
                     <h3 class="text-xl font-black text-blue-800 mb-4">詞彙與語境搭配</h3>
                     <p class="text-slate-600">掌握 Level 3-5 單字語境。看例句掌握詞性搭配詞，而非死背中文。</p>
                 </div>
                 <div class="card-wrapper">
+                    <div class="bg-orange-100 text-orange-600 rounded-full p-4 mb-6"><i class="fas fa-puzzle-piece text-3xl"></i></div>
                     <h3 class="text-xl font-black text-orange-800 mb-4">混合題資訊整合</h3>
                     <p class="text-slate-600">結合地圖、圖表或數據。學會讀懂 文章脈絡，解構藏很深的答案。</p>
                 </div>
                 <div class="card-wrapper">
+                    <div class="bg-blue-100 text-blue-600 rounded-full p-4 mb-6"><i class="fas fa-search text-3xl"></i></div>
                     <h3 class="text-xl font-black text-blue-800 mb-4">閱讀邏輯推論</h3>
                     <p class="text-slate-600">重點在抓出 作者意圖 與主旨推論，強化對跨領域文章的理解力。</p>
                 </div>
                 <div class="card-wrapper">
+                    <div class="bg-orange-100 text-orange-600 rounded-full p-4 mb-6"><i class="fas fa-pen-nib text-3xl"></i></div>
                     <h3 class="text-xl font-black text-orange-800 mb-4">圖文論述深度</h3>
                     <p class="text-slate-600">除了描述現象，更需探討 社會議題 與個人見解，打造具深度的作文內容。</p>
                 </div>
@@ -161,11 +204,15 @@
         <section class="text-center">
             <div class="bg-white p-12 md:p-20 border-[6px] border-blue-600 rounded-[3rem] shadow-2xl max-w-4xl mx-auto">
                 <h2 class="text-3xl md:text-5xl font-black mb-12">準備好迎接挑戰了嗎？</h2>
-                <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="flex justify-center items-center gap-4 text-3xl font-black text-[#00b359] mb-12 transition">
-                    <i class="fab fa-line text-6xl"></i>
-                    <span>Line: myavalon</span>
+                <div class="flex flex-col items-center gap-8 mb-12">
+                    <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="flex items-center gap-4 text-3xl font-black text-[#00b359] transition">
+                        <i class="fab fa-line text-6xl"></i>
+                        <span>Line: myavalon</span>
+                    </a>
+                </div>
+                <a href="https://tonyonlineenglish.netlify.app/exper" target="_blank" class="cta-button inline-block text-white px-16 py-6 rounded-2xl font-black text-2xl shadow-lg hover:scale-105 transition">
+                    📩 立即預約體驗課程
                 </a>
-                <a href="https://tonyonlineenglish.netlify.app/exper" class="cta-button inline-block text-white px-16 py-6 rounded-2xl font-black text-2xl shadow-lg hover:scale-105 transition">📩 立即預約體驗課程</a>
             </div>
         </section>
     </main>
@@ -176,9 +223,12 @@
 
     <script>
         function togglePanel() {
-            document.getElementById('writing-panel').classList.toggle('active');
-            document.getElementById('overlay').classList.toggle('active');
+            const panel = document.getElementById('writing-panel');
+            const overlay = document.getElementById('overlay');
+            panel.classList.toggle('active');
+            overlay.classList.toggle('active');
         }
     </script>
+
 </body>
 </html>
