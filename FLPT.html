@@ -158,7 +158,7 @@
         }
         
         .cert-header { padding: 20px; text-align: center; border-bottom: 3px solid var(--dark-text); background: #F8FAFC; }
-        .cert-title { display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 1.6rem; font-weight: 900; }
+        .cert-title { display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 1.8rem; font-weight: 900; }
         .color-dot { width: 18px; height: 18px; border-radius: 50%; display: inline-block; border: 2px solid var(--dark-text); }
 
         .theme-blue { border-top-color: var(--accent-blue); }
@@ -224,6 +224,13 @@
                 display: block; 
                 font-size: 2.1rem; /* 縮小字體以確保單行容納 */
                 white-space: nowrap; /* 強制不准換行到第三行 */
+            }
+            
+            /* 控制 為什麼選擇Tony 的第二行標題，確保縮小字體、不換到第三行 */
+            .section-title-2nd {
+                display: inline-block;
+                white-space: nowrap;
+                font-size: 1.6rem; /* 確保在小螢幕也能塞進單行 */
             }
 
             .hero-buttons { justify-content: center; align-items: center; }
@@ -302,8 +309,8 @@
 
     <!-- Why Choose Us -->
     <section class="section-padding container" id="introduction">
-        <!-- 手機版強制分兩行：為什麼選擇 (第一行) / Tony線上美語家教？ (第二行) -->
-        <h2 class="section-title">為什麼選擇<br class="mobile-break"> Tony線上美語家教？</h2>
+        <!-- 手機版強制分兩行，第二行強制縮放確保不換到第三行 -->
+        <h2 class="section-title">為什麼選擇<br class="mobile-break"> <span class="section-title-2nd">Tony線上美語家教？</span></h2>
         <p style="text-align: center; font-size: 1.2rem; font-weight: 900; margin-bottom: 30px;">透過系統化訓練與專業題型解析，幫助學生全面提升實力。</p>
         
         <div class="target-grid">
