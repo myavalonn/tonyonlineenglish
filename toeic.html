@@ -10,7 +10,7 @@
     <meta name="description" content="系統化提升聽力與閱讀能力，突破你的多益成績！Tony線上美語家教提供量身打造的各級數TOEIC課程，從基礎班到金色證書衝刺班，快速掌握考試技巧。">
     <meta property="og:title" content="多益TOEIC各級數-Tony線上美語家教">
     <meta property="og:description" content="系統化提升聽力與閱讀能力，突破你的多益成績！Tony線上美語家教提供量身打造的各級數TOEIC課程，從基礎班到金色證書衝刺班，快速掌握考試技巧。">
-    <!-- 加入 ImageKit 裁切參數 (tr=w-1200,h-630,fo-auto) 強制轉為 LINE 完美顯示的 1.91:1 長寬比 -->
+    <!-- 加入 ImageKit 裁切參數強制轉為 LINE 完美顯示的 1.91:1 長寬比 -->
     <meta property="og:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-13%20%E4%B8%8B%E5%8D%885.05.02.png?updatedAt=1773393129945&tr=w-1200,h-630,fo-auto">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-13%20%E4%B8%8B%E5%8D%885.05.02.png?updatedAt=1773393129945&tr=w-1200,h-630,fo-auto">
@@ -79,42 +79,57 @@
             padding: 0 20px;
         }
 
+        /* --- Mobile-First Spacing Setup --- */
+        .section-padding { padding: 50px 0; }
+        .levels-container { padding: 50px 0; }
+        
+        .section-title {
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 30px;
+            position: relative;
+            color: var(--dark-text);
+        }
+        .section-title::after {
+            content: '';
+            width: 80px;
+            height: 5px;
+            background: var(--primary-blue);
+            display: block;
+            margin: 15px auto 0;
+            border-radius: 3px;
+        }
+
         /* --- Hero Section --- */
         .hero {
             position: relative;
             background: linear-gradient(to right, rgba(15, 23, 42, 0.85), rgba(29, 78, 216, 0.7)), 
                         url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-13%20%E4%B8%8B%E5%8D%885.05.02.png?updatedAt=1773393129945') center/cover;
-            padding: 130px 20px;
+            padding: 80px 20px 60px;
             text-align: center;
             color: var(--white);
             overflow: hidden;
         }
         .hero h1 {
             color: var(--white);
-            font-size: 3.2rem;
-            margin-bottom: 25px;
+            font-size: 2.8rem;
+            margin-bottom: 20px;
             text-shadow: 0 4px 6px rgba(0,0,0,0.3);
             line-height: 1.3;
         }
         .hero p {
-            font-size: 1.3rem;
+            font-size: 1.2rem;
             max-width: 650px;
-            margin: 0 auto 40px auto;
+            margin: 0 auto 30px auto;
             color: #E2E8F0;
         }
         
         .hero-buttons {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 15px;
             justify-content: center;
             align-items: center;
-        }
-
-        @media (min-width: 768px) {
-            .hero-buttons {
-                flex-direction: row;
-            }
         }
 
         .cta-btn {
@@ -162,25 +177,6 @@
         }
 
         /* --- Target Audience Section --- */
-        .section-padding {
-            padding: 90px 0;
-        }
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            margin-bottom: 50px;
-            position: relative;
-            color: var(--dark-text);
-        }
-        .section-title::after {
-            content: '';
-            width: 80px;
-            height: 5px;
-            background: var(--primary-blue);
-            display: block;
-            margin: 20px auto 0;
-            border-radius: 3px;
-        }
         .target-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr); 
@@ -209,7 +205,7 @@
         }
         
         .target-list {
-            margin-top: 30px;
+            margin-top: 25px;
             background: var(--white);
             padding: 25px 20px;
             border-radius: 16px;
@@ -219,7 +215,7 @@
             padding-left: 20px;
         }
         .target-list li {
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             color: var(--gray-text);
         }
         .target-list li:last-child {
@@ -233,13 +229,12 @@
         /* --- Course Levels & Contents (Horizontal Scrollers) --- */
         .levels-container {
             background: var(--light-blue);
-            padding: 90px 0;
         }
 
         .swipe-hint {
             text-align: center;
             color: var(--primary-blue);
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             font-size: 1.15rem;
             font-weight: 700;
             display: block; 
@@ -254,7 +249,7 @@
             display: flex;
             gap: 20px;
             overflow-x: auto;
-            padding: 10px 20px 40px 20px;
+            padding: 10px 20px 30px 20px;
             scroll-snap-type: x mandatory;
             -ms-overflow-style: none; 
             scrollbar-width: none;
@@ -265,7 +260,6 @@
             display: none;
         }
 
-        /* CARD FLEX BASE - Set to 78vw to make Peeking VERY OBVIOUS on mobile */
         .level-card, .content-card {
             background: var(--white);
             border-radius: 20px;
@@ -278,9 +272,9 @@
             transition: transform 0.3s;
         }
         
-        /* Changed from Bottom Border to Left Border per user request */
+        /* Clean top border instead of ugly thick left border */
         .level-card { 
-            border-left: 10px solid; 
+            border-top: 5px solid; 
         }
         .content-card { 
             padding: 35px 25px; 
@@ -292,7 +286,7 @@
 
         /* Certificate Integrated Header Style */
         .cert-header {
-            padding: 35px 20px 25px;
+            padding: 30px 20px 20px;
             text-align: center;
             background: #FAFAFA;
             border-bottom: 1px solid #E2E8F0;
@@ -313,8 +307,10 @@
             display: inline-block;
             box-shadow: inset 0 -2px 4px rgba(0,0,0,0.2);
         }
+        
+        /* Font size reduced for mobile mode */
         .cert-score {
-            font-size: 3.2rem;
+            font-size: 2.2rem; 
             font-weight: 900;
             line-height: 1;
             margin-bottom: 10px;
@@ -327,41 +323,41 @@
             color: var(--dark-text);
         }
 
-        /* Theme Colors for Cards (Applying Left Border Color) */
-        .theme-brown { border-left-color: var(--brown-cert); }
+        /* Theme Colors for Cards (Applying Clean Top Border) */
+        .theme-brown { border-top-color: var(--brown-cert); }
         .theme-brown .cert-title { color: var(--dark-text); }
         .theme-brown .color-dot { background: var(--brown-cert); }
         .theme-brown .cert-score, .theme-brown .author { color: var(--brown-cert); }
         
-        .theme-green { border-left-color: var(--green-cert); }
+        .theme-green { border-top-color: var(--green-cert); }
         .theme-green .cert-title { color: var(--dark-text); }
         .theme-green .color-dot { background: var(--green-cert); }
         .theme-green .cert-score, .theme-green .author { color: var(--green-cert); }
 
-        .theme-blue { border-left-color: var(--blue-cert); }
+        .theme-blue { border-top-color: var(--blue-cert); }
         .theme-blue .cert-title { color: var(--dark-text); }
         .theme-blue .color-dot { background: var(--blue-cert); }
         .theme-blue .cert-score, .theme-blue .author { color: var(--blue-cert); }
 
-        .theme-gold { border-left-color: var(--gold-cert); }
+        .theme-gold { border-top-color: var(--gold-cert); }
         .theme-gold .cert-title { color: var(--dark-text); }
         .theme-gold .color-dot { background: var(--gold-cert); }
         .theme-gold .cert-score, .theme-gold .author { color: var(--gold-cert); }
 
         /* Level Body Details */
         .level-body {
-            padding: 30px 25px;
+            padding: 25px 20px;
             flex-grow: 1;
         }
         .level-body h3 {
             font-size: 1.6rem;
-            margin-bottom: 20px;
+            margin-bottom: 15px;
             text-align: center;
             color: var(--dark-text);
         }
         .level-body h4 {
             color: var(--primary-blue);
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             font-size: 1.2rem;
             display: flex;
             align-items: center;
@@ -369,12 +365,12 @@
         }
         .level-body ul {
             list-style: none;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
         .level-body ul li {
             position: relative;
             padding-left: 30px;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             color: var(--gray-text);
         }
         .level-body ul li::before {
@@ -390,7 +386,7 @@
             background: var(--light-blue);
             border-radius: 12px;
             padding: 20px;
-            margin-top: 25px;
+            margin-top: 20px;
             border-left: 5px solid var(--secondary-blue);
         }
         .feedback-title {
@@ -401,8 +397,8 @@
         }
         .student-review {
             font-size: 1.05rem;
-            margin-bottom: 15px;
-            padding-bottom: 15px;
+            margin-bottom: 12px;
+            padding-bottom: 12px;
             border-bottom: 1px dashed #CBD5E1;
         }
         .student-review:last-child {
@@ -419,21 +415,21 @@
             display: block;
             text-align: right;
             font-weight: 700;
-            margin-top: 6px;
+            margin-top: 4px;
         }
 
         /* Course Content Specifics */
         .icon-wrapper {
-            width: 70px;
-            height: 70px;
+            width: 60px;
+            height: 60px;
             background: var(--light-blue);
             border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
+            font-size: 1.8rem;
             color: var(--primary-blue);
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
         .content-card h3 {
             font-size: 1.5rem;
@@ -443,30 +439,30 @@
         .two-col {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 40px;
+            gap: 30px;
         }
         .list-block {
             background: var(--white);
-            padding: 45px 35px;
+            padding: 35px 25px;
             border-radius: 20px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.05);
         }
         .list-block h3 {
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             color: var(--primary-blue);
-            font-size: 1.8rem;
+            font-size: 1.6rem;
         }
         .feature-item {
             display: flex;
             align-items: center;
-            margin-bottom: 20px;
-            font-size: 1.25rem;
+            margin-bottom: 15px;
+            font-size: 1.15rem;
             color: var(--dark-text);
         }
         .feature-item i {
             color: var(--gold-cert);
-            margin-right: 18px;
-            font-size: 1.5rem;
+            margin-right: 15px;
+            font-size: 1.4rem;
             min-width: 30px;
             text-align: center;
         }
@@ -476,12 +472,12 @@
             background: linear-gradient(135deg, var(--primary-blue), var(--dark-text));
             color: var(--white);
             text-align: center;
-            padding: 100px 20px 0 20px; 
+            padding: 60px 20px 0 20px; 
         }
         .cta-section h2 {
             color: var(--white);
-            font-size: 2.8rem;
-            margin-bottom: 25px;
+            font-size: 2.2rem;
+            margin-bottom: 20px;
             line-height: 1.3;
         }
         
@@ -494,7 +490,7 @@
             font-weight: 700;
             font-size: 1.25rem;
             color: var(--gold-cert);
-            margin-bottom: 35px;
+            margin-bottom: 25px;
             transition: 0.3s;
             text-decoration: none;
         }
@@ -507,17 +503,17 @@
         .contact-links {
             display: flex;
             justify-content: center;
-            gap: 20px;
-            margin-top: 50px;
+            gap: 15px;
+            margin-top: 30px;
             flex-wrap: wrap;
         }
         .contact-btn {
             display: flex;
             align-items: center;
-            gap: 12px;
-            padding: 15px 30px;
+            gap: 10px;
+            padding: 12px 25px;
             border-radius: 12px;
-            font-size: 1.2rem;
+            font-size: 1.15rem;
             font-weight: 700;
             transition: 0.3s;
             background: var(--white);
@@ -535,7 +531,7 @@
         
         /* Mobile Full Width Line Snapshot Image */
         .snapshot-wrapper {
-            margin-top: 60px;
+            margin-top: 40px;
             text-align: center;
         }
         .snapshot-pic {
@@ -553,11 +549,35 @@
         
         /* Tablet & iPad Mode (768px ~ 1023px) */
         @media (min-width: 768px) {
-            .hero h1 { font-size: 4rem; }
-            .target-grid { grid-template-columns: repeat(4, 1fr); gap: 20px; }
-            .target-list { padding: 30px 40px; }
-            .two-col { grid-template-columns: 1fr 1fr; }
+            .section-padding { padding: 90px 0; }
+            .levels-container { padding: 90px 0; }
+            .section-title { font-size: 2.5rem; margin-bottom: 50px; }
+            .section-title::after { margin: 20px auto 0; }
             
+            .hero { padding: 130px 20px; }
+            .hero h1 { font-size: 4rem; margin-bottom: 25px; }
+            .hero p { margin: 0 auto 40px auto; }
+            .hero-buttons { flex-direction: row; gap: 20px; }
+            
+            .cert-score { font-size: 3.2rem; } /* Restore big fonts for tablets/desktop */
+            .level-body { padding: 30px 25px; }
+            
+            .target-grid { grid-template-columns: repeat(4, 1fr); gap: 20px; }
+            .target-list { padding: 30px 40px; margin-top: 30px; }
+            .target-list li { margin-bottom: 15px; }
+            
+            .two-col { grid-template-columns: 1fr 1fr; gap: 40px; }
+            .list-block { padding: 45px 35px; }
+            .list-block h3 { font-size: 1.8rem; margin-bottom: 25px; }
+            .feature-item { margin-bottom: 20px; }
+            
+            .cta-section { padding: 100px 20px 40px; }
+            .cta-section h2 { font-size: 2.8rem; margin-bottom: 25px; }
+            .form-link-box { margin-bottom: 35px; }
+            .contact-links { margin-top: 50px; gap: 20px; }
+            .contact-btn { padding: 15px 30px; font-size: 1.2rem; }
+            
+            .snapshot-wrapper { margin-top: 60px; }
             .snapshot-pic {
                 width: 100%;
                 max-width: 320px;
@@ -567,17 +587,16 @@
                 box-shadow: 0 15px 35px rgba(0,0,0,0.4);
                 margin-bottom: 60px; 
             }
-            .cta-section { padding-bottom: 40px; } 
         }
         
         @media (min-width: 768px) and (max-width: 1023px) {
             .scroller-wrapper .level-card,
             .scroller-wrapper .content-card {
-                /* iPad Mode: Exactly 2 cards fully visible (84vw total), leaving ~10vw for the 3rd card to visibly peek out */
+                /* iPad Mode: Exactly 2 cards fully visible */
                 flex: 0 0 42vw; 
             }
             .swipe-hint {
-                display: block; /* explicitly display swipe hint on Tablet too */
+                display: block; 
             }
         }
 
@@ -585,7 +604,6 @@
         @media (min-width: 1024px) {
             .hero h1 { font-size: 4.5rem; }
             
-            /* Hide swipe hint text */
             .swipe-hint { display: none; }
             
             /* Transform Scroller into Grid */
@@ -612,11 +630,11 @@
             <p>系統化提升聽力與閱讀能力，快速掌握考試技巧，突破你的多益成績！全方位為你打造專屬的高分計畫。</p>
             
             <div class="hero-buttons">
-                <!-- 學習需求填寫 (Icon removed) -->
+                <!-- 學習需求填寫 -->
                 <a href="https://docs.google.com/forms/d/e/1FAIpQLSeOHw3g4K5rFMeiP3vWscLYeU9K4xn-whgahQOeJSnmG6EqnQ/viewform?usp=header" class="cta-btn btn-primary" target="_blank">
                     📝 學習需求填寫
                 </a>
-                <!-- 課程介紹分級 (Icon removed) -->
+                <!-- 課程介紹分級 -->
                 <a href="#course-levels" class="cta-btn btn-secondary">
                     📖 課程介紹（分級）
                 </a>
@@ -628,7 +646,7 @@
     <section class="section-padding container">
         <h2 class="section-title">本課程適合對象</h2>
         
-        <!-- Icons Grid (2x2 on Mobile, 4x1 on Desktop) -->
+        <!-- Icons Grid -->
         <div class="target-grid">
             <div class="target-card">
                 <i class="fas fa-user-tie"></i>
@@ -662,7 +680,7 @@
     <!-- Course Levels & Feedbacks (Swipeable on Mobile/iPad) -->
     <section class="levels-container" id="course-levels">
         <div class="container">
-            <h2 class="section-title">四大課程與見證</h2>
+            <h2 class="section-title">四大課程與學員見證</h2>
             
             <div class="swipe-hint">
                 <i class="fas fa-arrows-alt-h"></i> 👉 左右滑動查看各級課程
@@ -903,16 +921,17 @@
     <section class="cta-section" id="cta">
         <div class="container">
             
+            <!-- 刪除了多餘的 Icon，只保留 emoji -->
             <a href="https://docs.google.com/forms/d/e/1FAIpQLSeOHw3g4K5rFMeiP3vWscLYeU9K4xn-whgahQOeJSnmG6EqnQ/viewform?usp=header" class="form-link-box" target="_blank">
-                <i class="fas fa-file-signature"></i> 📝 點此立即填寫學習需求表
+                📝 點此立即填寫學習需求表
             </a>
 
             <h2>立即開始你的 TOEIC 高分計畫 🚀</h2>
-            <p style="font-size: 1.35rem; margin-bottom: 40px; color: #E2E8F0; max-width: 700px; margin-left: auto; margin-right: auto;">
+            <p style="font-size: 1.35rem; margin-bottom: 30px; color: #E2E8F0; max-width: 700px; margin-left: auto; margin-right: auto;">
                 只要 3 分鐘填寫需求表，預約專屬線上體驗課程，讓我們協助你順利達標！
             </p>
             
-            <a href="https://tonyonlineenglish.netlify.app/exper" class="cta-btn btn-primary" target="_blank" style="margin-bottom: 20px;">
+            <a href="https://tonyonlineenglish.netlify.app/exper" class="cta-btn btn-primary" target="_blank">
                 👉 點此預約體驗課程
             </a>
 
@@ -926,7 +945,7 @@
             </div>
 
             <div class="snapshot-wrapper">
-                <p style="font-size: 1.1rem; color: #CBD5E1; margin-bottom: 15px;">掃描或點擊 LINE 與老師討論學習目標</p>
+                <p style="font-size: 1.1rem; color: #CBD5E1; margin-bottom: 10px;">掃描或點擊 LINE 與老師討論學習目標</p>
                 <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-13%20%E4%B8%8B%E5%8D%885.05.02.png?updatedAt=1773393129945" alt="Line Message Snapshot" class="snapshot-pic">
             </div>
         </div>
