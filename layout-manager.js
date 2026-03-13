@@ -76,6 +76,8 @@ document.addEventListener("DOMContentLoaded", function() {
             padding: 40px 20px; display: flex; flex-direction: column;
             visibility: hidden;
             box-sizing: border-box;
+            overflow-y: auto; /* 新增：解決手機版選單太長無法往下滑動的問題 */
+            -webkit-overflow-scrolling: touch; /* 新增：讓 iOS 滑動更順暢 */
         }
         .side-menu.open { left: 0; visibility: visible; }
         .menu-link {
@@ -89,6 +91,18 @@ document.addEventListener("DOMContentLoaded", function() {
             display: block; font-size: 16px !important; color: #94a3b8; margin-top: 6px; 
             line-height: 1.4; white-space: normal; 
         }
+
+        /* 新增：課程詳細介紹 - 高對比強調樣式 */
+        .highlight-course {
+            background: #FFD700 !important; /* 亮黃色背景 */
+            color: #000 !important; /* 黑色文字形成強烈對比 */
+            box-shadow: 0 4px 12px rgba(255, 215, 0, 0.2);
+        }
+        .highlight-course span {
+            color: #333 !important; /* 副標題深灰色 */
+            font-weight: 700;
+        }
+
         .menu-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 99998; display: none; }
         .menu-overlay.open { display: block; }
 
@@ -132,9 +146,11 @@ document.addEventListener("DOMContentLoaded", function() {
     const menuHTML = `
         <div class="menu-overlay" id="menu-overlay"></div>
         <nav class="side-menu" id="side-menu">
-            <div id="menu-close" style="color:white; font-size:50px; cursor:pointer; align-self:flex-end; margin-bottom:20px;">&times;</div>
+            <!-- 補上 flex-shrink: 0 防止 X 按鈕在小螢幕被擠壓 -->
+            <div id="menu-close" style="color:white; font-size:50px; cursor:pointer; align-self:flex-end; margin-bottom:20px; flex-shrink:0;">&times;</div>
             <a href="index.html" class="menu-link">回首頁</a>
-            <a href="https://tonyonlineenglish.netlify.app/allcourses" target="_blank" class="menu-link">課程詳細介紹<span>升學 檢定 職場 公職 客製化</span></a>
+            <!-- 加上 highlight-course 類別 -->
+            <a href="https://tonyonlineenglish.netlify.app/allcourses" target="_blank" class="menu-link highlight-course">課程詳細介紹<span>升學 檢定 職場 公職 客製化</span></a>
             <a href="https://tonyonlineenglish.netlify.app/ycs" target="_blank" class="menu-link">你的課表查詢<span>即時查看課程安排狀況</span></a>
             <a href="https://tonyonlineenglish.netlify.app/exper" target="_blank" class="menu-link">預約體驗課程<span>25 / 50 分鐘線上試聽</span></a>
             <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="menu-link" style="color: #00B900;">LINE 直接聯絡<span>ID: Myavalon</span></a>
