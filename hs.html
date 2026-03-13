@@ -4,13 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- 1. SEO Title (瀏覽器分頁上顯示的網頁標題) -->
     <title>普通高中學測英文 | Tony Online English</title>
-
-    <!-- 2. SEO Description (Google 搜尋時顯示的網頁描述) -->
     <meta name="description" content="專為普通高中生設計的學測英文線上課程！掌握一字多義、混合題資訊整合、閱讀推論與圖文論述，Tony Online English 帶你突破瓶頸，穩拿高分關鍵。立即預約體驗課程！">
-
-    <!-- 3. Message Preview Picture (貼到 Line, FB, iMessage 時的預覽小圖與文字) -->
     <meta property="og:title" content="普通高中學測英文 | Tony Online English">
     <meta property="og:description" content="專為普通高中生設計的學測英文線上課程！掌握一字多義、混合題資訊整合、閱讀推論與圖文論述，突破瓶頸，穩拿高分。">
     <meta property="og:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-07%20%E4%B8%8B%E5%8D%885.26.04.png?updatedAt=1772875573021">
@@ -19,7 +14,6 @@
 
     <!-- 載入 Layout Manager -->
     <script src="layout-manager.js"></script>
-
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
 
@@ -28,7 +22,7 @@
         html { scroll-behavior: smooth; }
         body { 
             font-family: 'Noto Sans TC', sans-serif;
-            background-color: #f8fafc; 
+            background-color: #fcfcfc; /* 微調背景偏白，讓純文字排版更乾淨 */
             color: #1e293b; 
             margin: 0;
             line-height: 1.6;
@@ -40,16 +34,11 @@
                         url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-07%20%E4%B8%8B%E5%8D%885.26.04.png?updatedAt=1772875573021'); 
             background-size: cover; 
             background-position: center; 
-            
-            /* 預設為 scroll，解決手機版圖片無限放大變全藍的問題 */
             background-attachment: scroll; 
         }
 
-        /* 只有在螢幕寬度大於 768px (平板與電腦版) 時，才開啟 fixed 視差效果 */
         @media (min-width: 768px) {
-            .hero-bg {
-                background-attachment: fixed;
-            }
+            .hero-bg { background-attachment: fixed; }
         }
 
         /* --- 側邊懸浮標籤樣式 --- */
@@ -76,7 +65,7 @@
         /* --- 展開視窗樣式 --- */
         #writing-panel {
             position: fixed;
-            left: -100%; /* 初始隱藏在左側外 */
+            left: -100%; 
             top: 50%;
             transform: translateY(-50%);
             width: 90%;
@@ -100,38 +89,6 @@
             z-index: 999;
         }
         #overlay.active { display: block; }
-
-        .card-wrapper {
-            background: white;
-            border-radius: 1.5rem;
-            padding: 2.5rem 2rem;
-            border: 1px solid #e2e8f0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            text-align: center;
-            height: 100%;
-        }
-
-        .responsive-grid {
-            display: grid;
-            gap: 2rem;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-        }
-
-        .features {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 1.5rem;
-            margin-bottom: 3rem;
-        }
-        .feature-item {
-            background: white;
-            padding: 1.25rem;
-            border-radius: 1rem;
-            border-left: 4px solid #2563eb;
-        }
-
         .cta-button { background-color: #2563eb; }
     </style>
 </head>
@@ -145,18 +102,15 @@
 
     <div id="writing-panel" class="p-8">
         <button onclick="togglePanel()" class="absolute top-4 right-6 text-2xl font-bold text-slate-400 hover:text-slate-900">✕</button>
-        
         <div class="inline-block bg-blue-600 text-white px-4 py-1 rounded-full text-xs font-bold mb-4">⭐ 特殊專欄</div>
         <h2 class="text-2xl font-black text-slate-900 mb-4">英文寫作加強班</h2>
         <p class="text-slate-600 mb-8 leading-relaxed">
-            針對學測非選擇題進行系統化強化。我們深耕 圖文論述 與 翻譯技巧，帶領學生運用高級句型與精準 轉承詞。適合目標鎖定學測英文頂標的學生。
+            針對學測非選擇題進行系統化強化。我們深耕 圖文論述 與 翻譯技巧，帶領學生運用高級句型與精準轉承詞。適合目標鎖定學測頂標的學生。
         </p>
-        
         <div class="bg-blue-50 p-6 rounded-2xl text-center mb-8 border border-blue-100">
             <div class="text-3xl mb-2">✍️</div>
             <p class="font-bold text-slate-800">構思 • 句型 • 實作</p>
         </div>
-
         <a href="https://tonyonlineenglish.netlify.app/exper" class="w-full block text-center bg-blue-600 text-white py-4 rounded-xl font-black hover:bg-blue-700 transition">
             預約寫作試聽
         </a>
@@ -164,85 +118,122 @@
 
     <header class="hero-bg min-h-[75vh] flex items-center justify-center text-center px-4">
         <div class="max-w-4xl">
-            <h1 class="text-4xl md:text-7xl font-black text-white mb-8 leading-tight">
-                普通高中學測英文
-            </h1>
-            <p class="text-xl md:text-2xl text-blue-100 font-medium mb-12 opacity-90">
-                掌握一字多義、混合題與圖文論述，穩拿 高分關鍵
-            </p>
-            <a href="#content-start" class="cta-button text-white px-12 py-5 rounded-2xl font-bold text-2xl inline-block shadow-lg hover:scale-105 transition">
+            <h1 class="text-4xl md:text-7xl font-black text-white mb-8 leading-tight">普通高中學測英文</h1>
+            <p class="text-xl md:text-2xl text-blue-100 font-medium mb-12 opacity-90">掌握一字多義、混合題與圖文論述，穩拿高分關鍵</p>
+            <a href="#content-start" class="cta-button text-white px-12 py-5 rounded-2xl font-bold text-xl inline-block shadow-lg hover:scale-105 transition">
                 了解更多
             </a>
         </div>
     </header>
 
-    <main id="content-start" class="max-w-7xl mx-auto px-5 py-16">
+    <main id="content-start" class="max-w-4xl mx-auto px-5 py-16">
         
-        <section class="mb-24">
-            <h2 class="text-3xl font-black text-center mb-12">🎯 適合對象</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto">
-                <div class="bg-blue-50 p-10 rounded-[2.5rem] border-2 border-blue-100 text-center">
-                    <i class="fas fa-school text-5xl text-blue-600 mb-6 block"></i>
-                    <p class="text-2xl font-bold text-slate-800">適合 加強學校進度<br>英文程度的普通高中學生</p>
+        <!-- 適合對象：改為手機版左右並排，縮小間距與字體 -->
+        <section class="mb-20">
+            <h2 class="text-2xl md:text-3xl font-black text-center mb-8 flex items-center justify-center gap-2">
+                <i class="fas fa-bullseye text-red-500"></i> 適合對象
+            </h2>
+            <div class="grid grid-cols-2 gap-4 md:gap-8 max-w-2xl mx-auto">
+                <div class="bg-blue-50 p-5 md:p-8 rounded-2xl text-center border border-blue-100">
+                    <i class="fas fa-school text-3xl md:text-5xl text-blue-600 mb-4 block"></i>
+                    <p class="text-[15px] md:text-xl font-bold text-slate-800 leading-snug">加強學校進度<br>普通高中學生</p>
                 </div>
-                <div class="bg-blue-50 p-10 rounded-[2.5rem] border-2 border-blue-100 text-center">
-                    <i class="fas fa-user-graduate text-5xl text-blue-600 mb-6 block"></i>
-                    <p class="text-2xl font-bold text-slate-800">準備普通高中學測英文<br>需要 突破瓶頸 的考生</p>
-                </div>
-            </div>
-        </section>
-
-        <section class="mb-24">
-            <h2 class="text-3xl font-black text-center mb-12">🚀 核心考點全解析</h2>
-            <div class="responsive-grid">
-                <div class="card-wrapper">
-                    <div class="bg-blue-100 text-blue-600 rounded-full p-4 mb-6"><i class="fas fa-language text-3xl"></i></div>
-                    <h3 class="text-xl font-black text-blue-800 mb-4">詞彙與語境搭配</h3>
-                    <p class="text-slate-600">掌握 Level 3-5 單字語境。看例句掌握詞性搭配詞，而非死背中文。</p>
-                </div>
-                <div class="card-wrapper">
-                    <div class="bg-orange-100 text-orange-600 rounded-full p-4 mb-6"><i class="fas fa-puzzle-piece text-3xl"></i></div>
-                    <h3 class="text-xl font-black text-orange-800 mb-4">混合題資訊整合</h3>
-                    <p class="text-slate-600">結合地圖、圖表或數據。學會讀懂 文章脈絡，解構藏很深的答案。</p>
-                </div>
-                <div class="card-wrapper">
-                    <div class="bg-blue-100 text-blue-600 rounded-full p-4 mb-6"><i class="fas fa-search text-3xl"></i></div>
-                    <h3 class="text-xl font-black text-blue-800 mb-4">閱讀邏輯推論</h3>
-                    <p class="text-slate-600">重點在抓出 作者意圖 與主旨推論，強化對跨領域文章的理解力。</p>
-                </div>
-                <div class="card-wrapper">
-                    <div class="bg-orange-100 text-orange-600 rounded-full p-4 mb-6"><i class="fas fa-pen-nib text-3xl"></i></div>
-                    <h3 class="text-xl font-black text-orange-800 mb-4">圖文論述深度</h3>
-                    <p class="text-slate-600">除了描述現象，更需探討 社會議題 與個人見解，打造具深度的作文內容。</p>
+                <div class="bg-blue-50 p-5 md:p-8 rounded-2xl text-center border border-blue-100">
+                    <i class="fas fa-user-graduate text-3xl md:text-5xl text-blue-600 mb-4 block"></i>
+                    <p class="text-[15px] md:text-xl font-bold text-slate-800 leading-snug">準備學測英文<br>突破瓶頸考生</p>
                 </div>
             </div>
         </section>
 
-        <div class="features">
-            <div class="feature-item">✅ <strong>彈性學習：</strong> 居家上課，時間自由安排，效率最高。</div>
-            <div class="feature-item">✅ <strong>精緻教學：</strong> 根據學生程度與目標，動態調整進度。</div>
-            <div class="feature-item">✅ <strong>專業教材：</strong> 緊扣最新命題趨勢，重點一目了然。</div>
-            <div class="feature-item">✅ <strong>全方位提升：</strong> 技巧與實力並重，穩定達成理想目標。</div>
-        </div>
+        <!-- 核心考點全解析：仿造圖片 5 的設計 (上四宮格 Icon，下條列文字) -->
+        <section class="mb-24">
+            <h2 class="text-2xl md:text-3xl font-black text-center mb-10 flex items-center justify-center gap-2">
+                <i class="fas fa-rocket text-orange-500"></i> 核心考點全解析
+            </h2>
 
-        <section class="text-center">
-            <div class="bg-white p-12 md:p-20 border-[6px] border-blue-600 rounded-[3rem] shadow-2xl max-w-4xl mx-auto">
-                <h2 class="text-3xl md:text-5xl font-black mb-12">準備好迎接挑戰了嗎？</h2>
-                <div class="flex flex-col items-center gap-8 mb-12">
-                    <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="flex items-center gap-4 text-3xl font-black text-[#00b359] transition hover:opacity-80">
-                        <i class="fab fa-line text-6xl"></i>
+            <!-- 1. 上半部：2x2 四宮格 Icon 與標題 -->
+            <div class="grid grid-cols-2 gap-y-10 gap-x-4 mb-10 text-center max-w-xl mx-auto">
+                <div>
+                    <i class="fas fa-language text-4xl text-orange-500 mb-3"></i>
+                    <h3 class="font-bold text-slate-800 text-base md:text-lg">詞彙與語境搭配</h3>
+                </div>
+                <div>
+                    <i class="fas fa-puzzle-piece text-4xl text-orange-500 mb-3"></i>
+                    <h3 class="font-bold text-slate-800 text-base md:text-lg">混合題資訊整合</h3>
+                </div>
+                <div>
+                    <i class="fas fa-search text-4xl text-blue-600 mb-3"></i>
+                    <h3 class="font-bold text-slate-800 text-base md:text-lg">閱讀邏輯推論</h3>
+                </div>
+                <div>
+                    <i class="fas fa-pen-nib text-4xl text-blue-600 mb-3"></i>
+                    <h3 class="font-bold text-slate-800 text-base md:text-lg">圖文論述深度</h3>
+                </div>
+            </div>
+
+            <!-- 分隔線 -->
+            <hr class="border-t-[3px] border-slate-800 mb-10 max-w-3xl mx-auto">
+
+            <!-- 2. 下半部：詳細條列敘述 -->
+            <div class="space-y-10 max-w-3xl mx-auto px-2">
+                
+                <!-- 群組 1 -->
+                <div>
+                    <span class="inline-block border-2 border-orange-500 text-orange-600 px-5 py-1.5 rounded-full font-black text-sm mb-5">
+                        選擇題型強化
+                    </span>
+                    <ul class="space-y-4 font-bold text-slate-800 text-[15px] md:text-lg tracking-wide">
+                        <li class="flex items-start gap-2">
+                            <span class="text-black mt-0.5">•</span>
+                            <span><span class="text-black">詞彙搭配：</span>掌握 Level 3-5 單字語境。看例句學搭配詞，非死背中文。</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-black mt-0.5">•</span>
+                            <span><span class="text-black">閱讀推論：</span>重點在抓出作者意圖與主旨推論，強化跨領域文章理解。</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- 群組 2 -->
+                <div>
+                    <span class="inline-block border-2 border-blue-600 text-blue-600 px-5 py-1.5 rounded-full font-black text-sm mb-5">
+                        混合與非選題
+                    </span>
+                    <ul class="space-y-4 font-bold text-slate-800 text-[15px] md:text-lg tracking-wide">
+                        <li class="flex items-start gap-2">
+                            <span class="text-black mt-0.5">•</span>
+                            <span><span class="text-black">資訊整合：</span>結合地圖、圖表或數據。學會讀懂文章脈絡解構答案。</span>
+                        </li>
+                        <li class="flex items-start gap-2">
+                            <span class="text-black mt-0.5">•</span>
+                            <span><span class="text-black">圖文論述：</span>探討社會議題與個人見解 <span class="text-blue-600 font-black">✔ 打造高分寫作內容</span></span>
+                        </li>
+                    </ul>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- CTA 區塊保持不變 -->
+        <section class="text-center mt-16">
+            <div class="bg-white p-10 md:p-20 border-[4px] md:border-[6px] border-blue-600 rounded-[2rem] md:rounded-[3rem] shadow-xl max-w-3xl mx-auto">
+                <h2 class="text-2xl md:text-4xl font-black mb-10">準備好迎接挑戰了嗎？</h2>
+                <div class="flex flex-col items-center gap-6 mb-10">
+                    <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="flex items-center gap-3 text-2xl md:text-3xl font-black text-[#00b359] transition hover:opacity-80">
+                        <i class="fab fa-line text-5xl md:text-6xl"></i>
                         <span>LINE: myavalon</span>
                     </a>
                 </div>
-                <a href="https://tonyonlineenglish.netlify.app/exper" target="_blank" class="cta-button inline-block text-white px-16 py-6 rounded-2xl font-black text-2xl shadow-lg hover:scale-105 transition">
+                <a href="https://tonyonlineenglish.netlify.app/exper" target="_blank" class="cta-button w-full md:w-auto inline-block text-white px-10 py-5 rounded-2xl font-black text-xl shadow-lg hover:scale-105 transition">
                     📩 預約體驗課程
                 </a>
             </div>
         </section>
+
     </main>
 
-    <footer class="py-12 text-center text-slate-500 font-bold border-t border-slate-200 bg-white mt-12">
-        <p>© 2026 TONY ONLINE ENGLISH | 普通高中學測英文專業課程</p>
+    <footer class="py-10 text-center text-slate-400 font-bold text-sm md:text-base border-t border-slate-200 bg-white mt-12">
+        <p>© 2026 TONY ONLINE ENGLISH | 普通高中學測英文</p>
     </footer>
 
     <script>
