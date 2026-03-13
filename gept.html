@@ -1,1 +1,306 @@
-aaa
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- 1. SEO Title -->
+    <title>全民英檢各級數-Tony線上美語家教｜專業線上GEPT證照輔導</title>
+    
+    <!-- 2. SEO Description -->
+    <meta name="description" content="Tony線上美語家教提供全民英檢(GEPT)初級、中級、中高級專業輔導。100%實境模擬口說、寫作逐字批改，從零基礎到高分突破，幫您輕鬆掌握各級數重點並考取證照！">
+    
+    <!-- 3. Message Preview Picture (Open Graph & Twitter) -->
+    <meta property="og:title" content="全民英檢各級數-Tony線上美語家教｜突破GEPT拿高分">
+    <meta property="og:description" content="專屬線上GEPT證照輔導課程，涵蓋聽說讀寫全方位訓練。結合實境模擬與逐字批改，立即預約體驗！">
+    <meta property="og:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-13%20%E4%B8%8B%E5%8D%884.15.10.png">
+    <meta property="og:url" content="https://tonyonlineenglish.netlify.app/gept">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-13%20%E4%B8%8B%E5%8D%884.15.10.png">
+
+    <!-- Styles & Scripts -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- User Requested Script -->
+    <script src="layout-manager.js"></script>
+
+    <style>
+        /* 隱藏預設滾動條 */
+        .hide-scroll::-webkit-scrollbar { display: none; }
+        .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* 滑動容器 (Swipeable Container with Edge Peeking) */
+        .swipe-container {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            gap: 1.25rem;
+            /* 左右留白，讓中間卡片居中時，旁邊卡片能「邊緣突出」 */
+            padding: 1rem 7.5vw;
+            scroll-behavior: smooth;
+        }
+
+        /* 手機模式：寬度 85vw 確保旁邊卡片露出。電腦模式則改為固定寬度並置中 */
+        .swipe-item {
+            flex: 0 0 85vw;
+            scroll-snap-align: center;
+        }
+
+        .swipe-item-feedback {
+            flex: 0 0 75vw;
+            scroll-snap-align: center;
+        }
+
+        @media (min-width: 768px) {
+            .swipe-container {
+                padding: 1rem 2rem;
+                justify-content: center;
+                flex-wrap: wrap;
+                overflow-x: visible;
+            }
+            .swipe-item { flex: 0 0 350px; margin-bottom: 2rem; }
+            .swipe-item-feedback { flex: 0 0 300px; margin-bottom: 1.5rem; }
+            .swipe-hint { display: none; }
+        }
+
+        /* 英雄區塊背景 */
+        .hero-bg {
+            background-image: linear-gradient(rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.8)), url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-13%20%E4%B8%8B%E5%8D%884.15.10.png');
+            background-size: cover;
+            background-position: center;
+        }
+    </style>
+</head>
+<body class="bg-gray-50 text-gray-800 font-sans antialiased">
+
+    <!-- Navbar -->
+    <nav class="bg-white shadow-sm sticky top-0 z-50">
+        <div class="max-w-7xl mx-auto px-4 py-4 flex justify-between items-center">
+            <div class="font-bold text-xl text-blue-800 tracking-wide">
+                Tony線上美語家教
+            </div>
+            <div>
+                <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="text-green-600 text-2xl hover:text-green-700 transition">
+                    <i class="fab fa-line"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="hero-bg text-white py-20 px-4 text-center">
+        <div class="max-w-3xl mx-auto">
+            <span class="bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-semibold mb-4 inline-block">全民英檢 GEPT 證照輔導</span>
+            <h1 class="text-3xl md:text-5xl font-extrabold mb-6 leading-tight">掌握關鍵技巧，<br>輕鬆突破 GEPT 檢定門檻</h1>
+            <p class="text-lg md:text-xl text-gray-200 mb-8">結合實境模擬與逐字批改，從零基礎到中高級，打造專屬您的通關策略！</p>
+            <div class="flex flex-col sm:flex-row justify-center gap-4">
+                <a href="https://tonyonlineenglish.netlify.app/exper" target="_blank" class="bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-8 rounded-full shadow-lg transition transform hover:-translate-y-1">
+                    預約體驗課程
+                </a>
+                <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="bg-white hover:bg-gray-100 text-blue-900 font-bold py-3 px-8 rounded-full shadow-lg transition transform hover:-translate-y-1 flex items-center justify-center gap-2">
+                    <i class="fab fa-line text-green-500 text-xl"></i> 專人 LINE 諮詢 (myavalon)
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 學習趨勢與核心特色 -->
+    <section class="py-12 bg-white px-4">
+        <div class="max-w-5xl mx-auto">
+            <h2 class="text-2xl md:text-3xl font-bold text-center mb-8 text-blue-900">整體學習趨勢與核心特色</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="bg-blue-50 rounded-xl p-6 shadow-sm border border-blue-100">
+                    <h3 class="text-lg font-bold mb-3 text-blue-800"><i class="fas fa-chart-line mr-2"></i>最新考試趨勢</h3>
+                    <ul class="space-y-3 text-gray-700 text-sm">
+                        <li><strong class="text-blue-700">📍 貼近真實情境：</strong>不只是死背，考題更強調實際溝通能力與核心語言素養，能在生活場景中運用。</li>
+                        <li><strong class="text-blue-700">📍 整合式題型增多：</strong>聽力與閱讀整合題在中級及中高級變得常見，測驗綜合理解與思考能力。</li>
+                        <li><strong class="text-blue-700">📍 重視語意理解：</strong>閱讀注重多文本與文意理解，語言使用更講求整體流暢性。</li>
+                    </ul>
+                </div>
+                <div class="bg-indigo-50 rounded-xl p-6 shadow-sm border border-indigo-100">
+                    <h3 class="text-lg font-bold mb-3 text-indigo-800"><i class="fas fa-bullseye mr-2"></i>Tony老師獨家對策</h3>
+                    <ul class="space-y-3 text-gray-700 text-sm">
+                        <li><strong class="text-indigo-700"><i class="fas fa-comment-dots"></i> 口說訓練：</strong>100% 專業線上口說測驗，強調「實境模擬與任務情境訓練」，不再只是單一背誦或模板式答題。</li>
+                        <li><strong class="text-indigo-700"><i class="fas fa-pen"></i> 寫作批改：</strong>採用「逐字批改」，趨勢聚焦在語意正確、邏輯清楚的寫作能力，而非單純句型模仿，建立高分習慣。</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- GEPT 級數課程介紹 (Swipeable) -->
+    <section class="py-12 bg-gray-100 overflow-hidden">
+        <div class="text-center mb-6">
+            <h2 class="text-2xl md:text-3xl font-bold text-blue-900">全民英檢各級數剖析</h2>
+            <p class="text-gray-500 mt-2 text-sm swipe-hint animate-pulse"><i class="fas fa-arrows-alt-h"></i> 左右滑動查看不同級數（邊緣突出設計）</p>
+        </div>
+
+        <div class="swipe-container hide-scroll">
+            
+            <!-- 初級 Card -->
+            <div class="swipe-item bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col">
+                <div class="bg-green-500 text-white p-4 text-center">
+                    <h3 class="text-xl font-bold">初級 GEPT</h3>
+                    <p class="text-green-100 text-sm">Elementary – 基礎溝通能力</p>
+                </div>
+                <div class="p-5 flex-1 text-sm text-gray-700">
+                    <p class="mb-4 bg-green-50 p-2 rounded text-green-800 font-medium">📌 目的定位：透過日常生活語境的聽說讀寫任務，建立基礎英語能力。</p>
+                    <ul class="space-y-3 mb-4">
+                        <li><strong><i class="fas fa-headphones text-gray-400 w-5"></i>聽力：</strong>圖片描述與簡短對話。<br><span class="text-xs text-gray-500">重點：聽懂簡單問句與生活語境。</span></li>
+                        <li><strong><i class="fas fa-book-open text-gray-400 w-5"></i>閱讀：</strong>句子填空與短文理解。<br><span class="text-xs text-gray-500">重點：簡短理解與字彙抓取。</span></li>
+                        <li><strong><i class="fas fa-comment-dots text-gray-400 w-5"></i>口說：</strong>重覆朗讀與簡單問答。<br><span class="text-xs text-gray-500">重點：發音清晰與簡單回應。</span></li>
+                        <li><strong><i class="fas fa-pen text-gray-400 w-5"></i>寫作：</strong>句子寫作與短段落。<br><span class="text-xs text-gray-500">重點：用簡單句正確表達意思。</span></li>
+                    </ul>
+                    <div class="border-t pt-3 mt-auto">
+                        <strong class="text-green-600 block mb-1">💡 準備策略：</strong>
+                        從零開始建立必備詞彙與句型，練習生活短篇故事，並模擬基本自我介紹，打穩英語基礎。
+                    </div>
+                </div>
+            </div>
+
+            <!-- 中級 Card -->
+            <div class="swipe-item bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col">
+                <div class="bg-blue-600 text-white p-4 text-center">
+                    <h3 class="text-xl font-bold">中級 GEPT</h3>
+                    <p class="text-blue-100 text-sm">Intermediate – 日常溝通與表達</p>
+                </div>
+                <div class="p-5 flex-1 text-sm text-gray-700">
+                    <p class="mb-4 bg-blue-50 p-2 rounded text-blue-800 font-medium">📌 目的定位：提升日常情境應對能力，可用英文進行基本溝通交流。</p>
+                    <ul class="space-y-3 mb-4">
+                        <li><strong><i class="fas fa-headphones text-gray-400 w-5"></i>聽力：</strong>一般對話與廣播公告。<br><span class="text-xs text-gray-500">重點：抓取主旨與重點資訊。</span></li>
+                        <li><strong><i class="fas fa-book-open text-gray-400 w-5"></i>閱讀：</strong>片語運用與多篇閱讀。<br><span class="text-xs text-gray-500">重點：理解短篇文章與生活主題。</span></li>
+                        <li><strong><i class="fas fa-comment-dots text-gray-400 w-5"></i>口說：</strong>問答練習與經驗描述。<br><span class="text-xs text-gray-500">重點：清楚表達觀點及經歷。</span></li>
+                        <li><strong><i class="fas fa-pen text-gray-400 w-5"></i>寫作：</strong>生活經驗與短文描述。<br><span class="text-xs text-gray-500">重點：簡潔有邏輯地表達想法。</span></li>
+                    </ul>
+                    <div class="border-t pt-3 mt-auto">
+                        <strong class="text-blue-600 block mb-1">💡 準備策略：</strong>
+                        擴大閱讀題材、建立主題性口說練習（如旅遊、興趣），搭配多樣片語與正確句型，穩健提升分數。
+                    </div>
+                </div>
+            </div>
+
+            <!-- 中高級 Card -->
+            <div class="swipe-item bg-white rounded-2xl shadow-lg overflow-hidden flex flex-col">
+                <div class="bg-indigo-700 text-white p-4 text-center">
+                    <h3 class="text-xl font-bold">中高級 GEPT</h3>
+                    <p class="text-indigo-100 text-sm">High-Int. – 有效溝通與分析</p>
+                </div>
+                <div class="p-5 flex-1 text-sm text-gray-700">
+                    <p class="mb-4 bg-indigo-50 p-2 rounded text-indigo-800 font-medium">📌 目的定位：具備廣泛話題理解能力，可處理社交、職場及日常議題。</p>
+                    <ul class="space-y-3 mb-4">
+                        <li><strong><i class="fas fa-headphones text-gray-400 w-5"></i>聽力：</strong>複雜情境資訊與講座。<br><span class="text-xs text-gray-500">重點：聽出主旨、細節及推論。</span></li>
+                        <li><strong><i class="fas fa-book-open text-gray-400 w-5"></i>閱讀：</strong>多篇長篇閱讀理解。<br><span class="text-xs text-gray-500">重點：分析文章結構與推論內容。</span></li>
+                        <li><strong><i class="fas fa-comment-dots text-gray-400 w-5"></i>口說：</strong>看圖描述與深度討論。<br><span class="text-xs text-gray-500">重點：自信有條理地表達意見。</span></li>
+                        <li><strong><i class="fas fa-pen text-gray-400 w-5"></i>寫作：</strong>中翻英與引導寫作。<br><span class="text-xs text-gray-500">重點：寫有結構的段落並清楚達意。</span></li>
+                    </ul>
+                    <div class="border-t pt-3 mt-auto">
+                        <strong class="text-indigo-700 block mb-1">💡 準備策略：</strong>
+                        聆聽真實語境(新聞/演講)、高階語彙句型練習，輔以口說主題討論與寫作邏輯架構，突破高分門檻。
+                    </div>
+                </div>
+            </div>
+            
+        </div>
+    </section>
+
+    <!-- 學生真實回饋 (Swipeable) -->
+    <section class="py-12 bg-white overflow-hidden">
+        <div class="text-center mb-6 px-4">
+            <h2 class="text-2xl md:text-3xl font-bold text-blue-900">學員真實評價與回饋</h2>
+            <p class="text-gray-500 mt-2 text-sm swipe-hint animate-pulse"><i class="fas fa-hand-pointer"></i> 向左右滑動查看所有學生心得</p>
+        </div>
+
+        <div class="swipe-container hide-scroll">
+            
+            <!-- 初級 Feedback 1 -->
+            <div class="swipe-item-feedback bg-green-50 border border-green-100 p-5 rounded-2xl shadow-sm relative mt-4">
+                <span class="absolute -top-3 left-4 bg-green-500 text-white text-xs px-3 py-1 rounded-full font-bold shadow">初級通過</span>
+                <div class="flex text-yellow-400 mb-2 mt-2 text-sm"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                <p class="text-gray-700 text-sm mb-3">「一開始對英文很沒自信，Tony老師的發音指導跟生活化情境讓我敢開口了！初級口說一次就過！」</p>
+                <div class="text-right text-xs font-bold text-gray-500">— 林同學 (國二)</div>
+            </div>
+            
+            <!-- 初級 Feedback 2 -->
+            <div class="swipe-item-feedback bg-green-50 border border-green-100 p-5 rounded-2xl shadow-sm relative mt-4">
+                <span class="absolute -top-3 left-4 bg-green-500 text-white text-xs px-3 py-1 rounded-full font-bold shadow">初級通過</span>
+                <div class="flex text-yellow-400 mb-2 mt-2 text-sm"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                <p class="text-gray-700 text-sm mb-3">「寫作句子從零開始練起，老師逐字批改讓我不再寫出中式英文，基礎打得很穩，非常推薦！」</p>
+                <div class="text-right text-xs font-bold text-gray-500">— 陳同學 (高一)</div>
+            </div>
+
+            <!-- 初級 Feedback 3 -->
+            <div class="swipe-item-feedback bg-green-50 border border-green-100 p-5 rounded-2xl shadow-sm relative mt-4">
+                <span class="absolute -top-3 left-4 bg-green-500 text-white text-xs px-3 py-1 rounded-full font-bold shadow">初級通過</span>
+                <div class="flex text-yellow-400 mb-2 mt-2 text-sm"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                <p class="text-gray-700 text-sm mb-3">「聽力練習很生活化，上課像在跟朋友聊天，不知不覺就聽懂了考試的對話，真的很有感。」</p>
+                <div class="text-right text-xs font-bold text-gray-500">— 王同學 (上班族)</div>
+            </div>
+
+            <!-- 中級 Feedback 1 -->
+            <div class="swipe-item-feedback bg-blue-50 border border-blue-100 p-5 rounded-2xl shadow-sm relative mt-4">
+                <span class="absolute -top-3 left-4 bg-blue-600 text-white text-xs px-3 py-1 rounded-full font-bold shadow">中級高分</span>
+                <div class="flex text-yellow-400 mb-2 mt-2 text-sm"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                <p class="text-gray-700 text-sm mb-3">「中級單字量變多，但老師教的閱讀技巧讓我能快速抓出段落邏輯，考試時間變得超充裕。」</p>
+                <div class="text-right text-xs font-bold text-gray-500">— 李同學 (高二)</div>
+            </div>
+
+            <!-- 中級 Feedback 2 -->
+            <div class="swipe-item-feedback bg-blue-50 border border-blue-100 p-5 rounded-2xl shadow-sm relative mt-4">
+                <span class="absolute -top-3 left-4 bg-blue-600 text-white text-xs px-3 py-1 rounded-full font-bold shadow">中級高分</span>
+                <div class="flex text-yellow-400 mb-2 mt-2 text-sm"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                <p class="text-gray-700 text-sm mb-3">「100%實境模擬口說超棒！考試時遇到類似情境，完全不緊張，能夠很流暢地表達自己的觀點。」</p>
+                <div class="text-right text-xs font-bold text-gray-500">— 吳同學 (大一)</div>
+            </div>
+
+            <!-- 中級 Feedback 3 -->
+            <div class="swipe-item-feedback bg-blue-50 border border-blue-100 p-5 rounded-2xl shadow-sm relative mt-4">
+                <span class="absolute -top-3 left-4 bg-blue-600 text-white text-xs px-3 py-1 rounded-full font-bold shadow">中級高分</span>
+                <div class="flex text-yellow-400 mb-2 mt-2 text-sm"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                <p class="text-gray-700 text-sm mb-3">「寫作批改很仔細，不僅教我替換多樣的片語，還讓我學會如何有邏輯地架構一篇短文。」</p>
+                <div class="text-right text-xs font-bold text-gray-500">— 許小姐 (上班族)</div>
+            </div>
+
+            <!-- 中高級 Feedback 1 -->
+            <div class="swipe-item-feedback bg-indigo-50 border border-indigo-100 p-5 rounded-2xl shadow-sm relative mt-4">
+                <span class="absolute -top-3 left-4 bg-indigo-700 text-white text-xs px-3 py-1 rounded-full font-bold shadow">中高級達標</span>
+                <div class="flex text-yellow-400 mb-2 mt-2 text-sm"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                <p class="text-gray-700 text-sm mb-3">「中高級的閱讀文章很難，感謝Tony老師教導分析文章結構，推理題不再卡關，順利達標！」</p>
+                <div class="text-right text-xs font-bold text-gray-500">— 黃同學 (大三)</div>
+            </div>
+
+            <!-- 中高級 Feedback 2 -->
+            <div class="swipe-item-feedback bg-indigo-50 border border-indigo-100 p-5 rounded-2xl shadow-sm relative mt-4">
+                <span class="absolute -top-3 left-4 bg-indigo-700 text-white text-xs px-3 py-1 rounded-full font-bold shadow">中高級達標</span>
+                <div class="flex text-yellow-400 mb-2 mt-2 text-sm"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                <p class="text-gray-700 text-sm mb-3">「引導寫作訓練非常扎實，老師幫我突破了高階字彙使用的盲點，文法跟語意終於寫到位了。」</p>
+                <div class="text-right text-xs font-bold text-gray-500">— 鄭先生 (工程師)</div>
+            </div>
+
+            <!-- 中高級 Feedback 3 -->
+            <div class="swipe-item-feedback bg-indigo-50 border border-indigo-100 p-5 rounded-2xl shadow-sm relative mt-4">
+                <span class="absolute -top-3 left-4 bg-indigo-700 text-white text-xs px-3 py-1 rounded-full font-bold shadow">中高級達標</span>
+                <div class="flex text-yellow-400 mb-2 mt-2 text-sm"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                <p class="text-gray-700 text-sm mb-3">「新聞和演講的聽力挑戰很大，但老師的訓練方式非常有效，面對真實語境的應變能力提升很多！」</p>
+                <div class="text-right text-xs font-bold text-gray-500">— 劉同學 (研究生)</div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- Footer / Action bar -->
+    <footer class="bg-gray-900 text-center py-12 px-4">
+        <h2 class="text-2xl font-bold text-white mb-6">準備好迎戰全民英檢了嗎？</h2>
+        <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+            <a href="https://tonyonlineenglish.netlify.app/exper" target="_blank" class="w-full sm:w-auto bg-amber-500 hover:bg-amber-600 text-white font-bold py-3 px-8 rounded-full shadow-lg transition">
+                立即預約體驗課程
+            </a>
+            <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="w-full sm:w-auto bg-[#06C755] hover:bg-[#05b34c] text-white font-bold py-3 px-8 rounded-full shadow-lg transition flex items-center justify-center gap-2">
+                <i class="fab fa-line text-xl"></i> 加入 LINE (ID: myavalon)
+            </a>
+        </div>
+        <p class="text-gray-500 text-sm mt-8">&copy; 2026 Tony線上美語家教 All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>
