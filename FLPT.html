@@ -1,1 +1,480 @@
-test
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- 1. Custom Script Required -->
+    <script src="layout-manager.js"></script>
+
+    <!-- SEO Meta Tags 依照您的指示填入 -->
+    <!-- 4. SEO Title (瀏覽器分頁上顯示的網頁標題) -->
+    <title>Tony線上美語家教 | FLPT外語能力測驗 英文證照專班 & 多益TOEIC各級數課程</title>
+
+    <!-- 2. SEO Description (Google 搜尋時顯示的網頁描述) -->
+    <meta name="description" content="專為公職人員、外派人員與研究生設計的FLPT外語能力測驗英文訓練課程，全面提升聽說讀寫！更有多益TOEIC各級數專班，一對一客製化專業教學，助您挑戰高分。">
+
+    <!-- 3. Message Preview Picture (貼到 Line, FB, iMessage 時的預覽小圖與文字) -->
+    <meta property="og:title" content="Tony線上美語家教 - FLPT外語測驗 & 多益TOEIC專班">
+    <meta property="og:description" content="提升英語能力，取得專業語言證照！一對一客製化課程，幫您全面提升聽力、閱讀、口說與寫作能力。點擊預約25分鐘體驗課程！">
+    <meta property="og:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-13%20%E4%B8%8B%E5%8D%8810.24.32.png">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-13%20%E4%B8%8B%E5%8D%8810.24.32.png">
+
+    <!-- CSS / Fonts / Icons -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;700;900&display=swap" rel="stylesheet">
+
+    <style>
+        body { font-family: 'Noto Sans TC', sans-serif; }
+        
+        /* 隱藏捲軸但保留滾動功能 */
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* 手機版滑動與邊緣突出(Edge-peek)設計 */
+        .swipe-container {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            padding-bottom: 1.5rem;
+            /* 讓右邊留空隙，製造邊緣突出的視覺引導 */
+            padding-right: 15vw; 
+        }
+        .swipe-item {
+            /* 在手機上寬度為 85%，讓下一個卡片露出一點點，引導使用者向左滑 */
+            flex: 0 0 85%;
+            scroll-snap-align: center;
+        }
+        @media (min-width: 768px) {
+            .swipe-container { flex-wrap: wrap; overflow-x: visible; padding-right: 0; }
+            .swipe-item { flex: 1 1 calc(33.333% - 1rem); }
+        }
+
+        /* 主題顏色自定義 (對應 FLPT Logo) */
+        .border-flpt-red { border-color: #D32F2F; }
+        .border-flpt-yellow { border-color: #FBC02D; }
+        .border-flpt-blue { border-color: #1976D2; }
+        .border-flpt-green { border-color: #388E3C; }
+        .bg-flpt-blue { background-color: #1976D2; }
+        .text-flpt-blue { color: #1976D2; }
+        .text-flpt-red { color: #D32F2F; }
+        .text-flpt-yellow { color: #FBC02D; }
+        .text-flpt-green { color: #388E3C; }
+    </style>
+</head>
+<body class="bg-slate-50 text-gray-800 antialiased">
+
+    <!-- Navbar -->
+    <nav class="bg-white shadow-sm fixed w-full z-50 top-0">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
+            <div class="font-bold text-xl text-flpt-blue tracking-wide">
+                <i class="fa-solid fa-earth-americas text-flpt-green mr-2"></i>Tony線上美語家教
+            </div>
+            <div>
+                <a href="https://tonyonlineenglish.netlify.app/exper" target="_blank" class="bg-flpt-blue hover:bg-blue-800 text-white px-4 py-2 rounded-lg text-sm font-semibold transition">預約體驗</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="relative bg-cover bg-center min-h-[90vh] flex items-center mt-16" style="background-image: url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/young-businesswoman-making-notes.jpg?updatedAt=1773303772470');">
+        <div class="absolute inset-0 bg-black/50"></div> <!-- 黑色半透明遮罩增加文字可讀性 -->
+        <div class="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-12 pt-10">
+            
+            <!-- Left Text / Slogan -->
+            <div class="text-white flex-1 text-center md:text-left">
+                <!-- Slogan Typography -->
+                <div class="relative inline-block mb-8 select-none">
+                    <span class="absolute -top-6 -left-2 md:-left-8 text-sm md:text-lg text-green-300 font-bold -rotate-6">Lenguas sin fronteras</span>
+                    <span class="absolute -top-10 right-0 text-sm md:text-lg text-blue-300 font-bold rotate-6">Der Himmel ist die Grenze</span>
+                    
+                    <h1 class="text-5xl md:text-7xl font-black tracking-widest text-white mt-4 drop-shadow-lg">
+                        多語無國界
+                    </h1>
+                    <h1 class="text-4xl md:text-6xl font-black tracking-widest text-white mt-2 drop-shadow-lg">
+                        未來不設限
+                    </h1>
+                    
+                    <h2 class="text-3xl md:text-5xl text-flpt-yellow font-bold mt-4 drop-shadow-md">
+                        The Sky is the Limit
+                    </h2>
+                    
+                    <span class="absolute -bottom-6 -left-4 text-sm md:text-lg text-red-300 font-bold -rotate-12">Rien n'est impossible</span>
+                    <span class="absolute -bottom-8 right-4 text-sm md:text-lg text-blue-200 font-bold rotate-12">限りなき未来</span>
+                </div>
+
+                <div class="mt-12 bg-black/30 p-6 rounded-2xl backdrop-blur-sm border border-white/20">
+                    <h3 class="text-2xl font-bold text-white mb-2">FLPT外語能力測驗 英文證照專班</h3>
+                    <p class="text-gray-200 text-lg mb-6">提升英語能力，取得專業語言證照。<br>專為公職人員、外派人員與研究生設計的系統化訓練。</p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                        <a href="https://tonyonlineenglish.netlify.app/exper" target="_blank" class="bg-flpt-red hover:bg-red-700 text-white font-bold py-3 px-8 rounded-full transition shadow-lg text-center">預約體驗課程</a>
+                        <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="bg-[#06C755] hover:bg-[#05b34c] text-white font-bold py-3 px-8 rounded-full transition shadow-lg flex items-center justify-center gap-2">
+                            <i class="fab fa-line text-2xl"></i> LINE: myavalon
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Circular Image -->
+            <div class="flex-1 flex justify-center md:justify-end pb-10 md:pb-0">
+                <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-13%20%E4%B8%8B%E5%8D%8810.24.32.png" 
+                     alt="Tony線上美語家教" 
+                     class="w-64 h-64 md:w-[450px] md:h-[450px] rounded-full object-cover border-8 border-white/80 shadow-2xl">
+            </div>
+        </div>
+    </header>
+
+    <!-- Why Choose Us -->
+    <section class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900">為什麼選擇 <span class="text-flpt-blue">Tony線上美語家教？</span></h2>
+                <p class="mt-4 text-gray-600">透過系統化訓練與專業題型解析，幫助學生全面提升聽、說、讀、寫，具備挑戰 FLPT 的實力。</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="bg-gray-50 p-6 rounded-xl border-t-4 border-flpt-red shadow-sm">
+                    <i class="fa-solid fa-magnifying-glass-chart text-3xl text-flpt-red mb-4"></i>
+                    <h3 class="text-xl font-bold mb-2">專業考試題型分析</h3>
+                    <p class="text-gray-600 text-sm">深入解析 FLPT外語能力測驗命題方向與常見題型，幫助學生掌握考試核心重點。</p>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-xl border-t-4 border-flpt-yellow shadow-sm">
+                    <i class="fa-solid fa-chalkboard-user text-3xl text-flpt-yellow mb-4"></i>
+                    <h3 class="text-xl font-bold mb-2">一對一客製化課程</h3>
+                    <p class="text-gray-600 text-sm">根據學生程度與學習目標，為您量身打造專屬學習計畫，效果最大化。</p>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-xl border-t-4 border-flpt-blue shadow-sm">
+                    <i class="fa-solid fa-file-pen text-3xl text-flpt-blue mb-4"></i>
+                    <h3 class="text-xl font-bold mb-2">真實模擬測驗</h3>
+                    <p class="text-gray-600 text-sm">高度模擬真實考試情境，幫助您提前適應節奏，建立應試強大信心。</p>
+                </div>
+                <div class="bg-gray-50 p-6 rounded-xl border-t-4 border-flpt-green shadow-sm">
+                    <i class="fa-solid fa-rocket text-3xl text-flpt-green mb-4"></i>
+                    <h3 class="text-xl font-bold mb-2">高效率學習策略</h3>
+                    <p class="text-gray-600 text-sm">透過結構化方法與技巧訓練，讓學生在最短時間內有效提升語言能力。</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Target Audience -->
+    <section class="py-16 bg-slate-100">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <h2 class="text-3xl font-bold text-center mb-10">課程適合對象</h2>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div class="flex items-start space-x-4 bg-white p-5 rounded-lg shadow-sm">
+                    <i class="fa-solid fa-user-tie text-2xl text-flpt-blue mt-1"></i>
+                    <div>
+                        <h4 class="font-bold text-lg">公職人員</h4>
+                        <p class="text-sm text-gray-500 mt-1">需要語言能力證明，作為升遷、考核或專業能力加分。</p>
+                    </div>
+                </div>
+                <div class="flex items-start space-x-4 bg-white p-5 rounded-lg shadow-sm">
+                    <i class="fa-solid fa-plane-departure text-2xl text-flpt-red mt-1"></i>
+                    <div>
+                        <h4 class="font-bold text-lg">外派人員</h4>
+                        <p class="text-sm text-gray-500 mt-1">準備海外派駐、國際交流或國際合作工作者。</p>
+                    </div>
+                </div>
+                <div class="flex items-start space-x-4 bg-white p-5 rounded-lg shadow-sm">
+                    <i class="fa-solid fa-graduation-cap text-2xl text-flpt-yellow mt-1"></i>
+                    <div>
+                        <h4 class="font-bold text-lg">研究所申請者</h4>
+                        <p class="text-sm text-gray-500 mt-1">需要英語能力證明，提高國內外學校申請競爭力。</p>
+                    </div>
+                </div>
+                <div class="flex items-start space-x-4 bg-white p-5 rounded-lg shadow-sm">
+                    <i class="fa-solid fa-briefcase text-2xl text-gray-700 mt-1"></i>
+                    <div>
+                        <h4 class="font-bold text-lg">上班族</h4>
+                        <p class="text-sm text-gray-500 mt-1">希望提升職場英語與跨國商務國際溝通能力。</p>
+                    </div>
+                </div>
+                <div class="flex items-start space-x-4 bg-white p-5 rounded-lg shadow-sm lg:col-span-2">
+                    <i class="fa-solid fa-check-double text-2xl text-flpt-green mt-1"></i>
+                    <div>
+                        <h4 class="font-bold text-lg">準備語言檢定的考生</h4>
+                        <p class="text-sm text-gray-500 mt-1">不熟悉題型、不了解命題邏輯？透過系統化訓練提升考試實力。</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FLPT Test Format Analysis -->
+    <section class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold">FLPT 英文測驗題型分析</h2>
+                <p class="mt-4 text-gray-600 max-w-2xl mx-auto">很多學生準備語言考試時，最大的問題是：不熟悉題型、不了解命題邏輯、練習方法不正確。因此本課程會為您進行完整的 FLPT 題型解析訓練。</p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- Listening -->
+                <div class="border-2 border-flpt-blue rounded-2xl p-6 relative overflow-hidden">
+                    <div class="absolute -right-6 -top-6 text-flpt-blue opacity-10"><i class="fa-solid fa-headphones text-9xl"></i></div>
+                    <h3 class="text-2xl font-bold text-flpt-blue mb-4"><i class="fa-solid fa-headphones mr-2"></i>聽力測驗 (Listening)</h3>
+                    <div class="mb-4">
+                        <strong class="text-gray-800">常見題型：</strong>
+                        <ul class="list-disc list-inside text-gray-600 mt-1 text-sm">
+                            <li>日常情境對話</li><li>工作與生活情境</li><li>簡短說明與短講</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <strong class="text-gray-800">訓練重點：</strong>
+                        <ul class="mt-1 space-y-1 text-sm">
+                            <li class="flex items-center"><i class="fa-solid fa-check text-green-500 mr-2"></i>聽力關鍵字辨識</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-green-500 mr-2"></i>情境理解能力</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-green-500 mr-2"></i>快速抓取重要資訊</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Reading -->
+                <div class="border-2 border-flpt-yellow rounded-2xl p-6 relative overflow-hidden">
+                    <div class="absolute -right-6 -top-6 text-flpt-yellow opacity-10"><i class="fa-solid fa-book-open text-9xl"></i></div>
+                    <h3 class="text-2xl font-bold text-flpt-yellow mb-4"><i class="fa-solid fa-book-open mr-2"></i>閱讀測驗 (Reading)</h3>
+                    <div class="mb-4">
+                        <strong class="text-gray-800">常見題型：</strong>
+                        <ul class="list-disc list-inside text-gray-600 mt-1 text-sm">
+                            <li>短篇文章閱讀</li><li>公告與資訊文件</li><li>說明型文章</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <strong class="text-gray-800">訓練重點：</strong>
+                        <ul class="mt-1 space-y-1 text-sm">
+                            <li class="flex items-center"><i class="fa-solid fa-check text-green-500 mr-2"></i>快速閱讀技巧</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-green-500 mr-2"></i>段落重點分析</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-green-500 mr-2"></i>題型解題策略</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Speaking -->
+                <div class="border-2 border-flpt-red rounded-2xl p-6 relative overflow-hidden">
+                    <div class="absolute -right-6 -top-6 text-flpt-red opacity-10"><i class="fa-solid fa-comments text-9xl"></i></div>
+                    <h3 class="text-2xl font-bold text-flpt-red mb-4"><i class="fa-solid fa-comments mr-2"></i>口說測驗 (Speaking)</h3>
+                    <div class="mb-4">
+                        <strong class="text-gray-800">常見題型：</strong>
+                        <ul class="list-disc list-inside text-gray-600 mt-1 text-sm">
+                            <li>圖片描述</li><li>情境回答</li><li>意見表達</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <strong class="text-gray-800">訓練重點：</strong>
+                        <ul class="mt-1 space-y-1 text-sm">
+                            <li class="flex items-center"><i class="fa-solid fa-check text-green-500 mr-2"></i>結構化回答技巧</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-green-500 mr-2"></i>邏輯表達能力</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-green-500 mr-2"></i>流暢口語訓練</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Writing -->
+                <div class="border-2 border-flpt-green rounded-2xl p-6 relative overflow-hidden">
+                    <div class="absolute -right-6 -top-6 text-flpt-green opacity-10"><i class="fa-solid fa-pen-nib text-9xl"></i></div>
+                    <h3 class="text-2xl font-bold text-flpt-green mb-4"><i class="fa-solid fa-pen-nib mr-2"></i>寫作測驗 (Writing)</h3>
+                    <div class="mb-4">
+                        <strong class="text-gray-800">常見題型：</strong>
+                        <ul class="list-disc list-inside text-gray-600 mt-1 text-sm">
+                            <li>短文寫作</li><li>情境回覆</li><li>意見表達</li>
+                        </ul>
+                    </div>
+                    <div>
+                        <strong class="text-gray-800">訓練重點：</strong>
+                        <ul class="mt-1 space-y-1 text-sm">
+                            <li class="flex items-center"><i class="fa-solid fa-check text-green-500 mr-2"></i>常見寫作句型</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-green-500 mr-2"></i>文法與邏輯修正</li>
+                            <li class="flex items-center"><i class="fa-solid fa-check text-green-500 mr-2"></i>專業逐字批改</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- TOEIC Interactive Swipeable Section (Cell phone optimized) -->
+    <section class="py-16 bg-slate-900 text-white overflow-hidden">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-10">
+                <h2 class="text-3xl md:text-4xl font-bold text-flpt-yellow mb-2">多益TOEIC各級數-Tony線上美語家教</h2>
+                <p class="text-gray-400 text-sm md:text-base">（手機版請左右滑動瀏覽各級數學員真實回饋）</p>
+            </div>
+
+            <!-- Level Selector Tabs (Swipeable horizontally on mobile) -->
+            <div class="flex overflow-x-auto space-x-3 pb-4 mb-6 hide-scrollbar snap-x snap-mandatory" id="toeic-tabs">
+                <button class="toeic-btn active flex-shrink-0 snap-center bg-flpt-blue text-white px-6 py-3 rounded-full font-bold shadow-lg transition" onclick="switchToeicLevel(1)">Level 1: 基礎先修班</button>
+                <button class="toeic-btn flex-shrink-0 snap-center bg-gray-700 hover:bg-gray-600 text-white px-6 py-3 rounded-full font-bold shadow-lg transition" onclick="switchToeicLevel(2)">Level 2: 500分實力班</button>
+                <button class="toeic-btn flex-shrink-0 snap-center bg-gray-700 hover:bg-gray-600 text-white px-6 py-3 rounded-full font-bold shadow-lg transition" onclick="switchToeicLevel(3)">Level 3: 750分進階班</button>
+                <button class="toeic-btn flex-shrink-0 snap-center bg-gray-700 hover:bg-gray-600 text-white px-6 py-3 rounded-full font-bold shadow-lg transition" onclick="switchToeicLevel(4)">Level 4: 900分奪金班</button>
+            </div>
+
+            <!-- Feedback Cards Container -->
+            <div id="toeic-content">
+                <!-- Level 1 Feedbacks -->
+                <div id="toeic-level-1" class="toeic-panel block transition-opacity duration-300">
+                    <div class="swipe-container hide-scrollbar gap-4">
+                        <div class="swipe-item bg-gray-800 p-6 rounded-2xl border-l-4 border-flpt-blue shadow-lg">
+                            <div class="flex items-center mb-4 text-yellow-400"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="text-gray-300 italic mb-4">"原本連基礎文法都看不懂，上完課後終於知道怎麼解題了！完全不會有壓力。"</p>
+                            <p class="text-right font-bold text-sm">- 學員 李同學</p>
+                        </div>
+                        <div class="swipe-item bg-gray-800 p-6 rounded-2xl border-l-4 border-flpt-blue shadow-lg">
+                            <div class="flex items-center mb-4 text-yellow-400"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="text-gray-300 italic mb-4">"老師非常有耐心，從發音跟單字開始救起，推薦給英文零基礎的人。"</p>
+                            <p class="text-right font-bold text-sm">- 學員 王先生</p>
+                        </div>
+                        <div class="swipe-item bg-gray-800 p-6 rounded-2xl border-l-4 border-flpt-blue shadow-lg">
+                            <div class="flex items-center mb-4 text-yellow-400"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="text-gray-300 italic mb-4">"課程安排很系統化，讓我沒有壓力地重新愛上英文，每天都期待上課。"</p>
+                            <p class="text-right font-bold text-sm">- 學員 林小姐</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Level 2 Feedbacks -->
+                <div id="toeic-level-2" class="toeic-panel hidden transition-opacity duration-300">
+                    <div class="swipe-container hide-scrollbar gap-4">
+                        <div class="swipe-item bg-gray-800 p-6 rounded-2xl border-l-4 border-flpt-green shadow-lg">
+                            <div class="flex items-center mb-4 text-yellow-400"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <!-- 用戶指定要求的回饋放入 -->
+                            <p class="text-white font-bold italic mb-4">"我不方便說太多，我只能分享我的體驗。老師很專業，有需要的人可以找Tony 老師。加油"</p>
+                            <p class="text-right font-bold text-flpt-yellow text-sm">- 學員 CDY</p>
+                        </div>
+                        <div class="swipe-item bg-gray-800 p-6 rounded-2xl border-l-4 border-flpt-green shadow-lg">
+                            <div class="flex items-center mb-4 text-yellow-400"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i></div>
+                            <p class="text-gray-300 italic mb-4">"突破500分大關！感謝Tony老師的聽力技巧解析，讓我不再聽到外國人口音就慌張。"</p>
+                            <p class="text-right font-bold text-sm">- 學員 陳先生</p>
+                        </div>
+                        <div class="swipe-item bg-gray-800 p-6 rounded-2xl border-l-4 border-flpt-green shadow-lg">
+                            <div class="flex items-center mb-4 text-yellow-400"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="text-gray-300 italic mb-4">"適合準備轉職的上班族，時間彈性，加上老師一對一針對弱點補強，進步非常有感。"</p>
+                            <p class="text-right font-bold text-sm">- 學員 黃小姐</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Level 3 Feedbacks -->
+                <div id="toeic-level-3" class="toeic-panel hidden transition-opacity duration-300">
+                    <div class="swipe-container hide-scrollbar gap-4">
+                        <div class="swipe-item bg-gray-800 p-6 rounded-2xl border-l-4 border-flpt-yellow shadow-lg">
+                            <div class="flex items-center mb-4 text-yellow-400"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="text-gray-300 italic mb-4">"考題命中率超高，長篇閱讀測驗終於寫得完了！不再亂猜一通。"</p>
+                            <p class="text-right font-bold text-sm">- 學員 吳同學</p>
+                        </div>
+                        <div class="swipe-item bg-gray-800 p-6 rounded-2xl border-l-4 border-flpt-yellow shadow-lg">
+                            <div class="flex items-center mb-4 text-yellow-400"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="text-gray-300 italic mb-4">"老師幫我設計了專屬的讀書計畫，讓我順利達到公司要求的外派750分門檻！"</p>
+                            <p class="text-right font-bold text-sm">- 學員 鄭先生</p>
+                        </div>
+                        <div class="swipe-item bg-gray-800 p-6 rounded-2xl border-l-4 border-flpt-yellow shadow-lg">
+                            <div class="flex items-center mb-4 text-yellow-400"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star-half-stroke"></i></div>
+                            <p class="text-gray-300 italic mb-4">"進階文法解說得非常清楚，秒殺很多以前會錯的題目，實用性極高。"</p>
+                            <p class="text-right font-bold text-sm">- 學員 劉小姐</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Level 4 Feedbacks -->
+                <div id="toeic-level-4" class="toeic-panel hidden transition-opacity duration-300">
+                    <div class="swipe-container hide-scrollbar gap-4">
+                        <div class="swipe-item bg-gray-800 p-6 rounded-2xl border-l-4 border-flpt-red shadow-lg">
+                            <div class="flex items-center mb-4 text-yellow-400"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="text-gray-300 italic mb-4">"目標是金色證書，Tony老師的魔鬼訓練跟模擬測驗真的很有用，成功拿下920分！"</p>
+                            <p class="text-right font-bold text-sm">- 學員 蔡同學</p>
+                        </div>
+                        <div class="swipe-item bg-gray-800 p-6 rounded-2xl border-l-4 border-flpt-red shadow-lg">
+                            <div class="flex items-center mb-4 text-yellow-400"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="text-gray-300 italic mb-4">"針對易錯題型的分析非常犀利，抓漏功力一流，省去我盲目刷題的時間。"</p>
+                            <p class="text-right font-bold text-sm">- 學員 許先生</p>
+                        </div>
+                        <div class="swipe-item bg-gray-800 p-6 rounded-2xl border-l-4 border-flpt-red shadow-lg">
+                            <div class="flex items-center mb-4 text-yellow-400"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                            <p class="text-gray-300 italic mb-4">"滿分推薦！不僅是考試過關，連帶工作上的 Email 撰寫跟英文簡報也變流利了。"</p>
+                            <p class="text-right font-bold text-sm">- 學員 郭小姐</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Outcomes & Call To Action -->
+    <section class="py-16 bg-blue-50">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 text-center">
+            <h2 class="text-3xl font-bold mb-6">課程學習成果</h2>
+            <p class="text-lg text-gray-700 mb-8">完成本課程後，學生可以：</p>
+            <div class="flex flex-col sm:flex-row flex-wrap justify-center gap-4 mb-8">
+                <span class="bg-white px-6 py-3 rounded-full shadow text-flpt-blue font-bold"><i class="fa-solid fa-check mr-2"></i>提升英語聽力理解能力</span>
+                <span class="bg-white px-6 py-3 rounded-full shadow text-flpt-blue font-bold"><i class="fa-solid fa-check mr-2"></i>提升閱讀與分析能力</span>
+                <span class="bg-white px-6 py-3 rounded-full shadow text-flpt-blue font-bold"><i class="fa-solid fa-check mr-2"></i>提升口語表達能力</span>
+                <span class="bg-white px-6 py-3 rounded-full shadow text-flpt-blue font-bold"><i class="fa-solid fa-check mr-2"></i>強化英文寫作能力</span>
+            </div>
+            <p class="text-xl font-bold text-gray-900 mb-10">並具備挑戰 <span class="text-flpt-red">FLPT 英文證照</span> 的強大實力。</p>
+
+            <div class="bg-white p-8 rounded-2xl shadow-xl border-t-8 border-flpt-blue">
+                <h3 class="text-2xl font-bold mb-4">預約體驗課程</h3>
+                <p class="text-gray-600 mb-6">若希望體驗 25分鐘線上課程 或了解完整課程內容，歡迎填寫學習需求表單。了解適合你的專屬學習計畫！</p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <a href="https://tonyonlineenglish.netlify.app/exper" target="_blank" class="bg-flpt-red hover:bg-red-700 text-white font-bold py-3 px-8 rounded-lg transition shadow-md text-lg">
+                        預約體驗課程
+                    </a>
+                    <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="bg-[#06C755] hover:bg-[#05b34c] text-white font-bold py-3 px-8 rounded-lg transition shadow-md flex items-center justify-center gap-2 text-lg">
+                        <i class="fab fa-line text-2xl"></i> LINE 線上諮詢
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer & SEO Keywords -->
+    <footer class="bg-gray-900 text-gray-400 py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h4 class="text-white text-xl font-bold mb-2">Tony線上美語家教</h4>
+            <p class="mb-6">專業英語教學 | 一對一客製化課程 | 提升語言能力與國際競爭力</p>
+            
+            <div class="border-t border-gray-700 pt-6 mt-6">
+                <!-- SEO 關鍵字置放區 -->
+                <p class="text-xs text-gray-500 flex flex-wrap justify-center gap-3">
+                    <span>#FLPT 英文課程</span>
+                    <span>#FLPT 英文補習</span>
+                    <span>#FLPT 英文準備</span>
+                    <span>#FLPT 外語能力測驗</span>
+                    <span>#FLPT 英文證照</span>
+                </p>
+            </div>
+            <p class="text-xs mt-6">&copy; 2026 Tony線上美語家教. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Interactive Script for TOEIC Levels -->
+    <script>
+        function switchToeicLevel(level) {
+            // 隱藏所有面板
+            document.querySelectorAll('.toeic-panel').forEach(panel => {
+                panel.classList.add('hidden');
+                panel.classList.remove('block');
+            });
+            // 移除所有按鈕的 active 狀態與顏色
+            document.querySelectorAll('.toeic-btn').forEach(btn => {
+                btn.classList.remove('bg-flpt-blue', 'active');
+                btn.classList.add('bg-gray-700');
+            });
+
+            // 顯示選中的面板
+            document.getElementById('toeic-level-' + level).classList.remove('hidden');
+            document.getElementById('toeic-level-' + level).classList.add('block');
+            
+            // 改變選中按鈕的顏色
+            const activeBtn = document.querySelector(`.toeic-btn:nth-child(${level})`);
+            activeBtn.classList.remove('bg-gray-700');
+            activeBtn.classList.add('bg-flpt-blue', 'active');
+            
+            // 自動滾動讓選中的 Tab 在手機畫面上置中 (UX優化)
+            activeBtn.scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+        }
+    </script>
+</body>
+</html>
