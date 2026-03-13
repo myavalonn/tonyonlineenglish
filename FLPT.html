@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-Hant" style="scroll-behavior: smooth;">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,246 +16,400 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-13%20%E4%B8%8B%E5%8D%8810.24.32.png">
 
-    <!-- CSS / Fonts / Icons -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome for Icons -->
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;700;900&display=swap" rel="stylesheet">
+    
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&family=Noto+Sans+TC:wght@400;700;900&display=swap" rel="stylesheet">
 
     <style>
-        body { font-family: 'Noto Sans TC', sans-serif; }
+        :root {
+            /* 主題黃色與純黑文字 */
+            --brand-yellow: #FFD600; 
+            --dark-text: #000000;    
+            --white: #FFFFFF;
+            
+            /* 加入的其他點綴色彩 (Add some other color) */
+            --accent-blue: #2563EB;
+            --accent-red: #DC2626;
+            --accent-green: #16A34A;
+            --accent-purple: #9333EA;
+        }
+
+        /* --- Global Styles --- */
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', 'Noto Sans TC', sans-serif; }
+        html { font-size: 18px; }
+        
+        /* 全站背景與文字強制純黑 */
+        body { background-color: var(--white); color: var(--dark-text); line-height: 1.7; overflow-x: hidden; }
+        h1, h2, h3, h4, h5, p, li, span, a, div { color: var(--dark-text); }
+        h1, h2, h3, h4, h5 { font-weight: 900; }
+        a { text-decoration: none; }
+        
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        .section-padding { padding: 60px 0; }
+        
+        .section-title {
+            text-align: center; font-size: 2.2rem; margin-bottom: 40px; position: relative; 
+        }
+        .section-title::after {
+            content: ''; width: 80px; height: 6px; background: var(--dark-text); display: block; margin: 15px auto 0;
+        }
+
+        /* --- Hero Section (背景亮化、無黃色遮蓋) --- */
+        .hero {
+            position: relative;
+            /* 使用白色半透明漸層讓背景圖片變亮，確保純黑文字絕對清晰 */
+            background: linear-gradient(to right, rgba(255, 255, 255, 0.95), rgba(255, 255, 255, 0.6)), 
+                        url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/young-businesswoman-making-notes.jpg?updatedAt=1773303772470') center/cover;
+            padding: 120px 20px 80px; text-align: center; overflow: hidden;
+            border-bottom: 8px solid var(--brand-yellow);
+        }
+        
+        .hero .container { position: relative; z-index: 10; }
+
+        /* 右上方疊加圖片 (全面縮小) */
+        .hero-overlay {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 80px; /* 手機版縮小 */
+            height: 80px;
+            border-radius: 50%;
+            z-index: 2;
+            object-fit: cover;
+            border: 3px solid var(--dark-text);
+            box-shadow: 4px 4px 0px rgba(0,0,0,1);
+        }
+
+        .hero h1 { font-size: 3.5rem; margin-bottom: 20px; letter-spacing: 2px; }
+        .hero h2 { font-size: 2rem; margin-bottom: 40px; }
+        
+        .hero-buttons { display: flex; flex-direction: column; gap: 15px; justify-content: center; align-items: center; flex-wrap: wrap; }
+        .cta-btn { 
+            display: inline-flex; align-items: center; justify-content: center; gap: 10px; 
+            padding: 16px 35px; font-size: 1.25rem; font-weight: 900; border-radius: 50px; 
+            transition: all 0.2s ease; width: 100%; max-width: 320px; 
+            border: 3px solid var(--dark-text);
+        }
+        
+        /* 按鈕設計：強烈的純黑與鮮黃對比 */
+        .btn-primary { 
+            background: var(--brand-yellow); 
+            box-shadow: 4px 4px 0px rgba(0,0,0,1); 
+        }
+        .btn-primary:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0px rgba(0,0,0,1); }
+        .btn-secondary { 
+            background: var(--white); 
+            box-shadow: 4px 4px 0px rgba(0,0,0,1); 
+        }
+        .btn-secondary:hover { background: #F1F5F9; transform: translate(2px, 2px); box-shadow: 2px 2px 0px rgba(0,0,0,1); }
+
+        /* --- Target Grid (Why Choose Us) --- */
+        .target-grid { display: grid; grid-template-columns: repeat(1, 1fr); gap: 20px; }
+        .target-card { 
+            background: var(--white); padding: 30px 20px; border-radius: 16px; 
+            border: 3px solid var(--dark-text); box-shadow: 5px 5px 0px rgba(0,0,0,1);
+            text-align: center; border-top-width: 8px; display: flex; flex-direction: column; align-items: center; 
+        }
+        .target-card i { font-size: 2.5rem; margin-bottom: 15px; }
+        .target-card h3 { font-size: 1.3rem; margin-bottom: 10px; }
+        .target-card p { font-size: 1.05rem; font-weight: 700; }
+
+        /* 為每張卡片加上其他色彩點綴 */
+        .border-blue { border-top-color: var(--accent-blue); }
+        .border-blue i { color: var(--accent-blue); }
+        .border-red { border-top-color: var(--accent-red); }
+        .border-red i { color: var(--accent-red); }
+        .border-green { border-top-color: var(--accent-green); }
+        .border-green i { color: var(--accent-green); }
+        .border-purple { border-top-color: var(--accent-purple); }
+        .border-purple i { color: var(--accent-purple); }
+
+        /* --- Target List (適合對象) --- */
+        .target-list { 
+            background: var(--brand-yellow); padding: 35px 25px; border-radius: 16px; 
+            border: 3px solid var(--dark-text); box-shadow: 6px 6px 0px rgba(0,0,0,1);
+            margin-top: 20px;
+        }
+        .target-list ul { padding-left: 20px; list-style-type: square; }
+        .target-list li { margin-bottom: 15px; font-weight: 700; font-size: 1.15rem; }
+        .target-list li:last-child { margin-bottom: 0; }
+        .target-list strong { font-size: 1.3rem; margin-right: 5px; background: var(--dark-text); color: var(--brand-yellow); padding: 2px 8px; border-radius: 4px; }
+
+        /* --- Course Levels (題型分析) --- */
+        .levels-bg { background: var(--white); border-top: 4px dashed var(--dark-text); border-bottom: 4px dashed var(--dark-text); }
+        .course-grid-container { display: grid; grid-template-columns: repeat(1, 1fr); gap: 25px; }
+        
+        .level-card { 
+            background: var(--white); border-radius: 20px; 
+            border: 3px solid var(--dark-text); box-shadow: 6px 6px 0px rgba(0,0,0,1);
+            display: flex; flex-direction: column; overflow: hidden; border-top-width: 10px;
+        }
+        
+        .cert-header { padding: 20px; text-align: center; border-bottom: 3px solid var(--dark-text); background: #F8FAFC; }
+        .cert-title { display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 1.8rem; font-weight: 900; }
+        .color-dot { width: 18px; height: 18px; border-radius: 50%; display: inline-block; border: 2px solid var(--dark-text); }
+
+        .theme-blue { border-top-color: var(--accent-blue); }
+        .theme-blue .color-dot { background: var(--accent-blue); }
+        .theme-red { border-top-color: var(--accent-red); }
+        .theme-red .color-dot { background: var(--accent-red); }
+        .theme-green { border-top-color: var(--accent-green); }
+        .theme-green .color-dot { background: var(--accent-green); }
+        .theme-purple { border-top-color: var(--accent-purple); }
+        .theme-purple .color-dot { background: var(--accent-purple); }
+
+        .level-body { padding: 25px 20px; flex-grow: 1; }
+        .level-body h4 { margin-bottom: 12px; font-size: 1.25rem; display: flex; align-items: center; gap: 10px; }
+        
+        /* 強制副標題圖示的點綴色 */
+        .theme-blue h4 i { color: var(--accent-blue); }
+        .theme-red h4 i { color: var(--accent-red); }
+        .theme-green h4 i { color: var(--accent-green); }
+        .theme-purple h4 i { color: var(--accent-purple); }
+
+        .level-body ul { list-style: none; margin-bottom: 25px; }
+        .level-body ul li { position: relative; padding-left: 30px; margin-bottom: 10px; font-weight: 700; }
+        .level-body ul li::before { content: '✔'; position: absolute; left: 0; font-weight: 900; }
+
+        /* --- Feedback Section --- */
+        .feedback-bg { background: var(--brand-yellow); }
+        .feedback-box { 
+            background: var(--white); border-radius: 16px; padding: 30px; 
+            border: 3px solid var(--dark-text); box-shadow: 6px 6px 0px rgba(0,0,0,1);
+            position: relative;
+        }
+        .feedback-box i.fa-quote-left { font-size: 3rem; position: absolute; top: 20px; left: 20px; opacity: 0.2; }
+        .student-review { position: relative; z-index: 10; padding-left: 10px; }
+        .student-review .quote { font-size: 1.3rem; font-weight: 900; display: block; margin-bottom: 15px; line-height: 1.6; }
+        .student-review .author { display: block; text-align: right; font-weight: 900; font-size: 1.2rem; }
+
+        /* --- CTA Bottom --- */
+        .cta-section { background: var(--white); text-align: center; padding: 60px 20px 80px 20px; }
+        .contact-links { display: flex; justify-content: center; gap: 15px; margin-top: 20px; flex-wrap: wrap; }
+        .contact-btn { 
+            display: flex; align-items: center; justify-content: center; gap: 10px; 
+            padding: 16px 35px; border-radius: 50px; font-size: 1.25rem; font-weight: 900; 
+            border: 3px solid var(--dark-text); transition: 0.2s; width: 100%; max-width: 320px;
+        }
+        .contact-btn.line { background: #00B900; color: var(--white); }
+        .contact-btn.line i { color: var(--white); }
+        .contact-btn:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0px rgba(0,0,0,1); }
+        .contact-btn.line:hover { box-shadow: 2px 2px 0px rgba(0,0,0,1); color: var(--white); }
+
+        /* =========================================
+           RESPONSIVE LOGIC
+           ========================================= */
+
+        @media (min-width: 768px) {
+            .hero-overlay { width: 130px; height: 130px; top: 30px; right: 5%; }
+            .hero h1 { font-size: 4.5rem; }
+            .hero-buttons { flex-direction: row; }
+            .target-grid { grid-template-columns: repeat(2, 1fr); }
+            .course-grid-container { grid-template-columns: repeat(2, 1fr); }
+        }
+
+        @media (min-width: 1024px) {
+            .hero-overlay { width: 150px; height: 150px; top: 40px; right: 10%; }
+            .hero h1 { font-size: 5.5rem; }
+            .target-grid { grid-template-columns: repeat(4, 1fr); }
+            .course-grid-container { grid-template-columns: repeat(4, 1fr); }
+        }
     </style>
 </head>
-<body class="bg-yellow-50 text-gray-800 antialiased">
+<body>
 
     <!-- Hero Section -->
-    <header class="relative bg-cover bg-center min-h-[60vh] flex items-center" style="background-image: url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/young-businesswoman-making-notes.jpg?updatedAt=1773303772470');">
-        <!-- 加入帶有黃色調的深色遮罩 -->
-        <div class="absolute inset-0 bg-yellow-900/70"></div> 
+    <section class="hero">
+        <!-- 右上方重疊圓形小圖 -->
+        <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-13%20%E4%B8%8B%E5%8D%8810.24.32.png" alt="Tony 線上美語" class="hero-overlay">
         
-        <div class="relative z-10 w-full max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col md:flex-row items-center justify-between gap-8 py-16">
+        <div class="container">
+            <h1>多語無國界</h1>
+            <h2>The Sky is the Limit</h2>
             
-            <!-- Left Text -->
-            <div class="text-white flex-1 text-center md:text-left">
-                <h1 class="text-5xl md:text-7xl font-black tracking-widest text-white drop-shadow-lg">
-                    多語無國界
-                </h1>
-                <h2 class="text-3xl md:text-5xl text-yellow-300 font-bold mt-6 drop-shadow-md">
-                    The Sky is the Limit
-                </h2>
-            </div>
-
-            <!-- Right Circular Image (已縮小) -->
-            <div class="flex-1 flex justify-center md:justify-end mt-8 md:mt-0">
-                <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-13%20%E4%B8%8B%E5%8D%8810.24.32.png" 
-                     alt="Tony線上美語家教" 
-                     class="w-32 h-32 md:w-56 md:h-56 rounded-full object-cover border-4 border-yellow-400 shadow-2xl">
+            <div class="hero-buttons">
+                <a href="#introduction" class="cta-btn btn-secondary">
+                    <i class="fas fa-book-open"></i> 課程介紹
+                </a>
+                <a href="https://tonyonlineenglish.netlify.app/exper" class="cta-btn btn-primary" target="_blank">
+                    <i class="fas fa-paper-plane"></i> 預約體驗課程
+                </a>
             </div>
         </div>
-    </header>
+    </section>
 
     <!-- Why Choose Us -->
-    <section class="py-16 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold text-gray-900">為什麼選擇 Tony線上美語家教？</h2>
-                <p class="mt-4 text-gray-600">透過系統化訓練與專業題型解析，幫助學生全面提升實力。</p>
+    <section class="section-padding container" id="introduction">
+        <h2 class="section-title">為什麼選擇 Tony線上美語家教？</h2>
+        <p style="text-align: center; font-size: 1.2rem; font-weight: 900; margin-bottom: 30px;">透過系統化訓練與專業題型解析，幫助學生全面提升實力。</p>
+        
+        <div class="target-grid">
+            <div class="target-card border-blue">
+                <i class="fas fa-magnifying-glass-chart"></i>
+                <h3>專業考試題型分析</h3>
+                <p>深入解析 FLPT 命題方向與常見題型，幫助學生掌握考試核心重點。</p>
             </div>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
-                <div class="bg-yellow-50 p-6 rounded-xl border-t-4 border-yellow-400 shadow-sm">
-                    <i class="fa-solid fa-magnifying-glass-chart text-3xl text-yellow-600 mb-4"></i>
-                    <h3 class="text-xl font-bold mb-2">專業考試題型分析</h3>
-                    <p class="text-gray-600 text-sm">深入解析 FLPT 命題方向與常見題型，幫助學生掌握考試核心重點。</p>
-                </div>
-                <div class="bg-yellow-50 p-6 rounded-xl border-t-4 border-yellow-400 shadow-sm">
-                    <i class="fa-solid fa-chalkboard-user text-3xl text-yellow-600 mb-4"></i>
-                    <h3 class="text-xl font-bold mb-2">一對一客製化課程</h3>
-                    <p class="text-gray-600 text-sm">根據學生程度與學習目標，為您量身打造專屬學習計畫，效果最大化。</p>
-                </div>
-                <div class="bg-yellow-50 p-6 rounded-xl border-t-4 border-yellow-400 shadow-sm">
-                    <i class="fa-solid fa-file-pen text-3xl text-yellow-600 mb-4"></i>
-                    <h3 class="text-xl font-bold mb-2">真實模擬測驗</h3>
-                    <p class="text-gray-600 text-sm">高度模擬真實考試情境，幫助您提前適應節奏，建立應試強大信心。</p>
-                </div>
-                <div class="bg-yellow-50 p-6 rounded-xl border-t-4 border-yellow-400 shadow-sm">
-                    <i class="fa-solid fa-rocket text-3xl text-yellow-600 mb-4"></i>
-                    <h3 class="text-xl font-bold mb-2">高效率學習策略</h3>
-                    <p class="text-gray-600 text-sm">透過結構化方法與技巧訓練，讓學生在最短時間內有效提升語言能力。</p>
-                </div>
+            <div class="target-card border-red">
+                <i class="fas fa-chalkboard-user"></i>
+                <h3>一對一客製化課程</h3>
+                <p>根據學生程度與學習目標，為您量身打造專屬學習計畫，效果最大化。</p>
+            </div>
+            <div class="target-card border-green">
+                <i class="fas fa-file-pen"></i>
+                <h3>真實模擬測驗</h3>
+                <p>高度模擬真實考試情境，幫助您提前適應節奏，建立應試強大信心。</p>
+            </div>
+            <div class="target-card border-purple">
+                <i class="fas fa-rocket"></i>
+                <h3>高效率學習策略</h3>
+                <p>透過結構化方法與技巧訓練，讓學生在最短時間內有效提升語言能力。</p>
             </div>
         </div>
     </section>
 
     <!-- Target Audience -->
-    <section class="py-16 bg-yellow-100">
-        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
-            <h2 class="text-3xl font-bold text-center mb-10">課程適合對象</h2>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="flex items-start space-x-4 bg-white p-5 rounded-lg shadow-sm border-l-4 border-yellow-400">
-                    <i class="fa-solid fa-user-tie text-2xl text-yellow-600 mt-1"></i>
-                    <div>
-                        <h4 class="font-bold text-lg">公職人員</h4>
-                        <p class="text-sm text-gray-500 mt-1">需要語言能力證明，作為升遷、考核或專業能力加分。</p>
-                    </div>
-                </div>
-                <div class="flex items-start space-x-4 bg-white p-5 rounded-lg shadow-sm border-l-4 border-yellow-400">
-                    <i class="fa-solid fa-plane-departure text-2xl text-yellow-600 mt-1"></i>
-                    <div>
-                        <h4 class="font-bold text-lg">外派人員</h4>
-                        <p class="text-sm text-gray-500 mt-1">準備海外派駐、國際交流或國際合作工作者。</p>
-                    </div>
-                </div>
-                <div class="flex items-start space-x-4 bg-white p-5 rounded-lg shadow-sm border-l-4 border-yellow-400">
-                    <i class="fa-solid fa-graduation-cap text-2xl text-yellow-600 mt-1"></i>
-                    <div>
-                        <h4 class="font-bold text-lg">研究所申請者</h4>
-                        <p class="text-sm text-gray-500 mt-1">需要英語能力證明，提高國內外學校申請競爭力。</p>
-                    </div>
-                </div>
-                <div class="flex items-start space-x-4 bg-white p-5 rounded-lg shadow-sm border-l-4 border-yellow-400">
-                    <i class="fa-solid fa-briefcase text-2xl text-yellow-600 mt-1"></i>
-                    <div>
-                        <h4 class="font-bold text-lg">上班族</h4>
-                        <p class="text-sm text-gray-500 mt-1">希望提升職場英語與跨國商務國際溝通能力。</p>
-                    </div>
-                </div>
-                <div class="flex items-start space-x-4 bg-white p-5 rounded-lg shadow-sm lg:col-span-2 border-l-4 border-yellow-400">
-                    <i class="fa-solid fa-check-double text-2xl text-yellow-600 mt-1"></i>
-                    <div>
-                        <h4 class="font-bold text-lg">準備語言檢定的考生</h4>
-                        <p class="text-sm text-gray-500 mt-1">不熟悉題型、不了解命題邏輯？透過系統化訓練提升考試實力。</p>
-                    </div>
-                </div>
-            </div>
+    <section class="section-padding container">
+        <h2 class="section-title">課程適合對象</h2>
+        
+        <div class="target-list">
+            <ul>
+                <li><strong>公職人員</strong>：需要語言能力證明，作為升遷、考核或專業能力加分。</li>
+                <li><strong>外派人員</strong>：準備海外派駐、國際交流或國際合作工作者。</li>
+                <li><strong>研究所申請者</strong>：需要英語能力證明，提高國內外學校申請競爭力。</li>
+                <li><strong>上班族</strong>：希望提升職場英語與跨國商務國際溝通能力。</li>
+                <li><strong>準備語言檢定的考生</strong>：不熟悉題型、不了解命題邏輯？透過系統化訓練提升考試實力。</li>
+            </ul>
         </div>
     </section>
 
     <!-- FLPT Test Format Analysis -->
-    <section class="py-16 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center mb-12">
-                <h2 class="text-3xl font-bold">FLPT 英文測驗題型分析</h2>
-                <p class="mt-4 text-gray-600 max-w-2xl mx-auto">本課程會為您進行完整的 FLPT 聽說讀寫題型解析訓練。</p>
-            </div>
+    <section class="section-padding levels-bg">
+        <div class="container">
+            <h2 class="section-title">FLPT 英文測驗題型分析</h2>
+            <p style="text-align: center; font-size: 1.2rem; font-weight: 900; margin-bottom: 30px;">很多學生準備語言考試時，最大的問題是：不熟悉題型、不了解命題邏輯、練習方法不正確。因此本課程會進行完整 FLPT題型解析訓練。</p>
             
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+            <div class="course-grid-container">
+                
                 <!-- Listening -->
-                <div class="border-2 border-yellow-300 bg-yellow-50 rounded-2xl p-6 relative overflow-hidden">
-                    <div class="absolute -right-6 -top-6 text-yellow-400 opacity-20"><i class="fa-solid fa-headphones text-9xl"></i></div>
-                    <h3 class="text-2xl font-bold text-yellow-700 mb-4"><i class="fa-solid fa-headphones mr-2"></i>聽力測驗 (Listening)</h3>
-                    <div class="mb-4">
-                        <strong class="text-gray-800">常見題型：</strong>
-                        <ul class="list-disc list-inside text-gray-600 mt-1 text-sm">
-                            <li>日常情境對話</li><li>工作與生活情境</li><li>簡短說明與短講</li>
-                        </ul>
+                <div class="level-card theme-blue">
+                    <div class="cert-header">
+                        <div class="cert-title"><span class="color-dot"></span> 聽力測驗</div>
+                        <div style="font-weight: 900; font-size: 1.2rem;">Listening</div>
                     </div>
-                    <div>
-                        <strong class="text-gray-800">訓練重點：</strong>
-                        <ul class="mt-1 space-y-1 text-sm text-gray-700">
-                            <li>✔ 聽力關鍵字辨識</li>
-                            <li>✔ 情境理解能力</li>
-                            <li>✔ 快速抓取重要資訊</li>
+                    <div class="level-body">
+                        <h4><i class="fas fa-headphones"></i> 常見題型</h4>
+                        <ul>
+                            <li>日常情境對話</li>
+                            <li>工作與生活情境</li>
+                            <li>簡短說明與短講</li>
+                        </ul>
+                        <h4><i class="fas fa-bullseye"></i> 訓練重點</h4>
+                        <ul>
+                            <li>聽力關鍵字辨識</li>
+                            <li>情境理解能力</li>
+                            <li>快速抓取重要資訊</li>
                         </ul>
                     </div>
                 </div>
 
                 <!-- Reading -->
-                <div class="border-2 border-yellow-300 bg-yellow-50 rounded-2xl p-6 relative overflow-hidden">
-                    <div class="absolute -right-6 -top-6 text-yellow-400 opacity-20"><i class="fa-solid fa-book-open text-9xl"></i></div>
-                    <h3 class="text-2xl font-bold text-yellow-700 mb-4"><i class="fa-solid fa-book-open mr-2"></i>閱讀測驗 (Reading)</h3>
-                    <div class="mb-4">
-                        <strong class="text-gray-800">常見題型：</strong>
-                        <ul class="list-disc list-inside text-gray-600 mt-1 text-sm">
-                            <li>短篇文章閱讀</li><li>公告與資訊文件</li><li>說明型文章</li>
-                        </ul>
+                <div class="level-card theme-red">
+                    <div class="cert-header">
+                        <div class="cert-title"><span class="color-dot"></span> 閱讀測驗</div>
+                        <div style="font-weight: 900; font-size: 1.2rem;">Reading</div>
                     </div>
-                    <div>
-                        <strong class="text-gray-800">訓練重點：</strong>
-                        <ul class="mt-1 space-y-1 text-sm text-gray-700">
-                            <li>✔ 快速閱讀技巧</li>
-                            <li>✔ 段落重點分析</li>
-                            <li>✔ 題型解題策略</li>
+                    <div class="level-body">
+                        <h4><i class="fas fa-book-open"></i> 常見題型</h4>
+                        <ul>
+                            <li>短篇文章閱讀</li>
+                            <li>公告與資訊文件</li>
+                            <li>說明型文章</li>
+                        </ul>
+                        <h4><i class="fas fa-bullseye"></i> 訓練重點</h4>
+                        <ul>
+                            <li>快速閱讀技巧</li>
+                            <li>段落重點分析</li>
+                            <li>題型解題策略</li>
                         </ul>
                     </div>
                 </div>
 
                 <!-- Speaking -->
-                <div class="border-2 border-yellow-300 bg-yellow-50 rounded-2xl p-6 relative overflow-hidden">
-                    <div class="absolute -right-6 -top-6 text-yellow-400 opacity-20"><i class="fa-solid fa-comments text-9xl"></i></div>
-                    <h3 class="text-2xl font-bold text-yellow-700 mb-4"><i class="fa-solid fa-comments mr-2"></i>口說測驗 (Speaking)</h3>
-                    <div class="mb-4">
-                        <strong class="text-gray-800">常見題型：</strong>
-                        <ul class="list-disc list-inside text-gray-600 mt-1 text-sm">
-                            <li>圖片描述</li><li>情境回答</li><li>意見表達</li>
-                        </ul>
+                <div class="level-card theme-green">
+                    <div class="cert-header">
+                        <div class="cert-title"><span class="color-dot"></span> 口說測驗</div>
+                        <div style="font-weight: 900; font-size: 1.2rem;">Speaking</div>
                     </div>
-                    <div>
-                        <strong class="text-gray-800">訓練重點：</strong>
-                        <ul class="mt-1 space-y-1 text-sm text-gray-700">
-                            <li>✔ 結構化回答技巧</li>
-                            <li>✔ 邏輯表達能力</li>
-                            <li>✔ 流暢口語訓練</li>
+                    <div class="level-body">
+                        <h4><i class="fas fa-comments"></i> 常見題型</h4>
+                        <ul>
+                            <li>圖片描述</li>
+                            <li>情境回答</li>
+                            <li>意見表達</li>
+                        </ul>
+                        <h4><i class="fas fa-bullseye"></i> 訓練重點</h4>
+                        <ul>
+                            <li>結構化回答技巧</li>
+                            <li>邏輯表達能力</li>
+                            <li>流暢口語訓練</li>
                         </ul>
                     </div>
                 </div>
 
                 <!-- Writing -->
-                <div class="border-2 border-yellow-300 bg-yellow-50 rounded-2xl p-6 relative overflow-hidden">
-                    <div class="absolute -right-6 -top-6 text-yellow-400 opacity-20"><i class="fa-solid fa-pen-nib text-9xl"></i></div>
-                    <h3 class="text-2xl font-bold text-yellow-700 mb-4"><i class="fa-solid fa-pen-nib mr-2"></i>寫作測驗 (Writing)</h3>
-                    <div class="mb-4">
-                        <strong class="text-gray-800">常見題型：</strong>
-                        <ul class="list-disc list-inside text-gray-600 mt-1 text-sm">
-                            <li>短文寫作</li><li>情境回覆</li><li>意見表達</li>
+                <div class="level-card theme-purple">
+                    <div class="cert-header">
+                        <div class="cert-title"><span class="color-dot"></span> 寫作測驗</div>
+                        <div style="font-weight: 900; font-size: 1.2rem;">Writing</div>
+                    </div>
+                    <div class="level-body">
+                        <h4><i class="fas fa-pen-nib"></i> 常見題型</h4>
+                        <ul>
+                            <li>短文寫作</li>
+                            <li>情境回覆</li>
+                            <li>意見表達</li>
+                        </ul>
+                        <h4><i class="fas fa-bullseye"></i> 訓練重點</h4>
+                        <ul>
+                            <li>常見寫作句型</li>
+                            <li>文法與邏輯修正</li>
+                            <li>專業逐字批改</li>
                         </ul>
                     </div>
-                    <div>
-                        <strong class="text-gray-800">訓練重點：</strong>
-                        <ul class="mt-1 space-y-1 text-sm text-gray-700">
-                            <li>✔ 常見寫作句型</li>
-                            <li>✔ 文法與邏輯修正</li>
-                            <li>✔ 專業逐字批改</li>
-                        </ul>
-                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- Feedback Section -->
+    <section class="section-padding feedback-bg">
+        <div class="container" style="max-width: 800px;">
+            <h2 class="section-title">學員分享</h2>
+            <div class="feedback-box">
+                <i class="fas fa-quote-left"></i>
+                <div class="student-review">
+                    <span class="quote">「我不方便說太多，我只能分享我的體驗。老師很專業，有需要的人可以找Tony 老師。加油」</span>
+                    <span class="author">- CDN</span>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- 學員分享 (倒數第二個 Widget) -->
-    <section class="py-16 bg-yellow-100">
-        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <h2 class="text-3xl font-bold mb-8 text-gray-900">學員分享</h2>
+    <!-- Call to Action Section -->
+    <section class="cta-section">
+        <div class="container">
+            <h2 style="font-size: 2.2rem; margin-bottom: 30px;">提升英語能力，取得專業語言證照！</h2>
             
-            <div class="bg-white p-8 md:p-12 rounded-2xl shadow-lg border-l-8 border-yellow-400 text-left relative">
-                <i class="fa-solid fa-quote-left text-4xl text-yellow-200 absolute top-6 left-6"></i>
-                <div class="relative z-10 pl-4 md:pl-8">
-                    <div class="flex items-center mb-4 text-yellow-500">
-                        <i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i>
-                    </div>
-                    <p class="text-lg md:text-xl text-gray-700 font-medium italic mb-6 leading-relaxed">
-                        「我不方便說太多，我只能分享我的體驗。老師很專業，有需要的人可以找Tony 老師。加油」
-                    </p>
-                    <p class="text-right font-bold text-gray-900 text-lg">- 學員 CDN</p>
-                </div>
-            </div>
-        </div>
-    </section>
-
-    <!-- 聯絡與預約 (最下方純按鈕，刪除所有廢話) -->
-    <section class="py-16 bg-yellow-400">
-        <div class="max-w-4xl mx-auto px-4 text-center">
-            <div class="flex flex-col sm:flex-row justify-center items-center gap-6">
-                <!-- 預約體驗課程按鈕 -->
-                <a href="https://tonyonlineenglish.netlify.app/exper" target="_blank" 
-                   class="w-full sm:w-auto bg-white hover:bg-gray-100 text-gray-900 font-bold py-4 px-10 rounded-full transition shadow-xl text-xl border-2 border-transparent">
+            <div class="hero-buttons">
+                <a href="https://tonyonlineenglish.netlify.app/exper" class="cta-btn btn-primary" target="_blank">
                     預約體驗課程 25/50分鐘
                 </a>
                 
-                <!-- LINE 聯絡按鈕 -->
-                <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" 
-                   class="w-full sm:w-auto bg-[#06C755] hover:bg-[#05b34c] text-white font-bold py-4 px-10 rounded-full transition shadow-xl flex items-center justify-center gap-2 text-xl border-2 border-[#06C755]">
-                    <i class="fab fa-line text-3xl"></i> LINE: myavalon
+                <a href="https://line.me/ti/p/T9YdimtG8_" class="contact-btn line" target="_blank">
+                    <i class="fab fa-line" style="font-size: 1.8rem;"></i> LINE: myavalon
                 </a>
             </div>
         </div>
