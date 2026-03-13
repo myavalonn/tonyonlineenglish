@@ -40,7 +40,6 @@
                         url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-13%20%E4%B8%8B%E5%8D%881.40.09.png?updatedAt=1773380419567'); 
             background-size: cover; 
             background-position: center center; 
-            /* 預設為 scroll，保護手機與平板不跑版 */
             background-attachment: scroll; 
         }
 
@@ -52,9 +51,9 @@
             .hero-bg { background-attachment: scroll !important; }
         }
         
-        /* CTA 按鈕主色調 (綠色) */
-        .cta-button { background-color: #10b981; } /* Emerald 500 */
-        .cta-button:hover { background-color: #059669; }
+        /* CTA 按鈕主色調改為紫色 (Purple Theme) */
+        .cta-button { background-color: #9333ea; } /* Purple 600 */
+        .cta-button:hover { background-color: #7e22ce; } /* Purple 700 */
     </style>
 </head>
 <body>
@@ -123,8 +122,8 @@
                             <span class="bg-purple-100 text-purple-600 w-12 h-12 flex items-center justify-center rounded-full text-2xl shrink-0">2</span> 
                             閱讀理解：跳脫公式化的拆解
                         </h3>
-                        <!-- 客戶指定：橘底白字標籤 -->
-                        <span class="bg-orange-500 text-white font-bold px-4 py-2 rounded-lg text-sm md:text-base shrink-0 shadow-md">
+                        <!-- 手機版字體放大至 text-base，平板以上為 text-lg -->
+                        <span class="bg-orange-500 text-white font-black px-4 py-2 rounded-lg text-base md:text-lg shrink-0 shadow-md tracking-wide">
                             閱讀理解｜核心考點｜單字精衝
                         </span>
                     </div>
@@ -151,8 +150,44 @@
             <h2 class="text-3xl md:text-4xl font-black text-center mb-10 flex items-center justify-center gap-3">
                 <i class="fas fa-users text-purple-600"></i> 適合對象
             </h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 w-full max-w-5xl mx-auto">
+            
+            <!-- 手機版佈局：3小格並排 + 下方詳細卡片 -->
+            <div class="block md:hidden w-full max-w-5xl mx-auto">
+                <!-- 上方：3小格並排 -->
+                <div class="grid grid-cols-3 gap-2 sm:gap-4 mb-6">
+                    <div class="bg-green-50 py-4 rounded-xl text-center border border-green-200 shadow-sm">
+                        <i class="fas fa-seedling text-3xl text-green-500 mb-2 block"></i>
+                        <h3 class="text-sm sm:text-base font-black text-slate-800 tracking-wide">升國一</h3>
+                    </div>
+                    <div class="bg-purple-50 py-4 rounded-xl text-center border border-purple-200 shadow-sm">
+                        <i class="fas fa-book-open text-3xl text-purple-500 mb-2 block"></i>
+                        <h3 class="text-sm sm:text-base font-black text-slate-800 tracking-wide">國一/二</h3>
+                    </div>
+                    <div class="bg-pink-50 py-4 rounded-xl text-center border border-pink-200 shadow-sm">
+                        <i class="fas fa-fire text-3xl text-pink-500 mb-2 block"></i>
+                        <h3 class="text-sm sm:text-base font-black text-slate-800 tracking-wide">國三</h3>
+                    </div>
+                </div>
                 
+                <!-- 下方：詳細卡片介紹 -->
+                <div class="space-y-4">
+                    <div class="bg-white p-5 rounded-2xl border-l-[6px] border-green-500 shadow-md">
+                        <h4 class="text-green-600 font-black text-xl mb-2">升國一</h4>
+                        <p class="text-slate-600 font-bold leading-relaxed text-[15px]">提前建立單字儲備量，與國小基礎完美銜接。</p>
+                    </div>
+                    <div class="bg-white p-5 rounded-2xl border-l-[6px] border-purple-500 shadow-md">
+                        <h4 class="text-purple-600 font-black text-xl mb-2">國一 / 國二</h4>
+                        <p class="text-slate-600 font-bold leading-relaxed text-[15px]">穩紮穩打學校進度，將零散的片語系統化。</p>
+                    </div>
+                    <div class="bg-white p-5 rounded-2xl border-l-[6px] border-pink-500 shadow-md">
+                        <h4 class="text-pink-600 font-black text-xl mb-2">國三</h4>
+                        <p class="text-slate-600 font-bold leading-relaxed text-[15px]">進入會考衝刺模式，針對弱點強化，提升答對率。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 平板與電腦版佈局：原本的三大格並排 -->
+            <div class="hidden md:grid md:grid-cols-3 gap-6 w-full max-w-5xl mx-auto">
                 <!-- 卡片 1 (Green) -->
                 <div class="bg-green-50 px-6 py-10 rounded-[2rem] text-center border border-green-200 hover:-translate-y-2 transition duration-300">
                     <i class="fas fa-seedling text-5xl text-green-500 mb-6 block"></i>
@@ -173,18 +208,21 @@
                     <h3 class="text-2xl font-black text-slate-800 mb-4 tracking-wider">國三</h3>
                     <p class="text-slate-600 font-bold leading-relaxed">進入會考衝刺模式<br>針對弱點強化，提升答對率。</p>
                 </div>
-
             </div>
         </section>
 
         <!-- CTA 區塊 -->
-        <section class="text-center mt-16 px-1 sm:px-4 md:px-0">
-            <p class="text-xl md:text-3xl font-black text-slate-800 mb-10 max-w-3xl mx-auto leading-relaxed">
+        <section class="text-center mt-16 px-2 sm:px-4 md:px-0">
+            <p class="text-xl md:text-3xl font-black text-slate-800 mb-10 max-w-4xl mx-auto leading-relaxed px-2">
                 英文實力的厚度，取決於對單字片語的掌握度。<br>
-                <span class="text-pink-600">拋棄過時的語法教條，把時間留給最重要的詞彙量與閱讀感。</span>
+                <span class="text-pink-600 inline-block mt-3 md:mt-4">
+                    <!-- 平板 iPad (md breakpoint) 起，強制斷行 -->
+                    拋棄過時的語法教條，<br class="hidden md:block">
+                    把時間留給最重要的詞彙量與閱讀感。
+                </span>
             </p>
 
-            <div class="bg-white p-8 md:p-16 border-[4px] md:border-[6px] border-emerald-500 rounded-[2rem] md:rounded-[3rem] shadow-xl max-w-4xl mx-auto w-full relative overflow-hidden">
+            <div class="bg-white p-8 md:p-16 border-[4px] md:border-[6px] border-purple-500 rounded-[2rem] md:rounded-[3rem] shadow-xl max-w-4xl mx-auto w-full relative overflow-hidden">
                 <!-- 裝飾背景色塊 -->
                 <div class="absolute -top-10 -right-10 w-32 h-32 bg-pink-100 rounded-full blur-3xl opacity-60"></div>
                 <div class="absolute -bottom-10 -left-10 w-32 h-32 bg-purple-100 rounded-full blur-3xl opacity-60"></div>
