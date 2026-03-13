@@ -58,6 +58,15 @@
         /* Hero 深入了解趨勢 按鈕主色調 (Emerald 500) */
         .cta-button-emerald { background-color: #10b981; } 
         .cta-button-emerald:hover { background-color: #059669; } 
+
+        /* 隱藏手機版橫向滑動的滾動條，但保留滾動功能 */
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
     </style>
 </head>
 <body>
@@ -215,15 +224,22 @@
             </div>
         </section>
 
-        <!-- 學員回饋 (新增區塊) -->
+        <!-- 學員回饋 (新增區塊 - 手機版為滑動卡片) -->
         <section class="mb-24">
-            <h2 class="text-3xl md:text-4xl font-black text-center mb-14 flex items-center justify-center gap-3">
+            <h2 class="text-3xl md:text-4xl font-black text-center mb-4 md:mb-14 flex items-center justify-center gap-3">
                 <i class="fas fa-comments text-emerald-500"></i> 學員回饋
             </h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 md:gap-8 w-full max-w-5xl mx-auto">
+            
+            <!-- 手機版專屬：直覺滑動提示 -->
+            <p class="text-center text-slate-400 text-sm font-bold mb-6 md:hidden animate-pulse">
+                <i class="fas fa-arrows-alt-h mr-1"></i> 左右滑動查看更多
+            </p>
+
+            <!-- 容器：手機版為 Flex X 軸滑動，電腦版為 Grid 2x2 -->
+            <div class="flex md:grid md:grid-cols-2 gap-4 md:gap-8 overflow-x-auto md:overflow-visible snap-x snap-mandatory hide-scrollbar pb-8 md:pb-0 px-2 md:px-0 w-full max-w-5xl mx-auto">
                 
                 <!-- William 的家長 -->
-                <div class="bg-white p-6 md:p-8 rounded-[2rem] shadow-md border-t-[6px] border-green-500 hover:-translate-y-2 transition duration-300 relative overflow-hidden">
+                <div class="snap-center shrink-0 w-[85vw] sm:w-[350px] md:w-auto bg-white p-6 md:p-8 rounded-[2rem] shadow-md border-t-[6px] border-green-500 hover:-translate-y-2 transition duration-300 relative overflow-hidden">
                     <i class="fas fa-quote-right text-green-100 text-7xl absolute -top-2 -right-2 opacity-40"></i>
                     <div class="flex items-center gap-4 mb-5 relative z-10">
                         <div class="w-12 h-12 rounded-full bg-green-100 text-green-600 flex items-center justify-center font-black text-xl shrink-0 shadow-sm">W</div>
@@ -235,7 +251,7 @@
                 </div>
 
                 <!-- Mia 的家長 -->
-                <div class="bg-white p-6 md:p-8 rounded-[2rem] shadow-md border-t-[6px] border-pink-500 hover:-translate-y-2 transition duration-300 relative overflow-hidden">
+                <div class="snap-center shrink-0 w-[85vw] sm:w-[350px] md:w-auto bg-white p-6 md:p-8 rounded-[2rem] shadow-md border-t-[6px] border-pink-500 hover:-translate-y-2 transition duration-300 relative overflow-hidden">
                     <i class="fas fa-quote-right text-pink-100 text-7xl absolute -top-2 -right-2 opacity-40"></i>
                     <div class="flex items-center gap-4 mb-5 relative z-10">
                         <div class="w-12 h-12 rounded-full bg-pink-100 text-pink-600 flex items-center justify-center font-black text-xl shrink-0 shadow-sm">M</div>
@@ -247,7 +263,7 @@
                 </div>
 
                 <!-- Lisa 的家長 -->
-                <div class="bg-white p-6 md:p-8 rounded-[2rem] shadow-md border-t-[6px] border-purple-500 hover:-translate-y-2 transition duration-300 relative overflow-hidden">
+                <div class="snap-center shrink-0 w-[85vw] sm:w-[350px] md:w-auto bg-white p-6 md:p-8 rounded-[2rem] shadow-md border-t-[6px] border-purple-500 hover:-translate-y-2 transition duration-300 relative overflow-hidden">
                     <i class="fas fa-quote-right text-purple-100 text-7xl absolute -top-2 -right-2 opacity-40"></i>
                     <div class="flex items-center gap-4 mb-5 relative z-10">
                         <div class="w-12 h-12 rounded-full bg-purple-100 text-purple-600 flex items-center justify-center font-black text-xl shrink-0 shadow-sm">L</div>
@@ -259,7 +275,7 @@
                 </div>
 
                 <!-- Allen 的家長 -->
-                <div class="bg-white p-6 md:p-8 rounded-[2rem] shadow-md border-t-[6px] border-blue-500 hover:-translate-y-2 transition duration-300 relative overflow-hidden">
+                <div class="snap-center shrink-0 w-[85vw] sm:w-[350px] md:w-auto bg-white p-6 md:p-8 rounded-[2rem] shadow-md border-t-[6px] border-blue-500 hover:-translate-y-2 transition duration-300 relative overflow-hidden">
                     <i class="fas fa-quote-right text-blue-100 text-7xl absolute -top-2 -right-2 opacity-40"></i>
                     <div class="flex items-center gap-4 mb-5 relative z-10">
                         <div class="w-12 h-12 rounded-full bg-blue-100 text-blue-600 flex items-center justify-center font-black text-xl shrink-0 shadow-sm">A</div>
