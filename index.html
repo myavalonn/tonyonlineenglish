@@ -6,7 +6,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <link rel="icon" href="/favicon.png" type="image/png">
 
-<!-- 更新標題為指定的名稱 -->
 <title>Tony線上美語家教</title>
 
 <meta name="description" content="Tony線上美語家教｜檢定、升學、全民英檢、多益、學測英文作文、國中會考、FLPT外語能力測驗國小英文、英文面試、觀光美語，一對一線上英文教學。">
@@ -69,7 +68,7 @@
   gtag('config', 'G-N2Q184QH9P');
 </script>
 
-    <!-- 引入 Google 手寫字體讓 Tony 更接近圖片質感 -->
+    <!-- 引入 Google 手寫字體 -->
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
     <style>
         /* 套用您指定的深色背景與基礎設定 */
@@ -105,7 +104,7 @@
             background-color: #060b1c !important; 
         }
 
-        /* ====== 新增：3D 特效 Canvas 樣式 ====== */
+        /* ====== 3D 特效 Canvas 樣式 ====== */
         #canvas {
             position: absolute;
             top: 0;
@@ -114,9 +113,10 @@
             height: 100%;
             z-index: 1; /* 夾在背景圖層(0)與文字層(2)之間 */
             pointer-events: none; /* 讓滑鼠可以穿透點擊下方的按鈕 */
+            mix-blend-mode: screen; /* 🌟 關鍵：過濾掉 3D 畫布的黑底，讓背景圖片完美透出來！ */
         }
 
-        /* ====== 1. 照片從左側滑入 ====== */
+        /* ====== 1. 這裡就是原先的照片，維持從左側滑入 ====== */
         .hero::before {
             content: "";
             position: absolute;
@@ -126,7 +126,7 @@
                         url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/1DE8F5F9-4E48-4960-84F7-A5B1B98B4954.jpg');
             background-size: cover;
             background-position: center;
-            z-index: 0; /* 修改這裡，降到最底層 */
+            z-index: 0; /* 在最底層 */
             transform: translateX(-100%);
             animation: slideInPhotoLeft 1s cubic-bezier(0.25, 1, 0.5, 1) forwards;
         }
@@ -210,7 +210,7 @@
             flex-direction: column;
             align-items: center;
             margin: 2.5vh 0;
-            pointer-events: none; /* 避免文字擋住下方的特效互動 */
+            pointer-events: none; /* 避免文字擋住滑鼠點擊特效互動 */
         }
 
         .main-title {
@@ -267,7 +267,7 @@
             border: 1px solid rgba(255, 255, 255, 0.25);
             white-space: nowrap;
             backdrop-filter: blur(5px);
-            pointer-events: none; /* 避免標籤擋住特效互動 */
+            pointer-events: none;
         }
 
         .tags-top { 
@@ -308,7 +308,7 @@
 <body>
 
     <div class="hero">
-        <!-- 💡 插入的 Tubes Cursor Canvas 畫布 -->
+        <!-- 💡 Tubes Cursor Canvas 畫布 (加上 mix-blend-mode: screen 即可顯示背景) -->
         <canvas id="canvas"></canvas>
 
         <div class="hero-content">
@@ -353,13 +353,13 @@
         </div>
     </div>
 
-    <!-- 💡 加入的 Tubes Cursor 特效腳本 (設為 ES6 module) -->
+    <!-- 加入的 Tubes Cursor 特效腳本 (設為 ES6 module) -->
     <script type="module">
       import TubesCursor from "https://cdn.jsdelivr.net/npm/threejs-components@0.0.19/build/cursors/tubes1.min.js";
 
       const app = TubesCursor(document.getElementById('canvas'), {
         tubes: {
-          colors: ["#f967fb", "#53bc28", "#6958d5"],
+          colors:["#f967fb", "#53bc28", "#6958d5"],
           lights: {
             intensity: 200,
             colors:["#83f36e", "#fe8a2e", "#ff008a", "#60aed5"]
@@ -367,7 +367,7 @@
         }
       });
 
-      // 點擊任何地方時改變特效顏色
+      // 點擊螢幕任何地方時改變特效顏色
       document.body.addEventListener('click', () => {
         const colors = randomColors(3);
         const lightsColors = randomColors(4);
