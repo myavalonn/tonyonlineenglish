@@ -1,0 +1,120 @@
+<div class="course-container">
+
+  <div class="header">
+    <h1>學生課程調整通知</h1>
+    <p>學生：Kai</p>
+  </div>
+
+  <div class="card green-card">
+    <h2>原課程資訊</h2>
+    <div class="card-content-stack">
+      <div class="info-group">
+        <label>課程名稱:</label>
+        <p>全民英檢初級</p>
+      </div>
+      <div class="info-group">
+        <label>繳費日期 / 金額:</label>
+        <p>2024.07.02 / $8,800</p>
+      </div>
+      <div class="info-group">
+        <label>課程規格:</label>
+        <p>16 堂 / 每堂 50 分鐘</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="card orange-card">
+    <h2>調整課程</h2>
+    <p class="highlight-title">全民英檢中級課程</p>
+    <ul>
+      <li>以 <strong>20 堂方案平均 600 點／堂</strong> 計算 （原 625 點）</li>
+      <li>原有剩餘堂數轉換為點數後，可直接折抵使用</li>
+      <li>後續課程將改以點數方式扣除</li>
+    </ul>
+  </div>
+
+  <div class="footer">
+    如您同意此調整方式，我將協助 Kai 安排後續中級課程。<br><br>
+    如有任何疑問，歡迎隨時與我聯繫，謝謝您的配合與支持！<br><br>
+    <strong>Tony 線上美語家教</strong>
+  </div>
+
+</div>
+
+<style>
+/* --- 全域基礎設定 --- */
+.course-container {
+  width: 100% !important;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: "Microsoft JhengHei", Arial, sans-serif;
+  line-height: 1.5;
+  box-sizing: border-box;
+  color: #333;
+  padding: 15px;
+}
+
+.header { text-align: center; padding: 20px 0; }
+.header h1 { font-size: 32px; margin-bottom: 10px; color: #2C3E50; }
+.header p { font-size: 24px; margin: 0; }
+
+.card {
+  margin-top: 20px;
+  padding: 25px;
+  border-radius: 15px;
+  width: 100%;
+  box-sizing: border-box;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+.green-card { background-color: #E8F5E9; border-left: 10px solid #4CAF50; }
+.orange-card { background-color: #FFF3E0; border-left: 10px solid #FF9800; }
+
+.card h2 { margin-top: 0; font-size: 28px; border-bottom: 2px solid rgba(0,0,0,0.1); padding-bottom: 10px; margin-bottom: 20px; }
+.highlight-title { font-size: 26px; font-weight: bold; margin: 15px 0; color: #E65100; }
+
+/* 核心修正：使用 Stack 結構避免重疊 */
+.card-content-stack { display: flex; flex-direction: column; gap: 20px; }
+.info-group label { font-weight: bold; font-size: 18px; color: #555; display: block; margin-bottom: 5px; }
+.info-group p { font-size: 22px; margin: 0; font-weight: 500; line-height: 1.4; }
+
+ul { margin-top: 15px; padding-left: 25px; font-size: 20px; }
+ul li { margin-bottom: 15px; line-height: 1.6; }
+
+.footer { margin-top: 30px; padding: 20px; font-size: 20px; border-top: 2px solid #EEE; line-height: 1.8; }
+
+/* --- Tablet 模式 (769px - 1200px) --- */
+@media (min-width: 769px) {
+  .header h1 { font-size: 56px; }
+  .header p { font-size: 40px; }
+  
+  .card { padding: 45px; }
+  .card h2 { font-size: 48px; margin-bottom: 30px; }
+  .highlight-title { font-size: 44px; }
+  
+  .card-content-stack { gap: 35px; } /* 增加項目間距 */
+  .info-group label { font-size: 30px; }
+  .info-group p { font-size: 38px; }
+  
+  ul { font-size: 34px; padding-left: 45px; }
+  ul li { margin-bottom: 25px; }
+  
+  .footer { font-size: 34px; }
+}
+
+/* --- Desktop 模式 (1201px 以上) --- */
+@media (min-width: 1201px) {
+  .header h1 { font-size: 72px; }
+  .header p { font-size: 52px; }
+  
+  .card h2 { font-size: 60px; }
+  .highlight-title { font-size: 52px; }
+  
+  .info-group label { font-size: 34px; }
+  .info-group p { font-size: 44px; }
+  
+  ul { font-size: 40px; }
+  ul li { margin-bottom: 30px; }
+  
+  .footer { font-size: 40px; }
+}
+</style>
