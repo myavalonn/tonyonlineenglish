@@ -2,13 +2,12 @@
 <html lang="zh-TW">
 <head>
 <meta name="robots" content="index, follow">
-<!-- 1. 修正了引號錯誤 -->
 <meta charset="UTF-8">
-<!-- 2. 保留完整的 viewport，刪除了重複的 -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <link rel="icon" href="/favicon.png" type="image/png">
 
-<title>Tony線上美語家教｜全民英檢、多益、學測英文作文、國中會考</title>
+<!-- 更新標題為指定的名稱 -->
+<title>Tony線上美語家教</title>
 
 <meta name="description" content="Tony線上美語家教｜檢定、升學、全民英檢、多益、學測英文作文、國中會考、FLPT外語能力測驗國小英文、英文面試、觀光美語，一對一線上英文教學。">
 
@@ -23,7 +22,7 @@
 
 <link rel="canonical" href="https://tonyonlineenglish.netlify.app/">
 
-<!-- 加入 Code 1 的 JSON-LD，並擴充 Google 搜尋結果次選單 (Sitelinks) 設定 -->
+<!-- JSON-LD -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -92,7 +91,6 @@
 
         /* 英雄區塊容器 */
         .hero {
-            /* 使用 fixed (固定定位) 徹底解決被捲到畫面外的問題 */
             position: fixed;
             top: 0;
             left: 0;
@@ -107,6 +105,17 @@
             background-color: #060b1c !important; 
         }
 
+        /* ====== 新增：3D 特效 Canvas 樣式 ====== */
+        #canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1; /* 夾在背景圖層(0)與文字層(2)之間 */
+            pointer-events: none; /* 讓滑鼠可以穿透點擊下方的按鈕 */
+        }
+
         /* ====== 1. 照片從左側滑入 ====== */
         .hero::before {
             content: "";
@@ -117,7 +126,7 @@
                         url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/1DE8F5F9-4E48-4960-84F7-A5B1B98B4954.jpg');
             background-size: cover;
             background-position: center;
-            z-index: 1;
+            z-index: 0; /* 修改這裡，降到最底層 */
             transform: translateX(-100%);
             animation: slideInPhotoLeft 1s cubic-bezier(0.25, 1, 0.5, 1) forwards;
         }
@@ -125,7 +134,7 @@
         /* ====== 2. 內容區塊 ====== */
         .hero-content { 
             position: relative;
-            z-index: 2;
+            z-index: 2; /* 確保文字和按鈕在特效最上層 */
             display: flex; 
             flex-direction: column; 
             align-items: center; 
@@ -134,7 +143,7 @@
             box-sizing: border-box;
         }
 
-        /* ====== 3. 「課程詳細介紹」連結按鈕 (已移除絕對定位，自然融入 flex 排版) ====== */
+        /* ====== 3. 「課程詳細介紹」連結按鈕 ====== */
         .course-intro-btn {
             z-index: 100;
             text-decoration: none;
@@ -152,6 +161,7 @@
             display: flex;
             align-items: center;
             gap: 10px; 
+            pointer-events: auto; /* 確保按鈕可點擊 */
         }
 
         .course-intro-btn:hover {
@@ -200,6 +210,7 @@
             flex-direction: column;
             align-items: center;
             margin: 2.5vh 0;
+            pointer-events: none; /* 避免文字擋住下方的特效互動 */
         }
 
         .main-title {
@@ -256,6 +267,7 @@
             border: 1px solid rgba(255, 255, 255, 0.25);
             white-space: nowrap;
             backdrop-filter: blur(5px);
+            pointer-events: none; /* 避免標籤擋住特效互動 */
         }
 
         .tags-top { 
@@ -296,6 +308,9 @@
 <body>
 
     <div class="hero">
+        <!-- 💡 插入的 Tubes Cursor Canvas 畫布 -->
+        <canvas id="canvas"></canvas>
+
         <div class="hero-content">
             <!-- 上方標籤 -->
             <div class="tags-container tags-top">
@@ -308,7 +323,7 @@
                 <span class="tag">多益</span>
                 <span class="tag">FLPT外語能力測驗</span>
                 
-                <!-- 💡 課程詳細介紹按鈕已完全移動至此處 -->
+                <!-- 💡 課程詳細介紹按鈕 -->
                 <a href="https://tonyonlineenglish.netlify.app/allcourses" class="course-intro-btn">
                     課程詳細介紹
                     <img src="https://ik.imagekit.io/lql1uveoc/tap-4.png?updatedAt=1771239128743" alt="Click Here" class="tap-icon">
@@ -338,7 +353,36 @@
         </div>
     </div>
 
-    <!-- 💡 原本的排版腳本 -->
+    <!-- 💡 加入的 Tubes Cursor 特效腳本 (設為 ES6 module) -->
+    <script type="module">
+      import TubesCursor from "https://cdn.jsdelivr.net/npm/threejs-components@0.0.19/build/cursors/tubes1.min.js";
+
+      const app = TubesCursor(document.getElementById('canvas'), {
+        tubes: {
+          colors: ["#f967fb", "#53bc28", "#6958d5"],
+          lights: {
+            intensity: 200,
+            colors:["#83f36e", "#fe8a2e", "#ff008a", "#60aed5"]
+          }
+        }
+      });
+
+      // 點擊任何地方時改變特效顏色
+      document.body.addEventListener('click', () => {
+        const colors = randomColors(3);
+        const lightsColors = randomColors(4);
+        app.tubes.setColors(colors);
+        app.tubes.setLightsColors(lightsColors);
+      });
+
+      function randomColors (count) {
+          return new Array(count)
+              .fill(0)
+              .map(() => "#" + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0'));
+      }
+    </script>
+
+    <!-- 原本的排版腳本 -->
     <script src="layout-manager.js"></script>
 
 </body>
