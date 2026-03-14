@@ -1,0 +1,705 @@
+<!-- START OF V65 (LAYOUT FIXED FOR ENGLISH OVERFLOW) -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Oswald:wght@400;500;600&family=Pacifico&display=swap" rel="stylesheet">
+
+<div class="app-shell">
+
+  <!-- CONTROL PANEL -->
+  <div class="control-deck">
+    <div class="deck-header">
+      <h3>/// DATA TERMINAL V65 <span style="font-size:12px; font-weight:400; opacity:1.0; margin-left:10px;">COMMERCIAL</span></h3>
+    </div>
+    
+    <div class="row-2">
+      <div class="input-group"><label>中文姓名</label><input type="text" id="inNameCN" placeholder="林育志" oninput="refreshData()"></div>
+      <div class="input-group"><label>英文姓名</label><input type="text" id="inNameEN" placeholder="Tony Lin" oninput="refreshData()"></div>
+    </div>
+    
+    <div class="row-2">
+      <div class="input-group"><label>日期</label><input type="date" id="inDate" oninput="refreshData()"></div>
+      <div class="input-group"><label>金額 ($)</label><input type="number" id="inAmount" placeholder="12000" oninput="refreshData()"></div>
+    </div>
+    
+    <div class="row-2">
+      <div class="input-group"><label>堂數</label><input type="number" id="inClasses" placeholder="20" oninput="refreshData()"></div>
+      <div class="input-group"><label>分鐘</label><input type="number" id="inMins" placeholder="50" oninput="refreshData()"></div>
+    </div>
+    
+    <div class="row-2">
+      <div class="input-group"><label>中文期限</label><input type="text" id="inExpiry" placeholder="2年" oninput="refreshData()"></div>
+      <div class="input-group"><label>英文期限</label><input type="text" id="inExpiryEN" placeholder="2 Years" oninput="refreshData()"></div>
+    </div>
+
+    <div class="input-group" style="margin-bottom: 10px;">
+        <label>單號</label><input type="text" id="inOrder" placeholder="15TEY" oninput="refreshData()">
+    </div>
+    
+    <div class="input-group"><label>中文時間 (空白鍵自動換行)</label><input type="text" id="inTimeCN" placeholder="週二6pm 週五6pm" oninput="refreshData()"></div>
+    <div class="input-group"><label>英文時間 (Space for new line)</label><input type="text" id="inTimeEN" placeholder="2026.01.10(Sat) 2026.01.11(Sun)" oninput="refreshData()"></div>
+
+    <button onclick="downloadPDF()" class="execute-btn">下載 PDF (版面修正版)</button>
+  </div>
+
+  <!-- PREVIEW AREA -->
+  <div class="preview-viewport">
+    <div id="pdf-container">
+      
+      <!-- === PAGE 1: CHINESE === -->
+      <div class="story-card">
+        <div class="c c1"></div><div class="c c2"></div>
+        
+        <!-- HEADER -->
+        <div class="header-section">
+          <div class="brand-text">
+            <h1 class="cn-title-regular">學費證明</h1>
+            <div class="logo-row">
+              <span class="tony-script">Tony</span>
+              <span class="brand-suffix">線上美語家教</span>
+            </div>
+          </div>
+          
+          <!-- QR Section -->
+          <div class="header-right-group">
+            <div class="qr-code">
+                <img src="https://ik.imagekit.io/lql1uveoc/%E6%88%AA%E5%9C%96%202025-11-20%20%E4%B8%8A%E5%8D%8812.23.24.png" crossorigin="anonymous">
+            </div>
+            <div class="qr-sub-text">https://TonyOnlineEnglish.mydurable.com</div>
+          </div>
+        </div>
+
+        <!-- MAIN GRID -->
+        <div class="layout-grid">
+            <div class="col-left-stack">
+                <div class="ref-black-box">
+                    <div class="top-line-group">
+                        <span class="label-sm text-white">總金額</span>
+                        <span class="currency-inline">NT$</span>
+                    </div>
+                    <div class="amount-large" id="outAmountNumCN">12,000</div>
+                    <div class="triangle-hollow"></div>
+                </div>
+                <div class="ref-border-box name-box-h">
+                    <div class="label-gray">學生姓名</div>
+                    <div class="val-name" id="outNameCN">林育志</div>
+                    <div class="corner-black"></div>
+                </div>
+                <div class="ref-stats-row">
+                    <div class="ref-border-box stat-item">
+                        <div class="stat-label-stack label-gray">
+                            <span>購買</span><span>堂數</span>
+                        </div>
+                        <div class="stat-val" id="outClassesCN">20</div>
+                    </div>
+                    <div class="ref-border-box stat-item">
+                        <div class="stat-label-stack label-gray">
+                            <span>每堂</span><span>(分)</span>
+                        </div>
+                        <div class="stat-val" id="outMinsCN">50</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-right-info">
+                <div class="info-group-right">
+                     <div class="info-line">
+                         <span class="info-l">日期：</span>
+                         <span class="info-v font-mono" id="outDateCN">--</span>
+                     </div>
+                     <div class="info-line">
+                         <span class="info-l">使用期限：</span>
+                         <span class="info-v" id="outExpiryCN">--</span>
+                     </div>
+                     <div class="info-line">
+                         <span class="info-l">上課時間：</span>
+                         <span class="info-v" id="outTimeCN">--</span>
+                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BOTTOM POLICY -->
+        <div class="rules-container">
+            <div class="rule-title-bar">
+                <div class="title-group">
+                    <span class="rule-h">一般請假/調課規範</span>
+                    <span class="black-symbols">⬇︎⬇︎⬇︎⬇︎⬇︎</span>
+                </div>
+                <span class="rule-tag">REF: A-01</span>
+            </div>
+            <div class="rule-row-flex">
+                <div class="r-box r-white">
+                    <div class="r-main">
+                        <span class="r-big">24</span>小時內提出請假/調課
+                    </div>
+                    <div class="r-sub">
+                        <span class="arrow-black">➤</span> 扣除 0.5 堂
+                    </div>
+                </div>
+                <div class="r-box r-black">
+                    <div class="r-main">
+                        <span class="r-big">12</span>小時內提出請假/調課
+                    </div>
+                    <div class="r-sub orange">
+                        <span class="arrow-orange">➤</span> 扣除 1 堂
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-section">
+          <div class="sig-block">
+            <div class="sig-title cn-regular">Tony線上美語家教</div>
+          </div>
+          <div class="footer-meta-row">
+             <span class="order-text number-font">NO. <b id="outOrderCN">15TEY</b></span>
+             <span class="url-text cn-text" style="font-size: 10px; text-align: right; display: block;">詳情請上<br>https://tonyonlineenglish.mydurable.com/regulations</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="html2pdf__page-break"></div>
+
+      <!-- === PAGE 2: ENGLISH === -->
+      <div class="story-card">
+        <div class="c c1"></div><div class="c c2"></div>
+        
+        <div class="header-section">
+          <div class="brand-text">
+            <h1 class="en-title">Tuition Fee Certificate</h1>
+            <div class="logo-row">
+              <span class="tony-script">Tony</span>
+              <span class="brand-suffix en-text" style="font-size: 16px;">Online English Tutoring</span>
+            </div>
+          </div>
+          <div class="qr-code">
+            <img src="https://ik.imagekit.io/lql1uveoc/%E6%88%AA%E5%9C%96%202025-11-20%20%E4%B8%8A%E5%8D%8812.23.24.png" crossorigin="anonymous">
+          </div>
+        </div>
+
+        <div class="layout-grid">
+            <div class="col-left-stack">
+                <div class="ref-black-box">
+                    <div class="top-line-group">
+                        <span class="label-sm text-white">Total Amount</span>
+                        <span class="currency-inline">NT$</span>
+                    </div>
+                    <div class="amount-large" id="outAmountNumEN">12,000</div>
+                    <div class="triangle-hollow"></div>
+                </div>
+                <div class="ref-border-box name-box-h">
+                    <div class="label-gray">Student Name</div>
+                    <div class="val-name" id="outNameEN" style="font-size: 28px;">Tony Lin</div>
+                    <div class="corner-black"></div>
+                </div>
+                <div class="ref-stats-row">
+                    <div class="ref-border-box stat-item">
+                        <div class="stat-label-stack label-gray">
+                            <span>Total</span><span>Sessions</span>
+                        </div>
+                        <div class="stat-val" id="outClassesEN">20</div>
+                    </div>
+                    <div class="ref-border-box stat-item">
+                        <div class="stat-label-stack label-gray">
+                            <span>Mins/</span><span>Class</span>
+                        </div>
+                        <div class="stat-val" id="outMinsEN">50</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-right-info">
+                <div class="info-group-right">
+                     <div class="info-line">
+                         <span class="info-l">Date :</span>
+                         <span class="info-v font-mono" id="outDateEN">--</span>
+                     </div>
+                     <div class="info-line">
+                         <span class="info-l">Validity :</span>
+                         <span class="info-v" id="outExpiryEN">--</span>
+                     </div>
+                     <div class="info-line">
+                         <span class="info-l">Class Time :</span>
+                         <span class="info-v" id="outTimeEN">--</span>
+                     </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="rules-container">
+            <div class="rule-title-bar">
+                <div class="title-group">
+                    <span class="rule-h" style="font-size: 13px; padding: 6px 10px;">General Leave / Rescheduling Policy</span>
+                    <span class="orange-arrows">▼▼▼</span>
+                </div>
+                <span class="rule-tag">REF: A-01</span>
+            </div>
+            <div class="rule-row-flex">
+                
+                <div class="r-box r-white">
+                    <div class="r-main" style="font-size: 16px; white-space: nowrap;">
+                        Notice within <span class="r-big">24</span> hrs
+                    </div>
+                    <div class="r-sub-col">
+                        <div style="white-space: nowrap;">
+                            <span class="arrow-black">➤</span> Deduct 0.5
+                        </div>
+                        <div>Session</div>
+                    </div>
+                </div>
+
+                <div class="r-box r-black">
+                    <div class="r-main" style="font-size: 16px; white-space: nowrap;">
+                        Notice within <span class="r-big">12</span> hrs
+                    </div>
+                    <div class="r-sub-col orange">
+                        <div style="white-space: nowrap;">
+                            <span class="arrow-orange">➤</span> Deduct 1
+                        </div>
+                        <div>Session</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <div class="footer-section">
+          <div class="sig-block">
+            <div class="sig-title en-text">Tony Online English Tutoring</div>
+          </div>
+          <div class="footer-meta-row">
+             <span class="order-text number-font">NO. <b id="outOrderEN">15TEY</b></span>
+             <span class="url-text number-font">TonyOnlineEnglish.mydurable.com</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="html2pdf__page-break"></div>
+
+      <!-- === PAGE 3: SICK LEAVE === -->
+      <div class="story-card airline-theme">
+        <div class="corner c c1"></div><div class="c c2"></div>
+        <div class="geo-stamp">
+          <div class="stamp-inner">
+            <span>VERIFIED</span>
+            <small>SICK LEAVE</small>
+          </div>
+        </div>
+        
+        <div class="header-section">
+          <div class="brand-text">
+            <h1 class="cn-title-regular">病假規範細節</h1>
+            <div class="logo-row">
+               <span class="brand-suffix cn-text">SICK LEAVE POLICY</span>
+               <span class="ticket-tag">REF: B-02</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-grid-p3" style="gap: 10px; position: relative; z-index: 2; margin-top: 20px;">
+          <div style="text-align:center; margin-bottom: 10px;">
+            <span class="neon-badge cn-text">審查核准後</span>
+          </div>
+
+          <div class="border-box padding-box ticket-block" style="background: #fff; margin-bottom: 15px;">
+            <div class="deco-circle"></div>
+            <div class="label cn-text" style="font-size: 22px; margin-bottom: 8px;">上課前，6小時內提出申請</div>
+            <div class="val cn-text" style="font-size: 36px; color:#27ae60;">不扣除堂數</div>
+            <div class="corner-black"></div>
+          </div>
+
+          <div class="black-box-p3 ticket-block" style="padding: 20px; margin-bottom: 15px;">
+             <div class="hazard-line"></div>
+            <div class="amount-label cn-text" style="color:#fff; font-size: 22px; margin-bottom: 8px;">上課前，3小時內提出申請</div>
+            <div class="amount-val" style="font-size: 36px; color: #fff;">扣除 0.5 堂</div>
+          </div>
+
+          <div class="detail-box-p3 border-box" style="background:#f9f9f9; position: relative; padding: 15px;">
+             <div class="bg-grid"></div> 
+             <div class="cn-text" style="text-align:center; font-size:15px; line-height:1.6; color:#000; position:relative; z-index:2;">
+               <p style="margin-bottom: 6px;">以上為因病假而扣堂取消申請規範。<br>申請核准後將以上述規範進行。</p>
+               <p style="margin-bottom: 6px;">請於病假當日後 14 天內點擊下方連結填寫線上申請表。</p>
+               <p style="margin-bottom: 0;">若不便操作，也可傳訊息通知，<br>將提供申請網址。</p>
+             </div>
+          </div>
+
+        </div>
+
+        <div class="footer-section" style="margin-top: auto;">
+           <div style="text-align:center;">
+             <span class="url-text number-font" style="font-size:12px;">https://tonyonlineenglish.mydurable.com/sickleave</span>
+           </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<style>
+  /* === PINK/LAVENDER THEME VARIABLES === */
+  :root {
+      /* Strawberry Milk & Lavender Palette */
+      --primary: #ff9a9e;     /* Pink */
+      --accent: #a29bfe;      /* Lavender */
+      --bg-body: #ffeef0;     /* Pale pink bg */
+      
+      --border-color: #ffdde1;
+      --text-main: #000000;   /* PURE BLACK requested */
+      --radius: 12px;         /* Rounded corners */
+  }
+
+  /* GLOBAL RESET */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg-body); font-family: 'Noto Sans TC', sans-serif; color: #000; }
+
+  /* CONTROLS */
+  .app-shell { display: flex; flex-direction: column; align-items: center; padding: 20px; }
+  .control-deck { 
+      width: 100%; max-width: 450px; 
+      background: #fff; 
+      padding: 25px; 
+      border-radius: 20px; 
+      color: #000; 
+      margin-bottom: 20px; 
+      box-shadow: 0 4px 15px rgba(255, 154, 158, 0.2);
+      border: 2px solid #fff0f3;
+  }
+  .deck-header h3 { color: var(--primary); margin-bottom: 15px; font-family: 'Oswald', sans-serif; border-bottom: 2px solid #ffdde1; padding-bottom:10px; }
+  .row-2 { display: flex; gap: 10px; margin-bottom: 10px; }
+  .input-group { flex: 1; }
+  label { display: block; font-size: 12px; color: #000; margin-bottom: 3px; font-weight: 600; }
+  input { 
+      width: 100%; padding: 10px; 
+      background: #fffafa !important; 
+      color: #000 !important; 
+      border: 1px solid #ffdde1; 
+      font-family: 'Noto Sans TC'; 
+      border-radius: 8px; font-size: 16px; 
+  }
+  .execute-btn { 
+      width: 100%; padding: 12px; 
+      background: var(--primary); 
+      color: #fff; border: none; font-weight: bold; cursor: pointer; margin-top: 10px; border-radius: 20px;
+      transition: background 0.3s;
+      box-shadow: 0 4px 10px rgba(255, 154, 158, 0.4);
+  }
+  .execute-btn:hover { background: #fab1a0; }
+  
+  /* PREVIEW AREA */
+  .preview-viewport { width: 380px; background: transparent; padding: 0; }
+  
+  /* STORY CARD (MAIN SHEET) */
+  .story-card {
+    width: 100%; height: 670px; background: #fff; position: relative; padding: 25px; 
+    display: flex; flex-direction: column; 
+    border: 1px solid #ffdde1; 
+    border-radius: var(--radius); 
+    box-shadow: 0 8px 25px rgba(162, 155, 254, 0.15); /* Soft Lavender Shadow */
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+
+  /* FONTS & COLORS */
+  .cn-text { font-family: 'Noto Sans TC', sans-serif; font-weight: 700; color: #000; } 
+  .cn-regular { font-family: 'Noto Sans TC', sans-serif; font-weight: 400; color: #000; } 
+  .font-mono { font-family: 'Oswald', sans-serif; font-weight: 500; letter-spacing: 0.5px; }
+  .text-white { color: #fff; }
+  .text-orange { color: var(--accent); } 
+  .label-gray { color: #000; font-weight: 700; font-size: 12px; letter-spacing: 1px; } /* FORCE BLACK */
+  .orange { color: var(--accent); } 
+  .blue { color: var(--primary); }
+  .warn { color: #e55039; }
+
+  /* HEADER */
+  .header-section { 
+      display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; 
+      border-bottom: 2px solid var(--primary); 
+      padding-bottom: 8px; 
+  }
+  .cn-title-regular { font-size: 32px; margin-bottom: 0; line-height: 1; color: var(--primary); }
+  .en-title { font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 28px; line-height: 1.1; color: var(--primary); margin-bottom: 0; }
+  .tony-script { font-family: 'Pacifico', cursive; color: var(--primary); font-size: 24px; }
+  .brand-suffix { font-weight: 500; font-size: 16px; color: #000; } /* FORCE BLACK */
+  .en-text { font-family: 'Oswald', sans-serif; font-weight: 500; }
+  
+  /* HEADER RIGHT (QR + URL) */
+  .header-right-group {
+      display: flex; flex-direction: column; align-items: flex-end;
+  }
+  .qr-code { width: 50px; height: 50px; border: 1px solid var(--primary); border-radius: 8px; padding: 2px; }
+  .qr-code img { width: 100%; height: 100%; opacity: 0.9; }
+  .qr-sub-text {
+      font-size: 8px;
+      font-family: 'Oswald', sans-serif;
+      margin-top: 3px;
+      color: #000; /* FORCE BLACK */
+      white-space: nowrap; 
+      letter-spacing: 0.3px;
+      font-weight: 400;
+  }
+
+  /* LAYOUT GRID */
+  .layout-grid { display: flex; gap: 15px; align-items: flex-start; margin-bottom: 15px; }
+  
+  /* FIXED: Reduced flex-basis of left column to give right column more space */
+  .col-left-stack { flex: 1.1; display: flex; flex-direction: column; gap: 8px; }
+  
+  /* 1. Big Color Box */
+  .ref-black-box { 
+    background: linear-gradient(135deg, var(--primary) 0%, #fecfef 100%);
+    padding: 12px; position: relative; 
+    height: 105px; display: flex; flex-direction: column; justify-content: center;
+    border-radius: var(--radius);
+  }
+  .top-line-group { display: flex; align-items: baseline; gap: 6px; margin-bottom: 2px; }
+  .label-sm { font-size: 12px; font-weight: 500; opacity: 0.9; letter-spacing: 1px; color: #fff; }
+  .currency-inline { font-family: 'Oswald'; font-weight: 400; font-size: 24px; color: #fff; line-height: 1; opacity: 0.8; }
+  .amount-large { font-family: 'Oswald'; font-weight: 600; font-size: 48px; color: #fff; letter-spacing: -0.5px; line-height: 1; text-shadow: 1px 1px 0 rgba(0,0,0,0.1); }
+  
+  .triangle-hollow {
+    position: absolute; bottom: 10px; right: 10px;
+    width: 0; height: 0;
+    border-left: 15px solid transparent;
+    border-right: 15px solid transparent;
+    border-bottom: 25px solid #fff; /* White Arrow */
+    opacity: 0.6;
+  }
+  .triangle-hollow:after { display: none; }
+
+  /* 2. Name Box */
+  .ref-border-box { 
+      border: 1px solid var(--border-color); 
+      background: #fdfdfd; position: relative; border-radius: var(--radius); 
+  }
+  .name-box-h { height: 70px; padding: 5px 12px; display: flex; flex-direction: column; justify-content: center; }
+  .val-name { font-size: 28px; font-weight: 500; line-height: 1.1; color: var(--text-main); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  
+  /* Corner Deco */
+  .corner-black { 
+      position: absolute; top: 0; right: 0; width: 12px; height: 12px; 
+      border-top: 4px solid var(--accent); /* Lavender corner */
+      border-right: 4px solid var(--accent); 
+      border-top-right-radius: var(--radius);
+  }
+
+  /* 3. Stats Row */
+  .ref-stats-row { display: flex; gap: 8px; height: 65px; }
+  .stat-item { flex: 1; display: flex; align-items: center; justify-content: space-between; padding: 0 10px; }
+  .stat-label-stack { display: flex; flex-direction: column; font-size: 11px; line-height: 1.1; font-weight: 700; color: #000; text-transform: uppercase; } /* FORCE BLACK */
+  .stat-val { font-family: 'Oswald'; font-weight: 500; font-size: 32px; line-height: 1; color: var(--accent); }
+
+  /* RIGHT COLUMN */
+  /* FIXED: Increased flex basis for right column */
+  .col-right-info { flex: 1; display: flex; flex-direction: column; justify-content: flex-start; padding-top: 5px; }
+  .info-group-right { display: flex; flex-direction: column; gap: 15px; }
+  .info-line { border-bottom: 1px solid #fff0f3; padding-bottom: 5px; }
+  .info-l { display: block; font-size: 14px; font-weight: 700; color: #000; margin-bottom: 5px; } /* FORCE BLACK */
+  
+  /* FIXED: Reduced font size to 16px to prevent overflow */
+  .info-v { 
+    display: block; 
+    font-size: 16px; 
+    text-align: right; 
+    font-weight: 500; 
+    line-height: 1.2; 
+    color: var(--text-main); 
+    word-break: break-word; /* Ensure long dates/times wrap */
+  }
+
+  /* === BOTTOM POLICY === */
+  .rules-container { margin-top: auto; margin-bottom: 10px; }
+  .rule-title-bar { display: flex; justify-content: space-between; margin-bottom: 8px; align-items: flex-end; }
+  
+  .title-group { display: flex; align-items: flex-end; gap: 5px; margin-top: -8px; transform: translateY(-3px); }
+
+  .rule-h { 
+    background: var(--primary); 
+    color: #fff; 
+    font-weight: 500; 
+    padding: 6px 12px; 
+    font-size: 18px; 
+    line-height: 1.1;
+    border-radius: var(--radius);
+  }
+  .orange-arrows { color: var(--accent); font-size: 14px; letter-spacing: -2px; margin-bottom: 2px; line-height: 1; }
+  
+  .black-symbols { 
+    color: var(--primary); 
+    font-size: 14px; 
+    letter-spacing: 2px; 
+    margin-left: 5px;
+    line-height: 1;
+    font-weight: bold;
+  }
+
+  .rule-tag { background: #dcdde1; color: #fff; font-family: 'Oswald'; font-size: 10px; padding: 2px 4px; margin-bottom: 2px; border-radius: 4px;}
+  
+  .rule-row-flex { display: flex; flex-direction: column; gap: 8px; }
+  .r-box { 
+      border: 1px solid #ffdde1; 
+      padding: 8px 15px; 
+      display: flex; align-items: center; justify-content: space-between; 
+      height: 60px; position: relative; 
+      border-radius: var(--radius);
+  }
+  
+  /* White Box: Text should be Black */
+  .r-white { background: #fff; }
+  .r-white .r-main, .r-white .r-sub { color: #000 !important; }
+  
+  /* Purple Box: Text MUST BE WHITE */
+  .r-black { background: var(--accent); color: #fff; border: none; } 
+  .r-black .r-main,
+  .r-black .r-sub,
+  .r-black .r-sub .arrow-orange,
+  .r-black .r-sub-col,
+  .r-black .orange {
+      color: #fff !important;
+  }
+  
+  .r-main { font-size: 16px; font-weight: 500; }
+  .r-big { font-size: 22px; font-weight: 700; margin-right: 2px; }
+  .r-sub { font-size: 18px; font-weight: 500; display: flex; align-items: center; gap: 5px; }
+  
+  .r-sub-col {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end; 
+      line-height: 1.1;
+      font-weight: 500;
+      font-size: 16px;
+      text-align: right;
+  }
+  
+  .arrow-black { color: var(--primary); font-size: 14px; }
+  .arrow-orange { color: #fff; font-size: 14px; } 
+
+  /* FOOTER */
+  .footer-section { width: 100%; margin-top: 5px; }
+  .footer-meta-row { display: flex; justify-content: space-between; border-top: 1px solid #eee; padding-top: 8px; }
+  .order-text { font-size: 11px; color: #000; } /* FORCE BLACK */
+  .url-text { font-size: 10px; font-weight: 500; color: var(--primary); }
+  .number-font { font-family: 'Oswald', sans-serif; font-weight: 500; letter-spacing: 0.5px; }
+
+  /* PAGE 3: Re-skin */
+  .airline-theme { background-color: #fff; }
+  .ticket-block { position: relative; display: flex; flex-direction: column; justify-content: center; border-radius: var(--radius); }
+  
+  .neon-badge {
+    background: var(--primary); 
+    color: #fff;
+    padding: 6px 20px;
+    border-radius: 50px;
+    font-size: 16px;
+    display: inline-block;
+    box-shadow: none; 
+    letter-spacing: 1px;
+    font-weight: 500;
+  }
+
+  .black-box-p3 { 
+      background: var(--primary); 
+      color: #fff; 
+      position: relative; 
+      overflow: hidden; 
+      border-radius: var(--radius);
+  }
+  
+  .detail-box-p3 { border: 1px solid #eee; background: #fffafa; border-radius: var(--radius); }
+  
+  .deco-circle { width: 10px; height: 10px; border: 2px solid #27ae60; border-radius: 50%; position: absolute; top: 10px; right: 10px; opacity: 0.5; }
+  
+  /* Hazard Line - Make it subtle */
+  .hazard-line {
+    position: absolute; bottom: 0; left: 0; width: 100%; height: 4px;
+    background: repeating-linear-gradient(45deg, #fecfef, #fecfef 5px, var(--primary) 5px, var(--primary) 10px);
+    opacity: 0.6;
+  }
+  
+  .bg-grid {
+    position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+    background-image: linear-gradient(#f0f0f0 1px, transparent 1px), linear-gradient(90deg, #f0f0f0 1px, transparent 1px);
+    background-size: 20px 20px; opacity: 0.5; z-index: 1;
+  }
+  
+  .geo-stamp {
+    position: absolute; top: 60px; right: 20px; width: 70px; height: 70px;
+    border: 3px double var(--accent); border-radius: 50%;
+    display: flex; justify-content: center; align-items: center;
+    transform: rotate(-10deg); opacity: 0.6;
+    z-index: 10;
+  }
+  .stamp-inner { text-align: center; color: var(--accent); font-weight: 900; line-height: 1; }
+  .stamp-inner span { font-size: 12px; display: block; }
+  .stamp-inner small { font-size: 8px; }
+
+  /* Page 3 Text colors */
+  .amount-val { color: #fff !important; text-shadow: 1px 1px 0 rgba(0,0,0,0.1); } 
+
+  .html2pdf__page-break { height: 0; }
+</style>
+
+<script>
+  window.onload = function() {
+    const d = new Date();
+    document.getElementById('inDate').value = d.toISOString().split('T')[0];
+    refreshData();
+  }
+
+  function refreshData() {
+    const v = (id, def) => document.getElementById(id).value || def;
+    
+    const rawAmount = v('inAmount', '12000');
+    const fmtAmount = new Intl.NumberFormat('en-US').format(rawAmount);
+    
+    const date = v('inDate', '2025-11-20');
+    const classes = v('inClasses', '20');
+    const mins = v('inMins', '50');
+    const expiry = v('inExpiry', '2年');
+    const order = v('inOrder', '15TEY');
+
+    // P1 (CN)
+    document.getElementById('outNameCN').innerText = v('inNameCN', '林育志');
+    
+    let timeCN = v('inTimeCN', '每週一 8pm');
+    document.getElementById('outTimeCN').innerHTML = timeCN.replace(/\s+/g, '<br>');
+
+    document.getElementById('outAmountNumCN').innerText = fmtAmount; 
+    document.getElementById('outOrderCN').innerText = order;
+    document.getElementById('outClassesCN').innerText = classes;
+    document.getElementById('outMinsCN').innerText = mins;
+    document.getElementById('outDateCN').innerText = date;
+    document.getElementById('outExpiryCN').innerText = expiry;
+
+    // P2 (EN)
+    document.getElementById('outNameEN').innerText = v('inNameEN', 'Tony Lin');
+    
+    let timeEN = v('inTimeEN', '8pm, Mondays');
+    document.getElementById('outTimeEN').innerHTML = timeEN.replace(/\s+/g, '<br>');
+
+    document.getElementById('outAmountNumEN').innerText = fmtAmount; 
+    document.getElementById('outOrderEN').innerText = order;
+    document.getElementById('outClassesEN').innerText = classes;
+    document.getElementById('outMinsEN').innerText = mins;
+    document.getElementById('outDateEN').innerText = date;
+    
+    let exEn = v('inExpiryEN', '2 Years');
+    document.getElementById('outExpiryEN').innerText = exEn;
+  }
+
+  function downloadPDF() {
+    const element = document.getElementById('pdf-container');
+    const nameEN = document.getElementById('inNameEN').value || "Student";
+    
+    const opt = {
+      margin:       0,
+      filename:     `${nameEN} Tuition Certificate.pdf`,
+      image:        { type: 'jpeg', quality: 1.0 },
+      html2canvas:  { scale: 4, useCORS: true, scrollY: 0 },
+      jsPDF:        { unit: 'mm', format: [108, 192], orientation: 'portrait' }
+    };
+    html2pdf().set(opt).from(element).save();
+  }
+</script>
+<!-- END OF V65 -->
