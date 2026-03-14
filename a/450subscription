@@ -1,0 +1,141 @@
+<style>
+  /* 基礎容器 */
+  .sub-container {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    margin: 20px 0;
+  }
+
+  .sub-table {
+    border-collapse: collapse;
+    margin: 10px auto;
+    font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+    width: 100%;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
+    overflow: hidden;
+    border: 1px solid #ddd;
+    table-layout: fixed;
+  }
+
+  .sub-table thead tr {
+    background: linear-gradient(135deg, #8a4fff, #6b38e8);
+    color: #ffffff;
+  }
+
+  /* 為了 GIF 定位，儲存格需設為相對定位 */
+  .relative-cell {
+    position: relative;
+    vertical-align: middle;
+  }
+
+  /* GIF 動畫樣式 */
+  .bonus-gif {
+    position: absolute;
+    top: 2px;
+    left: 2px;
+    z-index: 1;
+  }
+
+  /* --- 手機版設定 (預設) --- */
+  .sub-table th { padding: 12px 5px; font-size: 15px; }
+  .sub-table td { padding: 30px 5px 15px 5px; text-align: center; border-bottom: 1px solid #eee; border-right: 1px solid #eee; }
+  
+  .price-text { font-weight: bold; font-size: 16px; color: #333; }
+  .class-count { font-size: 15px; color: #666; font-weight: bold; }
+  .points-text { font-size: 18px; font-weight: 900; color: #8a4fff; }
+
+  /* 手機版 GIF 大小 */
+  .bonus-gif { width: 35px; height: auto; }
+
+  .promo-note {
+    background-color: #f6f0ff;
+    color: #5a2caf;
+    font-weight: bold;
+    font-size: 14px;
+    padding: 15px !important;
+  }
+
+  /* 手機版強制換行工具 */
+  .mobile-br { display: block; height: 5px; }
+
+  /* --- 平板尺寸 (min-width: 768px) --- */
+  @media screen and (min-width: 768px) {
+    .sub-table th { font-size: 22px; padding: 20px; }
+    .sub-table td { padding: 50px 10px 25px 10px; }
+    .price-text { font-size: 24px; }
+    .class-count { font-size: 22px; }
+    .points-text { font-size: 28px; }
+    .promo-note { font-size: 18px; }
+    
+    /* 平板版 GIF 大小 */
+    .bonus-gif { width: 55px; top: 5px; left: 5px; }
+    .mobile-br { display: none; } /* 平板以上不換行 */
+  }
+
+  /* --- 桌面巨大版 (min-width: 1200px) --- */
+  @media screen and (min-width: 1200px) {
+    .sub-table th { font-size: 32px; padding: 35px; }
+    .sub-table td { padding: 80px 15px 40px 15px; }
+    .price-text { font-size: 40px; }
+    .class-count { font-size: 36px; }
+    .points-text { font-size: 55px; }
+    .promo-note { font-size: 28px; padding: 30px !important; }
+    
+    /* 桌面版 GIF 大小 */
+    .bonus-gif { width: 90px; top: 10px; left: 10px; }
+  }
+
+  .sub-table td:last-child { border-right: none; }
+</style>
+
+<div class="sub-container">
+  <table class="sub-table">
+    <thead>
+      <tr>
+        <th>方案金額</th>
+        <th>預計堂數/450</th>
+        <th>獲得點數</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="price-text">NT$13,500</td>
+        <td class="class-count">約 30 堂課</td>
+        <td class="points-text">13,500 點</td>
+      </tr>
+      <tr>
+        <td class="price-text">NT$18,000</td>
+        <td class="class-count">約 41 堂課</td>
+        <td class="points-text relative-cell">
+          <img src="https://ik.imagekit.io/lql1uveoc/%E6%9C%83%E5%93%A1450/2026.%20%E6%96%B0%E5%A2%9E18000.36000/coupon.gif" class="bonus-gif">
+          18,450 點
+        </td>
+      </tr>
+      <tr>
+        <td class="price-text">NT$27,000</td>
+        <td class="class-count">約 62 堂課</td>
+        <td class="points-text relative-cell">
+          <img src="https://ik.imagekit.io/lql1uveoc/%E6%9C%83%E5%93%A1450/2026.%20%E6%96%B0%E5%A2%9E18000.36000/coupon.gif" class="bonus-gif">
+          27,900 點
+        </td>
+      </tr>
+      <tr>
+        <td class="price-text" style="color:#e63946;">NT$36,000</td>
+        <td class="class-count">約 85 堂課</td>
+        <td class="points-text relative-cell" style="color:#e63946;">
+          <img src="https://ik.imagekit.io/lql1uveoc/%E6%9C%83%E5%93%A1450/2026.%20%E6%96%B0%E5%A2%9E18000.36000/coupon.gif" class="bonus-gif">
+          38,250 點
+        </td>
+      </tr>
+      <tr>
+        <td colspan="3" class="promo-note">
+          🎁 優惠：一次購買兩期<div class="mobile-br"></div>贈送兩堂課(900點) 或 五堂課(2250點)
+          <br>
+          <span style="font-size: 0.8em; font-weight: normal; opacity: 0.8;">(1-1 每堂 50 分鐘)</span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
