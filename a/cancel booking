@@ -1,0 +1,86 @@
+<!-- CSS: 轉圈圈動畫樣式 -->
+<style>
+    /* 轉圈圈容器，讓它置中 */
+    #loading-spinner {
+        display: none; /* 預設隱藏 */
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 300px; /* 轉圈圈顯示時的高度，可自行調整 */
+        width: 100%;
+        font-family: sans-serif;
+        color: #666;
+    }
+
+    /* 轉圈圈本體 */
+    .loader {
+        border: 8px solid #f3f3f3; /* 灰色底 */
+        border-top: 8px solid #FF9900; /* 【已修改】 亮光橘色轉動部分 */
+        border-radius: 50%;
+        width: 50px;
+        height: 50px;
+        animation: spin 1s linear infinite;
+        margin-bottom: 15px;
+    }
+
+    /* 動畫定義 */
+    @keyframes spin {
+        0% { transform: rotate(0deg); }
+        100% { transform: rotate(360deg); }
+    }
+</style>
+
+<!-- HTML: 載入動畫 (預設隱藏) -->
+<div id="loading-spinner">
+    <div class="loader"></div>
+    <div>資料讀取中，請稍候...</div>
+</div>
+
+<!-- 這裡的寬高請您依照 Durable 網站的排版調整，特別是 min-height -->
+<iframe 
+    id="cancellation-iframe"
+    width="100%" 
+    height="1000px" 
+    frameborder="0"
+    style="border: none; overflow: hidden; min-height: 1000px; display: none;">
+</iframe>
+
+<script>
+    // 1. 取得 Apps Script 需要的參數 (action, eid, ts, confirm)
+    const params = new URLSearchParams(window.location.search);
+    const action = params.get('action'); 
+    const eid = params.get('eid'); 
+    const ts = params.get('ts');
+    const confirm = params.get('confirm');
+    
+    // 2. 只有當取消參數存在時才設定 iframe
+    if (action === 'cancel' && eid && ts) {
+        const iframe = document.getElementById('cancellation-iframe');
+        const spinner = document.getElementById('loading-spinner');
+        
+        // 【載入時】 先顯示轉圈圈
+        spinner.style.display = 'flex';
+
+        // **【重要】** 這是您的 Apps Script 網址 
+        const baseUrl = 'https://script.google.com/macros/s/AKfycbyWvhW6fp_ohPEvPK226KtNiQLCyAVMl77zV0Hq0k_TcEk3F1ni9qVcJystGUovVjTMGQ/exec';
+        
+        let fullUrl = `${baseUrl}?action=${action}&eid=${eid}&ts=${ts}`;
+        if (confirm) {
+            fullUrl += `&confirm=${confirm}`;
+        }
+        
+        // 【載入完成】 監聽 iframe 載入完成事件
+        iframe.onload = function() {
+            // 載入完成後：隱藏轉圈圈，顯示 iframe
+            spinner.style.display = 'none';
+            iframe.style.display = 'block';
+        };
+
+        // 設定 Iframe 來源 (這會觸發載入)
+        iframe.src = fullUrl;
+
+    } else {
+        // 如果網址沒有帶取消參數，顯示一個訊息
+        document.body.innerHTML = '<div style="font-family: sans-serif; text-align: center; padding: 50px;"><h1>無效或不完整的取消連結。</h1><p>請從您的預約確認信中點擊 [取消預約] 連結。</p></div>';
+    }
+</script>
