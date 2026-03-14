@@ -1,0 +1,671 @@
+<!-- START OF V69 (COMMERCIAL STYLE) -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Oswald:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<div class="app-shell">
+
+  <!-- CONTROL PANEL -->
+  <div class="control-deck">
+    <div class="deck-header">
+      <h3>/// DATA TERMINAL V69 (PRO)</h3>
+    </div>
+    
+    <div class="row-2">
+      <div class="input-group"><label>中文姓名</label><input type="text" id="inNameCN" placeholder="林育志" oninput="refreshData()"></div>
+      <div class="input-group"><label>英文姓名</label><input type="text" id="inNameEN" placeholder="Tony Lin" oninput="refreshData()"></div>
+    </div>
+    
+    <div class="row-2">
+      <div class="input-group"><label>日期</label><input type="date" id="inDate" oninput="refreshData()"></div>
+      <div class="input-group"><label>金額 ($)</label><input type="number" id="inAmount" placeholder="12000" oninput="refreshData()"></div>
+    </div>
+    
+    <div class="row-2">
+      <div class="input-group"><label>預估堂數</label><input type="number" id="inClasses" placeholder="20" oninput="refreshData()"></div>
+      <div class="input-group"><label>每堂分鐘</label><input type="number" id="inMins" placeholder="50" oninput="refreshData()"></div>
+    </div>
+
+    <!-- POINTS INPUT -->
+    <div class="input-group" style="margin-bottom: 10px;">
+        <label>課堂點數 (Points)</label><input type="text" id="inPoints" placeholder="900" oninput="refreshData()">
+    </div>
+    
+    <div class="row-2">
+      <div class="input-group"><label>中文期限</label><input type="text" id="inExpiry" placeholder="2年" oninput="refreshData()"></div>
+      <div class="input-group"><label>英文期限</label><input type="text" id="inExpiryEN" placeholder="2 Years" oninput="refreshData()"></div>
+    </div>
+
+    <div class="input-group" style="margin-bottom: 10px;">
+        <label>單號</label><input type="text" id="inOrder" placeholder="15TEY" oninput="refreshData()">
+    </div>
+    
+    <div class="input-group"><label>中文時間 (空白鍵自動換行)</label><input type="text" id="inTimeCN" placeholder="週二6pm 週五6pm" oninput="refreshData()"></div>
+    <div class="input-group"><label>英文時間 (Space for new line)</label><input type="text" id="inTimeEN" placeholder="6pm,Mon 6pm,Fri" oninput="refreshData()"></div>
+
+    <button onclick="downloadPDF()" class="execute-btn">下載 PDF (商業版)</button>
+  </div>
+
+  <!-- PREVIEW AREA -->
+  <div class="preview-viewport">
+    <div id="pdf-container">
+      
+      <!-- === PAGE 1: CHINESE === -->
+      <div class="story-card">
+        
+        <!-- HEADER -->
+        <div class="header-section">
+          <div class="brand-text">
+            <h1 class="cn-title-regular">學費證明</h1>
+            <div class="logo-row">
+              <span class="tony-brand">TONY</span>
+              <span class="brand-suffix">| 線上美語家教</span>
+            </div>
+          </div>
+          
+          <div class="header-right-group">
+            <div class="qr-code">
+                <img src="https://ik.imagekit.io/lql1uveoc/%E6%88%AA%E5%9C%96%202025-11-20%20%E4%B8%8A%E5%8D%8812.23.24.png" crossorigin="anonymous">
+            </div>
+            <div class="qr-sub-text">OFFICIAL WEBSITE</div>
+          </div>
+        </div>
+
+        <!-- MAIN GRID -->
+        <div class="layout-grid">
+            <div class="col-left-stack">
+                <!-- PRICE BOX -->
+                <div class="pro-panel dark-panel">
+                    <div class="top-line-group">
+                        <span class="label-sm text-gold">總金額 TOTAL</span>
+                    </div>
+                    <div class="amount-group">
+                        <span class="currency-inline">NT$</span>
+                        <span class="amount-large" id="outAmountNumCN">12,000</span>
+                    </div>
+                </div>
+
+                <!-- NAME BOX -->
+                <div class="pro-panel light-panel name-box-h">
+                    <div class="label-sub">學生姓名 Student Name</div>
+                    <div class="val-name" id="outNameCN">林育志</div>
+                </div>
+                
+                <!-- STATS ROW -->
+                <div class="ref-stats-row">
+                    <div class="pro-panel light-panel stat-item">
+                        <div class="label-sub">預估堂數</div>
+                        <div class="stat-val" id="outClassesCN">20</div>
+                    </div>
+                    <div class="pro-panel light-panel stat-item">
+                        <div class="label-sub">每堂分鐘</div>
+                        <div class="stat-val" id="outMinsCN">50</div>
+                    </div>
+                </div>
+
+                <!-- POINTS BAR -->
+                <div class="pro-panel light-panel points-row">
+                    <div class="label-sub">課堂點數 Points</div>
+                    <div class="stat-val text-navy" style="font-size: 24px;" id="outPointsCN">900</div>
+                </div>
+
+            </div>
+            
+            <!-- INFO COLUMN -->
+            <div class="col-right-info">
+                <div class="info-group-right">
+                     <div class="info-line">
+                         <span class="info-l">日期 Date</span>
+                         <span class="info-v font-mono" id="outDateCN">--</span>
+                     </div>
+                     <div class="info-line">
+                         <span class="info-l">期限 Expiry</span>
+                         <span class="info-v" id="outExpiryCN">--</span>
+                     </div>
+                     <div class="info-line">
+                         <span class="info-l">上課時間 Time</span>
+                         <span class="info-v time-text" id="outTimeCN">--</span>
+                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BOTTOM POLICY -->
+        <div class="rules-container">
+            <div class="rule-title-bar">
+                <span class="rule-h">請假 / 調課規範 (Policy)</span>
+                <span class="rule-ref">REF: A-01</span>
+            </div>
+            <div class="rule-row-flex">
+                <div class="r-box r-light">
+                    <div class="r-main">
+                        <span class="r-big">24</span>小時內提出
+                    </div>
+                    <div class="r-sub text-gray">
+                        扣除 0.5 堂
+                    </div>
+                </div>
+                <div class="r-box r-dark">
+                    <div class="r-main">
+                        <span class="r-big">12</span>小時內提出
+                    </div>
+                    <div class="r-sub text-gold">
+                        扣除 1 堂
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-section">
+          <div class="footer-line"></div>
+          <div class="footer-meta-row">
+             <div class="sig-block">
+                <div class="sig-title">Tony Online English</div>
+                <div class="url-text">https://tonyonlineenglish.mydurable.com</div>
+             </div>
+             <span class="order-text number-font">NO. <b id="outOrderCN">15TEY</b></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="html2pdf__page-break"></div>
+
+      <!-- === PAGE 2: ENGLISH === -->
+      <div class="story-card">
+        
+        <div class="header-section">
+          <div class="brand-text">
+            <h1 class="en-title">Tuition Certificate</h1>
+            <div class="logo-row">
+              <span class="tony-brand">TONY</span>
+              <span class="brand-suffix">| Online English Tutoring</span>
+            </div>
+          </div>
+          <div class="header-right-group">
+            <div class="qr-code">
+              <img src="https://ik.imagekit.io/lql1uveoc/%E6%88%AA%E5%9C%96%202025-11-20%20%E4%B8%8A%E5%8D%8812.23.24.png" crossorigin="anonymous">
+            </div>
+             <div class="qr-sub-text">OFFICIAL WEBSITE</div>
+          </div>
+        </div>
+
+        <div class="layout-grid">
+            <div class="col-left-stack">
+                <div class="pro-panel dark-panel">
+                    <div class="top-line-group">
+                        <span class="label-sm text-gold">Total Amount</span>
+                    </div>
+                    <div class="amount-group">
+                        <span class="currency-inline">NT$</span>
+                        <span class="amount-large" id="outAmountNumEN">12,000</span>
+                    </div>
+                </div>
+                
+                <div class="pro-panel light-panel name-box-h">
+                    <div class="label-sub">Student Name</div>
+                    <div class="val-name" id="outNameEN" style="font-size: 24px;">Tony Lin</div>
+                </div>
+                
+                <div class="ref-stats-row">
+                    <div class="pro-panel light-panel stat-item">
+                        <div class="label-sub">Est. Sessions</div>
+                        <div class="stat-val" id="outClassesEN">20</div>
+                    </div>
+                    <div class="pro-panel light-panel stat-item">
+                        <div class="label-sub">Mins / Class</div>
+                        <div class="stat-val" id="outMinsEN">50</div>
+                    </div>
+                </div>
+
+                 <div class="pro-panel light-panel points-row">
+                    <div class="label-sub">Class Points</div>
+                    <div class="stat-val text-navy" style="font-size: 24px;" id="outPointsEN">900</div>
+                </div>
+            </div>
+            
+            <div class="col-right-info">
+                <div class="info-group-right">
+                     <div class="info-line">
+                         <span class="info-l">Date</span>
+                         <span class="info-v font-mono" id="outDateEN">--</span>
+                     </div>
+                     <div class="info-line">
+                         <span class="info-l">Validity</span>
+                         <span class="info-v" id="outExpiryEN">--</span>
+                     </div>
+                     <div class="info-line">
+                         <span class="info-l">Class Time</span>
+                         <span class="info-v time-text" id="outTimeEN">--</span>
+                     </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="rules-container">
+            <div class="rule-title-bar">
+                <span class="rule-h">Rescheduling Policy</span>
+                <span class="rule-ref">REF: A-01</span>
+            </div>
+            <div class="rule-row-flex">
+                <div class="r-box r-light">
+                    <div class="r-main">
+                        Notice within <span class="r-big">24</span> hrs
+                    </div>
+                    <div class="r-sub text-gray">
+                        Deduct 0.5 Session
+                    </div>
+                </div>
+                <div class="r-box r-dark">
+                    <div class="r-main">
+                         Notice within <span class="r-big">12</span> hrs
+                    </div>
+                    <div class="r-sub text-gold">
+                        Deduct 1 Session
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-section">
+          <div class="footer-line"></div>
+          <div class="footer-meta-row">
+             <div class="sig-block">
+                <div class="sig-title">Tony Online English Tutoring</div>
+                <div class="url-text">TonyOnlineEnglish.mydurable.com</div>
+             </div>
+             <span class="order-text number-font">NO. <b id="outOrderEN">15TEY</b></span>
+          </div>
+        </div>
+      </div>
+
+      <div class="html2pdf__page-break"></div>
+
+      <!-- === PAGE 3: SICK LEAVE (Corporate Style) === -->
+      <div class="story-card corporate-theme">
+        
+        <div class="header-section">
+          <div class="brand-text">
+            <h1 class="cn-title-regular">病假規範細節</h1>
+            <div class="logo-row">
+               <span class="brand-suffix">SICK LEAVE POLICY</span>
+            </div>
+          </div>
+          <div class="header-right-group">
+               <span class="rule-ref">REF: B-02</span>
+          </div>
+        </div>
+
+        <div class="info-grid-p3" style="margin-top: 30px;">
+          
+          <div class="status-badge-row">
+            <span class="status-badge">須經審查核准 Subject to Approval</span>
+          </div>
+
+          <div class="pro-panel light-panel ticket-block" style="margin-bottom: 15px; border-left: 5px solid #27ae60;">
+            <div class="label-sub" style="font-size: 14px;">上課前，6小時內提出申請</div>
+            <div class="val text-green" style="font-size: 28px; font-weight:700;">不扣除堂數</div>
+          </div>
+
+          <div class="pro-panel dark-panel ticket-block" style="margin-bottom: 25px; border-left: 5px solid #c5a065;">
+            <div class="label-sub text-gold" style="font-size: 14px;">上課前，3小時內提出申請</div>
+            <div class="val text-white" style="font-size: 28px; font-weight:700;">扣除 0.5 堂</div>
+          </div>
+
+          <div class="detail-box-p3" style="background:#f8f9fa; padding: 20px; border-radius: 4px; border: 1px solid #eee;">
+             <div class="cn-text" style="font-size:14px; line-height:1.8; color:#555;">
+               <p style="margin-bottom: 8px;"><strong>規範說明：</strong></p>
+               <ul style="padding-left: 20px; margin-bottom: 15px;">
+                   <li>以上為因病假而扣堂取消申請規範。</li>
+                   <li>申請核准後將以上述規範進行結算。</li>
+                   <li>請於病假當日後 14 天內點擊下方連結填寫線上申請表。</li>
+               </ul>
+               <p style="margin-bottom: 0; color: #7f8c8d; font-size: 13px;">若不便操作，也可傳訊息通知，將提供申請網址。</p>
+             </div>
+          </div>
+
+        </div>
+
+        <div class="footer-section" style="margin-top: auto;">
+           <div class="footer-line"></div>
+           <div style="display:flex; justify-content:space-between; align-items:center;">
+             <span class="url-text" style="color:#7f8c8d;">Tony Online English</span>
+             <span class="url-text number-font">tonyonlineenglish.mydurable.com/sickleave</span>
+           </div>
+        </div>
+      </div>
+      
+      <div class="html2pdf__page-break"></div>
+      
+      <!-- === PAGE 4: SUBSCRIPTION POLICY (Corporate Style) === -->
+      <div class="story-card">
+        
+        <!-- HEADER -->
+        <div class="header-section">
+          <div class="brand-text">
+            <h1 class="cn-title-regular">訂閱制方案</h1>
+            <div class="logo-row">
+              <span class="brand-suffix">SUBSCRIPTION POLICY</span>
+            </div>
+          </div>
+          <div class="header-right-group">
+            <div class="qr-code">
+                <img src="https://ik.imagekit.io/lql1uveoc/%E6%88%AA%E5%9C%96%202025-12-04%20%E4%B8%8A%E5%8D%8812.18.08.png" crossorigin="anonymous">
+            </div>
+            <div class="qr-sub-text">SCAN FOR DETAILS</div>
+          </div>
+        </div>
+
+        <!-- SUBSCRIPTION CONTENT -->
+        <div class="sub-container" style="margin-top: 20px;">
+            
+            <!-- MAIN RULE: 900 Points -->
+            <div class="pro-panel dark-panel sub-highlight">
+                <div style="flex:1;">
+                    <div class="sub-title text-gold">每週固定訂閱扣除</div>
+                    <div class="sub-desc text-white" style="opacity: 0.8;">當周沒有上課也會扣除</div>
+                </div>
+                <div class="sub-val text-white">900 點</div>
+            </div>
+
+            <!-- RULES LIST -->
+            <div class="sub-list-grid">
+                
+                <!-- Time -->
+                <div class="sub-item-row">
+                    <div class="sub-label">適用上課時段</div>
+                    <div class="sub-content">
+                        週一～週五 (平日)<br>
+                        <span class="font-mono text-navy">10:00am ~ 5:00pm</span> 前
+                    </div>
+                </div>
+
+                <!-- Offer -->
+                <div class="sub-item-row">
+                    <div class="sub-label">訂閱優惠</div>
+                    <div class="sub-content">
+                        每堂 <span class="text-navy font-mono" style="font-size: 20px;">450</span> 點
+                    </div>
+                </div>
+
+                <!-- Extra Class Cost -->
+                <div class="sub-item-row">
+                    <div class="sub-label">加課 / 假日</div>
+                    <div class="sub-content">
+                        第三堂/其他時段/國定假日：每堂 <span class="text-navy font-mono">550</span> 點
+                    </div>
+                </div>
+
+                 <!-- Plan Switch -->
+                 <div class="sub-item-row">
+                    <div class="sub-label">期間轉方案</div>
+                    <div class="sub-content">
+                        改為非訂閱制，每堂 <span class="text-navy font-mono">550</span> 點
+                    </div>
+                </div>
+
+                <!-- Flexibility -->
+                <div class="sub-item-row">
+                    <div class="sub-label">權益與假期</div>
+                    <div class="sub-content sm-text text-gray">
+                        • 課程期間擁有『兩次』暫停權益 (不限時長)<br>
+                        • 2025-2026 連假當週不自動扣點 (可預約)
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- SPECIAL OFFER -->
+             <div class="special-offer-box">
+                <div class="offer-stars">SPECIAL OFFER</div>
+                <div class="offer-text cn-text">一次購買兩期 <span class="highlight-text">贈送 900 點</span></div>
+             </div>
+
+        </div>
+
+        <div class="footer-section">
+          <div class="footer-line"></div>
+          <div class="footer-meta-row">
+             <div class="sig-block">
+                <div class="sig-title">Tony Online English</div>
+             </div>
+             <span class="order-text number-font">NO. <b id="outOrderSub">15TEY</b></span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<style>
+  /* GLOBAL RESET & FONTS */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #eef2f5; font-family: 'Noto Sans TC', sans-serif; color: #2c3e50; }
+
+  /* COLORS */
+  :root {
+      --primary-navy: #1e293b;
+      --secondary-gray: #64748b;
+      --accent-gold: #c5a065;
+      --light-bg: #f8fafc;
+      --border-color: #e2e8f0;
+  }
+
+  /* CONTROLS (UNCHANGED FUNCTIONALITY, JUST STYLE) */
+  .app-shell { display: flex; flex-direction: column; align-items: center; padding: 20px; }
+  .control-deck { width: 100%; max-width: 450px; background: #fff; padding: 25px; border-radius: 8px; color: #333; margin-bottom: 20px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); border: 1px solid #ddd; }
+  .deck-header h3 { color: #1e293b; margin-bottom: 20px; font-family: 'Oswald', sans-serif; letter-spacing: 1px; font-size: 16px; border-bottom: 2px solid #1e293b; padding-bottom: 10px; }
+  .row-2 { display: flex; gap: 15px; margin-bottom: 15px; }
+  .input-group { flex: 1; }
+  label { display: block; font-size: 12px; color: #64748b; margin-bottom: 5px; font-weight: 600; }
+  input { width: 100%; padding: 10px; background: #f8fafc !important; color: #333 !important; border: 1px solid #cbd5e1; font-family: 'Noto Sans TC'; border-radius: 4px; font-size: 14px; transition: 0.2s; }
+  input:focus { border-color: #1e293b; outline: none; }
+  .execute-btn { width: 100%; padding: 12px; background: #1e293b; color: #fff; border: none; font-weight: 600; cursor: pointer; margin-top: 15px; border-radius: 4px; letter-spacing: 0.5px; transition: 0.2s; }
+  .execute-btn:hover { background: #334155; }
+  
+  /* PREVIEW VIEWPORT */
+  .preview-viewport { width: 380px; background: #dfe6e9; padding: 0; display:flex; justify-content:center; }
+  #pdf-container { width: 100%; }
+
+  /* === CARD DESIGN (COMMERCIAL) === */
+  .story-card {
+    width: 100%; height: 670px; background: #fff; position: relative; padding: 30px 25px; 
+    display: flex; flex-direction: column; overflow: hidden; margin-bottom: 20px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  }
+
+  /* TYPOGRAPHY */
+  .cn-text { font-family: 'Noto Sans TC', sans-serif; font-weight: 700; } 
+  .cn-title-regular { font-size: 24px; font-weight: 700; margin-bottom: 4px; color: #1e293b; letter-spacing: -0.5px; }
+  .en-title { font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 24px; color: #1e293b; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+  
+  .tony-brand { font-family: 'Oswald', sans-serif; font-weight: 700; color: #1e293b; font-size: 18px; letter-spacing: 1px; }
+  .brand-suffix { font-weight: 400; font-size: 12px; color: #64748b; letter-spacing: 0.5px; margin-left: 5px; }
+  
+  .font-mono { font-family: 'Oswald', sans-serif; font-weight: 500; letter-spacing: 0.5px; }
+  .text-white { color: #fff; }
+  .text-gold { color: #c5a065; }
+  .text-navy { color: #1e293b; }
+  .text-gray { color: #64748b; }
+  .text-green { color: #27ae60; }
+  
+  /* HEADER */
+  .header-section { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 25px; }
+  .header-right-group { display: flex; flex-direction: column; align-items: flex-end; }
+  .qr-code { width: 45px; height: 45px; border: 1px solid #e2e8f0; padding: 2px; }
+  .qr-code img { width: 100%; height: 100%; display:block; }
+  .qr-sub-text { font-size: 7px; font-family: 'Oswald', sans-serif; margin-top: 4px; color: #94a3b8; letter-spacing: 1px; }
+
+  /* LAYOUT GRID */
+  .layout-grid { display: flex; gap: 20px; align-items: flex-start; margin-bottom: 20px; flex: 1; }
+  .col-left-stack { flex: 1.3; display: flex; flex-direction: column; gap: 10px; }
+  
+  /* PRO PANELS (Replaces styling of old boxes) */
+  .pro-panel { border-radius: 4px; padding: 12px; display: flex; flex-direction: column; justify-content: center; position: relative; }
+  .dark-panel { background: #1e293b; color: #fff; height: 95px; }
+  .light-panel { background: #f8fafc; border: 1px solid #e2e8f0; }
+
+  /* Price Box Content */
+  .top-line-group { display: flex; align-items: center; gap: 6px; margin-bottom: 0px; }
+  .label-sm { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; opacity: 0.9; }
+  
+  .amount-group { display: flex; align-items: baseline; gap: 4px; }
+  .currency-inline { font-family: 'Oswald'; font-weight: 400; font-size: 16px; color: #94a3b8; }
+  .amount-large { font-family: 'Oswald'; font-weight: 500; font-size: 38px; color: #fff; letter-spacing: 0.5px; }
+  
+  /* Name Box */
+  .name-box-h { height: 70px; }
+  .label-sub { font-size: 10px; color: #94a3b8; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
+  .val-name { font-size: 22px; font-weight: 500; color: #1e293b; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  /* Stats Row */
+  .ref-stats-row { display: flex; gap: 10px; }
+  .stat-item { flex: 1; padding: 8px 10px; height: 65px; justify-content: space-between; }
+  .stat-val { font-family: 'Oswald'; font-weight: 500; font-size: 28px; color: #1e293b; line-height: 1.1; }
+
+  /* Points Row */
+  .points-row { height: 50px; flex-direction: row; justify-content: space-between; align-items: center; }
+
+  /* RIGHT COLUMN */
+  .col-right-info { flex: 1; display: flex; flex-direction: column; padding-top: 5px; }
+  .info-group-right { display: flex; flex-direction: column; gap: 18px; }
+  .info-line { display: flex; flex-direction: column; border-bottom: 1px solid #e2e8f0; padding-bottom: 8px; }
+  .info-l { font-size: 10px; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 4px; }
+  .info-v { font-size: 18px; text-align: left; font-weight: 500; color: #334155; }
+  .time-text { font-size: 15px; line-height: 1.3; }
+
+  /* === BOTTOM POLICY === */
+  .rules-container { margin-top: auto; margin-bottom: 15px; background: #fff; }
+  .rule-title-bar { display: flex; justify-content: space-between; margin-bottom: 10px; align-items: center; border-bottom: 1px solid #1e293b; padding-bottom: 5px; }
+  
+  .rule-h { color: #1e293b; font-weight: 700; font-size: 13px; text-transform: uppercase; letter-spacing: 0.5px; }
+  .rule-ref { background: #f1f5f9; color: #64748b; font-size: 9px; padding: 2px 6px; border-radius: 2px; font-weight: 600; }
+  
+  .rule-row-flex { display: flex; gap: 10px; }
+  .r-box { flex: 1; border-radius: 4px; padding: 10px 12px; display: flex; flex-direction: column; justify-content: center; height: 60px; }
+  .r-light { background: #f8fafc; border: 1px solid #e2e8f0; }
+  .r-dark { background: #1e293b; color: #fff; }
+  
+  .r-main { font-size: 12px; font-weight: 600; margin-bottom: 2px; }
+  .r-big { font-size: 18px; font-weight: 700; font-family: 'Oswald'; margin: 0 2px; }
+  .r-sub { font-size: 12px; font-weight: 500; }
+
+  /* FOOTER */
+  .footer-section { width: 100%; margin-top: 10px; }
+  .footer-line { width: 100%; height: 1px; background: #e2e8f0; margin-bottom: 8px; }
+  .footer-meta-row { display: flex; justify-content: space-between; align-items: flex-end; }
+  .sig-title { font-size: 12px; font-weight: 700; color: #1e293b; }
+  .url-text { font-size: 9px; color: #94a3b8; font-family: 'Oswald'; letter-spacing: 0.5px; }
+  .order-text { font-size: 11px; color: #64748b; }
+  .number-font { font-family: 'Oswald', sans-serif; font-weight: 500; letter-spacing: 0.5px; }
+
+  /* PAGE 3: SICK LEAVE */
+  .corporate-theme { background-color: #fff; }
+  .status-badge-row { text-align: center; margin-bottom: 20px; }
+  .status-badge { background: #e2e8f0; color: #475569; font-size: 11px; padding: 6px 15px; border-radius: 20px; font-weight: 600; letter-spacing: 0.5px; }
+  
+  /* PAGE 4: SUBSCRIPTION */
+  .sub-container { display: flex; flex-direction: column; gap: 15px; flex: 1; }
+  
+  .sub-highlight { display: flex; flex-direction: row; align-items: center; justify-content: space-between; padding: 15px 20px; background: #1e293b; border-radius: 6px; }
+  .sub-title { font-size: 14px; font-weight: 700; }
+  .sub-desc { font-size: 11px; margin-top: 2px; }
+  .sub-val { font-family: 'Oswald'; font-size: 32px; font-weight: 500; letter-spacing: 0.5px; }
+  
+  .sub-list-grid { display: flex; flex-direction: column; border-top: 1px solid #e2e8f0; }
+  .sub-item-row { display: flex; align-items: flex-start; padding: 12px 0; border-bottom: 1px solid #e2e8f0; }
+  
+  .sub-label { width: 90px; font-size: 12px; font-weight: 600; color: #64748b; line-height: 1.4; }
+  .sub-content { flex: 1; text-align: right; font-size: 13px; font-weight: 500; color: #334155; line-height: 1.4; }
+  .sm-text { font-size: 11px; line-height: 1.5; color: #64748b; }
+
+  .special-offer-box { 
+      border: 1px solid #c5a065; 
+      background: #fffbf2;
+      padding: 15px; 
+      text-align: center; 
+      margin-top: auto; 
+      border-radius: 4px;
+  }
+  .offer-stars { color: #c5a065; font-weight: 700; font-family: 'Oswald'; font-size: 12px; letter-spacing: 2px; margin-bottom: 5px; }
+  .offer-text { font-size: 14px; color: #1e293b; }
+  .highlight-text { color: #b45309; font-weight: 700; }
+
+  .html2pdf__page-break { height: 0; }
+</style>
+
+<script>
+  window.onload = function() {
+    const d = new Date();
+    document.getElementById('inDate').value = d.toISOString().split('T')[0];
+    refreshData();
+  }
+
+  function refreshData() {
+    const v = (id, def) => document.getElementById(id).value || def;
+    
+    const rawAmount = v('inAmount', '12000');
+    const fmtAmount = new Intl.NumberFormat('en-US').format(rawAmount);
+    
+    const date = v('inDate', '2025-11-20');
+    const classes = v('inClasses', '20');
+    const mins = v('inMins', '50');
+    const expiry = v('inExpiry', '2年');
+    const order = v('inOrder', '15TEY');
+    
+    // POINTS
+    const points = v('inPoints', '900');
+
+    // P1 (CN)
+    document.getElementById('outNameCN').innerText = v('inNameCN', '林育志');
+    
+    let timeCN = v('inTimeCN', '每週一 8pm');
+    document.getElementById('outTimeCN').innerHTML = timeCN.replace(/\s+/g, '<br>');
+
+    document.getElementById('outAmountNumCN').innerText = fmtAmount; 
+    document.getElementById('outOrderCN').innerText = order;
+    document.getElementById('outClassesCN').innerText = classes;
+    document.getElementById('outMinsCN').innerText = mins;
+    document.getElementById('outDateCN').innerText = date;
+    document.getElementById('outExpiryCN').innerText = expiry;
+    
+    // Set Points CN
+    document.getElementById('outPointsCN').innerText = points;
+
+    // P2 (EN)
+    document.getElementById('outNameEN').innerText = v('inNameEN', 'Tony Lin');
+    
+    let timeEN = v('inTimeEN', '8pm, Mondays');
+    document.getElementById('outTimeEN').innerHTML = timeEN.replace(/\s+/g, '<br>');
+
+    document.getElementById('outAmountNumEN').innerText = fmtAmount; 
+    document.getElementById('outOrderEN').innerText = order;
+    document.getElementById('outClassesEN').innerText = classes;
+    document.getElementById('outMinsEN').innerText = mins;
+    document.getElementById('outDateEN').innerText = date;
+    
+    // Set Points EN
+    document.getElementById('outPointsEN').innerText = points;
+    
+    let exEn = v('inExpiryEN', '2 Years');
+    document.getElementById('outExpiryEN').innerText = exEn;
+
+    // P4 (SUB)
+    document.getElementById('outOrderSub').innerText = order;
+  }
+
+  function downloadPDF() {
+    const element = document.getElementById('pdf-container');
+    const nameEN = document.getElementById('inNameEN').value || "Student";
+    
+    const opt = {
+      margin:       0,
+      filename:     `${nameEN}_Tuition_Certificate_Pro.pdf`,
+      image:        { type: 'jpeg', quality: 1.0 },
+      html2canvas:  { scale: 4, useCORS: true, scrollY: 0 },
+      jsPDF:        { unit: 'mm', format: [108, 192], orientation: 'portrait' }
+    };
+    html2pdf().set(opt).from(element).save();
+  }
+</script>
+<!-- END OF V69 PRO -->
