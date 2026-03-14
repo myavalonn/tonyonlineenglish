@@ -1,97 +1,142 @@
-<!-- CSS: 沙漏樣式 -->
-<style>
-    #loading-spinner {
-        display: flex; flex-direction: column; justify-content: center; align-items: center;
-        height: 400px; width: 100%; background-color: #ffffff;
-    }
-    #error-message {
-        display: none; text-align: center; padding: 50px; font-family: sans-serif;
-    }
-    .hourglass-img { width: 80px; height: auto; margin-bottom: 20px; }
-    .loading-text { font-family: sans-serif; color: #555; font-size: 16px; letter-spacing: 1px; }
-</style>
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <!-- ★ 這行是最關鍵的：讓手機瀏覽器知道要使用響應式 (RWD) 模式，而不是縮小顯示電腦版網頁 -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>取消預約</title>
 
-<!-- HTML -->
-<div id="loading-spinner">
-    <img src="https://ik.imagekit.io/lql1uveoc/Canceling%20animation%20and%20icons/hourglass-2.gif?updatedAt=1769089761304" alt="Loading" class="hourglass-img">
-    <div class="loading-text">資料讀取中...</div>
-</div>
-
-<div id="error-message">
-    <h3>無效或不完整的取消連結</h3>
-    <p>請從您的預約確認信中點擊 [取消預約] 連結。</p>
-</div>
-
-<iframe 
-    id="cancellation-iframe"
-    width="100%" 
-    height="1000px" 
-    frameborder="0"
-    style="border: none; overflow: hidden; min-height: 1000px; display: none;">
-</iframe>
-
-<script>
-    (function() {
-        // ============================================================
-        // ★★★ 請在這裡填入您的兩個 GAS 網址 (不要填錯！) ★★★
-        // ============================================================
-        
-        // 1. 請填入【25分鐘】GAS 的 Web App URL (結尾是 /exec)
-        const URL_25 = 'https://script.google.com/macros/s/AKfycbyZMqL135r1VvRL7pdW6EB6nmeLja-MhQt95ri5xa9j9Z810WfMb7_Vm156MPFn8t5Q/exec';
-        
-        // 2. 請填入【50分鐘】GAS 的 Web App URL (結尾是 /exec)
-        const URL_50 = 'https://script.google.com/macros/s/AKfycbyWvhW6fp_ohPEvPK226KtNiQLCyAVMl77zV0Hq0k_TcEk3F1ni9qVcJystGUovVjTMGQ/exec'; 
-
-        // ============================================================
-
-        const params = new URLSearchParams(window.location.search);
-        const action = params.get('action'); 
-        const eid = params.get('eid'); 
-        const ts = params.get('ts');
-        const confirm = params.get('confirm');
-        
-        // 讀取 Email 傳來的 type 參數，如果沒傳，預設就跑 50分鐘 的
-        const type = params.get('type') || '50';
-
-        const spinner = document.getElementById('loading-spinner');
-        const iframe = document.getElementById('cancellation-iframe');
-        const errorMsg = document.getElementById('error-message');
-
-        if (action === 'cancel' && eid && ts) {
-            
-            // 邏輯判斷：如果是 25 就載入 URL_25，否則載入 URL_50
-            let targetGasUrl = '';
-            
-            if (type === '25') {
-                targetGasUrl = URL_25;
-            } else {
-                targetGasUrl = URL_50;
-            }
-            
-            // 組合最終網址
-            let fullUrl = `${targetGasUrl}?action=${action}&eid=${eid}&ts=${ts}`;
-            
-            // 如果這行被加上去，代表要讓 GAS 知道現在是哪種模式 (選用)
-            fullUrl += `&type=${type}`;
-
-            if (confirm) {
-                fullUrl += `&confirm=${confirm}`;
-            }
-            
-            console.log("Loading GAS URL:", fullUrl); // 偵錯用
-
-            iframe.onload = function() {
-                setTimeout(function() {
-                    spinner.style.display = 'none'; 
-                    iframe.style.display = 'block'; 
-                }, 1500);
-            };
-
-            iframe.src = fullUrl;
-
-        } else {
-            spinner.style.display = 'none';
-            errorMsg.style.display = 'block';
+    <!-- CSS: 沙漏樣式與手機版調整 -->
+    <style>
+        /* 基礎設置，避免預設的 margin/padding 造成溢出 */
+        body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            background-color: #ffffff;
         }
-    })();
-</script>
+
+        #loading-spinner {
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            height: 400px; width: 100%; background-color: #ffffff;
+        }
+        
+        #error-message {
+            display: none; text-align: center; padding: 50px; font-family: sans-serif;
+            box-sizing: border-box; /* 確保 padding 不會撐破 100% 寬度 */
+            width: 100%;
+        }
+
+        .hourglass-img { width: 80px; height: auto; margin-bottom: 20px; }
+        .loading-text { font-family: sans-serif; color: #555; font-size: 16px; letter-spacing: 1px; }
+
+        /* ★ RWD 響應式設計：專門針對手機版的樣式 (螢幕寬度小於 768px 時觸發) */
+        @media screen and (max-width: 768px) {
+            .loading-text { 
+                font-size: 19px; /* 字體適度放大，提升手機可讀性 */
+                font-weight: bold;
+            }
+            #error-message {
+                padding: 40px 20px; /* 縮小左右 padding，避免手機螢幕太窄被擠壓 */
+            }
+            #error-message h3 {
+                font-size: 24px; /* 錯誤標題字體放大 */
+                margin-top: 0;
+            }
+            #error-message p {
+                font-size: 18px; /* 錯誤內文字體放大 */
+                line-height: 1.6; /* 增加行距，讓閱讀更舒適 */
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HTML -->
+    <div id="loading-spinner">
+        <img src="https://ik.imagekit.io/lql1uveoc/Canceling%20animation%20and%20icons/hourglass-2.gif?updatedAt=1769089761304" alt="Loading" class="hourglass-img">
+        <div class="loading-text">資料讀取中...</div>
+    </div>
+
+    <div id="error-message">
+        <h3>無效或不完整的取消連結</h3>
+        <p>請從您的預約確認信中點擊 [取消預約] 連結。</p>
+    </div>
+
+    <!-- iframe 加入了 max-width: 100% 確保即使內容過長也不會超出手機螢幕寬度 -->
+    <iframe 
+        id="cancellation-iframe"
+        width="100%" 
+        height="1000px" 
+        frameborder="0"
+        style="border: none; overflow: hidden; min-height: 1000px; display: none; max-width: 100%;">
+    </iframe>
+
+    <script>
+        (function() {
+            // ============================================================
+            // ★★★ 請在這裡填入您的兩個 GAS 網址 (不要填錯！) ★★★
+            // ============================================================
+            
+            // 1. 請填入【25分鐘】GAS 的 Web App URL (結尾是 /exec)
+            const URL_25 = 'https://script.google.com/macros/s/AKfycbyZMqL135r1VvRL7pdW6EB6nmeLja-MhQt95ri5xa9j9Z810WfMb7_Vm156MPFn8t5Q/exec';
+            
+            // 2. 請填入【50分鐘】GAS 的 Web App URL (結尾是 /exec)
+            const URL_50 = 'https://script.google.com/macros/s/AKfycbyWvhW6fp_ohPEvPK226KtNiQLCyAVMl77zV0Hq0k_TcEk3F1ni9qVcJystGUovVjTMGQ/exec'; 
+
+            // ============================================================
+
+            const params = new URLSearchParams(window.location.search);
+            const action = params.get('action'); 
+            const eid = params.get('eid'); 
+            const ts = params.get('ts');
+            const confirm = params.get('confirm');
+            
+            // 讀取 Email 傳來的 type 參數，如果沒傳，預設就跑 50分鐘 的
+            const type = params.get('type') || '50';
+
+            const spinner = document.getElementById('loading-spinner');
+            const iframe = document.getElementById('cancellation-iframe');
+            const errorMsg = document.getElementById('error-message');
+
+            if (action === 'cancel' && eid && ts) {
+                
+                // 邏輯判斷：如果是 25 就載入 URL_25，否則載入 URL_50
+                let targetGasUrl = '';
+                
+                if (type === '25') {
+                    targetGasUrl = URL_25;
+                } else {
+                    targetGasUrl = URL_50;
+                }
+                
+                // 組合最終網址
+                let fullUrl = `${targetGasUrl}?action=${action}&eid=${eid}&ts=${ts}`;
+                
+                // 如果這行被加上去，代表要讓 GAS 知道現在是哪種模式 (選用)
+                fullUrl += `&type=${type}`;
+
+                if (confirm) {
+                    fullUrl += `&confirm=${confirm}`;
+                }
+                
+                console.log("Loading GAS URL:", fullUrl); // 偵錯用
+
+                iframe.onload = function() {
+                    setTimeout(function() {
+                        spinner.style.display = 'none'; 
+                        iframe.style.display = 'block'; 
+                    }, 1500);
+                };
+
+                iframe.src = fullUrl;
+
+            } else {
+                spinner.style.display = 'none';
+                errorMsg.style.display = 'block';
+            }
+        })();
+    </script>
+
+</body>
+</html>
