@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>學習服務協議</title>
+<style>
+    :root {
+        --primary-color: #2c3e50;
+        --accent-color: #3498db; /* 圖片中的藍色 */
+        --highlight-color: #e74c3c;
+        --bg-light: #f8f9fa;
+        --border-color: #dee2e6;
+        --note-bg: #fff8dc;
+        --note-text: #856404;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+    }
+
+    .contract-container {
+        max-width: 950px;
+        margin: 20px auto;
+        padding: 40px;
+        font-family: "PingFang TC", "Heiti TC", "Microsoft JhengHei", sans-serif;
+        line-height: 1.8;
+        color: #333;
+        background-color: #fff;
+        box-shadow: 0 0 20px rgba(0,0,0,0.05);
+    }
+
+    /* --- 審閱期提示樣式 --- */
+    .review-notice {
+        background-color: #fffbe6;
+        border: 3px solid #ffc107;
+        border-radius: 15px;
+        padding: 30px 20px;
+        margin-bottom: 40px;
+        text-align: center;
+        color: #333;
+    }
+
+    .review-notice .notice-title {
+        font-size: 1.5rem;
+        font-weight: 900;
+        margin-bottom: 15px;
+        color: #2c3e50;
+    }
+
+    .review-notice .notice-content {
+        font-size: 1.1rem;
+        font-weight: 700;
+        line-height: 1.6;
+    }
+
+    /* --- 標題樣式 --- */
+    .contract-header {
+        text-align: center;
+        margin-bottom: 40px;
+    }
+
+    .section-title {
+        color: var(--accent-color);
+        font-size: 1.6rem;
+        font-weight: bold;
+        margin-top: 40px;
+        margin-bottom: 25px;
+        border-bottom: 2px solid var(--accent-color);
+        padding-bottom: 10px;
+    }
+
+    /* --- 方案內容樣式 --- */
+    .subsection-title {
+        font-size: 1.2rem;
+        color: #333;
+        font-weight: 800;
+        margin-top: 30px;
+        margin-bottom: 15px;
+    }
+
+    .highlight-note {
+        background-color: var(--note-bg);
+        color: var(--note-text);
+        padding: 15px;
+        border-radius: 6px;
+        margin-bottom: 25px;
+        font-size: 0.95rem;
+    }
+
+    .grid-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        margin: 15px 0;
+    }
+
+    .price-item {
+        background: var(--bg-light);
+        padding: 25px 15px;
+        border-radius: 8px;
+        text-align: center;
+        border: 1px solid #eee;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .price-item .plan-name { font-size: 1.1rem; color: #555; margin-bottom: 10px; font-weight: bold; }
+    .price-item .plan-price { display: block; font-size: 1.6rem; color: var(--primary-color); font-weight: 800; margin-bottom: 5px; }
+    
+    /* 優惠期標籤 */
+    .period-badge {
+        font-size: 0.9rem;
+        color: #c0392b;
+        background-color: #fff;
+        border: 1px solid #f5b7b1;
+        padding: 4px 12px;
+        border-radius: 20px;
+        font-weight: bold;
+        margin-top: 10px;
+    }
+
+    /* --- 列表樣式 --- */
+    .rules-list { list-style-type: disc; padding-left: 25px; margin: 0; }
+    .rules-list > li { margin-bottom: 20px; font-size: 1.05rem; }
+    .rules-list strong { color: #333; font-weight: 700; font-size: 1.1rem; }
+    
+    .rules-list ul { 
+        list-style-type: circle; 
+        padding-left: 25px; 
+        margin-top: 10px; 
+        margin-bottom: 10px; 
+        color: #555; 
+    }
+    .rules-list ul li { margin-bottom: 12px; }
+
+    /* --- 補充說明與警告 --- */
+    .sub-note {
+        display: block;
+        margin-top: 8px;
+        color: #555;
+        font-size: 0.95rem;
+        background-color: #fff0f0; 
+        padding: 10px;
+        border-radius: 4px;
+    }
+
+    .alert-box {
+        color: var(--highlight-color);
+        font-weight: bold;
+        background-color: #fdf2f2;
+        padding: 15px;
+        border-left: 5px solid var(--highlight-color);
+        border-radius: 4px;
+        margin: 20px 0;
+    }
+
+    /* --- 公式框 --- */
+    .formula-box {
+        background: #f0f8ff;
+        border: 2px dashed var(--accent-color);
+        padding: 20px;
+        text-align: center;
+        font-weight: bold;
+        font-size: 1.2rem;
+        margin: 30px 0;
+        color: #2c3e50;
+        border-radius: 4px;
+    }
+
+    /* --- 底部法規聲明 --- */
+    .compliance-footer {
+        font-size: 0.95rem;
+        color: #7f8c8d;
+        text-align: center;
+        margin-top: 50px;
+        border-top: 1px solid #eee;
+        padding-top: 30px;
+        line-height: 1.6;
+    }
+
+    .legal-links { display: flex; flex-direction: column; align-items: center; gap: 12px; margin-top: 20px; }
+    .link-item { display: flex; align-items: center; gap: 8px; }
+    .link-item a { color: #3498db; text-decoration: none; font-weight: bold; font-size: 1.05rem; }
+    .link-item a:hover { text-decoration: underline; }
+
+    @media (max-width: 600px) {
+        .contract-container { padding: 15px; }
+        .grid-container { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        .price-item { padding: 15px 5px; }
+        .review-notice { padding: 20px 15px; }
+        .review-notice .notice-title { font-size: 1.3rem; }
+        .formula-box { font-size: 1rem; padding: 15px; }
+    }
+</style>
+</head>
+<body>
+
+<div class="contract-container">
+    
+    <!-- 審閱期提示 -->
+    <div class="review-notice">
+        <div class="notice-title">【重要提醒：契約審閱期】</div>
+        <div class="notice-content">
+            依據相關法規，學員享有至少三日之契約審閱期。請務必詳閱以下所有條款，確認理解並同意後再行購課與支付費用。
+        </div>
+    </div>
+
+    <div class="contract-header">
+        <h1 style="color: #2c3e50; margin-bottom: 5px;">學習服務協議與學員權利規範書</h1>
+        <p style="color: #7f8c8d;">Learning Service Agreement & Terms of Service</p>
+    </div>
+
+    <!-- Section 1: 課程方案與服務內容 -->
+    <div>
+        <h2 class="section-title">一、 課程方案與服務內容</h2>
+        
+        <!-- 補回：1. 收費體驗課程 -->
+        <div class="subsection-title">1. 收費體驗課程（每人限購乙次）：</div>
+        <div class="grid-container">
+            <div class="price-item">
+                <span class="plan-name">25 分鐘體驗課</span>
+                <span class="plan-price">NT$ 300</span>
+            </div>
+            <div class="price-item">
+                <span class="plan-name">50 分鐘體驗課</span>
+                <span class="plan-price">NT$ 500</span>
+            </div>
+        </div>
+
+        <!-- 補回標題：2. 正式教學方案 -->
+        <div class="subsection-title" style="margin-top: 40px;">2. 正式教學方案（大宗購買優惠價，每堂 50 分鐘）：</div>
+        
+        <div class="highlight-note">
+            📝 <strong>基準說明：</strong>本服務之單堂原價為 NT$ 800。優惠方案若未於優惠期內使用完畢，將依原價計算（詳見第二條及第四條）。
+        </div>
+
+        <div class="grid-container">
+            <div class="price-item">
+                <span class="plan-name">6 堂方案</span>
+                <span class="plan-price">NT$ 4,200</span>
+                <div class="period-badge">優惠期 3 個月</div>
+            </div>
+            <div class="price-item">
+                <span class="plan-name">10 堂方案</span>
+                <span class="plan-price">NT$ 6,600</span>
+                <div class="period-badge">優惠期 9 個月</div>
+            </div>
+            <div class="price-item">
+                <span class="plan-name">16 堂方案</span>
+                <span class="plan-price">NT$ 10,000</span>
+                <div class="period-badge">優惠期 14 個月</div>
+            </div>
+            <div class="price-item">
+                <span class="plan-name">20 堂方案</span>
+                <span class="plan-price">NT$ 12,000</span>
+                <div class="period-badge">優惠期 18 個月</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Section 2 -->
+    <div>
+        <h2 class="section-title">二、 使用期限與優惠期</h2>
+        <ul class="rules-list">
+            <li>
+                <strong>使用期限：無期限。</strong>學員所購堂數於未使用完畢前皆有效。
+            </li>
+            <li>
+                <strong>優惠期：</strong>為鼓勵學員穩定學習並享有上述方案優惠價，各方案設有優惠期：
+                <ul>
+                    <li>6 堂方案：每堂NT$700 優惠期 3 個月。</li>
+                    <li>10 堂方案：每堂NT$660 優惠期 9 個月。</li>
+                    <li>16 堂方案：每堂NT$625 優惠期 14 個月。</li>
+                    <li>20 堂方案：每堂NT$600 優惠期 18 個月。</li>
+                </ul>
+            </li>
+            <li>
+                <strong>逾期處理：</strong>逾優惠期後，剩餘堂數依然有效。將自動結算並轉換為<strong>「剩餘學習點數」（1點=NT$1）</strong>。排課改以<strong>當時單堂原價（目前NT$800）</strong>扣抵。若剩餘點數不足扣抵一堂課，學員補足差額後即可預約上課。
+            </li>
+            <li>
+                <strong>續購展延優惠：</strong>若學員無法在優惠期內完成課程，可選擇<strong>續購新方案</strong>。辦理續購後，舊方案剩餘之堂數可全數併入新方案（免換算點數），且新合約之總優惠期將額外獲得 <strong>3 個月之寬限期</strong> （即：新方案優惠期 + 3個月）。
+            </li>
+        </ul>
+    </div>
+
+    <!-- Section 3 -->
+    <div>
+        <h2 class="section-title">三、 授課時段預約與保留原則</h2>
+        <ul class="rules-list">
+            <li><strong>固定時段優先權：</strong>每週規律上課之學員享有專屬固定時段預留權。</li>
+            <li><strong>釋放優先權：</strong>若學員因個人因素頻繁請假、調課（如：一個月內變動超過二次或出勤率低於 75%），將<strong>不予保留該固定時段</strong>。</li>
+            <li>
+                <strong>自主預約模式：</strong>失去固定時段優先權後，學員請改由<strong>預約系統自行操作</strong>，依開放之剩餘時段預約上課。
+                <span class="sub-note">
+                    ❖ 若學員濫用請假權益，例如在自主預約後仍頻繁請假或調課，系統將於預約後立即扣除一堂課，且該堂課不再享有原「課前 24 小時內請假或調課免扣堂數」之權利。
+                </span>
+            </li>
+        </ul>
+    </div>
+
+    <!-- Section 4 -->
+    <div>
+        <h2 class="section-title">四、 請假、調課與病假扣課規範</h2>
+        <strong>1. 一般請假或調課（個人因素）：</strong>
+        <ul style="margin-top: 5px;">
+            <li><strong>24 小時內</strong>提出請假或調課，扣除 0.5 堂</li>
+            <li><strong>12 小時內</strong>提出請假或調課，扣除 1 堂</li>
+        </ul>
+        <strong>2. 病假規範（需檢附相關證明）：</strong>
+        <ul style="margin-top: 5px;">
+            <li>上課前 6 小時以上申請核准後：<strong>不扣除堂數</strong>。</li>
+            <li>上課前 3 小時內申請核准後：<strong>扣除 0.5 堂</strong>。</li>
+        </ul>
+        <div class="alert-box">
+            注意：頻繁請假或缺席，將取消該時段課程之固定保留權。
+        </div>
+    </div>
+
+    <!-- Section 5 -->
+    <div>
+        <h2 class="section-title">五、 終止契約與退費結算</h2>
+        <ul class="rules-list">
+            <li><strong>服務性質說明：</strong>本課程屬真人即時教學服務。課程一旦開始授課（含體驗課），該堂課之費用即視為服務已履行並自總額中扣除。</li>
+            <li><strong>一般退費標準（體驗課程後）：</strong>
+                <ul>
+                    <li>體驗與續約確認原則：凡已完成體驗課程之學員，或辦理續購之學員，因已具備充分試聽試看機會（足以了解教學風格與內容，符合法規規定），對服務內容已有充分認知，正式購課後即不適用「7 日無條件全額退費」。</li>
+                    <li>恢復原價計算：結算時已使用課堂（含請假扣課）均以單堂原價 NT$ 800 計算，不再享有多堂方案優惠。</li>
+                    <li>
+                        <strong>契約終止：</strong>若學員於契約期間提前終止契約，應支付剩餘課程價值之 20% 作為契約終止補償，作為雙方約定之違約金。<br>
+                        <span style="font-size: 0.9rem; color: #7f8c8d; display: block; margin-top: 5px;">（法規條文：應記載事項 第 18 點（終止契約與退費） 之第二項。）</span>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+        <div class="formula-box">
+            退費金額 = [總繳費用 - (已使用堂數 * 800)] * 80%
+        </div>
+    </div>
+
+    <!-- Section 6 -->
+    <div>
+        <h2 class="section-title">六、 特殊情況展延方案</h2>
+        <p>如遇重大傷病、<strong>懷孕</strong>或其他不可抗力因素，提供證明後可免費展延 <strong>6 個月</strong> 優惠期。</p>
+    </div>
+
+    <!-- Section 7 -->
+    <div>
+        <h2 class="section-title">七、 合約生效確認</h2>
+        <p>1. 審閱確認：本協議內容已於購課前提供學員審閱至少三日。<br>
+        2. <strong>合約生效：學員支付費用之行為，即視為已充分審閱並同意接受本協議之所有條款。</strong></p>
+    </div>
+
+    <div class="compliance-footer">
+        <p>※ 本協議之退費與合約規範，均參照數位發展部（MODA）公告之「網際網路教學服務定型化契約應記載及不得記載事項」擬定，以保障雙方權益。</p>
+        <div class="legal-links">
+            <div class="link-item">
+                <span>🔗</span>
+                <a href="https://gazette.nat.gov.tw/egFront/detail.do?metaid=145492&log=detailLog" target="_blank">
+                    數位發展部公告（112年修正）
+                </a>
+            </div>
+            <div class="link-item">
+                <span>🔗</span>
+                <a href="https://www.ey.gov.tw/Page/DFB720D019CCCB0A/397a2ff8-748a-4df1-a52e-860278d0c275" target="_blank">
+                    行政院消費者保護會公告
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+</body>
+</html>
