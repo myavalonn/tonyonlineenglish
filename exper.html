@@ -324,6 +324,29 @@
         display: grid; grid-template-columns: repeat(6, 1fr);
         text-align: center; padding: 10px 0; font-size: 0.85rem; color: #888; font-weight: bold;
     }
+
+    /* 星期幾動態高亮的樣式 */
+    .mini-cal-weekday {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        width: 28px;
+        height: 28px;
+        border-radius: 6px;
+        border: 1px solid transparent;
+        transition: 0.2s;
+    }
+    .today-weekday {
+        color: #007bff;
+        border-color: #007bff;
+    }
+    .selected-weekday {
+        background: #007bff !important;
+        color: #fff !important;
+        border-color: transparent !important;
+        box-shadow: 0 2px 6px rgba(0,123,255,0.4);
+    }
+
     .mini-cal-days {
         /* 移除星期日，改為 6 欄 */
         display: grid; grid-template-columns: repeat(6, 1fr);
@@ -389,7 +412,6 @@
     @media (max-width: 768px) {
       .hero h1 { font-size: 2rem; }
       
-      /* 修改此處：移除與Hero重疊，滿版，字體微調不換行 */
       .steps-container { 
         font-size: 1rem; 
         padding: 20px 10px; 
@@ -745,8 +767,8 @@
                     <span id="mini-cal-title"></span>
                     <button id="cal-next-btn" onclick="changeMiniMonth(1)">❯</button>
                 </div>
-                <div class="mini-cal-weekdays">
-                    <span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span>
+                <!-- 改為動態產生星期表頭以便高亮 -->
+                <div class="mini-cal-weekdays" id="mini-cal-weekdays">
                 </div>
                 <div class="mini-cal-days" id="mini-cal-days"></div>
                 <div class="mini-cal-slots-box" id="mini-cal-slots-content">
@@ -776,20 +798,55 @@
         const prevBtn = document.getElementById('cal-prev-btn');
         const nextBtn = document.getElementById('cal-next-btn');
 
-        // 當前月 = 今天所在的月，鎖死「上一月」
         if (year === today.getFullYear() && month === today.getMonth()) {
             prevBtn.classList.add('disabled');
         } else {
             prevBtn.classList.remove('disabled');
         }
 
-        // 當前月 = 第20天所在的月，鎖死「下一月」
         if (year === maxDate.getFullYear() && month === maxDate.getMonth()) {
             nextBtn.classList.add('disabled');
         } else {
             nextBtn.classList.remove('disabled');
         }
 
+        // ==========================================
+        // 處理星期幾的動態高亮標頭 (藍底白字 or 藍色框線)
+        // ==========================================
+        let selectedDayOfWeek = -1;
+        if (selectedMiniDate) {
+            const [y, m, d] = selectedMiniDate.split('-');
+            // 只有在目前查看的月份才顯示該月份所選的高亮星期
+            if (parseInt(y) === year && parseInt(m) - 1 === month) {
+                const sd = new Date(y, m - 1, d);
+                selectedDayOfWeek = sd.getDay();
+            }
+        }
+
+        let todayDayOfWeek = -1;
+        // 若今天在此月份畫面中，取得「今天」對應的星期 (用來畫藍色框線)
+        if (today.getFullYear() === year && today.getMonth() === month) {
+            todayDayOfWeek = today.getDay();
+        }
+
+        const weekdaysArr =['一', '二', '三', '四', '五', '六'];
+        let weekdaysHtml = '';
+        for (let i = 0; i < 6; i++) {
+            let dayIndex = i + 1; // 代表星期一到星期六 (1~6)
+            let classes = 'mini-cal-weekday';
+            
+            // 如果是今天，給藍色框線
+            if (dayIndex === todayDayOfWeek) classes += ' today-weekday';
+            // 如果是選取日，給藍底白字 (此處CSS有 !important 會覆蓋掉 today 的框線)
+            if (dayIndex === selectedDayOfWeek) classes += ' selected-weekday';
+            
+            weekdaysHtml += `<div><span class="${classes}">${weekdaysArr[i]}</span></div>`;
+        }
+        document.getElementById('mini-cal-weekdays').innerHTML = weekdaysHtml;
+
+        // ==========================================
+        // 處理日期格子的產生
+        // ==========================================
         const firstDay = new Date(year, month, 1).getDay();
         const daysInMonth = new Date(year, month + 1, 0).getDate();
 
@@ -902,7 +959,7 @@
 
             if (cachedSlots[dStr] && cachedSlots[dStr].slots && cachedSlots[dStr].slots.length > 0) {
                 selectedMiniDate = dStr;
-                renderMiniCalendar();
+                renderMiniCalendar(); // 更新日曆及頂端星期幾高亮
                 renderSlotsForDate(dStr);
                 return; // 找到就停止
             }
@@ -916,7 +973,7 @@
                 fallbackDate.setDate(fallbackDate.getDate() + 1);
             }
             selectedMiniDate = fmtDate(fallbackDate);
-            renderMiniCalendar();
+            renderMiniCalendar(); // 更新日曆及頂端星期幾高亮
             renderSlotsForDate(selectedMiniDate);
         }
     }
@@ -925,7 +982,7 @@
     async function handleMiniDateClick(dateStr) {
         userHasManuallyClicked = true;
         selectedMiniDate = dateStr;
-        renderMiniCalendar(); 
+        renderMiniCalendar(); // 觸發重繪，讓星期幾也會同步變為藍底白字
 
         if (cachedSlots[dateStr]) {
             // 如果這天已經被背景讀取過了，零延遲瞬間顯示！
