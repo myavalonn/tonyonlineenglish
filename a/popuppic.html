@@ -1,0 +1,176 @@
+<style>
+  /* Overlay backdrop */
+  .popup-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  /* Modal box */
+  .popup-box {
+    background: #fff;
+    padding: 1rem;
+    border-radius: 12px;
+    max-width: 90%;
+    max-height: 90%;
+    overflow-y: auto;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+    position: relative;
+  }
+
+  /* Close button - larger */
+  .popup-close {
+    position: absolute;
+    top: 8px;
+    right: 12px;
+    font-size: 2rem;
+    color: #999;
+    cursor: pointer;
+    font-weight: bold;
+    z-index: 10000;
+  }
+
+  .popup-close:hover {
+    color: #000;
+  }
+
+  /* Default vertical layout */
+  .popup-images {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .popup-images img {
+    width: 80%;
+    height: auto;
+    border-radius: 8px;
+  }
+
+  /* Side-by-side on tablet and desktop */
+  @media (min-width: 768px) {
+    .popup-images {
+      flex-direction: row;
+      justify-content: center;
+    }
+
+    .popup-images img {
+      width: 45%;
+    }
+  }
+</style>
+
+<div class="popup-overlay" id="popupOverlay">
+  <div class="popup-box" id="popupBox">
+    <div class="popup-close" id="popupClose">✖</div>
+    <div class="popup-images">
+      <img src="https://ik.imagekit.io/lql1uveoc/%E5%85%A8%E6%B0%91%E8%8B%B1%E6%AA%A2%E5%88%9D%E7%B4%9A2025%E5%B9%B4%E6%B8%AC%E9%A9%97%E6%97%A5%E6%9C%9F-3.png?updatedAt=1748421410340" alt="Image 1">
+      <img src="https://ik.imagekit.io/lql1uveoc/Grey%20and%20Orange%20Modern%20Clean%20Event%20Calendar%20Your%20Story%20-%201.png?updatedAt=1747562790654" alt="Image 2">
+    </div>
+  </div>
+</div>
+
+<script>
+  const overlay = document.getElementById('popupOverlay');
+  const closeBtn = document.getElementById('popupClose');
+  const popupBox = document.getElementById('popupBox');
+
+  // Close when clicking the ✖
+  closeBtn.addEventListener('click', () => {
+    overlay.style.display = 'none';
+  });
+
+  // Close when clicking outside the popup box
+  overlay.addEventListener('click', (e) => {
+    if (!popupBox.contains(e.target)) {
+      overlay.style.display = 'none';
+    }
+  });
+</script>
+
+--------------------------------------------
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>預約按鈕</title>
+  <style>
+    /* 完整顯示的預約按鈕 */
+    .vertical-banner-link {
+      position: fixed;
+      top: 50%;
+      right: 0;
+      transform: translateY(-50%);
+      writing-mode: vertical-rl;
+      text-orientation: upright;
+      background-color: #00BCD4;
+      color: white;
+      font-size: 14px;
+      font-weight: bold;
+      padding: 4px 4px;
+      border-radius: 8px 0 0 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      text-decoration: none;
+      z-index: 9999;
+      transition: all 0.3s ease-in-out;
+      display: block; /* 預設顯示 */
+    }
+
+    /* 隱藏後顯示的細水藍色按鈕 (稍微長一些) */
+    .thin-banner-link {
+      position: fixed;
+      top: 50%;
+      right: 0;
+      transform: translateY(-50%);
+      background-color: #00BCD4;
+      color: white;
+      height: 50px; /* 調整為較長的按鈕 */
+      width: 10px;  /* 可調整寬度 */
+      border-radius: 5px;  /* 更圓滑的邊角 */
+      z-index: 9999;
+      cursor: pointer;
+      display: none; /* 預設隱藏 */
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 完整顯示的預約按鈕 -->
+  <a id="reservationBtn" class="vertical-banner-link" href="https://tonyonlineenglish.mydurable.com/experience/" target="_blank">
+    📅 點選預約體驗課程
+  </a>
+
+  <!-- 隱藏後顯示的細水藍色按鈕 (稍微長一些) -->
+  <div id="thinBanner" class="thin-banner-link"></div>
+
+  <script>
+    const reservationBtn = document.getElementById("reservationBtn");
+    const thinBanner = document.getElementById("thinBanner");
+
+    // 當頁面加載後，6秒鐘後隱藏完整按鈕，顯示細水藍色按鈕
+    window.onload = () => {
+      setTimeout(() => {
+        hideBanner();
+      }, 6000);  // 6秒後收起來
+    };
+
+    // 隱藏完整的預約按鈕，顯示細水藍色按鈕
+    function hideBanner() {
+      reservationBtn.style.display = "none";  // 隱藏完整預約按鈕
+      thinBanner.style.display = "block";  // 顯示細水藍色按鈕
+    }
+
+    // 當細水藍色按鈕被點擊時，顯示完整預約按鈕
+    thinBanner.onclick = function() {
+      reservationBtn.style.display = "block";  // 顯示完整預約按鈕
+      thinBanner.style.display = "none";  // 隱藏細水藍色按鈕
+    };
+  </script>
+</body>
+</html>
