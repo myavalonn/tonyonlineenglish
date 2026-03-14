@@ -1,0 +1,97 @@
+<!-- CSS: 沙漏樣式 -->
+<style>
+    #loading-spinner {
+        display: flex; flex-direction: column; justify-content: center; align-items: center;
+        height: 400px; width: 100%; background-color: #ffffff;
+    }
+    #error-message {
+        display: none; text-align: center; padding: 50px; font-family: sans-serif;
+    }
+    .hourglass-img { width: 80px; height: auto; margin-bottom: 20px; }
+    .loading-text { font-family: sans-serif; color: #555; font-size: 16px; letter-spacing: 1px; }
+</style>
+
+<!-- HTML -->
+<div id="loading-spinner">
+    <img src="https://ik.imagekit.io/lql1uveoc/Canceling%20animation%20and%20icons/hourglass-2.gif?updatedAt=1769089761304" alt="Loading" class="hourglass-img">
+    <div class="loading-text">資料讀取中...</div>
+</div>
+
+<div id="error-message">
+    <h3>無效或不完整的取消連結</h3>
+    <p>請從您的預約確認信中點擊 [取消預約] 連結。</p>
+</div>
+
+<iframe 
+    id="cancellation-iframe"
+    width="100%" 
+    height="1000px" 
+    frameborder="0"
+    style="border: none; overflow: hidden; min-height: 1000px; display: none;">
+</iframe>
+
+<script>
+    (function() {
+        // ============================================================
+        // ★★★ 請在這裡填入您的兩個 GAS 網址 (不要填錯！) ★★★
+        // ============================================================
+        
+        // 1. 請填入【25分鐘】GAS 的 Web App URL (結尾是 /exec)
+        const URL_25 = 'https://script.google.com/macros/s/AKfycbyZMqL135r1VvRL7pdW6EB6nmeLja-MhQt95ri5xa9j9Z810WfMb7_Vm156MPFn8t5Q/exec';
+        
+        // 2. 請填入【50分鐘】GAS 的 Web App URL (結尾是 /exec)
+        const URL_50 = 'https://script.google.com/macros/s/AKfycbyWvhW6fp_ohPEvPK226KtNiQLCyAVMl77zV0Hq0k_TcEk3F1ni9qVcJystGUovVjTMGQ/exec'; 
+
+        // ============================================================
+
+        const params = new URLSearchParams(window.location.search);
+        const action = params.get('action'); 
+        const eid = params.get('eid'); 
+        const ts = params.get('ts');
+        const confirm = params.get('confirm');
+        
+        // 讀取 Email 傳來的 type 參數，如果沒傳，預設就跑 50分鐘 的
+        const type = params.get('type') || '50';
+
+        const spinner = document.getElementById('loading-spinner');
+        const iframe = document.getElementById('cancellation-iframe');
+        const errorMsg = document.getElementById('error-message');
+
+        if (action === 'cancel' && eid && ts) {
+            
+            // 邏輯判斷：如果是 25 就載入 URL_25，否則載入 URL_50
+            let targetGasUrl = '';
+            
+            if (type === '25') {
+                targetGasUrl = URL_25;
+            } else {
+                targetGasUrl = URL_50;
+            }
+            
+            // 組合最終網址
+            let fullUrl = `${targetGasUrl}?action=${action}&eid=${eid}&ts=${ts}`;
+            
+            // 如果這行被加上去，代表要讓 GAS 知道現在是哪種模式 (選用)
+            fullUrl += `&type=${type}`;
+
+            if (confirm) {
+                fullUrl += `&confirm=${confirm}`;
+            }
+            
+            console.log("Loading GAS URL:", fullUrl); // 偵錯用
+
+            iframe.onload = function() {
+                setTimeout(function() {
+                    spinner.style.display = 'none'; 
+                    iframe.style.display = 'block'; 
+                }, 1500);
+            };
+
+            iframe.src = fullUrl;
+
+        } else {
+            spinner.style.display = 'none';
+            errorMsg.style.display = 'block';
+        }
+    })();
+</script>
