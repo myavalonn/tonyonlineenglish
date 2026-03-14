@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Course Pricing Card - Secure Access</title>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<style>
+  /* 你原本的 CSS 代碼 */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background-color: transparent; color: #333; line-height: 1.6; padding: 10px; }
+  .container { max-width: 600px; margin: 0 auto; background: #fff; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+  .header-image { width: 100%; height: 250px; object-fit: cover; background-color: #f0f0f0; position: relative; }
+  .content { padding: 30px; }
+  h1 { font-size: 22px; font-weight: 800; margin-bottom: 5px; color: #111; }
+  h2 { font-size: 16px; font-weight: normal; color: #333; margin-bottom: 25px; }
+  .price-section { margin-bottom: 25px; border-bottom: 1px solid #eee; padding-bottom: 20px; }
+  .price { font-size: 42px; font-weight: 500; color: #111; line-height: 1.2; }
+  .price-detail { font-size: 16px; color: #444; margin-top: 5px; }
+  .info-list { list-style: none; margin-bottom: 40px; }
+  .info-list li { display: flex; align-items: flex-start; margin-bottom: 15px; font-size: 15px; color: #333; }
+  .icon { flex-shrink: 0; width: 24px; height: 24px; background-color: #ddd; border-radius: 50%; display: flex; justify-content: center; align-items: center; margin-right: 12px; font-size: 12px; margin-top: 2px; }
+  .icon.check { background-color: #e0e0e0; color: #555; }
+  .info-box { border: 1px solid #ddd; border-radius: 12px; padding: 25px; margin-top: 20px; background-color: #fff; }
+  .info-header h3 { font-size: 28px; font-weight: 400; color: #222; margin-bottom: 5px; }
+  
+  /* 新增：登入遮罩樣式 */
+  #login-overlay {
+    position: fixed; inset: 0; background: #f8f9fa; z-index: 9999;
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    text-align: center; padding: 20px;
+  }
+  .login-btn {
+    padding: 15px 30px; font-size: 18px; cursor: pointer;
+    background: #4285F4; color: white; border: none; border-radius: 50px;
+    font-weight: bold; margin-top: 20px; box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+  }
+  #main-content { display: none; } /* 預設隱藏內容 */
+</style>
+</head>
+<body>
+
+<div id="login-overlay">
+    <h1 style="margin-bottom: 10px;">Tony Online English</h1>
+    <p>這是專屬學生的私人頁面，請先登入。</p>
+    <button class="login-btn" onclick="login()">使用 Google 帳號登入</button>
+    <p id="status-text" style="margin-top: 20px; color: #666; font-size: 14px;"></p>
+</div>
+
+<div id="main-content" class="container">
+  <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1000&auto=format&fit=crop" alt="Students" class="header-image">
+  <div class="content">
+    <h1>For Iris Liu Only 劉雅芳</h1>
+    <h2>多益課程TOEIC -600分/訂閱制/ 2026</h2>
+    <div class="price-section">
+      <div class="price">NT$ 9,000</div>
+      <div class="price-detail">大約20堂課 （每堂50分鐘） 訂閱制</div>
+    </div>
+    <ul class="info-list">
+        <li><span class="icon check">✓</span><span>預約, 或固定時段上課</span></li>
+        </ul>
+    <div class="info-box">
+      <div class="info-header"><h3>上課時間 + 點數須知</h3><p>Tony線上美語家教</p></div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // --- ⚠️ 請修改此處 ⚠️ ---
+  const supabaseUrl = 'https://ifmtjzixuuxgjsoebmkg.supabase.co';
+  const supabaseKey = 'sb_publishable_2QqSMgGZImY-xIDmmqVT0Q_aKagrdwg'; 
+  // -----------------------
+
+  const _supabase = supabase.createClient(supabaseUrl, supabaseKey);
+
+  async function checkAccess() {
+    const { data: { user } } = await _supabase.auth.getUser();
+
+    if (user) {
+      document.getElementById('status-text').innerText = "驗證名單中，請稍候...";
+      
+      // 檢查 allowed_users 表格
+      const { data, error } = await _supabase
+        .from('allowed_users')
+        .select('email')
+        .eq('email', user.email)
+        .single();
+
+      if (data) {
+        // 在名單中：隱藏遮罩，顯示內容
+        document.getElementById('login-overlay').style.display = 'none';
+        document.getElementById('main-content').style.display = 'block';
+      } else {
+        // 不在名單中
+        document.getElementById('status-text').innerHTML = 
+          `<span style="color:red">您的帳號 (${user.email}) 不在授權名單內。</span><br>請聯絡 Tony 老師。`;
+      }
+    }
+  }
+
+  async function login() {
+    const { error } = await _supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo: window.location.href }
+    });
+    if (error) alert("登入失敗: " + error.message);
+  }
+
+  // 網頁加載時檢查狀態
+  checkAccess();
+</script>
+
+</body>
+</html>
