@@ -51,6 +51,30 @@
     ul { margin-top: 15px; padding-left: 25px; font-size: 20px; }
     ul li { margin-bottom: 15px; line-height: 1.6; }
 
+    /* --- 新增：按鈕區塊樣式 (手機版) --- */
+    .btn-container {
+      text-align: center;
+      margin-top: 30px;
+    }
+    .action-btn {
+      display: inline-block;
+      background-color: #3498db;
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 22px;
+      font-weight: bold;
+      padding: 15px 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+      transition: background-color 0.3s ease, transform 0.1s ease;
+    }
+    .action-btn:hover {
+      background-color: #2980b9;
+    }
+    .action-btn:active {
+      transform: scale(0.98);
+    }
+
     .footer { margin-top: 30px; padding: 20px; font-size: 20px; border-top: 2px solid #EEE; line-height: 1.8; }
 
     /* --- Tablet 模式 (769px - 1200px) --- */
@@ -69,7 +93,11 @@
       ul { font-size: 34px; padding-left: 45px; }
       ul li { margin-bottom: 25px; }
       
-      .footer { font-size: 34px; }
+      /* --- 新增：按鈕區塊樣式 (平板版) --- */
+      .btn-container { margin-top: 40px; }
+      .action-btn { font-size: 36px; padding: 20px 45px; border-radius: 15px; }
+
+      .footer { font-size: 34px; margin-top: 40px;}
     }
 
     /* --- Desktop 模式 (1201px 以上) --- */
@@ -86,7 +114,11 @@
       ul { font-size: 40px; }
       ul li { margin-bottom: 30px; }
       
-      .footer { font-size: 40px; }
+      /* --- 新增：按鈕區塊樣式 (電腦版) --- */
+      .btn-container { margin-top: 50px; }
+      .action-btn { font-size: 44px; padding: 25px 60px; border-radius: 20px; }
+
+      .footer { font-size: 40px; margin-top: 50px; }
     }
   </style>
 </head>
@@ -124,6 +156,11 @@
         <li>原有剩餘堂數轉換為點數後，可直接折抵使用</li>
         <li>後續課程將改以點數方式扣除</li>
       </ul>
+    </div>
+
+    <!-- 👇 新增的查詢按鈕區塊 👇 -->
+    <div class="btn-container">
+      <a href="https://tonyonlineenglish.netlify.app/ycs" target="_blank" class="action-btn">即將上課課表及剩餘堂數查詢</a>
     </div>
 
     <div class="footer">
