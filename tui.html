@@ -283,8 +283,8 @@
     document.querySelectorAll('.buy-now-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             if (selectedPlan) {
-                // 新增：在訂購項目名稱後加上「 50分/堂」
-                document.getElementById('modal-item-name').innerText = `${selectedPlan.name} (NT$ ${parseInt(selectedPlan.price).toLocaleString()}) 50分/堂`;
+                // 新增：在訂購項目名稱後加上「 每堂50分」
+                document.getElementById('modal-item-name').innerText = `${selectedPlan.name} (NT$ ${parseInt(selectedPlan.price).toLocaleString()}) 每堂50分`;
                 modal.classList.add('open');
             }
         });
