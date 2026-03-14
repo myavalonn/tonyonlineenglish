@@ -320,11 +320,13 @@
     .mini-cal-header button.disabled { opacity: 0.2; cursor: default; pointer-events: none; }
     
     .mini-cal-weekdays {
-        display: grid; grid-template-columns: repeat(7, 1fr);
+        /* 移除星期日，改為 6 欄 */
+        display: grid; grid-template-columns: repeat(6, 1fr);
         text-align: center; padding: 10px 0; font-size: 0.85rem; color: #888; font-weight: bold;
     }
     .mini-cal-days {
-        display: grid; grid-template-columns: repeat(7, 1fr);
+        /* 移除星期日，改為 6 欄 */
+        display: grid; grid-template-columns: repeat(6, 1fr);
         gap: 6px; padding: 10px; text-align: center;
     }
     .mini-cal-day {
@@ -744,7 +746,7 @@
                     <button id="cal-next-btn" onclick="changeMiniMonth(1)">❯</button>
                 </div>
                 <div class="mini-cal-weekdays">
-                    <span>日</span><span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span>
+                    <span>一</span><span>二</span><span>三</span><span>四</span><span>五</span><span>六</span>
                 </div>
                 <div class="mini-cal-days" id="mini-cal-days"></div>
                 <div class="mini-cal-slots-box" id="mini-cal-slots-content">
@@ -792,14 +794,20 @@
         const daysInMonth = new Date(year, month + 1, 0).getDate();
 
         let html = '';
-        for(let i = 0; i < firstDay; i++) {
+        
+        // 星期日(0)跳過，因此首日如果是星期日，不需要留空；其餘星期幾(1-6)需留空 (星期幾 - 1) 個空格
+        let emptyCells = firstDay === 0 ? 0 : firstDay - 1;
+        for(let i = 0; i < emptyCells; i++) {
             html += `<div class="mini-cal-day empty"></div>`;
         }
 
         for(let d = 1; d <= daysInMonth; d++) {
             const cellDate = new Date(year, month, d);
-            const cellDateStr = fmtDate(cellDate);
+            
+            // 完全跳過星期日，不進行渲染
+            if (cellDate.getDay() === 0) continue;
 
+            const cellDateStr = fmtDate(cellDate);
             let classes = "mini-cal-day";
             
             // ★ 防線：如果比今天早，或者超過了 20 天以後，一律徹底反灰鎖死
@@ -886,6 +894,12 @@
 
         for (let dStr of sortedDates) {
             if (dStr < todayStr) continue;
+
+            // 避免自動選中星期日
+            const[y, m, d] = dStr.split('-');
+            const dObj = new Date(y, m - 1, d);
+            if (dObj.getDay() === 0) continue;
+
             if (cachedSlots[dStr] && cachedSlots[dStr].slots && cachedSlots[dStr].slots.length > 0) {
                 selectedMiniDate = dStr;
                 renderMiniCalendar();
@@ -895,10 +909,15 @@
         }
 
         // 如果目前抓回來的資料完全沒空檔，預設選取今天並顯示無時段 (等待下一批資料覆蓋)
+        // 若今天剛好是星期日，則往後推一天預設為星期一
         if (!selectedMiniDate) {
-            selectedMiniDate = todayStr;
+            let fallbackDate = new Date();
+            if (fallbackDate.getDay() === 0) {
+                fallbackDate.setDate(fallbackDate.getDate() + 1);
+            }
+            selectedMiniDate = fmtDate(fallbackDate);
             renderMiniCalendar();
-            renderSlotsForDate(todayStr);
+            renderSlotsForDate(selectedMiniDate);
         }
     }
 
