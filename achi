@@ -1,0 +1,150 @@
+
+
+ 
+
+
+<div>
+  <style>
+    .achievement-section {
+      width: 100%;
+      max-width: 1200px;
+      margin: auto;
+      padding: 2rem 1rem;
+      font-family: 'Segoe UI', sans-serif;
+    }
+
+    .achievement-section h2 {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 1.5rem;
+      font-weight: bold;
+    }
+
+    .achievement-grid {
+      display: grid;
+      gap: 1rem;
+      grid-template-columns: repeat(4, 1fr); /* 電腦版：4格 */
+    }
+
+    @media (max-width: 1024px) {
+      .achievement-grid {
+        grid-template-columns: repeat(3, 1fr); /* 平板：3格 */
+      }
+    }
+
+    @media (max-width: 600px) {
+      .achievement-grid {
+        grid-template-columns: repeat(2, 1fr); /* 手機：2格 */
+      }
+    }
+
+    .achievement-card {
+      border-radius: 1rem;
+      color: #333;
+      padding: 1rem;
+      text-align: center;
+      opacity: 0;
+      transform: scale(0.9);
+      transition: transform 0.6s ease, opacity 0.6s ease, box-shadow 0.3s ease;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+      will-change: transform;
+      backface-visibility: hidden;
+      perspective: 1000px;
+    }
+
+    .achievement-card.visible {
+      opacity: 1;
+      transform: scale(1);
+    }
+
+    .achievement-card:hover {
+      transform: scale(1.03);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    }
+
+    .achievement-emoji {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+
+    .achievement-title {
+      font-weight: 600;
+      font-size: 1.05rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .achievement-desc {
+      font-size: 0.9rem;
+      color: #444;
+    }
+
+    /* 背景顏色每格不同 */
+    .achievement-card:nth-child(1)  { background: #FFF8E1; }
+    .achievement-card:nth-child(2)  { background: #E1F5FE; }
+    .achievement-card:nth-child(3)  { background: #F1F8E9; }
+    .achievement-card:nth-child(4)  { background: #FCE4EC; }
+    .achievement-card:nth-child(5)  { background: #E8F5E9; }
+    .achievement-card:nth-child(6)  { background: #F3E5F5; }
+    .achievement-card:nth-child(7)  { background: #FFF3E0; }
+    .achievement-card:nth-child(8)  { background: #E0F7FA; }
+    .achievement-card:nth-child(9)  { background: #FFEBEE; }
+    .achievement-card:nth-child(10) { background: #EDE7F6; }
+    .achievement-card:nth-child(11) { background: #F1F8FF; }
+    .achievement-card:nth-child(12) { background: #FFFDE7; }
+  </style>
+
+  <section class="achievement-section">
+    <h3>🎓 學生成就榮譽榜 🏆</h2>
+    <div class="achievement-grid">
+      <div class="achievement-card"><div class="achievement-emoji">🎉</div><div class="achievement-title">Sarah 通過英檢初級</div><div class="achievement-desc">口說與寫作皆高分</div></div>
+      <div class="achievement-card"><div class="achievement-emoji">🎓</div><div class="achievement-title">Bella 碩士榜首</div><div class="achievement-desc">錄取體育大學推廣系</div></div>
+      <div class="achievement-card"><div class="achievement-emoji">🎓</div><div class="achievement-title">Yolanda 上榜中興大學</div><div class="achievement-desc">圖資所碩士班</div></div>
+      <div class="achievement-card"><div class="achievement-emoji">🎓</div><div class="achievement-title">Queenie 錄取台大碩士</div><div class="achievement-desc">園藝暨景觀學系</div></div>
+      <div class="achievement-card"><div class="achievement-emoji">🎉</div><div class="achievement-title">Cherry 作文 16.5 分</div><div class="achievement-desc">114 學測作文高分</div></div>
+      <div class="achievement-card"><div class="achievement-emoji">🎉</div><div class="achievement-title">Oliver 小四過英檢</div><div class="achievement-desc">取得初級證書</div></div>
+      <div class="achievement-card"><div class="achievement-emoji">🎓</div><div class="achievement-title">Ian 錄取彰師大碩士</div><div class="achievement-desc">統計資訊研究所</div></div>
+      <div class="achievement-card"><div class="achievement-emoji">🎉🎉</div><div class="achievement-title">Andy. H 拿到美國綠卡</div><div class="achievement-desc">成功取得永久居留</div></div>
+      <div class="achievement-card"><div class="achievement-emoji">🏆🥳</div><div class="achievement-title">Toby 全國競賽第一</div><div class="achievement-desc">海事群專業實作冠軍</div></div>
+      <div class="achievement-card"><div class="achievement-emoji">🎉</div><div class="achievement-title">William 通過英檢初級</div><div class="achievement-desc">取得全民英檢證書（國二）</div></div>
+      <div class="achievement-card"><div class="achievement-emoji">📘</div><div class="achievement-title">Ruei TOEIC 860分</div><div class="achievement-desc">多益成績表現優異</div></div>
+      <div class="achievement-card"><div class="achievement-emoji">💯</div><div class="achievement-title">Wilson 英文滿級分</div><div class="achievement-desc">國中會考英文拿滿分</div></div>
+    </div>
+  </section>
+
+  <script>
+    const cards = document.querySelectorAll('.achievement-card');
+
+    const simpleObserver = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1 });
+
+    cards.forEach(card => simpleObserver.observe(card));
+
+    // 電腦版動畫加強
+    function animateCardDesktop() {
+      let index = 0;
+      function showNext() {
+        if (index >= cards.length) return;
+        const card = cards[index];
+        card.style.transition = 'transform 0.5s ease, opacity 0.6s ease';
+        card.style.zIndex = '10';
+        card.style.transform = 'translateZ(0) scale(2.5)';
+        setTimeout(() => {
+          card.style.transform = 'scale(1)';
+          card.style.zIndex = '1';
+          index++;
+          setTimeout(showNext, 300);
+        }, 1000);
+      }
+      showNext();
+    }
+
+    if (window.innerWidth >= 1024) {
+      animateCardDesktop();
+    }
+  </script>
+</div>
