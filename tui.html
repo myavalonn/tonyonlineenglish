@@ -3,7 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tony線上美語家教 - 課程方案</title>
+    <title>線上美語家教學費資訊-Tony線上美語家教</title>
+
+    <!-- 3. Message Preview Picture (貼到 Line, FB, iMessage 時的預覽小圖與文字) -->
+    <meta property="og:title" content="線上美語家教學費資訊-Tony線上美語家教">
+    <meta property="og:description" content="升學 檢定 職場 公職 高考 面試 外商 觀光美語 展場英文 翻譯">
+    <meta property="og:url" content="https://tonyonlineenglish.netlify.app/tui">
+    <meta property="og:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/shutter-speed-3LXPDYb83MY-unsplash.jpg?updatedAt=1772773916191">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/shutter-speed-3LXPDYb83MY-unsplash.jpg?updatedAt=1772773916191">
+
     <script src="layout-manager.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -88,7 +97,7 @@
 <body>
 
 <div id="product-page-container">
-    <!-- HEADER (保持不變) -->
+    <!-- HEADER -->
     <div class="w-full relative overflow-hidden bg-gray-900 flex items-center justify-center" style="border-bottom-left-radius: 50% 20px; border-bottom-right-radius: 50% 20px;">
         <div class="absolute inset-0 z-0">
             <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/shutter-speed-3LXPDYb83MY-unsplash.jpg" class="w-full h-full object-cover" />
@@ -154,7 +163,7 @@
                 <button class="buy-now-btn">立即購買</button>
             </div>
 
-            <!-- 20堂 (價格調整) -->
+            <!-- 20堂 -->
             <div class="pricing-block plan-best-border" data-id="course-20" data-name="20堂課程" data-price="12000">
                 <div class="absolute top-0 right-0 bg-red-600 text-white text-xs px-3 py-1 rounded-bl-lg font-bold z-50">-25%</div>
                 <div class="absolute top-0 right-[52px] z-40">
@@ -176,10 +185,17 @@
 
         <!-- 連結與50分鐘資訊 -->
         <div class="max-w-md mx-auto flex justify-between items-center mt-8 px-2">
-            <a href="https://tonyonlineenglish.netlify.app" target="_blank" class="inline-flex items-center gap-2 text-[#1e3a8a] font-black text-lg hover:underline">
-                課程詳細介紹
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
-            </a>
+            <div class="flex flex-col gap-3">
+                <a href="https://tonyonlineenglish.netlify.app/allcourses" target="_blank" class="inline-flex items-center gap-2 text-[#1e3a8a] font-black text-lg hover:underline">
+                    課程詳細介紹
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+                </a>
+                <!-- 新增：請假調課規範 (紫色) -->
+                <a href="https://tonyonlineenglish.netlify.app/regulations" target="_blank" class="inline-flex items-center gap-2 text-purple-600 font-black text-lg hover:underline">
+                    請假調課規範
+                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
+                </a>
+            </div>
             <div class="text-black text-2xl font-black">50分鐘/堂</div>
         </div>
 
@@ -267,7 +283,8 @@
     document.querySelectorAll('.buy-now-btn').forEach(btn => {
         btn.addEventListener('click', () => {
             if (selectedPlan) {
-                document.getElementById('modal-item-name').innerText = `${selectedPlan.name} (NT$ ${parseInt(selectedPlan.price).toLocaleString()})`;
+                // 新增：在訂購項目名稱後加上「 50分/堂」
+                document.getElementById('modal-item-name').innerText = `${selectedPlan.name} (NT$ ${parseInt(selectedPlan.price).toLocaleString()}) 50分/堂`;
                 modal.classList.add('open');
             }
         });
