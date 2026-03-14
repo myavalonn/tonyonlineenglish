@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>課程預約</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    /* ... (前面的樣式保持不變) ... */
+    
+    /* 基本按鈕樣式 (維持不變) */
+    .slide-button {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+      color: white;
+      border-radius: 999px;
+      white-space: nowrap;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(20px);
+      animation: fadeIn 1s forwards;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+      text-decoration: none;
+      margin-bottom: 28px;
+      padding: 24px 48px;
+      min-width: 400px;
+      font-size: 1rem;
+      max-width: 95vw;
+      transition: background 0.5s ease, transform 0.3s ease;
+      z-index: 0;
+      box-sizing: border-box;
+    }
+
+    .slide-button::before {
+      content: "";
+      position: absolute;
+      top: -4px; left: -4px; right: -4px; bottom: -4px;
+      border-radius: 999px;
+      z-index: -1;
+    }
+
+    /* 前三個按鈕的顏色與光暈 (維持您原本喜歡的樣子) */
+    .btn-50 {
+      background: linear-gradient(135deg, #2b90d9, #20c4cb); /* 接近圖中的藍青色 */
+    }
+    .btn-50::before {
+      background: linear-gradient(270deg, #20c4cb, #2b90d9, #20c4cb);
+      background-size: 200% 200%;
+      animation: glowFuturistic 6s linear infinite;
+      color: #20c4cb;
+    }
+
+    .btn-25 { background: linear-gradient(90deg, #e65c00, #f9d423); } /* 接近圖中的深橘色 */
+    .btn-25::before {
+      background: linear-gradient(270deg, #e65c00, #f9d423, #e65c00);
+      background-size: 200% 200%;
+      animation: glowOrange 5s linear infinite;
+      color: #f9d423;
+    }
+
+    .btn-rules { background: linear-gradient(90deg, #8E2DE2, #4A00E0); } /* 接近圖中的紫色 */
+    .btn-rules::before {
+      background: linear-gradient(270deg, #8a63e7, #a45fff, #8a63e7);
+      background-size: 200% 200%;
+      animation: glowPurple 5s linear infinite;
+      color: #a45fff;
+    }
+
+    /* --- 第四個按鈕：分割樣式修正 --- */
+    
+    .btn-split-container {
+      padding: 0 !important;
+      background: transparent;
+    }
+    
+    /* 讓外框光暈呈現綜合色 (藍紫 + 紅光) */
+    .btn-split-container::before {
+      background: linear-gradient(270deg, #4A00E0, #DD2476, #4A00E0);
+      background-size: 200% 200%;
+      animation: glowSchedule 5s linear infinite;
+      color: #DD2476;
+    }
+
+    /* New 標籤 - 根據圖片微調位置 */
+    .btn-split-container::after {
+      content: 'New';
+      position: absolute;
+      top: 5px; 
+      right: 18px; /* 稍微往左一點點以免太貼邊緣，但避開 Icon */
+      background-color: #4CAF50; /* 經典綠色，對比紅底很清楚 */
+      color: white;
+      padding: 3px 8px;
+      border-radius: 5px;
+      font-size: 0.7em;
+      font-weight: bold;
+      transform: rotate(15deg);
+      box-shadow: 1px 1px 4px rgba(0, 0, 0, 0.4);
+      z-index: 10;
+      pointer-events: none;
+    }
+
+    /* 左右連結共用樣式 */
+    .split-link {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-decoration: none;
+      color: white;
+      height: 100%;
+      width: 50%;
+      transition: filter 0.2s;
+      gap: 10px; /* 文字與 icon 的距離 */
+      position: relative;
+    }
+
+    /* 左邊：深藍紫色 (對應圖片左下) */
+    .split-left {
+      background: linear-gradient(90deg, #4242e2, #5858ff);
+      /* 加入右邊框線，製造分隔感，看起來更高級 */
+      border-right: 1px solid rgba(255, 255, 255, 0.3); 
+    }
+
+    /* 右邊：桃紅轉橙色 (對應圖片右下) */
+    /* 這裡稍微加重紅色比例，區隔上面的純橘色按鈕 */
+    .split-right {
+      background: linear-gradient(90deg, #DA22FF, #FF8E53); 
+    }
+
+    .split-link:hover {
+      filter: brightness(1.15); /* 滑鼠移過去稍微變亮 */
+    }
+    
+    /* 確保 Icon 顏色正確 (圖片中看起來是黑色或深色外框，這邊設為標準顯示) */
+    .split-link img {
+      filter: drop-shadow(0px 1px 2px rgba(0,0,0,0.3)); /* 讓 Icon 在漸層上更清楚 */
+    }
+
+
+    /* --- 動畫定義 (不變) --- */
+    .slide-button:nth-child(1) { animation-delay: 0.1s; }
+    .slide-button:nth-child(2) { animation-delay: 0.4s; }
+    .slide-button:nth-child(3) { animation-delay: 0.7s; }
+    .slide-button:nth-child(4) { animation-delay: 1.0s; }
+    .slide-button:hover { transform: scale(1.05); }
+    .slide-button:active { transform: scale(0.97); }
+    @keyframes fadeIn { to { opacity: 1; transform: translateY(0); } }
+    @keyframes futuristicFlow { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+    @keyframes glowFuturistic { 0%, 100% { background-position: 0% 50%; filter: drop-shadow(0 0 8px currentColor); } 50% { background-position: 100% 50%; filter: drop-shadow(0 0 16px currentColor); } }
+    @keyframes glowOrange { 0%, 100% { background-position: 0% 50%; filter: drop-shadow(0 0 8px currentColor); } 50% { background-position: 100% 50%; filter: drop-shadow(0 0 14px currentColor); } }
+    @keyframes glowPurple { 0%, 100% { background-position: 0% 50%; filter: drop-shadow(0 0 10px currentColor); } 50% { background-position: 100% 50%; filter: drop-shadow(0 0 16px currentColor); } }
+    @keyframes glowSchedule { 0%, 100% { background-position: 0% 50%; filter: drop-shadow(0 0 8px currentColor); } 50% { background-position: 100% 50%; filter: drop-shadow(0 0 14px currentColor); } }
+
+    /* --- RWD 設定 --- */
+    @media (min-width: 1025px) {
+      .slide-button { font-size: 2.25rem; min-width: 780px; padding: 30px 60px; }
+      .split-link { padding: 30px 10px; }
+      .btn-split-container::after { top: 10px; right: 25px; font-size: 0.7em; }
+    }
+    @media (min-width: 481px) and (max-width: 1024px) {
+      .slide-button { font-size: 2.2rem; min-width: 620px; padding: 28px 56px; }
+      .split-link { padding: 28px 5px; }
+      .btn-split-container::after { top: 8px; right: 20px; font-size: 0.7em; }
+    }
+    @media (max-width: 480px) {
+      .slide-button { font-size: 1.7rem; padding: 24px 20px; width: 92vw; min-width: unset; }
+      .slide-button img { width: 45px !important; height: 45px !important; }
+      .split-link { 
+        padding: 24px 2px; 
+        font-size: 0.8em; 
+        line-height: 1.1; 
+        text-align: center;
+      }
+      .split-link img { width: 28px !important; height: 28px !important; }
+      .btn-split-container::after { top: 4px; right: 8px; font-size: 0.5em; }
+    }
+  </style>
+</head>
+<body>
+  <div style="display: flex; flex-direction: column; align-items: center;">
+    
+    <a id="booking-link-50" class="slide-button btn-50" href="#" style="display: flex; align-items: center; gap: 12px;">
+      預約50分鐘課程
+      <img src="https://ik.imagekit.io/lql1uveoc/external-link.png?updatedAt=1754911187731" alt="icon" width="40" height="40" />
+    </a>
+
+    <a class="slide-button btn-25" href="https://koalendar.com/e/TonyOnlineEnglish/" target="_blank" style="display: flex; align-items: center; gap: 12px;">
+      預約25分鐘課程 
+      <img src="https://ik.imagekit.io/lql1uveoc/Schedule%20information/info.png?updatedAt=1761978562177" width="40" height="40" />
+    </a>
+
+    <a class="slide-button btn-rules" href="https://tonyonlineenglish.mydurable.com/regulations" target="_blank" style="display: flex; align-items: center; gap: 12px;">
+      學生請假調課規範
+      <img src="https://ik.imagekit.io/lql1uveoc/external-link.png?updatedAt=1754911187731" alt="icon" width="40" height="40" />
+    </a>
+
+    <!-- 第四個按鈕：雙色分割 -->
+    <div class="slide-button btn-split-container">
+      
+      <!-- 左邊：查詢課表 (藍紫色) -->
+      <a class="split-link split-left" href="https://tonyonlineenglish.mydurable.com/ycs" target="_blank">
+        查詢你的課表
+        <img src="https://ik.imagekit.io/lql1uveoc/external-link.png?updatedAt=1754911187731" alt="icon" width="35" height="35" />
+      </a>
+
+      <!-- 右邊：多堂預約 (紅橙色) -->
+      <a class="split-link split-right" href="https://tonyonlineenglish.mydurable.com/booking" target="_blank">
+        支援多堂預約
+        <img src="https://ik.imagekit.io/lql1uveoc/external-link.png?updatedAt=1754911187731" alt="icon" width="35" height="35" />
+      </a>
+
+    </div>
+
+  </div>
+
+  <script>
+    const urls = [
+      'https://appt.link/meet-with-tony-w5vuHAPR/TonyOnlineEnglish50',
+      'https://appt.link/meet-with-tony-lin-jsqoaDPU/TonyOnlineEnglish',
+      'https://appt.link/TonyOnlineEnglishTutoring3/web-conference/'
+    ];
+
+    const bookingLink = document.getElementById('booking-link-50');
+
+    bookingLink.addEventListener('click', function(event) {
+      event.preventDefault();
+      let clickCount = parseInt(localStorage.getItem('bookingLinkClickCount') || '0');
+      const targetUrl = urls[clickCount % 3];
+      clickCount++;
+      localStorage.setItem('bookingLinkClickCount', clickCount);
+      window.location.href = targetUrl;
+    });
+  </script>
+
+</body>
+</html>
