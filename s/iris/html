@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Course Pricing Card</title>
+<style>
+  /* General Reset and Fonts */
+  * {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+  }
+
+  body {
+    font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    background-color: transparent; /* Transparent for Wix integration */
+    color: #333;
+    line-height: 1.6;
+    padding: 10px;
+  }
+
+  /* Main Container */
+  .container {
+    max-width: 600px;
+    margin: 0 auto;
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  }
+
+  /* Header Image Area */
+  .header-image {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    background-color: #f0f0f0;
+    position: relative;
+  }
+  
+  /* Tag on Image */
+  .image-tag {
+    position: absolute;
+    bottom: 20px;
+    right: 20px;
+    background-color: rgba(0, 0, 0, 0.7);
+    color: #fff;
+    padding: 4px 12px;
+    font-size: 12px;
+    border-radius: 4px;
+  }
+
+  /* Content Area */
+  .content {
+    padding: 30px;
+  }
+
+  /* Typography */
+  h1 {
+    font-size: 22px;
+    font-weight: 800;
+    margin-bottom: 5px;
+    color: #111;
+  }
+
+  h2 {
+    font-size: 16px;
+    font-weight: normal;
+    color: #333;
+    margin-bottom: 25px;
+  }
+
+  .price-section {
+    margin-bottom: 25px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 20px;
+  }
+
+  .price {
+    font-size: 42px;
+    font-weight: 500;
+    color: #111;
+    line-height: 1.2;
+  }
+
+  .price-detail {
+    font-size: 16px;
+    color: #444;
+    margin-top: 5px;
+  }
+
+  /* List Styling */
+  .info-list {
+    list-style: none;
+    margin-bottom: 40px;
+  }
+
+  .info-list li {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 15px;
+    font-size: 15px;
+    color: #333;
+  }
+
+  .icon {
+    flex-shrink: 0;
+    width: 24px;
+    height: 24px;
+    background-color: #ddd; /* Fallback gray circle */
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 12px;
+    font-size: 12px;
+    margin-top: 2px;
+  }
+  
+  /* Icon modifiers */
+  .icon.check { background-color: #e0e0e0; color: #555; }
+  .icon.medal { background-color: #fceabb; color: #d4af37; font-size: 14px;}
+  .icon.star { background-color: #fff4cc; color: #ffbb00; font-size: 14px;}
+  .icon.warn { background-color: #ffe6e6; color: #d32f2f; font-size: 14px;}
+  .icon.stop { background-color: #ffe6e6; color: #d32f2f; font-size: 14px;}
+
+  /* Second Section (Info Box) */
+  .info-box {
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    padding: 25px;
+    margin-top: 20px;
+    background-color: #fff;
+  }
+
+  .info-header {
+    margin-bottom: 20px;
+  }
+  
+  .info-header h3 {
+    font-size: 28px;
+    font-weight: 400;
+    color: #222;
+    margin-bottom: 5px;
+  }
+  
+  .info-header p {
+    color: #555;
+    font-size: 16px;
+  }
+
+  /* Button (Optional based on image blue hint at bottom) */
+  .btn {
+    display: block;
+    width: 100%;
+    text-align: center;
+    background-color: #1E90FF;
+    color: white;
+    padding: 15px;
+    border-radius: 30px;
+    text-decoration: none;
+    font-weight: bold;
+    margin-top: 20px;
+  }
+
+  /* Responsive Adjustments */
+  @media (max-width: 480px) {
+    .content { padding: 20px; }
+    h1 { font-size: 18px; }
+    .price { font-size: 36px; }
+    .info-header h3 { font-size: 24px; }
+    .header-image { height: 180px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <!-- 
+       IMPORTANT: 
+       Since I cannot host the image for you, I have put a placeholder image below.
+       You can change the 'src' link below to your own uploaded image URL if you have one.
+  -->
+  <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=1000&auto=format&fit=crop" alt="Students" class="header-image">
+  
+  <div class="content">
+    
+    <!-- Title Section -->
+    <h1>For Iris Liu Only 劉雅芳</h1>
+    <h2>多益課程TOEIC -600分/訂閱制/ 2026</h2>
+
+    <!-- Price Section -->
+    <div class="price-section">
+      <div class="price">NT$ 9,000</div>
+      <div class="price-detail">大約20堂課 （每堂50分鐘） 訂閱制</div>
+    </div>
+
+    <!-- Terms List -->
+    <ul class="info-list">
+      <li>
+        <span class="icon check">✓</span>
+        <span>預約, 或固定時段上課 （每週固定扣除訂閱制450點）(沒上課也會扣除 450點)</span>
+      </li>
+      <li>
+        <span class="icon check">✓</span>
+        <span>週六及國定假日每堂600點</span>
+      </li>
+      <li>
+        <span class="icon check">✓</span>
+        <span>🏅 24 小時內提出請假或調課, 扣除0.5堂 (週六/國定假日1堂)</span>
+      </li>
+      <li>
+        <span class="icon check">✓</span>
+        <span>🏅 12小時內提出請假或調課, 扣除1堂。(Line 收到時間為主)</span>
+      </li>
+      <li>
+        <span class="icon check">✓</span>
+        <span>⭐ 退費：第1~10堂申請，每堂扣除,NT$600後+扣除專案補助費後進行退費。</span>
+      </li>
+      <li>
+        <span class="icon check">✓</span>
+        <span>⭐ 退費：第11堂後申請，每堂扣除,NT$550後+扣除專案補助費後，進行退費。</span>
+      </li>
+      <li>
+        <span class="icon warn">!!</span>
+        <span>請多加注意, 避免掉入詐騙陷阱！</span>
+      </li>
+      <li>
+        <span class="icon stop">⛔</span>
+        <span>此方案為專屬優惠, 請勿與其他人分享！</span>
+      </li>
+      <li>
+        <span class="icon check">✓</span>
+        <span>此方案無暫停課程選項。</span>
+      </li>
+    </ul>
+
+    <!-- Second Card: Class Time Info -->
+    <div class="info-box">
+      <div class="info-header">
+        <h3>上課時間 + 點數須知</h3>
+        <p>Tony線上美語家教</p>
+      </div>
+
+      <ul class="info-list">
+        <li>
+          <span class="icon check">✓</span>
+          <span>(450)週一～週五 10am~10pm ;週六/國定假日 (600).</span>
+        </li>
+        <li>
+          <span class="icon check">✓</span>
+          <span>國定假日需再次確認, 也會提前公告是否有提供上課</span>
+        </li>
+        <li>
+          <span class="icon check">✓</span>
+          <span>此方案週六/國定假日若成功預約時段上課, 需600點 （週六學生眾多, 敬請見諒）。（包含國定假日）</span>
+        </li>
+        <li>
+          <span class="icon check">✓</span>
+          <span>可以固定時段上課, 非固定時段上課, 請多加利用線上預約系統。</span>
+        </li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+</body>
+</html>
