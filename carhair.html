@@ -2,6 +2,14 @@
 <div id="record-keeper-container"></div>
 <script>
     (function() {
+        // --- [新增部分] 自動注入 Viewport Meta Tag 確保手機端比例與字體放大生效 ---
+        if (!document.querySelector('meta[name="viewport"]')) {
+            const meta = document.createElement('meta');
+            meta.name = 'viewport';
+            meta.content = 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no';
+            document.head.appendChild(meta);
+        }
+
         // ------------------------------------------------------------------
         // Please paste your [existing] Web App URL (no need to redeploy)
         // ------------------------------------------------------------------
@@ -55,7 +63,8 @@
         }
 
         function showLoginScreen() {
-            container.innerHTML = `<style>#record-keeper-container .login-view{max-width:400px;margin:40px auto;background:#fff;padding:30px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,.1);text-align:center}#login-wrapper h3{margin-top:0;font-size:24px;color:#333}#password-input{width:100%;padding:12px;font-size:18px;border-radius:8px;border:1px solid #ccc;box-sizing:border-box;margin-top:20px;text-align:center}#login-button{width:100%;padding:12px;font-size:16px;font-weight:bold;color:#fff;background-color:#007bff;border:none;border-radius:8px;cursor:pointer;margin-top:20px}#login-button:hover{background-color:#0056b3}#login-button:disabled{background-color:#ccc;cursor:not-allowed;}#login-error{color:red;height:20px;margin-top:10px}@keyframes shake{10%,90%{transform:translate3d(-1px,0,0)}20%,80%{transform:translate3d(2px,0,0)}30%,50%,70%{transform:translate3d(-4px,0,0)}40%,60%{transform:translate3d(4px,0,0)}}.shake-error{animation:shake .5s cubic-bezier(.36,.07,.19,.97) both}</style><div class=login-view><div id=login-wrapper><h3>請輸入密碼</h3><input type=password id=password-input placeholder="Enter Password"><button id=login-button>解鎖</button><p id=login-error></p></div></div>`;
+            // [修改部分] 增加了針對手機版的大字體與大按鈕樣式 (@media max-width: 600px)
+            container.innerHTML = `<style>#record-keeper-container .login-view{width:90%;max-width:400px;box-sizing:border-box;margin:40px auto;background:#fff;padding:30px;border-radius:12px;box-shadow:0 4px 12px rgba(0,0,0,.1);text-align:center}#login-wrapper h3{margin-top:0;font-size:24px;color:#333}#password-input{width:100%;padding:15px;font-size:20px;border-radius:8px;border:1px solid #ccc;box-sizing:border-box;margin-top:20px;text-align:center}#login-button{width:100%;padding:15px;font-size:18px;font-weight:bold;color:#fff;background-color:#007bff;border:none;border-radius:8px;cursor:pointer;margin-top:20px}#login-button:hover{background-color:#0056b3}#login-button:disabled{background-color:#ccc;cursor:not-allowed;}#login-error{color:red;height:20px;margin-top:10px}@keyframes shake{10%,90%{transform:translate3d(-1px,0,0)}20%,80%{transform:translate3d(2px,0,0)}30%,50%,70%{transform:translate3d(-4px,0,0)}40%,60%{transform:translate3d(4px,0,0)}}.shake-error{animation:shake .5s cubic-bezier(.36,.07,.19,.97) both}@media (max-width: 600px){#record-keeper-container .login-view{margin:20px auto;padding:20px}#password-input{font-size:22px;padding:18px}#login-button{font-size:22px;padding:18px}}</style><div class=login-view><div id=login-wrapper><h3>請輸入密碼</h3><input type=password id=password-input placeholder="Enter Password"><button id=login-button>解鎖</button><p id=login-error></p></div></div>`;
             
             document.getElementById("login-button").addEventListener("click", checkPassword);
             document.getElementById("password-input").addEventListener("keyup", e => {
@@ -125,6 +134,28 @@
                     .inline-editor-actions button { width: 100%; }
                     .results-table td[data-label="ID:"] { display: none; }
                 }
+
+                /* ---[新增部分] 手機尺寸優化：加大按鈕、字體、更好點擊的區域 (RWD & Larger Fonts) --- */
+                @media (max-width: 600px) {
+                    :root { font-size: 24px; } /* 整體基礎字體放大 */
+                    #record-keeper-container { padding: 1em; margin: 0.5em auto; width: 98%; border-radius: 0.5em; box-sizing: border-box; }
+                    .app-nav { justify-content: space-between; gap: 0.5em; }
+                    .app-nav button { padding: 0.8em 0.2em; font-size: 1.1em; flex: 1; border-bottom-width: 4px; }
+                    input, select, textarea { padding: 0.9em; font-size: 1.1em; } /* 輸入框高度增加 */
+                    .form-group label { font-size: 1.1em; margin-bottom: 0.6em; }
+                    .app-button { padding: 1.1em; font-size: 1.2em; } /* 儲存大按鈕加倍醒目 */
+                    .query-filters { grid-template-columns: 1fr; gap: 1em; }
+                    .action-button { padding: 1em; font-size: 1.1em; width: 100%; margin-bottom: 0.6em; margin-right: 0; box-sizing: border-box; } /* 操作按鈕全寬化，防誤觸 */
+                    .results-table td { padding-left: 45% !important; font-size: 1.15em; min-height: 3.5em; padding-top: 1em; padding-bottom: 1em; }
+                    .results-table td:before { font-size: 0.95em; top: 50%; transform: translateY(-50%); } /* 左側標籤置中對齊 */
+                    .big-square-button { width: 8em; height: 8em; font-size: 1.5em; margin-top: 1em; }
+                    .inline-editor-container { padding: 1.2em; }
+                    .inline-editor-actions { gap: 1em; }
+                    .inline-editor-actions button { padding: 1em; font-size: 1.2em; }
+                    #haircutInfo { padding: 1em 0.5em; }
+                    .haircut-label, .haircut-date { font-size: 1.6rem; }
+                    h2 { font-size: 1.5em; }
+                }
             </style>
             <div class="app-nav"><button id="nav-car" class="active">汽車費用</button><button id="nav-haircut">剪髮紀錄</button></div>
             <div id="section-car" class="app-section active">
@@ -161,7 +192,7 @@
 
             let allCarData = {
                 headers: [],
-                data: []
+                data:[]
             };
             const findHeaderIndex = (headers, baseName) => headers.findIndex(h => h && h.trim().startsWith(baseName));
             const maskCarPlate = plate => (plate === 'BCX-8622' ? 'BCX-8***' : (plate === 'ALV-7506' ? 'ALV-7***' : plate));
@@ -499,9 +530,7 @@
                     document.body.appendChild(fileInput);
                     fileInput.click();
                 }
-            });
-
-            ['filter-car', 'filter-range', 'filter-item-type', 'filter-keyword'].forEach(id => document.getElementById(id).addEventListener(id === 'filter-keyword' ? 'input' : 'change', applyCarFilters));
+            });['filter-car', 'filter-range', 'filter-item-type', 'filter-keyword'].forEach(id => document.getElementById(id).addEventListener(id === 'filter-keyword' ? 'input' : 'change', applyCarFilters));
             document.querySelector('input[name="dateTime"]').value = new Date(new Date().getTime() - new Date().getTimezoneOffset() * 60000).toISOString().slice(0, 16);
             refreshCarData();
         }
