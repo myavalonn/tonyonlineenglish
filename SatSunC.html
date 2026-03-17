@@ -10,7 +10,7 @@
             background-color: #ffffff;
             margin: 0;
             padding: 0;
-            font-size: 20px; /* 適度調整基礎字體 */
+            font-size: 20px;
             line-height: 1.6;
             color: #000000;
         }
@@ -26,21 +26,50 @@
         .container {
             max-width: 600px;
             margin: 0 auto;
-            padding: 0 20px; /* 給予適當內距，防止貼邊 */
+            padding: 0 20px;
         }
 
         .header {
-            padding: 40px 0;
+            padding: 40px 0 30px 0;
             text-align: center;
-            border-bottom: 2px solid #000;
+            margin-bottom: 20px;
         }
 
-        .header h1 { font-size: 28px; margin: 0; }
-        .header p { font-size: 18px; margin-top: 10px; }
+        .header h1 { font-size: 30px; margin: 0; color: #222;}
+        .header p { font-size: 18px; margin-top: 10px; color: #555; }
 
+        /* --- 卡片式設計升級 --- */
         .section {
-            padding: 25px 0;
-            border-bottom: 1px solid #eee;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* 柔和的專業陰影 */
+        }
+
+        /* 不同的卡片顏色主題 */
+        .card-intro {
+            background-color: #f8f9fa;
+            border-left: 6px solid #8792a1; /* 沉穩灰 */
+        }
+        
+        .card-info {
+            background-color: #f2f7fa;
+            border-left: 6px solid #4a90e2; /* 資訊藍 */
+        }
+
+        .card-hours {
+            background-color: #fffbf0;
+            border-left: 6px solid #f5a623; /* 時間黃 */
+        }
+
+        .card-points {
+            background-color: #f4faf5;
+            border-left: 6px solid #50af41; /* 轉換綠 */
+        }
+
+        .card-alert {
+            background-color: #fff6f6;
+            border-left: 6px solid #d32f2f; /* 警告紅 */
         }
 
         .section-title {
@@ -54,23 +83,27 @@
 
         .red-border-box {
             border: 2px solid #d32f2f;
+            background-color: #ffffff;
             padding: 15px;
             margin-top: 15px;
-            border-radius: 4px;
+            border-radius: 6px;
         }
 
         .example-box {
-            background-color: #f5f5f5;
+            background-color: #ffffff; /* 改為白色以在彩色卡片中突顯 */
             padding: 15px;
             font-size: 18px;
             border-left: 5px solid #ccc;
             margin: 15px 0;
+            border-radius: 6px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
         }
 
         /* 針對手機的小字優化 */
         @media (max-width: 480px) {
             body { font-size: 22px; }
             .header h1 { font-size: 26px; }
+            .section { padding: 20px; }
         }
     </style>
 </head>
@@ -82,17 +115,17 @@
         <p>課程預約與請假規範</p>
     </div>
 
-    <div class="section">
+    <div class="section card-intro">
         <strong>【前言】</strong><br>
         Tony線上美語家教致力於提供專業且高品質的學習體驗。為了平衡教學能量與休息時間，針對學生主動指定的特殊時段，特訂定此規範以確保教學品質與公平性。
     </div>
 
-    <div class="section">
+    <div class="section card-info">
         <strong>💡 預約說明：</strong><br>
         通常特殊時段為老師公告開放預約，學生可預約該特殊時段課程，課堂數為正常規範。但若是學生「主動指定」該特殊時段上課，可參考底下規範。
     </div>
 
-    <div class="section">
+    <div class="section card-hours">
         <span class="section-title">⏰ 營業時間說明</span>
         <div>
             <strong>● 標準營業時段 (1.0x)</strong><br>
@@ -112,7 +145,7 @@
         </div>
     </div>
 
-    <div class="section">
+    <div class="section card-points">
         <span class="section-title">🔄 點數轉換機制</span>
         若指定於特殊時段上課，剩餘堂數將自動轉換為點數計算：<br><br>
         <strong>範例（<span class="time-group">1堂 = 100點</span>）：</strong><br>
@@ -128,7 +161,7 @@
         </div>
     </div>
 
-    <div class="section red-theme" style="border-bottom: none;">
+    <div class="section card-alert red-theme">
         <span class="section-title">📅 請假調課規範</span>
         針對<strong>「非營業時段」</strong>之預約：<br>
         請於課程開始前 <span class="time-group">48 小時</span> 告知。
@@ -145,7 +178,7 @@
         </div>
     </div>
 
-    <div style="text-align: center; padding: 40px 0; font-size: 14px; color: #999; border-top: 1px solid #eee;">
+    <div style="text-align: center; padding: 20px 0 40px 0; font-size: 14px; color: #999;">
         Tony 線上美語家教 - 感謝您的配合
     </div>
 </div>
