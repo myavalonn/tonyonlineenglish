@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>課程預約與加班時段規範</title>
+    <title>課程預約、點數與請假規範</title>
     <style>
         :root {
             --bg-color: #f0f2f5;
@@ -11,6 +11,7 @@
             --standard: #2e7d32;
             --special: #c62828;
             --info: #1565c0;
+            --warning: #f08c00;
         }
 
         body {
@@ -18,7 +19,7 @@
             background-color: var(--bg-color);
             margin: 0;
             padding: 15px;
-            font-size: 22px; /* 確保手機閱讀舒適度 */
+            font-size: 22px; /* 手機大字體優化 */
             line-height: 1.6;
             color: #333;
         }
@@ -35,18 +36,25 @@
         h1 {
             font-size: 28px;
             text-align: center;
-            color: #000;
-            margin-bottom: 25px;
             border-bottom: 4px solid #eee;
             padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        h2 {
+            font-size: 24px;
+            color: var(--info);
+            border-left: 8px solid var(--info);
+            padding-left: 12px;
+            margin-top: 30px;
         }
 
         .notice-card {
             background: #fff9db;
-            border: 2px solid #f08c00;
-            padding: 15px;
+            border: 2px solid var(--warning);
+            padding: 18px;
             border-radius: 12px;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             font-weight: bold;
         }
 
@@ -71,10 +79,17 @@
             border: 2px solid var(--info);
             padding: 20px;
             border-radius: 15px;
+        }
+
+        .policy-card {
+            background: #fff4e5;
+            border: 2px solid var(--warning);
+            padding: 20px;
+            border-radius: 15px;
             margin-top: 25px;
         }
 
-        .example {
+        .example-box {
             font-size: 19px;
             background: #fff;
             padding: 15px;
@@ -91,54 +106,66 @@
         @media (max-width: 480px) {
             body { font-size: 24px; }
             h1 { font-size: 26px; }
-            .example { font-size: 20px; }
+            .example-box { font-size: 21px; }
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>課程時段預約規範</h1>
+    <h1>課程預約與請假規範</h1>
 
     <div class="notice-card">
-        ⚠️ 重要提醒：<br>
-        非營業時段屬於教師私人休息時間。教師保有拒絕預約、調整或變更時段之最終權利。
+        ⚠️ 權益聲明：<br>
+        非營業時段預約需視教師行程狀況個別詢問。教師保有最終核准與拒絕預約之權利。
     </div>
 
     <div class="time-section">
         <strong style="color:var(--standard);">✅ 標準營業時段 (1.0x)</strong><br>
         • 週一至週五：10:00 - 22:00<br>
         • 週六：10:00 - 17:00<br>
-        <span style="font-size: 18px;">(計費方式：以「堂數」扣除)</span>
+        <span style="font-size: 19px; color: #666;">(最後一堂課於 4:50 PM 結束)</span><br>
     </div>
 
     <div class="special-section">
         <strong style="color:var(--special);">🌟 特殊指定時段 (1.2x)</strong><br>
         • 週六晚間：18:00 - 21:00<br>
-        • 週日全天：彈性預約時段<br>
-        <span style="font-size: 18px;">(需個別詢問，雙方同意後開放)</span>
+        • 週日時段：教師彈性公告開放
     </div>
 
+    <h2>🔄 點數轉換機制</h2>
     <div class="logic-card">
-        <h3 style="margin-top:0; color:var(--info);">🔄 點數轉換機制</h3>
-        <p>當學生要求於「非營業時段」上課，且經教師同意後，剩餘堂數將自動轉換為點數（1堂 = 600點）：</p>
-        
-        <div style="font-weight: bold; margin-bottom: 10px;">
-            • 標準時段課程：600 點 / 堂<br>
-            • 特殊時段課程：<span class="highlight">720 點 / 堂</span>
+        <p style="margin-top:0;">預約「特殊時段」時，剩餘堂數將自動轉換為點數（1堂 = 600點）：</p>
+        <div style="font-weight: bold;">
+            • 標準時段：600 點 / 堂<br>
+            • 特殊時段：<span class="highlight">720 點 / 堂</span>
         </div>
-
-        <div class="example">
-            <strong>💡 計算範例：</strong><br>
-            假設您目前剩餘 15 堂課：<br>
-            1. 轉換總點數：15堂 × 600 = <span class="highlight">9,000點</span><br>
-            2. 預約特殊時段：扣除 <span class="highlight">720點</span><br>
-            3. 剩餘點數：8,280點 (約 13.8 堂)
+        <div class="example-box">
+            <strong>範例：</strong>剩餘 15 堂預約週日課<br>
+            總點數 9000 - 特殊課 720 = 8280 點<br>
+            (回標準時段上課仍剩 13.8 堂)
         </div>
     </div>
 
-    <p style="font-size: 18px; color: #666; font-style: italic; margin-top: 25px; text-align: center;">
-        ※ 此機制旨在確保非營業時間之服務彈性與教學品質，感謝您的理解。
+    <h2>📅 請假與調課規範</h2>
+    <div class="policy-card">
+        <p style="margin-top:0;">針對<strong>「非營業時段」</strong>之預約：</p>
+        <p>請於課程開始前 <span class="highlight">48 小時</span> 告知取消或調課。</p>
+        
+        <p style="background: white; padding: 10px; border-radius: 8px; font-size: 19px;">
+            ❌ <strong>逾時告知：</strong><br>
+            若於上課前 48 小時內告知，將<strong>照常扣除</strong>該時段點數 (720 點)。
+        </p>
+
+        <div class="example-box" style="border-left: 5px solid var(--warning);">
+            <strong>範例：</strong><br>
+            預約：週日上午 10:00 課程<br>
+            期限：需於 <span class="highlight">週五上午 10:00 前</span> 完成請假。
+        </div>
+    </div>
+
+    <p style="font-size: 17px; color: #888; text-align: center; margin-top: 30px;">
+        感謝您的配合，共同維護優質教學環境。
     </p>
 </div>
 
