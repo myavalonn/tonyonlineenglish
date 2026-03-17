@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>課程點數與預約規範</title>
+    <style>
+        :root {
+            --bg-color: #f5f7fa;
+            --card-bg: #ffffff;
+            --text-main: #333333;
+            --accent-color: #e67e22; /* 提醒色：橘色 */
+            --point-color: #2c3e50; /* 主色：深藍 */
+        }
+
+        body {
+            font-family: "PingFang TC", "Microsoft JhengHei", sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 20px;
+            /* 手機版基礎字體加大 */
+            font-size: 22px; 
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            font-size: 30px;
+            text-align: center;
+            color: #000;
+            border-bottom: 4px solid var(--point-color);
+            padding-bottom: 15px;
+            margin-bottom: 30px;
+        }
+
+        .section-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-top: 35px;
+            color: var(--point-color);
+            border-left: 8px solid var(--point-color);
+            padding-left: 15px;
+            display: block;
+        }
+
+        .schedule-box {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 12px;
+            margin: 15px 0;
+            border: 1px solid #eee;
+        }
+
+        .point-card {
+            background: #f0f7ff;
+            border: 2px solid var(--point-color);
+            padding: 20px;
+            border-radius: 15px;
+            margin: 20px 0;
+        }
+
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px 0;
+            border-bottom: 1px solid #d1d1d1;
+        }
+
+        .premium {
+            color: var(--accent-color);
+            font-weight: bold;
+        }
+
+        .warning-note {
+            background: #fff3cd;
+            padding: 20px;
+            border-radius: 12px;
+            font-size: 20px;
+            border: 1px dashed #e67e22;
+            margin-top: 20px;
+        }
+
+        .footer {
+            font-size: 18px;
+            color: #888;
+            text-align: center;
+            margin-top: 40px;
+        }
+
+        /* 手機版字體優化 */
+        @media (max-width: 480px) {
+            body {
+                font-size: 24px; 
+                padding: 10px;
+            }
+            .container {
+                padding: 20px;
+            }
+            h1 { font-size: 28px; }
+            .section-title { font-size: 22px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>課程預約規範</h1>
+
+    <p>為維護教學品質，本課程全面採用<strong>「點數計算系統」</strong>進行預約與扣課。</p>
+
+    <span class="section-title">標準營業時間</span>
+    <div class="schedule-box">
+        • <b>週一至週五：</b>10:00 - 22:00<br>
+        • <b>週六：</b>10:00 - 17:00<br>
+        <small>(最後一堂課 16:50 結束)</small>
+    </div>
+
+    <span class="section-title">特殊彈性時段</span>
+    <div class="schedule-box">
+        • <b>週六晚間：</b>18:00 - 21:00<br>
+        • <b>週日全天：</b>依老師空檔彈性開放
+    </div>
+
+    <span class="section-title">點數扣除說明</span>
+    <div class="point-card">
+        <div class="price-row">
+            <span>標準時段課程</span>
+            <span>600 點</span>
+        </div>
+        <div class="price-row">
+            <span class="premium">非營業時段課程</span>
+            <span class="premium">720 點</span>
+        </div>
+        <p style="margin-top:15px; font-size: 18px; text-align: center; color: #666;">
+            <i>* 非營業時段以 1.2 倍率計算</i>
+        </p>
+    </div>
+
+    <div class="warning-note">
+        💡 <b>貼心提醒：</b><br>
+        特殊時段名額有限，若有預約需求請提前告知，老師將視當週行程為您安排。
+    </div>
+
+    <p class="footer">感謝您的配合與支持</p>
+</div>
+
+</body>
+</html>
