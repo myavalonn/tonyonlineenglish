@@ -3,24 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>課程時段與點數轉換規範</title>
+    <title>課程預約與加班時段規範</title>
     <style>
         :root {
-            --bg-color: #f4f6f9;
+            --bg-color: #f0f2f5;
             --card-bg: #ffffff;
-            --primary: #1a73e8;
-            --accent: #d93025;
-            --text: #202124;
+            --standard: #2e7d32;
+            --special: #c62828;
+            --info: #1565c0;
         }
 
         body {
             font-family: "PingFang TC", "Microsoft JhengHei", sans-serif;
             background-color: var(--bg-color);
-            color: var(--text);
             margin: 0;
             padding: 15px;
-            font-size: 22px; /* 手機基礎大字體 */
+            font-size: 22px; /* 確保手機閱讀舒適度 */
             line-height: 1.6;
+            color: #333;
         }
 
         .container {
@@ -28,119 +28,118 @@
             margin: 0 auto;
             background: var(--card-bg);
             padding: 25px;
-            border-radius: 16px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-radius: 24px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
         }
 
         h1 {
             font-size: 28px;
             text-align: center;
-            border-bottom: 3px solid #eee;
-            padding-bottom: 15px;
+            color: #000;
             margin-bottom: 25px;
+            border-bottom: 4px solid #eee;
+            padding-bottom: 15px;
         }
 
-        .time-box {
-            background: #e8f0fe;
+        .notice-card {
+            background: #fff9db;
+            border: 2px solid #f08c00;
             padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-        }
-
-        .special-time {
-            background: #fce8e6;
-            padding: 15px;
-            border-radius: 10px;
-            margin-bottom: 20px;
-            border: 1px solid var(--accent);
-        }
-
-        .logic-section {
-            background: #fff;
-            border: 2px solid var(--primary);
-            padding: 20px;
             border-radius: 12px;
-            margin-top: 25px;
-        }
-
-        .example-box {
-            background: #f8f9fa;
-            border-left: 5px solid #5f6368;
-            padding: 15px;
-            font-size: 19px;
-            margin-top: 15px;
-        }
-
-        .highlight {
-            color: var(--accent);
+            margin-bottom: 25px;
             font-weight: bold;
         }
 
-        /* 價格表格 */
-        .price-table {
-            width: 100%;
-            margin: 15px 0;
+        .time-section {
+            background: #e8f5e9;
+            border-left: 8px solid var(--standard);
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px 12px 12px 4px;
         }
-        .price-table td {
-            padding: 10px 0;
-            border-bottom: 1px solid #eee;
+
+        .special-section {
+            background: #ffebee;
+            border-left: 8px solid var(--special);
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 4px 12px 12px 4px;
+        }
+
+        .logic-card {
+            background: #e3f2fd;
+            border: 2px solid var(--info);
+            padding: 20px;
+            border-radius: 15px;
+            margin-top: 25px;
+        }
+
+        .example {
+            font-size: 19px;
+            background: #fff;
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            border: 1px solid #ddd;
+        }
+
+        .highlight {
+            color: var(--special);
+            font-weight: bold;
         }
 
         @media (max-width: 480px) {
             body { font-size: 24px; }
             h1 { font-size: 26px; }
-            .example-box { font-size: 20px; }
+            .example { font-size: 20px; }
         }
     </style>
 </head>
 <body>
 
 <div class="container">
-    <h1>課程預約與計費規範</h1>
+    <h1>課程時段預約規範</h1>
 
-    <div class="time-box">
-        <strong>✅ 標準營業時段 (1.0x)</strong><br>
+    <div class="notice-card">
+        ⚠️ 重要提醒：<br>
+        非營業時段屬於教師私人休息時間。教師保有拒絕預約、調整或變更時段之最終權利。
+    </div>
+
+    <div class="time-section">
+        <strong style="color:var(--standard);">✅ 標準營業時段 (1.0x)</strong><br>
         • 週一至週五：10:00 - 22:00<br>
         • 週六：10:00 - 17:00<br>
-        <span style="font-size: 18px;">(計費方式：扣除原課程 1 堂)</span>
+        <span style="font-size: 18px;">(計費方式：以「堂數」扣除)</span>
     </div>
 
-    <div class="special-time">
-        <strong>⚠️ 特殊指定時段 (1.2x)</strong><br>
+    <div class="special-section">
+        <strong style="color:var(--special);">🌟 特殊指定時段 (1.2x)</strong><br>
         • 週六晚間：18:00 - 21:00<br>
-        • 週日全天：彈性開放預約時段<br>
-        <span style="font-size: 18px;">(計費方式：自動啟動點數制)</span>
+        • 週日全天：彈性預約時段<br>
+        <span style="font-size: 18px;">(需個別詢問，雙方同意後開放)</span>
     </div>
 
-    <div class="logic-section">
-        <h3 style="margin-top:0; color:var(--primary);">🔄 點數轉換機制</h3>
-        <p>當您預約「特殊時段」時，系統將自動將剩餘堂數轉換為點數（1堂 = 600點）：</p>
+    <div class="logic-card">
+        <h3 style="margin-top:0; color:var(--info);">🔄 點數轉換機制</h3>
+        <p>當學生要求於「非營業時段」上課，且經教師同意後，剩餘堂數將自動轉換為點數（1堂 = 600點）：</p>
         
-        <table class="price-table">
-            <tr>
-                <td>標準時段課程</td>
-                <td>600 點 / 堂</td>
-            </tr>
-            <tr>
-                <td>特殊時段課程</td>
-                <td class="highlight">720 點 / 堂</td>
-            </tr>
-        </table>
+        <div style="font-weight: bold; margin-bottom: 10px;">
+            • 標準時段課程：600 點 / 堂<br>
+            • 特殊時段課程：<span class="highlight">720 點 / 堂</span>
+        </div>
 
-        <div class="example-box">
+        <div class="example">
             <strong>💡 計算範例：</strong><br>
-            假設您已上 5 堂課，剩餘 15 堂時預約了「週日課程」：<br><br>
-            1. 餘額轉換：15堂 × 600 = <span class="highlight">9,000點</span><br>
-            2. 扣除該次特殊課程：9,000 - 720 = <span class="highlight">8,280點</span><br>
-            3. 若回標準時段：8,280 ÷ 600 = <span class="highlight">剩餘 13.8 堂</span>
+            假設您目前剩餘 15 堂課：<br>
+            1. 轉換總點數：15堂 × 600 = <span class="highlight">9,000點</span><br>
+            2. 預約特殊時段：扣除 <span class="highlight">720點</span><br>
+            3. 剩餘點數：8,280點 (約 13.8 堂)
         </div>
     </div>
 
-    <p style="font-size: 18px; color: #666; font-style: italic; margin-top: 25px;">
-        * 此機制旨在精確計算非營業時間之服務折算。若有疑問歡迎隨時諮詢。
+    <p style="font-size: 18px; color: #666; font-style: italic; margin-top: 25px; text-align: center;">
+        ※ 此機制旨在確保非營業時間之服務彈性與教學品質，感謝您的理解。
     </p>
-
-    <p style="text-align: center; color: #999; font-size: 16px;">感謝您的配合與體諒</p>
 </div>
 
 </body>
