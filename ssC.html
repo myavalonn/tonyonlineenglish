@@ -4,15 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tony線上美語家教 - 課程規範</title>
-     <!-- 3. Message Preview Picture (貼到 Line, FB, iMessage 時的預覽小圖與文字) -->
-    <meta property="og:title" content="特殊時段預約上課規範 週六晚間/週日白天-Tony 線上美語家教">
-    <meta property="og:description" content="升學 檢定 職場 公職 高考 面試 外商 觀光美語 展場英文 翻譯">
-    <meta property="og:url" content="https://tonyonlineenglish.netlify.app/ssc">
-    <meta property="og:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/calendar.png">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/calendar.png">
-
-    <script src="layout-manager.js"></script>
     <style>
         /* 啟用平滑滾動，讓按鈕跳轉時更滑順 */
         html {
@@ -98,7 +89,6 @@
             border-left: 6px solid #4a90e2;
         }
 
-        /* 全新的特殊時段卡片主題 (紫色) */
         .card-special {
             background-color: #f8f4fb;
             border-left: 6px solid #9b59b6; 
@@ -174,17 +164,7 @@
         <a href="#leave-policy" class="nav-btn">請假和調課</a>
     </div>
 
-    <div class="section card-intro">
-        <strong>【前言】</strong><br>
-        Tony線上美語家教致力於提供專業且高品質的學習體驗。為了平衡教學能量與休息時間，針對學生主動指定的特殊時段，特訂定此規範以確保教學品質與公平性。
-    </div>
-
-    <div class="section card-info">
-        <strong>💡 預約說明：</strong><br>
-        通常特殊時段為老師公告開放預約，學生可預約該特殊時段課程，課堂數為正常規範。但若是學生「主動指定」該特殊時段上課，可參考底下規範。
-    </div>
-
-    <!-- 調整順序：特殊時段獨立新卡片，並放至標準時間前面 -->
+    <!-- 第 1 個：特殊指定時段 -->
     <div id="special-hours" class="section card-special red-theme">
         <span class="section-title">❖ 特殊指定時段 <span class="mobile-break">(正常堂數x1.2)</span></span>
         • 週六晚間：<span class="time-group">6pm - 9pm</span><br>
@@ -194,17 +174,7 @@
         </div>
     </div>
 
-    <div class="section card-hours">
-        <span class="section-title">⏰ 營業時間說明</span>
-        <div>
-            <strong>● 標準營業時段 (1.0x)</strong><br>
-            • 週一至週五：<span class="time-group">10am - 10pm</span><br>
-            • 週六：<span class="time-group">10am - 5pm</span><br>
-            <small style="color: #666;">(週六最後一堂課於 <span class="time-group">4:50 PM</span> 結束)</small><br>
-            <strong style="display: block; margin-top: 10px;">※ 週六 <span class="time-group">10am - 5pm</span> 為正常上課時段，無需額外點數</strong>
-        </div>
-    </div>
-
+    <!-- 第 2 個：點數轉換機制 -->
     <div id="points-conversion" class="section card-points">
         <span class="section-title">🔄 點數轉換機制</span>
         若指定於特殊時段上課，剩餘堂數將自動轉換為點數計算：<strong>正常堂數x1.2</strong><br><br>
@@ -221,6 +191,7 @@
         </div>
     </div>
 
+    <!-- 第 3 個：請假調課規範 -->
     <div id="leave-policy" class="section card-alert red-theme">
         <span class="section-title">📅 請假調課規範</span>
         針對<strong>「非營業時段」</strong>之預約：<br>
@@ -235,6 +206,30 @@
             <strong>範例：</strong><br>
             預約週日上午 <span class="time-group">10am</span> 課程，<br>
             需於 <span class="red-theme time-group">週五 10am 前</span> 完成請假。
+        </div>
+    </div>
+
+    <!-- 其他排下來：前言 -->
+    <div class="section card-intro">
+        <strong>【前言】</strong><br>
+        Tony線上美語家教致力於提供專業且高品質的學習體驗。為了平衡教學能量與休息時間，針對學生主動指定的特殊時段，特訂定此規範以確保教學品質與公平性。
+    </div>
+
+    <!-- 其他排下來：預約說明 -->
+    <div class="section card-info">
+        <strong>💡 預約說明：</strong><br>
+        通常特殊時段為老師公告開放預約，學生可預約該特殊時段課程，課堂數為正常規範。但若是學生「主動指定」該特殊時段上課，可參考底下規範。
+    </div>
+
+    <!-- 其他排下來：營業時間說明 -->
+    <div class="section card-hours">
+        <span class="section-title">⏰ 營業時間說明</span>
+        <div>
+            <strong>● 標準營業時段 (1.0x)</strong><br>
+            • 週一至週五：<span class="time-group">10am - 10pm</span><br>
+            • 週六：<span class="time-group">10am - 5pm</span><br>
+            <small style="color: #666;">(週六最後一堂課於 <span class="time-group">4:50 PM</span> 結束)</small><br>
+            <strong style="display: block; margin-top: 10px;">※ 週六 <span class="time-group">10am - 5pm</span> 為正常上課時段，無需額外點數</strong>
         </div>
     </div>
 
