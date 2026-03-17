@@ -8,20 +8,28 @@
         :root {
             --bg-color: #f0f2f5;
             --card-bg: #ffffff;
-            --primary: #1565c0; /* 標題藍 */
-            --standard: #2e7d32; /* 標準綠 */
-            --special: #d32f2f; /* 特殊指定紅 */
-            --warning: #f08c00; /* 提醒橘 */
+            --primary: #1565c0; 
+            --standard: #2e7d32; 
+            --special: #d32f2f; 
+            --warning: #f08c00; 
         }
 
         body {
             font-family: "PingFang TC", "Microsoft JhengHei", sans-serif;
             background-color: var(--bg-color);
             margin: 0;
-            padding: 0; /* 手機端邊距由 container 控制 */
+            padding: 0; 
             font-size: 22px; 
             line-height: 1.6;
             color: #333;
+            /* 優化中文排版，防止單字被擠到下一行 */
+            text-align: justify;
+            word-break: keep-all; 
+        }
+
+        /* 關鍵修正：強制不換行 */
+        .nowrap {
+            white-space: nowrap;
         }
 
         .container {
@@ -31,7 +39,6 @@
             min-height: 100vh;
         }
 
-        /* 頂部 Header */
         .header {
             background: var(--card-bg);
             text-align: center;
@@ -43,7 +50,6 @@
         .header h1 { font-size: 30px; margin: 0; color: #000; }
         .header p { font-size: 20px; color: #555; margin-top: 10px; }
 
-        /* 全寬卡片基礎設定 */
         .full-card {
             background: var(--card-bg);
             width: 100%;
@@ -84,7 +90,7 @@
         }
 
         .special-item {
-            background: #ffebee; /* 搭配紅色的淺紅底色 */
+            background: #ffebee; 
             border-radius: 12px;
             padding: 15px;
             margin-bottom: 15px;
@@ -110,11 +116,10 @@
         .highlight { color: var(--special); font-weight: bold; }
         .cancel-policy { background: #fff4e5; border: 2px solid var(--warning); border-radius: 15px; padding: 20px; }
 
-        /* 手機端全寬優化 */
         @media (max-width: 600px) {
             body { font-size: 24px; }
             .header h1 { font-size: 28px; }
-            .full-card { border-radius: 0; } /* 手機上取消圓角達成全寬視覺 */
+            .full-card { border-radius: 0; } 
             .example-box { font-size: 21px; }
         }
     </style>
@@ -144,16 +149,16 @@
         
         <div class="time-item">
             <strong style="color:var(--standard);">✅ 標準營業時段 (1.0x)</strong><br>
-            • 週一至週五：10am - 10pm<br>
-            • 週六：10am - 5pm<br>
-            <span style="font-size: 18px; color: #555;">(週六最後一堂課於 4:50 PM 結束)</span><br>
-            <span style="font-size: 18px; font-weight: bold; color: var(--standard);">※ 週六 10am-5pm 為正常上課時段，無需額外點數</span>
+            • 週一至週五：<span class="nowrap">10am - 10pm</span><br>
+            • 週六：<span class="nowrap">10am - 5pm</span><br>
+            <span style="font-size: 18px; color: #555;">(週六最後一堂課於 <span class="nowrap">4:50 PM</span> 結束)</span><br>
+            <span style="font-size: 18px; font-weight: bold; color: var(--standard);">※ 週六 <span class="nowrap">10am-5pm</span> 為正常上課時段，無需額外點數</span>
         </div>
 
         <div class="special-item">
             <strong style="color:var(--special);">❖ 特殊指定時段 (正常堂數x1.2)</strong><br>
-            • 週六晚間：6pm - 9pm<br>
-            • 週日時段：10am - 3pm<br>
+            • 週六晚間：<span class="nowrap">6pm - 9pm</span><br>
+            • 週日時段：<span class="nowrap">10am - 3pm</span><br>
             <span style="font-size: 18px; color: #d32f2f;">(以上教師彈性預約時段，需個別詢問，老師保有拒絕預約之權利)</span>
         </div>
     </div>
@@ -163,16 +168,16 @@
         <div class="logic-area">
             <p style="margin-top:0;">若指定於特殊時段上課，剩餘堂數將自動轉換為點數計算：</p>
             <div style="font-weight: bold; font-size: 22px;">
-                以下以每堂 100 點作為範例（1堂 = 100點）：<br>
-                • 標準時段：100 點 / 堂<br>
-                • 特殊時段：<span class="highlight">120 點 / 堂</span>
+                以下以每堂 100 點作為範例（<span class="nowrap">1堂 = 100點</span>）：<br>
+                • 標準時段：<span class="nowrap">100 點 / 堂</span><br>
+                • 特殊時段：<span class="nowrap highlight">120 點 / 堂</span>
             </div>
             <div class="example-box">
                 <strong>計算示範：</strong><br>
                 假設您目前剩餘 15 堂課：<br>
-                1. 轉換總點數：15 堂 × 100 = 1,500 點<br>
-                2. 指定特殊課：扣除 <span class="highlight">120 點</span><br>
-                3. 剩餘點數：1,380 點 (約 13.8 堂)
+                1. 轉換總點數：<span class="nowrap">15 堂 × 100 = 1,500 點</span><br>
+                2. 指定特殊課：扣除 <span class="highlight nowrap">120 點</span><br>
+                3. 剩餘點數：<span class="nowrap">1,380 點</span> (約 13.8 堂)
             </div>
         </div>
     </div>
@@ -181,13 +186,13 @@
         <div class="section-title">📅 48小時請假規範</div>
         <div class="cancel-policy">
             <p style="margin-top:0;">針對<strong>「非營業時段」</strong>之預約：</p>
-            <p>請於課程開始前 <span class="highlight">48 小時</span> 告知取消或調課。</p>
+            <p>請於課程開始前 <span class="highlight nowrap">48 小時</span> 告知取消或調課。</p>
             <p style="background: white; padding: 10px; border-radius: 8px; font-size: 20px;">
                 ❌ <strong>逾時告知：</strong><br>
-                若於上課前的 48 小時內告知，將<strong>照常扣除</strong>該時段點數 (120 點)。
+                若於上課前的 48 小時內告知，將<strong>照常扣除</strong>該時段點數 (<span class="nowrap">120 點</span>)。
             </p>
             <div class="example-box">
-                <strong>範例：</strong>假若已經預約週日上午 10am 課程，請於 <span class="highlight">週五 10am 前</span> 請假。
+                <strong>範例：</strong>假若已經預約週日上午 <span class="nowrap">10am</span> 課程，請於 <span class="highlight nowrap">週五 10am 前</span> 請假。
             </div>
         </div>
     </div>
