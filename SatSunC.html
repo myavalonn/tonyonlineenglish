@@ -5,6 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tony線上美語家教 - 課程規範</title>
     <style>
+        /* 啟用平滑滾動，讓按鈕跳轉時更滑順 */
+        html {
+            scroll-behavior: smooth;
+        }
+
         body {
             font-family: "PingFang TC", "Microsoft JhengHei", sans-serif;
             background-color: #ffffff;
@@ -15,7 +20,6 @@
             color: #000000;
         }
 
-        /* 關鍵修正：讓時間變成一個「不拆散的區塊」，但允許區塊換行 */
         .time-group {
             display: inline-block;
             white-space: nowrap;
@@ -30,46 +34,80 @@
         }
 
         .header {
-            padding: 40px 0 30px 0;
+            padding: 40px 0 20px 0;
             text-align: center;
-            margin-bottom: 20px;
         }
 
         .header h1 { font-size: 30px; margin: 0; color: #222;}
         .header p { font-size: 18px; margin-top: 10px; color: #555; }
+
+        /* --- 頂部導覽按鈕 --- */
+        .nav-buttons {
+            display: flex;
+            gap: 12px;
+            justify-content: center;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .nav-btn {
+            display: inline-block;
+            text-decoration: none;
+            background-color: #f1f5f9;
+            color: #334155;
+            padding: 10px 18px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.06);
+            transition: all 0.2s ease;
+            border: 1px solid #e2e8f0;
+        }
+
+        .nav-btn:hover {
+            background-color: #e2e8f0;
+            transform: translateY(-2px);
+        }
 
         /* --- 卡片式設計升級 --- */
         .section {
             padding: 25px;
             margin-bottom: 25px;
             border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); /* 柔和的專業陰影 */
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            /* 預留上方錨點間距，防止跳轉時被貼死 */
+            scroll-margin-top: 20px; 
         }
 
-        /* 不同的卡片顏色主題 */
         .card-intro {
             background-color: #f8f9fa;
-            border-left: 6px solid #8792a1; /* 沉穩灰 */
+            border-left: 6px solid #8792a1;
         }
         
         .card-info {
             background-color: #f2f7fa;
-            border-left: 6px solid #4a90e2; /* 資訊藍 */
+            border-left: 6px solid #4a90e2;
+        }
+
+        /* 全新的特殊時段卡片主題 (紫色) */
+        .card-special {
+            background-color: #f8f4fb;
+            border-left: 6px solid #9b59b6; 
         }
 
         .card-hours {
             background-color: #fffbf0;
-            border-left: 6px solid #f5a623; /* 時間黃 */
+            border-left: 6px solid #f5a623;
         }
 
         .card-points {
             background-color: #f4faf5;
-            border-left: 6px solid #50af41; /* 轉換綠 */
+            border-left: 6px solid #50af41;
         }
 
         .card-alert {
             background-color: #fff6f6;
-            border-left: 6px solid #d32f2f; /* 警告紅 */
+            border-left: 6px solid #d32f2f;
         }
 
         .section-title {
@@ -90,7 +128,7 @@
         }
 
         .example-box {
-            background-color: #ffffff; /* 改為白色以在彩色卡片中突顯 */
+            background-color: #ffffff; 
             padding: 15px;
             font-size: 18px;
             border-left: 5px solid #ccc;
@@ -99,11 +137,16 @@
             box-shadow: 0 2px 8px rgba(0,0,0,0.04);
         }
 
-        /* 針對手機的小字優化 */
+        /* 手機版響應式設定 */
         @media (max-width: 480px) {
             body { font-size: 22px; }
             .header h1 { font-size: 26px; }
             .section { padding: 20px; }
+            /* 讓 (正常堂數x1.2) 在手機版強制換行 */
+            .mobile-break { 
+                display: block; 
+                margin-top: 5px; 
+            }
         }
     </style>
 </head>
@@ -113,6 +156,13 @@
     <div class="header">
         <h1>Tony線上美語家教</h1>
         <p>課程預約與請假規範</p>
+    </div>
+
+    <!-- 頂部按鈕區塊 -->
+    <div class="nav-buttons">
+        <a href="#special-hours" class="nav-btn">特殊時段上課</a>
+        <a href="#points-conversion" class="nav-btn">點數轉換</a>
+        <a href="#leave-policy" class="nav-btn">請假和調課</a>
     </div>
 
     <div class="section card-intro">
@@ -125,6 +175,16 @@
         通常特殊時段為老師公告開放預約，學生可預約該特殊時段課程，課堂數為正常規範。但若是學生「主動指定」該特殊時段上課，可參考底下規範。
     </div>
 
+    <!-- 調整順序：特殊時段獨立新卡片，並放至標準時間前面 -->
+    <div id="special-hours" class="section card-special red-theme">
+        <span class="section-title">❖ 特殊指定時段 <span class="mobile-break">(正常堂數x1.2)</span></span>
+        • 週六晚間：<span class="time-group">6pm - 9pm</span><br>
+        • 週日時段：<span class="time-group">10am - 3pm</span><br>
+        <div style="font-size: 16px; margin-top: 10px;">
+            (以上教師彈性預約時段，需個別詢問，老師保有拒絕預約之權利)
+        </div>
+    </div>
+
     <div class="section card-hours">
         <span class="section-title">⏰ 營業時間說明</span>
         <div>
@@ -132,22 +192,13 @@
             • 週一至週五：<span class="time-group">10am - 10pm</span><br>
             • 週六：<span class="time-group">10am - 5pm</span><br>
             <small style="color: #666;">(週六最後一堂課於 <span class="time-group">4:50 PM</span> 結束)</small><br>
-            <strong>※ 週六 <span class="time-group">10am - 5pm</span> 為正常上課時段，無需額外點數</strong>
-        </div>
-
-        <div class="red-theme" style="margin-top: 20px;">
-            <span class="section-title">❖ 特殊指定時段 (正常堂數x1.2)</span>
-            • 週六晚間：<span class="time-group">6pm - 9pm</span><br>
-            • 週日時段：<span class="time-group">10am - 3pm</span><br>
-            <div style="font-size: 16px; margin-top: 5px;">
-                (以上教師彈性預約時段，需個別詢問，老師保有拒絕預約之權利)
-            </div>
+            <strong style="display: block; margin-top: 10px;">※ 週六 <span class="time-group">10am - 5pm</span> 為正常上課時段，無需額外點數</strong>
         </div>
     </div>
 
-    <div class="section card-points">
+    <div id="points-conversion" class="section card-points">
         <span class="section-title">🔄 點數轉換機制</span>
-        若指定於特殊時段上課，剩餘堂數將自動轉換為點數計算：<br><br>
+        若指定於特殊時段上課，剩餘堂數將自動轉換為點數計算：<strong>正常堂數x1.2</strong><br><br>
         <strong>範例（<span class="time-group">1堂 = 100點</span>）：</strong><br>
         • 標準時段：<span class="time-group">100 點 / 堂</span><br>
         <span class="red-theme">• 特殊時段：<span class="time-group">120 點 / 堂</span></span>
@@ -161,14 +212,14 @@
         </div>
     </div>
 
-    <div class="section card-alert red-theme">
+    <div id="leave-policy" class="section card-alert red-theme">
         <span class="section-title">📅 請假調課規範</span>
         針對<strong>「非營業時段」</strong>之預約：<br>
         請於課程開始前 <span class="time-group">48 小時</span> 告知。
         
         <div class="red-border-box">
             <strong>❌ 逾時告知：</strong><br>
-            若於上課前 <span class="time-group">48 小時內</span> 告知，將<strong>照常扣除</strong>該時段點數 (<span class="time-group">120 點</span>)。
+            若於上課前 <span class="time-group">48 小時內</span> 告知請假和調課，將<strong>照常扣除</strong>該時段點數 。
         </div>
 
         <div class="example-box" style="color: #000;">
