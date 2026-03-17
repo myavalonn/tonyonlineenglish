@@ -8,10 +8,10 @@
         :root {
             --bg-color: #f0f2f5;
             --card-bg: #ffffff;
-            --primary: #1565c0; /* 專業深藍 */
-            --standard: #2e7d32;
-            --special: #1565c0; /* 特殊時段改藍色 */
-            --warning: #f08c00;
+            --primary: #1565c0; /* 標題藍 */
+            --standard: #2e7d32; /* 標準綠 */
+            --special: #d32f2f; /* 特殊指定紅 */
+            --warning: #f08c00; /* 提醒橘 */
         }
 
         body {
@@ -71,6 +71,8 @@
             margin-bottom: 15px;
             display: flex;
             align-items: center;
+            border-left: 8px solid var(--primary);
+            padding-left: 12px;
         }
 
         .time-item {
@@ -82,7 +84,7 @@
         }
 
         .special-item {
-            background: #e3f2fd;
+            background: #ffebee; /* 搭配紅色的淺紅底色 */
             border-radius: 12px;
             padding: 15px;
             margin-bottom: 15px;
@@ -134,7 +136,7 @@
 
     <div class="notice-banner">
         💡 預約說明：<br>
-        通常特殊時段為老師主動公告開放預約，學生可預約該時段，課程按正常規範扣除。但若是學生「主動指定」非營業時間上課，則適用以下規範。
+        通常特殊時段為老師公告開放預約，學生可預約該特殊時段課程，課堂數為正常規範。但若是學生「主動指定」該特殊時段上課，可參考底下規範。
     </div>
 
     <div class="full-card">
@@ -145,14 +147,14 @@
             • 週一至週五：10am - 10pm<br>
             • 週六：10am - 5pm<br>
             <span style="font-size: 18px; color: #555;">(週六最後一堂課於 4:50 PM 結束)</span><br>
-            <span style="font-size: 18px; font-weight: bold;">※ 週六 10am-5pm 為正常時段，不需額外點數</span>
+            <span style="font-size: 18px; font-weight: bold; color: var(--standard);">※ 週六 10am-5pm 為正常上課時段，無需額外點數</span>
         </div>
 
         <div class="special-item">
             <strong style="color:var(--special);">❖ 特殊指定時段 (正常堂數x1.2)</strong><br>
             • 週六晚間：6pm - 9pm<br>
             • 週日時段：10am - 3pm<br>
-            <span style="font-size: 18px;">(以上為教師彈性預約時段，需個別詢問，老師保有拒絕預約之權利)</span>
+            <span style="font-size: 18px; color: #d32f2f;">(以上教師彈性預約時段，需個別詢問，老師保有拒絕預約之權利)</span>
         </div>
     </div>
 
@@ -161,7 +163,7 @@
         <div class="logic-area">
             <p style="margin-top:0;">若指定於特殊時段上課，剩餘堂數將自動轉換為點數計算：</p>
             <div style="font-weight: bold; font-size: 22px;">
-                範例（1堂 = 100點）：<br>
+                以下以每堂 100 點作為範例（1堂 = 100點）：<br>
                 • 標準時段：100 點 / 堂<br>
                 • 特殊時段：<span class="highlight">120 點 / 堂</span>
             </div>
@@ -182,10 +184,10 @@
             <p>請於課程開始前 <span class="highlight">48 小時</span> 告知取消或調課。</p>
             <p style="background: white; padding: 10px; border-radius: 8px; font-size: 20px;">
                 ❌ <strong>逾時告知：</strong><br>
-                若於 48 小時內告知，將<strong>照常扣除</strong>該時段點數 (120 點)。
+                若於上課前的 48 小時內告知，將<strong>照常扣除</strong>該時段點數 (120 點)。
             </p>
             <div class="example-box">
-                <strong>範例：</strong>預約週日上午 10am 課程，需於 <span class="highlight">週五上午 10am 前</span> 完成請假。
+                <strong>範例：</strong>假若已經預約週日上午 10am 課程，請於 <span class="highlight">週五 10am 前</span> 請假。
             </div>
         </div>
     </div>
