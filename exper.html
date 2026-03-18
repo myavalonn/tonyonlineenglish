@@ -662,7 +662,7 @@
       const email = document.getElementById("popup-email-input").value;
       if (!email.includes("@")) return alert("請輸入有效的信箱");
 
-      const blacklist =["8888@gmail.com", "z0970957377@gmail.com", "blockthisperson@gmail.com"];
+      const blacklist =["8888@gmail.com", "blockthisperson@gmail.com"];
       const cleanEmail = email.toLowerCase().trim();
 
       if (blacklist.includes(cleanEmail)) {
