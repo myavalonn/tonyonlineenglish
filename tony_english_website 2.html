@@ -1,0 +1,497 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tony 線上美語家教 | Tony Online English Tutoring</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=Noto+Serif+TC:wght@400;700&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+
+:root {
+  --blue:    #2563eb;
+  --indigo:  #4f46e5;
+  --purple:  #7c3aed;
+  --txt:     #111827;
+  --txt2:    #374151;
+  --txt3:    #6b7280;
+  --border:  #e5e7eb;
+}
+
+body { font-family:'DM Sans',sans-serif; color:var(--txt); background:#fff; overflow-x:hidden; cursor:none; }
+
+/* cursor */
+#cur  { width:9px; height:9px; background:var(--blue); border-radius:50%; position:fixed; pointer-events:none; z-index:9999; transform:translate(-50%,-50%); }
+#ring { width:34px; height:34px; border:1.5px solid rgba(37,99,235,.35); border-radius:50%; position:fixed; pointer-events:none; z-index:9998; transform:translate(-50%,-50%); }
+
+/* NAV */
+nav {
+  position:fixed; top:0; left:0; right:0; z-index:1000;
+  height:68px; display:flex; align-items:center; justify-content:space-between;
+  padding:0 2.5rem;
+  background:rgba(255,255,255,.95); backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--border);
+  box-shadow:0 1px 16px rgba(0,0,0,.06);
+}
+.n-logo { display:flex; align-items:center; gap:.7rem; text-decoration:none; }
+.n-logo-icon {
+  width:40px; height:40px; border-radius:50%;
+  background:linear-gradient(135deg,var(--blue),var(--indigo));
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Playfair Display',serif; font-style:italic; font-size:1.1rem; color:#fff;
+}
+.n-logo-text { font-family:'Noto Serif TC',serif; font-size:.9rem; color:var(--txt); line-height:1.3; }
+.n-logo-text small { color:var(--blue); font-size:.72rem; display:block; letter-spacing:.04em; }
+.n-links { display:flex; gap:1.8rem; list-style:none; }
+.n-links a { color:var(--txt3); text-decoration:none; font-size:.87rem; position:relative; transition:color .2s; }
+.n-links a::after { content:''; position:absolute; bottom:-3px; left:0; right:0; height:2px; background:var(--blue); transform:scaleX(0); transition:transform .2s; border-radius:2px; }
+.n-links a:hover { color:var(--blue); }
+.n-links a:hover::after { transform:scaleX(1); }
+.n-btns { display:flex; gap:.5rem; }
+.n-btn { padding:.38rem .85rem; border-radius:20px; font-size:.76rem; font-weight:500; text-decoration:none; border:1.5px solid transparent; transition:all .2s; }
+.n-yt  { background:#fff0f0; border-color:#fca5a5; color:#dc2626; }
+.n-fb  { background:#eff6ff; border-color:#93c5fd; color:#1d4ed8; }
+.n-ln  { background:#f0fdf4; border-color:#86efac; color:#16a34a; }
+.n-yt:hover{background:#fee2e2;} .n-fb:hover{background:#dbeafe;} .n-ln:hover{background:#dcfce7;}
+
+/* HERO — white with dot grid */
+#hero {
+  min-height:100vh; display:flex; flex-direction:column;
+  align-items:center; justify-content:center;
+  padding:9rem 2rem 5rem; text-align:center;
+  position:relative; overflow:hidden; background:#fff;
+}
+.hero-mesh {
+  position:absolute; inset:0; pointer-events:none;
+  background:
+    radial-gradient(ellipse 55% 45% at 50% 55%, rgba(37,99,235,.07) 0%, transparent 70%),
+    radial-gradient(ellipse 35% 35% at 15% 25%, rgba(124,58,237,.05) 0%, transparent 65%),
+    radial-gradient(ellipse 35% 35% at 85% 75%, rgba(8,145,178,.05) 0%, transparent 65%);
+}
+.hero-dots {
+  position:absolute; inset:0; pointer-events:none;
+  background-image:radial-gradient(circle, rgba(37,99,235,.11) 1px, transparent 1px);
+  background-size:32px 32px;
+  mask-image:radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+}
+
+.h-tags { display:flex; flex-wrap:wrap; justify-content:center; gap:.45rem; margin-bottom:2.2rem; position:relative; animation:fadeUp .7s ease both; }
+.h-tag { padding:.3rem .95rem; border-radius:20px; font-size:.8rem; border:1.5px solid #e0e7ff; color:#4f46e5; background:#eef2ff; transition:all .2s; text-decoration:none; }
+.h-tag:hover { background:#e0e7ff; border-color:#6366f1; }
+.h-tag.hot { background:linear-gradient(135deg,var(--blue),var(--indigo)); color:#fff; border-color:transparent; box-shadow:0 4px 14px rgba(79,70,229,.3); }
+
+.h-title { font-size:clamp(2.6rem,7.5vw,5.2rem); line-height:1.1; margin-bottom:.9rem; position:relative; animation:fadeUp .7s .18s ease both; }
+.h-title .tony { font-family:'Playfair Display',serif; font-style:italic; color:var(--blue); }
+.h-title .zh   { font-family:'Noto Serif TC',serif; font-weight:700; color:var(--txt); }
+.h-sub  { font-size:clamp(.95rem,2.2vw,1.35rem); color:var(--txt3); font-style:italic; margin-bottom:.4rem; animation:fadeUp .7s .32s ease both; }
+.h-line { font-size:clamp(.85rem,1.8vw,1.05rem); color:#9ca3af; font-style:italic; margin-bottom:2.2rem; animation:fadeUp .7s .46s ease both; }
+.h-cta  { display:flex; gap:.9rem; justify-content:center; flex-wrap:wrap; margin-bottom:2.8rem; animation:fadeUp .7s .6s ease both; }
+
+.btn-pri { padding:.85rem 2rem; border-radius:30px; font-size:.93rem; font-weight:500; background:linear-gradient(135deg,var(--blue),var(--indigo)); color:#fff; border:none; text-decoration:none; cursor:none; display:inline-flex; align-items:center; gap:.45rem; box-shadow:0 4px 18px rgba(37,99,235,.3); transition:all .25s; font-family:'DM Sans',sans-serif; }
+.btn-pri:hover { transform:translateY(-2px); box-shadow:0 8px 28px rgba(37,99,235,.38); }
+.btn-sec { padding:.85rem 2rem; border-radius:30px; font-size:.93rem; font-weight:400; background:#fff; color:var(--blue); border:1.5px solid #bfdbfe; text-decoration:none; cursor:none; display:inline-flex; align-items:center; gap:.45rem; transition:all .25s; font-family:'DM Sans',sans-serif; }
+.btn-sec:hover { border-color:var(--blue); background:#eff6ff; }
+
+.h-tags2 { display:flex; flex-wrap:wrap; justify-content:center; gap:.45rem; animation:fadeUp .7s .74s ease both; }
+.h-tag2 { padding:.28rem .85rem; border-radius:20px; font-size:.78rem; border:1.5px solid var(--border); color:var(--txt3); background:#f9fafb; transition:all .2s; }
+.h-tag2:hover { border-color:#bfdbfe; color:var(--blue); background:#eff6ff; }
+
+@keyframes fadeUp { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:translateY(0)} }
+
+/* SECTION BASE */
+.s-inner { max-width:1100px; margin:0 auto; padding:6rem 2rem; }
+.s-label { font-size:.73rem; letter-spacing:.14em; text-transform:uppercase; color:var(--blue); margin-bottom:.65rem; display:flex; align-items:center; gap:.55rem; }
+.s-label::before { content:''; width:22px; height:2px; background:var(--blue); border-radius:2px; }
+.s-label-c { justify-content:center; }
+.s-label-c::before,.s-label-c::after { content:''; width:18px; height:1px; background:currentColor; }
+.s-title { font-family:'Noto Serif TC',serif; font-size:clamp(1.7rem,3.8vw,2.7rem); line-height:1.2; margin-bottom:.9rem; }
+.s-title .ac { color:var(--blue); }
+.s-desc { color:var(--txt3); font-size:.97rem; line-height:1.75; max-width:540px; }
+.divider { width:100%; height:1px; background:linear-gradient(90deg,transparent,var(--border),transparent); }
+
+/* ABOUT — light indigo/purple */
+#about { background:linear-gradient(160deg,#f5f3ff 0%,#ede9fe 60%,#e0e7ff 100%); }
+#about .s-inner { display:grid; grid-template-columns:1fr 1fr; gap:5rem; align-items:center; }
+.about-wrap { position:relative; }
+.about-frame { width:100%; max-width:360px; aspect-ratio:3/4; border-radius:4px 56px 4px 56px; background:#fff; border:2px solid #c4b5fd; display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden; box-shadow:0 20px 60px rgba(124,58,237,.15); }
+.about-ph { font-family:'Playfair Display',serif; font-style:italic; font-size:5rem; color:#c4b5fd; }
+.about-frame::after { content:'← 換成你的照片'; position:absolute; bottom:1.2rem; left:50%; transform:translateX(-50%); font-size:.75rem; color:#a78bfa; white-space:nowrap; background:rgba(255,255,255,.85); padding:.2rem .6rem; border-radius:8px; }
+.about-glow { position:absolute; width:160px; height:160px; border-radius:50%; background:radial-gradient(circle,rgba(124,58,237,.18),transparent 70%); bottom:-40px; right:-40px; }
+.about-badges { display:flex; flex-wrap:wrap; gap:.45rem; margin:1.4rem 0; }
+.badge { padding:.28rem .8rem; border-radius:6px; font-size:.76rem; font-weight:500; }
+.ba { background:#eff6ff; color:#1d4ed8; border:1px solid #bfdbfe; }
+.bp { background:#fdf4ff; color:#7e22ce; border:1px solid #e9d5ff; }
+.bc { background:#ecfdf5; color:#065f46; border:1px solid #a7f3d0; }
+.about-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:1.2rem; margin-top:2rem; padding-top:2rem; border-top:1px solid #ddd6fe; }
+.st-num { font-family:'Playfair Display',serif; font-size:2rem; color:var(--indigo); display:block; }
+.st-lbl { font-size:.78rem; color:#6b7280; margin-top:.15rem; }
+.about-body { font-size:.95rem; color:#374151; line-height:1.85; margin-bottom:1.3rem; }
+
+/* WHY — white */
+#why { background:#fff; }
+.why-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(290px,1fr)); gap:1.4rem; margin-top:3.2rem; }
+.why-card { padding:1.8rem; border-radius:16px; border:1.5px solid #e0e7ff; background:#fff; box-shadow:0 2px 10px rgba(79,70,229,.05); transition:all .28s; position:relative; overflow:hidden; }
+.why-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background:linear-gradient(90deg,var(--blue),var(--indigo)); transform:scaleX(0); transform-origin:left; transition:transform .3s; }
+.why-card:hover { transform:translateY(-5px); box-shadow:0 12px 32px rgba(79,70,229,.13); border-color:#c7d2fe; }
+.why-card:hover::before { transform:scaleX(1); }
+.why-icon { width:48px; height:48px; border-radius:14px; font-size:1.35rem; display:flex; align-items:center; justify-content:center; margin-bottom:1.1rem; }
+.wi1{background:#eff6ff;} .wi2{background:#fdf4ff;} .wi3{background:#ecfdf5;}
+.wi4{background:#fff7ed;} .wi5{background:#fdf2f8;} .wi6{background:#f0fdf4;}
+.why-t { font-family:'Noto Serif TC',serif; font-size:1.02rem; margin-bottom:.5rem; }
+.why-d { font-size:.87rem; color:var(--txt3); line-height:1.7; }
+
+/* COURSES — soft blue gradient */
+#courses { background:linear-gradient(180deg,#f8faff 0%,#eff6ff 100%); }
+.c-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(310px,1fr)); gap:1.4rem; margin-top:3.2rem; }
+.c-card { border-radius:16px; background:#fff; border:1.5px solid #e0e7ff; box-shadow:0 2px 10px rgba(37,99,235,.06); overflow:hidden; transition:all .28s; }
+.c-card:hover { transform:translateY(-5px); box-shadow:0 12px 32px rgba(37,99,235,.12); border-color:#93c5fd; }
+.c-head { padding:1.6rem 1.6rem 1.2rem; border-bottom:1px solid #f3f4f6; display:flex; align-items:flex-start; gap:.9rem; }
+.c-ico { width:50px; height:50px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:1.4rem; flex-shrink:0; }
+.cib{background:#eff6ff;border:1.5px solid #bfdbfe;} .cip{background:#fdf4ff;border:1.5px solid #e9d5ff;}
+.cic{background:#ecfeff;border:1.5px solid #a5f3fc;} .cipk{background:#fdf2f8;border:1.5px solid #fbcfe8;}
+.cig{background:#ecfdf5;border:1.5px solid #a7f3d0;}
+.c-name { font-family:'Noto Serif TC',serif; font-size:1.05rem; margin-bottom:.25rem; }
+.c-for  { font-size:.78rem; color:var(--txt3); }
+.c-body { padding:1.2rem 1.6rem 1.6rem; }
+.c-ul   { list-style:none; display:flex; flex-direction:column; gap:.38rem; }
+.c-ul li { font-size:.86rem; color:var(--txt2); display:flex; align-items:center; gap:.5rem; }
+.c-ul li::before { content:''; width:6px; height:6px; border-radius:50%; background:var(--blue); flex-shrink:0; }
+.c-foot { padding:.9rem 1.6rem; border-top:1px solid #f3f4f6; display:flex; align-items:center; justify-content:space-between; }
+.c-exams { display:flex; flex-wrap:wrap; gap:.3rem; }
+.exam { font-size:.7rem; padding:.2rem .5rem; border-radius:8px; background:#eff6ff; color:#1d4ed8; border:1px solid #bfdbfe; }
+.c-link { font-size:.82rem; color:var(--blue); text-decoration:none; white-space:nowrap; display:flex; align-items:center; gap:.25rem; transition:color .2s; }
+.c-link:hover { color:var(--indigo); }
+
+/* TESTIMONIALS — warm yellow/cream */
+#testimonials { background:linear-gradient(160deg,#fffbeb 0%,#fef3c7 60%,#fde68a 100%); }
+.t-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(300px,1fr)); gap:1.4rem; margin-top:3.2rem; }
+.t-card { padding:1.8rem; border-radius:16px; background:#fff; border:1.5px solid #fde68a; box-shadow:0 2px 12px rgba(234,179,8,.1); transition:all .28s; position:relative; }
+.t-card:hover { transform:translateY(-4px); box-shadow:0 10px 28px rgba(234,179,8,.18); }
+.t-qmark { font-family:'Playfair Display',serif; font-size:3.5rem; line-height:1; color:#fde68a; position:absolute; top:.9rem; right:1.2rem; }
+.t-stars { color:#f59e0b; font-size:.85rem; letter-spacing:.1em; margin-bottom:.9rem; }
+.t-text  { font-size:.9rem; color:#44403c; line-height:1.78; margin-bottom:1.4rem; font-style:italic; }
+.t-author{ display:flex; align-items:center; gap:.7rem; }
+.t-av { width:38px; height:38px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:.83rem; font-weight:600; flex-shrink:0; background:linear-gradient(135deg,#f59e0b,#ea580c); color:#fff; }
+.t-name  { font-size:.87rem; font-weight:500; color:#1c1917; }
+.t-meta  { font-size:.77rem; color:#78716c; }
+.t-score { display:inline-flex; align-items:center; gap:.3rem; margin-top:.6rem; padding:.18rem .55rem; border-radius:6px; font-size:.73rem; background:#ecfdf5; color:#065f46; border:1px solid #a7f3d0; }
+
+/* FAQ — light gray */
+#faq { background:#f9fafb; }
+.faq-list { margin-top:3.2rem; display:flex; flex-direction:column; gap:.7rem; max-width:760px; }
+.faq-item { border:1.5px solid var(--border); border-radius:12px; overflow:hidden; transition:border-color .2s,box-shadow .2s; background:#fff; }
+.faq-item.open { border-color:#93c5fd; box-shadow:0 4px 16px rgba(37,99,235,.08); }
+.faq-q { display:flex; align-items:center; justify-content:space-between; padding:1.2rem 1.4rem; cursor:none; font-size:.95rem; font-family:'Noto Serif TC',serif; gap:1rem; background:#fff; transition:background .2s; user-select:none; }
+.faq-q:hover { background:#f8faff; }
+.faq-ico { width:26px; height:26px; border-radius:50%; flex-shrink:0; border:1.5px solid var(--border); display:flex; align-items:center; justify-content:center; font-size:.7rem; color:var(--txt3); transition:transform .3s,border-color .2s,background .2s,color .2s; }
+.faq-item.open .faq-ico { transform:rotate(45deg); border-color:var(--blue); background:#eff6ff; color:var(--blue); }
+.faq-a { max-height:0; overflow:hidden; transition:max-height .35s ease; }
+.faq-a-in { padding:1.1rem 1.4rem 1.2rem; font-size:.89rem; color:var(--txt2); line-height:1.78; border-top:1px solid #f3f4f6; }
+.faq-item.open .faq-a { max-height:280px; }
+
+/* CTA — deep blue */
+#contact { background:linear-gradient(135deg,#1e3a8a 0%,#312e81 50%,#4c1d95 100%); position:relative; overflow:hidden; }
+#contact::before { content:''; position:absolute; inset:0; background-image:radial-gradient(circle,rgba(255,255,255,.06) 1px,transparent 1px); background-size:28px 28px; }
+.cta-in { max-width:780px; margin:0 auto; padding:7rem 2rem; text-align:center; position:relative; }
+.cta-label { font-size:.72rem; letter-spacing:.14em; text-transform:uppercase; color:#93c5fd; margin-bottom:.65rem; display:flex; align-items:center; justify-content:center; gap:.5rem; }
+.cta-label::before,.cta-label::after { content:''; width:18px; height:1px; background:#93c5fd; }
+.cta-title { font-family:'Noto Serif TC',serif; font-size:clamp(1.9rem,5vw,3rem); line-height:1.2; color:#fff; margin-bottom:.9rem; }
+.cta-title span { color:#93c5fd; }
+.cta-desc { font-size:.97rem; color:#93c5fd; line-height:1.7; max-width:480px; margin:0 auto 2.2rem; }
+.cta-btns { display:flex; gap:.9rem; justify-content:center; flex-wrap:wrap; margin-bottom:2.8rem; }
+.btn-line-big { padding:.95rem 2.2rem; background:#00b900; color:#fff; border:none; border-radius:30px; font-size:.97rem; font-weight:500; cursor:none; text-decoration:none; display:inline-flex; align-items:center; gap:.55rem; box-shadow:0 4px 18px rgba(0,185,0,.35); transition:all .25s; font-family:'DM Sans',sans-serif; }
+.btn-line-big:hover { transform:translateY(-2px); box-shadow:0 8px 28px rgba(0,185,0,.45); }
+.btn-yt-out { padding:.95rem 2.2rem; background:rgba(255,255,255,.1); color:#fff; border:1.5px solid rgba(255,255,255,.3); border-radius:30px; font-size:.97rem; cursor:none; text-decoration:none; display:inline-flex; align-items:center; gap:.55rem; transition:all .25s; font-family:'DM Sans',sans-serif; }
+.btn-yt-out:hover { background:rgba(255,255,255,.18); border-color:rgba(255,255,255,.5); }
+.cta-form { background:rgba(255,255,255,.1); backdrop-filter:blur(8px); border:1px solid rgba(255,255,255,.2); border-radius:20px; padding:2rem; text-align:left; max-width:540px; margin:0 auto; }
+.cta-form-t { font-family:'Noto Serif TC',serif; font-size:1.05rem; text-align:center; color:#fff; margin-bottom:1.2rem; }
+.f-row { display:grid; grid-template-columns:1fr 1fr; gap:.9rem; margin-bottom:.9rem; }
+.f-grp { display:flex; flex-direction:column; gap:.35rem; }
+.f-grp.full { grid-column:1/-1; }
+.f-lbl { font-size:.78rem; color:#bfdbfe; }
+.f-in { padding:.68rem .95rem; background:rgba(255,255,255,.12); border:1px solid rgba(255,255,255,.25); border-radius:8px; color:#fff; font-size:.88rem; font-family:'DM Sans',sans-serif; transition:border-color .2s,background .2s; outline:none; cursor:none; }
+.f-in:focus { border-color:rgba(255,255,255,.6); background:rgba(255,255,255,.18); }
+.f-in::placeholder { color:rgba(255,255,255,.4); }
+.f-in option { background:#1e3a8a; color:#fff; }
+.btn-sub { width:100%; padding:.88rem; background:#fff; color:var(--blue); border:none; border-radius:10px; font-size:.95rem; font-weight:600; cursor:none; font-family:'DM Sans',sans-serif; transition:all .25s; margin-top:.9rem; box-shadow:0 4px 14px rgba(0,0,0,.2); }
+.btn-sub:hover { background:#eff6ff; transform:translateY(-1px); }
+
+/* FOOTER — dark */
+footer { background:#111827; border-top:1px solid #1f2937; padding:2.8rem 2rem; }
+.ft-in { max-width:1100px; margin:0 auto; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1.4rem; }
+.ft-logo { font-family:'Noto Serif TC',serif; color:#e5e7eb; }
+.ft-logo span { color:#3b82f6; }
+.ft-logo small { color:#6b7280; font-size:.77rem; display:block; font-family:'DM Sans',sans-serif; }
+.ft-links { display:flex; gap:1.4rem; }
+.ft-links a { font-size:.83rem; color:#6b7280; text-decoration:none; transition:color .2s; }
+.ft-links a:hover { color:#93c5fd; }
+.ft-soc { display:flex; gap:.6rem; }
+.ft-soc a { font-size:.8rem; color:#3b82f6; text-decoration:none; padding:.25rem .7rem; border-radius:12px; border:1px solid #1e3a8a; transition:all .2s; }
+.ft-soc a:hover { background:#1e3a8a; }
+
+/* REVEAL */
+.reveal { opacity:0; transform:translateY(24px); transition:opacity .65s ease,transform .65s ease; }
+.reveal.visible { opacity:1; transform:translateY(0); }
+.d1{transition-delay:.1s} .d2{transition-delay:.2s} .d3{transition-delay:.3s}
+
+/* MOBILE */
+@media(max-width:768px){
+  .n-links{display:none;}
+  .n-btn{padding:.3rem .55rem;font-size:.7rem;}
+  #about .s-inner{grid-template-columns:1fr;gap:2rem;}
+  .about-frame{max-width:260px;margin:0 auto;}
+  .f-row{grid-template-columns:1fr;}
+  .ft-in{flex-direction:column;text-align:center;}
+  .ft-links{flex-wrap:wrap;justify-content:center;}
+}
+</style>
+</head>
+<body>
+
+<div id="cur"></div>
+<div id="ring"></div>
+
+<!-- NAV -->
+<nav>
+  <a href="#hero" class="n-logo">
+    <div class="n-logo-icon">T</div>
+    <div class="n-logo-text">Tony 線上美語家教<small>Tony Online English Tutoring</small></div>
+  </a>
+  <ul class="n-links">
+    <li><a href="#about">關於Tony</a></li>
+    <li><a href="#why">為何選擇</a></li>
+    <li><a href="#courses">課程</a></li>
+    <li><a href="#testimonials">學員評價</a></li>
+    <li><a href="#faq">FAQ</a></li>
+    <li><a href="#contact">聯絡我</a></li>
+  </ul>
+  <div class="n-btns">
+    <a href="#" class="n-btn n-yt">▶ YouTube</a>
+    <a href="#" class="n-btn n-fb">f Facebook</a>
+    <a href="#" class="n-btn n-ln">● LINE</a>
+  </div>
+</nav>
+
+<!-- HERO: white -->
+<section id="hero">
+  <div class="hero-mesh"></div>
+  <div class="hero-dots"></div>
+  <div class="h-tags">
+    <span class="h-tag">升學</span><span class="h-tag">檢定</span><span class="h-tag">國中會考</span>
+    <span class="h-tag">高中學測</span><span class="h-tag">技高統測</span><span class="h-tag">全民英檢</span>
+    <span class="h-tag">多益</span><span class="h-tag">FLPT外語能力測驗</span>
+    <a href="#courses" class="h-tag hot">課程詳細介紹 👋</a>
+  </div>
+  <h1 class="h-title"><span class="tony">Tony</span> <span class="zh">線上美語家教</span></h1>
+  <p class="h-sub">Tony Online English Tutoring</p>
+  <p class="h-line">English is the Future. Let's get your English Boosted.</p>
+  <div class="h-cta">
+    <a href="#contact" class="btn-pri">免費預約試上課 →</a>
+    <a href="#courses" class="btn-sec">探索課程</a>
+  </div>
+  <div class="h-tags2">
+    <span class="h-tag2">國小英文</span><span class="h-tag2">聽說讀寫</span><span class="h-tag2">作文</span>
+    <span class="h-tag2">觀光美語</span><span class="h-tag2">展場英文</span><span class="h-tag2">客製化</span>
+    <span class="h-tag2">職場</span><span class="h-tag2">公職</span><span class="h-tag2">英文面試</span>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- ABOUT: light purple/indigo -->
+<section id="about">
+  <div class="s-inner">
+    <div class="about-wrap">
+      <div class="about-frame"><div class="about-ph">T</div></div>
+      <div class="about-glow"></div>
+    </div>
+    <div class="reveal">
+      <div class="s-label">About Tony</div>
+      <h2 class="s-title">美式英語教學，<br><span class="ac">從根本改變你的英語</span></h2>
+      <p class="about-body">Hi，我是 Tony！專業美式英語教師，擁有多年豐富教學經驗。畢業於美國知名大學，深刻了解台灣學生在學習英語時面臨的挑戰，能精準找到你的弱點並提供最有效的解決方案。</p>
+      <p class="about-body">無論你是想衝刺升學考試、提升職場英語競爭力、備考國際認證，還是讓日常英語更道地自然，我都能為你量身設計最適合的課程。</p>
+      <div class="about-badges">
+        <span class="badge ba">美國留學背景</span><span class="badge bp">TESOL 認證</span>
+        <span class="badge bc">多益 990 滿分</span><span class="badge ba">全民英檢精通級</span>
+        <span class="badge bp">500+ 學員</span>
+      </div>
+      <div class="about-stats">
+        <div><span class="st-num">500+</span><div class="st-lbl">累積學員</div></div>
+        <div><span class="st-num">8年</span><div class="st-lbl">教學經驗</div></div>
+        <div><span class="st-num">98%</span><div class="st-lbl">學員滿意度</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- WHY: white -->
+<section id="why">
+  <div class="s-inner">
+    <div class="reveal">
+      <div class="s-label">Why Tony</div>
+      <h2 class="s-title">為什麼選擇 <span class="ac">Tony？</span></h2>
+      <p class="s-desc">不只是教你英文，而是幫你找到最有效率的學習方式，讓你真正感受到進步。</p>
+    </div>
+    <div class="why-grid">
+      <div class="why-card reveal d1"><div class="why-icon wi1">🎯</div><div class="why-t">客製化課程設計</div><p class="why-d">根據你的程度、目標與學習習慣量身規劃，不走固定公版教材。</p></div>
+      <div class="why-card reveal d2"><div class="why-icon wi2">🗣️</div><div class="why-t">道地美式發音</div><p class="why-d">美國留學背景，帶你學習最自然的美式英語口音與語感。</p></div>
+      <div class="why-card reveal d3"><div class="why-icon wi3">💻</div><div class="why-t">彈性線上上課</div><p class="why-d">全程線上，Zoom / Google Meet，時間彈性配合你的行程。</p></div>
+      <div class="why-card reveal d1"><div class="why-icon wi4">📈</div><div class="why-t">考試導向策略</div><p class="why-d">熟悉各大英語考試題型，幫你在短時間內快速提升分數。</p></div>
+      <div class="why-card reveal d2"><div class="why-icon wi5">🤝</div><div class="why-t">即時互動教學</div><p class="why-d">真實對話練習，讓你在輕鬆環境中建立英語自信。</p></div>
+      <div class="why-card reveal d3"><div class="why-icon wi6">📝</div><div class="why-t">持續追蹤進度</div><p class="why-d">每堂課後提供回饋與作業，課外持續學習，穩定進步不中斷。</p></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- COURSES: soft blue -->
+<section id="courses">
+  <div class="s-inner">
+    <div class="reveal">
+      <div class="s-label">Courses</div>
+      <h2 class="s-title">找到最適合你的<span class="ac">課程</span></h2>
+      <p class="s-desc">從國小基礎到職場進階，每一門課程都為你的目標而設計。</p>
+    </div>
+    <div class="c-grid">
+      <div class="c-card reveal">
+        <div class="c-head"><div class="c-ico cib">📚</div><div><div class="c-name">國小英文 / 基礎英語</div><div class="c-for">適合：國小生、英語初學者</div></div></div>
+        <div class="c-body"><ul class="c-ul"><li>自然發音法 Phonics 系統教學</li><li>字彙、句型、基本文法奠基</li><li>培養英語學習興趣與自信</li><li>活潑互動教學，寓教於樂</li></ul></div>
+        <div class="c-foot"><div class="c-exams"><span class="exam">升學準備</span></div><a href="#contact" class="c-link">詢問課程 →</a></div>
+      </div>
+      <div class="c-card reveal d1">
+        <div class="c-head"><div class="c-ico cic">👂</div><div><div class="c-name">聽說讀寫全方位</div><div class="c-for">適合：國中、高中生</div></div></div>
+        <div class="c-body"><ul class="c-ul"><li>四技並重，均衡提升英語實力</li><li>閱讀理解技巧與速讀訓練</li><li>聽力訓練與口說練習</li><li>寫作架構與表達能力培養</li></ul></div>
+        <div class="c-foot"><div class="c-exams"><span class="exam">會考</span><span class="exam">學測</span></div><a href="#contact" class="c-link">詢問課程 →</a></div>
+      </div>
+      <div class="c-card reveal d2">
+        <div class="c-head"><div class="c-ico cip">✍️</div><div><div class="c-name">英文作文寫作</div><div class="c-for">適合：備考、學術寫作需求</div></div></div>
+        <div class="c-body"><ul class="c-ul"><li>段落結構與邏輯思維訓練</li><li>考試作文高分策略</li><li>個人化批改與詳細回饋</li><li>議論文、說明文各類題型</li></ul></div>
+        <div class="c-foot"><div class="c-exams"><span class="exam">學測</span><span class="exam">英檢</span></div><a href="#contact" class="c-link">詢問課程 →</a></div>
+      </div>
+      <div class="c-card reveal">
+        <div class="c-head"><div class="c-ico cipk">💼</div><div><div class="c-name">職場 / 商務英語</div><div class="c-for">適合：上班族、社會人士</div></div></div>
+        <div class="c-body"><ul class="c-ul"><li>商務Email撰寫與職場溝通</li><li>英文會議與簡報表達</li><li>英文面試技巧與實戰演練</li><li>展場英文、觀光接待美語</li></ul></div>
+        <div class="c-foot"><div class="c-exams"><span class="exam">多益</span><span class="exam">職場</span></div><a href="#contact" class="c-link">詢問課程 →</a></div>
+      </div>
+      <div class="c-card reveal d1">
+        <div class="c-head"><div class="c-ico cig">🏆</div><div><div class="c-name">國際證照備考班</div><div class="c-for">適合：目標考取認證者</div></div></div>
+        <div class="c-body"><ul class="c-ul"><li>多益 TOEIC 題型精析</li><li>全民英檢各級別系統備考</li><li>FLPT外語能力測驗準備</li><li>公職英文考試策略</li></ul></div>
+        <div class="c-foot"><div class="c-exams"><span class="exam">多益</span><span class="exam">英檢</span><span class="exam">FLPT</span></div><a href="#contact" class="c-link">詢問課程 →</a></div>
+      </div>
+      <div class="c-card reveal d2">
+        <div class="c-head"><div class="c-ico cib">⚙️</div><div><div class="c-name">客製化專屬課程</div><div class="c-for">適合：有特定需求者</div></div></div>
+        <div class="c-body"><ul class="c-ul"><li>完全依照需求設計課程</li><li>旅遊英語、特定產業用語</li><li>英語自信心重建課程</li><li>彈性安排進度與教材</li></ul></div>
+        <div class="c-foot"><div class="c-exams"><span class="exam">客製化</span></div><a href="#contact" class="c-link">詢問課程 →</a></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- TESTIMONIALS: warm yellow/cream -->
+<section id="testimonials">
+  <div class="s-inner">
+    <div class="reveal">
+      <div class="s-label">Student Reviews</div>
+      <h2 class="s-title">學員的<span class="ac">真實心得</span></h2>
+      <p class="s-desc">不說自己多好，讓學員的成果說話。</p>
+    </div>
+    <div class="t-grid">
+      <div class="t-card reveal"><div class="t-qmark">"</div><div class="t-stars">★★★★★</div><p class="t-text">跟了Tony老師六個月，多益從620分進步到890分！老師非常了解題型，每次上課都有滿滿的收穫，語感也越來越好。</p><div class="t-author"><div class="t-av">林</div><div><div class="t-name">林同學</div><div class="t-meta">備考多益 TOEIC</div><div class="t-score">📈 620 → 890 分</div></div></div></div>
+      <div class="t-card reveal d1"><div class="t-qmark">"</div><div class="t-stars">★★★★★</div><p class="t-text">在飯店工作需要接待外國客人，Tony老師設計觀光美語課程，現在和外國客人對話完全沒問題，還受到主管肯定！</p><div class="t-author"><div class="t-av">陳</div><div><div class="t-name">陳小姐</div><div class="t-meta">觀光美語 / 職場英語</div><div class="t-score">✅ 成功晉升資深接待</div></div></div></div>
+      <div class="t-card reveal d2"><div class="t-qmark">"</div><div class="t-stars">★★★★★</div><p class="t-text">幫兒子報名國小英文課，Tony老師非常有耐心，用遊戲和故事教學讓孩子不排斥英文。三個月後孩子會主動複習！</p><div class="t-author"><div class="t-av">王</div><div><div class="t-name">王媽媽</div><div class="t-meta">孩子就讀國小三年級</div><div class="t-score">📚 自然發音完全掌握</div></div></div></div>
+      <div class="t-card reveal"><div class="t-qmark">"</div><div class="t-stars">★★★★★</div><p class="t-text">準備全民英檢中高級，Tony老師幫我分析弱點密集訓練，一次就通過！老師的鼓勵讓我很有動力繼續學習。</p><div class="t-author"><div class="t-av">張</div><div><div class="t-name">張同學</div><div class="t-meta">全民英檢中高級</div><div class="t-score">🎉 一次通過初試複試</div></div></div></div>
+      <div class="t-card reveal d1"><div class="t-qmark">"</div><div class="t-stars">★★★★★</div><p class="t-text">英文面試一直很緊張，Tony老師幫我模擬面試情境、修正用語，教我自然展現自己。後來成功拿到外商公司的Offer！</p><div class="t-author"><div class="t-av">黃</div><div><div class="t-name">黃先生</div><div class="t-meta">英文面試專項訓練</div><div class="t-score">💼 成功入職外商公司</div></div></div></div>
+      <div class="t-card reveal d2"><div class="t-qmark">"</div><div class="t-stars">★★★★★</div><p class="t-text">學測英文作文是最怕的部分。Tony老師教我段落架構，每週批改練習，最後學測英文拿到15級分，超過預期！</p><div class="t-author"><div class="t-av">李</div><div><div class="t-name">李同學</div><div class="t-meta">大學學測英文作文</div><div class="t-score">📊 學測英文 15 級分</div></div></div></div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- FAQ: light gray -->
+<section id="faq">
+  <div class="s-inner">
+    <div class="reveal">
+      <div class="s-label">FAQ</div>
+      <h2 class="s-title">常見<span class="ac">問題</span></h2>
+      <p class="s-desc">有任何疑問，可以在這裡找到答案，或直接 LINE 詢問我。</p>
+    </div>
+    <div class="faq-list reveal">
+      <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span>上課方式是怎麼進行的？</span><div class="faq-ico">+</div></div><div class="faq-a"><div class="faq-a-in">全程線上一對一授課，使用 Zoom 或 Google Meet 進行視訊教學。上課前會提前分享教材，課後也會給予回饋與練習作業。不需要安裝特殊軟體，只要有網路和電腦（或平板）即可。</div></div></div>
+      <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span>費用是多少？有試上課嗎？</span><div class="faq-ico">+</div></div><div class="faq-a"><div class="faq-a-in">費用根據課程類型和課數而定，歡迎透過 LINE 詢問詳細報價。提供免費試上一堂課（30分鐘），讓你先體驗教學風格，確認適合再決定是否繼續。完全沒有壓力。</div></div></div>
+      <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span>一堂課多久？上課時間可以自己選嗎？</span><div class="faq-ico">+</div></div><div class="faq-a"><div class="faq-a-in">標準課程為每堂 60 分鐘，也可根據需求調整為 90 分鐘。上課時間非常彈性，平日白天、晚間及週末都有時段，會盡量配合你的行程。</div></div></div>
+      <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span>我的英文程度很差，可以報名嗎？</span><div class="faq-ico">+</div></div><div class="faq-a"><div class="faq-a-in">當然可以！我教過各種程度的學員，從完全零基礎到已有基礎想精進的都有。上課前會先了解你的程度和目標，量身規劃學習計畫，讓你每一堂課都有紮實的進步。</div></div></div>
+      <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span>如果需要取消或調整上課時間怎麼辦？</span><div class="faq-ico">+</div></div><div class="faq-a"><div class="faq-a-in">請至少在上課前 24 小時透過 LINE 通知，可以免費調整時間。我理解大家都有突發狀況，時間安排上會盡量彈性處理。</div></div></div>
+      <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span>需要自己準備什麼教材嗎？</span><div class="faq-ico">+</div></div><div class="faq-a"><div class="faq-a-in">基本上不需要自行購買教材，我會提供電子教材和學習資料。如果你有特定想使用的教材，也歡迎帶進課堂一起研讀。主要工具就是電腦和穩定的網路連線。</div></div></div>
+      <div class="faq-item"><div class="faq-q" onclick="toggleFaq(this)"><span>適合兒童上課嗎？幾歲可以開始？</span><div class="faq-ico">+</div></div><div class="faq-a"><div class="faq-a-in">非常歡迎！建議從國小低年級（約7歲）開始線上家教課程較為適合。我採用活潑生動的教學方式，讓孩子在輕鬆愉快的氛圍中愛上英語。</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA: deep blue gradient -->
+<section id="contact">
+  <div class="cta-in">
+    <div class="reveal">
+      <div class="cta-label">Contact</div>
+      <h2 class="cta-title">準備好提升你的英語了嗎？<br><span>立即聯絡 Tony</span></h2>
+      <p class="cta-desc">免費試上課等你來體驗，讓我了解你的目標，一起規劃最適合你的英語學習路。</p>
+      <div class="cta-btns">
+        <a href="https://line.me/" class="btn-line-big"><span>●</span> LINE 立即詢問</a>
+        <a href="#" class="btn-yt-out">▶ 觀看YouTube頻道</a>
+      </div>
+      <div class="cta-form">
+        <div class="cta-form-t">📩 留下資料，我會盡快與你聯絡</div>
+        <div class="f-row">
+          <div class="f-grp"><label class="f-lbl">姓名</label><input type="text" class="f-in" placeholder="你的名字"></div>
+          <div class="f-grp"><label class="f-lbl">聯絡方式（LINE / 電話）</label><input type="text" class="f-in" placeholder="LINE ID 或電話號碼"></div>
+        </div>
+        <div class="f-row">
+          <div class="f-grp"><label class="f-lbl">有興趣的課程</label><select class="f-in"><option value="">選擇課程類型</option><option>國小英文 / 基礎英語</option><option>聽說讀寫全方位</option><option>英文作文寫作</option><option>職場 / 商務英語</option><option>國際證照備考</option><option>客製化課程</option></select></div>
+          <div class="f-grp"><label class="f-lbl">目前英語程度</label><select class="f-in"><option value="">自我評估</option><option>初學者（幾乎沒基礎）</option><option>初級（國中程度）</option><option>中級（高中程度）</option><option>中高級（大學程度）</option><option>高級（工作使用）</option></select></div>
+        </div>
+        <div class="f-row"><div class="f-grp full"><label class="f-lbl">學習目標或備注（選填）</label><textarea class="f-in" rows="3" placeholder="例如：準備多益、想改善口說、孩子國小三年級…" style="resize:vertical;"></textarea></div></div>
+        <button class="btn-sub" onclick="submitForm()">送出詢問 →</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER: dark navy -->
+<footer>
+  <div class="ft-in">
+    <div class="ft-logo"><span>Tony</span> 線上美語家教<small>© 2024 Tony Online English Tutoring · English is the Future.</small></div>
+    <div class="ft-links">
+      <a href="#about">關於Tony</a><a href="#courses">課程</a>
+      <a href="#testimonials">學員評價</a><a href="#faq">FAQ</a><a href="#contact">聯絡我</a>
+    </div>
+    <div class="ft-soc">
+      <a href="#">YouTube</a><a href="#">Facebook</a><a href="#">LINE</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+const cur=document.getElementById('cur'),ring=document.getElementById('ring');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{ mx=e.clientX; my=e.clientY; cur.style.left=mx+'px'; cur.style.top=my+'px'; });
+(function loop(){ rx+=(mx-rx)*.14; ry+=(my-ry)*.14; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(loop); })();
+
+function toggleFaq(el){
+  const it=el.parentElement,open=it.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
+  if(!open) it.classList.add('open');
+}
+
+const obs=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')}),{threshold:.1,rootMargin:'0px 0px -40px 0px'});
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+function submitForm(){ alert('✅ 已收到你的詢問！Tony 老師會盡快透過 LINE 或電話與你聯絡，期待與你一起學習英語！'); }
+</script>
+</body>
+</html>
