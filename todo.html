@@ -1,8 +1,120 @@
-<iframe 
-  src="https://script.google.com/macros/s/AKfycbwio4Kj0RqZ3bAmxelA-Rr4kI1n5h36sr08kiqTQ7KIgt94NWpGCSmf7NGd1AV85HSp0Q/exec" 
-  width="100%" 
-  height="600px" 
-  frameborder="0" 
-  style="border: none; max-width: 500px; margin: 0 auto; display: block;">
-</iframe>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  .tutor-wrap { font-family: sans-serif; max-width: 500px; margin: auto; padding: 5px; color: #333; }
+  .tutor-controls { display: flex; justify-content: space-between; align-items: center; background: #fff; padding: 8px; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); margin-bottom: 10px; }
+  .tutor-btn { background: #3498db; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; }
+  .tutor-btn:active { background: #2980b9; }
+  #tutor-week-label { font-weight: bold; font-size: 14px; }
+  
+  /* 2 Blocks Across, 3 Down */
+  .tutor-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .tutor-card { background: #fff; border-radius: 6px; padding: 8px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); border-top: 4px solid #3498db; display: flex; flex-direction: column; }
+  .tutor-header { display: flex; justify-content: space-between; font-weight: bold; font-size: 13px; border-bottom: 1px solid #eee; padding-bottom: 4px; margin-bottom: 6px; }
+  .tutor-task { display: flex; align-items: flex-start; margin-bottom: 6px; }
+  .tutor-task input { width: 16px; height: 16px; margin-right: 6px; margin-top: 2px; }
+  .tutor-time { font-size: 11px; color: #7f8c8d; font-weight: bold; display: block;}
+  .tutor-text { font-size: 12px; }
+  
+  .done .tutor-text, .done .tutor-time { text-decoration: line-through; color: #bdc3c7; }
+  .no-classes { color: #95a5a6; font-size: 12px; text-align: center; font-style: italic; }
+  #tutor-loading { text-align: center; font-weight: bold; color: #3498db; margin-top: 20px; }
+</style>
+</head>
+<body>
 
+<div class="tutor-wrap">
+  <div class="tutor-controls">
+    <button class="tutor-btn" onclick="changeWeek(-1)">&#8592; Prev</button>
+    <span id="tutor-week-label">Current Week</span>
+    <button class="tutor-btn" onclick="changeWeek(1)">Next &#8594;</button>
+  </div>
+  <div id="tutor-loading">Loading classes...</div>
+  <div id="tutor-grid" class="tutor-grid" style="display: none;"></div>
+</div>
+
+<script>
+  // PASTE YOUR SCRIPT LINK HERE:
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyLh_8f803utbDsnU1DQyM1KBCZtmXPt1eJfAKBex1Hn4r9IT98aJS5M6OtYE0LQl7d2Q/exec";
+  
+  let currentOffset = 0;
+
+  function loadData() {
+    document.getElementById('tutor-loading').style.display = 'block';
+    document.getElementById('tutor-grid').style.display = 'none';
+    
+    let label = "Current Week";
+    if(currentOffset === -1) label = "Last Week";
+    if(currentOffset < -1) label = Math.abs(currentOffset) + " Wks Ago";
+    if(currentOffset === 1) label = "Next Week";
+    if(currentOffset > 1) label = "In " + currentOffset + " Wks";
+    document.getElementById('tutor-week-label').innerText = label;
+
+    // Fetch the data from your script
+    fetch(SCRIPT_URL + "?offset=" + currentOffset)
+      .then(response => response.json())
+      .then(data => renderGrid(data))
+      .catch(error => {
+        document.getElementById('tutor-loading').innerText = "Error loading schedule.";
+      });
+  }
+
+  function renderGrid(daysData) {
+    const grid = document.getElementById('tutor-grid');
+    grid.innerHTML = ''; 
+
+    daysData.forEach(day => {
+      let cardHtml = `<div class="tutor-card">
+        <div class="tutor-header"><span>${day.dayName}</span><span>${day.date}</span></div>`;
+
+      if (day.events.length === 0) {
+        cardHtml += `<div class="no-classes">No classes</div>`;
+      } else {
+        day.events.forEach(event => {
+          // Check phone memory to see if it's already crossed out
+          let isDone = localStorage.getItem('tutor_' + event.id) === 'true';
+          let checkedStr = isDone ? 'checked' : '';
+          let doneClass = isDone ? 'done' : '';
+          
+          cardHtml += `
+            <div class="tutor-task ${doneClass}" id="row-${event.id}">
+              <input type="checkbox" onchange="toggleTask('${event.id}', this)" ${checkedStr}>
+              <div>
+                <span class="tutor-time">${event.time}</span>
+                <span class="tutor-text">${event.title}</span>
+              </div>
+            </div>`;
+        });
+      }
+      cardHtml += `</div>`;
+      grid.innerHTML += cardHtml;
+    });
+
+    document.getElementById('tutor-loading').style.display = 'none';
+    document.getElementById('tutor-grid').style.display = 'grid';
+  }
+
+  function toggleTask(eventId, checkbox) {
+    const row = document.getElementById(`row-${eventId}`);
+    if (checkbox.checked) {
+      row.classList.add('done');
+      localStorage.setItem('tutor_' + eventId, 'true'); // Save to phone memory
+    } else {
+      row.classList.remove('done');
+      localStorage.removeItem('tutor_' + eventId);
+    }
+  }
+
+  function changeWeek(direction) {
+    currentOffset += direction;
+    loadData();
+  }
+
+  window.onload = loadData;
+</script>
+
+</body>
+</html>
