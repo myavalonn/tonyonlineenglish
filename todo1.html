@@ -6,7 +6,6 @@
 <title>Tutor Tracker</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet" />
 <style>
-  /* ─── TOKENS ─────────────────────────────────────────── */
   :root {
     --bg:       #0c0c10;
     --surf:     #14141c;
@@ -25,7 +24,6 @@
     --sans:     'Noto Sans TC', sans-serif;
   }
 
-  /* ─── RESET ──────────────────────────────────────────── */
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
 
@@ -37,7 +35,6 @@
     overflow-x: hidden;
   }
 
-  /* animated grain overlay */
   body::before {
     content: '';
     position: fixed;
@@ -48,7 +45,6 @@
     opacity: 0.5;
   }
 
-  /* ─── LOADING ─────────────────────────────────────────── */
   #loader {
     position: fixed;
     inset: 0;
@@ -80,7 +76,6 @@
 
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* ─── HEADER ──────────────────────────────────────────── */
   header {
     position: sticky;
     top: 0;
@@ -185,7 +180,6 @@
     white-space: nowrap;
   }
 
-  /* progress bar */
   .prog-track {
     height: 3px;
     background: var(--border);
@@ -202,7 +196,6 @@
     width: 0%;
   }
 
-  /* ─── GRID ────────────────────────────────────────────── */
   .grid {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
@@ -222,7 +215,6 @@
     .grid { grid-template-columns: repeat(6, 1fr); }
   }
 
-  /* ─── DAY CARD ────────────────────────────────────────── */
   .card {
     background: var(--card);
     border: 1px solid var(--border);
@@ -302,7 +294,6 @@
 
   .card.done .badge { background: rgba(52,211,153,0.15); color: var(--green); }
 
-  /* ─── STUDENT ROWS ────────────────────────────────────── */
   .student-list {
     padding: 7px;
     display: flex;
@@ -390,7 +381,6 @@
     padding: 20px 8px;
   }
 
-  /* ─── TOAST ───────────────────────────────────────────── */
   #toast {
     position: fixed;
     bottom: 28px;
@@ -411,15 +401,11 @@
     box-shadow: 0 8px 32px rgba(0,0,0,0.4);
   }
 
-  #toast.show {
-    transform: translateX(-50%) translateY(0);
-    opacity: 1;
-  }
-
-  #toast.ok { border-color: rgba(52,211,153,0.4); color: var(--green); }
+  #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+  #toast.ok   { border-color: rgba(52,211,153,0.4); color: var(--green); }
+  #toast.warn { border-color: rgba(245,158,11,0.4); color: var(--accent2); }
   #toast.fail { border-color: rgba(248,113,113,0.4); color: var(--red); }
 
-  /* ─── ERROR STATE ─────────────────────────────────────── */
   .error-box {
     margin: 40px auto;
     max-width: 440px;
@@ -430,32 +416,51 @@
     text-align: center;
   }
 
-  .error-box h2 {
+  .error-box h2 { font-family: var(--mono); color: var(--red); font-size: 0.9rem; margin-bottom: 10px; }
+  .error-box p  { font-size: 0.8rem; color: var(--sub); line-height: 1.6; }
+
+  .saving-row { opacity: 0.65; }
+
+  .saving-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
     font-family: var(--mono);
-    color: var(--red);
-    font-size: 0.9rem;
-    margin-bottom: 10px;
+    font-size: 0.58rem;
+    font-weight: 500;
+    color: var(--accent2);
+    letter-spacing: 0.1em;
+    background: rgba(245,158,11,0.1);
+    border: 1px solid rgba(245,158,11,0.3);
+    border-radius: 50px;
+    padding: 3px 10px;
+    animation: fadeInPill 0.2s ease;
   }
 
-  .error-box p {
-    font-size: 0.8rem;
-    color: var(--sub);
-    line-height: 1.6;
+  @keyframes fadeInPill {
+    from { opacity: 0; transform: scale(0.9); }
+    to   { opacity: 1; transform: scale(1); }
+  }
+
+  .saving-spin {
+    width: 8px; height: 8px;
+    border: 1.5px solid rgba(245,158,11,0.3);
+    border-top-color: var(--accent2);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+    flex-shrink: 0;
   }
 </style>
 </head>
 <body>
 
-<!-- LOADER -->
 <div id="loader">
   <div class="loader-ring"></div>
   <div class="loader-text">Loading calendar…</div>
 </div>
 
-<!-- TOAST -->
 <div id="toast"></div>
 
-<!-- HEADER -->
 <header>
   <div class="hrow1">
     <div class="logo">
@@ -470,43 +475,47 @@
       <div id="weekLabel">—</div>
       <button class="nav-btn" id="nextBtn" onclick="changeWeek(1)">&#8250;</button>
     </div>
-    <div class="summary-pill" id="summaryPill">—</div>
+    <div style="display:flex;align-items:center;gap:8px;flex:1;justify-content:flex-end;">
+      <div class="saving-pill" id="savingPill" style="display:none">
+        <span class="saving-spin"></span>SAVING
+      </div>
+      <div class="summary-pill" id="summaryPill">—</div>
+    </div>
   </div>
   <div class="prog-track">
     <div class="prog-fill" id="progFill"></div>
   </div>
 </header>
 
-<!-- DAYS GRID -->
 <div class="grid" id="grid"></div>
 
 <script>
-/* ──────────────────────────────────────────────────────────
-   CONFIG — your Apps Script web app URL
-────────────────────────────────────────────────────────── */
 const API = 'https://script.google.com/macros/s/AKfycbwkNK3C7TZpKosUJlmDvniNrR7AweBvscDymOBnCWv84XYm-KSQpjPHdXq5b45v_wYNcQ/exec';
 
-/* ──────────────────────────────────────────────────────────
-   STATE
-────────────────────────────────────────────────────────── */
 const DAY_NAMES = ['MON','TUE','WED','THU','FRI','SAT'];
 let currentMonday = null;
 let weekEvents    = {};
 let statuses      = {};
-let pending       = {};
+let savesInFlight = 0;
 
-/* ──────────────────────────────────────────────────────────
-   INIT
-────────────────────────────────────────────────────────── */
+function setSaveCount(n) {
+  savesInFlight = n;
+  const pill = document.getElementById('savingPill');
+  if (pill) pill.style.display = n > 0 ? 'inline-flex' : 'none';
+  document.getElementById('prevBtn').dataset.saving = n > 0 ? '1' : '';
+  document.getElementById('nextBtn').dataset.saving = n > 0 ? '1' : '';
+}
+
+function incSave() { setSaveCount(savesInFlight + 1); }
+function decSave() { setSaveCount(Math.max(0, savesInFlight - 1)); }
+
 window.addEventListener('DOMContentLoaded', () => {
   currentMonday = getMondayOf(new Date());
   loadWeek();
 });
 
-/* ──────────────────────────────────────────────────────────
-   NAVIGATION
-────────────────────────────────────────────────────────── */
 function changeWeek(delta) {
+  if (savesInFlight > 0) { toast('Saving… please wait a moment', 'warn'); return; }
   const d = new Date(currentMonday + 'T00:00:00');
   d.setDate(d.getDate() + delta * 7);
   currentMonday = fmt(d);
@@ -514,17 +523,14 @@ function changeWeek(delta) {
 }
 
 function goToday() {
+  if (savesInFlight > 0) { toast('Saving… please wait a moment', 'warn'); return; }
   currentMonday = getMondayOf(new Date());
   loadWeek();
 }
 
-/* ──────────────────────────────────────────────────────────
-   LOAD WEEK  (events + statuses in parallel)
-────────────────────────────────────────────────────────── */
 async function loadWeek() {
   showLoader(true);
   updateHeader();
-
   try {
     const [evts, sts] = await Promise.all([
       apiFetch('getWeekEvents', { date: currentMonday }),
@@ -537,31 +543,26 @@ async function loadWeek() {
     console.error(err);
     document.getElementById('grid').innerHTML =
       `<div class="error-box" style="grid-column:1/-1">
-        <h2>⚠ Could not load data</h2>
-        <p>Make sure the Apps Script is deployed and CORS headers are set.<br><br>Error: ${err.message}</p>
+        <h2>&#9888; Could not load data</h2>
+        <p>Make sure the Apps Script is deployed correctly.<br><br>Error: ${err.message}</p>
       </div>`;
   } finally {
     showLoader(false);
   }
 }
 
-/* ──────────────────────────────────────────────────────────
-   RENDER GRID
-────────────────────────────────────────────────────────── */
 function renderGrid() {
-  const grid    = document.getElementById('grid');
+  const grid     = document.getElementById('grid');
   const todayStr = fmt(new Date());
   grid.innerHTML = '';
-
   let total = 0, done = 0;
 
   for (let i = 0; i < 6; i++) {
     const d = new Date(currentMonday + 'T00:00:00');
     d.setDate(d.getDate() + i);
-    const dateStr = fmt(d);
-    const events  = weekEvents[dateStr] || [];
-    const isToday = dateStr === todayStr;
-
+    const dateStr   = fmt(d);
+    const events    = weekEvents[dateStr] || [];
+    const isToday   = dateStr === todayStr;
     const sentCount = events.filter(ev => statuses[`${dateStr}|${ev.title}`] === true).length;
     const allDone   = events.length > 0 && sentCount === events.length;
 
@@ -572,13 +573,11 @@ function renderGrid() {
     card.className = `card${isToday ? ' today' : ''}${allDone ? ' done' : ''}`;
     card.id = `card-${dateStr}`;
 
-    const badgeLabel = events.length === 0 ? 'no class' : `${sentCount} / ${events.length}`;
-
     card.innerHTML = `
       <div class="card-head">
         <div class="day-label">${DAY_NAMES[i]}</div>
         <div class="day-num">${d.getMonth()+1}/${d.getDate()}</div>
-        <div class="badge">${badgeLabel}</div>
+        <div class="badge">${events.length === 0 ? 'no class' : `${sentCount} / ${events.length}`}</div>
       </div>
       <div class="student-list" id="list-${dateStr}">
         ${events.length === 0
@@ -599,7 +598,7 @@ function studentRow(dateStr, ev) {
   return `
     <div class="s-row${sent ? ' sent' : ''}" id="${rid}"
          onclick="toggle('${dateStr}','${esc(ev.title)}','${rid}')">
-      <div class="checkbox">${sent ? '✓' : ''}</div>
+      <div class="checkbox">${sent ? '&#10003;' : ''}</div>
       <div class="s-info">
         <div class="s-name">${ev.title}</div>
         <div class="s-time">${ev.time}</div>
@@ -607,56 +606,49 @@ function studentRow(dateStr, ev) {
     </div>`;
 }
 
-/* ──────────────────────────────────────────────────────────
-   TOGGLE
-────────────────────────────────────────────────────────── */
 function toggle(dateStr, studentName, rid) {
   const key    = `${dateStr}|${studentName}`;
   const newVal = !(statuses[key] === true);
   statuses[key] = newVal;
 
-  // optimistic UI
   const row = document.getElementById(rid);
   if (row) {
-    row.className = 's-row' + (newVal ? ' sent' : '');
-    row.querySelector('.checkbox').textContent = newVal ? '✓' : '';
+    row.className = 's-row saving-row' + (newVal ? ' sent' : '');
+    row.querySelector('.checkbox').innerHTML = newVal ? '&#10003;' : '';
+    row.style.pointerEvents = 'none';
   }
   refreshCard(dateStr);
   refreshProgress();
+  incSave();
 
-  // debounced save
-  clearTimeout(pending[key]);
-  pending[key] = setTimeout(async () => {
-    try {
-      await apiFetch('setStatus', { key, value: newVal });
-      toast(newVal ? '✓ Marked as sent' : '↩ Unmarked', 'ok');
-    } catch {
-      // revert
+  apiFetch('setStatus', { key, value: newVal })
+    .then(() => {
+      decSave();
+      if (row) { row.classList.remove('saving-row'); row.style.pointerEvents = ''; }
+      toast(newVal ? '&#10003; Saved' : '&#8629; Unmarked', 'ok');
+    })
+    .catch(() => {
+      decSave();
       statuses[key] = !newVal;
       if (row) {
         row.className = 's-row' + (!newVal ? ' sent' : '');
-        row.querySelector('.checkbox').textContent = !newVal ? '✓' : '';
+        row.querySelector('.checkbox').innerHTML = !newVal ? '&#10003;' : '';
+        row.classList.remove('saving-row');
+        row.style.pointerEvents = '';
       }
       refreshCard(dateStr);
       refreshProgress();
       toast('Save failed — check connection', 'fail');
-    }
-  }, 450);
+    });
 }
 
-/* ──────────────────────────────────────────────────────────
-   REFRESH HELPERS
-────────────────────────────────────────────────────────── */
 function refreshCard(dateStr) {
   const card   = document.getElementById(`card-${dateStr}`);
   const events = weekEvents[dateStr] || [];
   if (!card || !events.length) return;
-
-  const sent  = events.filter(ev => statuses[`${dateStr}|${ev.title}`] === true).length;
-  const allD  = sent === events.length;
-
+  const sent = events.filter(ev => statuses[`${dateStr}|${ev.title}`] === true).length;
   card.querySelector('.badge').textContent = `${sent} / ${events.length}`;
-  card.classList.toggle('done', allD);
+  card.classList.toggle('done', sent === events.length);
 }
 
 function refreshProgress() {
@@ -672,34 +664,23 @@ function refreshProgress() {
 
 function updateProgress(done, total) {
   const pct = total > 0 ? Math.round(done / total * 100) : 0;
-  document.getElementById('progFill').style.width  = pct + '%';
+  document.getElementById('progFill').style.width = pct + '%';
   document.getElementById('summaryPill').textContent =
     total === 0 ? 'No classes' : `${done} / ${total} sent · ${pct}%`;
 }
 
-/* ──────────────────────────────────────────────────────────
-   HEADER
-────────────────────────────────────────────────────────── */
 function updateHeader() {
   const mon = new Date(currentMonday + 'T00:00:00');
   const sat = new Date(currentMonday + 'T00:00:00');
   sat.setDate(mon.getDate() + 5);
-
   document.getElementById('weekLabel').textContent =
     `${mon.getMonth()+1}/${mon.getDate()} – ${sat.getMonth()+1}/${sat.getDate()}`;
-
-  const todayMon = getMondayOf(new Date());
-  document.getElementById('nextBtn').disabled = currentMonday >= todayMon;
+  document.getElementById('nextBtn').disabled = currentMonday >= getMondayOf(new Date());
 }
 
-/* ──────────────────────────────────────────────────────────
-   API FETCH  — calls Apps Script via JSONP-style (no-cors workaround)
-   Apps Script must return JSON with CORS headers
-────────────────────────────────────────────────────────── */
 function apiFetch(action, params = {}) {
   return new Promise((resolve, reject) => {
     const cbName = '_cb_' + Date.now() + '_' + Math.floor(Math.random() * 1e6);
-
     const url = new URL(API);
     url.searchParams.set('action', action);
     url.searchParams.set('callback', cbName);
@@ -713,10 +694,7 @@ function apiFetch(action, params = {}) {
       if (script.parentNode) script.parentNode.removeChild(script);
     };
 
-    const timer = setTimeout(() => {
-      cleanup();
-      reject(new Error('Request timed out'));
-    }, 15000);
+    const timer = setTimeout(() => { cleanup(); reject(new Error('Request timed out')); }, 15000);
 
     window[cbName] = (json) => {
       clearTimeout(timer);
@@ -735,11 +713,8 @@ function apiFetch(action, params = {}) {
   });
 }
 
-/* ──────────────────────────────────────────────────────────
-   UTILS
-────────────────────────────────────────────────────────── */
 function getMondayOf(date) {
-  const d   = new Date(date);
+  const d = new Date(date);
   const day = d.getDay();
   d.setDate(d.getDate() + (day === 0 ? -6 : 1 - day));
   return fmt(d);
@@ -751,18 +726,15 @@ function fmt(d) {
 
 function rowId(key) { return 'r_' + key.replace(/[^a-zA-Z0-9]/g, '_'); }
 function esc(s)     { return s.replace(/\\/g,'\\\\').replace(/'/g,"\\'"); }
-
-function showLoader(show) {
-  document.getElementById('loader').classList.toggle('out', !show);
-}
+function showLoader(show) { document.getElementById('loader').classList.toggle('out', !show); }
 
 let _toastTimer;
 function toast(msg, type = '') {
   const el = document.getElementById('toast');
-  el.textContent = msg;
-  el.className   = `show${type ? ' ' + type : ''}`;
+  el.innerHTML = msg;
+  el.className = ['show', type].filter(Boolean).join(' ');
   clearTimeout(_toastTimer);
-  _toastTimer = setTimeout(() => { el.className = ''; }, 2400);
+  _toastTimer = setTimeout(() => { el.className = ''; }, 2600);
 }
 </script>
 </body>
