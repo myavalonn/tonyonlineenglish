@@ -217,23 +217,61 @@
     width: 0%;
   }
 
+  /* ─── PHONE: horizontal snap carousel ──────────────────
+     Each card = 88vw wide, next card peeks at right edge
+     Tablet/Desktop: normal grid layout
+  ─────────────────────────────────────────────────────── */
   .grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 10px;
-    padding: 14px 12px 36px;
-    max-width: 1400px;
-    margin: 0 auto;
+    display: flex;
+    flex-direction: row;
+    overflow-x: scroll;
+    overflow-y: visible;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 12px;
+    padding: 16px 16px 36px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
     position: relative;
     z-index: 1;
   }
 
+  .grid::-webkit-scrollbar { display: none; }
+
+  .grid .card {
+    flex: 0 0 88vw;
+    scroll-snap-align: start;
+    min-height: 70vh;
+  }
+
+  .grid .card:last-child {
+    margin-right: 12vw;
+  }
+
   @media (min-width: 600px) and (max-width: 979px) {
-    .grid { gap: 14px; padding: 18px 18px 44px; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      overflow-x: visible;
+      scroll-snap-type: none;
+      gap: 14px;
+      padding: 18px 18px 44px;
+    }
+    .grid .card { flex: unset; min-height: 260px; }
+    .grid .card:last-child { margin-right: 0; }
   }
 
   @media (min-width: 980px) {
-    .grid { grid-template-columns: repeat(3, 1fr); gap: 20px; padding: 24px 28px 56px; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      overflow-x: visible;
+      scroll-snap-type: none;
+      gap: 20px;
+      padding: 24px 28px 56px;
+    }
+    .grid .card { flex: unset; min-height: 300px; }
+    .grid .card:last-child { margin-right: 0; }
   }
 
   .card {
@@ -242,7 +280,6 @@
     border-radius: var(--r);
     display: flex;
     flex-direction: column;
-    min-height: 220px;
     overflow: hidden;
     transition: border-color 0.25s, box-shadow 0.25s;
     animation: fadeUp 0.4s ease both;
@@ -276,7 +313,7 @@
   .card.done { border-color: var(--green); }
 
   .card-head {
-    padding: 11px 12px 9px;
+    padding: 18px 18px 14px;
     border-bottom: 1px solid var(--border);
     display: flex;
     flex-direction: column;
@@ -291,7 +328,6 @@
     .card-head { padding: 20px 20px 14px; }
   }
 
-  /* ─── DAY LABEL: EN + ZH ─────────────────────────────── */
   .day-label {
     display: flex;
     align-items: baseline;
@@ -301,7 +337,7 @@
 
   .day-en {
     font-family: var(--mono);
-    font-size: 0.75rem;
+    font-size: 1.1rem;
     font-weight: 700;
     letter-spacing: 0.12em;
     text-transform: uppercase;
@@ -310,7 +346,7 @@
 
   .day-zh {
     font-family: var(--sans);
-    font-size: 0.65rem;
+    font-size: 0.9rem;
     font-weight: 500;
     color: var(--sub);
     letter-spacing: 0.04em;
@@ -331,11 +367,11 @@
 
   .day-num {
     font-family: var(--mono);
-    font-size: 1.2rem;
+    font-size: 2rem;
     font-weight: 500;
     color: var(--text);
     line-height: 1;
-    margin-top: 2px;
+    margin-top: 4px;
   }
 
   @media (min-width: 600px) and (max-width: 979px) {
@@ -353,11 +389,11 @@
     align-items: center;
     gap: 3px;
     font-family: var(--mono);
-    font-size: 0.6rem;
+    font-size: 0.82rem;
     font-weight: 500;
-    padding: 2px 8px;
+    padding: 3px 10px;
     border-radius: 50px;
-    margin-top: 5px;
+    margin-top: 6px;
     background: var(--border2);
     color: var(--sub);
     width: fit-content;
@@ -375,21 +411,21 @@
   .card.done .badge { background: rgba(52,211,153,0.15); color: var(--green); }
 
   .student-list {
-    padding: 7px;
+    padding: 10px;
     display: flex;
     flex-direction: column;
-    gap: 5px;
+    gap: 8px;
     flex: 1;
   }
 
   .s-row {
     display: flex;
     align-items: center;
-    gap: 8px;
-    padding: 9px 10px;
+    gap: 12px;
+    padding: 13px 14px;
     background: var(--surf);
     border: 1px solid var(--border);
-    border-radius: 9px;
+    border-radius: 12px;
     cursor: pointer;
     transition: border-color 0.18s, background 0.18s, transform 0.12s;
     user-select: none;
@@ -414,15 +450,15 @@
   }
 
   .checkbox {
-    width: 18px; height: 18px;
-    border: 1.5px solid var(--muted);
-    border-radius: 5px;
+    width: 26px; height: 26px;
+    border: 2px solid var(--muted);
+    border-radius: 7px;
     flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.18s;
-    font-size: 11px;
+    font-size: 15px;
     color: #000;
     font-weight: 700;
   }
@@ -444,7 +480,7 @@
 
   .s-name {
     font-family: var(--sans);
-    font-size: 0.75rem;
+    font-size: 1.05rem;
     font-weight: 500;
     color: var(--text);
     white-space: nowrap;
@@ -468,9 +504,9 @@
 
   .s-time {
     font-family: var(--mono);
-    font-size: 0.58rem;
+    font-size: 0.78rem;
     color: var(--muted);
-    margin-top: 1px;
+    margin-top: 2px;
   }
 
   @media (min-width: 600px) and (max-width: 979px) {
@@ -562,6 +598,34 @@
     animation: spin 0.7s linear infinite;
     flex-shrink: 0;
   }
+
+  /* ─── SWIPE DOT INDICATORS (phone only) ─────────────── */
+  .swipe-dots {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    padding: 0 0 24px;
+    position: relative;
+    z-index: 1;
+  }
+
+  .swipe-dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--border2);
+    transition: background 0.25s, transform 0.25s;
+    flex-shrink: 0;
+    cursor: pointer;
+  }
+
+  .swipe-dot.active {
+    background: var(--accent);
+    transform: scale(1.3);
+  }
+
+  @media (min-width: 600px) {
+    .swipe-dots { display: none; }
+  }
 </style>
 </head>
 <body>
@@ -601,6 +665,7 @@
 </header>
 
 <div class="grid" id="grid"></div>
+<div class="swipe-dots" id="swipeDots"></div>
 
 <script>
 const API = 'https://script.google.com/macros/s/AKfycbwkNK3C7TZpKosUJlmDvniNrR7AweBvscDymOBnCWv84XYm-KSQpjPHdXq5b45v_wYNcQ/exec';
@@ -723,6 +788,7 @@ function renderGrid() {
   }
 
   updateProgress(done, total);
+  setTimeout(initSwipeDots, 50);
 }
 
 function studentRow(dateStr, ev) {
@@ -856,6 +922,32 @@ function getMondayOf(date) {
 
 function fmt(d) {
   return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+// ── SWIPE DOT INDICATORS ──────────────────────────────
+function initSwipeDots() {
+  const dotsEl = document.getElementById('swipeDots');
+  const grid   = document.getElementById('grid');
+  if (!dotsEl || !grid || window.innerWidth >= 600) return;
+
+  dotsEl.innerHTML = '';
+  const cards = grid.querySelectorAll('.card');
+  cards.forEach((_, i) => {
+    const dot = document.createElement('div');
+    dot.className = 'swipe-dot' + (i === 0 ? ' active' : '');
+    dot.onclick = () => {
+      cards[i].scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'start' });
+    };
+    dotsEl.appendChild(dot);
+  });
+
+  grid.addEventListener('scroll', () => {
+    const cardW = (cards[0]?.offsetWidth || grid.offsetWidth) + 12;
+    const idx   = Math.round(grid.scrollLeft / cardW);
+    dotsEl.querySelectorAll('.swipe-dot').forEach((d, i) => {
+      d.classList.toggle('active', i === idx);
+    });
+  }, { passive: true });
 }
 
 function rowId(key) { return 'r_' + key.replace(/[^a-zA-Z0-9]/g, '_'); }
