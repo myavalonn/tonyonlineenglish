@@ -1,4 +1,4 @@
-// layout-manager.js - 終極修正版：解決 iPad 直/橫放白條問題 (包含文字換行與寬度修正) + 新增 IG & 移除手機版白邊
+// layout-manager.js - 終極修正版：解決 iPad 直/橫放白條問題 (包含文字換行與寬度修正) + 新增 IG & 恢復手機版白邊
 document.addEventListener("DOMContentLoaded", function() {
     if (document.getElementById('tony-unique-header')) return;
 
@@ -137,16 +137,16 @@ document.addEventListener("DOMContentLoaded", function() {
         @media (max-width: 600px) {
             .tony-banner { height: 100px; padding: 0 10px; }
             .logo-box { height: 70px; }
-            .nav-links { gap: 4px; } /* 微調：縮小按鈕之間的空隙以容納4個Icon */
+            .nav-links { gap: 5px; } /* 微調間距以容納4個Icon */
             .pill-btn { 
-                padding: 6px; /* 微調：縮小 padding 防止過度擁擠 */
-                width: auto; height: auto; 
+                padding: 0; /* 改為0，靠固定寬高來撐起圓形 */
+                width: 40px; height: 40px; /* 設定固定寬高維持完美圓形 */
                 justify-content: center; 
                 border-radius: 50%; 
-                border: none; /* 刪除白圈邊框 */
+                /* 移除了 border: none，讓全域的白色圓圈邊框重新顯示 */
             }
             .pill-btn span { display: none; }
-            .social-icon { height: 24px; } /* 稍微放大一點點圖標，因為沒邊框了 */
+            .social-icon { height: 20px; } /* 恢復原本的大小以適應白圈內部 */
             .hamburger-icon { font-size: 32px !important; }
         }
     `;
@@ -179,7 +179,7 @@ document.addEventListener("DOMContentLoaded", function() {
                     <img src="https://ik.imagekit.io/lql1uveoc/Banner%20Front%20page/facebook.png" class="social-icon">
                     <span>Facebook</span>
                 </a>
-                <!-- 新增 Instagram 按鈕 -->
+                <!-- Instagram 按鈕 -->
                 <a href="https://www.instagram.com/tonyonlineenglish" target="_blank" class="pill-btn">
                     <img src="https://ik.imagekit.io/lql1uveoc/instagram.png" class="social-icon">
                     <span>Instagram</span>
