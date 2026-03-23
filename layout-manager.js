@@ -1,4 +1,4 @@
-// layout-manager.js - 終極修正版：解決 iPad 直/橫放白條問題 (包含文字換行與寬度修正)
+// layout-manager.js - 終極修正版：解決 iPad 直/橫放白條問題 (包含文字換行與寬度修正) + 新增 IG & 移除手機版白邊
 document.addEventListener("DOMContentLoaded", function() {
     if (document.getElementById('tony-unique-header')) return;
 
@@ -73,20 +73,20 @@ document.addEventListener("DOMContentLoaded", function() {
         .side-menu {
             position: fixed; 
             top: 0; 
-            bottom: 0; /* 修正1：捨棄 100vh，改用 bottom: 0 完美貼合手機螢幕真實邊界 */
+            bottom: 0; 
             left: -320px; 
             width: 320px; 
             max-width: 85%; 
             background: var(--tony-dark); 
             z-index: 99999; 
-            transition: left 0.4s ease; /* 確保只有左右位移產生動畫 */
-            padding: 40px 20px 80px 20px; /* 修正2：增加底部 padding，防止手機系統導覽列擋住最後一個按鈕 */
+            transition: left 0.4s ease; 
+            padding: 40px 20px 80px 20px; 
             visibility: hidden;
             box-sizing: border-box;
-            overflow-y: auto !important; /* 強制啟動內部垂直滾動 */
-            overscroll-behavior: contain; /* 修正3：阻止滑動穿透到背景網頁 */
-            -webkit-overflow-scrolling: touch; /* 讓 iOS 滑動平滑順暢 */
-            display: block; /* 修正4：捨棄 flex 佈局，解決手機瀏覽器計算內部高度的 Bug */
+            overflow-y: auto !important; 
+            overscroll-behavior: contain; 
+            -webkit-overflow-scrolling: touch; 
+            display: block; 
         }
         .side-menu.open { left: 0; visibility: visible; }
         .menu-link {
@@ -137,15 +137,16 @@ document.addEventListener("DOMContentLoaded", function() {
         @media (max-width: 600px) {
             .tony-banner { height: 100px; padding: 0 10px; }
             .logo-box { height: 70px; }
-            .nav-links { gap: 6px; }
+            .nav-links { gap: 4px; } /* 微調：縮小按鈕之間的空隙以容納4個Icon */
             .pill-btn { 
-                padding: 10px; 
-                width: 42px; height: 42px; 
+                padding: 6px; /* 微調：縮小 padding 防止過度擁擠 */
+                width: auto; height: auto; 
                 justify-content: center; 
                 border-radius: 50%; 
+                border: none; /* 刪除白圈邊框 */
             }
             .pill-btn span { display: none; }
-            .social-icon { height: 20px; }
+            .social-icon { height: 24px; } /* 稍微放大一點點圖標，因為沒邊框了 */
             .hamburger-icon { font-size: 32px !important; }
         }
     `;
@@ -154,7 +155,6 @@ document.addEventListener("DOMContentLoaded", function() {
     const menuHTML = `
         <div class="menu-overlay" id="menu-overlay"></div>
         <nav class="side-menu" id="side-menu">
-            <!-- 配合 display: block，將叉叉按鈕改為靠右對齊 -->
             <div style="text-align: right; margin-bottom: 20px;">
                 <span id="menu-close" style="color:white; font-size:50px; cursor:pointer; line-height: 1;">&times;</span>
             </div>
@@ -179,6 +179,11 @@ document.addEventListener("DOMContentLoaded", function() {
                     <img src="https://ik.imagekit.io/lql1uveoc/Banner%20Front%20page/facebook.png" class="social-icon">
                     <span>Facebook</span>
                 </a>
+                <!-- 新增 Instagram 按鈕 -->
+                <a href="https://www.instagram.com/tonyonlineenglish" target="_blank" class="pill-btn">
+                    <img src="https://ik.imagekit.io/lql1uveoc/instagram.png" class="social-icon">
+                    <span>Instagram</span>
+                </a>
                 <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="pill-btn">
                     <img src="https://ik.imagekit.io/lql1uveoc/Banner%20Front%20page/line.png" class="social-icon">
                     <span>LINE</span>
@@ -198,8 +203,6 @@ document.addEventListener("DOMContentLoaded", function() {
         const isOpen = sideMenu.classList.toggle('open');
         overlay.classList.toggle('open');
         
-        // 修正5： Body Scroll Lock
-        // 當選單打開時鎖定背景禁止滑動，讓瀏覽器「別無選擇」只能滑動你的選單
         if (isOpen) {
             document.body.style.overflow = 'hidden';
         } else {
