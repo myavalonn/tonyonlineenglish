@@ -134,9 +134,9 @@
 
   .today-pill {
     font-family: var(--mono);
-    font-size: 0.62rem;
+    font-size: 1.24rem; /* Doubled size */
     font-weight: 700;
-    padding: 5px 14px;
+    padding: 8px 18px;
     border-radius: var(--r);
     border: 2px solid var(--text);
     color: var(--text);
@@ -193,9 +193,9 @@
 
   .summary-pill {
     font-family: var(--mono);
-    font-size: 0.65rem;
+    font-size: 1.3rem; /* Doubled size */
     font-weight: 700;
-    color: var(--text);
+    color: #0066cc; /* Blue color */
     white-space: nowrap;
   }
 
@@ -425,10 +425,8 @@
     font-size: 0.75rem;
     color: var(--muted);
     margin-top: 2px;
-    display: none;
+    display: block; /* Restored visibility for all devices */
   }
-
-  @media (min-width: 980px) { .s-time { display: block; } }
 
   .no-class {
     flex: 1;
