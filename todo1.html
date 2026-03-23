@@ -123,7 +123,6 @@
     50% { opacity: 0.4; transform: scale(0.7); }
   }
 
-  /* ─── CURRENT DATE BAR ───────────────────────────────── */
   .current-date-bar {
     font-family: var(--mono);
     font-size: 0.68rem;
@@ -218,11 +217,6 @@
     width: 0%;
   }
 
-  /* ─── GRID ─────────────────────────────────────────────
-     Phone  (<600px):  2 cols → 2/2/2
-     Tablet (600-979): 2 cols → 2/2/2  (bigger fonts)
-     Desktop (≥980px): 3 cols → 3/3
-  ───────────────────────────────────────────────────── */
   .grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -297,24 +291,43 @@
     .card-head { padding: 20px 20px 14px; }
   }
 
+  /* ─── DAY LABEL: EN + ZH ─────────────────────────────── */
   .day-label {
+    display: flex;
+    align-items: baseline;
+    gap: 6px;
+    margin-bottom: 2px;
+  }
+
+  .day-en {
     font-family: var(--mono);
-    font-size: 0.6rem;
-    font-weight: 500;
-    letter-spacing: 0.14em;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
-    color: var(--muted);
+    color: var(--text);
+  }
+
+  .day-zh {
+    font-family: var(--sans);
+    font-size: 0.65rem;
+    font-weight: 500;
+    color: var(--sub);
+    letter-spacing: 0.04em;
   }
 
   @media (min-width: 600px) and (max-width: 979px) {
-    .day-label { font-size: 0.8rem; }
+    .day-en { font-size: 1rem; }
+    .day-zh { font-size: 0.82rem; }
   }
 
   @media (min-width: 980px) {
-    .day-label { font-size: 0.85rem; letter-spacing: 0.16em; }
+    .day-en { font-size: 1.05rem; letter-spacing: 0.14em; }
+    .day-zh { font-size: 0.88rem; }
   }
 
-  .card.today .day-label { color: var(--accent); }
+  .card.today .day-en { color: var(--accent); }
+  .card.today .day-zh { color: rgba(167,139,250,0.7); }
 
   .day-num {
     font-family: var(--mono);
@@ -592,7 +605,9 @@
 <script>
 const API = 'https://script.google.com/macros/s/AKfycbwkNK3C7TZpKosUJlmDvniNrR7AweBvscDymOBnCWv84XYm-KSQpjPHdXq5b45v_wYNcQ/exec';
 
-const DAY_NAMES = ['MON','TUE','WED','THU','FRI','SAT'];
+const DAY_NAMES    = ['MON','TUE','WED','THU','FRI','SAT'];
+const DAY_NAMES_ZH = ['週一','週二','週三','週四','週五','週六'];
+
 let currentMonday = null;
 let weekEvents    = {};
 let statuses      = {};
@@ -691,7 +706,10 @@ function renderGrid() {
 
     card.innerHTML = `
       <div class="card-head">
-        <div class="day-label">${DAY_NAMES[i]}</div>
+        <div class="day-label">
+          <span class="day-en">${DAY_NAMES[i]}</span>
+          <span class="day-zh">${DAY_NAMES_ZH[i]}</span>
+        </div>
         <div class="day-num">${d.getMonth()+1}/${d.getDate()}</div>
         <div class="badge">${events.length === 0 ? 'no class' : `${sentCount} / ${events.length}`}</div>
       </div>
