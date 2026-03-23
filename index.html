@@ -1,769 +1,389 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-TW">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>Tutor Tracker</title>
-<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet" />
-<style>
-  /* ─── TOKENS ─────────────────────────────────────────── */
-  :root {
-    --bg:       #0c0c10;
-    --surf:     #14141c;
-    --card:     #1c1c28;
-    --border:   #28283a;
-    --border2:  #32324a;
-    --accent:   #a78bfa;
-    --accent2:  #f59e0b;
-    --green:    #34d399;
-    --red:      #f87171;
-    --text:     #e2e2f0;
-    --sub:      #9898b8;
-    --muted:    #52527a;
-    --r:        13px;
-    --mono:     'DM Mono', monospace;
-    --sans:     'Noto Sans TC', sans-serif;
-  }
+<meta name="robots" content="index, follow">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<link rel="icon" href="/favicon.png" type="image/png">
 
-  /* ─── RESET ──────────────────────────────────────────── */
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
+<title>Tony線上美語家教</title>
 
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: var(--sans);
-    min-height: 100dvh;
-    overflow-x: hidden;
-  }
+<meta name="description" content="Tony線上美語家教｜檢定、升學、全民英檢、多益、學測英文作文、國中會考、FLPT外語能力測驗國小英文、英文面試、觀光美語，一對一線上英文教學。">
 
-  /* animated grain overlay */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-    pointer-events: none;
-    z-index: 0;
-    opacity: 0.5;
-  }
+<!-- 整合所有 Open Graph 標籤 -->
+<meta property="og:site_name" content="Tony線上美語家教">
+<meta property="og:title" content="Tony線上美語家教">
+<meta property="og:description" content="全民英檢、多益、學測英文作文、國中會考、國小英文、英文面試、觀光美語">
+<meta property="og:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/Tony%20%E7%B7%9A%E4%B8%8A%E7%BE%8E%E8%AA%9E%E5%AE%B6%E6%95%99.png">
+<meta property="og:url" content="https://tonyonlineenglish.netlify.app">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="zh_TW">
 
-  /* ─── LOADING ─────────────────────────────────────────── */
-  #loader {
-    position: fixed;
-    inset: 0;
-    background: var(--bg);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
-    z-index: 999;
-    transition: opacity 0.5s ease;
-  }
-  #loader.out { opacity: 0; pointer-events: none; }
+<link rel="canonical" href="https://tonyonlineenglish.netlify.app/">
 
-  .loader-ring {
-    width: 48px; height: 48px;
-    border: 3px solid var(--border2);
-    border-top-color: var(--accent);
-    border-radius: 50%;
-    animation: spin 0.9s linear infinite;
-  }
+<!-- JSON-LD -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph":[
+    {
+      "@type": "WebSite",
+      "name": "Tony線上美語家教",
+      "url": "https://tonyonlineenglish.netlify.app/"
+    },
+    {
+      "@type": "ItemList",
+      "itemListElement":[
+        {
+          "@type": "SiteNavigationElement",
+          "position": 1,
+          "name": "詳細課程介紹",
+          "url": "https://tonyonlineenglish.netlify.app/allcourses"
+        },
+        {
+          "@type": "SiteNavigationElement",
+          "position": 2,
+          "name": "預約體驗課程",
+          "url": "https://tonyonlineenglish.netlify.app/booking"
+        },
+        {
+          "@type": "SiteNavigationElement",
+          "position": 3,
+          "name": "與我聯繫",
+          "url": "https://line.me/ti/p/T9YdimtG8_"
+        }
+      ]
+    }
+  ]
+}
+</script>
 
-  .loader-text {
-    font-family: var(--mono);
-    font-size: 0.75rem;
-    color: var(--muted);
-    letter-spacing: 0.08em;
-  }
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-N2Q184QH9P"></script>
+<script>
+  window.dataLayer = window.dataLayer ||
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
 
-  @keyframes spin { to { transform: rotate(360deg); } }
+  gtag('config', 'G-N2Q184QH9P');
+</script>
 
-  /* ─── HEADER ──────────────────────────────────────────── */
-  header {
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    background: rgba(12, 12, 16, 0.88);
-    backdrop-filter: blur(18px);
-    -webkit-backdrop-filter: blur(18px);
-    border-bottom: 1px solid var(--border);
-    padding: 12px 16px 10px;
-  }
+    <!-- 引入 Google 手寫字體 -->
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
+    <style>
+        /* 套用您指定的深色背景與基礎設定 */
+        html { 
+            background-color: #060b1c !important; 
+            margin: 0; 
+            padding: 0; 
+            scroll-behavior: smooth; 
+        }
+        
+        body { 
+            margin: 0; 
+            padding: 0; 
+            font-family: "Microsoft JhengHei", sans-serif; 
+            color: white; 
+            overflow-x: hidden; 
+            min-height: 100vh; 
+        }
 
-  .hrow1 {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 10px;
-  }
+        /* 英雄區塊容器 */
+        .hero {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            overflow: hidden;
+            background-color: #060b1c !important; 
+        }
 
-  .logo {
-    font-family: var(--mono);
-    font-size: 0.78rem;
-    font-weight: 500;
-    color: var(--accent);
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
+        /* ====== 3D 特效 Canvas 樣式 ====== */
+        #canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1; /* 夾在背景圖層(0)與文字層(2)之間 */
+            pointer-events: none; /* 讓滑鼠可以穿透點擊下方的按鈕 */
+            mix-blend-mode: screen; /* 🌟 關鍵：過濾掉 3D 畫布的黑底，讓背景圖片完美透出來！ */
+        }
 
-  .logo-dot {
-    width: 7px; height: 7px;
-    border-radius: 50%;
-    background: var(--accent);
-    animation: pulse 2.4s ease-in-out infinite;
-  }
+        /* ====== 1. 這裡就是原先的照片，維持從左側滑入 ====== */
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; 
+            width: 100%; height: 100%;
+            background: linear-gradient(rgba(6, 11, 28, 0.7), rgba(6, 11, 28, 0.8)), 
+                        url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/1DE8F5F9-4E48-4960-84F7-A5B1B98B4954.jpg');
+            background-size: cover;
+            background-position: center;
+            z-index: 0; /* 在最底層 */
+            transform: translateX(-100%);
+            animation: slideInPhotoLeft 1s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        }
 
-  @keyframes pulse {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.4; transform: scale(0.7); }
-  }
+        /* ====== 2. 內容區塊 ====== */
+        .hero-content { 
+            position: relative;
+            z-index: 2; /* 確保文字和按鈕在特效最上層 */
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            width: 100%; 
+            padding: 0 10px;
+            box-sizing: border-box;
+        }
 
-  .today-pill {
-    font-family: var(--mono);
-    font-size: 0.62rem;
-    font-weight: 500;
-    padding: 5px 14px;
-    border-radius: 50px;
-    border: 1px solid var(--accent);
-    color: var(--accent);
-    background: transparent;
-    cursor: pointer;
-    letter-spacing: 0.08em;
-    transition: background 0.2s, color 0.2s;
-  }
-  .today-pill:hover { background: var(--accent); color: #fff; }
+        /* ====== 3. 「課程詳細介紹」連結按鈕 ====== */
+        .course-intro-btn {
+            z-index: 100;
+            text-decoration: none;
+            color: white;
+            font-size: clamp(1rem, 4vw, 1.25rem);
+            font-weight: bold;
+            background: linear-gradient(135deg, #4e54c8, #6B73FF); 
+            padding: 12px 28px;
+            border-radius: 40px; 
+            border: 2px solid rgba(255, 255, 255, 0.5);
+            box-shadow: 0 6px 15px rgba(107, 115, 255, 0.6);
+            opacity: 0; 
+            animation: popInTopLeft 0.8s cubic-bezier(0.25, 1, 0.5, 1) 2s forwards;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px; 
+            pointer-events: auto; /* 確保按鈕可點擊 */
+        }
 
-  .hrow2 {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-  }
+        .course-intro-btn:hover {
+            background: linear-gradient(135deg, #6B73FF, #4e54c8);
+            box-shadow: 0 8px 25px rgba(107, 115, 255, 0.9);
+            transform: scale(1.06); 
+        }
 
-  .week-nav {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    background: var(--card);
-    border: 1px solid var(--border2);
-    border-radius: 50px;
-    padding: 5px 12px;
-  }
+        /* 小手點擊圖示浮動動畫 */
+        .tap-icon {
+            width: 26px;
+            height: 26px;
+            object-fit: contain;
+            animation: floatIcon 1.5s infinite ease-in-out alternate;
+        }
 
-  .nav-btn {
-    background: none;
-    border: none;
-    color: var(--sub);
-    cursor: pointer;
-    font-size: 1rem;
-    width: 26px; height: 26px;
-    border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    transition: background 0.15s, color 0.15s;
-    line-height: 1;
-  }
-  .nav-btn:hover:not(:disabled) { background: var(--border2); color: var(--accent); }
-  .nav-btn:disabled { opacity: 0.25; cursor: default; }
+        /* 針對平板與手機模式的專屬調整 */
+        @media (max-width: 1024px) {
+            .course-intro-btn {
+                padding: 10px 24px;
+            }
+        }
 
-  #weekLabel {
-    font-family: var(--mono);
-    font-size: 0.72rem;
-    color: var(--text);
-    min-width: 130px;
-    text-align: center;
-  }
+        @media (max-width: 768px) {
+            .course-intro-btn {
+                padding: 8px 18px;
+                font-size: 0.95rem; 
+            }
+            .tap-icon {
+                width: 22px;
+                height: 22px;
+            }
+        }
 
-  .summary-pill {
-    font-family: var(--mono);
-    font-size: 0.65rem;
-    color: var(--sub);
-    white-space: nowrap;
-  }
+        @keyframes floatIcon {
+            from { transform: translateY(0); }
+            to { transform: translateY(-4px) scale(1.05); }
+        }
 
-  /* progress bar */
-  .prog-track {
-    height: 3px;
-    background: var(--border);
-    border-radius: 4px;
-    overflow: hidden;
-    margin-top: 10px;
-  }
+        /* ====== 4. 標題群組從右側滑入 ====== */
+        .title-group {
+            transform: translateX(100vw); 
+            opacity: 0;
+            animation: slideInTextRight 1s cubic-bezier(0.25, 1, 0.5, 1) 0.3s forwards;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 2.5vh 0;
+            pointer-events: none; /* 避免文字擋住滑鼠點擊特效互動 */
+        }
 
-  .prog-fill {
-    height: 100%;
-    background: linear-gradient(90deg, var(--accent), var(--accent2));
-    border-radius: 4px;
-    transition: width 0.5s cubic-bezier(.4,0,.2,1);
-    width: 0%;
-  }
+        .main-title {
+            font-size: clamp(2rem, 9.5vw, 6rem); 
+            font-weight: 900;
+            margin: 0;
+            white-space: nowrap; 
+            letter-spacing: 2px;
+            line-height: 1.2;
+        }
 
-  /* ─── GRID ────────────────────────────────────────────── */
-  .grid {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
-    padding: 12px 10px 32px;
-    max-width: 1100px;
-    margin: 0 auto;
-    position: relative;
-    z-index: 1;
-  }
+        .tony-name { 
+            color: #6B73FF; 
+            font-family: 'Pacifico', 'Comic Sans MS', 'Brush Script MT', cursive; 
+            font-weight: normal; 
+            margin-right: 2vw; 
+            padding-right: 0.5vw;
+            text-shadow: 0px 0px 10px rgba(107, 115, 255, 0.6); 
+        }
 
-  @media (min-width: 700px) {
-    .grid { grid-template-columns: repeat(3, 1fr); gap: 12px; padding: 16px 16px 40px; }
-  }
+        .subtitle-italic {
+            font-size: clamp(1rem, 4.5vw, 2rem);
+            font-style: italic;
+            font-weight: 400;
+            color: #f1f1f1;
+            margin: 10px 0 5px 0;
+            letter-spacing: 1px;
+        }
 
-  @media (min-width: 980px) {
-    .grid { grid-template-columns: repeat(6, 1fr); }
-  }
+        .slogan-text {
+            font-size: clamp(0.9rem, 4vw, 1.8rem);
+            font-weight: 300;
+            color: rgba(255, 255, 255, 0.8);
+            margin: 4px 0;
+            letter-spacing: 1.5px;
+            font-style: italic; 
+        }
 
-  /* ─── DAY CARD ────────────────────────────────────────── */
-  .card {
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: var(--r);
-    display: flex;
-    flex-direction: column;
-    min-height: 190px;
-    overflow: hidden;
-    transition: border-color 0.25s, box-shadow 0.25s;
-    animation: fadeUp 0.4s ease both;
-  }
+        /* ====== 5. 標籤區域與動畫 ====== */
+        .tags-container {
+            display: flex; 
+            flex-wrap: wrap; 
+            justify-content: center; 
+            align-items: center;
+            gap: 8px; 
+            max-width: 95vw;
+        }
 
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(14px); }
-    to   { opacity: 1; transform: translateY(0); }
-  }
+        .tag {
+            font-size: clamp(0.75rem, 3.5vw, 1rem);
+            background: rgba(255, 255, 255, 0.1);
+            padding: 6px 14px;
+            border-radius: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.25);
+            white-space: nowrap;
+            backdrop-filter: blur(5px);
+            pointer-events: none;
+        }
 
-  .card:nth-child(1) { animation-delay: 0.04s; }
-  .card:nth-child(2) { animation-delay: 0.08s; }
-  .card:nth-child(3) { animation-delay: 0.12s; }
-  .card:nth-child(4) { animation-delay: 0.16s; }
-  .card:nth-child(5) { animation-delay: 0.20s; }
-  .card:nth-child(6) { animation-delay: 0.24s; }
+        .tags-top { 
+            transform: translateY(-50px); 
+            opacity: 0;
+            animation: slideInTop 1s ease-out 0.6s forwards; 
+        }
 
-  .card.today {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 1px var(--accent), 0 4px 24px rgba(167,139,250,0.12);
-  }
+        .tags-bottom { 
+            transform: translateY(50px); 
+            opacity: 0;
+            animation: slideInBottom 1s ease-out 0.6s forwards; 
+        }
 
-  .card.done { border-color: var(--green); }
-
-  .card-head {
-    padding: 10px 11px 8px;
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    flex-direction: column;
-    gap: 1px;
-  }
-
-  .day-label {
-    font-family: var(--mono);
-    font-size: 0.55rem;
-    font-weight: 500;
-    letter-spacing: 0.14em;
-    text-transform: uppercase;
-    color: var(--muted);
-  }
-
-  .card.today .day-label { color: var(--accent); }
-
-  .day-num {
-    font-family: var(--mono);
-    font-size: 1.1rem;
-    font-weight: 500;
-    color: var(--text);
-    line-height: 1;
-    margin-top: 2px;
-  }
-
-  .card.today .day-num { color: var(--accent); }
-
-  .badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 3px;
-    font-family: var(--mono);
-    font-size: 0.52rem;
-    font-weight: 500;
-    padding: 2px 7px;
-    border-radius: 50px;
-    margin-top: 5px;
-    background: var(--border2);
-    color: var(--sub);
-    width: fit-content;
-    transition: background 0.3s, color 0.3s;
-  }
-
-  .card.done .badge { background: rgba(52,211,153,0.15); color: var(--green); }
-
-  /* ─── STUDENT ROWS ────────────────────────────────────── */
-  .student-list {
-    padding: 7px;
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    flex: 1;
-  }
-
-  .s-row {
-    display: flex;
-    align-items: center;
-    gap: 7px;
-    padding: 8px 9px;
-    background: var(--surf);
-    border: 1px solid var(--border);
-    border-radius: 9px;
-    cursor: pointer;
-    transition: border-color 0.18s, background 0.18s, transform 0.12s;
-    user-select: none;
-    -webkit-tap-highlight-color: transparent;
-    touch-action: manipulation;
-  }
-
-  .s-row:hover { border-color: var(--border2); }
-  .s-row:active { transform: scale(0.97); }
-
-  .s-row.sent {
-    background: rgba(52, 211, 153, 0.05);
-    border-color: rgba(52, 211, 153, 0.25);
-  }
-
-  .checkbox {
-    width: 17px; height: 17px;
-    border: 1.5px solid var(--muted);
-    border-radius: 5px;
-    flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.18s;
-    font-size: 10px;
-    color: #000;
-    font-weight: 700;
-  }
-
-  .s-row.sent .checkbox {
-    background: var(--green);
-    border-color: var(--green);
-  }
-
-  .s-info { flex: 1; min-width: 0; }
-
-  .s-name {
-    font-family: var(--sans);
-    font-size: 0.7rem;
-    font-weight: 500;
-    color: var(--text);
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    transition: color 0.18s;
-  }
-
-  .s-row.sent .s-name {
-    text-decoration: line-through;
-    color: var(--muted);
-  }
-
-  .s-time {
-    font-family: var(--mono);
-    font-size: 0.52rem;
-    color: var(--muted);
-    margin-top: 1px;
-  }
-
-  .no-class {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-family: var(--mono);
-    font-size: 0.6rem;
-    color: var(--muted);
-    letter-spacing: 0.06em;
-    padding: 20px 8px;
-  }
-
-  /* ─── TOAST ───────────────────────────────────────────── */
-  #toast {
-    position: fixed;
-    bottom: 28px;
-    left: 50%;
-    transform: translateX(-50%) translateY(60px);
-    background: var(--card);
-    border: 1px solid var(--border2);
-    color: var(--text);
-    font-family: var(--mono);
-    font-size: 0.72rem;
-    padding: 10px 22px;
-    border-radius: 50px;
-    z-index: 200;
-    transition: transform 0.28s cubic-bezier(.4,0,.2,1), opacity 0.28s;
-    opacity: 0;
-    white-space: nowrap;
-    pointer-events: none;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
-  }
-
-  #toast.show {
-    transform: translateX(-50%) translateY(0);
-    opacity: 1;
-  }
-
-  #toast.ok { border-color: rgba(52,211,153,0.4); color: var(--green); }
-  #toast.fail { border-color: rgba(248,113,113,0.4); color: var(--red); }
-
-  /* ─── ERROR STATE ─────────────────────────────────────── */
-  .error-box {
-    margin: 40px auto;
-    max-width: 440px;
-    background: var(--card);
-    border: 1px solid rgba(248,113,113,0.3);
-    border-radius: var(--r);
-    padding: 28px 24px;
-    text-align: center;
-  }
-
-  .error-box h2 {
-    font-family: var(--mono);
-    color: var(--red);
-    font-size: 0.9rem;
-    margin-bottom: 10px;
-  }
-
-  .error-box p {
-    font-size: 0.8rem;
-    color: var(--sub);
-    line-height: 1.6;
-  }
-</style>
+        /* ====== 動畫定義 ====== */
+        @keyframes slideInPhotoLeft { 
+            from { transform: translateX(-100%); } 
+            to { transform: translateX(0); } 
+        }
+        @keyframes slideInTextRight { 
+            from { transform: translateX(100vw); opacity: 0; } 
+            to { transform: translateX(0); opacity: 1; } 
+        }
+        @keyframes slideInTop { 
+            from { transform: translateY(-50px); opacity: 0; } 
+            to { transform: translateY(0); opacity: 1; } 
+        }
+        @keyframes slideInBottom { 
+            from { transform: translateY(50px); opacity: 0; } 
+            to { transform: translateY(0); opacity: 1; } 
+        }
+        @keyframes popInTopLeft {
+            from { transform: translate(-20px, -20px); opacity: 0; }
+            to { transform: translate(0, 0); opacity: 1; }
+        }
+    </style>
 </head>
 <body>
 
-<!-- LOADER -->
-<div id="loader">
-  <div class="loader-ring"></div>
-  <div class="loader-text">Loading calendar…</div>
-</div>
+    <div class="hero">
+        <!-- 💡 Tubes Cursor Canvas 畫布 (加上 mix-blend-mode: screen 即可顯示背景) -->
+        <canvas id="canvas"></canvas>
 
-<!-- TOAST -->
-<div id="toast"></div>
+        <div class="hero-content">
+            <!-- 上方標籤 -->
+            <div class="tags-container tags-top">
+                <span class="tag">升學</span>
+                <span class="tag">檢定</span>
+                <span class="tag">國中會考</span>
+                <span class="tag">高中學測</span>
+                <span class="tag">技高統測</span>
+                <span class="tag">全民英檢</span>
+                <span class="tag">多益</span>
+                <span class="tag">FLPT外語能力測驗</span>
+                
+                <!-- 💡 課程詳細介紹按鈕 -->
+                <a href="https://tonyonlineenglish.netlify.app/allcourses" class="course-intro-btn">
+                    課程詳細介紹
+                    <img src="https://ik.imagekit.io/lql1uveoc/tap-4.png?updatedAt=1771239128743" alt="Click Here" class="tap-icon">
+                </a>
+            </div>
 
-<!-- HEADER -->
-<header>
-  <div class="hrow1">
-    <div class="logo">
-      <div class="logo-dot"></div>
-      TUTOR TRACKER
+            <!-- 標題群組 -->
+            <div class="title-group">
+                <h1 class="main-title"><span class="tony-name">Tony</span>線上美語家教</h1>
+                <div class="subtitle-italic">Tony Online English Tutoring</div>
+                <div class="slogan-text">English is the Future.</div>
+                <div class="slogan-text">Let's get your English Boosted.</div>
+            </div>
+
+            <!-- 下方標籤 -->
+            <div class="tags-container tags-bottom">
+                <span class="tag">國小英文</span>
+                <span class="tag">聽說讀寫</span>
+                <span class="tag">作文</span>
+                <span class="tag">觀光美語</span>
+                <span class="tag">展場英文</span>
+                <span class="tag">客製化</span>
+                <span class="tag">職場</span>
+                <span class="tag">公職</span>
+                <span class="tag">英文面試</span>
+            </div>
+        </div>
     </div>
-    <button class="today-pill" onclick="goToday()">THIS WEEK</button>
-  </div>
-  <div class="hrow2">
-    <div class="week-nav">
-      <button class="nav-btn" id="prevBtn" onclick="changeWeek(-1)">&#8249;</button>
-      <div id="weekLabel">—</div>
-      <button class="nav-btn" id="nextBtn" onclick="changeWeek(1)">&#8250;</button>
-    </div>
-    <div class="summary-pill" id="summaryPill">—</div>
-  </div>
-  <div class="prog-track">
-    <div class="prog-fill" id="progFill"></div>
-  </div>
-</header>
 
-<!-- DAYS GRID -->
-<div class="grid" id="grid"></div>
+    <!-- 加入的 Tubes Cursor 特效腳本 (設為 ES6 module) -->
+    <script type="module">
+      import TubesCursor from "https://cdn.jsdelivr.net/npm/threejs-components@0.0.19/build/cursors/tubes1.min.js";
 
-<script>
-/* ──────────────────────────────────────────────────────────
-   CONFIG — your Apps Script web app URL
-────────────────────────────────────────────────────────── */
-const API = 'https://script.google.com/macros/s/AKfycbwkNK3C7TZpKosUJlmDvniNrR7AweBvscDymOBnCWv84XYm-KSQpjPHdXq5b45v_wYNcQ/exec';
+      const app = TubesCursor(document.getElementById('canvas'), {
+        tubes: {
+          colors:["#f967fb", "#53bc28", "#6958d5"],
+          lights: {
+            intensity: 200,
+            colors:["#83f36e", "#fe8a2e", "#ff008a", "#60aed5"]
+          }
+        }
+      });
 
-/* ──────────────────────────────────────────────────────────
-   STATE
-────────────────────────────────────────────────────────── */
-const DAY_NAMES = ['MON','TUE','WED','THU','FRI','SAT'];
-let currentMonday = null;
-let weekEvents    = {};
-let statuses      = {};
-let pending       = {};
+      // 點擊螢幕任何地方時改變特效顏色
+      document.body.addEventListener('click', () => {
+        const colors = randomColors(3);
+        const lightsColors = randomColors(4);
+        app.tubes.setColors(colors);
+        app.tubes.setLightsColors(lightsColors);
+      });
 
-/* ──────────────────────────────────────────────────────────
-   INIT
-────────────────────────────────────────────────────────── */
-window.addEventListener('DOMContentLoaded', () => {
-  currentMonday = getMondayOf(new Date());
-  loadWeek();
-});
-
-/* ──────────────────────────────────────────────────────────
-   NAVIGATION
-────────────────────────────────────────────────────────── */
-function changeWeek(delta) {
-  const d = new Date(currentMonday + 'T00:00:00');
-  d.setDate(d.getDate() + delta * 7);
-  currentMonday = fmt(d);
-  loadWeek();
-}
-
-function goToday() {
-  currentMonday = getMondayOf(new Date());
-  loadWeek();
-}
-
-/* ──────────────────────────────────────────────────────────
-   LOAD WEEK  (events + statuses in parallel)
-────────────────────────────────────────────────────────── */
-async function loadWeek() {
-  showLoader(true);
-  updateHeader();
-
-  try {
-    const [evts, sts] = await Promise.all([
-      apiFetch('getWeekEvents', { date: currentMonday }),
-      apiFetch('getStatuses',   { weekStart: currentMonday })
-    ]);
-    weekEvents = evts;
-    statuses   = sts;
-    renderGrid();
-  } catch(err) {
-    console.error(err);
-    document.getElementById('grid').innerHTML =
-      `<div class="error-box" style="grid-column:1/-1">
-        <h2>⚠ Could not load data</h2>
-        <p>Make sure the Apps Script is deployed and CORS headers are set.<br><br>Error: ${err.message}</p>
-      </div>`;
-  } finally {
-    showLoader(false);
-  }
-}
-
-/* ──────────────────────────────────────────────────────────
-   RENDER GRID
-────────────────────────────────────────────────────────── */
-function renderGrid() {
-  const grid    = document.getElementById('grid');
-  const todayStr = fmt(new Date());
-  grid.innerHTML = '';
-
-  let total = 0, done = 0;
-
-  for (let i = 0; i < 6; i++) {
-    const d = new Date(currentMonday + 'T00:00:00');
-    d.setDate(d.getDate() + i);
-    const dateStr = fmt(d);
-    const events  = weekEvents[dateStr] || [];
-    const isToday = dateStr === todayStr;
-
-    const sentCount = events.filter(ev => statuses[`${dateStr}|${ev.title}`] === true).length;
-    const allDone   = events.length > 0 && sentCount === events.length;
-
-    total += events.length;
-    done  += sentCount;
-
-    const card = document.createElement('div');
-    card.className = `card${isToday ? ' today' : ''}${allDone ? ' done' : ''}`;
-    card.id = `card-${dateStr}`;
-
-    const badgeLabel = events.length === 0 ? 'no class' : `${sentCount} / ${events.length}`;
-
-    card.innerHTML = `
-      <div class="card-head">
-        <div class="day-label">${DAY_NAMES[i]}</div>
-        <div class="day-num">${d.getMonth()+1}/${d.getDate()}</div>
-        <div class="badge">${badgeLabel}</div>
-      </div>
-      <div class="student-list" id="list-${dateStr}">
-        ${events.length === 0
-          ? '<div class="no-class">—</div>'
-          : events.map(ev => studentRow(dateStr, ev)).join('')}
-      </div>`;
-
-    grid.appendChild(card);
-  }
-
-  updateProgress(done, total);
-}
-
-function studentRow(dateStr, ev) {
-  const key  = `${dateStr}|${ev.title}`;
-  const sent = statuses[key] === true;
-  const rid  = rowId(key);
-  return `
-    <div class="s-row${sent ? ' sent' : ''}" id="${rid}"
-         onclick="toggle('${dateStr}','${esc(ev.title)}','${rid}')">
-      <div class="checkbox">${sent ? '✓' : ''}</div>
-      <div class="s-info">
-        <div class="s-name">${ev.title}</div>
-        <div class="s-time">${ev.time}</div>
-      </div>
-    </div>`;
-}
-
-/* ──────────────────────────────────────────────────────────
-   TOGGLE
-────────────────────────────────────────────────────────── */
-function toggle(dateStr, studentName, rid) {
-  const key    = `${dateStr}|${studentName}`;
-  const newVal = !(statuses[key] === true);
-  statuses[key] = newVal;
-
-  // optimistic UI
-  const row = document.getElementById(rid);
-  if (row) {
-    row.className = 's-row' + (newVal ? ' sent' : '');
-    row.querySelector('.checkbox').textContent = newVal ? '✓' : '';
-  }
-  refreshCard(dateStr);
-  refreshProgress();
-
-  // debounced save
-  clearTimeout(pending[key]);
-  pending[key] = setTimeout(async () => {
-    try {
-      await apiFetch('setStatus', { key, value: newVal });
-      toast(newVal ? '✓ Marked as sent' : '↩ Unmarked', 'ok');
-    } catch {
-      // revert
-      statuses[key] = !newVal;
-      if (row) {
-        row.className = 's-row' + (!newVal ? ' sent' : '');
-        row.querySelector('.checkbox').textContent = !newVal ? '✓' : '';
+      function randomColors (count) {
+          return new Array(count)
+              .fill(0)
+              .map(() => "#" + Math.floor(Math.random() * 16777215).toString(16).padStart(6, '0'));
       }
-      refreshCard(dateStr);
-      refreshProgress();
-      toast('Save failed — check connection', 'fail');
-    }
-  }, 450);
-}
+    </script>
 
-/* ──────────────────────────────────────────────────────────
-   REFRESH HELPERS
-────────────────────────────────────────────────────────── */
-function refreshCard(dateStr) {
-  const card   = document.getElementById(`card-${dateStr}`);
-  const events = weekEvents[dateStr] || [];
-  if (!card || !events.length) return;
+    <!-- 原本的排版腳本 -->
+    <script src="layout-manager.js"></script>
 
-  const sent  = events.filter(ev => statuses[`${dateStr}|${ev.title}`] === true).length;
-  const allD  = sent === events.length;
-
-  card.querySelector('.badge').textContent = `${sent} / ${events.length}`;
-  card.classList.toggle('done', allD);
-}
-
-function refreshProgress() {
-  let total = 0, done = 0;
-  Object.keys(weekEvents).forEach(ds => {
-    (weekEvents[ds] || []).forEach(ev => {
-      total++;
-      if (statuses[`${ds}|${ev.title}`] === true) done++;
-    });
-  });
-  updateProgress(done, total);
-}
-
-function updateProgress(done, total) {
-  const pct = total > 0 ? Math.round(done / total * 100) : 0;
-  document.getElementById('progFill').style.width  = pct + '%';
-  document.getElementById('summaryPill').textContent =
-    total === 0 ? 'No classes' : `${done} / ${total} sent · ${pct}%`;
-}
-
-/* ──────────────────────────────────────────────────────────
-   HEADER
-────────────────────────────────────────────────────────── */
-function updateHeader() {
-  const mon = new Date(currentMonday + 'T00:00:00');
-  const sat = new Date(currentMonday + 'T00:00:00');
-  sat.setDate(mon.getDate() + 5);
-
-  document.getElementById('weekLabel').textContent =
-    `${mon.getMonth()+1}/${mon.getDate()} – ${sat.getMonth()+1}/${sat.getDate()}`;
-
-  const todayMon = getMondayOf(new Date());
-  document.getElementById('nextBtn').disabled = currentMonday >= todayMon;
-}
-
-/* ──────────────────────────────────────────────────────────
-   API FETCH  — calls Apps Script via JSONP-style (no-cors workaround)
-   Apps Script must return JSON with CORS headers
-────────────────────────────────────────────────────────── */
-function apiFetch(action, params = {}) {
-  return new Promise((resolve, reject) => {
-    const cbName = '_cb_' + Date.now() + '_' + Math.floor(Math.random() * 1e6);
-
-    const url = new URL(API);
-    url.searchParams.set('action', action);
-    url.searchParams.set('callback', cbName);
-    Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, String(v)));
-
-    const script = document.createElement('script');
-    script.src = url.toString();
-
-    const cleanup = () => {
-      delete window[cbName];
-      if (script.parentNode) script.parentNode.removeChild(script);
-    };
-
-    const timer = setTimeout(() => {
-      cleanup();
-      reject(new Error('Request timed out'));
-    }, 15000);
-
-    window[cbName] = (json) => {
-      clearTimeout(timer);
-      cleanup();
-      if (json.error) reject(new Error(json.error));
-      else resolve(json.data);
-    };
-
-    script.onerror = () => {
-      clearTimeout(timer);
-      cleanup();
-      reject(new Error('Network error — could not reach Apps Script'));
-    };
-
-    document.head.appendChild(script);
-  });
-}
-
-/* ──────────────────────────────────────────────────────────
-   UTILS
-────────────────────────────────────────────────────────── */
-function getMondayOf(date) {
-  const d   = new Date(date);
-  const day = d.getDay();
-  d.setDate(d.getDate() + (day === 0 ? -6 : 1 - day));
-  return fmt(d);
-}
-
-function fmt(d) {
-  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
-}
-
-function rowId(key) { return 'r_' + key.replace(/[^a-zA-Z0-9]/g, '_'); }
-function esc(s)     { return s.replace(/\\/g,'\\\\').replace(/'/g,"\\'"); }
-
-function showLoader(show) {
-  document.getElementById('loader').classList.toggle('out', !show);
-}
-
-let _toastTimer;
-function toast(msg, type = '') {
-  const el = document.getElementById('toast');
-  el.textContent = msg;
-  el.className   = `show${type ? ' ' + type : ''}`;
-  clearTimeout(_toastTimer);
-  _toastTimer = setTimeout(() => { el.className = ''; }, 2400);
-}
-</script>
 </body>
 </html>
