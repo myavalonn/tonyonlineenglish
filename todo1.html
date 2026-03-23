@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+<title>Tutor Tracker</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet" />
+<style>
+  /* ─── TOKENS ─────────────────────────────────────────── */
+  :root {
+    --bg:       #0c0c10;
+    --surf:     #14141c;
+    --card:     #1c1c28;
+    --border:   #28283a;
+    --border2:  #32324a;
+    --accent:   #a78bfa;
+    --accent2:  #f59e0b;
+    --green:    #34d399;
+    --red:      #f87171;
+    --text:     #e2e2f0;
+    --sub:      #9898b8;
+    --muted:    #52527a;
+    --r:        13px;
+    --mono:     'DM Mono', monospace;
+    --sans:     'Noto Sans TC', sans-serif;
+  }
+
+  /* ─── RESET ──────────────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    min-height: 100dvh;
+    overflow-x: hidden;
+  }
+
+  /* animated grain overlay */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.5;
+  }
+
+  /* ─── LOADING ─────────────────────────────────────────── */
+  #loader {
+    position: fixed;
+    inset: 0;
+    background: var(--bg);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    z-index: 999;
+    transition: opacity 0.5s ease;
+  }
+  #loader.out { opacity: 0; pointer-events: none; }
+
+  .loader-ring {
+    width: 48px; height: 48px;
+    border: 3px solid var(--border2);
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.9s linear infinite;
+  }
+
+  .loader-text {
+    font-family: var(--mono);
+    font-size: 0.75rem;
+    color: var(--muted);
+    letter-spacing: 0.08em;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ─── HEADER ──────────────────────────────────────────── */
+  header {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    background: rgba(12, 12, 16, 0.88);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+    border-bottom: 1px solid var(--border);
+    padding: 12px 16px 10px;
+  }
+
+  .hrow1 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+  }
+
+  .logo {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--accent);
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .logo-dot {
+    width: 7px; height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    animation: pulse 2.4s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.7); }
+  }
+
+  .today-pill {
+    font-family: var(--mono);
+    font-size: 0.62rem;
+    font-weight: 500;
+    padding: 5px 14px;
+    border-radius: 50px;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    background: transparent;
+    cursor: pointer;
+    letter-spacing: 0.08em;
+    transition: background 0.2s, color 0.2s;
+  }
+  .today-pill:hover { background: var(--accent); color: #fff; }
+
+  .hrow2 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .week-nav {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: var(--card);
+    border: 1px solid var(--border2);
+    border-radius: 50px;
+    padding: 5px 12px;
+  }
+
+  .nav-btn {
+    background: none;
+    border: none;
+    color: var(--sub);
+    cursor: pointer;
+    font-size: 1rem;
+    width: 26px; height: 26px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    transition: background 0.15s, color 0.15s;
+    line-height: 1;
+  }
+  .nav-btn:hover:not(:disabled) { background: var(--border2); color: var(--accent); }
+  .nav-btn:disabled { opacity: 0.25; cursor: default; }
+
+  #weekLabel {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    color: var(--text);
+    min-width: 130px;
+    text-align: center;
+  }
+
+  .summary-pill {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    color: var(--sub);
+    white-space: nowrap;
+  }
+
+  /* progress bar */
+  .prog-track {
+    height: 3px;
+    background: var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 10px;
+  }
+
+  .prog-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 4px;
+    transition: width 0.5s cubic-bezier(.4,0,.2,1);
+    width: 0%;
+  }
+
+  /* ─── GRID ────────────────────────────────────────────── */
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    padding: 12px 10px 32px;
+    max-width: 1100px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  @media (min-width: 700px) {
+    .grid { grid-template-columns: repeat(3, 1fr); gap: 12px; padding: 16px 16px 40px; }
+  }
+
+  @media (min-width: 980px) {
+    .grid { grid-template-columns: repeat(6, 1fr); }
+  }
+
+  /* ─── DAY CARD ────────────────────────────────────────── */
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    display: flex;
+    flex-direction: column;
+    min-height: 190px;
+    overflow: hidden;
+    transition: border-color 0.25s, box-shadow 0.25s;
+    animation: fadeUp 0.4s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(14px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  .card:nth-child(1) { animation-delay: 0.04s; }
+  .card:nth-child(2) { animation-delay: 0.08s; }
+  .card:nth-child(3) { animation-delay: 0.12s; }
+  .card:nth-child(4) { animation-delay: 0.16s; }
+  .card:nth-child(5) { animation-delay: 0.20s; }
+  .card:nth-child(6) { animation-delay: 0.24s; }
+
+  .card.today {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 1px var(--accent), 0 4px 24px rgba(167,139,250,0.12);
+  }
+
+  .card.done { border-color: var(--green); }
+
+  .card-head {
+    padding: 10px 11px 8px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+  }
+
+  .day-label {
+    font-family: var(--mono);
+    font-size: 0.55rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--muted);
+  }
+
+  .card.today .day-label { color: var(--accent); }
+
+  .day-num {
+    font-family: var(--mono);
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--text);
+    line-height: 1;
+    margin-top: 2px;
+  }
+
+  .card.today .day-num { color: var(--accent); }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-family: var(--mono);
+    font-size: 0.52rem;
+    font-weight: 500;
+    padding: 2px 7px;
+    border-radius: 50px;
+    margin-top: 5px;
+    background: var(--border2);
+    color: var(--sub);
+    width: fit-content;
+    transition: background 0.3s, color 0.3s;
+  }
+
+  .card.done .badge { background: rgba(52,211,153,0.15); color: var(--green); }
+
+  /* ─── STUDENT ROWS ────────────────────────────────────── */
+  .student-list {
+    padding: 7px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    flex: 1;
+  }
+
+  .s-row {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    padding: 8px 9px;
+    background: var(--surf);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    cursor: pointer;
+    transition: border-color 0.18s, background 0.18s, transform 0.12s;
+    user-select: none;
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+  }
+
+  .s-row:hover { border-color: var(--border2); }
+  .s-row:active { transform: scale(0.97); }
+
+  .s-row.sent {
+    background: rgba(52, 211, 153, 0.05);
+    border-color: rgba(52, 211, 153, 0.25);
+  }
+
+  .checkbox {
+    width: 17px; height: 17px;
+    border: 1.5px solid var(--muted);
+    border-radius: 5px;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.18s;
+    font-size: 10px;
+    color: #000;
+    font-weight: 700;
+  }
+
+  .s-row.sent .checkbox {
+    background: var(--green);
+    border-color: var(--green);
+  }
+
+  .s-info { flex: 1; min-width: 0; }
+
+  .s-name {
+    font-family: var(--sans);
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: var(--text);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: color 0.18s;
+  }
+
+  .s-row.sent .s-name {
+    text-decoration: line-through;
+    color: var(--muted);
+  }
+
+  .s-time {
+    font-family: var(--mono);
+    font-size: 0.52rem;
+    color: var(--muted);
+    margin-top: 1px;
+  }
+
+  .no-class {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: var(--mono);
+    font-size: 0.6rem;
+    color: var(--muted);
+    letter-spacing: 0.06em;
+    padding: 20px 8px;
+  }
+
+  /* ─── TOAST ───────────────────────────────────────────── */
+  #toast {
+    position: fixed;
+    bottom: 28px;
+    left: 50%;
+    transform: translateX(-50%) translateY(60px);
+    background: var(--card);
+    border: 1px solid var(--border2);
+    color: var(--text);
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    padding: 10px 22px;
+    border-radius: 50px;
+    z-index: 200;
+    transition: transform 0.28s cubic-bezier(.4,0,.2,1), opacity 0.28s;
+    opacity: 0;
+    white-space: nowrap;
+    pointer-events: none;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+  }
+
+  #toast.show {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+  }
+
+  #toast.ok { border-color: rgba(52,211,153,0.4); color: var(--green); }
+  #toast.fail { border-color: rgba(248,113,113,0.4); color: var(--red); }
+
+  /* ─── ERROR STATE ─────────────────────────────────────── */
+  .error-box {
+    margin: 40px auto;
+    max-width: 440px;
+    background: var(--card);
+    border: 1px solid rgba(248,113,113,0.3);
+    border-radius: var(--r);
+    padding: 28px 24px;
+    text-align: center;
+  }
+
+  .error-box h2 {
+    font-family: var(--mono);
+    color: var(--red);
+    font-size: 0.9rem;
+    margin-bottom: 10px;
+  }
+
+  .error-box p {
+    font-size: 0.8rem;
+    color: var(--sub);
+    line-height: 1.6;
+  }
+</style>
+</head>
+<body>
+
+<!-- LOADER -->
+<div id="loader">
+  <div class="loader-ring"></div>
+  <div class="loader-text">Loading calendar…</div>
+</div>
+
+<!-- TOAST -->
+<div id="toast"></div>
+
+<!-- HEADER -->
+<header>
+  <div class="hrow1">
+    <div class="logo">
+      <div class="logo-dot"></div>
+      TUTOR TRACKER
+    </div>
+    <button class="today-pill" onclick="goToday()">THIS WEEK</button>
+  </div>
+  <div class="hrow2">
+    <div class="week-nav">
+      <button class="nav-btn" id="prevBtn" onclick="changeWeek(-1)">&#8249;</button>
+      <div id="weekLabel">—</div>
+      <button class="nav-btn" id="nextBtn" onclick="changeWeek(1)">&#8250;</button>
+    </div>
+    <div class="summary-pill" id="summaryPill">—</div>
+  </div>
+  <div class="prog-track">
+    <div class="prog-fill" id="progFill"></div>
+  </div>
+</header>
+
+<!-- DAYS GRID -->
+<div class="grid" id="grid"></div>
+
+<script>
+/* ──────────────────────────────────────────────────────────
+   CONFIG — your Apps Script web app URL
+────────────────────────────────────────────────────────── */
+const API = 'https://script.google.com/macros/s/AKfycbwkNK3C7TZpKosUJlmDvniNrR7AweBvscDymOBnCWv84XYm-KSQpjPHdXq5b45v_wYNcQ/exec';
+
+/* ──────────────────────────────────────────────────────────
+   STATE
+────────────────────────────────────────────────────────── */
+const DAY_NAMES = ['MON','TUE','WED','THU','FRI','SAT'];
+let currentMonday = null;
+let weekEvents    = {};
+let statuses      = {};
+let pending       = {};
+
+/* ──────────────────────────────────────────────────────────
+   INIT
+────────────────────────────────────────────────────────── */
+window.addEventListener('DOMContentLoaded', () => {
+  currentMonday = getMondayOf(new Date());
+  loadWeek();
+});
+
+/* ──────────────────────────────────────────────────────────
+   NAVIGATION
+────────────────────────────────────────────────────────── */
+function changeWeek(delta) {
+  const d = new Date(currentMonday + 'T00:00:00');
+  d.setDate(d.getDate() + delta * 7);
+  currentMonday = fmt(d);
+  loadWeek();
+}
+
+function goToday() {
+  currentMonday = getMondayOf(new Date());
+  loadWeek();
+}
+
+/* ──────────────────────────────────────────────────────────
+   LOAD WEEK  (events + statuses in parallel)
+────────────────────────────────────────────────────────── */
+async function loadWeek() {
+  showLoader(true);
+  updateHeader();
+
+  try {
+    const [evts, sts] = await Promise.all([
+      apiFetch('getWeekEvents', { date: currentMonday }),
+      apiFetch('getStatuses',   { weekStart: currentMonday })
+    ]);
+    weekEvents = evts;
+    statuses   = sts;
+    renderGrid();
+  } catch(err) {
+    console.error(err);
+    document.getElementById('grid').innerHTML =
+      `<div class="error-box" style="grid-column:1/-1">
+        <h2>⚠ Could not load data</h2>
+        <p>Make sure the Apps Script is deployed and CORS headers are set.<br><br>Error: ${err.message}</p>
+      </div>`;
+  } finally {
+    showLoader(false);
+  }
+}
+
+/* ──────────────────────────────────────────────────────────
+   RENDER GRID
+────────────────────────────────────────────────────────── */
+function renderGrid() {
+  const grid    = document.getElementById('grid');
+  const todayStr = fmt(new Date());
+  grid.innerHTML = '';
+
+  let total = 0, done = 0;
+
+  for (let i = 0; i < 6; i++) {
+    const d = new Date(currentMonday + 'T00:00:00');
+    d.setDate(d.getDate() + i);
+    const dateStr = fmt(d);
+    const events  = weekEvents[dateStr] || [];
+    const isToday = dateStr === todayStr;
+
+    const sentCount = events.filter(ev => statuses[`${dateStr}|${ev.title}`] === true).length;
+    const allDone   = events.length > 0 && sentCount === events.length;
+
+    total += events.length;
+    done  += sentCount;
+
+    const card = document.createElement('div');
+    card.className = `card${isToday ? ' today' : ''}${allDone ? ' done' : ''}`;
+    card.id = `card-${dateStr}`;
+
+    const badgeLabel = events.length === 0 ? 'no class' : `${sentCount} / ${events.length}`;
+
+    card.innerHTML = `
+      <div class="card-head">
+        <div class="day-label">${DAY_NAMES[i]}</div>
+        <div class="day-num">${d.getMonth()+1}/${d.getDate()}</div>
+        <div class="badge">${badgeLabel}</div>
+      </div>
+      <div class="student-list" id="list-${dateStr}">
+        ${events.length === 0
+          ? '<div class="no-class">—</div>'
+          : events.map(ev => studentRow(dateStr, ev)).join('')}
+      </div>`;
+
+    grid.appendChild(card);
+  }
+
+  updateProgress(done, total);
+}
+
+function studentRow(dateStr, ev) {
+  const key  = `${dateStr}|${ev.title}`;
+  const sent = statuses[key] === true;
+  const rid  = rowId(key);
+  return `
+    <div class="s-row${sent ? ' sent' : ''}" id="${rid}"
+         onclick="toggle('${dateStr}','${esc(ev.title)}','${rid}')">
+      <div class="checkbox">${sent ? '✓' : ''}</div>
+      <div class="s-info">
+        <div class="s-name">${ev.title}</div>
+        <div class="s-time">${ev.time}</div>
+      </div>
+    </div>`;
+}
+
+/* ──────────────────────────────────────────────────────────
+   TOGGLE
+────────────────────────────────────────────────────────── */
+function toggle(dateStr, studentName, rid) {
+  const key    = `${dateStr}|${studentName}`;
+  const newVal = !(statuses[key] === true);
+  statuses[key] = newVal;
+
+  // optimistic UI
+  const row = document.getElementById(rid);
+  if (row) {
+    row.className = 's-row' + (newVal ? ' sent' : '');
+    row.querySelector('.checkbox').textContent = newVal ? '✓' : '';
+  }
+  refreshCard(dateStr);
+  refreshProgress();
+
+  // debounced save
+  clearTimeout(pending[key]);
+  pending[key] = setTimeout(async () => {
+    try {
+      await apiFetch('setStatus', { key, value: newVal });
+      toast(newVal ? '✓ Marked as sent' : '↩ Unmarked', 'ok');
+    } catch {
+      // revert
+      statuses[key] = !newVal;
+      if (row) {
+        row.className = 's-row' + (!newVal ? ' sent' : '');
+        row.querySelector('.checkbox').textContent = !newVal ? '✓' : '';
+      }
+      refreshCard(dateStr);
+      refreshProgress();
+      toast('Save failed — check connection', 'fail');
+    }
+  }, 450);
+}
+
+/* ──────────────────────────────────────────────────────────
+   REFRESH HELPERS
+────────────────────────────────────────────────────────── */
+function refreshCard(dateStr) {
+  const card   = document.getElementById(`card-${dateStr}`);
+  const events = weekEvents[dateStr] || [];
+  if (!card || !events.length) return;
+
+  const sent  = events.filter(ev => statuses[`${dateStr}|${ev.title}`] === true).length;
+  const allD  = sent === events.length;
+
+  card.querySelector('.badge').textContent = `${sent} / ${events.length}`;
+  card.classList.toggle('done', allD);
+}
+
+function refreshProgress() {
+  let total = 0, done = 0;
+  Object.keys(weekEvents).forEach(ds => {
+    (weekEvents[ds] || []).forEach(ev => {
+      total++;
+      if (statuses[`${ds}|${ev.title}`] === true) done++;
+    });
+  });
+  updateProgress(done, total);
+}
+
+function updateProgress(done, total) {
+  const pct = total > 0 ? Math.round(done / total * 100) : 0;
+  document.getElementById('progFill').style.width  = pct + '%';
+  document.getElementById('summaryPill').textContent =
+    total === 0 ? 'No classes' : `${done} / ${total} sent · ${pct}%`;
+}
+
+/* ──────────────────────────────────────────────────────────
+   HEADER
+────────────────────────────────────────────────────────── */
+function updateHeader() {
+  const mon = new Date(currentMonday + 'T00:00:00');
+  const sat = new Date(currentMonday + 'T00:00:00');
+  sat.setDate(mon.getDate() + 5);
+
+  document.getElementById('weekLabel').textContent =
+    `${mon.getMonth()+1}/${mon.getDate()} – ${sat.getMonth()+1}/${sat.getDate()}`;
+
+  const todayMon = getMondayOf(new Date());
+  document.getElementById('nextBtn').disabled = currentMonday >= todayMon;
+}
+
+/* ──────────────────────────────────────────────────────────
+   API FETCH  — calls Apps Script via JSONP-style (no-cors workaround)
+   Apps Script must return JSON with CORS headers
+────────────────────────────────────────────────────────── */
+function apiFetch(action, params = {}) {
+  return new Promise((resolve, reject) => {
+    const cbName = '_cb_' + Date.now() + '_' + Math.floor(Math.random() * 1e6);
+
+    const url = new URL(API);
+    url.searchParams.set('action', action);
+    url.searchParams.set('callback', cbName);
+    Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, String(v)));
+
+    const script = document.createElement('script');
+    script.src = url.toString();
+
+    const cleanup = () => {
+      delete window[cbName];
+      if (script.parentNode) script.parentNode.removeChild(script);
+    };
+
+    const timer = setTimeout(() => {
+      cleanup();
+      reject(new Error('Request timed out'));
+    }, 15000);
+
+    window[cbName] = (json) => {
+      clearTimeout(timer);
+      cleanup();
+      if (json.error) reject(new Error(json.error));
+      else resolve(json.data);
+    };
+
+    script.onerror = () => {
+      clearTimeout(timer);
+      cleanup();
+      reject(new Error('Network error — could not reach Apps Script'));
+    };
+
+    document.head.appendChild(script);
+  });
+}
+
+/* ──────────────────────────────────────────────────────────
+   UTILS
+────────────────────────────────────────────────────────── */
+function getMondayOf(date) {
+  const d   = new Date(date);
+  const day = d.getDay();
+  d.setDate(d.getDate() + (day === 0 ? -6 : 1 - day));
+  return fmt(d);
+}
+
+function fmt(d) {
+  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+}
+
+function rowId(key) { return 'r_' + key.replace(/[^a-zA-Z0-9]/g, '_'); }
+function esc(s)     { return s.replace(/\\/g,'\\\\').replace(/'/g,"\\'"); }
+
+function showLoader(show) {
+  document.getElementById('loader').classList.toggle('out', !show);
+}
+
+let _toastTimer;
+function toast(msg, type = '') {
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.className   = `show${type ? ' ' + type : ''}`;
+  clearTimeout(_toastTimer);
+  _toastTimer = setTimeout(() => { el.className = ''; }, 2400);
+}
+</script>
+</body>
+</html>
