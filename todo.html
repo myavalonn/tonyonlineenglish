@@ -6,21 +6,21 @@
 <title>Tutor Tracker</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet" />
 <style>
-  /* ─── LCD / G-SHOCK THEME ───────────────────────────── */
+  /* ─── CLEAN WHITE THEME ─────────────────────────────── */
   :root {
-    --bg:       #b8c5a0;
-    --surf:     #a8b890;
-    --card:     #c2ceaa;
-    --border:   #7a8f62;
-    --border2:  #5a7042;
-    --accent:   #0f1a05;
-    --accent2:  #1e3010;
-    --green:    #0f1a05;
-    --red:      #3a0a0a;
-    --text:     #0f1a05;
-    --sub:      #0f1a05;
-    --muted:    #3a4a2a;
-    --r:        2px;
+    --bg:       #ffffff;
+    --surf:     #f5f5f5;
+    --card:     #ffffff;
+    --border:   #e0e0e0;
+    --border2:  #c0c0c0;
+    --accent:   #111111;
+    --accent2:  #444444;
+    --green:    #111111;
+    --red:      #cc0000;
+    --text:     #111111;
+    --sub:      #444444;
+    --muted:    #888888;
+    --r:        8px;
     --mono:     'DM Mono', monospace;
     --sans:     'Noto Sans TC', sans-serif;
   }
@@ -34,27 +34,7 @@
     font-family: var(--sans);
     min-height: 100dvh;
     overflow-x: hidden;
-  }
-
-  /* LCD dot-matrix texture */
-  body::before {
-    content: '';
-    position: fixed;
-    inset: 0;
-    background-image: radial-gradient(circle, rgba(0,0,0,0.09) 1px, transparent 1px);
-    background-size: 3px 3px;
-    pointer-events: none;
-    z-index: 9998;
-  }
-
-  /* LCD vignette — darker edges */
-  body::after {
-    content: '';
-    position: fixed;
-    inset: 0;
-    box-shadow: inset 0 0 80px rgba(0,0,0,0.22);
-    pointer-events: none;
-    z-index: 9997;
+    overflow-y: auto;
   }
 
   #loader {
@@ -93,10 +73,10 @@
     position: sticky;
     top: 0;
     z-index: 50;
-    background: rgba(178, 193, 158, 0.97);
+    background: rgba(255,255,255,0.95);
     backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
-    border-bottom: 2px solid var(--border2);
+    border-bottom: 1px solid var(--border);
     padding: 12px 16px 10px;
   }
 
@@ -142,22 +122,22 @@
     font-weight: 700;
     color: var(--text);
     letter-spacing: 0.08em;
-    background: var(--bg);
-    border: 2px solid var(--border2);
-    border-radius: 3px;
-    padding: 4px 10px;
+    background: var(--surf);
+    border: 1px solid var(--border);
+    border-radius: var(--r);
+    padding: 4px 12px;
     white-space: nowrap;
   }
 
-  @media (min-width: 600px) { .current-date-bar { font-size: 0.85rem; padding: 5px 14px; } }
-  @media (min-width: 980px) { .current-date-bar { font-size: 0.9rem; padding: 6px 18px; } }
+  @media (min-width: 600px) { .current-date-bar { font-size: 0.9rem; padding: 5px 16px; } }
+  @media (min-width: 980px) { .current-date-bar { font-size: 1rem; padding: 6px 18px; } }
 
   .today-pill {
     font-family: var(--mono);
     font-size: 0.62rem;
     font-weight: 700;
     padding: 5px 14px;
-    border-radius: 3px;
+    border-radius: var(--r);
     border: 2px solid var(--text);
     color: var(--text);
     background: transparent;
@@ -177,37 +157,39 @@
   .week-nav {
     display: flex;
     align-items: center;
-    gap: 6px;
-    background: var(--bg);
-    border: 2px solid var(--border2);
-    border-radius: 3px;
-    padding: 5px 12px;
+    gap: 8px;
   }
 
+  /* ── BIG NAVIGATION ARROWS ── */
   .nav-btn {
-    background: none;
+    background: var(--text);
     border: none;
-    color: var(--text);
+    color: var(--bg);
     cursor: pointer;
-    font-size: 1rem;
+    font-size: 1.8rem;
     font-weight: 700;
-    width: 26px; height: 26px;
-    border-radius: 2px;
+    width: 44px; height: 44px;
+    border-radius: 8px;
     display: flex; align-items: center; justify-content: center;
-    transition: background 0.1s, color 0.1s;
+    transition: background 0.15s, transform 0.1s;
     line-height: 1;
+    flex-shrink: 0;
   }
-  .nav-btn:hover:not(:disabled) { background: var(--border2); color: var(--bg); }
-  .nav-btn:disabled { opacity: 0.25; cursor: default; }
+  .nav-btn:hover:not(:disabled) { background: var(--sub); transform: scale(1.08); }
+  .nav-btn:active:not(:disabled) { transform: scale(0.94); }
+  .nav-btn:disabled { opacity: 0.18; cursor: default; }
 
   #weekLabel {
     font-family: var(--mono);
-    font-size: 0.72rem;
+    font-size: 1rem;
     font-weight: 700;
     color: var(--text);
-    min-width: 130px;
+    min-width: 140px;
     text-align: center;
+    letter-spacing: 0.04em;
   }
+
+  @media (min-width: 600px) { #weekLabel { font-size: 1.2rem; } }
 
   .summary-pill {
     font-family: var(--mono);
@@ -218,9 +200,8 @@
   }
 
   .prog-track {
-    height: 4px;
+    height: 3px;
     background: var(--border);
-    border-radius: 0;
     overflow: hidden;
     margin-top: 10px;
   }
@@ -240,6 +221,7 @@
     padding: 14px 12px 36px;
     position: relative;
     z-index: 1;
+    will-change: transform;
   }
 
   @media (min-width: 600px) and (max-width: 979px) {
@@ -253,26 +235,22 @@
   /* ─── DAY CARD ──────────────────────────────────────── */
   .card {
     background: var(--card);
-    border: 2px solid var(--border2);
-    border-radius: 2px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--r);
     display: flex;
     flex-direction: column;
     min-height: 220px;
     overflow: hidden;
-    transition: border-color 0.15s;
-    animation: fadeUp 0.4s ease both;
+    transition: border-color 0.15s, box-shadow 0.15s;
+    animation: fadeUp 0.35s ease both;
+    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
   }
 
-  @media (min-width: 600px) and (max-width: 979px) {
-    .card { min-height: 260px; }
-  }
-
-  @media (min-width: 980px) {
-    .card { min-height: 300px; }
-  }
+  @media (min-width: 600px) and (max-width: 979px) { .card { min-height: 260px; } }
+  @media (min-width: 980px) { .card { min-height: 300px; } }
 
   @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(10px); }
+    from { opacity: 0; transform: translateY(12px); }
     to   { opacity: 1; transform: translateY(0); }
   }
 
@@ -285,30 +263,26 @@
 
   .card.today {
     border-color: var(--text);
-    box-shadow: 0 0 0 2px var(--text), 0 2px 8px rgba(0,0,0,0.25);
+    border-width: 2px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.14);
   }
 
   .card.done {
-    border-color: var(--border2);
     background: var(--surf);
+    border-color: var(--border2);
   }
 
   .card-head {
-    padding: 10px 12px 8px;
-    border-bottom: 2px solid var(--border2);
+    padding: 11px 13px 9px;
+    border-bottom: 1.5px solid var(--border);
     background: var(--surf);
     display: flex;
     flex-direction: column;
     gap: 2px;
   }
 
-  @media (min-width: 600px) and (max-width: 979px) {
-    .card-head { padding: 18px 18px 14px; }
-  }
-
-  @media (min-width: 980px) {
-    .card-head { padding: 20px 20px 14px; }
-  }
+  @media (min-width: 600px) and (max-width: 979px) { .card-head { padding: 18px 18px 14px; } }
+  @media (min-width: 980px) { .card-head { padding: 20px 20px 14px; } }
 
   .day-label {
     display: flex;
@@ -321,17 +295,16 @@
     font-family: var(--mono);
     font-size: 1.1rem;
     font-weight: 700;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
     color: var(--text);
   }
 
   .day-zh {
     font-family: var(--sans);
-    font-size: 0.9rem;
+    font-size: 0.88rem;
     font-weight: 700;
-    color: var(--text);
-    letter-spacing: 0.04em;
+    color: var(--sub);
   }
 
   @media (min-width: 600px) and (max-width: 979px) {
@@ -340,59 +313,45 @@
   }
 
   @media (min-width: 980px) {
-    .day-en { font-size: 1.05rem; letter-spacing: 0.14em; }
+    .day-en { font-size: 1.05rem; }
     .day-zh { font-size: 0.88rem; }
   }
 
-  .card.today .day-en,
-  .card.today .day-zh { color: var(--text); }
+  .card.today .day-en { color: var(--text); }
+  .card.today .day-zh { color: var(--sub); }
 
   .badge {
     font-family: var(--mono);
     font-size: 0.68rem;
     font-weight: 700;
-    padding: 1px 6px;
-    border: 1.5px solid var(--text);
-    border-radius: 2px;
-    color: var(--text);
+    padding: 1px 7px;
+    border: 1.5px solid var(--border2);
+    border-radius: 4px;
+    color: var(--sub);
     background: var(--bg);
     margin-left: auto;
     letter-spacing: 0.04em;
     white-space: nowrap;
+    transition: all 0.2s;
   }
 
-  @media (min-width: 600px) and (max-width: 979px) {
-    .badge { font-size: 0.85rem; padding: 2px 8px; }
-  }
+  @media (min-width: 600px) and (max-width: 979px) { .badge { font-size: 0.85rem; padding: 2px 9px; } }
+  @media (min-width: 980px) { .badge { font-size: 0.82rem; padding: 2px 9px; } }
 
-  @media (min-width: 980px) {
-    .badge { font-size: 0.82rem; padding: 2px 8px; }
-  }
-
-  .card.done .badge {
-    background: var(--text);
-    color: var(--bg);
-  }
+  .card.done .badge { background: var(--text); color: var(--bg); border-color: var(--text); }
 
   .day-num {
     font-family: var(--mono);
-    font-size: 2rem;
+    font-size: 2.2rem;
     font-weight: 700;
     color: var(--text);
     line-height: 1;
     margin-top: 4px;
-    letter-spacing: 0.05em;
+    letter-spacing: 0.02em;
   }
 
-  @media (min-width: 600px) and (max-width: 979px) {
-    .day-num { font-size: 2.6rem; }
-  }
-
-  @media (min-width: 980px) {
-    .day-num { font-size: 2.2rem; }
-  }
-
-  .card.today .day-num { color: var(--text); }
+  @media (min-width: 600px) and (max-width: 979px) { .day-num { font-size: 2.8rem; } }
+  @media (min-width: 980px) { .day-num { font-size: 2.4rem; } }
 
   /* ─── STUDENT ROWS ──────────────────────────────────── */
   .student-list {
@@ -407,61 +366,42 @@
     display: flex;
     align-items: center;
     gap: 10px;
-    padding: 12px 12px;
+    padding: 11px 12px;
     background: var(--bg);
     border: 1.5px solid var(--border);
-    border-radius: 2px;
+    border-radius: 6px;
     cursor: pointer;
-    transition: background 0.1s, border-color 0.1s;
+    transition: border-color 0.12s, background 0.12s, transform 0.1s;
     user-select: none;
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
   }
 
-  @media (min-width: 600px) and (max-width: 979px) {
-    .s-row { padding: 16px 16px; gap: 14px; }
-  }
-
-  @media (min-width: 980px) {
-    .s-row { padding: 14px 16px; gap: 14px; }
-  }
+  @media (min-width: 600px) and (max-width: 979px) { .s-row { padding: 15px 16px; gap: 14px; } }
+  @media (min-width: 980px) { .s-row { padding: 13px 16px; gap: 14px; } }
 
   .s-row:hover { border-color: var(--border2); background: var(--surf); }
   .s-row:active { transform: scale(0.98); }
 
-  .s-row.sent {
-    background: rgba(0,0,0,0.07);
-    border-color: var(--border2);
-  }
+  .s-row.sent { background: var(--surf); border-color: var(--border2); }
 
   .checkbox {
     width: 24px; height: 24px;
-    border: 2px solid var(--text);
-    border-radius: 2px;
+    border: 2px solid var(--border2);
+    border-radius: 4px;
     flex-shrink: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.1s;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.12s;
     font-size: 14px;
-    color: var(--bg);
     font-weight: 700;
-    background: var(--card);
-  }
-
-  @media (min-width: 600px) and (max-width: 979px) {
-    .checkbox { width: 30px; height: 30px; font-size: 18px; }
-  }
-
-  @media (min-width: 980px) {
-    .checkbox { width: 24px; height: 24px; font-size: 14px; }
-  }
-
-  .s-row.sent .checkbox {
-    background: var(--text);
-    border-color: var(--text);
+    background: var(--bg);
     color: var(--bg);
   }
+
+  @media (min-width: 600px) and (max-width: 979px) { .checkbox { width: 30px; height: 30px; font-size: 18px; border-radius: 5px; } }
+  @media (min-width: 980px) { .checkbox { width: 24px; height: 24px; font-size: 14px; } }
+
+  .s-row.sent .checkbox { background: var(--text); border-color: var(--text); color: var(--bg); }
 
   .s-info { flex: 1; min-width: 0; }
 
@@ -475,32 +415,20 @@
     text-overflow: ellipsis;
   }
 
-  @media (min-width: 600px) and (max-width: 979px) {
-    .s-name { font-size: 1.3rem; }
-  }
+  @media (min-width: 600px) and (max-width: 979px) { .s-name { font-size: 1.3rem; } }
+  @media (min-width: 980px) { .s-name { font-size: 1rem; } }
 
-  @media (min-width: 980px) {
-    .s-name { font-size: 1rem; }
-  }
+  .s-row.sent .s-name { text-decoration: line-through; opacity: 0.45; }
 
-  .s-row.sent .s-name {
-    text-decoration: line-through;
-    opacity: 0.5;
-  }
-
-  /* time hidden on phone/tablet, shown on desktop */
   .s-time {
     font-family: var(--mono);
     font-size: 0.75rem;
-    font-weight: 700;
     color: var(--muted);
     margin-top: 2px;
     display: none;
   }
 
-  @media (min-width: 980px) {
-    .s-time { display: block; }
-  }
+  @media (min-width: 980px) { .s-time { display: block; } }
 
   .no-class {
     flex: 1;
@@ -510,10 +438,9 @@
     font-family: var(--mono);
     font-size: 0.75rem;
     font-weight: 700;
-    color: var(--text);
+    color: var(--muted);
     letter-spacing: 0.1em;
     padding: 20px 8px;
-    opacity: 0.35;
   }
 
   /* ─── TOAST ─────────────────────────────────────────── */
@@ -522,39 +449,38 @@
     bottom: 28px;
     left: 50%;
     transform: translateX(-50%) translateY(60px);
-    background: var(--card);
-    border: 2px solid var(--text);
-    color: var(--text);
+    background: var(--text);
+    color: var(--bg);
     font-family: var(--mono);
     font-size: 0.72rem;
     font-weight: 700;
     padding: 10px 22px;
-    border-radius: 3px;
+    border-radius: 50px;
     z-index: 200;
     transition: transform 0.28s cubic-bezier(.4,0,.2,1), opacity 0.28s;
     opacity: 0;
     white-space: nowrap;
     pointer-events: none;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
   }
 
   #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-  #toast.ok   { border-color: var(--text); }
-  #toast.warn { border-color: var(--text); }
-  #toast.fail { border-color: var(--red); color: var(--red); }
+  #toast.ok   { background: var(--text); }
+  #toast.warn { background: #664400; }
+  #toast.fail { background: var(--red); }
 
   .error-box {
     margin: 40px auto;
     max-width: 440px;
     background: var(--card);
-    border: 2px solid var(--border2);
-    border-radius: 2px;
+    border: 1.5px solid var(--border);
+    border-radius: var(--r);
     padding: 28px 24px;
     text-align: center;
   }
 
-  .error-box h2 { font-family: var(--mono); font-weight: 700; color: var(--red); font-size: 0.9rem; margin-bottom: 10px; }
-  .error-box p  { font-size: 0.8rem; color: var(--text); line-height: 1.6; }
+  .error-box h2 { font-family: var(--mono); color: var(--red); font-size: 0.9rem; margin-bottom: 10px; }
+  .error-box p  { font-size: 0.8rem; color: var(--sub); line-height: 1.6; }
 
   .saving-row { opacity: 0.5; }
 
@@ -567,9 +493,9 @@
     font-weight: 700;
     color: var(--text);
     letter-spacing: 0.1em;
-    background: var(--bg);
-    border: 2px solid var(--text);
-    border-radius: 2px;
+    background: var(--surf);
+    border: 1.5px solid var(--border2);
+    border-radius: 4px;
     padding: 3px 8px;
     animation: fadeInPill 0.2s ease;
   }
@@ -581,7 +507,7 @@
 
   .saving-spin {
     width: 8px; height: 8px;
-    border: 2px solid rgba(0,0,0,0.2);
+    border: 2px solid var(--border);
     border-top-color: var(--text);
     border-radius: 50%;
     animation: spin 0.7s linear infinite;
@@ -670,40 +596,41 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 function changeWeek(delta) {
-  if (savesInFlight > 0) { toast('Saving… please wait', 'warn'); return; }
-  const d = new Date(currentMonday + 'T00:00:00');
-  d.setDate(d.getDate() + delta * 7);
-  currentMonday = fmt(d);
-  loadWeek();
+  animateWeekChange(delta);
 }
 
 function goToday() {
   if (savesInFlight > 0) { toast('Saving… please wait', 'warn'); return; }
-  currentMonday = getMondayOf(new Date());
-  loadWeek();
+  const todayMon = getMondayOf(new Date());
+  if (currentMonday === todayMon) return;
+  const delta = todayMon > currentMonday ? 1 : -1;
+  const grid = document.getElementById('grid');
+  slideGrid(grid, delta, () => {
+    currentMonday = todayMon;
+    loadWeek();
+  });
 }
 
-async function loadWeek() {
+function loadWeek() {
   showLoader(true);
   updateHeader();
-  try {
-    const [evts, sts] = await Promise.all([
-      apiFetch('getWeekEvents', { date: currentMonday }),
-      apiFetch('getStatuses',   { weekStart: currentMonday })
-    ]);
+  return Promise.all([
+    apiFetch('getWeekEvents', { date: currentMonday }),
+    apiFetch('getStatuses',   { weekStart: currentMonday })
+  ]).then(([evts, sts]) => {
     weekEvents = evts;
     statuses   = sts;
     renderGrid();
-  } catch(err) {
+  }).catch(err => {
     console.error(err);
     document.getElementById('grid').innerHTML =
       `<div class="error-box" style="grid-column:1/-1">
         <h2>&#9888; Could not load data</h2>
         <p>Make sure the Apps Script is deployed correctly.<br><br>Error: ${err.message}</p>
       </div>`;
-  } finally {
+  }).finally(() => {
     showLoader(false);
-  }
+  });
 }
 
 function renderGrid() {
@@ -813,13 +740,11 @@ function refreshCard(dateStr) {
   const card   = document.getElementById(`card-${dateStr}`);
   const events = weekEvents[dateStr] || [];
   if (!card || !events.length) return;
-  const sent = events.filter(ev => statuses[`${dateStr}|${ev.title}`] === true).length;
-  const badge = card.querySelector('.badge');
-  if (badge) badge.textContent = `${sent}/${events.length}`;
+  const sent    = events.filter(ev => statuses[`${dateStr}|${ev.title}`] === true).length;
   const allDone = sent === events.length;
+  const badge   = card.querySelector('.badge');
+  if (badge) badge.textContent = `${sent}/${events.length}`;
   card.classList.toggle('done', allDone);
-  if (allDone && badge) { badge.style.background = 'var(--text)'; badge.style.color = 'var(--bg)'; }
-  else if (badge)       { badge.style.background = 'var(--bg)';   badge.style.color = 'var(--text)'; }
 }
 
 function refreshProgress() {
@@ -837,7 +762,7 @@ function updateProgress(done, total) {
   const pct = total > 0 ? Math.round(done / total * 100) : 0;
   document.getElementById('progFill').style.width = pct + '%';
   document.getElementById('summaryPill').textContent =
-    total === 0 ? 'NO CLASS' : `${done}/${total} SENT · ${pct}%`;
+    total === 0 ? 'No classes' : `${done}/${total} sent · ${pct}%`;
 }
 
 function updateHeader() {
@@ -865,6 +790,58 @@ function apiFetch(action, params = {}) {
     document.head.appendChild(script);
   });
 }
+
+/* ── SLIDE ANIMATION + SWIPE GESTURES ──────────────────── */
+function slideGrid(grid, direction, callback) {
+  const outX = direction > 0 ? '-110%' : '110%';
+  const inX  = direction > 0 ?  '110%' : '-110%';
+
+  grid.style.transition = 'transform 0.25s cubic-bezier(.4,0,.2,1), opacity 0.25s';
+  grid.style.transform  = `translateX(${outX})`;
+  grid.style.opacity    = '0.2';
+
+  setTimeout(() => {
+    callback();
+    grid.style.transition = 'none';
+    grid.style.transform  = `translateX(${inX})`;
+    grid.style.opacity    = '0';
+    void grid.offsetWidth; // force reflow
+    grid.style.transition = 'transform 0.28s cubic-bezier(.2,.8,.3,1), opacity 0.28s';
+    grid.style.transform  = 'translateX(0)';
+    grid.style.opacity    = '1';
+  }, 220);
+}
+
+function animateWeekChange(delta) {
+  if (savesInFlight > 0) { toast('Saving… please wait', 'warn'); return; }
+  const todayMon = getMondayOf(new Date());
+  if (delta > 0 && currentMonday >= todayMon) return;
+  const grid = document.getElementById('grid');
+  slideGrid(grid, delta, () => {
+    const d = new Date(currentMonday + 'T00:00:00');
+    d.setDate(d.getDate() + delta * 7);
+    currentMonday = fmt(d);
+    loadWeek();
+  });
+}
+
+// Touch swipe detection
+(function() {
+  let x0 = 0, y0 = 0, t0 = 0;
+  document.addEventListener('touchstart', e => {
+    x0 = e.touches[0].clientX;
+    y0 = e.touches[0].clientY;
+    t0 = Date.now();
+  }, { passive: true });
+
+  document.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].clientX - x0;
+    const dy = Math.abs(e.changedTouches[0].clientY - y0);
+    const dt = Date.now() - t0;
+    if (dt > 420 || dy > 90 || Math.abs(dx) < 55) return;
+    animateWeekChange(dx < 0 ? 1 : -1);
+  }, { passive: true });
+})();
 
 function getMondayOf(date) {
   const d = new Date(date);
