@@ -37,38 +37,58 @@
     overflow-y: auto;
   }
 
+  /* ─── NEW LOADER ANIMATION ──────────────────────────── */
   #loader {
     position: fixed;
     inset: 0;
-    background: var(--bg);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 20px;
+    background-color: #000000;
     z-index: 999;
     transition: opacity 0.5s ease;
+    animation: colorRot 5000ms linear infinite;
   }
-  #loader.out { opacity: 0; pointer-events: none; }
+  #loader.out { 
+    opacity: 0; 
+    pointer-events: none; 
+  }
 
-  .loader-ring {
-    width: 48px; height: 48px;
-    border: 3px solid var(--border);
-    border-top-color: var(--text);
+  .loader {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    top: calc(50% - 50px);
+    left: calc(50% - 50px);
+    animation: rotAnim 750ms ease-in-out infinite;
+  }
+  .loader::before,
+  .loader::after {
+    content: "";
+    position: absolute;
+    width: 25%;
+    height: 25%;
+    top: 0;
+    left: 0;
     border-radius: 50%;
-    animation: spin 0.9s linear infinite;
+    background-color: #ffffff;
+    box-shadow: 0 0 40px #7aa8ff, 0 0 10px #7aa8ff;
+  }
+  .loader::after {
+    top: unset;
+    left: unset;
+    bottom: 0;
+    right: 0;
   }
 
-  .loader-text {
-    font-family: var(--mono);
-    font-size: 0.75rem;
-    font-weight: 700;
-    color: var(--text);
-    letter-spacing: 0.08em;
+  @keyframes rotAnim {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
   }
 
-  @keyframes spin { to { transform: rotate(360deg); } }
+  @keyframes colorRot {
+    0% { filter: hue-rotate(0deg); }
+    100% { filter: hue-rotate(360deg); }
+  }
 
+  /* ─── HEADER ────────────────────────────────────────── */
   header {
     position: sticky;
     top: 0;
@@ -85,7 +105,7 @@
     align-items: center;
     justify-content: space-between;
     margin-bottom: 10px;
-    gap: 8px;
+    gap: 12px;
     flex-wrap: wrap;
   }
 
@@ -132,6 +152,13 @@
   @media (min-width: 600px) { .current-date-bar { font-size: 0.9rem; padding: 5px 16px; } }
   @media (min-width: 980px) { .current-date-bar { font-size: 1rem; padding: 6px 18px; } }
 
+  .top-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+
   .today-pill {
     font-family: var(--mono);
     font-size: 1.24rem; /* Doubled size */
@@ -146,6 +173,14 @@
     transition: background 0.15s, color 0.15s;
   }
   .today-pill:hover { background: var(--text); color: var(--bg); }
+
+  .summary-pill {
+    font-family: var(--mono);
+    font-size: 1.3rem; /* Doubled size */
+    font-weight: 700;
+    color: #0066cc; /* Blue color */
+    white-space: nowrap;
+  }
 
   .hrow2 {
     display: flex;
@@ -190,14 +225,6 @@
   }
 
   @media (min-width: 600px) { #weekLabel { font-size: 1.2rem; } }
-
-  .summary-pill {
-    font-family: var(--mono);
-    font-size: 1.3rem; /* Doubled size */
-    font-weight: 700;
-    color: #0066cc; /* Blue color */
-    white-space: nowrap;
-  }
 
   .prog-track {
     height: 3px;
@@ -425,7 +452,7 @@
     font-size: 0.75rem;
     color: var(--muted);
     margin-top: 2px;
-    display: block; /* Restored visibility for all devices */
+    display: block; /* Visible on all devices */
   }
 
   .no-class {
@@ -516,8 +543,7 @@
 <body>
 
 <div id="loader">
-  <div class="loader-ring"></div>
-  <div class="loader-text">Loading calendar…</div>
+  <div class="loader blurjs"></div>
 </div>
 
 <div id="toast"></div>
@@ -529,7 +555,11 @@
       TUTOR TRACKER
     </div>
     <div class="current-date-bar" id="currentDateBar">—</div>
-    <button class="today-pill" onclick="goToday()">THIS WEEK</button>
+    <!-- Status info is now bundled next to the THIS WEEK button -->
+    <div class="top-actions">
+      <button class="today-pill" onclick="goToday()">THIS WEEK</button>
+      <div class="summary-pill" id="summaryPill">—</div>
+    </div>
   </div>
   <div class="hrow2">
     <div class="week-nav">
@@ -541,7 +571,6 @@
       <div class="saving-pill" id="savingPill" style="display:none">
         <span class="saving-spin"></span>SAVING
       </div>
-      <div class="summary-pill" id="summaryPill">—</div>
     </div>
   </div>
   <div class="prog-track">
