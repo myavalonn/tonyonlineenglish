@@ -4,124 +4,31 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-  /* =========================================
-     BASE STYLES (CELLPHONE FIRST)
-     ========================================= */
-  .tutor-wrap { 
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
-    width: 100%; 
-    max-width: 500px; /* Keeps it contained on mobile */
-    margin: auto; 
-    padding: 10px; 
-    color: #333; 
-    box-sizing: border-box;
-  }
-  .tutor-controls { 
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center; 
-    background: #fff; 
-    padding: 12px; 
-    border-radius: 8px; 
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
-    margin-bottom: 15px; 
-  }
-  .tutor-btn { 
-    background: #3498db; 
-    color: white; 
-    border: none; 
-    padding: 10px 15px; 
-    border-radius: 6px; 
-    cursor: pointer; 
-    font-size: 16px; /* BIGGER font for mobile tap */
-    font-weight: bold;
-  }
+  /* Same responsive CSS as before */
+  .tutor-wrap { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; width: 100%; max-width: 500px; margin: auto; padding: 10px; color: #333; box-sizing: border-box; }
+  .tutor-controls { display: flex; justify-content: space-between; align-items: center; background: #fff; padding: 12px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); margin-bottom: 15px; }
+  .tutor-btn { background: #3498db; color: white; border: none; padding: 10px 15px; border-radius: 6px; cursor: pointer; font-size: 16px; font-weight: bold; }
   .tutor-btn:active { background: #2980b9; }
-  #tutor-week-label { 
-    font-weight: bold; 
-    font-size: 18px; /* BIGGER font for mobile */
-  }
-  
-  /* 2 Blocks Across, 3 Down for Cellphone */
-  .tutor-grid { 
-    display: grid; 
-    grid-template-columns: 1fr 1fr; 
-    gap: 12px; 
-  }
-  .tutor-card { 
-    background: #fff; 
-    border-radius: 8px; 
-    padding: 12px; 
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
-    border-top: 5px solid #3498db; 
-    display: flex; 
-    flex-direction: column; 
-  }
-  .tutor-header { 
-    display: flex; 
-    justify-content: space-between; 
-    font-weight: bold; 
-    font-size: 16px; /* BIGGER font */
-    border-bottom: 2px solid #eee; 
-    padding-bottom: 6px; 
-    margin-bottom: 10px; 
-  }
-  .tutor-task { 
-    display: flex; 
-    align-items: flex-start; 
-    margin-bottom: 10px; 
-  }
-  /* Bigger checkboxes for cellphones */
-  .tutor-task input { 
-    width: 22px; 
-    height: 22px; 
-    margin-right: 10px; 
-    margin-top: 2px; 
-    flex-shrink: 0;
-  }
-  .tutor-task-info {
-    display: flex;
-    flex-direction: column;
-  }
-  .tutor-time { 
-    font-size: 14px; /* BIGGER font */
-    color: #7f8c8d; 
-    font-weight: bold; 
-    display: block;
-    margin-bottom: 2px;
-  }
-  .tutor-text { 
-    font-size: 16px; /* BIGGER font */
-    line-height: 1.3;
-  }
-  
+  #tutor-week-label { font-weight: bold; font-size: 18px; }
+  .tutor-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  .tutor-card { background: #fff; border-radius: 8px; padding: 12px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); border-top: 5px solid #3498db; display: flex; flex-direction: column; }
+  .tutor-header { display: flex; justify-content: space-between; font-weight: bold; font-size: 16px; border-bottom: 2px solid #eee; padding-bottom: 6px; margin-bottom: 10px; }
+  .tutor-task { display: flex; align-items: flex-start; margin-bottom: 10px; }
+  .tutor-task input { width: 22px; height: 22px; margin-right: 10px; margin-top: 2px; flex-shrink: 0; }
+  .tutor-task-info { display: flex; flex-direction: column; }
+  .tutor-time { font-size: 14px; color: #7f8c8d; font-weight: bold; display: block; margin-bottom: 2px;}
+  .tutor-text { font-size: 16px; line-height: 1.3; }
   .done .tutor-text, .done .tutor-time { text-decoration: line-through; color: #bdc3c7; }
   .no-classes { color: #95a5a6; font-size: 14px; text-align: center; font-style: italic; margin-top: 10px;}
   #tutor-loading { text-align: center; font-weight: bold; font-size: 18px; color: #3498db; margin-top: 30px; }
 
-  /* =========================================
-     TABLET & DESKTOP MODE (Screens wider than 768px)
-     ========================================= */
   @media (min-width: 768px) {
-    .tutor-wrap {
-      max-width: 1000px; /* MUCH WIDER overall size */
-      padding: 20px;
-    }
-    .tutor-grid {
-      grid-template-columns: 1fr 1fr 1fr; /* Changes to 3 blocks across so it doesn't stretch weirdly */
-      gap: 20px; /* Bigger gaps between blocks */
-    }
-    .tutor-controls {
-      padding: 15px 25px;
-      margin-bottom: 25px;
-    }
+    .tutor-wrap { max-width: 1000px; padding: 20px; }
+    .tutor-grid { grid-template-columns: 1fr 1fr 1fr; gap: 20px; }
+    .tutor-controls { padding: 15px 25px; margin-bottom: 25px; }
     .tutor-btn { font-size: 18px; padding: 12px 25px; }
     #tutor-week-label { font-size: 22px; }
-    
-    .tutor-card { 
-      padding: 20px; /* More breathing room inside the boxes */
-      min-height: 180px; 
-    }
+    .tutor-card { padding: 20px; min-height: 180px; }
     .tutor-header { font-size: 20px; margin-bottom: 15px; }
     .tutor-time { font-size: 16px; }
     .tutor-text { font-size: 18px; }
@@ -139,7 +46,7 @@
     <span id="tutor-week-label">Current Week</span>
     <button class="tutor-btn" onclick="changeWeek(1)">Next &#8594;</button>
   </div>
-  <div id="tutor-loading">Loading classes...</div>
+  <div id="tutor-loading">Loading schedule...</div>
   <div id="tutor-grid" class="tutor-grid" style="display: none;"></div>
 </div>
 
@@ -162,7 +69,8 @@
     if(currentOffset > 1) label = "In " + currentOffset + " Wks";
     document.getElementById('tutor-week-label').innerText = label;
 
-    fetch(SCRIPT_URL + "?offset=" + currentOffset)
+    // Fetch calendar AND Google Sheet statuses
+    fetch(SCRIPT_URL + "?action=get&offset=" + currentOffset)
       .then(response => response.json())
       .then(data => renderGrid(data))
       .catch(error => {
@@ -182,9 +90,9 @@
         cardHtml += `<div class="no-classes">No classes</div>`;
       } else {
         day.events.forEach(event => {
-          let isDone = localStorage.getItem('tutor_' + event.id) === 'true';
-          let checkedStr = isDone ? 'checked' : '';
-          let doneClass = isDone ? 'done' : '';
+          
+          let checkedStr = event.isDone ? 'checked' : '';
+          let doneClass = event.isDone ? 'done' : '';
           
           cardHtml += `
             <div class="tutor-task ${doneClass}" id="row-${event.id}">
@@ -206,13 +114,20 @@
 
   function toggleTask(eventId, checkbox) {
     const row = document.getElementById(`row-${eventId}`);
-    if (checkbox.checked) {
+    const isDone = checkbox.checked;
+    
+    // Update visuals immediately
+    if (isDone) {
       row.classList.add('done');
-      localStorage.setItem('tutor_' + eventId, 'true'); 
     } else {
       row.classList.remove('done');
-      localStorage.removeItem('tutor_' + eventId);
     }
+
+    // Send change to Google Sheet (Sync to all devices)
+    fetch(SCRIPT_URL + "?action=toggle&id=" + eventId + "&state=" + isDone)
+      .then(res => res.json())
+      .then(data => console.log("Saved to Google Sheet!"))
+      .catch(err => console.error("Error saving:", err));
   }
 
   function changeWeek(direction) {
