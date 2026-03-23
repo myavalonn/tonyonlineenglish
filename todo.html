@@ -6,20 +6,21 @@
 <title>Tutor Tracker</title>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet" />
 <style>
+  /* ─── LCD / G-SHOCK THEME ───────────────────────────── */
   :root {
-    --bg:       #0c0c10;
-    --surf:     #14141c;
-    --card:     #1c1c28;
-    --border:   #28283a;
-    --border2:  #32324a;
-    --accent:   #a78bfa;
-    --accent2:  #f59e0b;
-    --green:    #34d399;
-    --red:      #f87171;
-    --text:     #e2e2f0;
-    --sub:      #9898b8;
-    --muted:    #52527a;
-    --r:        13px;
+    --bg:       #b8c5a0;
+    --surf:     #a8b890;
+    --card:     #c2ceaa;
+    --border:   #7a8f62;
+    --border2:  #5a7042;
+    --accent:   #0f1a05;
+    --accent2:  #1e3010;
+    --green:    #0f1a05;
+    --red:      #3a0a0a;
+    --text:     #0f1a05;
+    --sub:      #0f1a05;
+    --muted:    #3a4a2a;
+    --r:        2px;
     --mono:     'DM Mono', monospace;
     --sans:     'Noto Sans TC', sans-serif;
   }
@@ -35,14 +36,25 @@
     overflow-x: hidden;
   }
 
+  /* LCD dot-matrix texture */
   body::before {
     content: '';
     position: fixed;
     inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    background-image: radial-gradient(circle, rgba(0,0,0,0.09) 1px, transparent 1px);
+    background-size: 3px 3px;
     pointer-events: none;
-    z-index: 0;
-    opacity: 0.5;
+    z-index: 9998;
+  }
+
+  /* LCD vignette — darker edges */
+  body::after {
+    content: '';
+    position: fixed;
+    inset: 0;
+    box-shadow: inset 0 0 80px rgba(0,0,0,0.22);
+    pointer-events: none;
+    z-index: 9997;
   }
 
   #loader {
@@ -61,8 +73,8 @@
 
   .loader-ring {
     width: 48px; height: 48px;
-    border: 3px solid var(--border2);
-    border-top-color: var(--accent);
+    border: 3px solid var(--border);
+    border-top-color: var(--text);
     border-radius: 50%;
     animation: spin 0.9s linear infinite;
   }
@@ -70,7 +82,8 @@
   .loader-text {
     font-family: var(--mono);
     font-size: 0.75rem;
-    color: var(--muted);
+    font-weight: 700;
+    color: var(--text);
     letter-spacing: 0.08em;
   }
 
@@ -80,10 +93,10 @@
     position: sticky;
     top: 0;
     z-index: 50;
-    background: rgba(12, 12, 16, 0.88);
+    background: rgba(178, 193, 158, 0.97);
     backdrop-filter: blur(18px);
     -webkit-backdrop-filter: blur(18px);
-    border-bottom: 1px solid var(--border);
+    border-bottom: 2px solid var(--border2);
     padding: 12px 16px 10px;
   }
 
@@ -99,8 +112,8 @@
   .logo {
     font-family: var(--mono);
     font-size: 0.78rem;
-    font-weight: 500;
-    color: var(--accent);
+    font-weight: 700;
+    color: var(--text);
     letter-spacing: 0.14em;
     text-transform: uppercase;
     display: flex;
@@ -113,46 +126,46 @@
 
   .logo-dot {
     width: 7px; height: 7px;
-    border-radius: 50%;
-    background: var(--accent);
+    border-radius: 1px;
+    background: var(--text);
     animation: pulse 2.4s ease-in-out infinite;
   }
 
   @keyframes pulse {
     0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.4; transform: scale(0.7); }
+    50% { opacity: 0.3; transform: scale(0.7); }
   }
 
   .current-date-bar {
     font-family: var(--mono);
     font-size: 0.68rem;
-    font-weight: 500;
-    color: var(--sub);
-    letter-spacing: 0.06em;
-    background: var(--card);
-    border: 1px solid var(--border2);
-    border-radius: 50px;
-    padding: 4px 12px;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: 0.08em;
+    background: var(--bg);
+    border: 2px solid var(--border2);
+    border-radius: 3px;
+    padding: 4px 10px;
     white-space: nowrap;
   }
 
-  @media (min-width: 600px) { .current-date-bar { font-size: 0.85rem; padding: 5px 16px; } }
+  @media (min-width: 600px) { .current-date-bar { font-size: 0.85rem; padding: 5px 14px; } }
   @media (min-width: 980px) { .current-date-bar { font-size: 0.9rem; padding: 6px 18px; } }
 
   .today-pill {
     font-family: var(--mono);
     font-size: 0.62rem;
-    font-weight: 500;
+    font-weight: 700;
     padding: 5px 14px;
-    border-radius: 50px;
-    border: 1px solid var(--accent);
-    color: var(--accent);
+    border-radius: 3px;
+    border: 2px solid var(--text);
+    color: var(--text);
     background: transparent;
     cursor: pointer;
     letter-spacing: 0.08em;
-    transition: background 0.2s, color 0.2s;
+    transition: background 0.15s, color 0.15s;
   }
-  .today-pill:hover { background: var(--accent); color: #fff; }
+  .today-pill:hover { background: var(--text); color: var(--bg); }
 
   .hrow2 {
     display: flex;
@@ -165,30 +178,32 @@
     display: flex;
     align-items: center;
     gap: 6px;
-    background: var(--card);
-    border: 1px solid var(--border2);
-    border-radius: 50px;
+    background: var(--bg);
+    border: 2px solid var(--border2);
+    border-radius: 3px;
     padding: 5px 12px;
   }
 
   .nav-btn {
     background: none;
     border: none;
-    color: var(--sub);
+    color: var(--text);
     cursor: pointer;
     font-size: 1rem;
+    font-weight: 700;
     width: 26px; height: 26px;
-    border-radius: 50%;
+    border-radius: 2px;
     display: flex; align-items: center; justify-content: center;
-    transition: background 0.15s, color 0.15s;
+    transition: background 0.1s, color 0.1s;
     line-height: 1;
   }
-  .nav-btn:hover:not(:disabled) { background: var(--border2); color: var(--accent); }
+  .nav-btn:hover:not(:disabled) { background: var(--border2); color: var(--bg); }
   .nav-btn:disabled { opacity: 0.25; cursor: default; }
 
   #weekLabel {
     font-family: var(--mono);
     font-size: 0.72rem;
+    font-weight: 700;
     color: var(--text);
     min-width: 130px;
     text-align: center;
@@ -197,33 +212,27 @@
   .summary-pill {
     font-family: var(--mono);
     font-size: 0.65rem;
-    color: var(--sub);
+    font-weight: 700;
+    color: var(--text);
     white-space: nowrap;
   }
 
   .prog-track {
-    height: 3px;
+    height: 4px;
     background: var(--border);
-    border-radius: 4px;
+    border-radius: 0;
     overflow: hidden;
     margin-top: 10px;
   }
 
   .prog-fill {
     height: 100%;
-    background: linear-gradient(90deg, var(--accent), var(--accent2));
-    border-radius: 4px;
+    background: var(--text);
     transition: width 0.5s cubic-bezier(.4,0,.2,1);
     width: 0%;
   }
 
-  /* ─── GRID ─────────────────────────────────────────────
-     Phone  (<600px): 2-col grid — left col ~57vw, right
-       col also ~57vw but bleeds off screen (half visible)
-       body clips it with overflow-x:hidden
-     Tablet (600-979): 2-col normal
-     Desktop (≥980px): 3-col normal
-  ─────────────────────────────────────────────────────── */
+  /* ─── GRID ──────────────────────────────────────────── */
   .grid {
     display: grid;
     grid-template-columns: 57vw 57vw;
@@ -234,45 +243,36 @@
   }
 
   @media (min-width: 600px) and (max-width: 979px) {
-    .grid {
-      grid-template-columns: repeat(2, 1fr);
-      gap: 14px;
-      padding: 18px 18px 44px;
-    }
+    .grid { grid-template-columns: repeat(2, 1fr); gap: 14px; padding: 18px 18px 44px; }
   }
 
   @media (min-width: 980px) {
-    .grid {
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-      padding: 24px 28px 56px;
-      max-width: 1400px;
-      margin: 0 auto;
-    }
+    .grid { grid-template-columns: repeat(3, 1fr); gap: 20px; padding: 24px 28px 56px; max-width: 1400px; margin: 0 auto; }
   }
 
+  /* ─── DAY CARD ──────────────────────────────────────── */
   .card {
     background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: var(--r);
+    border: 2px solid var(--border2);
+    border-radius: 2px;
     display: flex;
     flex-direction: column;
     min-height: 220px;
     overflow: hidden;
-    transition: border-color 0.25s, box-shadow 0.25s;
+    transition: border-color 0.15s;
     animation: fadeUp 0.4s ease both;
   }
 
   @media (min-width: 600px) and (max-width: 979px) {
-    .card { min-height: 260px; border-radius: 16px; }
+    .card { min-height: 260px; }
   }
 
   @media (min-width: 980px) {
-    .card { min-height: 300px; border-radius: 18px; }
+    .card { min-height: 300px; }
   }
 
   @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(14px); }
+    from { opacity: 0; transform: translateY(10px); }
     to   { opacity: 1; transform: translateY(0); }
   }
 
@@ -284,22 +284,26 @@
   .card:nth-child(6) { animation-delay: 0.24s; }
 
   .card.today {
-    border-color: var(--accent);
-    box-shadow: 0 0 0 1px var(--accent), 0 4px 24px rgba(167,139,250,0.12);
+    border-color: var(--text);
+    box-shadow: 0 0 0 2px var(--text), 0 2px 8px rgba(0,0,0,0.25);
   }
 
-  .card.done { border-color: var(--green); }
+  .card.done {
+    border-color: var(--border2);
+    background: var(--surf);
+  }
 
   .card-head {
-    padding: 18px 18px 14px;
-    border-bottom: 1px solid var(--border);
+    padding: 10px 12px 8px;
+    border-bottom: 2px solid var(--border2);
+    background: var(--surf);
     display: flex;
     flex-direction: column;
-    gap: 1px;
+    gap: 2px;
   }
 
   @media (min-width: 600px) and (max-width: 979px) {
-    .card-head { padding: 16px 16px 12px; }
+    .card-head { padding: 18px 18px 14px; }
   }
 
   @media (min-width: 980px) {
@@ -308,8 +312,8 @@
 
   .day-label {
     display: flex;
-    align-items: baseline;
-    gap: 6px;
+    align-items: center;
+    gap: 5px;
     margin-bottom: 2px;
   }
 
@@ -325,14 +329,14 @@
   .day-zh {
     font-family: var(--sans);
     font-size: 0.9rem;
-    font-weight: 500;
-    color: var(--sub);
+    font-weight: 700;
+    color: var(--text);
     letter-spacing: 0.04em;
   }
 
   @media (min-width: 600px) and (max-width: 979px) {
-    .day-en { font-size: 1rem; }
-    .day-zh { font-size: 0.82rem; }
+    .day-en { font-size: 1.4rem; }
+    .day-zh { font-size: 1.15rem; }
   }
 
   @media (min-width: 980px) {
@@ -340,159 +344,162 @@
     .day-zh { font-size: 0.88rem; }
   }
 
-  .card.today .day-en { color: var(--accent); }
-  .card.today .day-zh { color: rgba(167,139,250,0.7); }
+  .card.today .day-en,
+  .card.today .day-zh { color: var(--text); }
+
+  .badge {
+    font-family: var(--mono);
+    font-size: 0.68rem;
+    font-weight: 700;
+    padding: 1px 6px;
+    border: 1.5px solid var(--text);
+    border-radius: 2px;
+    color: var(--text);
+    background: var(--bg);
+    margin-left: auto;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+  }
+
+  @media (min-width: 600px) and (max-width: 979px) {
+    .badge { font-size: 0.85rem; padding: 2px 8px; }
+  }
+
+  @media (min-width: 980px) {
+    .badge { font-size: 0.82rem; padding: 2px 8px; }
+  }
+
+  .card.done .badge {
+    background: var(--text);
+    color: var(--bg);
+  }
 
   .day-num {
     font-family: var(--mono);
     font-size: 2rem;
-    font-weight: 500;
+    font-weight: 700;
     color: var(--text);
     line-height: 1;
     margin-top: 4px;
+    letter-spacing: 0.05em;
   }
 
   @media (min-width: 600px) and (max-width: 979px) {
-    .day-num { font-size: 1.7rem; }
+    .day-num { font-size: 2.6rem; }
   }
 
   @media (min-width: 980px) {
-    .day-num { font-size: 2rem; }
+    .day-num { font-size: 2.2rem; }
   }
 
-  .card.today .day-num { color: var(--accent); }
+  .card.today .day-num { color: var(--text); }
 
-  .badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 3px;
-    font-family: var(--mono);
-    font-size: 0.82rem;
-    font-weight: 500;
-    padding: 3px 10px;
-    border-radius: 50px;
-    margin-top: 6px;
-    background: var(--border2);
-    color: var(--sub);
-    width: fit-content;
-    transition: background 0.3s, color 0.3s;
-  }
-
-  @media (min-width: 600px) and (max-width: 979px) {
-    .badge { font-size: 0.78rem; padding: 3px 11px; }
-  }
-
-  @media (min-width: 980px) {
-    .badge { font-size: 0.82rem; padding: 4px 13px; }
-  }
-
-  .card.done .badge { background: rgba(52,211,153,0.15); color: var(--green); }
-
+  /* ─── STUDENT ROWS ──────────────────────────────────── */
   .student-list {
-    padding: 10px;
+    padding: 8px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
     flex: 1;
   }
 
   .s-row {
     display: flex;
     align-items: center;
-    gap: 12px;
-    padding: 13px 14px;
-    background: var(--surf);
-    border: 1px solid var(--border);
-    border-radius: 12px;
+    gap: 10px;
+    padding: 12px 12px;
+    background: var(--bg);
+    border: 1.5px solid var(--border);
+    border-radius: 2px;
     cursor: pointer;
-    transition: border-color 0.18s, background 0.18s, transform 0.12s;
+    transition: background 0.1s, border-color 0.1s;
     user-select: none;
     -webkit-tap-highlight-color: transparent;
     touch-action: manipulation;
   }
 
   @media (min-width: 600px) and (max-width: 979px) {
-    .s-row { padding: 13px 14px; gap: 12px; border-radius: 12px; }
+    .s-row { padding: 16px 16px; gap: 14px; }
   }
 
   @media (min-width: 980px) {
-    .s-row { padding: 14px 16px; gap: 14px; border-radius: 12px; }
+    .s-row { padding: 14px 16px; gap: 14px; }
   }
 
-  .s-row:hover { border-color: var(--border2); }
-  .s-row:active { transform: scale(0.97); }
+  .s-row:hover { border-color: var(--border2); background: var(--surf); }
+  .s-row:active { transform: scale(0.98); }
 
   .s-row.sent {
-    background: rgba(52, 211, 153, 0.05);
-    border-color: rgba(52, 211, 153, 0.25);
+    background: rgba(0,0,0,0.07);
+    border-color: var(--border2);
   }
 
   .checkbox {
-    width: 26px; height: 26px;
-    border: 2px solid var(--muted);
-    border-radius: 7px;
+    width: 24px; height: 24px;
+    border: 2px solid var(--text);
+    border-radius: 2px;
     flex-shrink: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.18s;
-    font-size: 15px;
-    color: #000;
+    transition: all 0.1s;
+    font-size: 14px;
+    color: var(--bg);
     font-weight: 700;
+    background: var(--card);
   }
 
   @media (min-width: 600px) and (max-width: 979px) {
-    .checkbox { width: 24px; height: 24px; font-size: 14px; border-radius: 7px; }
+    .checkbox { width: 30px; height: 30px; font-size: 18px; }
   }
 
   @media (min-width: 980px) {
-    .checkbox { width: 26px; height: 26px; font-size: 15px; border-radius: 7px; }
+    .checkbox { width: 24px; height: 24px; font-size: 14px; }
   }
 
   .s-row.sent .checkbox {
-    background: var(--green);
-    border-color: var(--green);
+    background: var(--text);
+    border-color: var(--text);
+    color: var(--bg);
   }
 
   .s-info { flex: 1; min-width: 0; }
 
   .s-name {
     font-family: var(--sans);
-    font-size: 1.05rem;
-    font-weight: 500;
+    font-size: 1rem;
+    font-weight: 700;
     color: var(--text);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    transition: color 0.18s;
   }
 
   @media (min-width: 600px) and (max-width: 979px) {
-    .s-name { font-size: 1rem; }
+    .s-name { font-size: 1.3rem; }
   }
 
   @media (min-width: 980px) {
-    .s-name { font-size: 1.05rem; }
+    .s-name { font-size: 1rem; }
   }
 
   .s-row.sent .s-name {
     text-decoration: line-through;
-    color: var(--muted);
+    opacity: 0.5;
   }
 
+  /* time hidden on phone/tablet, shown on desktop */
   .s-time {
     font-family: var(--mono);
-    font-size: 0.78rem;
+    font-size: 0.75rem;
+    font-weight: 700;
     color: var(--muted);
     margin-top: 2px;
-  }
-
-  @media (min-width: 600px) and (max-width: 979px) {
-    .s-time { font-size: 0.78rem; }
+    display: none;
   }
 
   @media (min-width: 980px) {
-    .s-time { font-size: 0.82rem; }
+    .s-time { display: block; }
   }
 
   .no-class {
@@ -501,51 +508,55 @@
     align-items: center;
     justify-content: center;
     font-family: var(--mono);
-    font-size: 0.6rem;
-    color: var(--muted);
-    letter-spacing: 0.06em;
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--text);
+    letter-spacing: 0.1em;
     padding: 20px 8px;
+    opacity: 0.35;
   }
 
+  /* ─── TOAST ─────────────────────────────────────────── */
   #toast {
     position: fixed;
     bottom: 28px;
     left: 50%;
     transform: translateX(-50%) translateY(60px);
     background: var(--card);
-    border: 1px solid var(--border2);
+    border: 2px solid var(--text);
     color: var(--text);
     font-family: var(--mono);
     font-size: 0.72rem;
+    font-weight: 700;
     padding: 10px 22px;
-    border-radius: 50px;
+    border-radius: 3px;
     z-index: 200;
     transition: transform 0.28s cubic-bezier(.4,0,.2,1), opacity 0.28s;
     opacity: 0;
     white-space: nowrap;
     pointer-events: none;
-    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
   }
 
   #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-  #toast.ok   { border-color: rgba(52,211,153,0.4); color: var(--green); }
-  #toast.warn { border-color: rgba(245,158,11,0.4); color: var(--accent2); }
-  #toast.fail { border-color: rgba(248,113,113,0.4); color: var(--red); }
+  #toast.ok   { border-color: var(--text); }
+  #toast.warn { border-color: var(--text); }
+  #toast.fail { border-color: var(--red); color: var(--red); }
 
   .error-box {
     margin: 40px auto;
     max-width: 440px;
     background: var(--card);
-    border: 1px solid rgba(248,113,113,0.3);
-    border-radius: var(--r);
+    border: 2px solid var(--border2);
+    border-radius: 2px;
     padding: 28px 24px;
     text-align: center;
   }
 
-  .error-box h2 { font-family: var(--mono); color: var(--red); font-size: 0.9rem; margin-bottom: 10px; }
-  .error-box p  { font-size: 0.8rem; color: var(--sub); line-height: 1.6; }
+  .error-box h2 { font-family: var(--mono); font-weight: 700; color: var(--red); font-size: 0.9rem; margin-bottom: 10px; }
+  .error-box p  { font-size: 0.8rem; color: var(--text); line-height: 1.6; }
 
-  .saving-row { opacity: 0.65; }
+  .saving-row { opacity: 0.5; }
 
   .saving-pill {
     display: inline-flex;
@@ -553,13 +564,13 @@
     gap: 5px;
     font-family: var(--mono);
     font-size: 0.58rem;
-    font-weight: 500;
-    color: var(--accent2);
+    font-weight: 700;
+    color: var(--text);
     letter-spacing: 0.1em;
-    background: rgba(245,158,11,0.1);
-    border: 1px solid rgba(245,158,11,0.3);
-    border-radius: 50px;
-    padding: 3px 10px;
+    background: var(--bg);
+    border: 2px solid var(--text);
+    border-radius: 2px;
+    padding: 3px 8px;
     animation: fadeInPill 0.2s ease;
   }
 
@@ -570,8 +581,8 @@
 
   .saving-spin {
     width: 8px; height: 8px;
-    border: 1.5px solid rgba(245,158,11,0.3);
-    border-top-color: var(--accent2);
+    border: 2px solid rgba(0,0,0,0.2);
+    border-top-color: var(--text);
     border-radius: 50%;
     animation: spin 0.7s linear infinite;
     flex-shrink: 0;
@@ -621,7 +632,6 @@ const API = 'https://script.google.com/macros/s/AKfycbwkNK3C7TZpKosUJlmDvniNrR7A
 
 const DAY_NAMES    = ['MON','TUE','WED','THU','FRI','SAT'];
 const DAY_NAMES_ZH = ['週一','週二','週三','週四','週五','週六'];
-
 let currentMonday = null;
 let weekEvents    = {};
 let statuses      = {};
@@ -660,7 +670,7 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 function changeWeek(delta) {
-  if (savesInFlight > 0) { toast('Saving… please wait a moment', 'warn'); return; }
+  if (savesInFlight > 0) { toast('Saving… please wait', 'warn'); return; }
   const d = new Date(currentMonday + 'T00:00:00');
   d.setDate(d.getDate() + delta * 7);
   currentMonday = fmt(d);
@@ -668,7 +678,7 @@ function changeWeek(delta) {
 }
 
 function goToday() {
-  if (savesInFlight > 0) { toast('Saving… please wait a moment', 'warn'); return; }
+  if (savesInFlight > 0) { toast('Saving… please wait', 'warn'); return; }
   currentMonday = getMondayOf(new Date());
   loadWeek();
 }
@@ -718,18 +728,20 @@ function renderGrid() {
     card.className = `card${isToday ? ' today' : ''}${allDone ? ' done' : ''}`;
     card.id = `card-${dateStr}`;
 
+    const badgeLabel = events.length === 0 ? '—' : `${sentCount}/${events.length}`;
+
     card.innerHTML = `
       <div class="card-head">
         <div class="day-label">
           <span class="day-en">${DAY_NAMES[i]}</span>
           <span class="day-zh">${DAY_NAMES_ZH[i]}</span>
+          <span class="badge">${badgeLabel}</span>
         </div>
         <div class="day-num">${d.getMonth()+1}/${d.getDate()}</div>
-        <div class="badge">${events.length === 0 ? 'no class' : `${sentCount} / ${events.length}`}</div>
       </div>
       <div class="student-list" id="list-${dateStr}">
         ${events.length === 0
-          ? '<div class="no-class">—</div>'
+          ? '<div class="no-class">NO CLASS</div>'
           : events.map(ev => studentRow(dateStr, ev)).join('')}
       </div>`;
 
@@ -739,16 +751,23 @@ function renderGrid() {
   updateProgress(done, total);
 }
 
+function cleanName(title) {
+  return title
+    .replace(/\s*(English\s*(Class|Lesson|Course)?|英文課?|英語課?|的?英文|的?英語)\s*/gi, '')
+    .trim() || title;
+}
+
 function studentRow(dateStr, ev) {
-  const key  = `${dateStr}|${ev.title}`;
-  const sent = statuses[key] === true;
-  const rid  = rowId(key);
+  const key         = `${dateStr}|${ev.title}`;
+  const sent        = statuses[key] === true;
+  const rid         = rowId(key);
+  const displayName = cleanName(ev.title);
   return `
     <div class="s-row${sent ? ' sent' : ''}" id="${rid}"
          onclick="toggle('${dateStr}','${esc(ev.title)}','${rid}')">
       <div class="checkbox">${sent ? '&#10003;' : ''}</div>
       <div class="s-info">
-        <div class="s-name">${ev.title}</div>
+        <div class="s-name">${displayName}</div>
         <div class="s-time">${ev.time}</div>
       </div>
     </div>`;
@@ -786,7 +805,7 @@ function toggle(dateStr, studentName, rid) {
       }
       refreshCard(dateStr);
       refreshProgress();
-      toast('Save failed — check connection', 'fail');
+      toast('Save failed', 'fail');
     });
 }
 
@@ -795,8 +814,12 @@ function refreshCard(dateStr) {
   const events = weekEvents[dateStr] || [];
   if (!card || !events.length) return;
   const sent = events.filter(ev => statuses[`${dateStr}|${ev.title}`] === true).length;
-  card.querySelector('.badge').textContent = `${sent} / ${events.length}`;
-  card.classList.toggle('done', sent === events.length);
+  const badge = card.querySelector('.badge');
+  if (badge) badge.textContent = `${sent}/${events.length}`;
+  const allDone = sent === events.length;
+  card.classList.toggle('done', allDone);
+  if (allDone && badge) { badge.style.background = 'var(--text)'; badge.style.color = 'var(--bg)'; }
+  else if (badge)       { badge.style.background = 'var(--bg)';   badge.style.color = 'var(--text)'; }
 }
 
 function refreshProgress() {
@@ -814,7 +837,7 @@ function updateProgress(done, total) {
   const pct = total > 0 ? Math.round(done / total * 100) : 0;
   document.getElementById('progFill').style.width = pct + '%';
   document.getElementById('summaryPill').textContent =
-    total === 0 ? 'No classes' : `${done} / ${total} sent · ${pct}%`;
+    total === 0 ? 'NO CLASS' : `${done}/${total} SENT · ${pct}%`;
 }
 
 function updateHeader() {
@@ -833,30 +856,12 @@ function apiFetch(action, params = {}) {
     url.searchParams.set('action', action);
     url.searchParams.set('callback', cbName);
     Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, String(v)));
-
     const script = document.createElement('script');
     script.src = url.toString();
-
-    const cleanup = () => {
-      delete window[cbName];
-      if (script.parentNode) script.parentNode.removeChild(script);
-    };
-
+    const cleanup = () => { delete window[cbName]; if (script.parentNode) script.parentNode.removeChild(script); };
     const timer = setTimeout(() => { cleanup(); reject(new Error('Request timed out')); }, 15000);
-
-    window[cbName] = (json) => {
-      clearTimeout(timer);
-      cleanup();
-      if (json.error) reject(new Error(json.error));
-      else resolve(json.data);
-    };
-
-    script.onerror = () => {
-      clearTimeout(timer);
-      cleanup();
-      reject(new Error('Network error — could not reach Apps Script'));
-    };
-
+    window[cbName] = (json) => { clearTimeout(timer); cleanup(); if (json.error) reject(new Error(json.error)); else resolve(json.data); };
+    script.onerror = () => { clearTimeout(timer); cleanup(); reject(new Error('Network error')); };
     document.head.appendChild(script);
   });
 }
