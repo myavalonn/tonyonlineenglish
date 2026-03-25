@@ -579,6 +579,14 @@
                 box-shadow: 0 2px 6px rgba(0,0,0,0.08); 
             }
 
+            /* =====================================================
+               FIX: Removed scroll-snap-type from CSS.
+               It is now applied only on first user interaction
+               via JavaScript, preventing the auto-scroll-on-load
+               bug in Safari iOS and other mobile browsers.
+               Also added overflow-anchor: none to prevent
+               Chrome's scroll anchoring from jumping.
+               ===================================================== */
             .m-slider-container {
                 display: flex;
                 overflow-x: auto;
@@ -586,13 +594,14 @@
                 padding: 20px 20px 30px 20px; 
                 -webkit-overflow-scrolling: touch;
                 scrollbar-width: none;
-                /* 已移除預設的 scroll-snap-type，避免 Safari iOS 自動跳轉 */
+                overflow-anchor: none;
             }
             .m-slider-container::-webkit-scrollbar { display: none; }
 
             .m-info-box { 
                 min-width: 88%;
-                scroll-snap-align: center;
+                /* FIX: Removed scroll-snap-align: center from CSS.
+                   Applied dynamically via JS after first user interaction. */
                 margin: 0; 
                 border-radius: 16px; background: #fff; 
                 border: 2px solid #e5e7eb; padding: 40px 20px 30px 20px; position: relative; 
@@ -811,8 +820,8 @@
 
         .testi-stars { color: #fbbf24; font-size: 1.1rem; margin-bottom: 15px; letter-spacing: 2px;}
         .testi-text { font-size: 1rem; color: #4b5563; line-height: 1.6; font-style: italic; flex-grow: 1; }
-        .testi-text::before { content: "“ "; color: #cbd5e1; font-size: 1.5em; font-family: serif; font-weight: bold;}
-        .testi-text::after { content: " ”"; color: #cbd5e1; font-size: 1.5em; font-family: serif; font-weight: bold;}
+        .testi-text::before { content: "\201C"; color: #cbd5e1; font-size: 1.5em; font-family: serif; font-weight: bold;}
+        .testi-text::after { content: "\201D"; color: #cbd5e1; font-size: 1.5em; font-family: serif; font-weight: bold;}
 
         @media (max-width: 768px) {
             .testimonials-wrapper { padding: 0 15px; }
@@ -931,12 +940,29 @@
     </style>
     
     <script>
-        // 確保網頁載入時絕對停留在最上方
+        // =====================================================
+        // FIX: Aggressive scroll-to-top on page load.
+        // Prevents browser scroll restoration from jumping
+        // the page down on mobile/tablet devices.
+        // =====================================================
         if ('scrollRestoration' in history) {
             history.scrollRestoration = 'manual';
         }
+        // Immediate attempt before DOM is parsed
         window.scrollTo(0, 0);
+
         document.addEventListener("DOMContentLoaded", function() {
+            window.scrollTo(0, 0);
+            // RAF + setTimeout chain for maximum Safari iOS compatibility
+            requestAnimationFrame(function() {
+                window.scrollTo(0, 0);
+                setTimeout(function() { window.scrollTo(0, 0); }, 50);
+                setTimeout(function() { window.scrollTo(0, 0); }, 200);
+            });
+        });
+
+        // Belt-and-suspenders: also reset on window load (after images etc.)
+        window.addEventListener('load', function() {
             window.scrollTo(0, 0);
         });
     </script>
@@ -1191,7 +1217,7 @@
                 </p>
 
                 <div class="m-list-title">客製化選項</div>
-                <div class="m-list-row"><div class="m-check bg-orange"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><div>選項A：4回批改 & 兩堂1-1家教(50分/堂)</div></div>
+                <div class="m-list-row"><div class="m-check bg-orange"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><div>選項A：4回批改 &amp; 兩堂1-1家教(50分/堂)</div></div>
                 <div class="m-list-row"><div class="m-check bg-orange"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><div>選項B：6堂 1-1 家教課程(50分/堂)</div></div>
                 <div class="m-list-row"><div class="m-check bg-orange"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><div class="option-item"><span class="option-tag-orange">A+B優惠</span>八堂1-1家教 + 四回寫作批改</div></div>
 
@@ -1603,11 +1629,20 @@
     document.addEventListener('DOMContentLoaded', () => {
         const slider = document.getElementById('mobile-slider');
         if(slider) {
-            // 徹底解決 Safari iOS 載入時自動強制對齊導致的「畫面跳轉Bug」
-            // 改為：只有在使用者實際點擊/觸碰/捲動該區塊時，才加上 scrollSnapType 屬性
+            // =====================================================
+            // FIX: scroll-snap-type and scroll-snap-align are NOT
+            // set in CSS. They are applied here only after the
+            // user's first interaction (touch/scroll/hover),
+            // preventing Safari iOS and other mobile browsers from
+            // auto-snapping/jumping the page on initial load.
+            // =====================================================
             const enableSnap = () => {
                 if (slider.style.scrollSnapType !== 'x mandatory') {
                     slider.style.scrollSnapType = 'x mandatory';
+                    // Also apply snap-align to all cards
+                    slider.querySelectorAll('.m-info-box').forEach(card => {
+                        card.style.scrollSnapAlign = 'center';
+                    });
                 }
             };
             slider.addEventListener('touchstart', enableSnap, { once: true, passive: true });
@@ -1618,7 +1653,8 @@
                 let bestIndex = 0;
                 let minDistance = Infinity;
                 
-                const sliderCenter = slider.scrollLeft + (slider.clientWidth / 2);[0, 1, 2].forEach(i => {
+                const sliderCenter = slider.scrollLeft + (slider.clientWidth / 2);
+                [0, 1, 2].forEach(i => {
                     const card = document.getElementById('m-card-' + i);
                     if(card) {
                         const cardCenter = card.offsetLeft + (card.offsetWidth / 2);
