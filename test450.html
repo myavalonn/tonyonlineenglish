@@ -62,7 +62,8 @@
     .hero-title .glow-text { display: inline; font-size: clamp(26px, 6.5vw, 65px); font-weight: 900; margin-left: 10px; animation: initialGlow 2.5s ease-in-out forwards; }
     .hero-title .highlight-number { color: #ffeb3b; }
     .hero-subtitle-extra { font-size: clamp(18px, 4.5vw, 28px); color: #e0e0e0; margin-top: 15px; font-weight: bold; }
-    .hero-cta-btn { display: inline-block; margin-top: 30px; padding: 18px 40px; background: linear-gradient(135deg, #ff9800, #ff5722); color: #fff !important; font-size: clamp(18px, 4vw, 22px); font-weight: bold; border-radius: 50px; text-decoration: none; box-shadow: 0 6px 20px rgba(255, 87, 34, 0.4); }
+    /* 修正了點擊跳轉行為，防止網址變更 */
+    .hero-cta-btn { display: inline-block; margin-top: 30px; padding: 18px 40px; background: linear-gradient(135deg, #ff9800, #ff5722); color: #fff !important; font-size: clamp(18px, 4vw, 22px); font-weight: bold; border-radius: 50px; text-decoration: none; box-shadow: 0 6px 20px rgba(255, 87, 34, 0.4); cursor: pointer; }
     .hero-watermark { position: absolute; right: 20px; bottom: 15px; color: rgba(255, 255, 255, 0.5); font-size: 14px; z-index: 2; }
 
     /* =========================================
@@ -137,10 +138,6 @@
     /* =========================================
        6. 側邊購物車設定
        ========================================= */
-    .cart-icon-wrapper { position: absolute; top: 30px; right: 20px; font-size: 36px; cursor: pointer; color: #000; z-index: 10; }
-    .cart-count { position: absolute; top: -8px; right: -12px; background-color: red; color: white; border-radius: 50%; width: 22px; height: 22px; font-size: 14px; font-weight: bold; display: flex; justify-content: center; align-items: center; transition: transform 0.2s ease; transform: scale(0); }
-    .cart-count.visible { transform: scale(1); }
-    
     .cart-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 1000; opacity: 0; visibility: hidden; }
     .cart-overlay.open { opacity: 1; visibility: visible; }
     .cart-panel { position: fixed; top: 0; right: -100%; width: 90%; max-width: 800px; height: 100%; background-color: #fff; box-shadow: -5px 0 15px rgba(0,0,0,0.1); z-index: 1001; transition: right 0.5s ease; display: flex; flex-direction: column; }
@@ -250,11 +247,12 @@
   <div class="hero-section-inner">
     <div class="hero-text-content">
         <h1 class="hero-title">
-            <span class=“nowrap”>訂閱制: 限時特殊時段優惠！</span>
+            <span class="nowrap">限時特殊時段優惠！</span>
             <span class="glow-text">每堂只需<span class="highlight-number">450</span>點</span>
         </h1>
         <p class="hero-subtitle-extra">每堂 50 分鐘</p>
-        <a href="#target-checklist" class="hero-cta-btn">查看方案重點</a>
+        <!-- 修正按鈕寫法，避免點擊後改變網址 -->
+        <a href="javascript:void(0);" onclick="document.getElementById('target-checklist').scrollIntoView({behavior: 'smooth'});" class="hero-cta-btn">查看方案重點</a>
     </div>
   </div>
   <div class="hero-watermark">Tony線上美語家教</div>
@@ -290,17 +288,9 @@
                   <li><i class="check-icon">✓</i> <span><strong>每週固定『900點』訂閱扣除</strong>，當周沒有上課也會扣除</span></li>
                   <li><i class="check-icon">✓</i> <span><strong>適用上課時段：週一～週五 (平日) 10:00am~5:00pm前</strong></span></li>
                   <li><i class="check-icon">✓</i> <span><strong>每週第三堂或平日5pm後：『550點』</strong><br><span style="font-size: 0.9em; opacity: 0.8;">*週六及國定假日每堂：『600點』</span></span></li>
-               <li>
-  <i class="check-icon">✓</i> 
-  <span>
-    <strong>期間轉為非訂閱制：每堂『550點』</strong><br>
-    <span style="font-size: 0.9em; opacity: 0.8;">*平日 5:00 pm後每堂：『600點』，週六及國定假日每堂：『600點』</span>
-  </span>
-</li>
-<li>
-  <i class="check-icon">✓</i> 
-  <span><strong>課程期間會員擁有『兩次』暫停課程權益。</strong>(不限時長)</span>
-</li>                  <li><i class="check-icon">✓</i> <span><strong>『24小時內』提出請假或調課，『扣除0.5堂』</strong> (該時段點數)</span></li>
+                  <li><i class="check-icon">✓</i> <span><strong>期間轉為非訂閱制：每堂『550點』</strong><br><span style="font-size: 0.9em; opacity: 0.8;”>*平日 5pm後每堂：『600點』，週六及國定假日每堂：『600點』</span></span></li>
+                  <li><i class="check-icon">✓</i> <span><strong>課程期間會員擁有『兩次』暫停課程權益。</strong>(不限時長)</span></li>
+                  <li><i class="check-icon">✓</i> <span><strong>『24小時內』提出請假或調課，『扣除0.5堂』</strong> (該時段點數)</span></li>
                   <li><i class="check-icon">✓</i> <span><strong>『12小時內』提出請假或調課，『扣除1堂』</strong> (該時段點數)</span></li>
                   <li><i class="warning-icon">⚠️</i> <span><strong>週六和國定假日課程需於上課前 24 小時提出請假或調課</strong>；若未於24小時前提出，當堂課視為已使用。</span></li>
                   <li><i class="check-icon">✓</i> <span><strong>2026 連假當週不自動扣除點數</strong> (會另行公告)，但仍可預約上課</span></li>
@@ -747,6 +737,14 @@
     window.closeEmailPopup = function() { emailPopupOverlay.classList.remove('visible'); }
 
     document.addEventListener('DOMContentLoaded', () => {
+        // 【修正】移除 URL 中的錨點並強制將畫面回到最上方，避免點開 LINE 的連結自動跳轉
+        if (window.location.hash) {
+            window.history.replaceState(null, null, window.location.pathname + window.location.search);
+        }
+        setTimeout(() => {
+            window.scrollTo(0, 0);
+        }, 10);
+        
         initGallery();
         updateCartDisplay();
 
