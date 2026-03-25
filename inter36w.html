@@ -582,15 +582,11 @@
             .m-slider-container {
                 display: flex;
                 overflow-x: auto;
-                /* 移除初始的強制對齊，避免手機版載入跳轉 Bug */
                 gap: 15px;
                 padding: 20px 20px 30px 20px; 
                 -webkit-overflow-scrolling: touch;
                 scrollbar-width: none;
-            }
-            /* 透過 JS 延遲加入此 Class，讓瀏覽器載入完成後才啟用對齊 */
-            .m-slider-container.snap-active {
-                scroll-snap-type: x mandatory;
+                /* 已移除預設的 scroll-snap-type，避免 Safari iOS 自動跳轉 */
             }
             .m-slider-container::-webkit-scrollbar { display: none; }
 
@@ -935,11 +931,14 @@
     </style>
     
     <script>
-        // 防止手機版在載入時自動跳轉至內容區域的 Bug
+        // 確保網頁載入時絕對停留在最上方
         if ('scrollRestoration' in history) {
             history.scrollRestoration = 'manual';
         }
         window.scrollTo(0, 0);
+        document.addEventListener("DOMContentLoaded", function() {
+            window.scrollTo(0, 0);
+        });
     </script>
 </head>
 <body>
@@ -1604,17 +1603,22 @@
     document.addEventListener('DOMContentLoaded', () => {
         const slider = document.getElementById('mobile-slider');
         if(slider) {
-            // 延遲啟用強制對齊，徹底防止手機版一載入就自動往下跳的 Bug
-            setTimeout(() => {
-                slider.classList.add('snap-active');
-            }, 300);
+            // 徹底解決 Safari iOS 載入時自動強制對齊導致的「畫面跳轉Bug」
+            // 改為：只有在使用者實際點擊/觸碰/捲動該區塊時，才加上 scrollSnapType 屬性
+            const enableSnap = () => {
+                if (slider.style.scrollSnapType !== 'x mandatory') {
+                    slider.style.scrollSnapType = 'x mandatory';
+                }
+            };
+            slider.addEventListener('touchstart', enableSnap, { once: true, passive: true });
+            slider.addEventListener('mouseover', enableSnap, { once: true, passive: true });
+            slider.addEventListener('scroll', enableSnap, { once: true, passive: true });
 
             slider.addEventListener('scroll', () => {
                 let bestIndex = 0;
                 let minDistance = Infinity;
                 
-                const sliderCenter = slider.scrollLeft + (slider.clientWidth / 2);
-                [0, 1, 2].forEach(i => {
+                const sliderCenter = slider.scrollLeft + (slider.clientWidth / 2);[0, 1, 2].forEach(i => {
                     const card = document.getElementById('m-card-' + i);
                     if(card) {
                         const cardCenter = card.offsetLeft + (card.offsetWidth / 2);
