@@ -53,68 +53,56 @@
         .hero-section {
             width: 100%;
             min-height: 60vh;
-            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)), 
+                        url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-13%20%E4%B8%8B%E5%8D%884.15.10.png?updatedAt=1773389907343') center center / cover no-repeat;
             display: flex;
-            flex-direction: row;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 60px 5%;
-            gap: 40px;
-            overflow: hidden;
-            position: relative;
+            text-align: center;
+            padding: 20px;
+            color: #fff;
+            overflow: hidden; /* 防止動畫跑出版面 */
         }
 
-        /* 動畫設定 */
+        /* 動畫設定：從左側滑入 */
         @keyframes slideInLeft {
-            0% { opacity: 0; transform: translateX(-80px); }
-            100% { opacity: 1; transform: translateX(0); }
-        }
-
-        @keyframes slideInRight {
-            0% { opacity: 0; transform: translateX(80px); }
+            0% { opacity: 0; transform: translateX(-60px); }
             100% { opacity: 1; transform: translateX(0); }
         }
 
         .hero-content {
-            flex: 1;
-            max-width: 650px;
-            color: #fff;
-            opacity: 0; /* 起始透明，靠動畫顯示 */
+            opacity: 0;
             animation: slideInLeft 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
-        }
-
-        .hero-image-wrapper {
-            flex: 1;
-            max-width: 500px;
-            opacity: 0; /* 起始透明，靠動畫顯示 */
-            animation: slideInRight 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s forwards; /* 延遲0.2秒滑入 */
-        }
-
-        .hero-image-wrapper img {
-            width: 100%;
-            height: auto;
-            border-radius: 16px;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-            display: block;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            max-width: 900px;
         }
 
         .hero-title {
-            font-size: 3.2rem;
+            font-size: 3.5rem;
             font-weight: 900;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
             line-height: 1.3;
-            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
         }
 
         .hero-title .highlight {
             color: #fbbf24;
         }
+        
+        .hero-sub-text {
+            display: block;
+            margin-top: 5px;
+        }
 
         .hero-action-group {
             display: flex;
             flex-direction: column;
-            gap: 15px;
-            align-items: flex-start;
+            align-items: center;
+            gap: 20px;
+            width: 100%;
         }
 
         .hero-btn {
@@ -144,6 +132,7 @@
             display: flex;
             gap: 15px;
             flex-wrap: wrap;
+            justify-content: center;
         }
 
         .secondary-btn {
@@ -177,25 +166,17 @@
             background-color: rgba(0, 185, 0, 1);
         }
 
-        @media (max-width: 900px) {
-            .hero-title { font-size: 2.5rem; }
-        }
-
         @media (max-width: 768px) {
-            .hero-section {
-                flex-direction: column;
-                padding: 40px 20px;
-                gap: 30px;
-                text-align: center;
+            .hero-section { min-height: 50vh; padding: 40px 20px; }
+            .hero-title { font-size: 2.2rem; margin-bottom: 25px; }
+            
+            /* 手機版：影片課程X寫作加強 縮小並強制在同一行 */
+            .hero-sub-text {
+                font-size: 1.5rem;
+                white-space: nowrap; 
             }
-            .hero-content {
-                text-align: center;
-                /* 手機版同樣保留左滑入與右滑入效果 */
-            }
-            .hero-action-group {
-                align-items: center;
-                width: 100%;
-            }
+            
+            .hero-action-group { max-width: 400px; width: 100%; }
             .hero-btn { width: 100%; font-size: 1.15rem; padding: 14px; }
             
             /* 強制按鈕在同一行 */
@@ -228,72 +209,6 @@
 
         /* Mobile Header Section */
         .m-header-section { display: none; padding-top: 25px; margin-bottom: 10px; }
-
-        /* =========================================
-           TESTIMONIALS SECTION (學員見證)
-           ========================================= */
-        .testimonials-wrapper {
-            width: 100%;
-            max-width: 1400px;
-            margin: 50px auto 20px auto;
-            padding: 0 20px;
-            box-sizing: border-box;
-        }
-
-        .testi-section-title {
-            text-align: center;
-            font-size: 2rem;
-            font-weight: 900;
-            color: var(--text-main);
-            margin-bottom: 30px;
-        }
-
-        .testi-slider {
-            display: flex;
-            overflow-x: auto;
-            scroll-snap-type: x mandatory;
-            gap: 20px;
-            padding: 10px 5px 30px 5px; /* padding for shadow visibility */
-            -webkit-overflow-scrolling: touch;
-            scrollbar-width: none;
-        }
-        .testi-slider::-webkit-scrollbar { display: none; }
-
-        .testi-card {
-            min-width: 300px;
-            max-width: 320px;
-            background: #ffffff;
-            border: 1px solid #e5e7eb;
-            border-radius: 16px;
-            padding: 25px;
-            scroll-snap-align: center;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
-            flex-shrink: 0;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .testi-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 12px;
-        }
-
-        .testi-name { font-weight: 800; font-size: 1.2rem; color: var(--text-main); }
-        .testi-role {
-            font-size: 0.85rem;
-            background: #f1f5f9;
-            padding: 4px 10px;
-            border-radius: 20px;
-            color: #475569;
-            font-weight: 700;
-        }
-
-        .testi-stars { color: #fbbf24; font-size: 1.1rem; margin-bottom: 15px; letter-spacing: 2px;}
-        .testi-text { font-size: 1rem; color: #4b5563; line-height: 1.6; font-style: italic; flex-grow: 1; }
-        .testi-text::before { content: "“ "; color: #cbd5e1; font-size: 1.5em; font-family: serif; font-weight: bold;}
-        .testi-text::after { content: " ”"; color: #cbd5e1; font-size: 1.5em; font-family: serif; font-weight: bold;}
 
         /* =========================================
            FEATURES SECTION
@@ -691,6 +606,72 @@
             .m-dot.active { width: 30px; }
         }
 
+        /* =========================================
+           TESTIMONIALS SECTION (學員見證)
+           ========================================= */
+        .testimonials-wrapper {
+            width: 100%;
+            max-width: 1400px;
+            margin: 20px auto 60px auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        .testi-section-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--text-main);
+            margin-bottom: 30px;
+        }
+
+        .testi-slider {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            gap: 20px;
+            padding: 10px 5px 30px 5px; /* padding for shadow visibility */
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+        .testi-slider::-webkit-scrollbar { display: none; }
+
+        .testi-card {
+            min-width: 300px;
+            max-width: 320px;
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 25px;
+            scroll-snap-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .testi-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .testi-name { font-weight: 800; font-size: 1.2rem; color: var(--text-main); }
+        .testi-role {
+            font-size: 0.85rem;
+            background: #f1f5f9;
+            padding: 4px 10px;
+            border-radius: 20px;
+            color: #475569;
+            font-weight: 700;
+        }
+
+        .testi-stars { color: #fbbf24; font-size: 1.1rem; margin-bottom: 15px; letter-spacing: 2px;}
+        .testi-text { font-size: 1rem; color: #4b5563; line-height: 1.6; font-style: italic; flex-grow: 1; }
+        .testi-text::before { content: "“ "; color: #cbd5e1; font-size: 1.5em; font-family: serif; font-weight: bold;}
+        .testi-text::after { content: " ”"; color: #cbd5e1; font-size: 1.5em; font-family: serif; font-weight: bold;}
+
         /* CART & OVERLAY STYLES */
         .cart-overlay { 
             position: fixed; top: 0; left: 0; 
@@ -798,14 +779,13 @@
 </head>
 <body>
 
-<!-- HERO SECTION (改版圖文左右設計 + 載入動畫) -->
+<!-- HERO SECTION (使用背景大圖，文字由左滑入) -->
 <div class="hero-section">
-    <!-- 文字區塊：從左側滑入 -->
     <div class="hero-content">
         <h1 class="hero-title">
             GEPT 全民英檢<br>
             「<span class="highlight">中級寫作</span>」<br>
-            影片課程X寫作加強
+            <span class="hero-sub-text">影片課程X寫作加強</span>
         </h1>
         
         <div class="hero-action-group">
@@ -821,11 +801,6 @@
                 </a>
             </div>
         </div>
-    </div>
-
-    <!-- 圖片區塊：從右側滑入 -->
-    <div class="hero-image-wrapper">
-        <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-13%20%E4%B8%8B%E5%8D%884.15.10.png?updatedAt=1773389907343" alt="GEPT 課程預覽">
     </div>
 </div>
 
@@ -1062,61 +1037,6 @@
         </div>
     </div>
 
-    <!-- ========================================== 
-         TESTIMONIALS SECTION (學員見證) 
-         ========================================== -->
-    <div class="testimonials-wrapper">
-        <h2 class="testi-section-title">學員見證</h2>
-        <div class="testi-slider" id="testi-slider">
-            
-            <div class="testi-card">
-                <div class="testi-header">
-                    <span class="testi-name">Jason</span>
-                    <span class="testi-role">高中生</span>
-                </div>
-                <div class="testi-stars">★★★★★</div>
-                <p class="testi-text">本來寫作常常抓不到重點，上了6回完整影片課程後，邏輯變得超清晰！順利取得全民英檢中級證書，進步非常明顯！</p>
-            </div>
-
-            <div class="testi-card">
-                <div class="testi-header">
-                    <span class="testi-name">Emily</span>
-                    <span class="testi-role">國中生</span>
-                </div>
-                <div class="testi-stars">★★★★★</div>
-                <p class="testi-text">老師的雙師專業批改一針見血地點出我的盲點，也給了很多實用的範本替換，讓我第一次挑戰就高分通過！</p>
-            </div>
-
-            <div class="testi-card">
-                <div class="testi-header">
-                    <span class="testi-name">Kevin</span>
-                    <span class="testi-role">高中生</span>
-                </div>
-                <div class="testi-stars">★★★★★</div>
-                <p class="testi-text">1對1的線上真人寫作診斷課程太棒了！直接解決我長久以來的文法錯誤。加強方案完全拯救了我的備考期。</p>
-            </div>
-
-            <div class="testi-card">
-                <div class="testi-header">
-                    <span class="testi-name">Rachel</span>
-                    <span class="testi-role">高中生</span>
-                </div>
-                <div class="testi-stars">★★★★★</div>
-                <p class="testi-text">考前衝刺選了方案A，影片時數不會太長但都是精華！搭配翻譯與批改指導，讓我在寫作大題拿到了從未想過的高分。</p>
-            </div>
-
-            <div class="testi-card">
-                <div class="testi-header">
-                    <span class="testi-name">Leo</span>
-                    <span class="testi-role">國中生</span>
-                </div>
-                <div class="testi-stars">★★★★★</div>
-                <p class="testi-text">原本對英文寫作超沒自信，靠著家教課程慢慢建立語感跟句型，最後奇蹟似地過關了！非常推薦需要針對性指導的人。</p>
-            </div>
-
-        </div>
-    </div>
-
     <!-- COURSE FEATURES SECTION -->
     <div class="features-wrapper">
         <div class="feature-group-row feature-service-group">
@@ -1175,6 +1095,61 @@
         <div class="terms-box">
             <strong>💡 組合優惠說明：</strong><br>
             本專案包含之真人服務（批改評分與家教） 。贈送項目為限時福利，恕不折現或抵扣主課程費用。
+        </div>
+    </div>
+
+    <!-- ========================================== 
+         TESTIMONIALS SECTION (學員見證) - 移至最底端
+         ========================================== -->
+    <div class="testimonials-wrapper">
+        <h2 class="testi-section-title">學員見證</h2>
+        <div class="testi-slider" id="testi-slider">
+            
+            <div class="testi-card">
+                <div class="testi-header">
+                    <span class="testi-name">Jason</span>
+                    <span class="testi-role">高中生</span>
+                </div>
+                <div class="testi-stars">★★★★★</div>
+                <p class="testi-text">本來寫作常常抓不到重點，上了6回完整影片課程後，邏輯變得超清晰！順利取得全民英檢中級證書，進步非常明顯！</p>
+            </div>
+
+            <div class="testi-card">
+                <div class="testi-header">
+                    <span class="testi-name">Emily</span>
+                    <span class="testi-role">國中生</span>
+                </div>
+                <div class="testi-stars">★★★★★</div>
+                <p class="testi-text">老師的雙師專業批改一針見血地點出我的盲點，也給了很多實用的範本替換，讓我第一次挑戰就高分通過！</p>
+            </div>
+
+            <div class="testi-card">
+                <div class="testi-header">
+                    <span class="testi-name">Kevin</span>
+                    <span class="testi-role">高中生</span>
+                </div>
+                <div class="testi-stars">★★★★★</div>
+                <p class="testi-text">1對1的線上真人寫作診斷課程太棒了！直接解決我長久以來的文法錯誤。加強方案完全拯救了我的備考期。</p>
+            </div>
+
+            <div class="testi-card">
+                <div class="testi-header">
+                    <span class="testi-name">Rachel</span>
+                    <span class="testi-role">高中生</span>
+                </div>
+                <div class="testi-stars">★★★★★</div>
+                <p class="testi-text">考前衝刺選了方案A，影片時數不會太長但都是精華！搭配翻譯與批改指導，讓我在寫作大題拿到了從未想過的高分。</p>
+            </div>
+
+            <div class="testi-card">
+                <div class="testi-header">
+                    <span class="testi-name">Leo</span>
+                    <span class="testi-role">國中生</span>
+                </div>
+                <div class="testi-stars">★★★★★</div>
+                <p class="testi-text">原本對英文寫作超沒自信，靠著家教課程慢慢建立語感跟句型，最後奇蹟似地過關了！非常推薦需要針對性指導的人。</p>
+            </div>
+
         </div>
     </div>
 
