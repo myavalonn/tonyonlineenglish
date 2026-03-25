@@ -15,7 +15,7 @@
     
     /* 讓主要容器在所有裝置都呈現全寬度，取消陰影與圓角 */
     .product-widget { 
-        max-width: 1200px; /* 電腦版展開至 1200px 寬度 */
+        max-width: 1200px; 
         width: 100%; 
         margin: 0 auto; 
         background-color: #ffffff; 
@@ -24,10 +24,34 @@
         overflow: hidden; 
     }
     
-    .image-gallery { position: relative; overflow: hidden; background-color: #eee; }
+    .image-gallery { position: relative; overflow: hidden; background-color: #fff; }
     .gallery-track { display: flex; transition: transform 0.5s ease-in-out; }
-    .gallery-slide { min-width: 100%; box-sizing: border-box; }
-    .gallery-slide img { width: 100%; display: block; }
+    .gallery-slide { min-width: 100%; box-sizing: border-box; position: relative; }
+    .gallery-slide img { width: 100%; display: block; cursor: zoom-in; }
+    
+    /* --- 手機版箭頭與點點樣式 --- */
+    .gallery-nav { position: absolute; top: 50%; transform: translateY(-50%); width: 100%; display: flex; justify-content: space-between; pointer-events: none; z-index: 5; }
+    .gallery-nav button { pointer-events: auto; background-color: rgba(0, 0, 0, 0.5); color: white; border: none; font-size: 28px; font-weight: bold; cursor: pointer; border-radius: 50%; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; margin: 0 15px; line-height: 1; transition: background-color 0.3s ease; }
+    .gallery-nav button:hover { background-color: rgba(0, 0, 0, 0.8); }
+    .gallery-dots { position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px; z-index: 5; }
+    .gallery-dot { width: 12px; height: 12px; background-color: rgba(255, 255, 255, 0.6); border-radius: 50%; cursor: pointer; transition: background-color 0.3s ease, transform 0.3s ease; border: 1px solid rgba(0, 0, 0, 0.4); }
+    .gallery-dot.active { background-color: white; transform: scale(1.1); box-shadow: 0 0 5px rgba(0,0,0,0.5); }
+
+    /* --- 圖片放大 Lightbox 樣式 --- */
+    .lightbox-overlay {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background-color: rgba(0, 0, 0, 0.9); z-index: 3000;
+        display: none; justify-content: center; align-items: center;
+    }
+    .lightbox-overlay.visible { display: flex; }
+    .lightbox-overlay img {
+        max-width: 95%; max-height: 95%; border-radius: 8px;
+        box-shadow: 0 4px 25px rgba(0,0,0,0.5);
+    }
+    .lightbox-close {
+        position: absolute; top: 20px; right: 30px; color: white;
+        font-size: 40px; font-weight: bold; cursor: pointer;
+    }
     
     .product-info { padding: 30px 20px; position: relative; }
     .product-info h1 { font-size: 32px; color: #000; margin: 0 0 10px 0; line-height: 1.3; font-weight: bold; }
@@ -77,7 +101,7 @@
     .hero-watermark { position: absolute; right: 20px; bottom: 15px; color: rgba(255, 255, 255, 0.5); font-size: 14px; z-index: 2; }
 
     /* =========================================
-       3. 適合每週固定兩堂... (還原為純粹黑字白底無卡片)
+       3. 適合每週固定兩堂... (純粹黑字白底無卡片)
        ========================================= */
     .photo2-checklist {
         margin: 40px 0; padding-top: 30px; border-top: 3px solid #000; scroll-margin-top: 40px;
@@ -101,7 +125,7 @@
     }
 
     /* =========================================
-       4. 底部區塊：時段與費用、課程權益 (無卡片、無Icon，黑字大標)
+       4. 底部區塊：時段與費用、課程權益 (無卡片、黑字大標)
        ========================================= */
     .info-block-simple {
         max-width: 1200px; margin: 0 auto; padding: 40px 20px; background-color: #ffffff; color: #000;
@@ -143,7 +167,6 @@
     .option-selector select { font-size: 20px; padding: 15px; border: 2px solid #000; border-radius: 8px; width: 100%; color: #000; background-color: #fff;}
     #add-to-cart-btn { width: 100%; background-color: #000; color: white; border: none; padding: 20px; font-size: 22px; font-weight: bold; border-radius: 8px; cursor: pointer; }
     
-    /* 購物車側邊欄與其他原有樣式保留 */
     .cart-icon-wrapper { position: absolute; top: 30px; right: 20px; font-size: 36px; cursor: pointer; color: #000; z-index: 10; }
     .cart-count { position: absolute; top: -8px; right: -12px; background-color: red; color: white; border-radius: 50%; width: 22px; height: 22px; font-size: 14px; font-weight: bold; display: flex; justify-content: center; align-items: center; transition: transform 0.2s ease; transform: scale(0); }
     .cart-count.visible { transform: scale(1); }
@@ -180,7 +203,24 @@
        7. RWD 響應式字體與排版加強
        ========================================= */
     @media screen and (min-width: 768px) {
-        /* 電腦版：字體進一步放大，維持全寬大器感 */
+        /* 電腦/平板版：五張圖片並列為一排，無箭頭 */
+        .image-gallery { padding: 0 20px; background: transparent; overflow: visible; margin-bottom: 30px; margin-top: 20px; }
+        .gallery-track {
+            display: grid !important;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            transform: none !important; /* 取消輪播滑動效果 */
+            width: 100%;
+        }
+        .gallery-slide { 
+            min-width: 0 !important; width: 100% !important; 
+            border-radius: 8px; overflow: hidden; border: 1px solid #e0e0e0;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+        .gallery-slide:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
+        .gallery-nav, .gallery-dots { display: none !important; }
+
+        /* 電腦版字體放大 */
         .product-info h1 { font-size: 42px; }
         .product-info h2 { font-size: 28px; }
         .photo2-checklist h3 { font-size: 32px; }
@@ -219,13 +259,18 @@
 </head>
 <body>
 
+<!-- 點擊放大的 Lightbox 覆蓋層 -->
+<div id="lightbox-overlay" class="lightbox-overlay" onclick="closeLightbox()">
+    <span class="lightbox-close">&times;</span>
+    <img id="lightbox-img" src="" alt="放大圖片">
+</div>
+
 <!-- Hero Section -->
 <div class="hero-section">
   <div class="hero-bg-layer"></div>
   <div class="hero-section-inner">
     <div class="hero-text-content">
         <h1 class="hero-title">
-            <!-- 移除換行，讓手機與電腦版皆能在同一行 (或自動依寬度流暢折行) -->
             <span class="nowrap">限時特殊時段優惠！</span>
             <span class="glow-text">每堂只需<span class="highlight-number">450</span>點</span>
         </h1>
@@ -240,6 +285,7 @@
 <div id="embedding-container">
   <div id="product-page">
     <div class="product-widget">
+        <!-- 圖片區域 -->
         <div class="image-gallery"><div class="gallery-track"></div></div>
         
         <div class="product-info">
@@ -260,9 +306,7 @@
                 </div>
             </div>
 
-            <!-- =========================================
-                 修改：純文字黑字白底重點清單 (無卡片)
-                 ========================================= -->
+            <!-- 純文字黑字白底重點清單 -->
             <div class="photo2-checklist" id="target-checklist">
               <h3>適合每週固定兩堂課程的學員</h3>
               <ul>
@@ -346,9 +390,7 @@
   </div>
 </div>
 
-<!-- =========================================
-     下方表格與黑字白底資訊區塊 (無卡片設計)
-     ========================================= -->
+<!-- 下方表格與黑字白底資訊區塊 -->
 <div class="extra-sections-wrapper">
   
   <!-- 表格：時段 (Code 5) -->
@@ -435,9 +477,7 @@
   </div>
 </div>
 
-<!-- =========================================
-     純文字大字體 Info Blocks (無卡片/無Icon)
-     ========================================= -->
+<!-- 純文字大字體 Info Blocks -->
 <div class="info-block-simple">
     <h3>時段與費用</h3>
     <p><strong>適用時段：</strong><br>
@@ -473,7 +513,7 @@
 </div>
 
 <!-- =========================================
-     常見問題 FAQ
+     常見問題 FAQ (已加上超連結)
      ========================================= -->
 <div class="faq-section">
     <h2>課程常見問題FAQ</h2>
@@ -481,7 +521,7 @@
     <div class="faq-item">
         <button class="faq-question">我可以選擇的課程為何呢？ <span style="float: right;">+</span></button>
         <div class="faq-answer">
-            <p>請點選詳細課程介紹，上述陳列皆可上課！若有特殊課程需求，請直接告知我們。</p>
+            <p>請點選 <a href="https://tonyonlineenglish.netlify.app/allcourses" target="_blank" style="color: blue; text-decoration: underline;">詳細課程介紹</a>，上述陳列皆可上課！若有特殊課程需求，請直接告知我們。</p>
         </div>
     </div>
     
@@ -497,7 +537,7 @@
     <div class="faq-item">
         <button class="faq-question">我要怎麼知道我的上課時間？ <span style="float: right;">+</span></button>
         <div class="faq-answer">
-            <p>直接點選課程時段查詢連結，輸入您的英文名字即可知道即將開始的課程。</p>
+            <p>直接點選 <a href="https://tonyonlineenglish.netlify.app/ycs" target="_blank" style="color: blue; text-decoration: underline;">課程時段查詢</a> 連結，輸入您的英文名字即可知道即將開始的課程。</p>
         </div>
     </div>
     
@@ -525,7 +565,6 @@
     ];
     let cart = {};
     let currentSlide = 0;
-    let autoRotateInterval;
     let touchStartX = 0;
 
     const productPage = document.getElementById("product-page"),
@@ -550,29 +589,70 @@
         closePopupBtn = document.getElementById('close-popup-btn'),
         popupCheckoutBtn = document.getElementById('popup-checkout-btn');
 
+    // Lightbox 控制
+    function openLightbox(index) {
+        document.getElementById('lightbox-img').src = images[index];
+        document.getElementById('lightbox-overlay').classList.add('visible');
+        document.body.style.overflow = 'hidden'; // 防止背景滾動
+    }
+    function closeLightbox() {
+        document.getElementById('lightbox-overlay').classList.remove('visible');
+        document.body.style.overflow = '';
+    }
+
+    // 圖片切換控制
     function showSlide(index) {
         if (images.length === 0) return;
         if (index >= images.length) { currentSlide = 0; } else if (index < 0) { currentSlide = images.length - 1; } else { currentSlide = index; }
+        
         galleryTrack.style.transform = `translateX(${-currentSlide * 100}%)`;
+        
+        if (images.length > 1) { 
+            const dots = document.querySelectorAll('.gallery-dot');
+            if(dots.length) {
+                dots.forEach(dot => dot.classList.remove('active')); 
+                dots[currentSlide].classList.add('active'); 
+            }
+        }
     }
-
     function nextSlide() { showSlide(currentSlide + 1); }
     function prevSlide() { showSlide(currentSlide - 1); }
-    function startAutoRotate() { if (images.length > 1) { stopAutoRotate(); autoRotateInterval = setInterval(nextSlide, 4000); } }
-    function stopAutoRotate() { clearInterval(autoRotateInterval); }
-    function handleTouchStart(e) { stopAutoRotate(); touchStartX = e.touches[0].clientX; }
-    function handleTouchEnd(e) { const touchEndX = e.changedTouches[0].clientX; if (touchStartX - touchEndX > 50) { nextSlide(); } else if (touchEndX - touchStartX > 50) { prevSlide(); } }
+    function handleTouchStart(e) { touchStartX = e.touches[0].clientX; }
+    function handleTouchEnd(e) { 
+        const touchEndX = e.changedTouches[0].clientX; 
+        if (touchStartX - touchEndX > 50) { nextSlide(); } 
+        else if (touchEndX - touchStartX > 50) { prevSlide(); } 
+    }
 
+    // 初始化圖片區
     function initGallery() {
         galleryTrack.innerHTML = '';
         if (images.length === 0) { imageGallery.style.display = 'none'; return; }
-        images.forEach(src => { galleryTrack.innerHTML += `<div class="gallery-slide"><img src="${src}" alt="宣傳圖"></div>`; });
+        
+        images.forEach((src, index) => { 
+            galleryTrack.innerHTML += `<div class="gallery-slide"><img src="${src}" alt="宣傳圖" onclick="openLightbox(${index})"></div>`; 
+        });
+
         if (images.length > 1) {
+            imageGallery.insertAdjacentHTML('beforeend', `<div class="gallery-nav"><button class="prev-btn">‹</button><button class="next-btn">›</button></div>`);
+            document.querySelector('.prev-btn').addEventListener('click', prevSlide);
+            document.querySelector('.next-btn').addEventListener('click', nextSlide);
+            
+            const dotsContainer = document.createElement('div');
+            dotsContainer.className = 'gallery-dots';
+            images.forEach((_, index) => { 
+                dotsContainer.innerHTML += `<div class="gallery-dot" data-index="${index}"></div>`; 
+            });
+            imageGallery.appendChild(dotsContainer);
+            
+            dotsContainer.addEventListener('click', e => { 
+                if(e.target.dataset.index !== undefined) { 
+                    showSlide(parseInt(e.target.dataset.index)); 
+                } 
+            });
+            
             imageGallery.addEventListener('touchstart', handleTouchStart, { passive: true });
             imageGallery.addEventListener('touchend', handleTouchEnd, { passive: true });
-            imageGallery.addEventListener('mouseenter', stopAutoRotate);
-            imageGallery.addEventListener('mouseleave', startAutoRotate);
-            startAutoRotate();
         }
         showSlide(0);
     }
