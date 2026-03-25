@@ -162,7 +162,7 @@ document.addEventListener("DOMContentLoaded", function() {
             <a href="https://tonyonlineenglish.netlify.app/allcourses" target="_blank" class="menu-link highlight-course">課程詳細介紹<span>升學 檢定 職場 公職 客製化</span></a>
             
             <!-- 新增的全民英檢中級寫作選項 -->
-            <a href="https://tonyonlineenglish.netlify.app/inter36w" target="_blank" class="menu-link">全民英檢中級寫作<span>三/六回影片課程+家教+寫作批改</span></a>
+            <a href="https://tonyonlineenglish.netlify.app/inter36w" target="_blank" class="menu-link">全民英檢中級寫作<span>三/六回影片課程+家教+批改</span></a>
             
             <a href="https://tonyonlineenglish.netlify.app/ycs" target="_blank" class="menu-link">你的課表查詢<span>即時查看課程安排狀況</span></a>
             <a href="https://tonyonlineenglish.netlify.app/exper" target="_blank" class="menu-link">預約體驗課程<span>25 / 50 分鐘線上試聽</span></a>
