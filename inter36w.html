@@ -167,31 +167,31 @@
         }
 
         @media (max-width: 768px) {
-            .hero-section { min-height: 50vh; padding: 40px 20px; }
+            .hero-section { min-height: 50vh; padding: 40px 15px; }
             .hero-title { font-size: 2.2rem; margin-bottom: 25px; }
             
             /* 手機版：影片課程X寫作加強 縮小並強制在同一行 */
             .hero-sub-text {
-                font-size: 1.5rem;
+                font-size: 1.3rem; /* 字體再縮小一點確保安全 */
                 white-space: nowrap; 
             }
             
-            .hero-action-group { max-width: 400px; width: 100%; }
+            .hero-action-group { max-width: 100%; width: 100%; }
             .hero-btn { width: 100%; font-size: 1.15rem; padding: 14px; }
             
-            /* 強制按鈕在同一行 */
+            /* 強制按鈕在同一行並優化內距 */
             .hero-links {
                 display: flex;
                 flex-direction: row;
                 flex-wrap: nowrap;
                 width: 100%;
-                gap: 10px;
+                gap: 8px;
                 justify-content: space-between;
             }
             .secondary-btn {
                 flex: 1;
                 justify-content: center;
-                padding: 12px 0;
+                padding: 12px 5px; /* 縮減左右 padding 以免字體被擠壓 */
                 font-size: 0.9rem;
                 white-space: nowrap;
             }
@@ -613,7 +613,7 @@
             width: 100%;
             max-width: 1400px;
             margin: 20px auto 60px auto;
-            padding: 0 20px;
+            padding: 0 30px; /* 給左右箭頭留出空間 */
             box-sizing: border-box;
         }
 
@@ -625,14 +625,53 @@
             margin-bottom: 30px;
         }
 
+        .testi-container-relative {
+            position: relative;
+            width: 100%;
+            display: flex;
+            align-items: center;
+        }
+
+        /* 桌面版左右切換箭頭 */
+        .testi-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 48px;
+            height: 48px;
+            background-color: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 50%;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 10;
+            color: #64748b;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+
+        .testi-arrow:hover {
+            background-color: var(--theme-blue);
+            color: white;
+            border-color: var(--theme-blue);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+        }
+
+        .testi-arrow.left-arrow { left: -20px; }
+        .testi-arrow.right-arrow { right: -20px; }
+
         .testi-slider {
             display: flex;
             overflow-x: auto;
             scroll-snap-type: x mandatory;
             gap: 20px;
-            padding: 10px 5px 30px 5px; /* padding for shadow visibility */
+            padding: 15px 5px 30px 5px; /* padding for shadow visibility */
             -webkit-overflow-scrolling: touch;
             scrollbar-width: none;
+            width: 100%;
         }
         .testi-slider::-webkit-scrollbar { display: none; }
 
@@ -671,6 +710,19 @@
         .testi-text { font-size: 1rem; color: #4b5563; line-height: 1.6; font-style: italic; flex-grow: 1; }
         .testi-text::before { content: "“ "; color: #cbd5e1; font-size: 1.5em; font-family: serif; font-weight: bold;}
         .testi-text::after { content: " ”"; color: #cbd5e1; font-size: 1.5em; font-family: serif; font-weight: bold;}
+
+        /* 手機版隱藏桌面箭頭，並確保露出下一張卡片 */
+        @media (max-width: 768px) {
+            .testimonials-wrapper { padding: 0 15px; }
+            .testi-arrow { display: none; }
+            .testi-slider { gap: 15px; }
+            .testi-card {
+                /* 設定 85vw 確保右側會露出下一張卡片的邊緣，提示可滑動 */
+                min-width: 85vw;
+                max-width: 85vw;
+                padding: 20px;
+            }
+        }
 
         /* CART & OVERLAY STYLES */
         .cart-overlay { 
@@ -797,7 +849,7 @@
                     <i class="fa-solid fa-calendar-check"></i> 預約體驗課程
                 </a>
                 <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="secondary-btn line-btn">
-                    <i class="fa-brands fa-line"></i> LINE: myavalon
+                    <img src="https://ik.imagekit.io/lql1uveoc/line.png?updatedAt=1761926064215" alt="LINE" style="width: 18px; height: 18px; object-fit: contain;"> 加入 LINE
                 </a>
             </div>
         </div>
@@ -1103,53 +1155,61 @@
          ========================================== -->
     <div class="testimonials-wrapper">
         <h2 class="testi-section-title">學員見證</h2>
-        <div class="testi-slider" id="testi-slider">
+        
+        <!-- 加入 relative 容器供電腦版左右箭頭定位 -->
+        <div class="testi-container-relative">
+            <button class="testi-arrow left-arrow" onclick="scrollTesti(-1)"><i class="fa-solid fa-chevron-left"></i></button>
             
-            <div class="testi-card">
-                <div class="testi-header">
-                    <span class="testi-name">Jason</span>
-                    <span class="testi-role">高中生</span>
+            <div class="testi-slider" id="testi-slider">
+                
+                <div class="testi-card">
+                    <div class="testi-header">
+                        <span class="testi-name">Jason</span>
+                        <span class="testi-role">高中生</span>
+                    </div>
+                    <div class="testi-stars">★★★★★</div>
+                    <p class="testi-text">本來寫作常常抓不到重點，上了6回完整影片課程後，邏輯變得超清晰！順利取得全民英檢中級證書，進步非常明顯！</p>
                 </div>
-                <div class="testi-stars">★★★★★</div>
-                <p class="testi-text">本來寫作常常抓不到重點，上了6回完整影片課程後，邏輯變得超清晰！順利取得全民英檢中級證書，進步非常明顯！</p>
-            </div>
 
-            <div class="testi-card">
-                <div class="testi-header">
-                    <span class="testi-name">Emily</span>
-                    <span class="testi-role">國中生</span>
+                <div class="testi-card">
+                    <div class="testi-header">
+                        <span class="testi-name">Emily</span>
+                        <span class="testi-role">國中生</span>
+                    </div>
+                    <div class="testi-stars">★★★★★</div>
+                    <p class="testi-text">老師的雙師專業批改一針見血地點出我的盲點，也給了很多實用的範本替換，讓我第一次挑戰就高分通過！</p>
                 </div>
-                <div class="testi-stars">★★★★★</div>
-                <p class="testi-text">老師的雙師專業批改一針見血地點出我的盲點，也給了很多實用的範本替換，讓我第一次挑戰就高分通過！</p>
-            </div>
 
-            <div class="testi-card">
-                <div class="testi-header">
-                    <span class="testi-name">Kevin</span>
-                    <span class="testi-role">高中生</span>
+                <div class="testi-card">
+                    <div class="testi-header">
+                        <span class="testi-name">Kevin</span>
+                        <span class="testi-role">高中生</span>
+                    </div>
+                    <div class="testi-stars">★★★★★</div>
+                    <p class="testi-text">1對1的線上真人寫作診斷課程太棒了！直接解決我長久以來的文法錯誤。加強方案完全拯救了我的備考期。</p>
                 </div>
-                <div class="testi-stars">★★★★★</div>
-                <p class="testi-text">1對1的線上真人寫作診斷課程太棒了！直接解決我長久以來的文法錯誤。加強方案完全拯救了我的備考期。</p>
-            </div>
 
-            <div class="testi-card">
-                <div class="testi-header">
-                    <span class="testi-name">Rachel</span>
-                    <span class="testi-role">高中生</span>
+                <div class="testi-card">
+                    <div class="testi-header">
+                        <span class="testi-name">Rachel</span>
+                        <span class="testi-role">高中生</span>
+                    </div>
+                    <div class="testi-stars">★★★★★</div>
+                    <p class="testi-text">考前衝刺選了方案A，影片時數不會太長但都是精華！搭配翻譯與批改指導，讓我在寫作大題拿到了從未想過的高分。</p>
                 </div>
-                <div class="testi-stars">★★★★★</div>
-                <p class="testi-text">考前衝刺選了方案A，影片時數不會太長但都是精華！搭配翻譯與批改指導，讓我在寫作大題拿到了從未想過的高分。</p>
-            </div>
 
-            <div class="testi-card">
-                <div class="testi-header">
-                    <span class="testi-name">Leo</span>
-                    <span class="testi-role">國中生</span>
+                <div class="testi-card">
+                    <div class="testi-header">
+                        <span class="testi-name">Leo</span>
+                        <span class="testi-role">國中生</span>
+                    </div>
+                    <div class="testi-stars">★★★★★</div>
+                    <p class="testi-text">原本對英文寫作超沒自信，靠著家教課程慢慢建立語感跟句型，最後奇蹟似地過關了！非常推薦需要針對性指導的人。</p>
                 </div>
-                <div class="testi-stars">★★★★★</div>
-                <p class="testi-text">原本對英文寫作超沒自信，靠著家教課程慢慢建立語感跟句型，最後奇蹟似地過關了！非常推薦需要針對性指導的人。</p>
-            </div>
 
+            </div>
+            
+            <button class="testi-arrow right-arrow" onclick="scrollTesti(1)"><i class="fa-solid fa-chevron-right"></i></button>
         </div>
     </div>
 
@@ -1409,6 +1469,16 @@
             dots[index].classList.add('active');
         }
     }
+
+    // 電腦版評價卡片左右捲動
+    window.scrollTesti = function(direction) {
+        const slider = document.getElementById('testi-slider');
+        // 大約滾動一張卡片的寬度 + gap (320 + 20)
+        const scrollAmount = 340; 
+        if(slider) {
+            slider.scrollBy({ left: direction * scrollAmount, behavior: 'smooth' });
+        }
+    };
 
     document.addEventListener('DOMContentLoaded', () => {
         const slider = document.getElementById('mobile-slider');
