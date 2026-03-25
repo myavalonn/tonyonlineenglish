@@ -1,4 +1,4 @@
-<!-- START OF V65 (LAYOUT FIXED FOR ENGLISH OVERFLOW) -->
+<!-- START OF V71 (NEW LINE FOR 不限時長) -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Oswald:wght@400;500;600&family=Pacifico&display=swap" rel="stylesheet">
@@ -8,7 +8,7 @@
   <!-- CONTROL PANEL -->
   <div class="control-deck">
     <div class="deck-header">
-      <h3>/// DATA TERMINAL V65 <span style="font-size:12px; font-weight:400; opacity:1.0; margin-left:10px;">COMMERCIAL</span></h3>
+      <h3>/// DATA TERMINAL V71 <span style="font-size:12px; font-weight:400; opacity:1.0; margin-left:10px;">COMMERCIAL</span></h3>
     </div>
     
     <div class="row-2">
@@ -31,14 +31,15 @@
       <div class="input-group"><label>英文期限</label><input type="text" id="inExpiryEN" placeholder="2 Years" oninput="refreshData()"></div>
     </div>
 
-    <div class="input-group" style="margin-bottom: 10px;">
-        <label>單號</label><input type="text" id="inOrder" placeholder="15TEY" oninput="refreshData()">
+    <div class="row-2">
+      <div class="input-group"><label>單號</label><input type="text" id="inOrder" placeholder="15TEY" oninput="refreshData()"></div>
+      <div class="input-group"><label>課程點數</label><input type="number" id="inPoints" placeholder="13500" oninput="refreshData()"></div>
     </div>
     
     <div class="input-group"><label>中文時間 (空白鍵自動換行)</label><input type="text" id="inTimeCN" placeholder="週二6pm 週五6pm" oninput="refreshData()"></div>
     <div class="input-group"><label>英文時間 (Space for new line)</label><input type="text" id="inTimeEN" placeholder="2026.01.10(Sat) 2026.01.11(Sun)" oninput="refreshData()"></div>
 
-    <button onclick="downloadPDF()" class="execute-btn">下載 PDF (版面修正版)</button>
+    <button onclick="downloadPDF()" class="execute-btn">下載 PDF (共5頁完整版)</button>
   </div>
 
   <!-- PREVIEW AREA -->
@@ -62,9 +63,9 @@
           <!-- QR Section -->
           <div class="header-right-group">
             <div class="qr-code">
-                <img src="https://ik.imagekit.io/lql1uveoc/%E6%88%AA%E5%9C%96%202025-11-20%20%E4%B8%8A%E5%8D%8812.23.24.png" crossorigin="anonymous">
+                <img src="https://ik.imagekit.io/lql1uveoc/%E5%AD%B8%E8%B2%BB%E8%AD%89%E6%98%8EQrcode/%E9%A6%96%E9%A0%81%20netlify" crossorigin="anonymous">
             </div>
-            <div class="qr-sub-text">https://TonyOnlineEnglish.mydurable.com</div>
+            <div class="qr-sub-text">https://tonyonlineenglish.netlify.app</div>
           </div>
         </div>
 
@@ -84,10 +85,11 @@
                     <div class="val-name" id="outNameCN">林育志</div>
                     <div class="corner-black"></div>
                 </div>
+                <!-- STATS ROW (2 Items) -->
                 <div class="ref-stats-row">
                     <div class="ref-border-box stat-item">
                         <div class="stat-label-stack label-gray">
-                            <span>購買</span><span>堂數</span>
+                            <span>預估</span><span>堂數</span>
                         </div>
                         <div class="stat-val" id="outClassesCN">20</div>
                     </div>
@@ -110,10 +112,17 @@
                          <span class="info-l">使用期限：</span>
                          <span class="info-v" id="outExpiryCN">--</span>
                      </div>
-                     <div class="info-line">
+                     <div class="info-line" style="border-bottom: none;">
                          <span class="info-l">上課時間：</span>
                          <span class="info-v" id="outTimeCN">--</span>
                      </div>
+                </div>
+                <!-- POINTS BOX MOVED TO RIGHT SIDE -->
+                <div class="ref-border-box" style="height: 60px; padding: 0 10px; display: flex; align-items: center; justify-content: space-between; margin-top: auto;">
+                    <div class="stat-label-stack label-gray" style="font-size: 11px;">
+                        <span>課程</span><span>點數</span>
+                    </div>
+                    <div class="stat-val" id="outPointsCN" style="font-size: 24px; font-family: 'Oswald'; font-weight: 500; color: var(--accent);">13,500</div>
                 </div>
             </div>
         </div>
@@ -122,26 +131,33 @@
         <div class="rules-container">
             <div class="rule-title-bar">
                 <div class="title-group">
-                    <span class="rule-h">一般請假/調課規範</span>
-                    <span class="black-symbols">⬇︎⬇︎⬇︎⬇︎⬇︎</span>
+                    <span class="rule-tag" style="margin-right: 5px; font-size: 11px;">REF: A-01</span>
                 </div>
-                <span class="rule-tag">REF: A-01</span>
             </div>
-            <div class="rule-row-flex">
-                <div class="r-box r-white">
-                    <div class="r-main">
-                        <span class="r-big">24</span>小時內提出請假/調課
-                    </div>
-                    <div class="r-sub">
-                        <span class="arrow-black">➤</span> 扣除 0.5 堂
+            
+            <!-- Policy Blocks -->
+            <div class="new-policy-block">
+                <!-- Group 1 -->
+                <div class="policy-group">
+                    <div class="policy-header">★ 週六或國定假日 (整天)</div>
+                    <div class="policy-row bg-dark">
+                        <span>24小時內請假/調課</span>
+                        <span class="hl-orange">➤ 扣除 1 堂</span>
                     </div>
                 </div>
-                <div class="r-box r-black">
-                    <div class="r-main">
-                        <span class="r-big">12</span>小時內提出請假/調課
-                    </div>
-                    <div class="r-sub orange">
-                        <span class="arrow-orange">➤</span> 扣除 1 堂
+                
+                <!-- Group 2 -->
+                <div class="policy-group">
+                    <div class="policy-header">★ 一般平日 (週一~週五)請假/調課</div>
+                    <div class="policy-split-row">
+                        <div class="split-box bg-light">
+                            <span>24小時內</span>
+                            <span class="text-pink">➤ 扣 0.5堂</span>
+                        </div>
+                        <div class="split-box bg-dark">
+                            <span>12小時內</span>
+                            <span class="hl-orange">➤ 扣 1堂</span>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -153,7 +169,7 @@
           </div>
           <div class="footer-meta-row">
              <span class="order-text number-font">NO. <b id="outOrderCN">15TEY</b></span>
-             <span class="url-text cn-text" style="font-size: 10px; text-align: right; display: block;">詳情請上<br>https://tonyonlineenglish.mydurable.com/regulations</span>
+             <span class="url-text cn-text" style="font-size: 10px; text-align: right; display: block;">詳情請上<br>https://tonyonlineenglish.netlify.app/regulations</span>
           </div>
         </div>
       </div>
@@ -173,7 +189,7 @@
             </div>
           </div>
           <div class="qr-code">
-            <img src="https://ik.imagekit.io/lql1uveoc/%E6%88%AA%E5%9C%96%202025-11-20%20%E4%B8%8A%E5%8D%8812.23.24.png" crossorigin="anonymous">
+            <img src="https://ik.imagekit.io/lql1uveoc/%E5%AD%B8%E8%B2%BB%E8%AD%89%E6%98%8EQrcode/%E9%A6%96%E9%A0%81%20netlify" crossorigin="anonymous">
           </div>
         </div>
 
@@ -192,15 +208,16 @@
                     <div class="val-name" id="outNameEN" style="font-size: 28px;">Tony Lin</div>
                     <div class="corner-black"></div>
                 </div>
+                <!-- STATS ROW (2 Items) -->
                 <div class="ref-stats-row">
                     <div class="ref-border-box stat-item">
-                        <div class="stat-label-stack label-gray">
-                            <span>Total</span><span>Sessions</span>
+                        <div class="stat-label-stack label-gray" style="font-size: 10px; letter-spacing: 0;">
+                            <span>Est.</span><span>Sessions</span>
                         </div>
                         <div class="stat-val" id="outClassesEN">20</div>
                     </div>
                     <div class="ref-border-box stat-item">
-                        <div class="stat-label-stack label-gray">
+                        <div class="stat-label-stack label-gray" style="font-size: 10px; letter-spacing: 0;">
                             <span>Mins/</span><span>Class</span>
                         </div>
                         <div class="stat-val" id="outMinsEN">50</div>
@@ -218,48 +235,56 @@
                          <span class="info-l">Validity :</span>
                          <span class="info-v" id="outExpiryEN">--</span>
                      </div>
-                     <div class="info-line">
+                     <div class="info-line" style="border-bottom: none;">
                          <span class="info-l">Class Time :</span>
                          <span class="info-v" id="outTimeEN">--</span>
                      </div>
                 </div>
+                <!-- POINTS BOX MOVED TO RIGHT SIDE -->
+                <div class="ref-border-box" style="height: 60px; padding: 0 10px; display: flex; align-items: center; justify-content: space-between; margin-top: auto;">
+                    <div class="stat-label-stack label-gray" style="font-size: 10px; letter-spacing: 0;">
+                        <span>Course</span><span>Points</span>
+                    </div>
+                    <div class="stat-val" id="outPointsEN" style="font-size: 24px; font-family: 'Oswald'; font-weight: 500; color: var(--accent);">13,500</div>
+                </div>
             </div>
         </div>
 
+        <!-- BOTTOM POLICY -->
         <div class="rules-container">
-            <div class="rule-title-bar">
+            <div class="rule-title-bar" style="margin-bottom: 5px;">
                 <div class="title-group">
-                    <span class="rule-h" style="font-size: 13px; padding: 6px 10px;">General Leave / Rescheduling Policy</span>
+                    <span class="rule-h" style="font-size: 13px; padding: 4px 10px;">General Leave / Rescheduling Policy</span>
                     <span class="orange-arrows">▼▼▼</span>
                 </div>
-                <span class="rule-tag">REF: A-01</span>
             </div>
-            <div class="rule-row-flex">
+            
+            <span class="rule-tag" style="font-size: 11px; margin-bottom: 5px; display: inline-block;">REF: A-01</span>
+
+            <div class="new-policy-block">
+                <!-- Group 1 -->
+                <div class="policy-group">
+                    <div class="policy-header">★ Sat or National Holidays (All Day)</div>
+                    <div class="policy-row bg-dark">
+                        <span>Notice within 24 hrs</span>
+                        <span class="hl-orange">➤ Deduct 1 Session</span>
+                    </div>
+                </div>
                 
-                <div class="r-box r-white">
-                    <div class="r-main" style="font-size: 16px; white-space: nowrap;">
-                        Notice within <span class="r-big">24</span> hrs
-                    </div>
-                    <div class="r-sub-col">
-                        <div style="white-space: nowrap;">
-                            <span class="arrow-black">➤</span> Deduct 0.5
+                <!-- Group 2 -->
+                <div class="policy-group">
+                    <div class="policy-header">★ Weekdays (Mon-Fri)</div>
+                    <div class="policy-split-row">
+                        <div class="split-box bg-light" style="flex-direction: column; text-align: center; justify-content: center; padding: 4px;">
+                            <span style="font-size: 12px; margin-bottom: 2px;">Within 24 hrs</span>
+                            <span class="text-pink" style="font-size: 13px;">➤ Deduct 0.5</span>
                         </div>
-                        <div>Session</div>
+                        <div class="split-box bg-dark" style="flex-direction: column; text-align: center; justify-content: center; padding: 4px;">
+                            <span style="font-size: 12px; margin-bottom: 2px;">Within 12 hrs</span>
+                            <span class="hl-orange" style="font-size: 13px;">➤ Deduct 1</span>
+                        </div>
                     </div>
                 </div>
-
-                <div class="r-box r-black">
-                    <div class="r-main" style="font-size: 16px; white-space: nowrap;">
-                        Notice within <span class="r-big">12</span> hrs
-                    </div>
-                    <div class="r-sub-col orange">
-                        <div style="white-space: nowrap;">
-                            <span class="arrow-orange">➤</span> Deduct 1
-                        </div>
-                        <div>Session</div>
-                    </div>
-                </div>
-
             </div>
         </div>
 
@@ -269,7 +294,7 @@
           </div>
           <div class="footer-meta-row">
              <span class="order-text number-font">NO. <b id="outOrderEN">15TEY</b></span>
-             <span class="url-text number-font">TonyOnlineEnglish.mydurable.com</span>
+             <span class="url-text number-font">tonyonlineenglish.netlify.app</span>
           </div>
         </div>
       </div>
@@ -327,9 +352,143 @@
 
         <div class="footer-section" style="margin-top: auto;">
            <div style="text-align:center;">
-             <span class="url-text number-font" style="font-size:12px;">https://tonyonlineenglish.mydurable.com/sickleave</span>
+             <span class="url-text number-font" style="font-size:12px;">https://tonyonlineenglish.netlify.app/sickleave</span>
            </div>
         </div>
+      </div>
+
+      <div class="html2pdf__page-break"></div>
+
+      <!-- === PAGE 4: SUBSCRIPTION POLICY === -->
+      <div class="story-card">
+        <div class="c c1"></div><div class="c c2"></div>
+        
+        <div class="header-section" style="border-bottom: none; margin-bottom: 5px;">
+          <div class="brand-text">
+            <h1 class="cn-title-regular" style="color: #000; font-size: 36px; margin-bottom: 5px;">訂閱制方案</h1>
+            <div class="logo-row">
+              <span class="brand-suffix" style="color: #888; font-weight: 500; font-family: 'Oswald'; letter-spacing: 1px;">SUBSCRIPTION POLICY</span>
+            </div>
+          </div>
+          <div class="header-right-group">
+            <div class="qr-code">
+                <img src="https://ik.imagekit.io/lql1uveoc/%E5%AD%B8%E8%B2%BB%E8%AD%89%E6%98%8EQrcode/450subs" crossorigin="anonymous">
+            </div>
+            <div class="qr-sub-text" style="color:#888;">SCAN FOR DETAILS</div>
+          </div>
+        </div>
+
+        <!-- Dark Hero Box -->
+        <div class="sub-hero-box">
+            <div class="sub-hero-left">
+                每週固定訂閱扣除<br>
+                <small>當周沒有上課也會扣除</small>
+            </div>
+            <div class="sub-hero-right">
+                900 <span>點</span>
+            </div>
+        </div>
+
+        <!-- Details List -->
+        <div class="sub-list">
+            <div class="sub-row">
+                <div class="sub-label">適用上課時段</div>
+                <div class="sub-val">
+                    週一～週五 (平日)<br>
+                    <span style="font-family: 'Oswald'; font-size: 15px;">10:00am ~ 5:00pm 前</span>
+                </div>
+            </div>
+            
+            <div class="sub-row">
+                <div class="sub-label">訂閱優惠</div>
+                <div class="sub-val">
+                    每堂 <span class="big-num">450</span> 點
+                </div>
+            </div>
+
+            <div class="sub-row">
+                <div class="sub-label">加課 / 假日</div>
+                <div class="sub-val">
+                    第三堂 / 平日 5pm後：每堂 <b>550</b> 點<br>
+                    <span style="color:#444;">週六及國定假日：每堂 <b>600</b> 點</span>
+                </div>
+            </div>
+
+            <div class="sub-row">
+                <div class="sub-label">期間轉方案</div>
+                <div class="sub-val">
+                    改為非訂閱制，每堂 <b>550</b> 點<br>
+                    <span style="color:#666; font-size: 12px;">(週六及國定假日：每堂 600 點)</span>
+                </div>
+            </div>
+
+            <div class="sub-row" style="border-bottom: none;">
+                <div class="sub-label">權益與假期</div>
+                <div class="sub-val" style="color: #444;">
+                    • 課程期間擁有『兩次』暫停權益<br>
+                    <span style="color:#666; font-size: 12px;">(不限時長)</span><br>
+                    • 2026 連假當週不自動扣點 (可預約)
+                </div>
+            </div>
+        </div>
+
+      </div>
+
+      <div class="html2pdf__page-break"></div>
+
+      <!-- === PAGE 5: PRICING PLANS === -->
+      <div class="story-card">
+        <div class="c c1"></div><div class="c c2"></div>
+        
+        <div class="header-section" style="border-bottom: 2px solid var(--accent); margin-bottom: 15px;">
+          <div class="brand-text">
+            <h1 class="cn-title-regular" style="color: var(--accent);">方案點數表</h1>
+            <div class="logo-row">
+              <span class="brand-suffix" style="font-family: 'Oswald'; color: #666;">PRICING PLANS & POINTS</span>
+            </div>
+          </div>
+        </div>
+
+        <table class="pricing-table">
+            <thead>
+                <tr>
+                    <th>方案金額</th>
+                    <th>預計堂數<br>/450</th>
+                    <th>獲得點數</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>NT$13,500</td>
+                    <td>約 30 堂課</td>
+                    <td class="pts">13,500 點</td>
+                </tr>
+                <tr>
+                    <td>NT$18,000</td>
+                    <td>約 41 堂課</td>
+                    <td class="pts">18,450 點</td>
+                </tr>
+                <tr>
+                    <td>NT$27,000</td>
+                    <td>約 62 堂課</td>
+                    <td class="pts">27,900 點</td>
+                </tr>
+                <tr>
+                    <td class="warn-text">NT$36,000</td>
+                    <td>約 85 堂課</td>
+                    <td class="pts warn-text">38,250 點</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="promo-footer">
+            <span style="font-size: 14px; color: #e55039; font-weight: bold; margin-bottom: 5px; display: block;">
+                🎁 優惠：一次購買兩期
+            </span>
+            贈送兩堂課(900點) 或 五堂課(2250點)
+            <span class="sub-note">(1-1 每堂 50 分鐘)</span>
+        </div>
+
       </div>
 
     </div>
@@ -405,11 +564,7 @@
   .cn-regular { font-family: 'Noto Sans TC', sans-serif; font-weight: 400; color: #000; } 
   .font-mono { font-family: 'Oswald', sans-serif; font-weight: 500; letter-spacing: 0.5px; }
   .text-white { color: #fff; }
-  .text-orange { color: var(--accent); } 
-  .label-gray { color: #000; font-weight: 700; font-size: 12px; letter-spacing: 1px; } /* FORCE BLACK */
-  .orange { color: var(--accent); } 
-  .blue { color: var(--primary); }
-  .warn { color: #e55039; }
+  .label-gray { color: #000; font-weight: 700; font-size: 12px; letter-spacing: 1px; } 
 
   /* HEADER */
   .header-section { 
@@ -420,7 +575,7 @@
   .cn-title-regular { font-size: 32px; margin-bottom: 0; line-height: 1; color: var(--primary); }
   .en-title { font-family: 'Oswald', sans-serif; font-weight: 700; font-size: 28px; line-height: 1.1; color: var(--primary); margin-bottom: 0; }
   .tony-script { font-family: 'Pacifico', cursive; color: var(--primary); font-size: 24px; }
-  .brand-suffix { font-weight: 500; font-size: 16px; color: #000; } /* FORCE BLACK */
+  .brand-suffix { font-weight: 500; font-size: 16px; color: #000; } 
   .en-text { font-family: 'Oswald', sans-serif; font-weight: 500; }
   
   /* HEADER RIGHT (QR + URL) */
@@ -433,17 +588,17 @@
       font-size: 8px;
       font-family: 'Oswald', sans-serif;
       margin-top: 3px;
-      color: #000; /* FORCE BLACK */
+      color: #000; 
       white-space: nowrap; 
       letter-spacing: 0.3px;
       font-weight: 400;
   }
 
-  /* LAYOUT GRID */
-  .layout-grid { display: flex; gap: 15px; align-items: flex-start; margin-bottom: 15px; }
+  /* LAYOUT GRID (Now uses align-items: stretch to force equal column heights) */
+  .layout-grid { display: flex; gap: 15px; align-items: stretch; margin-bottom: 10px; }
   
-  /* FIXED: Reduced flex-basis of left column to give right column more space */
-  .col-left-stack { flex: 1.1; display: flex; flex-direction: column; gap: 8px; }
+  /* Stack Left adjusted */
+  .col-left-stack { flex: 1.25; display: flex; flex-direction: column; gap: 8px; }
   
   /* 1. Big Color Box */
   .ref-black-box { 
@@ -462,10 +617,9 @@
     width: 0; height: 0;
     border-left: 15px solid transparent;
     border-right: 15px solid transparent;
-    border-bottom: 25px solid #fff; /* White Arrow */
+    border-bottom: 25px solid #fff; 
     opacity: 0.6;
   }
-  .triangle-hollow:after { display: none; }
 
   /* 2. Name Box */
   .ref-border-box { 
@@ -475,167 +629,132 @@
   .name-box-h { height: 70px; padding: 5px 12px; display: flex; flex-direction: column; justify-content: center; }
   .val-name { font-size: 28px; font-weight: 500; line-height: 1.1; color: var(--text-main); margin-top: 2px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
   
-  /* Corner Deco */
   .corner-black { 
       position: absolute; top: 0; right: 0; width: 12px; height: 12px; 
-      border-top: 4px solid var(--accent); /* Lavender corner */
+      border-top: 4px solid var(--accent);
       border-right: 4px solid var(--accent); 
       border-top-right-radius: var(--radius);
   }
 
-  /* 3. Stats Row */
-  .ref-stats-row { display: flex; gap: 8px; height: 65px; }
-  .stat-item { flex: 1; display: flex; align-items: center; justify-content: space-between; padding: 0 10px; }
-  .stat-label-stack { display: flex; flex-direction: column; font-size: 11px; line-height: 1.1; font-weight: 700; color: #000; text-transform: uppercase; } /* FORCE BLACK */
-  .stat-val { font-family: 'Oswald'; font-weight: 500; font-size: 32px; line-height: 1; color: var(--accent); }
+  /* 3. Stats Row (Top 2 Items) */
+  .ref-stats-row { display: flex; gap: 8px; height: 60px; }
+  .stat-item { flex: 1; display: flex; align-items: center; justify-content: space-between; padding: 0 12px; }
+  .stat-label-stack { display: flex; flex-direction: column; font-size: 11px; line-height: 1.1; font-weight: 700; color: #000; text-transform: uppercase; } 
+  .stat-val { font-family: 'Oswald'; font-weight: 500; font-size: 30px; line-height: 1; color: var(--accent); }
 
   /* RIGHT COLUMN */
-  /* FIXED: Increased flex basis for right column */
-  .col-right-info { flex: 1; display: flex; flex-direction: column; justify-content: flex-start; padding-top: 5px; }
+  .col-right-info { flex: 0.85; display: flex; flex-direction: column; justify-content: flex-start; padding-top: 5px; }
   .info-group-right { display: flex; flex-direction: column; gap: 15px; }
   .info-line { border-bottom: 1px solid #fff0f3; padding-bottom: 5px; }
-  .info-l { display: block; font-size: 14px; font-weight: 700; color: #000; margin-bottom: 5px; } /* FORCE BLACK */
-  
-  /* FIXED: Reduced font size to 16px to prevent overflow */
+  .info-l { display: block; font-size: 14px; font-weight: 700; color: #000; margin-bottom: 5px; } 
   .info-v { 
-    display: block; 
-    font-size: 16px; 
-    text-align: right; 
-    font-weight: 500; 
-    line-height: 1.2; 
-    color: var(--text-main); 
-    word-break: break-word; /* Ensure long dates/times wrap */
+    display: block; font-size: 16px; text-align: right; 
+    font-weight: 500; line-height: 1.2; color: var(--text-main); 
+    word-break: break-word; 
   }
 
-  /* === BOTTOM POLICY === */
+  /* === NEW POLICY LAYOUT (PAGES 1 & 2) === */
   .rules-container { margin-top: auto; margin-bottom: 10px; }
-  .rule-title-bar { display: flex; justify-content: space-between; margin-bottom: 8px; align-items: flex-end; }
-  
-  .title-group { display: flex; align-items: flex-end; gap: 5px; margin-top: -8px; transform: translateY(-3px); }
-
+  .rule-title-bar { display: flex; justify-content: space-between; align-items: flex-end; }
+  .title-group { display: flex; align-items: flex-end; gap: 5px; }
   .rule-h { 
-    background: var(--primary); 
-    color: #fff; 
-    font-weight: 500; 
-    padding: 6px 12px; 
-    font-size: 18px; 
-    line-height: 1.1;
+    background: var(--primary); color: #fff; font-weight: 500; 
     border-radius: var(--radius);
   }
   .orange-arrows { color: var(--accent); font-size: 14px; letter-spacing: -2px; margin-bottom: 2px; line-height: 1; }
+  .rule-tag { background: #dcdde1; color: #fff; font-family: 'Oswald'; padding: 2px 6px; border-radius: 4px;}
   
-  .black-symbols { 
-    color: var(--primary); 
-    font-size: 14px; 
-    letter-spacing: 2px; 
-    margin-left: 5px;
-    line-height: 1;
-    font-weight: bold;
+  .new-policy-block { display: flex; flex-direction: column; gap: 8px; }
+  .policy-group { display: flex; flex-direction: column; }
+  .policy-header { font-size: 14px; font-weight: 700; color: #000; margin-bottom: 4px; display: flex; align-items: center; }
+  
+  .policy-row { 
+      display: flex; justify-content: space-between; align-items: center; 
+      padding: 8px 15px; border-radius: 8px; font-size: 15px; font-weight: bold; 
+  }
+  .policy-split-row { display: flex; gap: 8px; }
+  .split-box { 
+      flex: 1; display: flex; justify-content: space-between; align-items: center; 
+      padding: 8px 12px; border-radius: 8px; font-size: 14px; font-weight: bold; 
   }
 
-  .rule-tag { background: #dcdde1; color: #fff; font-family: 'Oswald'; font-size: 10px; padding: 2px 4px; margin-bottom: 2px; border-radius: 4px;}
-  
-  .rule-row-flex { display: flex; flex-direction: column; gap: 8px; }
-  .r-box { 
-      border: 1px solid #ffdde1; 
-      padding: 8px 15px; 
-      display: flex; align-items: center; justify-content: space-between; 
-      height: 60px; position: relative; 
-      border-radius: var(--radius);
-  }
-  
-  /* White Box: Text should be Black */
-  .r-white { background: #fff; }
-  .r-white .r-main, .r-white .r-sub { color: #000 !important; }
-  
-  /* Purple Box: Text MUST BE WHITE */
-  .r-black { background: var(--accent); color: #fff; border: none; } 
-  .r-black .r-main,
-  .r-black .r-sub,
-  .r-black .r-sub .arrow-orange,
-  .r-black .r-sub-col,
-  .r-black .orange {
-      color: #fff !important;
-  }
-  
-  .r-main { font-size: 16px; font-weight: 500; }
-  .r-big { font-size: 22px; font-weight: 700; margin-right: 2px; }
-  .r-sub { font-size: 18px; font-weight: 500; display: flex; align-items: center; gap: 5px; }
-  
-  .r-sub-col {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end; 
-      line-height: 1.1;
-      font-weight: 500;
-      font-size: 16px;
-      text-align: right;
-  }
-  
-  .arrow-black { color: var(--primary); font-size: 14px; }
-  .arrow-orange { color: #fff; font-size: 14px; } 
+  /* Policy Colors */
+  .bg-dark { background: var(--accent); color: #fff; border: 1px solid var(--accent); }
+  .bg-light { background: #fff; color: #000; border: 1px solid var(--border-color); }
+  .text-pink { color: var(--primary); font-size: 15px;}
+  .hl-orange { color: #ffeaa7; font-size: 15px; text-shadow: 1px 1px 0 rgba(0,0,0,0.1); } 
 
   /* FOOTER */
   .footer-section { width: 100%; margin-top: 5px; }
   .footer-meta-row { display: flex; justify-content: space-between; border-top: 1px solid #eee; padding-top: 8px; }
-  .order-text { font-size: 11px; color: #000; } /* FORCE BLACK */
+  .order-text { font-size: 11px; color: #000; } 
   .url-text { font-size: 10px; font-weight: 500; color: var(--primary); }
   .number-font { font-family: 'Oswald', sans-serif; font-weight: 500; letter-spacing: 0.5px; }
 
-  /* PAGE 3: Re-skin */
+  /* === PAGE 3: SICK LEAVE === */
   .airline-theme { background-color: #fff; }
   .ticket-block { position: relative; display: flex; flex-direction: column; justify-content: center; border-radius: var(--radius); }
-  
-  .neon-badge {
-    background: var(--primary); 
-    color: #fff;
-    padding: 6px 20px;
-    border-radius: 50px;
-    font-size: 16px;
-    display: inline-block;
-    box-shadow: none; 
-    letter-spacing: 1px;
-    font-weight: 500;
-  }
-
-  .black-box-p3 { 
-      background: var(--primary); 
-      color: #fff; 
-      position: relative; 
-      overflow: hidden; 
-      border-radius: var(--radius);
-  }
-  
+  .neon-badge { background: var(--primary); color: #fff; padding: 6px 20px; border-radius: 50px; font-size: 16px; display: inline-block; font-weight: 500;}
+  .black-box-p3 { background: var(--primary); color: #fff; position: relative; overflow: hidden; border-radius: var(--radius); }
   .detail-box-p3 { border: 1px solid #eee; background: #fffafa; border-radius: var(--radius); }
-  
   .deco-circle { width: 10px; height: 10px; border: 2px solid #27ae60; border-radius: 50%; position: absolute; top: 10px; right: 10px; opacity: 0.5; }
-  
-  /* Hazard Line - Make it subtle */
   .hazard-line {
     position: absolute; bottom: 0; left: 0; width: 100%; height: 4px;
-    background: repeating-linear-gradient(45deg, #fecfef, #fecfef 5px, var(--primary) 5px, var(--primary) 10px);
-    opacity: 0.6;
+    background: repeating-linear-gradient(45deg, #fecfef, #fecfef 5px, var(--primary) 5px, var(--primary) 10px); opacity: 0.6;
   }
-  
   .bg-grid {
     position: absolute; top: 0; left: 0; width: 100%; height: 100%;
     background-image: linear-gradient(#f0f0f0 1px, transparent 1px), linear-gradient(90deg, #f0f0f0 1px, transparent 1px);
     background-size: 20px 20px; opacity: 0.5; z-index: 1;
   }
-  
   .geo-stamp {
     position: absolute; top: 60px; right: 20px; width: 70px; height: 70px;
     border: 3px double var(--accent); border-radius: 50%;
     display: flex; justify-content: center; align-items: center;
-    transform: rotate(-10deg); opacity: 0.6;
-    z-index: 10;
+    transform: rotate(-10deg); opacity: 0.6; z-index: 10;
   }
   .stamp-inner { text-align: center; color: var(--accent); font-weight: 900; line-height: 1; }
   .stamp-inner span { font-size: 12px; display: block; }
   .stamp-inner small { font-size: 8px; }
-
-  /* Page 3 Text colors */
   .amount-val { color: #fff !important; text-shadow: 1px 1px 0 rgba(0,0,0,0.1); } 
+
+  /* === PAGE 4: SUBSCRIPTION POLICY === */
+  .sub-hero-box { 
+      background: var(--accent); color: #fff; 
+      border-radius: var(--radius); padding: 20px 25px; 
+      display: flex; justify-content: space-between; align-items: center; 
+      margin-bottom: 15px; box-shadow: 0 4px 10px rgba(162, 155, 254, 0.2);
+  }
+  .sub-hero-left { font-size: 18px; font-weight: bold; line-height: 1.2; }
+  .sub-hero-left small { font-size: 13px; font-weight: normal; opacity: 0.9; display: block; margin-top: 6px; }
+  .sub-hero-right { font-size: 48px; font-family: 'Oswald'; font-weight: 500; line-height: 1; }
+  .sub-hero-right span { font-size: 24px; font-family: 'Noto Sans TC'; font-weight: bold; }
+
+  .sub-list { display: flex; flex-direction: column; margin-bottom: 20px; }
+  .sub-row { display: flex; padding: 16px 5px; border-bottom: 1px solid #ffdde1; align-items: center; }
+  .sub-label { width: 28%; font-weight: bold; color: #555; font-size: 14px; }
+  .sub-val { width: 72%; text-align: right; font-weight: 600; font-size: 14px; color: #000; line-height: 1.5; white-space: nowrap; letter-spacing: -0.2px;}
+  .sub-val .big-num { font-size: 24px; font-family: 'Oswald'; color: var(--accent); margin: 0 4px; vertical-align: middle;}
+
+  /* === PAGE 5: PRICING PLANS === */
+  .pricing-table { width: 100%; border-collapse: collapse; margin-top: 10px; text-align: center; }
+  .pricing-table th { 
+      background: var(--accent); color: #fff; 
+      padding: 10px 8px; font-size: 14px; border: 1px solid var(--accent); line-height: 1.3;
+  }
+  .pricing-table td { 
+      padding: 16px 8px; border: 1px solid #ffdde1; 
+      font-size: 15px; font-weight: 700; color: #000; background: #fff; white-space: nowrap;
+  }
+  .pricing-table .pts { color: var(--accent); font-size: 20px; font-family: 'Oswald', 'Noto Sans TC'; font-weight: 600; }
+  .pricing-table .warn-text { color: var(--primary); }
+
+  .promo-footer { 
+      background: #fffafa; border: 2px dashed #ffdde1; border-radius: var(--radius); 
+      text-align: center; padding: 20px; margin-top: auto; 
+      font-weight: bold; line-height: 1.6; color: #333; font-size: 15px;
+  }
+  .promo-footer .sub-note { font-size: 13px; color: #888; font-weight: normal; display: block; margin-top: 5px; }
 
   .html2pdf__page-break { height: 0; }
 </style>
@@ -653,6 +772,9 @@
     const rawAmount = v('inAmount', '12000');
     const fmtAmount = new Intl.NumberFormat('en-US').format(rawAmount);
     
+    const rawPoints = v('inPoints', '13500');
+    const fmtPoints = new Intl.NumberFormat('en-US').format(rawPoints);
+
     const date = v('inDate', '2025-11-20');
     const classes = v('inClasses', '20');
     const mins = v('inMins', '50');
@@ -661,29 +783,26 @@
 
     // P1 (CN)
     document.getElementById('outNameCN').innerText = v('inNameCN', '林育志');
-    
     let timeCN = v('inTimeCN', '每週一 8pm');
     document.getElementById('outTimeCN').innerHTML = timeCN.replace(/\s+/g, '<br>');
-
     document.getElementById('outAmountNumCN').innerText = fmtAmount; 
     document.getElementById('outOrderCN').innerText = order;
     document.getElementById('outClassesCN').innerText = classes;
     document.getElementById('outMinsCN').innerText = mins;
+    document.getElementById('outPointsCN').innerText = fmtPoints; 
     document.getElementById('outDateCN').innerText = date;
     document.getElementById('outExpiryCN').innerText = expiry;
 
     // P2 (EN)
     document.getElementById('outNameEN').innerText = v('inNameEN', 'Tony Lin');
-    
     let timeEN = v('inTimeEN', '8pm, Mondays');
     document.getElementById('outTimeEN').innerHTML = timeEN.replace(/\s+/g, '<br>');
-
     document.getElementById('outAmountNumEN').innerText = fmtAmount; 
     document.getElementById('outOrderEN').innerText = order;
     document.getElementById('outClassesEN').innerText = classes;
     document.getElementById('outMinsEN').innerText = mins;
+    document.getElementById('outPointsEN').innerText = fmtPoints; 
     document.getElementById('outDateEN').innerText = date;
-    
     let exEn = v('inExpiryEN', '2 Years');
     document.getElementById('outExpiryEN').innerText = exEn;
   }
@@ -694,7 +813,7 @@
     
     const opt = {
       margin:       0,
-      filename:     `${nameEN} Tuition Certificate.pdf`,
+      filename:     `${nameEN} Tuition Complete Package.pdf`,
       image:        { type: 'jpeg', quality: 1.0 },
       html2canvas:  { scale: 4, useCORS: true, scrollY: 0 },
       jsPDF:        { unit: 'mm', format: [108, 192], orientation: 'portrait' }
@@ -702,4 +821,4 @@
     html2pdf().set(opt).from(element).save();
   }
 </script>
-<!-- END OF V65 -->
+<!-- END OF V71 -->
