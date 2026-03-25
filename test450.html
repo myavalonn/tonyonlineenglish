@@ -268,8 +268,6 @@
         <div class="image-gallery"><div class="gallery-track"></div></div>
         
         <div class="product-info">
-            <div id="cart-icon" class="cart-icon-wrapper">🛒<span id="cart-count" class="cart-count">0</span></div>
-            
             <h1>會員訂閱制 每週固定兩堂</h1>
             <div class="subtitle-wrapper">
                 <p style="color: blue; font-size: 20px; margin: 0; font-weight: bold;">（1-1每堂50分鐘）</p>
@@ -565,8 +563,6 @@
 
     const productPage = document.getElementById("product-page"),
         thankYouPage = document.getElementById("thank-you-page"),
-        cartIcon = document.getElementById("cart-icon"),
-        cartCountSpan = document.getElementById("cart-count"),
         cartOverlay = document.getElementById("cart-overlay"),
         cartPanel = document.getElementById("cart-panel"),
         closeCartBtn = document.getElementById("close-cart-btn-main"),
@@ -661,8 +657,6 @@
         });
         const { finalTotal } = calculateTotals();
         cartTotalContainer.innerHTML = `<div class="total-row final-total" style="color:#000;"><span>總計</span><span style="color:red;">NT$ ${finalTotal.toLocaleString()}</span></div>`;
-        cartCountSpan.innerText = totalItems;
-        cartCountSpan.classList.toggle("visible", totalItems > 0);
     }
 
     function handleCartInteraction(e) {
@@ -748,7 +742,6 @@
         initGallery();
         updateCartDisplay();
 
-        cartIcon.addEventListener("click", toggleCartPanel);
         closeCartBtn.addEventListener("click", toggleCartPanel);
         cartOverlay.addEventListener("click", (e) => { if(e.target === cartOverlay) toggleCartPanel(); });
         cartItemsContainer.addEventListener("click", handleCartInteraction);
