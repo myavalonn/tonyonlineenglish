@@ -1,432 +1,480 @@
+
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-TW" style="scroll-behavior: smooth;">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Tony線上美語家教 - 課程方案</title>
+ <meta property="og:title" content="訂閱制度課程資訊-Tony線上美語家教">
+    <meta property="og:description" content="升學 檢定 全民英檢 多益 雅思 領思 職場 公職 高考 面試 外商 觀光美語 展場英文 翻譯 ">
+    <meta property="og:url" content="https://tonyonlineenglish.netlify.app/450">
+    <meta property="og:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/beautiful-smart-asian-young-entrepreneur-business-woman-owner-sme-checking-product.jpg?updatedAt=1773303767592">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/beautiful-smart-asian-young-entrepreneur-business-woman-owner-sme-checking-product.jpg?updatedAt=1773303767592">
+
   <script src="layout-manager.js" defer></script>
   <style>
     /* =========================================
-       1. 原始購物車與基礎樣式 (完全保留您原本的設定)
+       1. 基礎重置與全寬度設定 (白底黑字)
        ========================================= */
-    #embedding-container { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; background-color: #f0f2f5; padding: 20px 0; }
-    .product-widget { max-width: 560px; width: 90%; margin: 40px auto; background-color: white; border-radius: 12px; box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1); overflow: hidden; }
-    .image-gallery { position: relative; overflow: hidden; background-color: #eee; }
+    body { margin: 0; padding: 0; background-color: #ffffff; font-family: -apple-system, BlinkMacSystemFont, "PingFang TC", "Microsoft JhengHei", "Segoe UI", Roboto, Arial, sans-serif; }
+    
+    #embedding-container { background-color: #ffffff; padding: 0; }
+    
+    /* 讓主要容器在所有裝置都呈現全寬度，取消陰影與圓角 */
+    .product-widget { 
+        max-width: 1200px; 
+        width: 100%; 
+        margin: 0 auto; 
+        background-color: #ffffff; 
+        border-radius: 0; 
+        box-shadow: none; 
+        overflow: hidden; 
+    }
+    
+    .image-gallery { position: relative; overflow: hidden; background-color: #fff; }
     .gallery-track { display: flex; transition: transform 0.5s ease-in-out; }
-    .gallery-slide { min-width: 100%; box-sizing: border-box; }
-    .gallery-slide img { width: 100%; display: block; }
-    .product-info { padding: 32px; position: relative; }
-    .product-info h1 { font-size: 28px; color: #333; margin: 0 0 10px 0; line-height: 1.3; }
-    .product-info h2 { font-size: 22px; color: #555; margin: 0; font-weight: 500;}
-    .subtitle-wrapper { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; margin-bottom: 25px; }
-    .subtitle-note { font-size: 16px; color: #777; }
-    .option-selector { display: flex; flex-direction: column; gap: 10px; margin-bottom: 25px; }
-    .option-selector label { font-size: 18px; color: #555; font-weight: bold; }
-    .option-selector select { font-size: 18px; padding: 10px 14px; border: 1px solid #ccc; border-radius: 6px; width: 100%; box-sizing: border-box; }
-    .option-selector select, .option-selector option { color: #007bff; }
-    .option-selector option { font-size: 16px; padding: 5px; }
-    #add-to-cart-btn { width: 100%; background-color: #3b414a; color: white; border: none; padding: 18px 20px; font-size: 20px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: background-color 0.3s ease; }
-    .cart-icon-wrapper { position: absolute; top: 32px; right: 32px; font-size: 36px; cursor: pointer; color: #333; z-index: 10; }
-    .cart-count { position: absolute; top: -8px; right: -12px; background-color: red; color: white; border-radius: 50%; width: 22px; height: 22px; font-size: 14px; font-weight: bold; display: flex; justify-content: center; align-items: center; transition: transform 0.2s ease; transform: scale(0); }
-    .cart-count.visible { transform: scale(1); }
-    .cart-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 1000; opacity: 0; visibility: hidden; transition: opacity 0.5s ease, visibility 0.5s ease; }
-    .cart-overlay.open { opacity: 1; visibility: visible; }
-    .cart-panel { position: fixed; top: 0; right: -100%; width: 90%; max-width: 800px; height: 100%; background-color: #f9f9f9; box-shadow: -5px 0 15px rgba(0,0,0,0.1); z-index: 1001; transition: right 0.5s ease-in-out; display: flex; flex-direction: column; }
-    .cart-panel.open { right: 0; }
-    .cart-body { display: flex; flex-grow: 1; padding: 0 20px 20px 20px; gap: 40px; overflow-y: auto; }
-    .cart-left, .cart-right { flex-basis: 50%; background-color: white; padding: 20px; border-radius: 8px; border: 1px solid #e0e0e0; }
-    .cart-left { position: relative; }
-    .cart-left h3 { margin-top: 0; }
-    #close-cart-btn-main { position: absolute; top: 20px; right: 20px; background: none; border: none; font-size: 28px; line-height: 1; cursor: pointer; color: #888; padding: 0; }
-    .cart-item { display: flex; justify-content: space-between; align-items: flex-start; gap: 15px; padding-bottom: 20px; border-bottom: 1px solid #eee; }
-    .cart-item-info { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
-    .cart-item-name { font-weight: bold; }
-    .remove-item-btn { background: none; border: none; color: #999; cursor: pointer; font-size: 14px; text-decoration: underline; padding: 0; white-space: nowrap; }
-    .cart-item-price { font-weight: bold; white-space: nowrap; text-align: right; color: red; } 
-    .cart-total { margin-top: 20px; padding-top: 20px; border-top: 2px solid #333; }
-    .cart-total .total-row { display: flex; justify-content: space-between; font-size: 18px; line-height: 1.6; }
-    .cart-total .total-row.final-total { font-size: 22px; font-weight: bold; }
-    .cart-total .final-total span:last-child { color: red; } 
-    #checkout-form p { color: #555; }
-    .line-link { font-weight: bold; color: #00B900; text-align: center; margin-bottom: 15px; display: block; text-decoration: none;}
-    #checkout-form input[type="email"] { width: 100%; padding: 12px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; margin-bottom: 15px; box-sizing: border-box; cursor: pointer; }
-    #checkout-form button { width: 100%; background-color: #3b414a; color: white; border: none; padding: 15px; font-size: 18px; font-weight: bold; border-radius: 6px; cursor: pointer; transition: background-color 0.3s ease; }
-    .tls-info { text-align: center; color: #888; font-size: 12px; margin-top: 15px; }
-    .payment-info-section { margin-top: 15px; padding-top: 20px; border-top: 1px solid #eee; }
-    .payment-method { background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 6px; padding: 15px; display: flex; align-items: center; gap: 15px; font-size: 15px; }
-    .icon-circle { border: 2px solid black; border-radius: 50%; width: 18px; height: 18px; display: flex; justify-content: center; align-items: center; flex-shrink: 0; }
-    .icon-circle div { width: 8px; height: 8px; background-color: black; border-radius: 50%; }
-    .payment-method.custom-style { background-color: black; }
-    .payment-method.custom-style span { color: white; }
-    .payment-method.custom-style .icon-circle { border-color: white; }
-    .payment-method.custom-style .icon-circle div { background-color: white; }
-    #thank-you-page { display: none; padding: 20px; box-sizing: border-box; }
-    .thank-you-container { max-width: 900px; width: 100%; margin: 0 auto; background-color: #f9f9f9; border: 1px solid #e0e0e0; }
-    .ty-left-panel { background-color: white; padding: 40px; }
-    .ty-right-panel { background-color: #f9f9f9; padding: 40px; }
-    .ty-checkmark { font-size: 48px; color: #27ae60; }
-    .ty-header { display: flex; align-items: center; gap: 15px; font-size: 28px; color: #333; margin: 15px 0; }
-    .ty-message { color: #555; line-height: 1.6; }
-    .ty-order-details { margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; }
-    .ty-detail-item { display: flex; justify-content: space-between; padding: 8px 0; font-size: 14px; align-items: center; }
-    .ty-summary-header { font-size: 18px; color: #555; margin: 0 0 20px 0; border-bottom: 1px solid #ddd; padding-bottom: 10px;}
-    .ty-order-item { padding-bottom: 15px; border-bottom: 1px solid #eee; }
-    .ty-item-details { display: flex; justify-content: space-between; align-items: flex-start; gap: 15px; }
-    .ty-item-info { font-weight: bold; }
-    .ty-item-price { font-weight: bold; white-space: nowrap; }
-    #ty-order-id { font-size: 2em; color: #007bff; font-weight: bold; }
-    .ty-booking-link { display: block; background-color: #007bff; color: white !important; padding: 12px 20px; border-radius: 8px; text-decoration: none; text-align: center; font-weight: bold; margin-top: 10px; margin-bottom: 10px; transition: background-color 0.3s ease; }
-    .ty-booking-link:hover { background-color: #0056b3; }
-    .ty-line-link { color: green; font-weight: bold; text-decoration: none; }
-    #continue-shopping-btn { color: blue; }
-    #close-btn { color: red; margin-left: 20px; }
-
-    /* --- Confetti Eruption Animation --- */
-    #celebration-icon { font-size: 1.5em; position: relative; display: inline-block; z-index: 1;}
-    @keyframes confetti-eruption {
-      0% { opacity: 1; transform: translate(-50%, 20%) scale(0); }
-      30% { opacity: 1; }
-      100% {
-        opacity: 0;
-        box-shadow: -15px -35px 0 -3px #e74c3c, 15px -35px 0 -3px #3498db, -25px -20px 0 -3px #f1c40f, 25px -20px 0 -3px #2ecc71, 0px -45px 0 -3px #9b59b6, -10px -50px 0 -3px orange, 10px -50px 0 -3px hotpink;
-        transform: translate(-50%, -20px) scale(1.5) rotate(15deg);
-      }
-    }
-    .celebration-icon::before {
-      content: ''; position: absolute; bottom: 5px; left: 50%;
-      width: 8px; height: 8px; border-radius: 2px;
-      background-color: transparent;
-      box-shadow: 0 0 0 0 #e74c3c, 0 0 0 0 #3498db, 0 0 0 0 #f1c40f, 0 0 0 0 #2ecc71, 0 0 0 0 #9b59b6, 0 0 0 0 orange, 0 0 0 0 hotpink;
-      animation: confetti-eruption 1.5s ease-out infinite; z-index: -1;
-    }
-    .celebration-icon::after { display: none; }
+    .gallery-slide { min-width: 100%; box-sizing: border-box; position: relative; }
+    .gallery-slide img { width: 100%; display: block; cursor: zoom-in; }
     
-    /* Futuristic Pill Banner Style */
-    .futuristic-pill-banner { display: inline-block; padding: 10px 25px; font-family: 'Noto Sans TC', sans-serif; font-size: 16px; font-weight: 500; color: white; background: linear-gradient(110deg, #5E32E2 0%, #A259FF 100%); border-radius: 50px; box-shadow: 0 4px 15px rgba(94, 50, 226, 0.4); text-shadow: 0 0 8px rgba(255, 255, 255, 0.3); transition: transform 0.3s ease, box-shadow 0.3s ease; margin: 0; }
-    .futuristic-pill-banner:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(94, 50, 226, 0.5); }
-    .banner-break { display: none; }
-    
-    /* Email Popup Styles */
-    #email-popup-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); z-index: 2000; display: none; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s ease-in-out; }
-    #email-popup-overlay.visible { display: flex; opacity: 1; }
-    .email-popup-content { background-color: white; padding: 40px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); position: relative; width: 90%; max-width: 500px; text-align: center; transform: scale(0.9); transition: transform 0.3s ease-in-out; }
-    #email-popup-overlay.visible .email-popup-content { transform: scale(1); }
-    #close-popup-btn { position: absolute; top: 15px; right: 15px; background: none; border: none; font-size: 28px; cursor: pointer; color: #888; }
-    .email-popup-content label { font-size: 22px; color: #333; display: block; margin-bottom: 15px; }
-    .email-popup-content input[type="email"] { width: 100%; padding: 15px; font-size: 20px; border: 2px solid #007bff; border-radius: 8px; box-sizing: border-box; text-align: center; }
-    #popup-checkout-btn { width: 100%; background-color: #3b414a; color: white; border: none; padding: 15px; font-size: 20px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: background-color 0.3s ease; margin-top: 20px; }
-    #popup-checkout-btn:hover { background-color: #525964; }
-
-    /* Image Gallery Styles */
+    /* 手機版箭頭與點點樣式 */
     .gallery-nav { position: absolute; top: 50%; transform: translateY(-50%); width: 100%; display: flex; justify-content: space-between; pointer-events: none; z-index: 5; }
-    .gallery-nav button { pointer-events: auto; background-color: rgba(0, 0, 0, 0.4); color: white; border: none; font-size: 28px; font-weight: bold; cursor: pointer; border-radius: 50%; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; margin: 0 15px; line-height: 1; transition: background-color 0.3s ease; }
-    .gallery-nav button:hover { background-color: rgba(0, 0, 0, 0.7); }
+    .gallery-nav button { pointer-events: auto; background-color: rgba(0, 0, 0, 0.5); color: white; border: none; font-size: 28px; font-weight: bold; cursor: pointer; border-radius: 50%; width: 40px; height: 40px; display: flex; justify-content: center; align-items: center; margin: 0 15px; line-height: 1; transition: background-color 0.3s ease; }
+    .gallery-nav button:hover { background-color: rgba(0, 0, 0, 0.8); }
     .gallery-dots { position: absolute; bottom: 15px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px; z-index: 5; }
-    .gallery-dot { width: 12px; height: 12px; background-color: rgba(255, 255, 255, 0.6); border-radius: 50%; cursor: pointer; transition: background-color 0.3s ease, transform 0.3s ease; border: 1px solid rgba(0, 0, 0, 0.2); }
-    .gallery-dot.active { background-color: white; transform: scale(1.1); }
-
-    /* Media Queries for Original Cart */
-    @media (min-width: 1025px) {
-      .thank-you-container { display: flex; gap: 30px; }
-      .ty-left-panel { flex-basis: 55%; }
-      .ty-right-panel { flex-basis: 45%; }
-    }
-    @media (min-width: 768px) and (max-width: 1024px) {
-      .product-widget { max-width: 700px; margin: 50px auto; }
-      .product-info { padding: 45px; }
-      .product-info h1 { font-size: 38px; }
-      .product-info h2 { font-size: 28px; }
-      .option-selector label, .option-selector select { font-size: 22px; }
-      #add-to-cart-btn { font-size: 24px; padding: 20px 22px; }
-      .thank-you-container { flex-direction: column; display: block; }
-    }
-    @media (max-width: 767px) {
-      .product-widget { max-width: 400px; margin: 20px auto; }
-      .product-info { padding: 24px; }
-      .product-info h1 { font-size: 22px; margin-bottom: 5px; }
-      .product-info h2 { font-size: 18px; }
-      .option-selector label, .option-selector select { font-size: 16px; }
-      #add-to-cart-btn { font-size: 18px; padding: 15px 20px; }
-      .cart-icon-wrapper { top: 30px; right: 25px; font-size: 32px; }
-      .cart-panel { width: 100%; max-width: 100%; }
-      .cart-body { flex-direction: column; gap: 20px; padding: 0 15px 15px 15px; }
-      .cart-left, .cart-right { flex-basis: auto; }
-      #close-cart-btn-main { top: 15px; right: 15px; }
-      .thank-you-container { flex-direction: column; }
-      .ty-left-panel, .ty-right-panel { padding: 25px; }
-      .banner-break { display: inline; }
-      .futuristic-pill-banner { text-align: center; border-radius: 25px; }
-    }
-
+    .gallery-dot { width: 12px; height: 12px; background-color: rgba(255, 255, 255, 0.6); border-radius: 50%; cursor: pointer; transition: background-color 0.3s ease, transform 0.3s ease; border: 1px solid rgba(0, 0, 0, 0.4); }
+    .gallery-dot.active { background-color: white; transform: scale(1.1); box-shadow: 0 0 5px rgba(0,0,0,0.5); }
 
     /* =========================================
-       2. 新增區塊樣式 (Hero、Table 3&5、Photo 3、FAQ)
+       圖片放大 Lightbox 樣式 (包含滑動與箭頭)
        ========================================= */
-    body { margin: 0; padding: 0; background-color: #f4f6f9; }
+    .lightbox-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.9); z-index: 3000; display: none; justify-content: center; align-items: center; touch-action: none; }
+    .lightbox-overlay.visible { display: flex; }
+    .lightbox-overlay img { max-width: 95%; max-height: 95%; border-radius: 8px; box-shadow: 0 4px 25px rgba(0,0,0,0.5); user-select: none; }
+    .lightbox-close { position: absolute; top: 20px; right: 30px; color: white; font-size: 45px; font-weight: bold; cursor: pointer; z-index: 3002; }
     
-    /* Hero Section (Photo 1) */
-    .hero-section { background-image: linear-gradient(rgba(40, 30, 80, 0.7), rgba(40, 30, 80, 0.7)), url('https://images.unsplash.com/photo-1514565131-fce0801e5785?auto=format&fit=crop&w=2000&q=80'); background-size: cover; background-position: center; padding: 120px 20px; text-align: left; display: flex; align-items: center; justify-content: flex-start; margin-bottom: 20px; }
-    .hero-section-inner { max-width: 1200px; width: 100%; margin: 0 auto; }
-    .hero-section h1 { color: white; font-size: 3.5rem; margin: 0; line-height: 1.3; text-shadow: 2px 2px 10px rgba(0,0,0,0.5); font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif; font-weight: 500; letter-spacing: 2px; }
+    /* 放大模式的左右切換箭頭 */
+    .lightbox-nav {
+        position: absolute; top: 50%; transform: translateY(-50%);
+        background-color: rgba(0, 0, 0, 0.6); color: white; border: none;
+        font-size: 30px; font-weight: bold; cursor: pointer;
+        width: 50px; height: 50px; border-radius: 50%; display: flex;
+        justify-content: center; align-items: center; z-index: 3001;
+        transition: background-color 0.3s ease; user-select: none;
+    }
+    .lightbox-nav:hover { background-color: rgba(0, 0, 0, 0.9); }
+    .lightbox-prev { left: 20px; }
+    .lightbox-next { right: 20px; }
+    
+    .product-info { padding: 30px 20px; position: relative; }
+    .product-info h1 { font-size: 32px; color: #000; margin: 0 0 10px 0; line-height: 1.3; font-weight: bold; }
+    
+    .subtitle-wrapper { display: flex; flex-direction: column; align-items: flex-start; gap: 8px; margin-bottom: 25px; }
+    .futuristic-pill-banner { display: inline-block; padding: 10px 25px; font-size: 18px; font-weight: bold; color: white; background: linear-gradient(110deg, #5E32E2 0%, #A259FF 100%); border-radius: 50px; margin: 0; }
+    .banner-break { display: none; }
+    
+    /* =========================================
+       2. Hero Section 頂部橫幅
+       ========================================= */
+    .hero-section { position: relative; overflow: hidden; padding: 100px 20px; display: flex; align-items: center; justify-content: flex-start; min-height: 50vh; background-color: #281e50; }
+    .hero-bg-layer { position: absolute; top: 0; left: 0; right: 0; bottom: 0; background-image: linear-gradient(rgba(40, 30, 80, 0.5), rgba(40, 30, 80, 0.7)), url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/evgeny-tchebotarev-ZPQE4XssoBc-unsplash.jpg?updatedAt=1773813234495'); background-size: cover; background-position: center; z-index: 0; animation: swipeInRight 1.5s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+    .hero-section-inner { position: relative; z-index: 2; max-width: 1200px; width: 100%; margin: 0 auto; }
+    .hero-text-content { max-width: 900px; background: rgba(0, 0, 0, 0.45); padding: 40px; border-radius: 20px; backdrop-filter: blur(8px); animation: swipeInLeft 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+    .hero-title { margin: 0; line-height: 1.3; letter-spacing: 1px; color: #fff; text-shadow: 2px 2px 8px rgba(0,0,0,0.6); }
+    .hero-title .nowrap { display: inline; font-size: clamp(24px, 6vw, 55px); font-weight: 700; }
+    .hero-title .glow-text { display: inline; font-size: clamp(26px, 6.5vw, 65px); font-weight: 900; margin-left: 10px; animation: initialGlow 2.5s ease-in-out forwards; }
+    .hero-title .highlight-number { color: #ffeb3b; }
+    .hero-subtitle-extra { font-size: clamp(18px, 4.5vw, 28px); color: #e0e0e0; margin-top: 15px; font-weight: bold; }
+    /* 修正了點擊跳轉行為，防止網址變更 */
+    .hero-cta-btn { display: inline-block; margin-top: 30px; padding: 18px 40px; background: linear-gradient(135deg, #ff9800, #ff5722); color: #fff !important; font-size: clamp(18px, 4vw, 22px); font-weight: bold; border-radius: 50px; text-decoration: none; box-shadow: 0 6px 20px rgba(255, 87, 34, 0.4); cursor: pointer; }
+    .hero-watermark { position: absolute; right: 20px; bottom: 15px; color: rgba(255, 255, 255, 0.5); font-size: 14px; z-index: 2; }
 
-    /* Photo 2 Checklist Style (Inserted inside original widget safely) */
-    .photo2-checklist { margin: 25px 0; border-top: 1px solid #eee; padding-top: 20px;}
-    .photo2-checklist p { font-size: 15px; font-weight: bold; margin-bottom: 15px; color: #444; }
+    /* =========================================
+       3. 適合每週固定兩堂... 
+       ========================================= */
+    .photo2-checklist { margin: 40px 0; padding-top: 30px; border-top: 3px solid #000; scroll-margin-top: 40px; }
+    .photo2-checklist h3 { font-size: 26px; color: #000; margin-bottom: 25px; font-weight: 900; line-height: 1.4; }
     .photo2-checklist ul { list-style: none; padding: 0; margin: 0; }
-    .photo2-checklist li { display: flex; align-items: flex-start; margin-bottom: 12px; font-size: 14px; color: #444; line-height: 1.6; }
-    .check-icon { margin-right: 10px; font-size: 16px; color: #333; font-style: normal; }
-    .warning-icon { margin-right: 10px; font-size: 16px; font-style: normal; }
+    .photo2-checklist li { display: flex; align-items: flex-start; margin-bottom: 22px; font-size: 20px; color: #000; line-height: 1.6; }
+    .photo2-checklist li strong { font-weight: 900; color: #000; }
+    .check-icon, .warning-icon { flex-shrink: 0; margin-right: 12px; margin-top: 3px; font-size: 22px; font-weight: bold; color: #000; }
+    .warning-icon { color: #e53e3e; }
+    .special-offer-banner { font-size: 22px; font-weight: 900; color: #000; margin-top: 30px; margin-bottom: 20px; }
 
-    /* Tables Container (Code 3 & Code 5) */
-    .extra-sections-wrapper { max-width: 1000px; margin: 40px auto; padding: 0 15px; }
+    /* =========================================
+       4. 方案選擇卡片區塊 (點擊即結帳)
+       ========================================= */
+    .plan-selector-container { max-width: 1200px; margin: 60px auto 40px auto; padding: 0 20px; }
+    .plan-selector-title { font-size: 32px; color: #000; font-weight: 900; margin-bottom: 25px; border-bottom: 2px solid #000; display: inline-block; padding-bottom: 10px; }
+    
+    .plan-list-header { display: none; }
+    .plan-list { display: flex; flex-direction: column; gap: 15px; }
+    
+    .plan-card {
+        display: flex; align-items: center; padding: 25px; border: 2px solid #ccc;
+        border-radius: 12px; background: #fff; cursor: pointer; transition: all 0.2s ease;
+    }
+    .plan-card:hover { border-color: #000; box-shadow: 0 4px 20px rgba(0,0,0,0.15); transform: translateY(-2px); }
+    
+    .plan-radio {
+        width: 26px; height: 26px; border: 2px solid #888; border-radius: 50%;
+        margin-right: 20px; flex-shrink: 0; display: flex; align-items: center; justify-content: center;
+    }
+    .plan-card:hover .plan-radio { border-color: #000; }
+    .plan-radio::after { content: ''; width: 14px; height: 14px; background: #000; border-radius: 50%; opacity: 0; transition: opacity 0.2s; }
+    .plan-card:active .plan-radio::after { opacity: 1; }
 
-    /* Sub-Table (Code 3) */
-    .sub-container { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 20px 0 40px 0; }
-    .sub-table { border-collapse: collapse; margin: 10px auto; font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif; width: 100%; box-shadow: 0 12px 30px rgba(0, 0, 0, 0.1); border-radius: 15px; overflow: hidden; border: 1px solid #ddd; table-layout: fixed; background: white;}
-    .sub-table thead tr { background: linear-gradient(135deg, #8a4fff, #6b38e8); color: #ffffff; }
-    .relative-cell { position: relative; vertical-align: middle; }
-    .bonus-gif { position: absolute; top: 2px; left: 2px; z-index: 1; width: 35px; height: auto; }
-    .sub-table th { padding: 12px 5px; font-size: 15px; }
-    .sub-table td { padding: 30px 5px 15px 5px; text-align: center; border-bottom: 1px solid #eee; border-right: 1px solid #eee; }
-    .price-text { font-weight: bold; font-size: 16px; color: #333; }
-    .class-count { font-size: 15px; color: #666; font-weight: bold; }
-    .points-text { font-size: 18px; font-weight: 900; color: #8a4fff; }
-    .promo-note { background-color: #f6f0ff; color: #5a2caf; font-weight: bold; font-size: 14px; padding: 15px !important; }
+    .plan-details { display: flex; flex: 1; justify-content: space-between; align-items: center; font-size: 24px; font-weight: bold; color: #000; }
+    .plan-col { flex: 1; text-align: center; }
+    .plan-col:first-child { text-align: left; }
+    .plan-col:last-child { text-align: right; }
+    .plan-bonus-icon { width: 40px; vertical-align: middle; margin-right: 8px; }
 
-    /* Time Slot Table (Code 5) */
-    .table-container { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; margin: 20px 0; }
-    .price-table { border-collapse: collapse; margin: 10px auto; font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif; width: 100%; box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15); border-radius: 12px; overflow: hidden; border: 1px solid #ddd; table-layout: fixed; background: white;}
-    .price-table thead tr { background-color: #e63946; color: #ffffff; }
-    .price-table th { padding: 10px 5px; font-size: 14px; }
-    .en-sub { display: block; font-size: 9px; opacity: 0.9; text-transform: uppercase; }
-    .price-table td { padding: 12px 5px; text-align: center; border-bottom: 1px solid #eee; border-right: 1px solid #eee; }
-    .bold-time { font-weight: bold; font-size: 14px; color: #333; background-color: #fafafa; }
-    .time-sub { font-size: 11px; color: #888; display: block; }
-    .weekday-price { font-size: 18px; font-weight: bold; color: #444; }
-    .blue-price { color: #007bff; }
-    .holiday-cell { font-size: 22px; font-weight: 900; color: #e63946; background-color: #fffafa; }
-    .note-row { background-color: #fdf2f2; color: #d62828; font-weight: bold; font-size: 13px; }
-    .note-cell { padding: 15px !important; border-right: none !important; }
+    /* =========================================
+       5. 底部表格區塊 (時段與費用)
+       ========================================= */
+    .extra-sections-wrapper { max-width: 1200px; margin: 40px auto; padding: 0 20px; }
+    .table-container { width: 100%; overflow-x: auto; margin: 30px 0; }
+    .price-table { border-collapse: collapse; margin: 0 auto; width: 100%; border: 2px solid #000; background: white; }
+    .price-table th { background-color: #000; color: #ffffff; padding: 15px; font-size: 18px; font-weight: bold; }
+    .price-table td { padding: 20px 10px; text-align: center; border-bottom: 1px solid #ccc; border-right: 1px solid #ccc; font-size: 18px; color: #000;}
+    .bold-time { font-weight: bold; font-size: 18px; background-color: #f9f9f9; }
+    .weekday-price { font-size: 22px; font-weight: bold; }
+    .holiday-cell { font-size: 26px; font-weight: 900; }
 
-    /* Info Block Section (Photo 3) */
-    .info-block { background-color: #f8faf5; padding: 50px 20px; text-align: center; font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif; line-height: 1.8; margin: 40px auto; border-radius: 12px; border: 1px solid #e8ede3; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-    .info-block p.top-highlight { font-weight: bold; font-size: 18px; margin-bottom: 40px; color: #222; }
-    .info-block h2 { font-size: 26px; color: #333; margin-top: 30px; margin-bottom: 15px; font-weight: normal;}
-    .info-block h3 { font-size: 24px; margin-bottom: 40px; line-height: 1.5; font-weight: normal; }
-    .text-orange { color: #e67e22; font-weight: bold; }
-    .text-green { color: #2ecc71; font-weight: bold; }
-    .diamond-list { list-style: none; padding: 0; display: inline-block; text-align: left; margin: 20px 0; font-weight: bold; font-style: italic; color: #2c3e50; font-size: 18px;}
-    .diamond-list li { margin-bottom: 15px; }
-    .text-pink { color: #ff52b4; font-weight: bold; font-style: italic; font-size: 18px; margin: 15px 0; }
-    .info-action-text { font-size: 18px; color: #333; margin: 30px 0; }
-    .info-quote { font-size: 20px; color: #333; margin: 40px 0; }
-    .limit-text { font-size: 18px; color: #333; margin-top: 40px; }
-    .text-blue-outline { color: #3498db; }
-    .line-link-bottom { display: inline-block; color: #2c3e50; text-decoration: underline; font-weight: bold; font-size: 20px; margin-top: 20px; }
+    /* Info Blocks (無卡片) */
+    .info-block-simple { max-width: 1200px; margin: 0 auto; padding: 40px 20px; background-color: #ffffff; color: #000; }
+    .info-block-simple h3 { font-size: 28px; color: #000; font-weight: 900; margin: 0 0 20px 0; padding-bottom: 10px; border-bottom: 2px solid #000; display: inline-block; }
+    .info-block-simple p { font-size: 20px; line-height: 1.8; margin-bottom: 25px; color: #000; }
+    .info-block-simple p strong { font-weight: 900; }
+    .info-block-simple hr { border: 0; border-top: 2px solid #eee; margin: 50px 0; }
+    .line-btn { display: inline-block; background-color: #00B900; color: #fff !important; padding: 16px 40px; border-radius: 50px; text-decoration: none; font-weight: bold; font-size: 22px; margin-top: 20px; }
 
-    /* FAQ Section (Photo 4) */
-    .faq-section { max-width: 800px; margin: 60px auto; padding: 20px; font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif; }
-    .faq-section h2 { text-align: center; font-size: 32px; margin-bottom: 40px; color: #222;}
-    .faq-item { border-top: 1px solid #eaeaea; padding: 20px 0; }
-    .faq-item:last-child { border-bottom: 1px solid #eaeaea; }
-    .faq-question { width: 100%; text-align: center; background: none; border: none; font-size: 20px; font-weight: 500; color: #333; cursor: pointer; display: flex; justify-content: center; align-items: center; padding: 10px 0; outline: none; position: relative; }
-    .faq-question .icon { position: absolute; right: 10px; font-size: 24px; font-weight: 300; transition: transform 0.3s ease; color: #888;}
-    .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; color: #555; text-align: center; font-size: 16px; }
-    .faq-answer p { padding-top: 20px; margin: 0; line-height: 1.8; }
-    .faq-answer a { color: #e67e22; text-decoration: none; }
-    .faq-question.active .icon { transform: rotate(45deg); }
-    .faq-answer .text-blue { color: #3498db; }
-    .faq-answer .text-green { color: #2ecc71; }
-    .faq-answer .text-red { color: #e74c3c; }
+    /* FAQ */
+    .faq-section { max-width: 1200px; margin: 60px auto; padding: 20px; }
+    .faq-section h2 { font-size: 32px; color: #000; font-weight: bold; border-bottom: 2px solid #000; padding-bottom: 10px; display: inline-block;}
+    .faq-item { border-bottom: 1px solid #ccc; padding: 20px 0; }
+    .faq-question { width: 100%; text-align: left; background: none; border: none; font-size: 22px; font-weight: bold; color: #000; cursor: pointer; padding: 10px 0; position: relative; }
+    .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease; color: #000; font-size: 20px; line-height: 1.8; }
+    .faq-answer p { padding-top: 15px; margin: 0; }
 
-    /* RWD for New Sections */
+    /* =========================================
+       6. 側邊購物車設定
+       ========================================= */
+    .cart-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.5); z-index: 1000; opacity: 0; visibility: hidden; }
+    .cart-overlay.open { opacity: 1; visibility: visible; }
+    .cart-panel { position: fixed; top: 0; right: -100%; width: 90%; max-width: 800px; height: 100%; background-color: #fff; box-shadow: -5px 0 15px rgba(0,0,0,0.1); z-index: 1001; transition: right 0.5s ease; display: flex; flex-direction: column; }
+    .cart-panel.open { right: 0; }
+    
+    .cart-body { display: flex; flex-grow: 1; padding: 20px; gap: 40px; overflow-y: auto; }
+    .cart-left, .cart-right { padding: 15px; } 
+    #close-cart-btn-main { position: absolute; top: 20px; right: 20px; background: none; border: none; font-size: 32px; cursor: pointer; color: #000; z-index: 10; }
+    .cart-item { display: flex; justify-content: space-between; align-items: flex-start; gap: 15px; padding-bottom: 20px; border-bottom: 1px solid #eee; }
+    .remove-item-btn { background: none; border: none; color: red; cursor: pointer; font-size: 16px; text-decoration: underline; padding: 0; }
+    .cart-total .total-row.final-total { font-size: 24px; font-weight: bold; }
+    #checkout-form input[type="email"] { width: 100%; padding: 15px; font-size: 18px; border: 2px solid #ccc; margin-bottom: 15px; }
+    .payment-method.custom-style { background-color: black; padding: 15px; color: white; }
+
+    /* =========================================
+       7. Email Popup Full Width (點擊方案滿版結帳)
+       ========================================= */
+    #email-popup-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0,0,0,0.85); z-index: 2000; display: none; justify-content: center; align-items: center; opacity: 0; }
+    #email-popup-overlay.visible { display: flex; opacity: 1; }
+    .email-popup-content { background-color: white; padding: 50px 30px; width: 100%; max-width: 650px; text-align: center; border-radius: 8px; position: relative; box-sizing: border-box; }
+    .email-popup-content input { width: 100%; padding: 18px; font-size: 22px; border: 2px solid #000; box-sizing: border-box; }
+    #popup-checkout-btn { width: 100%; background-color: #000; color: white; padding: 18px; font-size: 24px; margin-top: 25px; border: none; font-weight: bold; cursor: pointer;}
+    #close-popup-btn { position: absolute; top: 15px; right: 20px; background: none; border: none; font-size: 40px; cursor: pointer; color: #000; line-height: 1; }
+    
+    /* 感謝頁面完整設計 */
+    #thank-you-page { display: none; padding: 40px 20px; max-width: 1200px; margin: 0 auto; background-color: #ffffff; }
+    .ty-header { font-size: 36px; color: #000; font-weight: 900; margin-bottom: 20px; }
+    .ty-section { background-color: #f9f9f9; padding: 25px; border: 2px solid #000; margin-bottom: 30px; }
+    .ty-section h3 { font-size: 24px; font-weight: bold; margin-top: 0; border-bottom: 2px solid #000; padding-bottom: 10px; color: #000; }
+    .ty-detail-text { font-size: 20px; color: #000; margin-bottom: 10px; line-height: 1.6; }
+    .ty-detail-text strong { font-weight: 900; }
+
+    /* =========================================
+       8. RWD 響應式字體與排版加強
+       ========================================= */
+    @media screen and (min-width: 1025px) {
+        .cart-body { flex-direction: row; }
+        .cart-left, .cart-right { flex-basis: 50%; }
+    }
+    
+    @media (max-width: 1024px) {
+        .cart-body { flex-direction: column !important; gap: 20px; padding: 20px; }
+        .cart-left, .cart-right { flex-basis: auto; width: 100%; padding: 0; }
+        .cart-right { padding-top: 20px; border-top: 2px solid #eee; }
+    }
+
     @media screen and (min-width: 768px) {
-      .hero-section h1 { font-size: 4rem; text-align: left; }
-      .price-table th { font-size: 22px; padding: 20px; }
-      .en-sub { font-size: 14px; }
-      .price-table td { padding: 25px 10px; }
-      .bold-time { font-size: 22px; }
-      .time-sub { font-size: 16px; }
-      .weekday-price { font-size: 36px; }
-      .holiday-cell { font-size: 48px; }
-      .note-row { font-size: 20px; }
-      .sub-table th { font-size: 22px; padding: 20px; }
-      .sub-table td { padding: 50px 10px 25px 10px; }
-      .price-text { font-size: 24px; }
-      .class-count { font-size: 22px; }
-      .points-text { font-size: 28px; }
-      .promo-note { font-size: 18px; }
-      .bonus-gif { width: 55px; top: 5px; left: 5px; }
+        /* 電腦/平板版 */
+        .image-gallery { padding: 0 20px; background: transparent; overflow: visible; margin-bottom: 30px; margin-top: 20px; }
+        .gallery-track { display: grid !important; grid-template-columns: repeat(5, 1fr); gap: 15px; transform: none !important; width: 100%; }
+        .gallery-slide { min-width: 0 !important; width: 100% !important; border-radius: 8px; overflow: hidden; border: 1px solid #e0e0e0; transition: transform 0.2s ease, box-shadow 0.2s ease; cursor: zoom-in; }
+        .gallery-slide:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
+        .gallery-nav, .gallery-dots { display: none !important; }
+
+        .plan-list-header { display: flex; padding: 10px 25px 10px 75px; font-size: 20px; font-weight: bold; color: #555; border-bottom: 2px solid #000; margin-bottom: 15px; }
+        .plan-header-col { flex: 1; text-align: center; }
+        .plan-header-col:first-child { text-align: left; }
+        .plan-header-col:last-child { text-align: right; }
+
+        .product-info h1 { font-size: 42px; }
+        .photo2-checklist h3 { font-size: 32px; }
+        .photo2-checklist li { font-size: 24px; }
+        .info-block-simple h3 { font-size: 34px; }
+        .info-block-simple p { font-size: 24px; }
+        .price-table th { font-size: 24px; padding: 20px; }
+        .price-table td { font-size: 22px; padding: 30px 15px; }
+        .weekday-price { font-size: 32px; }
+        .holiday-cell { font-size: 40px; }
+        .banner-break { display: none; }
     }
-    @media screen and (min-width: 1200px) {
-      .hero-section { padding: 150px 20px; }
-      .hero-section h1 { font-size: 5rem; }
-      .price-table th { font-size: 32px; padding: 30px; }
-      .en-sub { font-size: 18px; margin-top: 5px; }
-      .price-table td { padding: 40px 15px; }
-      .bold-time { font-size: 32px; }
-      .time-sub { font-size: 20px; }
-      .weekday-price { font-size: 60px; }
-      .holiday-cell { font-size: 85px; }
-      .note-row { font-size: 28px; padding: 25px !important; }
-      .sub-table th { font-size: 32px; padding: 35px; }
-      .sub-table td { padding: 80px 15px 40px 15px; }
-      .price-text { font-size: 40px; }
-      .class-count { font-size: 36px; }
-      .points-text { font-size: 55px; }
-      .promo-note { font-size: 28px; padding: 30px !important; }
-      .bonus-gif { width: 90px; top: 10px; left: 10px; }
-    }
+    
     @media (max-width: 767px) {
-      .hero-section h1 { font-size: 2.5rem; text-align: center;}
-      .hero-section { justify-content: center; }
+        /* 手機版：方案選擇卡片專屬排版 */
+        .plan-card { padding: 15px; align-items: flex-start; }
+        .plan-radio { margin-top: 4px; }
+        .plan-details { flex-direction: row; flex-wrap: wrap; align-items: center; gap: 2px 10px; }
+        .plan-col { text-align: left !important; width: auto; font-size: 22px; }
+        .plan-col:nth-child(2) { font-size: 15px; font-weight: normal; color: #555; white-space: nowrap; }
+        .plan-col:nth-child(3) { width: 100%; font-size: 20px; margin-top: 6px; }
+
+        .email-popup-content { width: 100%; height: 100%; border-radius: 0; display: flex; flex-direction: column; justify-content: center; }
+        #close-popup-btn { top: 20px; right: 20px; }
+        
+        .hero-text-content { padding: 30px 20px; text-align: left; }
+        .product-info { padding: 25px 15px; }
+        .extra-sections-wrapper { padding: 0 15px; }
+        .info-block-simple { padding: 30px 15px; }
+        .banner-break { display: inline; }
+
+        /* 手機版 Lightbox 控制箭頭稍微縮小 */
+        .lightbox-nav { width: 40px; height: 40px; font-size: 22px; }
+        .lightbox-prev { left: 10px; }
+        .lightbox-next { right: 10px; }
     }
+
+    @keyframes swipeInLeft { 0% { transform: translateX(-40px); opacity: 0; } 100% { transform: translateX(0); opacity: 1; } }
+    @keyframes swipeInRight { 0% { transform: scale(1.05); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+    @keyframes initialGlow { 0% { text-shadow: 0 0 10px #fff, 0 0 20px #ffeb3b, 0 0 30px #ff9800; } 100% { text-shadow: 2px 2px 8px rgba(0,0,0,0.6); } }
   </style>
 </head>
 <body>
 
-<!-- 新增：頂部 Hero 橫幅 (Photo 1) -->
-<div class="hero-section">
-  <div class="hero-section-inner">
-    <h1>限時特殊時段優惠！<br>每堂只需450點</h1>
-  </div>
+<!-- 點擊放大的 Lightbox 覆蓋層 (含箭頭與滑動偵測) -->
+<div id="lightbox-overlay" class="lightbox-overlay" onclick="closeLightbox()">
+    <span class="lightbox-close">&times;</span>
+    <button class="lightbox-nav lightbox-prev" onclick="prevLightboxImage(event)">&#10094;</button>
+    <!-- 點擊圖片本身不關閉 lightbox，阻止冒泡 -->
+    <img id="lightbox-img" src="" alt="放大圖片" onclick="event.stopPropagation()">
+    <button class="lightbox-nav lightbox-next" onclick="nextLightboxImage(event)">&#10095;</button>
 </div>
 
-<!-- 完全保留您的原始購物車核心容器 -->
+<!-- Hero Section -->
+<div class="hero-section">
+  <div class="hero-bg-layer"></div>
+  <div class="hero-section-inner">
+    <div class="hero-text-content">
+        <h1 class="hero-title">
+            <span class=“nowrap”>訂閱制/特殊時段</span>
+           <br> <span class="glow-text">每堂只需<span class="highlight-number">450</span>點</span>
+        </h1>
+        <p class="hero-subtitle-extra">每堂 50 分鐘<br> (每週享有2堂超優惠課程)</p>
+        <!-- 修正按鈕寫法，避免點擊後改變網址 -->
+        <a href="javascript:void(0);" onclick="document.getElementById('target-checklist').scrollIntoView({behavior: 'smooth'});" class="hero-cta-btn">查看方案重點</a>
+    </div>
+  </div>
+  <div class="hero-watermark">Tony線上美語家教</div>
+</div>
+
+<!-- 主要內容全寬容器 -->
 <div id="embedding-container">
   <div id="product-page">
     <div class="product-widget">
+        <!-- 圖片區域 -->
         <div class="image-gallery"><div class="gallery-track"></div></div>
+        
         <div class="product-info">
-            <div id="cart-icon" class="cart-icon-wrapper">🛒<span id="cart-count" class="cart-count">0</span></div>
-            
-            <!-- 您原本的標題與附標 -->
             <h1>會員訂閱制 每週固定兩堂</h1>
             <div class="subtitle-wrapper">
-                <p style="color: blue; font-size: 16px; margin: 0;">（1-1每堂50分鐘）</p>
+                <p style="color: blue; font-size: 20px; margin: 0; font-weight: bold;">（1-1每堂50分鐘）</p>
                 <p class="futuristic-pill-banner">（一次購買兩期贈送<br class="banner-break">兩堂課1350點或五堂課2250點）</p>
-                <div style="display: flex; gap: 10px; align-items: center; margin-top: 10px; flex-wrap: wrap;">
-                    <a href="https://tonyonlineenglish.mydurable.com/allcourses" target="_blank" style="color: blue; font-size: 16px; text-decoration: none; display: flex; align-items: center; gap: 5px;">
-                        <img src="https://ik.imagekit.io/lql1uveoc/external-link.png?updatedAt=1754911187731" style="width: 12px; height: 12px;">所有課程介紹
+                <div style="display: flex; gap: 15px; align-items: center; margin-top: 15px; flex-wrap: wrap;">
+                    <a href="https://tonyonlineenglish.netlify.app/allcourses" target="_blank" style="color: blue; font-size: 18px; text-decoration: underline; font-weight: bold;">
+                        🔗 所有課程介紹
                     </a>
-                    <span style="color: #ccc;">|</span>
-                    <a href="https://tonyonlineenglish.mydurable.com/regulations" target="_blank" style="color: black; font-size: 16px; text-decoration: none; display: flex; align-items: center; gap: 5px;">
-                        <img src="https://ik.imagekit.io/lql1uveoc/external-link.png?updatedAt=1754911187731" style="width: 12px; height: 12px;">請假-調課規範
+                    <span style="color: #000; font-size: 18px;">|</span>
+                    <a href="https://tonyonlineenglish.netlify.app/regulations" target="_blank" style="color: #000; font-size: 18px; text-decoration: underline; font-weight: bold;">
+                        🔗 請假-調課規範
                     </a>
                 </div>
             </div>
 
-            <!-- 嵌入 Photo 2 的文字清單 (不干擾原本結構) -->
-            <div class="photo2-checklist">
-              <p>適合每週固定兩堂課程的學員</p>
+            <!-- 純文字黑字白底重點清單 -->
+            <div class="photo2-checklist" id="target-checklist">
+              <h3>適合每週固定兩堂課程的學員</h3>
               <ul>
-                  <li><i class="check-icon">✓</i> 每週固定『900點』訂閱扣除，當周沒有上課也會扣除</li>
-                  <li><i class="check-icon">✓</i> 適用上課時段 週一～週五 （平日） 上午10:00am~5:00pm前</li>
-                  <li><i class="check-icon">✓</i> 每週第三堂或平日5pm後：『550點』 *週六及國定假日每堂：『600點』</li>
-                  <li><i class="check-icon">✓</i> 2026 (會另行公告) 連假當週不自動扣除點數，但仍可預約上課</li>
-                  <li><i class="check-icon">✓</i> 課程期間會員擁有『兩次』暫停課程權益。(不限時長)</li>
-                  <li><i class="check-icon">✓</i> 期間轉方案，改為非訂閱制，每堂『550』點。週六及國定假日課程每堂：『600點』</li>
-                  <li><i class="check-icon">✓</i> 『24小時內』提出請假或調課，『扣除0.5堂』 (該時段點數)</li>
-                  <li><i class="check-icon">✓</i> 『12小時內』提出請假或調課，『扣除1堂』 (該時段點數)</li>
-                  <li><i class="warning-icon">⚠️</i> 週六和國定假日課程需於上課前 24 小時提出請假或調課；若未於24 小時前提出，當堂課視為已使用。</li>
-                  <li><i class="check-icon">✓</i> Special Offer 優惠 ⬇️⬇️⬇️⬇️⬇️</li>
+                  <li><i class="check-icon">✓</i> <span><strong>每週固定『900點』訂閱(每週享有兩堂超值優惠課程）</strong>，當周沒有上課也會扣除</span></li>
+                  <li><i class="check-icon">✓</i> <span><strong>適用上課時段：週一～週五 (平日) 10:00am~5:00pm前</strong></span></li>
+                  <li><i class="check-icon">✓</i> <span><strong>每週第三堂或平日5pm後：『550點』</strong><span style="font-size: 0.9em; opacity: 0.8;">*週六及國定假日每堂：『600點』</span></span></li>
+                 <li>
+  <i class="check-icon">✓</i> 
+  <span>
+  <strong> <span style="color: blue;">期間轉為非訂閱制</span>：每堂『550點』 </strong> <br> <span style="font-size: 0.9em; opacity: 0.8;"> *平日 5:00pm後每堂：『600點』，週六及國定假日每堂：『600點』 </span>   </span>
+</li>
+<li>
+  <i class="check-icon">✓</i> 
+  <span><strong>課程期間會員擁有『兩次』暫停課程權益。</strong>(不限時長)</span>
+</li>
+                  <li><i class="check-icon">✓</i> <span><strong>『24小時內』提出請假或調課，『扣除0.5堂』</strong> (該時段點數)</span></li>
+                  <li><i class="check-icon">✓</i> <span><strong>『12小時內』提出請假或調課，『扣除1堂』</strong> (該時段點數)</span></li>
+                  <li><i class="warning-icon">⚠️</i> <span><strong>週六和國定假日課程需於上課前 24 小時提出請假或調課</strong>；若未於24小時前提出，當堂課視為已使用。</span></li>
+                  <li><i class="check-icon">✓</i> <span><strong>2026 連假當週不自動扣除點數</strong> (會另行公告)，但仍可預約上課</span></li>
               </ul>
+              <div class="special-offer-banner">Special Offer 優惠 ⬇️⬇️⬇️⬇️⬇️</div>
             </div>
-
-            <!-- 您原本的購物車選項區 -->
-            <div class="option-selector">
-                <label for="course-options">
-                    <span style="color: black; font-size: 18px; font-weight: bold;">選擇課程方案</span>
-                </label>
-                <select id="course-options"></select>
-            </div>
-            <button id="add-to-cart-btn"></button>
+            
         </div>
     </div>
     
-    <!-- 您原本的側邊購物車畫面 -->
+    <!-- 側邊購物車畫面 -->
     <div id="cart-overlay" class="cart-overlay"></div>
     <div id="cart-panel" class="cart-panel">
         <div class="cart-body">
             <div class="cart-left">
-                <h3>購物車 <button class="close-btn" id="close-cart-btn-main">×</button></h3>
+                <h3 style="font-size: 26px; color:#000;">購物車</h3>
                 <div id="cart-items-container"></div>
-                <div id="cart-total-container" class="cart-total">
-                </div>
+                <div id="cart-total-container" class="cart-total"></div>
             </div>
             <div class="cart-right">
-                <h3>結帳</h3>
+                <h3 style="font-size: 26px; color:#000;">結帳</h3>
                 <form id="checkout-form" onsubmit="return false;">
-                    <p>請輸入您的電子信箱。</p>
-                    <input type="email" id="email" required readonly placeholder="點擊這裡輸入信箱">
-                    <a class="line-link" href="https://line.me/ti/p/T9YdimtG8_" target="_blank">請加入Line: Myavalon</a>
+                    <p style="font-size: 18px; color: #000;">請輸入您的電子信箱。</p>
+                    <input type="email" id="email" required readonly placeholder="請於商品區點擊方案直接結帳">
+                    <a class="line-link" href="https://line.me/ti/p/T9YdimtG8_" target="_blank" style="font-size: 20px;">請加入Line: Myavalon</a>
                     <div class="payment-info-section">
-                        <h3>付款資訊</h3>
+                        <h3 style="color:#000;">付款資訊</h3>
                         <div class="payment-method custom-style">
-                            <div class="icon-circle"><div></div></div>
                             <span>匯款或可以使用Line Pay/iPassMoney 付款</span>
                         </div>
                     </div>
-                    <p class="tls-info">所有數據都透過安全 TLS 連線進行加密傳輸</p>
                 </form>
             </div>
         </div>
+        <button id="close-cart-btn-main">×</button>
     </div>
   </div>
   
-  <!-- 您原本的信箱彈窗 -->
+  <!-- 滿版 Email 結帳彈窗 (點擊方案後彈出) -->
   <div id="email-popup-overlay">
       <div class="email-popup-content">
-          <button id="close-popup-btn">×</button>
-          <label for="popup-email-input">請輸入您的電子信箱</label>
+          <button id="close-popup-btn" onclick="closeEmailPopup()">×</button>
+          <label for="popup-email-input" style="font-size: 28px; font-weight: bold; color: #000; margin-bottom: 20px; display: block;">請輸入您的電子信箱</label>
           <input type="email" id="popup-email-input" required placeholder="example@email.com">
-          <button id="popup-checkout-btn">確認</button>
+          <button id="popup-checkout-btn">確認送出結帳</button>
       </div>
   </div>
 
-  <!-- 您原本的精美感謝頁面與動畫結構 -->
-  <div id="thank-you-page" style="display:none;">
-    <div class="thank-you-container">
-        <div class="ty-left-panel">
-            <div class="ty-checkmark">✓</div>
-            <h2 class="ty-header">感謝您的訂購！<span id="celebration-icon" class="celebration-icon">🎉</span></h2>
-            <p class="ty-message">您的訂單已成功建立。確認信已寄送至您的電子信箱，請檢查您的收件匣。</p>
-            <div class="ty-order-details">
-                <div class="ty-detail-item"><span>訂單編號</span><span id="ty-order-id"></span></div>
-                <div class="ty-detail-item"><span>訂單時間</span><span id="ty-order-timestamp"></span></div>
-                <div class="ty-detail-item"><span>電子信箱</span><span id="ty-customer-email"></span></div>
-            </div>
-            <div id="ty-booking-container" style="display: none; margin-top: 20px;">
-                <h3>下一步：預約課程</h3>
-                <p>請點擊下方專屬連結，預約您的上課時間：</p>
-                <div id="ty-booking-links-list"></div>
-            </div>
-            <div class="ty-payment-instructions" style="margin-top: 20px;">
-                <h3>如何付款:</h3>
-                <p><a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="ty-line-link">請點選加入Line: myavalon</a></p>
-                <p>匯款或可以使用Line Pay/iPassMoney 付款</p>
-                <p>交易成功後煩請告知<br>將提供學費證明<br>感謝 ＾＾</p>
-            </div>
-            <div style="margin-top: 20px;">
-              <a href="#" id="continue-shopping-btn">繼續購物</a>
-              <a href="#" id="close-btn">關閉</a>
-            </div>
-        </div>
-        <div class="ty-right-panel">
-            <h3 class="ty-summary-header">訂單摘要</h3>
-            <div id="ty-cart-items-container"></div>
-            <div id="ty-total-container" class="cart-total">
-            </div>
-        </div>
-    </div>
+  <!-- 感謝頁面 -->
+  <div id="thank-you-page">
+      <h2 class="ty-header">🎉 感謝您的訂購！</h2>
+      <p style="font-size: 22px; color: #000; margin-bottom: 40px; font-weight: bold;">您的訂單已成功建立。確認信已寄送至您的電子信箱。</p>
+      
+      <!-- 訂單資訊區塊 -->
+      <div class="ty-section">
+          <h3>📝 訂單資訊</h3>
+          <div class="ty-detail-text"><strong>訂單編號：</strong> <span id="ty-order-id"></span></div>
+          <div class="ty-detail-text"><strong>下單時間：</strong> <span id="ty-order-timestamp"></span></div>
+          <div class="ty-detail-text"><strong>電子信箱：</strong> <span id="ty-customer-email"></span></div>
+      </div>
+
+      <!-- 購物明細區塊 -->
+      <div class="ty-section">
+          <h3>🛒 訂單明細</h3>
+          <div id="ty-cart-items-container"></div>
+          <div id="ty-total-container"></div>
+      </div>
+
+      <!-- 付款指示區塊 -->
+      <div class="ty-section" style="background-color: #fff5f5; border-color: #e53e3e;">
+          <h3 style="color: #e53e3e; border-bottom-color: #e53e3e;">💳 下一步：如何付款</h3>
+          <p style="font-size: 22px; color: #000; font-weight: bold; line-height: 1.8;">
+              請點選下方按鈕加入 Line: myavalon<br>
+              匯款或可以使用 Line Pay / iPassMoney 付款。<br>
+              交易成功後煩請告知，將提供學費證明，感謝 ＾＾
+          </p>
+          <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="line-btn" style="margin-top: 15px;">加入Line : myavalon</a>
+      </div>
+
+      <div style="margin-top: 40px;">
+          <a href="#" id="continue-shopping-btn" style="font-size: 22px; color: blue; font-weight: bold; text-decoration: underline;">← 繼續購物</a>
+      </div>
   </div>
 </div>
 
-<!-- =========================================
-     新增：下方表格與文字區塊 (安全地加在原始容器之外)
-     ========================================= -->
+<!-- 下方區塊開始 -->
 <div class="extra-sections-wrapper">
   
+  <!-- =========================================
+       選擇課程方案卡片區塊
+       ========================================= -->
+  <div class="plan-selector-container">
+      <h3 class="plan-selector-title">
+          選擇課程方案 <span style="font-size: 18px; font-weight: normal;">(點擊選擇即進入結帳)</span>
+      </h3>
+      
+      <!-- 桌面版欄位標頭 -->
+      <div class="plan-list-header">
+          <div class="plan-header-col">方案金額</div>
+          <div class="plan-header-col">預計堂數/450</div>
+          <div class="plan-header-col">獲得點數</div>
+      </div>
+
+      <div class="plan-list">
+          <div class="plan-card" onclick="selectPlanAndCheckout('plan-1')">
+              <div class="plan-radio"></div>
+              <div class="plan-details">
+                  <div class="plan-col">NT$13,500</div>
+                  <div class="plan-col">約 30 堂課</div>
+                  <div class="plan-col">13,500 點</div>
+              </div>
+          </div>
+          
+          <div class="plan-card" onclick="selectPlanAndCheckout('plan-3')">
+              <div class="plan-radio"></div>
+              <div class="plan-details">
+                  <div class="plan-col">NT$18,000</div>
+                  <div class="plan-col">約 41 堂課</div>
+                  <div class="plan-col" style="font-weight: 900;"><img src="https://ik.imagekit.io/lql1uveoc/%E6%9C%83%E5%93%A1450/2026.%20%E6%96%B0%E5%A2%9E18000.36000/coupon.gif" class="plan-bonus-icon">18,450 點</div>
+              </div>
+          </div>
+
+          <div class="plan-card" onclick="selectPlanAndCheckout('plan-2')">
+              <div class="plan-radio"></div>
+              <div class="plan-details">
+                  <div class="plan-col">NT$27,000</div>
+                  <div class="plan-col">約 62 堂課</div>
+                  <div class="plan-col" style="font-weight: 900;"><img src="https://ik.imagekit.io/lql1uveoc/%E6%9C%83%E5%93%A1450/2026.%20%E6%96%B0%E5%A2%9E18000.36000/coupon.gif" class="plan-bonus-icon">27,900 點</div>
+              </div>
+          </div>
+
+          <div class="plan-card" onclick="selectPlanAndCheckout('plan-4')">
+              <div class="plan-radio"></div>
+              <div class="plan-details">
+                  <div class="plan-col" style="color: red;">NT$36,000</div>
+                  <div class="plan-col">約 85 堂課</div>
+                  <div class="plan-col" style="color: red; font-weight: 900;"><img src="https://ik.imagekit.io/lql1uveoc/%E6%9C%83%E5%93%A1450/2026.%20%E6%96%B0%E5%A2%9E18000.36000/coupon.gif" class="plan-bonus-icon">38,250 點</div>
+              </div>
+          </div>
+      </div>
+      <div style="background-color: #f6f0ff; font-weight: bold; padding: 20px; text-align: center; border-radius: 8px; margin-top: 15px; font-size: 18px; color: #000;">
+          🎁 優惠：一次購買兩期贈送兩堂課(900點) 或 五堂課(2250點)<br>
+          <span style="font-size: 16px; font-weight: normal;">(1-1 每堂 50 分鐘)</span>
+      </div>
+  </div>
+
   <!-- 表格：時段 (Code 5) -->
   <div class="table-container">
     <table class="price-table">
@@ -439,159 +487,103 @@
       </thead>
       <tbody>
         <tr>
-          <td class="bold-time">10:00 - 12:00<span class="time-sub">Morning</span></td>
+          <td class="bold-time">10:00 - 12:00</td>
           <td class="weekday-price">450點</td>
           <td rowspan="3" class="holiday-cell">600點</td>
         </tr>
         <tr>
-          <td class="bold-time">13:00 - 17:00<span class="time-sub">Afternoon</span></td>
+          <td class="bold-time">13:00 - 17:00</td>
           <td class="weekday-price">450點</td>
         </tr>
         <tr>
-          <td class="bold-time">18:00 - 22:00<span class="time-sub">Evening</span></td>
-          <td class="weekday-price blue-price">550點</td>
+          <td class="bold-time">18:00 - 22:00</td>
+          <td class="weekday-price" style="color: blue;">550點</td>
         </tr>
-        <tr class="note-row">
-          <td colspan="3" class="note-cell">
+        <tr>
+          <td colspan="3" style="background-color: #f9f9f9; font-weight: bold;">
             💡 適用時段內每週第三堂課：550點
           </td>
         </tr>
       </tbody>
     </table>
   </div>
-
-  <!-- 表格：方案點數 (Code 3) -->
-  <div class="sub-container">
-    <table class="sub-table">
-      <thead>
-        <tr>
-          <th>方案金額</th>
-          <th>預計堂數/450</th>
-          <th>獲得點數</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td class="price-text">NT$13,500</td>
-          <td class="class-count">約 30 堂課</td>
-          <td class="points-text">13,500 點</td>
-        </tr>
-        <tr>
-          <td class="price-text">NT$18,000</td>
-          <td class="class-count">約 41 堂課</td>
-          <td class="points-text relative-cell">
-            <img src="https://ik.imagekit.io/lql1uveoc/%E6%9C%83%E5%93%A1450/2026.%20%E6%96%B0%E5%A2%9E18000.36000/coupon.gif" class="bonus-gif">
-            18,450 點
-          </td>
-        </tr>
-        <tr>
-          <td class="price-text">NT$27,000</td>
-          <td class="class-count">約 62 堂課</td>
-          <td class="points-text relative-cell">
-            <img src="https://ik.imagekit.io/lql1uveoc/%E6%9C%83%E5%93%A1450/2026.%20%E6%96%B0%E5%A2%9E18000.36000/coupon.gif" class="bonus-gif">
-            27,900 點
-          </td>
-        </tr>
-        <tr>
-          <td class="price-text" style="color:#e63946;">NT$36,000</td>
-          <td class="class-count">約 85 堂課</td>
-          <td class="points-text relative-cell" style="color:#e63946;">
-            <img src="https://ik.imagekit.io/lql1uveoc/%E6%9C%83%E5%93%A1450/2026.%20%E6%96%B0%E5%A2%9E18000.36000/coupon.gif" class="bonus-gif">
-            38,250 點
-          </td>
-        </tr>
-        <tr>
-          <td colspan="3" class="promo-note">
-            🎁 優惠：一次購買兩期<div class="mobile-br"></div>贈送兩堂課(900點) 或 五堂課(2250點)
-            <br>
-            <span style="font-size: 0.8em; font-weight: normal; opacity: 0.8;">(1-1 每堂 50 分鐘)</span>
-          </td>
-        </tr>
-      </tbody>
-    </table>
-  </div>
-
-  <!-- 新增：說明區塊 (Photo 3) -->
-  <div class="info-block">
-      <p class="top-highlight">每週第三堂或平日5pm後：『550點』 *週六及國定假日每堂：『600點』<br> (若有需求，可彈性加課)</p>
-      
-      <h2>適用時段：</h2>
-      <h3>
-          <span class="text-orange">週一至週五(平常日) 白天時段</span> <span class="text-green">10am-5pm</span><br>
-          <span style="color:#333;">皆可預約，(國定假日需看情況進行通知)</span>
-      </h3>
-      
-      <ul class="diamond-list">
-          <li>❖一次繳費： (約 30/40+1堂課約15/21週，每堂 50 分鐘)</li>
-          <li>❖課程期間可 暫停上課最多 2 次，可自由選擇恢復時間</li>
-      </ul>
-
-      <p class="text-pink">◎連假優惠：2026 將另行公告</p>
-      <p class="text-pink">一次購買兩期有贈送堂數。</p>
-
-      <p class="info-action-text">
-          快速提升：系統化背單字，快速提升英語實力🚀<br>
-          立即報名，把握機會！ 趕緊聯繫，了解更多詳情並預約體驗課程📲
-      </p>
-
-      <p class="info-quote">Tony線上美語家教 讓學習英語變得更輕鬆、更有效率！</p>
-
-      <p class="limit-text">
-          名額有限 請把握機會<br>
-          <span class="text-blue-outline">(Tony線上美語家教保留隨時終止優惠方案的權利。)</span>
-      </p>
-
-      <p><a href="https://line.me/ti/p/T9YdimtG8_" class="line-link-bottom" target="_blank">加入Line : myavalon</a></p>
-  </div>
-
-  <!-- 新增：常見問題 FAQ (Photo 4) -->
-  <div class="faq-section">
-      <h2>課程常見問題FAQ</h2>
-      
-      <div class="faq-item">
-          <button class="faq-question">我可以選擇的課程為何呢？ <span class="icon">+</span></button>
-          <div class="faq-answer">
-              <p>請點 <a href="#">🔗詳細課程介紹</a>，上述陳列皆可上課！若有特殊課程需求，請直接告知我們。Thanks</p>
-          </div>
-      </div>
-      
-      <div class="faq-item">
-          <button class="faq-question">上課時間為何？ <span class="icon">+</span></button>
-          <div class="faq-answer">
-              <p>Tony線上美語家教上課時間<br>
-              <span class="text-green">週一～週五： 上午10:00~晚上10:00</span><br>
-              <span class="text-red">週六： 上午 10:00~下午5:00 pm</span><br>
-              <a href="#">🔗點選線上預約系統</a></p>
-          </div>
-      </div>
-      
-      <div class="faq-item">
-          <button class="faq-question">我要怎麼知道我的上課時間？ <span class="icon">+</span></button>
-          <div class="faq-answer">
-              <p><span class="text-blue">直接點選連結,輸入您的英文名字即可知道即將開始的課程。</span> <a href="#">🔗課程時段查詢</a></p>
-          </div>
-      </div>
-      
-      <div class="faq-item">
-          <button class="faq-question">我的課程如果進行到一半,需要更改課程方案,可以嗎？ <span class="icon">+</span></button>
-          <div class="faq-answer">
-              <p><span class="text-red">當然可以！</span>由於細節較多，會需要以個別傳送！請提供Line 或是Gmail 帳號！</p>
-          </div>
-      </div>
-  </div>
-
 </div>
 
+<!-- 純文字大字體 Info Blocks -->
+<div class="info-block-simple">
+    <h3>訂閱至時段與點數計算</h3>
+    <p><strong>適用時段：</strong><br>
+    週一至週五(平常日) 白天時段 10am-5pm前皆可預約，(國定假日需看情況進行通知)</p>
+    
+    <p><strong>每週第三堂或平日5pm後：『550點』</strong><br>
+    *週六及國定假日每堂：『600點』<br>
+    (若有需求，可彈性加課)</p>
 
-<!-- =========================================
-     完全還原您的 JavaScript，包含 Google Sheets API 串接與訂單號碼
-     ========================================= -->
+    <hr>
+
+    <h3>課程權益與優惠</h3>
+    <p><strong>❖ 一次繳費：</strong>(約 30/40+1堂課約15/21週，每堂 50 分鐘)</p>
+    <p><strong>❖ 彈性暫停：</strong>課程期間可暫停上課最多 2 次，可自由選擇恢復時間</p>
+    <p><strong>◎ 連假優惠：</strong>2026 將另行公告</p>
+    <p style="color: #ff52b4; font-weight: bold; font-size: 24px;">一次購買兩期有贈送堂數！</p>
+
+    <hr>
+
+    <h3>快速提升英語實力</h3>
+    <p>系統化背單字，快速提升英語實力！<br>
+    Tony線上美語家教 讓學習英語變得更輕鬆、更有效率！<br>
+    立即報名，把握機會！ 趕緊聯繫，了解更多詳情並預約體驗課程。</p>
+
+    <hr>
+
+    <h3>注意事項</h3>
+    <p><strong>名額有限 請把握機會</strong><br>
+    <span style="font-size: 18px;">(Tony線上美語家教保留隨時終止優惠方案的權利。)</span></p>
+    <br>
+    <a href="https://line.me/ti/p/T9YdimtG8_" class="line-btn" target="_blank">加入Line : myavalon</a>
+</div>
+
+<!-- 常見問題 FAQ -->
+<div class="faq-section">
+    <h2>課程常見問題FAQ</h2>
+    
+    <div class="faq-item">
+        <button class="faq-question">我可以選擇的課程為何呢？ <span style="float: right;">+</span></button>
+        <div class="faq-answer">
+            <p>請點選 <a href="https://tonyonlineenglish.netlify.app/allcourses" target="_blank" style="color: blue; text-decoration: underline;">詳細課程介紹</a>，上述陳列皆可上課！若有特殊課程需求，請直接告知我們。</p>
+        </div>
+    </div>
+    
+    <div class="faq-item">
+        <button class="faq-question">上課時間為何？ <span style="float: right;">+</span></button>
+        <div class="faq-answer">
+            <p>Tony線上美語家教上課時間：<br>
+            週一～週五： 上午 10:00 ~ 晚上 10:00<br>
+            週六： 上午 10:00 ~ 下午 5:00</p>
+        </div>
+    </div>
+    
+    <div class="faq-item">
+        <button class="faq-question">我要怎麼知道我的上課時間？ <span style="float: right;">+</span></button>
+        <div class="faq-answer">
+            <p>直接點選 <a href="https://tonyonlineenglish.netlify.app/ycs" target="_blank" style="color: blue; text-decoration: underline;">課程時段查詢</a> 連結，輸入您的英文名字即可知道即將開始的課程。</p>
+        </div>
+    </div>
+    
+    <div class="faq-item">
+        <button class="faq-question">如果進行到一半需要更改課程方案可以嗎？ <span style="float: right;">+</span></button>
+        <div class="faq-answer">
+            <p>當然可以！由於細節較多，會需要以個別傳送！請提供 Line 或是 Gmail 帳號。</p>
+        </div>
+    </div>
+</div>
+
 <script>
     const products =[
-        { id: 'plan-1', name: 'NT$13,500', price: 13500, description: '（約30堂課）13500點', bookingLink: null },
-        { id: 'plan-2', name: 'NT$27,000', price: 27000, description: '（約62堂課）27900點', bookingLink: null },
-        { id: 'plan-3', name: 'NT$18,000', price: 18000, description: '（約41堂課）18450點', bookingLink: null },
-        { id: 'plan-4', name: 'NT$36,000', price: 36000, description: '（約85堂課）38250點', bookingLink: null }
+        { id: 'plan-1', name: 'NT$13,500', price: 13500, description: '（約 30 堂課）13,500 點', bookingLink: null },
+        { id: 'plan-3', name: 'NT$18,000', price: 18000, description: '（約 41 堂課）18,450 點', bookingLink: null },
+        { id: 'plan-2', name: 'NT$27,000', price: 27000, description: '（約 62 堂課）27,900 點', bookingLink: null },
+        { id: 'plan-4', name: 'NT$36,000', price: 36000, description: '（約 85 堂課）38,250 點', bookingLink: null }
     ];
     const images =[
         "https://ik.imagekit.io/lql1uveoc/%E6%9C%83%E5%93%A1450/5.png?updatedAt=1761542162559",
@@ -602,97 +594,106 @@
     ];
     let cart = {};
     let currentSlide = 0;
-    let autoRotateInterval;
     let touchStartX = 0;
+    
+    // Lightbox 狀態追蹤
+    let currentLightboxIndex = 0;
+    let lbTouchStartX = 0;
 
     const productPage = document.getElementById("product-page"),
         thankYouPage = document.getElementById("thank-you-page"),
-        addToCartBtn = document.getElementById("add-to-cart-btn"),
-        courseOptionsSelect = document.getElementById('course-options'),
-        cartIcon = document.getElementById("cart-icon"),
-        cartCountSpan = document.getElementById("cart-count"),
         cartOverlay = document.getElementById("cart-overlay"),
         cartPanel = document.getElementById("cart-panel"),
         closeCartBtn = document.getElementById("close-cart-btn-main"),
         cartItemsContainer = document.getElementById("cart-items-container"),
         cartTotalContainer = document.getElementById("cart-total-container"),
-        checkoutForm = document.getElementById("checkout-form"),
         emailInput = document.getElementById("email"),
         continueShoppingBtn = document.getElementById("continue-shopping-btn"),
-        closeBtn = document.getElementById("close-btn"),
         imageGallery = document.querySelector('.image-gallery'),
         galleryTrack = document.querySelector('.gallery-track'),
         emailPopupOverlay = document.getElementById('email-popup-overlay'),
         popupEmailInput = document.getElementById('popup-email-input'),
-        closePopupBtn = document.getElementById('close-popup-btn'),
         popupCheckoutBtn = document.getElementById('popup-checkout-btn');
 
+    // ==================
+    // 放大圖片(Lightbox)控制
+    // ==================
+    function openLightbox(index) {
+        currentLightboxIndex = index;
+        document.getElementById('lightbox-img').src = images[currentLightboxIndex];
+        document.getElementById('lightbox-overlay').classList.add('visible');
+        document.body.style.overflow = 'hidden'; 
+    }
+    function closeLightbox() {
+        document.getElementById('lightbox-overlay').classList.remove('visible');
+        document.body.style.overflow = '';
+    }
+    function nextLightboxImage(e) {
+        if(e) e.stopPropagation();
+        currentLightboxIndex = (currentLightboxIndex + 1) % images.length;
+        document.getElementById('lightbox-img').src = images[currentLightboxIndex];
+    }
+    function prevLightboxImage(e) {
+        if(e) e.stopPropagation();
+        currentLightboxIndex = (currentLightboxIndex - 1 + images.length) % images.length;
+        document.getElementById('lightbox-img').src = images[currentLightboxIndex];
+    }
+
+    // ==================
+    // 手機版內嵌圖片滑動
+    // ==================
     function showSlide(index) {
         if (images.length === 0) return;
         if (index >= images.length) { currentSlide = 0; } else if (index < 0) { currentSlide = images.length - 1; } else { currentSlide = index; }
         galleryTrack.style.transform = `translateX(${-currentSlide * 100}%)`;
-        if (images.length > 1) { document.querySelectorAll('.gallery-dot').forEach(dot => dot.classList.remove('active')); document.querySelectorAll('.gallery-dot')[currentSlide].classList.add('active'); }
+        if (images.length > 1) { 
+            const dots = document.querySelectorAll('.gallery-dot');
+            if(dots.length) { dots.forEach(dot => dot.classList.remove('active')); dots[currentSlide].classList.add('active'); }
+        }
     }
-
     function nextSlide() { showSlide(currentSlide + 1); }
     function prevSlide() { showSlide(currentSlide - 1); }
-    function startAutoRotate() { if (images.length > 1) { stopAutoRotate(); autoRotateInterval = setInterval(nextSlide, 4000); } }
-    function stopAutoRotate() { clearInterval(autoRotateInterval); }
-    function handleTouchStart(e) { stopAutoRotate(); touchStartX = e.touches[0].clientX; }
-    function handleTouchEnd(e) { const touchEndX = e.changedTouches[0].clientX; if (touchStartX - touchEndX > 50) { nextSlide(); } else if (touchEndX - touchStartX > 50) { prevSlide(); } }
+    function handleTouchStart(e) { touchStartX = e.touches[0].clientX; }
+    function handleTouchEnd(e) { 
+        const touchEndX = e.changedTouches[0].clientX; 
+        if (touchStartX - touchEndX > 50) { nextSlide(); } else if (touchEndX - touchStartX > 50) { prevSlide(); } 
+    }
 
+    // 初始化圖片
     function initGallery() {
         galleryTrack.innerHTML = '';
         if (images.length === 0) { imageGallery.style.display = 'none'; return; }
-        images.forEach(src => { galleryTrack.innerHTML += `<div class="gallery-slide"><img src="${src}" alt="課程宣傳圖"></div>`; });
-        const existingNav = imageGallery.querySelector('.gallery-nav');
-        if (existingNav) existingNav.remove();
-        const existingDots = imageGallery.querySelector('.gallery-dots');
-        if (existingDots) existingDots.remove();
+        images.forEach((src, index) => { 
+            galleryTrack.innerHTML += `<div class="gallery-slide"><img src="${src}" alt="宣傳圖" onclick="openLightbox(${index})"></div>`; 
+        });
         if (images.length > 1) {
             imageGallery.insertAdjacentHTML('beforeend', `<div class="gallery-nav"><button class="prev-btn">‹</button><button class="next-btn">›</button></div>`);
-            document.querySelector('.prev-btn').addEventListener('click', () => { stopAutoRotate(); prevSlide(); });
-            document.querySelector('.next-btn').addEventListener('click', () => { stopAutoRotate(); nextSlide(); });
+            document.querySelector('.prev-btn').addEventListener('click', prevSlide);
+            document.querySelector('.next-btn').addEventListener('click', nextSlide);
             const dotsContainer = document.createElement('div');
             dotsContainer.className = 'gallery-dots';
             images.forEach((_, index) => { dotsContainer.innerHTML += `<div class="gallery-dot" data-index="${index}"></div>`; });
             imageGallery.appendChild(dotsContainer);
-            dotsContainer.addEventListener('click', e => { if(e.target.dataset.index) { stopAutoRotate(); showSlide(parseInt(e.target.dataset.index)); } });
+            dotsContainer.addEventListener('click', e => { if(e.target.dataset.index !== undefined) { showSlide(parseInt(e.target.dataset.index)); } });
             imageGallery.addEventListener('touchstart', handleTouchStart, { passive: true });
             imageGallery.addEventListener('touchend', handleTouchEnd, { passive: true });
-            imageGallery.addEventListener('mouseenter', stopAutoRotate);
-            imageGallery.addEventListener('mouseleave', startAutoRotate);
-            startAutoRotate();
         }
         showSlide(0);
     }
 
-    function populateCourseOptions() {
-        courseOptionsSelect.innerHTML = '';
-        products.forEach(p => {
-            courseOptionsSelect.innerHTML += `<option value="${p.id}">${p.name} ${p.description}</option>`;
-        });
-    }
-
-    function updateButton() {
-        const selectedProduct = products.find(p => p.id === courseOptionsSelect.value);
-        if (selectedProduct) {
-            addToCartBtn.textContent = `NT$ ${selectedProduct.price.toLocaleString()} | 加入購物車`;
-        }
-    }
-
-    function handleAddToCart() {
-        const productToAdd = products.find(p => p.id === courseOptionsSelect.value);
+    // ==================
+    // 結帳與購物車相關
+    // ==================
+    window.selectPlanAndCheckout = function(planId) {
+        const productToAdd = products.find(p => p.id === planId);
         if (productToAdd) {
             cart = {}; 
             cart[productToAdd.id] = { ...productToAdd, imageUrl: images.length > 0 ? images[0] : '' };
         }
         updateCartDisplay();
-        cartOverlay.classList.add("open");
-        cartPanel.classList.add("open");
-        setTimeout(() => { emailInput.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 500);
+        openEmailPopup();
     }
-    
+
     function calculateTotals() {
         const finalTotal = Object.values(cart).reduce((sum, item) => sum + item.price, 0);
         return { finalTotal };
@@ -700,25 +701,18 @@
 
     function updateCartDisplay() {
         const totalItems = Object.keys(cart).length;
-        cartItemsContainer.innerHTML = totalItems > 0 ? '' : '<p>您的購物車是空的。</p>';
-        
+        cartItemsContainer.innerHTML = totalItems > 0 ? '' : '<p style="font-size:18px; color:#000;">您的購物車是空的。</p>';
         Object.entries(cart).forEach(([id, item]) => {
             cartItemsContainer.innerHTML += `<div class="cart-item">
                                                  <div class="cart-item-info">
-                                                     <div class="cart-item-name">${item.name} ${item.description}</div>
+                                                     <div class="cart-item-name" style="font-size:20px; color:#000;">${item.name} ${item.description}</div>
                                                      <button class="remove-item-btn" data-id="${id}">移除</button>
                                                  </div>
-                                                 <div class="cart-item-price">NT$ ${item.price.toLocaleString()}</div>
+                                                 <div class="cart-item-price" style="font-size:20px; color:red;">NT$ ${item.price.toLocaleString()}</div>
                                              </div>`;
         });
-        
         const { finalTotal } = calculateTotals();
-
-        let totalHtml = `<div class="total-row final-total"><span>總計</span><span>NT$ ${finalTotal.toLocaleString()}</span></div>`;
-        cartTotalContainer.innerHTML = totalHtml;
-
-        cartCountSpan.innerText = totalItems;
-        cartCountSpan.classList.toggle("visible", totalItems > 0);
+        cartTotalContainer.innerHTML = `<div class="total-row final-total" style="color:#000;"><span>總計</span><span style="color:red;">NT$ ${finalTotal.toLocaleString()}</span></div>`;
     }
 
     function handleCartInteraction(e) {
@@ -729,39 +723,38 @@
         }
     }
 
+    // 顯示感謝頁面
     function showThankYouPage(orderData) {
+        document.getElementById('ty-customer-email').innerText = orderData.email;
+        document.getElementById('ty-order-id').innerText = orderData.orderId;
+        document.getElementById('ty-order-timestamp').innerText = orderData.timestamp;
+
         let itemsHtml = '';
         orderData.items.forEach(item => {
-             itemsHtml += `<div class="ty-order-item">
-                              <div class="ty-item-details">
-                                  <div class="ty-item-info">${item.name} ${item.description}</div>
-                                  <div class="ty-item-price">NT$ ${item.price.toLocaleString()}</div>
-                              </div>
+             itemsHtml += `<div style="display:flex; justify-content:space-between; margin-bottom:15px; font-size:20px; color:#000;">
+                              <span style="font-weight:bold;">${item.name} ${item.description}</span>
+                              <span style="font-weight:bold; color:red;">NT$ ${item.price.toLocaleString()}</span>
                            </div>`;
         });
         document.getElementById('ty-cart-items-container').innerHTML = itemsHtml;
 
-        let totalHtml = `<div class="total-row final-total"><span>總計</span><span>NT$ ${orderData.totalPrice.toLocaleString()}</span></div>`;
+        let totalHtml = `<div style="display:flex; justify-content:space-between; font-size:26px; font-weight:900; margin-top:20px; border-top:2px solid #000; padding-top:20px; color:#000;">
+                            <span>總計</span>
+                            <span style="color:red;">NT$ ${orderData.totalPrice.toLocaleString()}</span>
+                         </div>`;
         document.getElementById('ty-total-container').innerHTML = totalHtml;
-
-        document.getElementById('ty-customer-email').innerText = orderData.email;
-        document.getElementById('ty-order-id').innerText = orderData.orderId;
-        document.getElementById('ty-order-timestamp').innerText = orderData.timestamp;
-        const tyBookingContainer = document.getElementById('ty-booking-container');
-        const tyBookingLinksList = document.getElementById('ty-booking-links-list');
-        if (orderData.bookingLinks && orderData.bookingLinks.length > 0) {
-            tyBookingLinksList.innerHTML = '';
-            orderData.bookingLinks.forEach(item => { tyBookingLinksList.innerHTML += `<a href="${item.link}" target="_blank" class="ty-booking-link">點此預約：${item.name}</a>`; });
-            tyBookingContainer.style.display = 'block';
-        } else { tyBookingContainer.style.display = 'none'; }
 
         productPage.style.display = 'none';
         cartOverlay.classList.remove('open');
         cartPanel.classList.remove('open');
         thankYouPage.style.display = 'block';
+        
+        // 滑動至感謝頁頭部
+        setTimeout(() => {
+            thankYouPage.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 50);
     }
     
-    // 完全還原您的結帳與資料傳送函式
     function handleCheckout(e) {
       if(e) e.preventDefault();
       const email = popupEmailInput.value;
@@ -775,14 +768,12 @@
       popupCheckoutBtn.disabled = true;
       popupCheckoutBtn.innerText = "處理中...";
       closeEmailPopup();
+      
       showThankYouPage({
           email, items: Object.values(cart),
-          totalPrice: finalTotal,
-          orderId, timestamp,
-          bookingLinks: Object.values(cart).filter(i => i.bookingLink).map(i => ({ name: i.name, link: i.bookingLink }))
+          totalPrice: finalTotal, orderId, timestamp
       });
 
-      // 串接至您的 Google Apps Script
       fetch("https://script.google.com/macros/s/AKfycbyU13Wivs341DMPupk9EKrL9u908zrHNOVqZUXri-hGezkk6qj_7loQGIf0GCfmvj_f/exec", {
           method: "POST",
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -796,32 +787,49 @@
       .then(response => { if (!response.ok) console.error("Error submitting order."); return response.text(); })
       .then(() => { cart = {}; updateCartDisplay(); })
       .catch(e => console.error("Fetch error:", e))
-      .finally(() => { popupCheckoutBtn.disabled = false; popupCheckoutBtn.innerText = "確認"; });
+      .finally(() => { popupCheckoutBtn.disabled = false; popupCheckoutBtn.innerText = "確認送出結帳"; });
     }
 
     function toggleCartPanel() { cartOverlay.classList.toggle("open"); cartPanel.classList.toggle("open"); }
-    function openEmailPopup() { popupEmailInput.value = emailInput.value; emailPopupOverlay.classList.add('visible'); setTimeout(() => popupEmailInput.focus(), 100); }
-    function closeEmailPopup() { emailPopupOverlay.classList.remove('visible'); }
+    window.openEmailPopup = function() { popupEmailInput.value = emailInput.value; emailPopupOverlay.classList.add('visible'); setTimeout(() => popupEmailInput.focus(), 100); }
+    window.closeEmailPopup = function() { emailPopupOverlay.classList.remove('visible'); }
 
     document.addEventListener('DOMContentLoaded', () => {
+        // 移除 URL 中的錨點並強制將畫面回到最上方，避免點開 LINE 的連結自動跳轉
+        if (window.location.hash) {
+            window.history.replaceState(null, null, window.location.pathname + window.location.search);
+        }
+        setTimeout(() => { window.scrollTo(0, 0); }, 10);
+        
         initGallery();
-        populateCourseOptions();
-        updateButton();
         updateCartDisplay();
 
-        courseOptionsSelect.addEventListener('change', updateButton);
-        addToCartBtn.addEventListener("click", handleAddToCart);
-        cartIcon.addEventListener("click", toggleCartPanel);
+        // 綁定 Lightbox 的觸控滑動切換事件
+        const lightboxOverlay = document.getElementById('lightbox-overlay');
+        lightboxOverlay.addEventListener('touchstart', (e) => {
+            lbTouchStartX = e.touches[0].clientX;
+        }, { passive: true });
+        
+        lightboxOverlay.addEventListener('touchend', (e) => {
+            const touchEndX = e.changedTouches[0].clientX;
+            if (lbTouchStartX - touchEndX > 50) {
+                nextLightboxImage(); // 左滑 -> 下一張
+            } else if (touchEndX - lbTouchStartX > 50) {
+                prevLightboxImage(); // 右滑 -> 上一張
+            }
+        }, { passive: true });
+
         closeCartBtn.addEventListener("click", toggleCartPanel);
         cartOverlay.addEventListener("click", (e) => { if(e.target === cartOverlay) toggleCartPanel(); });
         cartItemsContainer.addEventListener("click", handleCartInteraction);
         
-        const resetToProductPage = (e) => { e.preventDefault(); thankYouPage.style.display = 'none'; productPage.style.display = 'block'; };
-        continueShoppingBtn.addEventListener('click', resetToProductPage);
-        closeBtn.addEventListener('click', resetToProductPage);
+        continueShoppingBtn.addEventListener('click', (e) => { 
+            e.preventDefault(); 
+            thankYouPage.style.display = 'none'; 
+            productPage.style.display = 'block'; 
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
         
-        emailInput.addEventListener('click', openEmailPopup);
-        closePopupBtn.addEventListener('click', closeEmailPopup);
         popupCheckoutBtn.addEventListener('click', handleCheckout);
         emailPopupOverlay.addEventListener('click', (e) => { if (e.target === emailPopupOverlay) closeEmailPopup(); });
         
@@ -834,16 +842,17 @@
         
         popupEmailInput.addEventListener('input', () => emailInput.value = popupEmailInput.value);
 
-        // 常見問題 FAQ 點擊收合邏輯
         const faqs = document.querySelectorAll(".faq-question");
         faqs.forEach(faq => {
             faq.addEventListener("click", () => {
-                faq.classList.toggle("active");
                 let panel = faq.nextElementSibling;
+                let symbol = faq.querySelector("span");
                 if (panel.style.maxHeight) {
                     panel.style.maxHeight = null;
+                    symbol.innerText = "+";
                 } else {
                     panel.style.maxHeight = panel.scrollHeight + "px";
+                    symbol.innerText = "-";
                 }
             });
         });
