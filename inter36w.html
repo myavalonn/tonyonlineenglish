@@ -3,8 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GEPT 寫作課程方案</title>
-         <!-- FontAwesome for Features Section Icons -->
+    
+    <!-- 1. SEO Title (瀏覽器分頁上顯示的網頁標題) -->
+    <title>GEPT 全民英檢「中級寫作」影片課程+加強 | Tony Online English</title>
+
+    <!-- 2. SEO Description (Google 搜尋時顯示的網頁描述) -->
+    <meta name="description" content="GEPT 全民英檢中級寫作專屬課程。提供3回與6回完整影片詳解、雙師專業批改、1對1真人線上家教寫作診斷。快速提升寫作實力，靈活客製化加強方案，適合衝刺高分與突破弱點！">
+
+    <!-- 3. Message Preview Picture (貼到 Line, FB, iMessage 時的預覽小圖與文字) -->
+    <meta property="og:url" content="https://tonyonlineenglish.netlify.app/inter36w">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="GEPT 全民英檢「中級寫作」影片課程+加強 | Tony Online English">
+    <meta property="og:description" content="GEPT 全民英檢中級寫作專屬課程。提供3回與6回完整影片詳解、雙師專業批改、1對1真人線上家教寫作診斷。快速提升寫作實力，突破寫作盲點！">
+    <meta property="og:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-13%20%E4%B8%8B%E5%8D%884.15.10.png?updatedAt=1773389907343">
+    
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="GEPT 全民英檢「中級寫作」影片課程+加強 | Tony Online English">
+    <meta name="twitter:description" content="GEPT 全民英檢中級寫作專屬課程。提供3回與6回完整影片詳解、雙師專業批改、1對1真人線上家教寫作診斷。">
+    <meta name="twitter:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-13%20%E4%B8%8B%E5%8D%884.15.10.png?updatedAt=1773389907343">
+
+    <!-- FontAwesome for Features Section Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Noto+Sans+TC:wght@400;700;900&display=swap');
@@ -34,7 +53,7 @@
         .hero-section {
             width: 100%;
             min-height: 60vh;
-            background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.7)), 
+            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)), 
                         url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-13%20%E4%B8%8B%E5%8D%884.15.10.png?updatedAt=1773389907343') center center / cover no-repeat;
             display: flex;
             flex-direction: column;
@@ -80,10 +99,51 @@
             color: white;
         }
 
+        /* --- Secondary Hero Links (LINE & Booking) --- */
+        .hero-links {
+            margin-top: 25px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .secondary-btn {
+            background-color: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 50px;
+            font-size: 1.05rem;
+            font-weight: 700;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .secondary-btn:hover {
+            background-color: rgba(255, 255, 255, 0.35);
+            transform: translateY(-2px);
+        }
+
+        .line-btn {
+            background-color: rgba(0, 185, 0, 0.85);
+            border-color: #00B900;
+        }
+
+        .line-btn:hover {
+            background-color: rgba(0, 185, 0, 1);
+        }
+
         @media (max-width: 768px) {
             .hero-section { min-height: 50vh; padding: 30px 20px; }
             .hero-title { font-size: 2.2rem; margin-bottom: 25px; }
             .hero-btn { font-size: 1.1rem; padding: 14px 30px; }
+            .secondary-btn { font-size: 0.95rem; padding: 10px 20px; }
         }
 
         .pricing-wrapper { width: 100%; padding: 0 40px; margin: 0 auto; }
@@ -100,12 +160,12 @@
         .m-header-section { display: none; padding-top: 25px; margin-bottom: 10px; }
 
         /* =========================================
-           FEATURES SECTION (Merged from Doc 2)
+           FEATURES SECTION
            ========================================= */
         .features-wrapper {
             width: 100%;
             max-width: 1400px;
-            margin: 60px auto 40px auto; /* 加大 margin-top 確保與上方方案區有足夠間距 */
+            margin: 60px auto 40px auto;
             padding: 20px 0; 
             box-sizing: border-box;
         }
@@ -211,7 +271,6 @@
             perspective: 1000px; 
         }
         
-        /* Desktop Card Structure */
         .card {
             background: var(--card-bg); 
             border-radius: 20px; 
@@ -231,12 +290,10 @@
         .card.theme-blue { --theme-color: var(--theme-blue); }
         .card.theme-orange { --theme-color: var(--theme-orange); }
         
-        /* Header elements inside card */
         .card-header-row { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 20px; }
         .plan-title-label { font-size: 1.2rem; font-weight: 800; color: var(--theme-color); }
         .card-corner-logo { height: 50px; width: auto; opacity: 0.8; }
 
-        /* "Most Popular" Badge */
         .top-badge {
             position: absolute; top: -16px; left: 50%; transform: translateX(-50%);
             background-color: var(--theme-blue);
@@ -245,7 +302,6 @@
             box-shadow: 0 4px 10px rgba(0,0,0,0.15); letter-spacing: 0.5px;
         }
 
-        /* Desktop Typography */
         .d-main-heading { font-size: 2.2rem; font-weight: 900; color: #111827; margin-bottom: 15px; text-align: center; line-height: 1.2; }
         .d-big-num { font-size: 1.3em; margin-right: 5px; font-weight: 900; }
         
@@ -259,7 +315,6 @@
             padding: 0 5px;
         }
         
-        /* The Middle Colored Bar */
         .identity-bar {
             width: 100%; padding: 12px; border-radius: 8px;
             background-color: var(--theme-color); color: white;
@@ -267,7 +322,6 @@
             margin-bottom: 30px; letter-spacing: 1px;
         }
 
-        /* Lists */
         .d-list-container { flex-grow: 1; display: flex; flex-direction: column; gap: 18px; margin-bottom: 25px; }
         .d-section-title { 
             font-size: 1.15rem; font-weight: 700; color: #9ca3af; 
@@ -300,7 +354,6 @@
         .gift-text { color: #dc2626; font-weight: 800; margin-right: 4px; }
         .promo-tag { background-color: #f97316; color: white; padding: 1px 6px; border-radius: 4px; font-size: 0.85em; margin-right: 6px; vertical-align: middle; }
 
-        /* Bottom Button */
         .desktop-action-area { margin-top: 15px; width: 100%; }
         .d-action-btn { 
             display: flex; align-items: center; justify-content: center; gap: 10px;
@@ -337,7 +390,6 @@
             .pricing-wrapper { padding: 0; max-width: 100%; }
             .mobile-view { display: flex; flex-direction: column; width: 100%; min-height: 100vh; padding-top: 5px; }
 
-            /* Sticky Segmented Control Wrapper */
             .m-ladder-nav-wrapper {
                 position: -webkit-sticky;
                 position: sticky;
@@ -350,7 +402,6 @@
                 box-shadow: 0 4px 10px -4px rgba(0,0,0,0.08);
             }
 
-            /* Segmented Control (Capsule) */
             .m-ladder-nav {
                 display: flex; 
                 align-items: center; 
@@ -373,7 +424,6 @@
                 box-shadow: 0 2px 6px rgba(0,0,0,0.08); 
             }
 
-            /* HORIZONTAL SLIDER CONTAINER */
             .m-slider-container {
                 display: flex;
                 overflow-x: auto;
@@ -385,7 +435,6 @@
             }
             .m-slider-container::-webkit-scrollbar { display: none; }
 
-            /* INFO BOX */
             .m-info-box { 
                 min-width: 88%;
                 scroll-snap-align: center;
@@ -404,17 +453,14 @@
             .m-main-heading { font-size: 1.8rem; font-weight: 900; color: #111827; margin-bottom: 15px; text-align: center; }
             .m-big-num { font-size: 1.2em; margin-right: 5px; }
             
-            /* Description Text with Inline Tags */
             .m-desc-text { font-size: 1.1rem; color: #64748b; line-height: 1.6; margin-bottom: 25px; }
             
-            /* INLINE TAGS */
             .m-inline-tags { display: inline; font-weight: 700; margin-left: 5px; }
             .m-inline-tag { display: inline-block; font-size: 0.9em; margin-right: 4px; padding: 0 2px; }
             .m-inline-tag.blue { color: var(--theme-blue); background-color: #e0e7ff; border-radius: 4px; padding: 0 6px;}
             .m-inline-tag.purple { color: var(--theme-purple); background-color: #f3e8ff; border-radius: 4px; padding: 0 6px;}
             .m-inline-tag.orange { color: var(--theme-orange); background-color: #ffedd5; border-radius: 4px; padding: 0 6px;}
 
-            /* MOBILE BADGE */
             .m-floating-btn {
                 position: absolute; top: -25px; left: 50%; transform: translateX(-50%);
                 display: inline-flex; align-items: center; justify-content: center;
@@ -424,7 +470,6 @@
                 white-space: nowrap;
             }
             
-            /* MOBILE CART BUTTON */
             .m-action-btn { 
                 display: flex; flex-direction: row; align-items: center; justify-content: center; 
                 width: 100%; padding: 16px; border-radius: 8px; color: white; 
@@ -456,7 +501,6 @@
             .option-item { font-weight: 700; }
             .option-tag-orange { background: #ffedd5; color: #c2410c; padding: 2px 6px; border-radius: 4px; margin-right: 5px; }
 
-            /* PAGINATION DOTS */
             .m-pagination-dots {
                 display: flex; justify-content: center; align-items: center; gap: 8px;
                 margin-top: -10px; margin-bottom: 30px;
@@ -473,8 +517,6 @@
         /* TABLET SPECIFIC (768px - 1180px) */
         @media (min-width: 768px) and (max-width: 1180px) {
             .m-view-title { font-size: 2.8rem; margin-bottom: 25px; }
-            
-            /* Tablet Scale for Features Section */
             .feature-icon-wrapper { width: 120px; height: 120px; margin-bottom: 25px; }
             .feature-icon-wrapper i { font-size: 60px; }
             .feature-text h3 { font-size: 28px; }
@@ -575,7 +617,6 @@
         .payment-method.custom-style .icon-circle { border-color: white; }
         .payment-method.custom-style .icon-circle div { background-color: white; }
 
-        /* Plan C Selection Inside Cart */
         .plan-c-selection-header { font-size: 1.4rem; font-weight: 800; color: var(--theme-orange); margin-bottom: 20px; text-align: center; }
         .plan-c-option-card { border: 2px solid #eee; border-radius: 8px; padding: 15px; margin-bottom: 15px; cursor: pointer; transition: all 0.2s; position: relative; }
         .plan-c-option-card:hover { border-color: var(--theme-orange); background-color: #fff7ed; transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
@@ -586,7 +627,6 @@
         .btn-plan-c-b { background-color: #8f0988 !important; }
         .btn-plan-c-combo { background-color: #e65100 !important; }
         
-        /* Thank You Page */
         #thank-you-page { display: none; padding: 20px; box-sizing: border-box; }
         .thank-you-container { max-width: 900px; width: 100%; margin: 0 auto; background-color: #f9f9f9; border: 1px solid #e0e0e0; }
         .ty-left-panel { background-color: white; padding: 40px; }
@@ -609,7 +649,6 @@
         #close-btn { color: red; cursor: pointer; text-decoration: underline; }
         #celebration-icon { font-size: 1.5em; position: relative; display: inline-block; z-index: 1;}
         
-        /* Mobile Cart Adjustments */
         @media (max-width: 767px) {
             .cart-panel { width: 100%; max-width: 100%; height: 100dvh; }
             .cart-body { flex-direction: column; gap: 20px; padding: 0 15px 15px 15px; }
@@ -627,6 +666,16 @@
 <div class="hero-section">
     <h1 class="hero-title">GEPT 全民英檢<br>「<span class="highlight">中級寫作</span>」影片課程+加強</h1>
     <a href="#content-start" class="hero-btn">了解詳細方案 <i class="fa-solid fa-arrow-down"></i></a>
+    
+    <!-- 附加連結按鈕區塊 -->
+    <div class="hero-links">
+        <a href="https://tonyonlineenglish.netlify.app/exper" target="_blank" class="secondary-btn">
+            <i class="fa-solid fa-calendar-check"></i> 預約體驗課程
+        </a>
+        <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="secondary-btn line-btn">
+            <i class="fa-brands fa-line"></i> LINE: myavalon
+        </a>
+    </div>
 </div>
 
 <div class="pricing-wrapper" id="content-start">
@@ -1015,7 +1064,7 @@
         { id: 'course-CB', name: '方案C: 六堂線上家教寫作課程', price: 4200, description: '選項 B (家教+寫作作業練習)', bookingLink: null, imageId: 2 },
         { id: 'course-COMBO', name: '方案C: 八堂1-1家教+四回批改', price: 6800, description: 'A+B 組合優惠', bookingLink: null, imageId: 2 }
     ];
-    // Dummy images for cart (kept for compatibility)
+    
     const images =[
         "https://ik.imagekit.io/lql1uveoc/Beginning-intermediate%20level/Dark%20Blue%20and%20Beige%20Modern%20Simple%20Schedule%20A4%20Document-7.png", 
         "https://ik.imagekit.io/lql1uveoc/Beginning-intermediate%20level/Dark%20Blue%20and%20Beige%20Modern%20Simple%20Schedule%20A4%20Document-2.png", 
@@ -1044,7 +1093,6 @@
         document.getElementById("cart-panel").classList.toggle("open");
     };
 
-    // Open Cart with Plan C Options displayed inside
     window.openPlanC_InCart = function() {
         if(event) event.stopPropagation();
         document.getElementById("cart-overlay").classList.add("open");
@@ -1108,7 +1156,6 @@
         btn.disabled = true;
         btn.innerText = "處理中...";
         
-        // Show TY Page
         let itemsHtml = '';
         Object.values(cart).forEach(item => {
              itemsHtml += `<div class="ty-order-item"><div class="ty-item-details"><div class="ty-item-info">${item.name}</div><div class="ty-item-price">NT$ ${item.price.toLocaleString()}</div></div></div>`;
@@ -1120,7 +1167,7 @@
         document.getElementById('ty-order-timestamp').innerText = timestamp;
         
         document.querySelector('.pricing-wrapper').style.display = 'none';
-        document.querySelector('.hero-section').style.display = 'none'; /* Hide hero on TY page */
+        document.querySelector('.hero-section').style.display = 'none'; 
         document.getElementById("cart-overlay").classList.remove('open');
         document.getElementById("cart-panel").classList.remove('open');
         document.getElementById("thank-you-page").style.display = 'block';
@@ -1168,17 +1215,12 @@
         totalContainer.innerHTML = `<div class="total-row final-total"><span>總計</span><span>NT$ ${finalTotal.toLocaleString()}</span></div>`;
     }
 
-    // --- FIXED MOBILE SCROLL & TAB SYNC LOGIC ---
-    
-    // Function to programmatically scroll to a card (when clicking top tabs/dots)
     function scrollToCard(index) {
         const slider = document.getElementById('mobile-slider');
         const targetCard = document.getElementById('m-card-' + index);
         
         if(slider && targetCard) {
-            // New logic: Use offsetLeft of the card minus the padding of the container
-            // This is more robust than calculating center points manually with width math
-            const paddingLeft = 20; // Matches CSS padding: 20px 20px 30px 20px
+            const paddingLeft = 20; 
             const scrollPos = targetCard.offsetLeft - paddingLeft;
             
             slider.scrollTo({
@@ -1190,16 +1232,13 @@
         }
     }
 
-    // Update active class on segmented control tabs & pagination dots
     function updateActiveTab(index) {
-        // Update Segmented Control Tabs
         document.querySelectorAll('.ladder-tab').forEach(t => t.classList.remove('active'));
         const tabs = document.querySelectorAll('.ladder-tab');
         if(tabs[index]) {
             tabs[index].classList.add('active');
         }
 
-        // Update Pagination Dots
         document.querySelectorAll('.m-dot').forEach(d => d.classList.remove('active'));
         const dots = document.querySelectorAll('.m-dot');
         if(dots[index]) {
@@ -1207,20 +1246,16 @@
         }
     }
 
-    // Detect Scroll to update tabs and dots automatically
     document.addEventListener('DOMContentLoaded', () => {
         const slider = document.getElementById('mobile-slider');
         if(slider) {
             slider.addEventListener('scroll', () => {
-                // Find which card is closest to the center of the viewport/container
                 let bestIndex = 0;
                 let minDistance = Infinity;
                 
-                // Center point of the visible slider area
                 const sliderCenter = slider.scrollLeft + (slider.clientWidth / 2);[0, 1, 2].forEach(i => {
                     const card = document.getElementById('m-card-' + i);
                     if(card) {
-                        // Center point of the card itself
                         const cardCenter = card.offsetLeft + (card.offsetWidth / 2);
                         const distance = Math.abs(sliderCenter - cardCenter);
                         
@@ -1236,6 +1271,9 @@
         }
     });
 </script>
+
+<!-- Add layout-manager.js as requested -->
+<script src="layout-manager.js"></script>
 
 </body>
 </html>
