@@ -188,8 +188,13 @@
     .email-popup-content input { width: 100%; padding: 15px; font-size: 20px; border: 2px solid #000; }
     #popup-checkout-btn { width: 100%; background-color: #000; color: white; padding: 15px; font-size: 22px; margin-top: 20px; border: none; font-weight: bold; cursor: pointer;}
     
-    #thank-you-page { display: none; padding: 20px; max-width: 1200px; margin: 0 auto;}
-    .ty-header { font-size: 32px; color: #000; }
+    /* 感謝頁面完整設計 */
+    #thank-you-page { display: none; padding: 40px 20px; max-width: 1200px; margin: 0 auto; background-color: #ffffff; }
+    .ty-header { font-size: 36px; color: #000; font-weight: 900; margin-bottom: 20px; }
+    .ty-section { background-color: #f9f9f9; padding: 25px; border: 2px solid #000; margin-bottom: 30px; }
+    .ty-section h3 { font-size: 24px; font-weight: bold; margin-top: 0; border-bottom: 2px solid #000; padding-bottom: 10px; color: #000; }
+    .ty-detail-text { font-size: 20px; color: #000; margin-bottom: 10px; line-height: 1.6; }
+    .ty-detail-text strong { font-weight: 900; }
 
     /* FAQ */
     .faq-section { max-width: 1200px; margin: 60px auto; padding: 20px; }
@@ -369,24 +374,40 @@
       </div>
   </div>
 
-  <!-- 感謝頁面 -->
+  <!-- 感謝頁面 (滿版大字體設計，保留所有訂單資訊) -->
   <div id="thank-you-page">
-      <h2 class="ty-header">感謝您的訂購！</h2>
-      <p style="font-size: 20px; color: #000;">您的訂單已成功建立。確認信已寄送至您的電子信箱。</p>
-      <div id="ty-customer-email" style="display:none;"></div>
-      <div id="ty-order-id" style="display:none;"></div>
-      <div id="ty-order-timestamp" style="display:none;"></div>
-      <div id="ty-cart-items-container" style="display:none;"></div>
-      <div id="ty-total-container" style="display:none;"></div>
-      <div id="ty-booking-links-list" style="display:none;"></div>
-      <p style="font-size: 20px; color: #000; font-weight: bold; margin-top: 30px;">
-          請點選加入Line: myavalon<br>
-          交易成功後煩請告知，將提供學費證明，感謝！
-      </p>
-      <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="line-btn">加入Line : myavalon</a>
-      <br><br>
-      <a href="#" id="continue-shopping-btn" style="font-size: 18px; color: blue;">繼續購物</a>
-      <a href="#" id="close-btn" style="font-size: 18px; color: red; margin-left: 20px;">關閉</a>
+      <h2 class="ty-header">🎉 感謝您的訂購！</h2>
+      <p style="font-size: 22px; color: #000; margin-bottom: 40px; font-weight: bold;">您的訂單已成功建立。確認信已寄送至您的電子信箱。</p>
+      
+      <!-- 訂單資訊區塊 -->
+      <div class="ty-section">
+          <h3>📝 訂單資訊</h3>
+          <div class="ty-detail-text"><strong>訂單編號：</strong> <span id="ty-order-id"></span></div>
+          <div class="ty-detail-text"><strong>下單時間：</strong> <span id="ty-order-timestamp"></span></div>
+          <div class="ty-detail-text"><strong>電子信箱：</strong> <span id="ty-customer-email"></span></div>
+      </div>
+
+      <!-- 購物明細區塊 -->
+      <div class="ty-section">
+          <h3>🛒 訂單明細</h3>
+          <div id="ty-cart-items-container"></div>
+          <div id="ty-total-container"></div>
+      </div>
+
+      <!-- 付款指示區塊 -->
+      <div class="ty-section" style="background-color: #fff5f5; border-color: #e53e3e;">
+          <h3 style="color: #e53e3e; border-bottom-color: #e53e3e;">💳 下一步：如何付款</h3>
+          <p style="font-size: 22px; color: #000; font-weight: bold; line-height: 1.8;">
+              請點選下方按鈕加入 Line: myavalon<br>
+              匯款或可以使用 Line Pay / iPassMoney 付款。<br>
+              交易成功後煩請告知，將提供學費證明，感謝 ＾＾
+          </p>
+          <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="line-btn" style="margin-top: 15px;">加入Line : myavalon</a>
+      </div>
+
+      <div style="margin-top: 40px;">
+          <a href="#" id="continue-shopping-btn" style="font-size: 22px; color: blue; font-weight: bold; text-decoration: underline;">← 繼續購物</a>
+      </div>
   </div>
 </div>
 
@@ -581,7 +602,6 @@
         checkoutForm = document.getElementById("checkout-form"),
         emailInput = document.getElementById("email"),
         continueShoppingBtn = document.getElementById("continue-shopping-btn"),
-        closeBtn = document.getElementById("close-btn"),
         imageGallery = document.querySelector('.image-gallery'),
         galleryTrack = document.querySelector('.gallery-track'),
         emailPopupOverlay = document.getElementById('email-popup-overlay'),
@@ -600,7 +620,7 @@
         document.body.style.overflow = '';
     }
 
-    // 圖片切換控制
+    // 圖片切換控制 (手機版用)
     function showSlide(index) {
         if (images.length === 0) return;
         if (index >= images.length) { currentSlide = 0; } else if (index < 0) { currentSlide = images.length - 1; } else { currentSlide = index; }
@@ -717,12 +737,40 @@
         }
     }
 
+    // 將訂單資訊完整帶入 HTML 節點中，並以平滑滾動顯示
     function showThankYouPage(orderData) {
+        // 1. 填入訂單基本資訊
+        document.getElementById('ty-customer-email').innerText = orderData.email;
+        document.getElementById('ty-order-id').innerText = orderData.orderId;
+        document.getElementById('ty-order-timestamp').innerText = orderData.timestamp;
+
+        // 2. 填入購物車明細
+        let itemsHtml = '';
+        orderData.items.forEach(item => {
+             itemsHtml += `<div style="display:flex; justify-content:space-between; margin-bottom:15px; font-size:20px; color:#000;">
+                              <span style="font-weight:bold;">${item.name} ${item.description}</span>
+                              <span style="font-weight:bold; color:red;">NT$ ${item.price.toLocaleString()}</span>
+                           </div>`;
+        });
+        document.getElementById('ty-cart-items-container').innerHTML = itemsHtml;
+
+        // 3. 填入總計
+        let totalHtml = `<div style="display:flex; justify-content:space-between; font-size:26px; font-weight:900; margin-top:20px; border-top:2px solid #000; padding-top:20px; color:#000;">
+                            <span>總計</span>
+                            <span style="color:red;">NT$ ${orderData.totalPrice.toLocaleString()}</span>
+                         </div>`;
+        document.getElementById('ty-total-container').innerHTML = totalHtml;
+
+        // 4. 切換畫面顯示
         productPage.style.display = 'none';
         cartOverlay.classList.remove('open');
         cartPanel.classList.remove('open');
         thankYouPage.style.display = 'block';
-        window.scrollTo(0,0);
+        
+        // 5. 自動平滑滾動到感謝頁的頂部，而不是整個網頁重置到最上面
+        setTimeout(() => {
+            thankYouPage.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 50);
     }
     
     function handleCheckout(e) {
@@ -738,6 +786,7 @@
       popupCheckoutBtn.disabled = true;
       popupCheckoutBtn.innerText = "處理中...";
       closeEmailPopup();
+      
       showThankYouPage({
           email, items: Object.values(cart),
           totalPrice: finalTotal, orderId, timestamp
@@ -776,9 +825,13 @@
         cartOverlay.addEventListener("click", (e) => { if(e.target === cartOverlay) toggleCartPanel(); });
         cartItemsContainer.addEventListener("click", handleCartInteraction);
         
-        const resetToProductPage = (e) => { e.preventDefault(); thankYouPage.style.display = 'none'; productPage.style.display = 'block'; };
+        const resetToProductPage = (e) => { 
+            e.preventDefault(); 
+            thankYouPage.style.display = 'none'; 
+            productPage.style.display = 'block'; 
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        };
         continueShoppingBtn.addEventListener('click', resetToProductPage);
-        closeBtn.addEventListener('click', resetToProductPage);
         
         emailInput.addEventListener('click', openEmailPopup);
         closePopupBtn.addEventListener('click', closeEmailPopup);
