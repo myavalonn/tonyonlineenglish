@@ -53,28 +53,68 @@
         .hero-section {
             width: 100%;
             min-height: 60vh;
-            background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)), 
-                        url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-13%20%E4%B8%8B%E5%8D%884.15.10.png?updatedAt=1773389907343') center center / cover no-repeat;
+            background: linear-gradient(135deg, #0f172a 0%, #1e3a8a 100%);
             display: flex;
-            flex-direction: column;
+            flex-direction: row;
             align-items: center;
             justify-content: center;
-            text-align: center;
-            padding: 20px;
+            padding: 60px 5%;
+            gap: 40px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        /* 動畫設定 */
+        @keyframes slideInLeft {
+            0% { opacity: 0; transform: translateX(-80px); }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+
+        @keyframes slideInRight {
+            0% { opacity: 0; transform: translateX(80px); }
+            100% { opacity: 1; transform: translateX(0); }
+        }
+
+        .hero-content {
+            flex: 1;
+            max-width: 650px;
             color: #fff;
+            opacity: 0; /* 起始透明，靠動畫顯示 */
+            animation: slideInLeft 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+
+        .hero-image-wrapper {
+            flex: 1;
+            max-width: 500px;
+            opacity: 0; /* 起始透明，靠動畫顯示 */
+            animation: slideInRight 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) 0.2s forwards; /* 延遲0.2秒滑入 */
+        }
+
+        .hero-image-wrapper img {
+            width: 100%;
+            height: auto;
+            border-radius: 16px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            display: block;
         }
 
         .hero-title {
-            font-size: 3.5rem;
+            font-size: 3.2rem;
             font-weight: 900;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             line-height: 1.3;
-            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
-            max-width: 900px;
+            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
         }
 
         .hero-title .highlight {
             color: #fbbf24;
+        }
+
+        .hero-action-group {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: flex-start;
         }
 
         .hero-btn {
@@ -87,8 +127,9 @@
             text-decoration: none;
             transition: all 0.3s ease;
             box-shadow: 0 6px 20px rgba(0, 101, 255, 0.4);
-            display: flex;
+            display: inline-flex;
             align-items: center;
+            justify-content: center;
             gap: 10px;
         }
 
@@ -99,17 +140,14 @@
             color: white;
         }
 
-        /* --- Secondary Hero Links (LINE & Booking) --- */
         .hero-links {
-            margin-top: 25px;
             display: flex;
             gap: 15px;
             flex-wrap: wrap;
-            justify-content: center;
         }
 
         .secondary-btn {
-            background-color: rgba(255, 255, 255, 0.2);
+            background-color: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(5px);
             -webkit-backdrop-filter: blur(5px);
             color: white;
@@ -119,14 +157,14 @@
             font-weight: 700;
             text-decoration: none;
             transition: all 0.3s ease;
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            display: flex;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            display: inline-flex;
             align-items: center;
             gap: 8px;
         }
 
         .secondary-btn:hover {
-            background-color: rgba(255, 255, 255, 0.35);
+            background-color: rgba(255, 255, 255, 0.3);
             transform: translateY(-2px);
         }
 
@@ -139,11 +177,43 @@
             background-color: rgba(0, 185, 0, 1);
         }
 
+        @media (max-width: 900px) {
+            .hero-title { font-size: 2.5rem; }
+        }
+
         @media (max-width: 768px) {
-            .hero-section { min-height: 50vh; padding: 30px 20px; }
-            .hero-title { font-size: 2.2rem; margin-bottom: 25px; }
-            .hero-btn { font-size: 1.1rem; padding: 14px 30px; }
-            .secondary-btn { font-size: 0.95rem; padding: 10px 20px; }
+            .hero-section {
+                flex-direction: column;
+                padding: 40px 20px;
+                gap: 30px;
+                text-align: center;
+            }
+            .hero-content {
+                text-align: center;
+                /* 手機版同樣保留左滑入與右滑入效果 */
+            }
+            .hero-action-group {
+                align-items: center;
+                width: 100%;
+            }
+            .hero-btn { width: 100%; font-size: 1.15rem; padding: 14px; }
+            
+            /* 強制按鈕在同一行 */
+            .hero-links {
+                display: flex;
+                flex-direction: row;
+                flex-wrap: nowrap;
+                width: 100%;
+                gap: 10px;
+                justify-content: space-between;
+            }
+            .secondary-btn {
+                flex: 1;
+                justify-content: center;
+                padding: 12px 0;
+                font-size: 0.9rem;
+                white-space: nowrap;
+            }
         }
 
         .pricing-wrapper { width: 100%; padding: 0 40px; margin: 0 auto; }
@@ -160,12 +230,78 @@
         .m-header-section { display: none; padding-top: 25px; margin-bottom: 10px; }
 
         /* =========================================
+           TESTIMONIALS SECTION (學員見證)
+           ========================================= */
+        .testimonials-wrapper {
+            width: 100%;
+            max-width: 1400px;
+            margin: 50px auto 20px auto;
+            padding: 0 20px;
+            box-sizing: border-box;
+        }
+
+        .testi-section-title {
+            text-align: center;
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--text-main);
+            margin-bottom: 30px;
+        }
+
+        .testi-slider {
+            display: flex;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            gap: 20px;
+            padding: 10px 5px 30px 5px; /* padding for shadow visibility */
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+        }
+        .testi-slider::-webkit-scrollbar { display: none; }
+
+        .testi-card {
+            min-width: 300px;
+            max-width: 320px;
+            background: #ffffff;
+            border: 1px solid #e5e7eb;
+            border-radius: 16px;
+            padding: 25px;
+            scroll-snap-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            flex-shrink: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .testi-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .testi-name { font-weight: 800; font-size: 1.2rem; color: var(--text-main); }
+        .testi-role {
+            font-size: 0.85rem;
+            background: #f1f5f9;
+            padding: 4px 10px;
+            border-radius: 20px;
+            color: #475569;
+            font-weight: 700;
+        }
+
+        .testi-stars { color: #fbbf24; font-size: 1.1rem; margin-bottom: 15px; letter-spacing: 2px;}
+        .testi-text { font-size: 1rem; color: #4b5563; line-height: 1.6; font-style: italic; flex-grow: 1; }
+        .testi-text::before { content: "“ "; color: #cbd5e1; font-size: 1.5em; font-family: serif; font-weight: bold;}
+        .testi-text::after { content: " ”"; color: #cbd5e1; font-size: 1.5em; font-family: serif; font-weight: bold;}
+
+        /* =========================================
            FEATURES SECTION
            ========================================= */
         .features-wrapper {
             width: 100%;
             max-width: 1400px;
-            margin: 60px auto 40px auto;
+            margin: 40px auto 40px auto;
             padding: 20px 0; 
             box-sizing: border-box;
         }
@@ -236,7 +372,7 @@
         }
 
         @media (max-width: 767px) {
-            .features-wrapper { padding: 15px; margin-top: 30px; margin-bottom: 20px; }
+            .features-wrapper { padding: 15px; margin-top: 10px; margin-bottom: 20px; }
             .feature-group-row { display: flex; flex-direction: column; gap: 12px; } 
             .feature-service-group { margin-bottom: 12px; }
 
@@ -662,19 +798,34 @@
 </head>
 <body>
 
-<!-- HERO SECTION -->
+<!-- HERO SECTION (改版圖文左右設計 + 載入動畫) -->
 <div class="hero-section">
-    <h1 class="hero-title">GEPT 全民英檢<br>「<span class="highlight">中級寫作</span>」影片課程+加強</h1>
-    <a href="#content-start" class="hero-btn">了解詳細方案 <i class="fa-solid fa-arrow-down"></i></a>
-    
-    <!-- 附加連結按鈕區塊 -->
-    <div class="hero-links">
-        <a href="https://tonyonlineenglish.netlify.app/exper" target="_blank" class="secondary-btn">
-            <i class="fa-solid fa-calendar-check"></i> 預約體驗課程
-        </a>
-        <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="secondary-btn line-btn">
-            <i class="fa-brands fa-line"></i> LINE: myavalon
-        </a>
+    <!-- 文字區塊：從左側滑入 -->
+    <div class="hero-content">
+        <h1 class="hero-title">
+            GEPT 全民英檢<br>
+            「<span class="highlight">中級寫作</span>」<br>
+            影片課程X寫作加強
+        </h1>
+        
+        <div class="hero-action-group">
+            <a href="#content-start" class="hero-btn">了解詳細方案 <i class="fa-solid fa-arrow-down"></i></a>
+            
+            <!-- 附加連結按鈕區塊 -->
+            <div class="hero-links">
+                <a href="https://tonyonlineenglish.netlify.app/exper" target="_blank" class="secondary-btn">
+                    <i class="fa-solid fa-calendar-check"></i> 預約體驗課程
+                </a>
+                <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="secondary-btn line-btn">
+                    <i class="fa-brands fa-line"></i> LINE: myavalon
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- 圖片區塊：從右側滑入 -->
+    <div class="hero-image-wrapper">
+        <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-13%20%E4%B8%8B%E5%8D%884.15.10.png?updatedAt=1773389907343" alt="GEPT 課程預覽">
     </div>
 </div>
 
@@ -828,17 +979,15 @@
                 <div class="m-plan-name text-blue">方案 B</div>
                 <div class="m-main-heading"><span class="m-big-num">6</span>回完整影片課程</div>
                 
-                <!-- Description + Tags Inline -->
                 <p class="m-desc-text">
-    最紮實的教學方案，提供兩倍的教學量與練習機會，全面提升實力。適合👉
-    <span class="m-inline-tags">
-        <span class="m-inline-tag blue">#追求高分</span>
-        <span class="m-inline-tag blue">#大量實作</span>
-        <span class="m-inline-tag blue">#多次練習</span>
-    </span>
-</p>
+                    最紮實的教學方案，提供兩倍的教學量與練習機會，全面提升實力。適合👉
+                    <span class="m-inline-tags">
+                        <span class="m-inline-tag blue">#追求高分</span>
+                        <span class="m-inline-tag blue">#大量實作</span>
+                        <span class="m-inline-tag blue">#多次練習</span>
+                    </span>
+                </p>
      
-
                 <div class="m-list-title">完整內容包含</div>
                 <div class="m-list-row"><div class="m-check bg-blue"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><div><span class="badge-solid bg-solid-blue">6 回</span>完整翻譯+寫作影片課程詳解</div></div>
                 <div class="m-list-row"><div class="m-check bg-blue"><svg viewBox="0 0 24 24"><path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/></svg></div><div><img src="https://ik.imagekit.io/lql1uveoc/%E6%9C%83%E5%93%A1450/2026.%20%E6%96%B0%E5%A2%9E18000.36000/coupon.gif?updatedAt=1768548704641" class="gift-icon"><span class="gift-text">贈送</span>4 回寫作+翻譯批改</div></div>
@@ -857,14 +1006,12 @@
                 <div class="m-plan-name text-purple">方案 A</div>
                 <div class="m-main-heading"><span class="m-big-num">3</span>回完整影片課程</div>
                 
-                <!-- Description + Tags Inline -->
                 <p class="m-desc-text">
                     這是完整課程的精選版，適合想在短時間內掌握核心技巧的學生。適合👉
                     <span class="m-inline-tags">
                         <span class="m-inline-tag purple">#重點補強</span>
                         <span class="m-inline-tag purple">#備考時間緊湊</span>
                         <span class="m-inline-tag purple">#初次嘗試</span>
-                         
                     </span>
                 </p>
 
@@ -886,7 +1033,6 @@
                 <div class="m-plan-name text-orange">方案 C</div>
                 <div class="m-main-heading">中級寫作加強課程</div>
                 
-                <!-- Description + Tags Inline -->
                 <p class="m-desc-text">
                     針對已有教學資源，需要「純練習」或「純指導」的客製化選項。適合👉
                     <span class="m-inline-tags">
@@ -916,12 +1062,64 @@
         </div>
     </div>
 
-    <!-- COURSE FEATURES SECTION (Merged from Doc 2) - MOVED TO BOTTOM -->
-    <div class="features-wrapper">
-        <!-- 第一區：核心真人服務 -->
-        <div class="feature-group-row feature-service-group">
+    <!-- ========================================== 
+         TESTIMONIALS SECTION (學員見證) 
+         ========================================== -->
+    <div class="testimonials-wrapper">
+        <h2 class="testi-section-title">學員見證</h2>
+        <div class="testi-slider" id="testi-slider">
             
-            <!-- Item 1: 雙師批改 -->
+            <div class="testi-card">
+                <div class="testi-header">
+                    <span class="testi-name">Jason</span>
+                    <span class="testi-role">高中生</span>
+                </div>
+                <div class="testi-stars">★★★★★</div>
+                <p class="testi-text">本來寫作常常抓不到重點，上了6回完整影片課程後，邏輯變得超清晰！順利取得全民英檢中級證書，進步非常明顯！</p>
+            </div>
+
+            <div class="testi-card">
+                <div class="testi-header">
+                    <span class="testi-name">Emily</span>
+                    <span class="testi-role">國中生</span>
+                </div>
+                <div class="testi-stars">★★★★★</div>
+                <p class="testi-text">老師的雙師專業批改一針見血地點出我的盲點，也給了很多實用的範本替換，讓我第一次挑戰就高分通過！</p>
+            </div>
+
+            <div class="testi-card">
+                <div class="testi-header">
+                    <span class="testi-name">Kevin</span>
+                    <span class="testi-role">高中生</span>
+                </div>
+                <div class="testi-stars">★★★★★</div>
+                <p class="testi-text">1對1的線上真人寫作診斷課程太棒了！直接解決我長久以來的文法錯誤。加強方案完全拯救了我的備考期。</p>
+            </div>
+
+            <div class="testi-card">
+                <div class="testi-header">
+                    <span class="testi-name">Rachel</span>
+                    <span class="testi-role">高中生</span>
+                </div>
+                <div class="testi-stars">★★★★★</div>
+                <p class="testi-text">考前衝刺選了方案A，影片時數不會太長但都是精華！搭配翻譯與批改指導，讓我在寫作大題拿到了從未想過的高分。</p>
+            </div>
+
+            <div class="testi-card">
+                <div class="testi-header">
+                    <span class="testi-name">Leo</span>
+                    <span class="testi-role">國中生</span>
+                </div>
+                <div class="testi-stars">★★★★★</div>
+                <p class="testi-text">原本對英文寫作超沒自信，靠著家教課程慢慢建立語感跟句型，最後奇蹟似地過關了！非常推薦需要針對性指導的人。</p>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- COURSE FEATURES SECTION -->
+    <div class="features-wrapper">
+        <div class="feature-group-row feature-service-group">
             <div class="feature-item">
                 <div class="feature-icon-wrapper">
                     <span class="feature-badge">獨家</span>
@@ -932,8 +1130,6 @@
                     <p>修飾語感 ＋ 點評邏輯 ＋ 範本提供</p>
                 </div>
             </div>
-
-            <!-- Item 2: 1-1 診斷 -->
             <div class="feature-item">
                 <div class="feature-icon-wrapper">
                     <span class="feature-badge">贈送</span>
@@ -944,12 +1140,9 @@
                     <p>50分鐘/堂，彈性線上預約(或Line)</p>
                 </div>
             </div>
-
         </div>
 
-        <!-- 第二區：影片資源 -->
         <div class="feature-group-row feature-video-group">
-            
             <div class="feature-item">
                 <div class="feature-icon-wrapper">
                     <i class="fa-solid fa-circle-play"></i>
@@ -959,7 +1152,6 @@
                     <p>總時長 <span class="time-highlight">3小時 36分</span></p>
                 </div>
             </div>
-
             <div class="feature-item">
                 <div class="feature-icon-wrapper">
                     <i class="fa-solid fa-layer-group"></i>
@@ -969,7 +1161,6 @@
                     <p>總時長 <span class="time-highlight">7小時 38分</span></p>
                 </div>
             </div>
-            
             <div class="feature-item">
                 <div class="feature-icon-wrapper">
                     <i class="fa-solid fa-infinity"></i>
@@ -979,10 +1170,8 @@
                     <p>課程影片可重複播放複習</p>
                 </div>
             </div>
-
         </div>
 
-        <!-- 第三區：條款防護說明 -->
         <div class="terms-box">
             <strong>💡 組合優惠說明：</strong><br>
             本專案包含之真人服務（批改評分與家教） 。贈送項目為限時福利，恕不折現或抵扣主課程費用。
@@ -1076,7 +1265,7 @@
         if(event) event.stopPropagation();
         const productToAdd = products.find(p => p.id === productId);
         if (productToAdd) {
-            cart = {}; // One item max rule preserved
+            cart = {}; 
             cart[productToAdd.id] = { ...productToAdd, imageUrl: images[productToAdd.imageId] || images[0] };
         }
         updateCartDisplay();
@@ -1272,7 +1461,7 @@
     });
 </script>
 
-<!-- Add layout-manager.js as requested -->
+<!-- Add layout-manager.js -->
 <script src="layout-manager.js"></script>
 
 </body>
