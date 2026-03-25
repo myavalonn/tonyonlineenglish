@@ -13,6 +13,7 @@
     
     #embedding-container { background-color: #ffffff; padding: 0; }
     
+    /* 讓主要容器在所有裝置都呈現全寬度，取消陰影與圓角 */
     .product-widget { 
         max-width: 1200px; 
         width: 100%; 
@@ -77,7 +78,7 @@
     .special-offer-banner { font-size: 22px; font-weight: 900; color: #000; margin-top: 30px; margin-bottom: 20px; }
 
     /* =========================================
-       4. NEW: 方案選擇卡片區塊 (點擊即結帳)
+       4. 方案選擇卡片區塊 (點擊即結帳)
        ========================================= */
     .plan-selector-container { max-width: 1200px; margin: 60px auto 40px auto; padding: 0 20px; }
     .plan-selector-title { font-size: 32px; color: #000; font-weight: 900; margin-bottom: 25px; border-bottom: 2px solid #000; display: inline-block; padding-bottom: 10px; }
@@ -104,23 +105,6 @@
     .plan-col:first-child { text-align: left; }
     .plan-col:last-child { text-align: right; }
     .plan-bonus-icon { width: 40px; vertical-align: middle; margin-right: 8px; }
-
-    @media (min-width: 768px) {
-        .plan-list-header {
-            display: flex; padding: 10px 25px 10px 75px; font-size: 20px; font-weight: bold;
-            color: #555; border-bottom: 2px solid #000; margin-bottom: 15px;
-        }
-        .plan-header-col { flex: 1; text-align: center; }
-        .plan-header-col:first-child { text-align: left; }
-        .plan-header-col:last-child { text-align: right; }
-    }
-    
-    @media (max-width: 767px) {
-        .plan-card { padding: 15px; align-items: flex-start; }
-        .plan-radio { margin-top: 5px; }
-        .plan-details { flex-direction: column; align-items: flex-start; gap: 10px; }
-        .plan-col { text-align: left !important; width: 100%; font-size: 22px; }
-    }
 
     /* =========================================
        5. 底部表格區塊 (時段與費用)
@@ -151,7 +135,7 @@
     .faq-answer p { padding-top: 15px; margin: 0; }
 
     /* =========================================
-       6. 側邊購物車設定 (已修正左側邊距與手機/平板直向排版)
+       6. 側邊購物車設定
        ========================================= */
     .cart-icon-wrapper { position: absolute; top: 30px; right: 20px; font-size: 36px; cursor: pointer; color: #000; z-index: 10; }
     .cart-count { position: absolute; top: -8px; right: -12px; background-color: red; color: white; border-radius: 50%; width: 22px; height: 22px; font-size: 14px; font-weight: bold; display: flex; justify-content: center; align-items: center; transition: transform 0.2s ease; transform: scale(0); }
@@ -162,7 +146,6 @@
     .cart-panel { position: fixed; top: 0; right: -100%; width: 90%; max-width: 800px; height: 100%; background-color: #fff; box-shadow: -5px 0 15px rgba(0,0,0,0.1); z-index: 1001; transition: right 0.5s ease; display: flex; flex-direction: column; }
     .cart-panel.open { right: 0; }
     
-    /* 修正了 padding 避免完全靠左 */
     .cart-body { display: flex; flex-grow: 1; padding: 20px; gap: 40px; overflow-y: auto; }
     .cart-left, .cart-right { padding: 15px; } 
     #close-cart-btn-main { position: absolute; top: 20px; right: 20px; background: none; border: none; font-size: 32px; cursor: pointer; color: #000; z-index: 10; }
@@ -199,21 +182,24 @@
     }
     
     @media (max-width: 1024px) {
-        /* 手機版與平板版：購物車一律由上往下，絕不分左右 */
         .cart-body { flex-direction: column !important; gap: 20px; padding: 20px; }
         .cart-left, .cart-right { flex-basis: auto; width: 100%; padding: 0; }
         .cart-right { padding-top: 20px; border-top: 2px solid #eee; }
     }
 
     @media screen and (min-width: 768px) {
-        /* 電腦/平板版：五張圖片並列為一排，無箭頭 */
+        /* 電腦/平板版 */
         .image-gallery { padding: 0 20px; background: transparent; overflow: visible; margin-bottom: 30px; margin-top: 20px; }
         .gallery-track { display: grid !important; grid-template-columns: repeat(5, 1fr); gap: 15px; transform: none !important; width: 100%; }
         .gallery-slide { min-width: 0 !important; width: 100% !important; border-radius: 8px; overflow: hidden; border: 1px solid #e0e0e0; transition: transform 0.2s ease, box-shadow 0.2s ease; }
         .gallery-slide:hover { transform: translateY(-5px); box-shadow: 0 8px 20px rgba(0,0,0,0.15); }
         .gallery-nav, .gallery-dots { display: none !important; }
 
-        /* 電腦版字體放大 */
+        .plan-list-header { display: flex; padding: 10px 25px 10px 75px; font-size: 20px; font-weight: bold; color: #555; border-bottom: 2px solid #000; margin-bottom: 15px; }
+        .plan-header-col { flex: 1; text-align: center; }
+        .plan-header-col:first-child { text-align: left; }
+        .plan-header-col:last-child { text-align: right; }
+
         .product-info h1 { font-size: 42px; }
         .photo2-checklist h3 { font-size: 32px; }
         .photo2-checklist li { font-size: 24px; }
@@ -227,7 +213,14 @@
     }
     
     @media (max-width: 767px) {
-        /* Email Popup 手機版完全滿版 */
+        /* 手機版：方案選擇卡片專屬排版 (金額右側接小字堂數，不換行) */
+        .plan-card { padding: 15px; align-items: flex-start; }
+        .plan-radio { margin-top: 4px; }
+        .plan-details { flex-direction: row; flex-wrap: wrap; align-items: center; gap: 2px 10px; }
+        .plan-col { text-align: left !important; width: auto; font-size: 22px; }
+        .plan-col:nth-child(2) { font-size: 15px; font-weight: normal; color: #555; white-space: nowrap; }
+        .plan-col:nth-child(3) { width: 100%; font-size: 20px; margin-top: 6px; }
+
         .email-popup-content { width: 100%; height: 100%; border-radius: 0; display: flex; flex-direction: column; justify-content: center; }
         #close-popup-btn { top: 20px; right: 20px; }
         
@@ -309,12 +302,10 @@
               <div class="special-offer-banner">Special Offer 優惠 ⬇️⬇️⬇️⬇️⬇️</div>
             </div>
             
-            <!-- 原本的 Select / Button 已移除，改用下方的直覺卡片式 -->
-
         </div>
     </div>
     
-    <!-- 側邊購物車畫面 (修復了 Padding 且平板手機單排) -->
+    <!-- 側邊購物車畫面 -->
     <div id="cart-overlay" class="cart-overlay"></div>
     <div id="cart-panel" class="cart-panel">
         <div class="cart-body">
@@ -352,7 +343,7 @@
       </div>
   </div>
 
-  <!-- 感謝頁面 (滿版大字體設計，保留所有訂單資訊) -->
+  <!-- 感謝頁面 -->
   <div id="thank-you-page">
       <h2 class="ty-header">🎉 感謝您的訂購！</h2>
       <p style="font-size: 22px; color: #000; margin-bottom: 40px; font-weight: bold;">您的訂單已成功建立。確認信已寄送至您的電子信箱。</p>
@@ -393,7 +384,7 @@
 <div class="extra-sections-wrapper">
   
   <!-- =========================================
-       NEW: 選擇課程方案卡片區塊 (取代原先的 Code 3 表格與上方的按鈕) 
+       選擇課程方案卡片區塊
        ========================================= -->
   <div class="plan-selector-container">
       <h3 class="plan-selector-title">
@@ -519,7 +510,7 @@
     <a href="https://line.me/ti/p/T9YdimtG8_" class="line-btn" target="_blank">加入Line : myavalon</a>
 </div>
 
-<!-- 常見問題 FAQ (已加上超連結) -->
+<!-- 常見問題 FAQ -->
 <div class="faq-section">
     <h2>課程常見問題FAQ</h2>
     
@@ -640,7 +631,7 @@
         showSlide(0);
     }
 
-    // [新增] 點擊卡片觸發結帳流程
+    // 點擊卡片觸發結帳流程
     window.selectPlanAndCheckout = function(planId) {
         const productToAdd = products.find(p => p.id === planId);
         if (productToAdd) {
@@ -682,7 +673,7 @@
         }
     }
 
-    // 顯示感謝頁面 (修正自動滾動到上方，但不重置最頂)
+    // 顯示感謝頁面
     function showThankYouPage(orderData) {
         document.getElementById('ty-customer-email').innerText = orderData.email;
         document.getElementById('ty-order-id').innerText = orderData.orderId;
@@ -769,7 +760,6 @@
             window.scrollTo({ top: 0, behavior: 'smooth' });
         });
         
-        emailInput.addEventListener('click', openEmailPopup);
         popupCheckoutBtn.addEventListener('click', handleCheckout);
         emailPopupOverlay.addEventListener('click', (e) => { if (e.target === emailPopupOverlay) closeEmailPopup(); });
         
