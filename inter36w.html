@@ -101,7 +101,6 @@
             line-height: 1.25;
             text-shadow: 0 4px 15px rgba(0, 0, 0, 0.8);
             z-index: 10;
-            /* 同時套用滑入與發光特效 */
             animation: slideInLeft 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards,
                        glowPulseBrand 2.5s ease-in-out 0.5s forwards;
         }
@@ -136,7 +135,6 @@
             margin-bottom: 15px;
             line-height: 1.2;
             text-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
-            /* 發光特效 */
             animation: glowPulseTitle 2.5s ease-in-out 1.2s forwards;
         }
 
@@ -230,16 +228,16 @@
         @media (max-width: 768px) {
             .hero-section { 
                 min-height: 85vh; 
-                /* 縮小 padding-top (原60vw 調整為 42vw) 以拉近與上方文字的距離 */
-                padding: 42vw 15px 40px 15px; 
+                /* 縮小 padding-top 讓所有文字往上挪動 */
+                padding: 30vw 15px 40px 15px; 
                 background-color: #0f172a; 
-                /* 背景圖片維持100%寬度，上方自然呈現 */
+                /* 修改為 cover，讓背景圖片向下延伸完整覆蓋整個 hero 區塊 */
                 background-image: 
-                    linear-gradient(to bottom, rgba(15,23,42,0.2) 0%, rgba(15,23,42,0.8) 35vw, rgba(15,23,42,1) 48vw),
+                    linear-gradient(to bottom, rgba(15,23,42,0.4) 0%, rgba(15,23,42,0.85) 100%),
                     url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-13%20%E4%B8%8B%E5%8D%884.15.10.png?updatedAt=1773389907343');
-                background-size: 100% auto, 100% auto;
-                background-position: top center, top center;
-                background-repeat: no-repeat, no-repeat;
+                background-size: cover;
+                background-position: center center;
+                background-repeat: no-repeat;
                 justify-content: flex-start;
             }
 
@@ -263,6 +261,11 @@
                 margin-bottom: 10px; 
                 line-height: 1.3;
             }
+
+            /* 手機版：特定文字放大 15% */
+            .scale-up {
+                font-size: 1.15em; 
+            }
             
             /* 控制 X 換行：只有手機版會啟動換行，且移除左右空格 */
             .m-break { display: block; }
@@ -274,7 +277,7 @@
                 white-space: nowrap; 
                 margin-bottom: 25px;
                 letter-spacing: 0.5px;
-                color: #9ca3af;
+                color: #cbd5e1;
             }
             
             .hero-action-group { max-width: 100%; width: 100%; }
@@ -714,7 +717,7 @@
             width: 100%;
             max-width: 1400px;
             margin: 20px auto 60px auto;
-            padding: 0 30px; /* 給左右箭頭留出空間 */
+            padding: 0 30px; 
             box-sizing: border-box;
         }
 
@@ -733,7 +736,6 @@
             align-items: center;
         }
 
-        /* 桌面版左右切換箭頭 */
         .testi-arrow {
             position: absolute;
             top: 50%;
@@ -769,7 +771,7 @@
             overflow-x: auto;
             scroll-snap-type: x mandatory;
             gap: 20px;
-            padding: 15px 5px 30px 5px; /* padding for shadow visibility */
+            padding: 15px 5px 30px 5px; 
             -webkit-overflow-scrolling: touch;
             scrollbar-width: none;
             width: 100%;
@@ -812,13 +814,11 @@
         .testi-text::before { content: "“ "; color: #cbd5e1; font-size: 1.5em; font-family: serif; font-weight: bold;}
         .testi-text::after { content: " ”"; color: #cbd5e1; font-size: 1.5em; font-family: serif; font-weight: bold;}
 
-        /* 手機版隱藏桌面箭頭，並確保露出下一張卡片 (85vw) 提示用戶滑動 */
         @media (max-width: 768px) {
             .testimonials-wrapper { padding: 0 15px; }
             .testi-arrow { display: none; }
             .testi-slider { gap: 15px; }
             .testi-card {
-                /* 設定 85vw 確保右側會露出下一張卡片的邊緣 */
                 min-width: 85vw;
                 max-width: 85vw;
                 padding: 20px;
@@ -943,10 +943,10 @@
 
     <!-- 中央核心內容 -->
     <div class="hero-content">
-        <div class="hero-intro">這一次，</div>
-        <!-- 主標題 (含發光動畫)，手機版會透過 m-break 將 X 獨立成行 -->
+        <div class="hero-intro">這一次</div>
+        <!-- 主標題 (含發光動畫)，手機版會透過 m-break 將 X 獨立成行，並利用 scale-up 放大指定文字 -->
         <h1 class="hero-title-large">
-            全新方法<span class="desktop-x-space"> </span><br class="m-break">×<span class="desktop-x-space"> </span><br class="m-break">全新思維，<br>順利通過英檢寫作。
+            <span class="scale-up">全新方法</span><span class="desktop-x-space"> </span><br class="m-break">×<span class="desktop-x-space"> </span><br class="m-break"><span class="scale-up">全新思維</span><br>順利通過英檢寫作
         </h1>
         <span class="hero-sub-text">影片課程X寫作加強❖1-1家教</span>
         
@@ -1266,7 +1266,6 @@
     <div class="testimonials-wrapper">
         <h2 class="testi-section-title">學員見證</h2>
         
-        <!-- 加入 relative 容器供電腦版左右箭頭定位 -->
         <div class="testi-container-relative">
             <button class="testi-arrow left-arrow" onclick="scrollTesti(-1)"><i class="fa-solid fa-chevron-left"></i></button>
             
@@ -1337,7 +1336,7 @@
         <div class="cart-right">
             <h3>結帳</h3>
             <form id="checkout-form" onsubmit="return false;">
-                <p>請輸入您的電子信箱。</p>
+                <p>請輸入您的電子信箱</p>
                 <input type="email" id="email" required placeholder="請輸入您的電子信箱">
                 <button type="button" id="sidebar-checkout-btn" onclick="handleCheckout()">確認送出訂單</button>
                 <a class="line-link" href="https://line.me/ti/p/T9YdimtG8_" target="_blank">請加入Line: Myavalon</a>
