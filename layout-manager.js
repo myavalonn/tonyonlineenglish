@@ -1,4 +1,4 @@
-// layout-manager.js - 終極修正版：解決 iPad 直/橫放白條問題 (包含文字換行與寬度修正) + 新增 IG & 恢復手機版白邊
+// layout-manager.js - 終極修正版：解決 iPad 直/橫放白條問題 (包含文字換行與寬度修正) + 新增 IG & 恢復手機版白邊 + 新增全民英檢中級寫作
 document.addEventListener("DOMContentLoaded", function() {
     if (document.getElementById('tony-unique-header')) return;
 
@@ -160,6 +160,10 @@ document.addEventListener("DOMContentLoaded", function() {
             </div>
             <a href="index.html" class="menu-link">回首頁</a>
             <a href="https://tonyonlineenglish.netlify.app/allcourses" target="_blank" class="menu-link highlight-course">課程詳細介紹<span>升學 檢定 職場 公職 客製化</span></a>
+            
+            <!-- 新增的全民英檢中級寫作選項 -->
+            <a href="https://tonyonlineenglish.netlify.app/inter36w" target="_blank" class="menu-link">全民英檢中級寫作<span>三/六回影片課程+家教+寫作批改</span></a>
+            
             <a href="https://tonyonlineenglish.netlify.app/ycs" target="_blank" class="menu-link">你的課表查詢<span>即時查看課程安排狀況</span></a>
             <a href="https://tonyonlineenglish.netlify.app/exper" target="_blank" class="menu-link">預約體驗課程<span>25 / 50 分鐘線上試聽</span></a>
             <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="menu-link" style="color: #00B900;">LINE 直接聯絡<span>ID: Myavalon</span></a>
