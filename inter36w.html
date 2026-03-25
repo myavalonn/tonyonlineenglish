@@ -231,7 +231,7 @@
                 /* 縮小 padding-top 讓所有文字往上挪動 */
                 padding: 30vw 15px 40px 15px; 
                 background-color: #0f172a; 
-                /* 修改為 cover，讓背景圖片向下延伸完整覆蓋整個 hero 區塊 */
+                /* 背景圖片為 cover，確保圖片完整覆蓋到下方 LINE 按鈕處 */
                 background-image: 
                     linear-gradient(to bottom, rgba(15,23,42,0.4) 0%, rgba(15,23,42,0.85) 100%),
                     url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-13%20%E4%B8%8B%E5%8D%884.15.10.png?updatedAt=1773389907343');
@@ -582,11 +582,15 @@
             .m-slider-container {
                 display: flex;
                 overflow-x: auto;
-                scroll-snap-type: x mandatory;
+                /* 移除初始的強制對齊，避免手機版載入跳轉 Bug */
                 gap: 15px;
                 padding: 20px 20px 30px 20px; 
                 -webkit-overflow-scrolling: touch;
                 scrollbar-width: none;
+            }
+            /* 透過 JS 延遲加入此 Class，讓瀏覽器載入完成後才啟用對齊 */
+            .m-slider-container.snap-active {
+                scroll-snap-type: x mandatory;
             }
             .m-slider-container::-webkit-scrollbar { display: none; }
 
@@ -929,6 +933,14 @@
         }
         @media (min-width: 1025px) { .thank-you-container { display: flex; gap: 30px; } .ty-left-panel { flex-basis: 55%; } .ty-right-panel { flex-basis: 45%; } }
     </style>
+    
+    <script>
+        // 防止手機版在載入時自動跳轉至內容區域的 Bug
+        if ('scrollRestoration' in history) {
+            history.scrollRestoration = 'manual';
+        }
+        window.scrollTo(0, 0);
+    </script>
 </head>
 <body>
 
@@ -1592,11 +1604,17 @@
     document.addEventListener('DOMContentLoaded', () => {
         const slider = document.getElementById('mobile-slider');
         if(slider) {
+            // 延遲啟用強制對齊，徹底防止手機版一載入就自動往下跳的 Bug
+            setTimeout(() => {
+                slider.classList.add('snap-active');
+            }, 300);
+
             slider.addEventListener('scroll', () => {
                 let bestIndex = 0;
                 let minDistance = Infinity;
                 
-                const sliderCenter = slider.scrollLeft + (slider.clientWidth / 2);[0, 1, 2].forEach(i => {
+                const sliderCenter = slider.scrollLeft + (slider.clientWidth / 2);
+                [0, 1, 2].forEach(i => {
                     const card = document.getElementById('m-card-' + i);
                     if(card) {
                         const cardCenter = card.offsetLeft + (card.offsetWidth / 2);
