@@ -272,13 +272,106 @@
         100% { text-shadow: 2px 2px 10px rgba(0,0,0,0.6); }
     }
 
-    /* Photo 2 Checklist Style (Inserted inside original widget safely) */
-    .photo2-checklist { margin: 25px 0; border-top: 1px solid #eee; padding-top: 20px; scroll-margin-top: 40px;}
-    .photo2-checklist p { font-size: 15px; font-weight: bold; margin-bottom: 15px; color: #444; }
-    .photo2-checklist ul { list-style: none; padding: 0; margin: 0; }
-    .photo2-checklist li { display: flex; align-items: flex-start; margin-bottom: 12px; font-size: 14px; color: #444; line-height: 1.6; }
-    .check-icon { margin-right: 10px; font-size: 16px; color: #333; font-style: normal; }
-    .warning-icon { margin-right: 10px; font-size: 16px; font-style: normal; }
+    /* --- Photo 2 全新 Checklist 分類卡片設計 (RWD + 大字體 + 粗體高亮) --- */
+    .photo2-checklist {
+        margin: 35px 0 25px 0;
+        padding-top: 25px;
+        border-top: 2px dashed #e2e8f0;
+        scroll-margin-top: 40px;
+        font-family: 'PingFang TC', 'Microsoft JhengHei', sans-serif;
+    }
+    .checklist-main-title {
+        font-size: 24px;
+        color: #1a202c;
+        margin-bottom: 20px;
+        font-weight: 800;
+        text-align: center;
+        letter-spacing: 1px;
+    }
+    .checklist-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+    }
+    .check-card {
+        background: #f8faff;
+        border: 1px solid #e2e8f0;
+        border-radius: 12px;
+        padding: 20px 25px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+    }
+    .check-card.alert-card {
+        background: #fffaf5;
+        border-color: #feebc8;
+    }
+    .check-card-title {
+        font-size: 20px;
+        color: #2b6cb0;
+        margin: 0 0 15px 0;
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        border-bottom: 2px solid rgba(0,0,0,0.05);
+        padding-bottom: 12px;
+        font-weight: 700;
+    }
+    .check-card.alert-card .check-card-title {
+        color: #c05621;
+    }
+    .check-card ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+    .check-card li {
+        display: flex;
+        align-items: flex-start;
+        margin-bottom: 16px;
+        font-size: 16px; /* 手機基礎字體變大 */
+        color: #2d3748;
+        line-height: 1.6;
+    }
+    .check-card li:last-child { margin-bottom: 0; }
+    .check-icon, .warning-icon {
+        flex-shrink: 0;
+        margin-right: 12px;
+        margin-top: 2px;
+        font-size: 18px;
+    }
+    .check-icon { color: #38a169; font-weight: bold; }
+    .warning-icon { color: #e53e3e; }
+    
+    /* 重點粗體與底色高亮 */
+    .check-card li strong {
+        color: #1a202c;
+        font-weight: 800;
+        background: linear-gradient(120deg, rgba(255, 235, 59, 0.5) 0%, rgba(255, 235, 59, 0.5) 100%);
+        background-repeat: no-repeat;
+        background-size: 100% 35%;
+        background-position: 0 90%;
+        padding: 0 2px;
+    }
+    .check-card li strong.text-blue { color: #2b6cb0; background: none; }
+    .check-card li strong.text-red { color: #e53e3e; background: none; }
+    
+    .sub-text {
+        display: block;
+        font-size: 0.9em;
+        margin-top: 6px;
+        color: #718096;
+    }
+    .special-offer-banner {
+        text-align: center;
+        font-size: 18px;
+        font-weight: 800;
+        color: #e53e3e;
+        margin-top: 25px;
+        padding: 16px;
+        background: #fff5f5;
+        border-radius: 8px;
+        border: 2px dashed #feb2b2;
+        letter-spacing: 1px;
+    }
 
     /* Tables Container (Code 3 & Code 5) */
     .extra-sections-wrapper { max-width: 1000px; margin: 40px auto; padding: 0 15px; }
@@ -410,6 +503,13 @@
 
     /* RWD for New Sections */
     @media screen and (min-width: 768px) {
+      /* RWD Checklist 電腦版字體更大 */
+      .checklist-main-title { font-size: 28px; }
+      .check-card-title { font-size: 22px; }
+      .check-card li { font-size: 18px; }
+      .sub-text { font-size: 16px; }
+      .special-offer-banner { font-size: 20px; }
+
       .price-table th { font-size: 22px; padding: 20px; }
       .en-sub { font-size: 14px; }
       .price-table td { padding: 25px 10px; }
@@ -447,13 +547,16 @@
     @media (max-width: 767px) {
       .hero-section { padding: 80px 15px; justify-content: center; }
       .hero-text-content { padding: 30px 20px; text-align: center; }
-      .hero-title .nowrap { display: block; } /* Keep block to force single line centering if possible */
+      .hero-title .nowrap { display: block; } 
+      
+      /* RWD Checklist 手機版調整間距 */
+      .check-card { padding: 15px; }
     }
   </style>
 </head>
 <body>
 
-<!-- 新增：頂部 Hero 橫幅 (Photo 1) - Redesigned -->
+<!-- 頂部 Hero 橫幅 -->
 <div class="hero-section">
   <div class="hero-bg-layer"></div>
   <div class="hero-section-inner">
@@ -469,7 +572,7 @@
   <div class="hero-watermark">Tony線上美語家教</div>
 </div>
 
-<!-- 完全保留您的原始購物車核心容器 -->
+<!-- 原始購物車核心容器 -->
 <div id="embedding-container">
   <div id="product-page">
     <div class="product-widget">
@@ -477,13 +580,11 @@
         <div class="product-info">
             <div id="cart-icon" class="cart-icon-wrapper">🛒<span id="cart-count" class="cart-count">0</span></div>
             
-            <!-- 您原本的標題與附標 -->
             <h1>會員訂閱制 每週固定兩堂</h1>
             <div class="subtitle-wrapper">
                 <p style="color: blue; font-size: 16px; margin: 0;">（1-1每堂50分鐘）</p>
                 <p class="futuristic-pill-banner">（一次購買兩期贈送<br class="banner-break">兩堂課1350點或五堂課2250點）</p>
                 <div style="display: flex; gap: 10px; align-items: center; margin-top: 10px; flex-wrap: wrap;">
-                    <!-- 替換為新連結 -->
                     <a href="https://tonyonlineenglish.netlify.app/allcourses" target="_blank" style="color: blue; font-size: 16px; text-decoration: none; display: flex; align-items: center; gap: 5px;">
                         <img src="https://ik.imagekit.io/lql1uveoc/external-link.png?updatedAt=1754911187731" style="width: 12px; height: 12px;">所有課程介紹
                     </a>
@@ -494,24 +595,52 @@
                 </div>
             </div>
 
-            <!-- 嵌入 Photo 2 的文字清單 (不干擾原本結構) 加上錨點 ID -->
+            <!-- =========================================
+                 修改：重點分類 Checklist 卡片 (RWD, 大字體, 粗體高亮)
+                 ========================================= -->
             <div class="photo2-checklist" id="target-checklist">
-              <p>適合每週固定兩堂課程的學員</p>
-              <ul>
-                  <li><i class="check-icon">✓</i> 每週固定『900點』訂閱扣除，當周沒有上課也會扣除</li>
-                  <li><i class="check-icon">✓</i> 適用上課時段 週一～週五 （平日） 上午10:00am~5:00pm前</li>
-                  <li><i class="check-icon">✓</i> 每週第三堂或平日5pm後：『550點』 *週六及國定假日每堂：『600點』</li>
-                  <li><i class="check-icon">✓</i> 2026 (會另行公告) 連假當週不自動扣除點數，但仍可預約上課</li>
-                  <li><i class="check-icon">✓</i> 課程期間會員擁有『兩次』暫停課程權益。(不限時長)</li>
-                  <li><i class="check-icon">✓</i> 期間轉方案，改為非訂閱制，每堂『550』點。週六及國定假日課程每堂：『600點』</li>
-                  <li><i class="check-icon">✓</i> 『24小時內』提出請假或調課，『扣除0.5堂』 (該時段點數)</li>
-                  <li><i class="check-icon">✓</i> 『12小時內』提出請假或調課，『扣除1堂』 (該時段點數)</li>
-                  <li><i class="warning-icon">⚠️</i> 週六和國定假日課程需於上課前 24 小時提出請假或調課；若未於24 小時前提出，當堂課視為已使用。</li>
-                  <li><i class="check-icon">✓</i> Special Offer 優惠 ⬇️⬇️⬇️⬇️⬇️</li>
-              </ul>
+              <h3 class="checklist-main-title">適合每週固定兩堂課程的學員</h3>
+              
+              <div class="checklist-grid">
+                  <!-- 卡片 1：基本扣點與時段 -->
+                  <div class="check-card">
+                      <h4 class="check-card-title"><span class="icon">⏱️</span> 基本扣點與上課時段</h4>
+                      <ul>
+                          <li><i class="check-icon">✓</i> <span>每週固定 <strong class="text-blue">『900點』</strong> 訂閱扣除，當周沒有上課也會扣除</span></li>
+                          <li><i class="check-icon">✓</i> <span>適用上課時段：<strong>週一～週五 (平日) 10:00am~5:00pm前</strong></span></li>
+                      </ul>
+                  </div>
+
+                  <!-- 卡片 2：加課與轉換 -->
+                  <div class="check-card">
+                      <h4 class="check-card-title"><span class="icon">➕</span> 加課與方案轉換</h4>
+                      <ul>
+                          <li><i class="check-icon">✓</i> <span>每週第三堂或平日5pm後：<strong class="text-blue">『550點』</strong><br>
+                              <span class="sub-text">*週六及國定假日每堂：<strong class="text-red">『600點』</strong></span></span></li>
+                          <li><i class="check-icon">✓</i> <span>期間轉為非訂閱制：每堂 <strong class="text-blue">『550點』</strong><br>
+                              <span class="sub-text">*週六及國定假日課程每堂：<strong class="text-red">『600點』</strong></span></span></li>
+                      </ul>
+                  </div>
+
+                  <!-- 卡片 3：請假與暫停 (Alert Card) -->
+                  <div class="check-card alert-card">
+                      <h4 class="check-card-title"><span class="icon">⚠️</span> 請假、調課與暫停規範</h4>
+                      <ul>
+                          <li><i class="check-icon">✓</i> <span>課程期間會員擁有 <strong class="text-blue">『兩次』</strong> 暫停課程權益。(不限時長)</span></li>
+                          <li><i class="check-icon">✓</i> <span><strong class="text-red">『24小時內』</strong> 提出請假或調課，<strong>『扣除0.5堂』</strong> (該時段點數)</span></li>
+                          <li><i class="check-icon">✓</i> <span><strong class="text-red">『12小時內』</strong> 提出請假或調課，<strong>『扣除1堂』</strong> (該時段點數)</span></li>
+                          <li><i class="warning-icon">❗️</i> <span><strong>週六和國定假日課程</strong> 需於上課前 <strong>24 小時</strong> 提出請假或調課；若未於24小時前提出，當堂課視為 <strong>已使用</strong>。</span></li>
+                          <li><i class="check-icon">✓</i> <span>2026 連假當週 <strong>不自動扣除點數</strong> (會另行公告)，但仍可預約上課</span></li>
+                      </ul>
+                  </div>
+              </div>
+              
+              <div class="special-offer-banner">
+                  Special Offer 優惠 ⬇️⬇️⬇️⬇️⬇️
+              </div>
             </div>
 
-            <!-- 您原本的購物車選項區 -->
+            <!-- 購物車選項區 -->
             <div class="option-selector">
                 <label for="course-options">
                     <span style="color: black; font-size: 18px; font-weight: bold;">選擇課程方案</span>
@@ -522,7 +651,7 @@
         </div>
     </div>
     
-    <!-- 您原本的側邊購物車畫面 -->
+    <!-- 側邊購物車畫面 -->
     <div id="cart-overlay" class="cart-overlay"></div>
     <div id="cart-panel" class="cart-panel">
         <div class="cart-body">
@@ -552,7 +681,7 @@
     </div>
   </div>
   
-  <!-- 您原本的信箱彈窗 -->
+  <!-- 信箱彈窗 -->
   <div id="email-popup-overlay">
       <div class="email-popup-content">
           <button id="close-popup-btn">×</button>
@@ -562,7 +691,7 @@
       </div>
   </div>
 
-  <!-- 您原本的精美感謝頁面與動畫結構 -->
+  <!-- 感謝頁面 -->
   <div id="thank-you-page" style="display:none;">
     <div class="thank-you-container">
         <div class="ty-left-panel">
@@ -600,9 +729,7 @@
   </div>
 </div>
 
-<!-- =========================================
-     新增：下方表格與文字區塊 (安全地加在原始容器之外)
-     ========================================= -->
+<!-- 下方表格與文字區塊 -->
 <div class="extra-sections-wrapper">
   
   <!-- 表格：時段 (Code 5) -->
@@ -690,9 +817,8 @@
   </div>
 </div>
 
-<!-- 新增：全新重設計卡片式說明區塊 (Photo 3) -->
+<!-- Info Block Cards -->
 <div class="info-cards-wrapper">
-    <!-- 卡片 1：時段與費用 -->
     <div class="info-card">
         <div class="card-icon">🕒</div>
         <h3>時段與費用</h3>
@@ -705,7 +831,6 @@
         <span class="text-sm">(若有需求，可彈性加課)</span></p>
     </div>
 
-    <!-- 卡片 2：課程權益 -->
     <div class="info-card">
         <div class="card-icon">📝</div>
         <h3>課程權益與優惠</h3>
@@ -717,7 +842,6 @@
         <p class="highlight-pink" style="text-align: center;">一次購買兩期有贈送堂數！</p>
     </div>
 
-    <!-- 卡片 3：學習效益 -->
     <div class="info-card benefit-card">
         <div class="card-icon">🚀</div>
         <h3>快速提升英語實力</h3>
@@ -726,7 +850,6 @@
         <p>立即報名，把握機會！ 趕緊聯繫，了解更多詳情並預約體驗課程📲</p>
     </div>
 
-    <!-- 卡片 4：底部警語與行動呼籲 (滿寬) -->
     <div class="info-card footer-card">
         <div class="card-icon">⚠️</div>
         <h3>注意事項</h3>
@@ -736,7 +859,7 @@
     </div>
 </div>
 
-<!-- 新增：常見問題 FAQ (Photo 4) -->
+<!-- 常見問題 FAQ -->
 <div class="faq-section">
     <h2>課程常見問題FAQ</h2>
     
@@ -772,9 +895,6 @@
     </div>
 </div>
 
-<!-- =========================================
-     完全還原您的 JavaScript，包含 Google Sheets API 串接與訂單號碼
-     ========================================= -->
 <script>
     const products =[
         { id: 'plan-1', name: 'NT$13,500', price: 13500, description: '（約30堂課）13500點', bookingLink: null },
@@ -950,7 +1070,6 @@
         thankYouPage.style.display = 'block';
     }
     
-    // 完全還原您的結帳與資料傳送函式
     function handleCheckout(e) {
       if(e) e.preventDefault();
       const email = popupEmailInput.value;
@@ -971,7 +1090,6 @@
           bookingLinks: Object.values(cart).filter(i => i.bookingLink).map(i => ({ name: i.name, link: i.bookingLink }))
       });
 
-      // 串接至您的 Google Apps Script
       fetch("https://script.google.com/macros/s/AKfycbyU13Wivs341DMPupk9EKrL9u908zrHNOVqZUXri-hGezkk6qj_7loQGIf0GCfmvj_f/exec", {
           method: "POST",
           headers: { "Content-Type": "application/x-www-form-urlencoded" },
@@ -1023,7 +1141,6 @@
         
         popupEmailInput.addEventListener('input', () => emailInput.value = popupEmailInput.value);
 
-        // 常見問題 FAQ 點擊收合邏輯
         const faqs = document.querySelectorAll(".faq-question");
         faqs.forEach(faq => {
             faq.addEventListener("click", () => {
