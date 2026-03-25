@@ -52,7 +52,7 @@
         /* --- HERO SECTION --- */
         .hero-section {
             width: 100%;
-            min-height: 60vh;
+            min-height: 80vh;
             background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)), 
                         url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-13%20%E4%B8%8B%E5%8D%884.15.10.png?updatedAt=1773389907343') center center / cover no-repeat;
             display: flex;
@@ -60,41 +60,75 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            padding: 20px;
+            padding: 120px 20px 60px 20px; /* 增加上方 padding 避免與左上角文字重疊 */
             color: #fff;
-            overflow: hidden; /* 防止動畫跑出版面 */
+            position: relative;
+            overflow: hidden; 
         }
 
-        /* 動畫設定：從左側滑入 */
         @keyframes slideInLeft {
             0% { opacity: 0; transform: translateX(-60px); }
             100% { opacity: 1; transform: translateX(0); }
         }
+        
+        @keyframes fadeInUP {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
 
+        /* 左上方品牌文字 */
+        .hero-brand {
+            position: absolute;
+            top: 40px;
+            left: 50px;
+            text-align: left;
+            font-size: 3.5rem; /* 原本的尺寸 */
+            font-weight: 900;
+            line-height: 1.25;
+            text-shadow: 0 4px 15px rgba(0, 0, 0, 0.8);
+            z-index: 10;
+            animation: slideInLeft 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+
+        .hero-brand .highlight-red {
+            color: #dc2626; /* 修改為紅色 */
+        }
+
+        /* 中央內容區塊 */
         .hero-content {
             opacity: 0;
-            animation: slideInLeft 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            animation: fadeInUP 1s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            animation-delay: 0.3s;
             display: flex;
             flex-direction: column;
             align-items: center;
-            max-width: 900px;
+            max-width: 1000px;
+            z-index: 10;
         }
 
-        .hero-title {
-            font-size: 3.5rem;
+        .hero-intro {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #fbbf24;
+            margin-bottom: 5px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+        }
+
+        .hero-title-large {
+            font-size: 4.5rem; /* 超大字體 */
             font-weight: 900;
-            margin-bottom: 30px;
-            line-height: 1.3;
+            margin-bottom: 15px;
+            line-height: 1.2;
             text-shadow: 0 4px 15px rgba(0, 0, 0, 0.6);
         }
 
-        .hero-title .highlight {
-            color: #fbbf24;
-        }
-        
         .hero-sub-text {
             display: block;
-            margin-top: 5px;
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 30px;
+            color: #e2e8f0;
+            letter-spacing: 2px;
         }
 
         .hero-action-group {
@@ -166,18 +200,57 @@
             background-color: rgba(0, 185, 0, 1);
         }
 
+        @media (max-width: 1180px) and (min-width: 769px) {
+            .hero-title-large { font-size: 3.5rem; }
+            .hero-brand { font-size: 2.8rem; left: 30px; }
+        }
+
         @media (max-width: 768px) {
-            .hero-section { min-height: 50vh; padding: 40px 15px; }
-            .hero-title { font-size: 2.2rem; margin-bottom: 25px; }
+            .hero-section { 
+                min-height: 85vh; 
+                /* 手機版：圖片完全不裁切顯示在上方，底下自然銜接深色背景 */
+                padding: 60vw 15px 40px 15px; 
+                background-color: #0f172a; 
+                background-image: 
+                    linear-gradient(to bottom, rgba(15,23,42,0.3) 0%, rgba(15,23,42,0.85) 45vw, rgba(15,23,42,1) 60vw),
+                    url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-13%20%E4%B8%8B%E5%8D%884.15.10.png?updatedAt=1773389907343');
+                background-size: 100% auto, 100% auto;
+                background-position: top center, top center;
+                background-repeat: no-repeat, no-repeat;
+                justify-content: flex-start;
+            }
+
+            .hero-brand {
+                top: 20px;
+                left: 20px;
+                font-size: 2.2rem; /* 手機版還原原本的尺寸 */
+                text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+            }
+
+            .hero-content {
+                margin-top: 0;
+            }
+
+            .hero-intro {
+                font-size: 1.4rem;
+            }
+            
+            .hero-title-large { 
+                font-size: 2.2rem; 
+                margin-bottom: 10px; 
+            }
             
             /* 手機版：影片課程X寫作加強 縮小並強制在同一行 */
             .hero-sub-text {
-                font-size: 1.3rem; /* 字體再縮小一點確保安全 */
+                font-size: 0.85rem; 
                 white-space: nowrap; 
+                margin-bottom: 25px;
+                letter-spacing: 0.5px;
+                color: #9ca3af;
             }
             
             .hero-action-group { max-width: 100%; width: 100%; }
-            .hero-btn { width: 100%; font-size: 1.15rem; padding: 14px; }
+            .hero-btn { width: 100%; font-size: 1.15rem; padding: 14px; margin-bottom: 5px;}
             
             /* 強制按鈕在同一行並優化內距 */
             .hero-links {
@@ -711,13 +784,13 @@
         .testi-text::before { content: "“ "; color: #cbd5e1; font-size: 1.5em; font-family: serif; font-weight: bold;}
         .testi-text::after { content: " ”"; color: #cbd5e1; font-size: 1.5em; font-family: serif; font-weight: bold;}
 
-        /* 手機版隱藏桌面箭頭，並確保露出下一張卡片 */
+        /* 手機版隱藏桌面箭頭，並確保露出下一張卡片 (85vw) 提示用戶滑動 */
         @media (max-width: 768px) {
             .testimonials-wrapper { padding: 0 15px; }
             .testi-arrow { display: none; }
             .testi-slider { gap: 15px; }
             .testi-card {
-                /* 設定 85vw 確保右側會露出下一張卡片的邊緣，提示可滑動 */
+                /* 設定 85vw 確保右側會露出下一張卡片的邊緣 */
                 min-width: 85vw;
                 max-width: 85vw;
                 padding: 20px;
@@ -831,14 +904,22 @@
 </head>
 <body>
 
-<!-- HERO SECTION (使用背景大圖，文字由左滑入) -->
+<!-- HERO SECTION -->
 <div class="hero-section">
+    
+    <!-- 放置於圖片左上方的標題 -->
+    <div class="hero-brand">
+        GEPT 全民英檢<br>
+        「<span class="highlight-red">中級寫作</span>」
+    </div>
+
+    <!-- 中央核心內容 -->
     <div class="hero-content">
-        <h1 class="hero-title">
-            GEPT 全民英檢<br>
-            「<span class="highlight">中級寫作</span>」<br>
-            <span class=“hero-sub-text">影片課程X寫作加強❖1-1家教</span>
+        <div class="hero-intro">這一次，</div>
+        <h1 class="hero-title-large">
+            全新方法 × 全新思維，<br>順利通過寫作。
         </h1>
+        <span class="hero-sub-text">影片課程X寫作加強❖1-1家教</span>
         
         <div class="hero-action-group">
             <a href="#content-start" class="hero-btn">了解詳細方案 <i class="fa-solid fa-arrow-down"></i></a>
