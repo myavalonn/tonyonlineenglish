@@ -72,10 +72,10 @@
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
     <style>
         /* =========================================
-           基礎與主頁面設定
+           基礎與主頁面設定 (更新為白色 Light 主題)
            ========================================= */
         html { 
-            background-color: #060b1c !important; 
+            background-color: #ffffff !important; 
             margin: 0; 
             padding: 0; 
             scroll-behavior: smooth; 
@@ -85,7 +85,7 @@
             margin: 0; 
             padding: 0; 
             font-family: "Microsoft JhengHei", sans-serif; 
-            color: white; 
+            color: #060b1c; /* 文字改為深藍/深灰 */
             overflow-x: hidden; 
             min-height: 100vh; 
         }
@@ -109,9 +109,10 @@
             align-items: center;
             text-align: center;
             overflow: hidden;
-            background-color: #060b1c !important; 
+            background-color: #ffffff !important; 
         }
 
+        /* ====== 3D 特效 Canvas (針對白底修正黑科技) ====== */
         #canvas {
             position: absolute;
             top: 0;
@@ -120,16 +121,19 @@
             height: 100%;
             z-index: 1; 
             pointer-events: none; 
-            mix-blend-mode: screen; 
+            /* 將黑底反轉為白底，保持色彩，再透過 multiply 去除白色背景 */
+            filter: invert(1) hue-rotate(180deg);
+            mix-blend-mode: multiply; 
         }
 
-        /* ====== 加入 .start-animations 後才觸發主頁面進場動畫 ====== */
+        /* ====== 主頁面進場動畫 (改成淺色遮罩) ====== */
         .hero::before {
             content: "";
             position: absolute;
             top: 0; left: 0; 
             width: 100%; height: 100%;
-            background: linear-gradient(rgba(6, 11, 28, 0.7), rgba(6, 11, 28, 0.8)), 
+            /* 淺色漸層疊加 */
+            background: linear-gradient(rgba(255, 255, 255, 0.85), rgba(255, 255, 255, 0.95)), 
                         url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/1DE8F5F9-4E48-4960-84F7-A5B1B98B4954.jpg');
             background-size: cover;
             background-position: center;
@@ -160,8 +164,8 @@
             background: linear-gradient(135deg, #4e54c8, #6B73FF); 
             padding: 12px 28px;
             border-radius: 40px; 
-            border: 2px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 6px 15px rgba(107, 115, 255, 0.6);
+            border: 2px solid rgba(255, 255, 255, 0.8);
+            box-shadow: 0 6px 15px rgba(107, 115, 255, 0.3);
             opacity: 0; 
             transition: all 0.3s ease;
             display: flex;
@@ -175,7 +179,7 @@
 
         .course-intro-btn:hover {
             background: linear-gradient(135deg, #6B73FF, #4e54c8);
-            box-shadow: 0 8px 25px rgba(107, 115, 255, 0.9);
+            box-shadow: 0 8px 25px rgba(107, 115, 255, 0.6);
             transform: scale(1.06); 
         }
 
@@ -206,6 +210,7 @@
             white-space: nowrap; 
             letter-spacing: 2px;
             line-height: 1.2;
+            color: #060b1c; /* 在白底中保持深色字 */
         }
 
         .tony-name { 
@@ -214,14 +219,14 @@
             font-weight: normal; 
             margin-right: 2vw; 
             padding-right: 0.5vw;
-            text-shadow: 0px 0px 10px rgba(107, 115, 255, 0.6); 
+            text-shadow: 0px 4px 15px rgba(107, 115, 255, 0.3); /* 輕柔的陰影 */
         }
 
         .subtitle-italic {
             font-size: clamp(1rem, 4.5vw, 2rem);
             font-style: italic;
             font-weight: 400;
-            color: #f1f1f1;
+            color: #555;
             margin: 10px 0 5px 0;
             letter-spacing: 1px;
         }
@@ -229,7 +234,7 @@
         .slogan-text {
             font-size: clamp(0.9rem, 4vw, 1.8rem);
             font-weight: 300;
-            color: rgba(255, 255, 255, 0.8);
+            color: #777;
             margin: 4px 0;
             letter-spacing: 1.5px;
             font-style: italic; 
@@ -246,10 +251,11 @@
 
         .tag {
             font-size: clamp(0.75rem, 3.5vw, 1rem);
-            background: rgba(255, 255, 255, 0.1);
+            background: rgba(0, 0, 0, 0.04);
+            color: #444;
             padding: 6px 14px;
             border-radius: 20px;
-            border: 1px solid rgba(255, 255, 255, 0.25);
+            border: 1px solid rgba(0, 0, 0, 0.1);
             white-space: nowrap;
             backdrop-filter: blur(5px);
             pointer-events: none;
@@ -305,116 +311,68 @@
         }
 
         /* =========================================
-           Tony 開場進場動畫專屬樣式
+           開場進場動畫專屬樣式 (Loader)
            ========================================= */
         .tony-loader-section {
             position: fixed;
             top: 0; left: 0;
             width: 100vw; height: 100vh;
             z-index: 9999; 
-            background-color: #060b1c; 
+            background-color: #ffffff; /* 純白背景 */
             display: flex;
-            overflow: hidden;
-            color: white;
-        }
-
-        .tony-loader {
             justify-content: center;
             align-items: center;
-            width: 100%; height: 100%;
+            color: #060b1c;
+        }
+
+        .loader-content {
             display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+        }
+
+        /* 上方的文字切換區 (拉霸機效果) */
+        .ticker-wrap {
+            position: relative;
+            height: 1.5em; /* 限制高度展示單行 */
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 2vh; 
+            clip-path: inset(-30% 0 -30% 0); /* 允許字母上下延伸但整體做剪裁 */
+        }
+
+        .ticker-item {
             position: absolute;
-            top: 0; left: 0;
-            overflow: hidden;
+            font-size: clamp(1.2rem, 5vw, 3.5rem);
+            font-weight: 900;
+            color: #6B73FF; /* 藍色亮眼強調 */
+            white-space: nowrap;
+            text-align: center;
+        }
+
+        /* 下方的主標題 */
+        .main-title-wrap {
+            display: flex;
+            justify-content: center;
         }
 
         .tony__h1 {
             white-space: nowrap;
-            justify-content: center;
-            font-size: clamp(1.5rem, 8vw, 8rem);
+            font-size: clamp(1.5rem, 8vw, 6rem);
             font-weight: 900;
-            line-height: 1.2;
+            margin: 0;
             display: flex;
-            position: relative;
-        }
-
-        .tony__h1-start {
-            justify-content: flex-end;
-            display: flex;
-            overflow: hidden;
-            padding-bottom: 0.2em;
-            margin-bottom: -0.2em;
-        }
-
-        .tony__h1-end {
-            justify-content: flex-start;
-            display: flex;
-            overflow: hidden;
-            padding-bottom: 0.2em;
-            margin-bottom: -0.2em;
+            color: #060b1c;
         }
 
         .tony__letter {
-            display: block;
-            position: relative;
+            display: inline-block;
+            /* 起始狀態由 GSAP 注入 */
         }
-
-        .tony-loader__box {
-            flex-flow: column;
-            justify-content: center;
-            align-items: center;
-            width: 0;
-            display: flex;
-            position: relative;
-        }
-
-        .tony-loader__box-inner {
-            justify-content: center;
-            align-items: center;
-            min-width: 1.5em; /* 剛好容納四個中文字的寬度 */
-            height: 100%;
-            display: flex;
-            position: relative;
-        }
-
-        .tony__growing-box {
-            justify-content: center;
-            align-items: center;
-            width: 0%;
-            height: 100%;
-            display: flex;
-            position: absolute;
-            overflow: hidden;
-            background: linear-gradient(135deg, #4e54c8, #6B73FF);
-            border-radius: 12px;
-        }
-
-        .tony__growing-box-wrap {
-            width: 100%;
-            min-width: 1.5em;
-            height: 100%;
-            position: absolute;
-        }
-
-        .tony__cover-text {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            background: linear-gradient(135deg, #4e54c8, #6B73FF);
-            color: white;
-            font-size: 0.25em; 
-            font-weight: 700;
-            line-height: 1.3;
-            letter-spacing: 2px;
-        }
-
-        .tony__cover-text-extra.is--1 { z-index: 3; }
-        .tony__cover-text-extra.is--2 { z-index: 2; }
-        .tony__cover-text-extra.is--3 { z-index: 1; }
 
     </style>
 </head>
@@ -422,41 +380,33 @@
 
     <!-- ====== 開場動畫遮罩區塊 ====== -->
     <section class="tony-loader-section">
-      <div class="tony-loader">
-        <div class="tony__h1">
-          <!-- 前半段文字 -->
-          <div class="tony__h1-start">
-            <span class="tony__letter" style="font-family: 'Pacifico', cursive; color: #6B73FF; padding-right: 2px;">T</span>
-            <span class="tony__letter" style="font-family: 'Pacifico', cursive; color: #6B73FF; padding-right: 2px;">o</span>
-            <span class="tony__letter" style="font-family: 'Pacifico', cursive; color: #6B73FF; padding-right: 2px;">n</span>
-            <span class="tony__letter" style="font-family: 'Pacifico', cursive; color: #6B73FF; padding-right: 8px;">y</span>
+      <div class="loader-content">
+        
+        <!-- 上方快速切換文字區 (第一到第五條) -->
+        <div class="ticker-wrap">
+            <div class="ticker-item">升學 檢定 公職 外商</div>
+            <div class="ticker-item">全民英檢GEPT 多益TOEIC FLPT</div>
+            <div class="ticker-item">國小 國中 高中 技職</div>
+            <div class="ticker-item">流利口說 專業寫作</div>
+            <div class="ticker-item">觀光美語 客製化</div>
+        </div>
+
+        <!-- 下方主要品牌文字 -->
+        <div class="main-title-wrap">
+          <div class="tony__h1">
+            <span class="tony__letter" style="font-family: 'Pacifico', cursive; color: #6B73FF;">T</span>
+            <span class="tony__letter" style="font-family: 'Pacifico', cursive; color: #6B73FF;">o</span>
+            <span class="tony__letter" style="font-family: 'Pacifico', cursive; color: #6B73FF;">n</span>
+            <span class="tony__letter" style="font-family: 'Pacifico', cursive; color: #6B73FF; padding-right: 0.1em;">y</span>
             <span class="tony__letter">線</span>
             <span class="tony__letter">上</span>
-          </div>
-          
-          <!-- 中間展開盒子與閃爍文字 -->
-          <div class="tony-loader__box">
-            <div class="tony-loader__box-inner">
-              <div class="tony__growing-box">
-                <div class="tony__growing-box-wrap">
-                  <div class="tony__cover-text tony__cover-text-extra is--1">升學<br>檢定</div>
-                  <div class="tony__cover-text tony__cover-text-extra is--2">全民英檢<br>多益</div>
-                  <div class="tony__cover-text tony__cover-text-extra is--3">公職<br>面試</div>
-                  <!-- 最終停留文字 -->
-                  <div class="tony__cover-text">外商<br>客製化</div>
-                </div>
-              </div>
-            </div>
-          </div>
-          
-          <!-- 後半段文字 -->
-          <div class="tony__h1-end">
             <span class="tony__letter">美</span>
             <span class="tony__letter">語</span>
             <span class="tony__letter">家</span>
             <span class="tony__letter">教</span>
           </div>
         </div>
+
       </div>
     </section>
 
@@ -541,94 +491,79 @@
     <!-- 開場動畫控制腳本 -->
     <script>
       function initTonyLoadingAnimation() {
-        const container = document.querySelector(".tony-loader-section");
-        const loadingLetter = container.querySelectorAll(".tony__letter");
-        const box = container.querySelectorAll(".tony-loader__box");
-        const growingBox = container.querySelectorAll(".tony__growing-box");
-        const headingStart = container.querySelectorAll(".tony__h1-start");
-        const headingEnd = container.querySelectorAll(".tony__h1-end");
-        const coverTextExtra = container.querySelectorAll(".tony__cover-text-extra");
-
         const tl = gsap.timeline({
-          defaults: { ease: "expo.inOut" },
           onStart: () => {
             document.body.classList.add('is--loading');
-          },
-          onComplete: () => {
-            // 在藍色全螢幕淡出前夕，觸發下方網頁內容的進場動畫
-            document.querySelector('.hero').classList.add('start-animations');
-            
-            // 將整個 Loader 背景漸進淡出
-            gsap.to(container, {
-              opacity: 0,
-              duration: 1.2,
-              ease: "power2.inOut",
-              onComplete: () => {
-                container.style.display = 'none'; // 隱藏 Loader 讓背景點擊可以生效
-                document.body.classList.remove('is--loading'); // 恢復正常滾動
-              }
-            });
           }
         });
-        
-        // 1. 巨大文字從底部滑入
-        if (loadingLetter.length) {
-          tl.from(loadingLetter, { yPercent: 100, stagger: 0.03, duration: 1.25 });
-        }
-        
-        // 2. 中間撐開空間
-        if (box.length) {
-          tl.fromTo(box, { width: "0em" }, { width: "1.5em", duration: 1.25 }, "< 1");
-        }
 
-        // 3. 顯示帶有背景色的盒子
-        if (growingBox.length) {
-          tl.fromTo(growingBox, { width: "0%" }, { width: "100%", duration: 1.25 }, "<");
-        }
-        
-        // 4. 文字往兩側微推提供呼吸感
-        if (headingStart.length) {
-          tl.fromTo(headingStart, { x: "0em" }, { x: "-0.05em", duration: 1.25 }, "<");
-        }
-        if (headingEnd.length) {
-          tl.fromTo(headingEnd, { x: "0em" }, { x: "0.05em", duration: 1.25 }, "<");
-        }
+        // ==========================================
+        // 1. "Tony線上美語家教" 滑順進場 (不再有切斷問題)
+        // ==========================================
+        const letters = document.querySelectorAll('.tony__letter');
+        gsap.set(letters, { y: 60, opacity: 0 }); // 透過 y 位移與透明度控制，不依賴 overflow hidden
 
-        // 5. 中間文字逐格閃爍替換
-        if (coverTextExtra.length) {
-          tl.fromTo(coverTextExtra, { opacity: 1 }, {
-            opacity: 0,
-            duration: 0.05,
-            ease: "none",
-            stagger: 0.6
-          }, "-=0.2"); 
-        }
-          
-        // 6. 最終將盒子放大至全螢幕填滿
-        if (growingBox.length) {
-          tl.to(growingBox, {
-            width: "100vw",
-            height: "100vh",
-            borderRadius: "0px",
-            duration: 1.5,
-            ease: "power3.inOut"
-          }, "+=0.2");
-        }
-        
-        if (box.length) {
-          tl.to(box, { width: "100vw", duration: 1.5, ease: "power3.inOut" }, "<");
-        }
+        tl.to(letters, {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          stagger: 0.04,
+          ease: "back.out(1.5)"
+        });
 
-        // 稍微將最終停留文字放大
-        const finalCoverText = document.querySelector(".tony__cover-text:not(.tony__cover-text-extra)");
-        if (finalCoverText) {
-          tl.to(finalCoverText, { scale: 1.5, duration: 1.5, ease: "power3.inOut" }, "<");
-        }
-        
-        // 在全螢幕展開的過程中，將背後的巨型文字隱藏
-        if (loadingLetter.length) {
-          tl.to(loadingLetter, { opacity: 0, duration: 0.5 }, "< 0.2");
-        }
+        // ==========================================
+        // 2. 上方文字列「由上往下」切換效果
+        // ==========================================
+        const tickerItems = document.querySelectorAll('.ticker-item');
+        gsap.set(tickerItems, { yPercent: -150, opacity: 0 }); // 初始位置在上方
+
+        const tickerDuration = 0.35; // 下降切換的速度
+        const stayDuration = 0.55;   // 每次停留在畫面的時間
+
+        tickerItems.forEach((item, i) => {
+          const isLast = i === tickerItems.length - 1;
+
+          // (A) 從上方進入中央
+          tl.to(item, {
+            yPercent: 0,
+            opacity: 1,
+            duration: tickerDuration,
+            ease: "power2.out"
+          }, i === 0 ? "-=0.2" : "-=0.05"); // 微妙的重疊時間讓動畫更絲滑
+
+          if (!isLast) {
+            // (B) 如果不是最後一條，則往下離開
+            tl.to(item, {
+              yPercent: 120,
+              opacity: 0,
+              duration: tickerDuration,
+              ease: "power2.in"
+            }, `+=${stayDuration}`);
+          } 
+        });
+
+        // ==========================================
+        // 3. 所有動畫完畢，整體 Loader 向上淡出，觸發主網頁
+        // ==========================================
+        tl.to('.loader-content', {
+          y: -40,
+          opacity: 0,
+          duration: 0.8,
+          ease: "power2.inOut"
+        }, `+=${stayDuration}`); // 讓最後一條文字停留一下再收起
+
+        tl.to('.tony-loader-section', {
+          opacity: 0,
+          duration: 0.6,
+          onStart: () => {
+            // 觸發原始網頁的進場動畫
+            document.querySelector('.hero').classList.add('start-animations');
+          },
+          onComplete: () => {
+            document.querySelector('.tony-loader-section').style.display = 'none';
+            document.body.classList.remove('is--loading'); // 釋放滾動條
+          }
+        }, "-=0.4");
       }
 
       // 等待 DOM 讀取完畢後初始化
