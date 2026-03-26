@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Tony IG Story Recording</title>
+    <style>
+        /* 載入具有質感的明體 */
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;600&display=swap');
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            background-color: #000; /* 純黑背景，高級感 */
+            color: #fff;
+            font-family: 'Noto Serif TC', serif;
+            overflow: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        /* 設定 IG 9:16 容器 */
+        .phone-viewport {
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+        }
+
+        .slide {
+            position: absolute;
+            width: 85%; /* 左右留白 */
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            flex-direction: column;
+            opacity: 0;
+            transform: translateY(10px);
+            transition: opacity 1.5s ease-in-out, transform 1.2s ease-in-out;
+            visibility: hidden;
+        }
+
+        .slide.active {
+            opacity: 1;
+            transform: translateY(0);
+            visibility: visible;
+        }
+
+        /* Slide 1-4 主文字樣式 */
+        .text-main {
+            font-size: 1.6rem; /* 手機端清晰尺寸 */
+            line-height: 1.8;
+            letter-spacing: 0.12em;
+        }
+
+        .highlight {
+            color: #e2e8f0; /* 霧灰藍，低調強調 */
+        }
+
+        /* Slide 5 專用樣式 (小字、斜體) */
+        .quote-style {
+            font-style: italic;
+            font-size: 1.1rem; /* 較小字體 */
+            color: #a1a1aa; /* 顏色變淡 */
+            line-height: 2;
+            letter-spacing: 0.08em;
+        }
+
+        .signature {
+            margin-top: 2.5rem;
+            font-size: 0.8rem;
+            font-style: normal;
+            letter-spacing: 0.15em;
+            color: #71717a;
+        }
+
+        /* 錄影快門提示 (不會錄進去) */
+        #hint {
+            position: fixed;
+            bottom: 30px;
+            width: 100%;
+            text-align: center;
+            font-size: 10px;
+            color: #222;
+            z-index: 100;
+            font-family: sans-serif;
+        }
+
+    </style>
+</head>
+<body>
+
+<div class="phone-viewport">
+
+    <div class="slide active">
+        <div class="text-main">
+            近期越來越多學員<br>
+            告知有強烈的慾望<br>需要拿到<br>
+            <span class="highlight">全民英檢中級</span>的證書。
+        </div>
+    </div>
+
+    <div class="slide">
+        <div class="text-main">
+            令人驚訝的是，<br>
+            全部都是<span class="highlight">越級打怪</span><br>
+            全部都是國小生<br>
+            或是國中一年級學生。
+        </div>
+    </div>
+
+    <div class="slide">
+        <div class="text-main">
+            越挫越勇，<br>
+            一下課就傳訊息<br>
+            想要趕快複習上課內容。<br>
+            <span style="font-size: 1.1rem; opacity: 0.7;">筆記＋影片都要。</span>
+        </div>
+    </div>
+
+    <div class="slide">
+        <div class="text-main">
+            各位學員們加油！<br>
+            <br>
+            <span style="font-weight: 600;">115年 4/18 (六)</span><br>
+            中級口說＋寫作<br>即將再次登場。
+        </div>
+    </div>
+
+    <div class="slide">
+        <div class="quote-style">
+            拿到英檢證書不會讓你一夜致富，<br>
+            也不會讓你的人生有<br>多大的輝煌紀錄。<br>
+            <br>
+            但是當你需要時，拿的出來，<br>
+            這才是人生最大的成就時刻。
+            <div class="signature">
+                — by Tony線上美語家教<br>
+                Tony Online English Tutoring.
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<div id="hint">點擊畫面切換下一頁</div>
+
+<script>
+    const slides = document.querySelectorAll('.slide');
+    let currentSlide = 0;
+
+    // 點擊畫面切換
+    document.addEventListener('click', () => {
+        slides[currentSlide].classList.remove('active');
+        currentSlide = (currentSlide + 1) % slides.length;
+        slides[currentSlide].classList.add('active');
+    });
+
+    // 為了錄影方便，增加自動播放功能 (每 5 秒切換)
+    // 如果你想手動控制，請註解掉下面的程式碼
+    setInterval(() => {
+        slides[currentSlide].classList.remove('active');
+        currentSlide = (currentSlide + 1) % slides.length;
+        slides[currentSlide].classList.add('active');
+    }, 5000); // 5000 毫秒 = 5 秒
+</script>
+
+</body>
+</html>
