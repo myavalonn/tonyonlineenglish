@@ -114,12 +114,12 @@ document.addEventListener("DOMContentLoaded", function() {
 
         /* 全民英檢中級寫作 - 專屬漸層樣式 */
         .gept-course {
-    background: linear-gradient(135deg, #63B3ED 0%, #2B6CB0 100%) !important;
-    box-shadow: 0 4px 12px rgba(43, 108, 176, 0.3);
-    color: #000000 !important; /* 強制大字變黑色 */
+    background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%) !important; /* 飽和的質感紅 */
+    color: #ffffff !important; /* 純白大字 */
+    box-shadow: 0 4px 12px rgba(197, 48, 48, 0.3);
 }
 .gept-course span {
-    color: #333333 !important; /* 強制下方小字變深灰色/黑色 */
+    color: rgba(255, 255, 255, 0.9) !important; /* 白色小字，帶一點點透明度增加層次 */
 }
 
         .menu-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 99998; display: none; }
