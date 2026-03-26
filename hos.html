@@ -1,0 +1,663 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>林育志 門診掛號總覽</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600&family=Noto+Sans+TC:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #FAF7F2;
+    --ink: #1A1612;
+    --ink-soft: #4A433C;
+    --ink-muted: #9B8F85;
+    --accent: #C0392B;
+    --accent-soft: #F5EAE8;
+    --border: #E2D9CF;
+    --fam: #1A5276;
+    --fam-bg: #EAF2FB;
+    --gi: #1E8449;
+    --gi-bg: #E9F7EF;
+    --dent: #784212;
+    --dent-bg: #FEF5E7;
+    --card-bg: #FFFFFF;
+    --shadow: 0 1px 4px rgba(26,22,18,0.07);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  /* ── Header ── */
+  .page-header {
+    background: var(--ink);
+    color: #fff;
+    padding: 1.5rem 1.25rem 1.25rem;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+  }
+
+  .page-header h1 {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 18px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    margin-bottom: 4px;
+  }
+
+  .page-header p {
+    font-size: 12px;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 0.06em;
+  }
+
+  .header-stats {
+    display: flex;
+    gap: 1rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .stat {
+    flex: 1;
+    text-align: center;
+  }
+
+  .stat-num {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 22px;
+    font-weight: 600;
+    line-height: 1;
+  }
+
+  .stat-label {
+    font-size: 10px;
+    color: rgba(255,255,255,0.45);
+    margin-top: 3px;
+    letter-spacing: 0.05em;
+  }
+
+  .stat-divider {
+    width: 1px;
+    background: rgba(255,255,255,0.12);
+    align-self: stretch;
+  }
+
+  /* ── Legend ── */
+  .legend {
+    display: flex;
+    gap: 10px;
+    padding: 0.9rem 1.25rem;
+    background: var(--cream);
+    border-bottom: 1px solid var(--border);
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .legend-item {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    white-space: nowrap;
+    font-size: 11px;
+    color: var(--ink-soft);
+  }
+
+  .legend-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* ── Month group ── */
+  .month-group {
+    padding: 0 1rem 1rem;
+  }
+
+  .month-label {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    color: var(--ink-muted);
+    padding: 1.2rem 0.25rem 0.6rem;
+    text-transform: uppercase;
+  }
+
+  /* ── Day section ── */
+  .day-section {
+    margin-bottom: 0.75rem;
+  }
+
+  .day-header {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    padding: 0 0.25rem 0.4rem;
+  }
+
+  .day-num {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--ink);
+    line-height: 1;
+  }
+
+  .day-meta {
+    font-size: 11px;
+    color: var(--ink-muted);
+  }
+
+  /* ── Appointment card ── */
+  .appt-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 8px;
+    box-shadow: var(--shadow);
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .appt-card::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+  }
+
+  .appt-card.fam::before { background: var(--fam); }
+  .appt-card.gi::before  { background: var(--gi); }
+  .appt-card.dent::before { background: var(--dent); }
+
+  .appt-num-wrap {
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-width: 40px;
+  }
+
+  .appt-num-label {
+    font-size: 9px;
+    color: var(--ink-muted);
+    letter-spacing: 0.06em;
+    margin-bottom: 2px;
+  }
+
+  .appt-num {
+    font-family: 'Noto Serif TC', serif;
+    font-size: 26px;
+    font-weight: 600;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .appt-body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .appt-row1 {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    margin-bottom: 5px;
+    flex-wrap: wrap;
+  }
+
+  .tag {
+    font-size: 10px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 20px;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+  }
+
+  .tag.fam  { background: var(--fam-bg);  color: var(--fam); }
+  .tag.gi   { background: var(--gi-bg);   color: var(--gi); }
+  .tag.dent { background: var(--dent-bg); color: var(--dent); }
+
+  .appt-time {
+    font-size: 10px;
+    color: var(--ink-muted);
+    background: #F5F3F0;
+    padding: 2px 7px;
+    border-radius: 20px;
+  }
+
+  .appt-doctor {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--ink);
+    margin-bottom: 3px;
+  }
+
+  .appt-location {
+    font-size: 12px;
+    color: var(--ink-muted);
+    display: flex;
+    align-items: flex-start;
+    gap: 4px;
+  }
+
+  .loc-icon {
+    width: 12px;
+    height: 12px;
+    flex-shrink: 0;
+    margin-top: 1px;
+    opacity: 0.5;
+  }
+
+  /* ── Footer ── */
+  .page-footer {
+    text-align: center;
+    padding: 1.5rem 1rem 2.5rem;
+    font-size: 11px;
+    color: var(--ink-muted);
+    letter-spacing: 0.05em;
+  }
+</style>
+</head>
+<body>
+
+<div class="page-header">
+  <h1>林育志　門診掛號總覽</h1>
+  <p>2026年4月 – 5月　·　早上 09:00–10:00</p>
+  <div class="header-stats">
+    <div class="stat">
+      <div class="stat-num">15</div>
+      <div class="stat-label">總掛號筆</div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat">
+      <div class="stat-num">10</div>
+      <div class="stat-label">看診天數</div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat">
+      <div class="stat-num">3</div>
+      <div class="stat-label">科別</div>
+    </div>
+  </div>
+</div>
+
+<div class="legend">
+  <div class="legend-item"><div class="legend-dot" style="background:var(--fam)"></div>家庭醫學科</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--gi)"></div>胃腸肝臟內科</div>
+  <div class="legend-item"><div class="legend-dot" style="background:var(--dent)"></div>牙科</div>
+</div>
+
+<!-- ─────── 四月 ─────── -->
+<div class="month-group">
+  <div class="month-label">四月</div>
+
+  <!-- 04/03 -->
+  <div class="day-section">
+    <div class="day-header">
+      <div class="day-num">03</div>
+      <div class="day-meta">週五</div>
+    </div>
+    <div class="appt-card fam">
+      <div class="appt-num-wrap">
+        <div class="appt-num-label">號碼</div>
+        <div class="appt-num">50</div>
+      </div>
+      <div class="appt-body">
+        <div class="appt-row1">
+          <span class="tag fam">家庭醫學科</span>
+          <span class="appt-time">09:00–10:00</span>
+        </div>
+        <div class="appt-doctor">張富勝 醫師</div>
+        <div class="appt-location">
+          <svg class="loc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          第五醫療大樓 2F — 7202診
+        </div>
+      </div>
+    </div>
+    <div class="appt-card gi">
+      <div class="appt-num-wrap">
+        <div class="appt-num-label">號碼</div>
+        <div class="appt-num">20</div>
+      </div>
+      <div class="appt-body">
+        <div class="appt-row1">
+          <span class="tag gi">胃腸肝臟內科</span>
+          <span class="appt-time">09:00–10:00</span>
+        </div>
+        <div class="appt-doctor">傅重春 醫師</div>
+        <div class="appt-location">
+          <svg class="loc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          醫療大樓 2F — 1238診
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 04/06 -->
+  <div class="day-section">
+    <div class="day-header">
+      <div class="day-num">06</div>
+      <div class="day-meta">週一</div>
+    </div>
+    <div class="appt-card fam">
+      <div class="appt-num-wrap">
+        <div class="appt-num-label">號碼</div>
+        <div class="appt-num">32</div>
+      </div>
+      <div class="appt-body">
+        <div class="appt-row1">
+          <span class="tag fam">家庭醫學科</span>
+          <span class="appt-time">09:00–10:00</span>
+        </div>
+        <div class="appt-doctor">張富勝 醫師</div>
+        <div class="appt-location">
+          <svg class="loc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          第五醫療大樓 2F — 7202診
+        </div>
+      </div>
+    </div>
+    <div class="appt-card gi">
+      <div class="appt-num-wrap">
+        <div class="appt-num-label">號碼</div>
+        <div class="appt-num">96</div>
+      </div>
+      <div class="appt-body">
+        <div class="appt-row1">
+          <span class="tag gi">胃腸肝臟內科</span>
+          <span class="appt-time">09:00–10:00</span>
+        </div>
+        <div class="appt-doctor">陳建華 醫師</div>
+        <div class="appt-location">
+          <svg class="loc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          南平大樓 2F — 8201診
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 04/09 -->
+  <div class="day-section">
+    <div class="day-header">
+      <div class="day-num">09</div>
+      <div class="day-meta">週四</div>
+    </div>
+    <div class="appt-card gi">
+      <div class="appt-num-wrap">
+        <div class="appt-num-label">號碼</div>
+        <div class="appt-num">74</div>
+      </div>
+      <div class="appt-body">
+        <div class="appt-row1">
+          <span class="tag gi">胃腸肝臟內科</span>
+          <span class="appt-time">09:00–10:00</span>
+        </div>
+        <div class="appt-doctor">陳奎閃 醫師</div>
+        <div class="appt-location">
+          <svg class="loc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          南平大樓 2F — 8202診
+        </div>
+      </div>
+    </div>
+    <div class="appt-card fam">
+      <div class="appt-num-wrap">
+        <div class="appt-num-label">號碼</div>
+        <div class="appt-num">17</div>
+      </div>
+      <div class="appt-body">
+        <div class="appt-row1">
+          <span class="tag fam">家庭醫學科</span>
+          <span class="appt-time">09:00–10:00</span>
+        </div>
+        <div class="appt-doctor">張富勝 醫師</div>
+        <div class="appt-location">
+          <svg class="loc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          癌療中心 1F — 6151診
+        </div>
+      </div>
+    </div>
+    <div class="appt-card gi">
+      <div class="appt-num-wrap">
+        <div class="appt-num-label">號碼</div>
+        <div class="appt-num">97</div>
+      </div>
+      <div class="appt-body">
+        <div class="appt-row1">
+          <span class="tag gi">胃腸肝臟內科</span>
+          <span class="appt-time">09:00–10:00</span>
+        </div>
+        <div class="appt-doctor">陳建華 醫師</div>
+        <div class="appt-location">
+          <svg class="loc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          南平大樓 2F — 8203診
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 04/16 -->
+  <div class="day-section">
+    <div class="day-header">
+      <div class="day-num">16</div>
+      <div class="day-meta">週四</div>
+    </div>
+    <div class="appt-card gi">
+      <div class="appt-num-wrap">
+        <div class="appt-num-label">號碼</div>
+        <div class="appt-num">60</div>
+      </div>
+      <div class="appt-body">
+        <div class="appt-row1">
+          <span class="tag gi">胃腸肝臟內科</span>
+          <span class="appt-time">09:00–10:00</span>
+        </div>
+        <div class="appt-doctor">陳奎閃 醫師</div>
+        <div class="appt-location">
+          <svg class="loc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          南平大樓 2F — 8202診
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 04/22 -->
+  <div class="day-section">
+    <div class="day-header">
+      <div class="day-num">22</div>
+      <div class="day-meta">週三</div>
+    </div>
+    <div class="appt-card dent">
+      <div class="appt-num-wrap">
+        <div class="appt-num-label">號碼</div>
+        <div class="appt-num">36</div>
+      </div>
+      <div class="appt-body">
+        <div class="appt-row1">
+          <span class="tag dent">牙科</span>
+          <span class="appt-time">09:00–10:00</span>
+        </div>
+        <div class="appt-doctor">陳菁琳 醫師</div>
+        <div class="appt-location">
+          <svg class="loc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          一般牙科 — 3505診
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 04/23 -->
+  <div class="day-section">
+    <div class="day-header">
+      <div class="day-num">23</div>
+      <div class="day-meta">週四</div>
+    </div>
+    <div class="appt-card gi">
+      <div class="appt-num-wrap">
+        <div class="appt-num-label">號碼</div>
+        <div class="appt-num">47</div>
+      </div>
+      <div class="appt-body">
+        <div class="appt-row1">
+          <span class="tag gi">胃腸肝臟內科</span>
+          <span class="appt-time">09:00–10:00</span>
+        </div>
+        <div class="appt-doctor">陳奎閃 醫師</div>
+        <div class="appt-location">
+          <svg class="loc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          南平大樓 2F — 8202診
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 04/30 -->
+  <div class="day-section">
+    <div class="day-header">
+      <div class="day-num">30</div>
+      <div class="day-meta">週四</div>
+    </div>
+    <div class="appt-card gi">
+      <div class="appt-num-wrap">
+        <div class="appt-num-label">號碼</div>
+        <div class="appt-num">51</div>
+      </div>
+      <div class="appt-body">
+        <div class="appt-row1">
+          <span class="tag gi">胃腸肝臟內科</span>
+          <span class="appt-time">09:00–10:00</span>
+        </div>
+        <div class="appt-doctor">陳奎閃 醫師</div>
+        <div class="appt-location">
+          <svg class="loc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          南平大樓 2F — 8202診
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ─────── 五月 ─────── -->
+<div class="month-group">
+  <div class="month-label">五月</div>
+
+  <!-- 05/07 -->
+  <div class="day-section">
+    <div class="day-header">
+      <div class="day-num">07</div>
+      <div class="day-meta">週四</div>
+    </div>
+    <div class="appt-card gi">
+      <div class="appt-num-wrap">
+        <div class="appt-num-label">號碼</div>
+        <div class="appt-num">46</div>
+      </div>
+      <div class="appt-body">
+        <div class="appt-row1">
+          <span class="tag gi">胃腸肝臟內科</span>
+          <span class="appt-time">09:00–10:00</span>
+        </div>
+        <div class="appt-doctor">陳奎閃 醫師</div>
+        <div class="appt-location">
+          <svg class="loc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          南平大樓 2F — 8202診
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 05/14 -->
+  <div class="day-section">
+    <div class="day-header">
+      <div class="day-num">14</div>
+      <div class="day-meta">週四</div>
+    </div>
+    <div class="appt-card gi">
+      <div class="appt-num-wrap">
+        <div class="appt-num-label">號碼</div>
+        <div class="appt-num">6</div>
+      </div>
+      <div class="appt-body">
+        <div class="appt-row1">
+          <span class="tag gi">胃腸肝臟內科</span>
+          <span class="appt-time">09:00–10:00</span>
+        </div>
+        <div class="appt-doctor">陳奎閃 醫師</div>
+        <div class="appt-location">
+          <svg class="loc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          南平大樓 2F — 8202診
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 05/21 -->
+  <div class="day-section">
+    <div class="day-header">
+      <div class="day-num">21</div>
+      <div class="day-meta">週四</div>
+    </div>
+    <div class="appt-card gi">
+      <div class="appt-num-wrap">
+        <div class="appt-num-label">號碼</div>
+        <div class="appt-num">48</div>
+      </div>
+      <div class="appt-body">
+        <div class="appt-row1">
+          <span class="tag gi">胃腸肝臟內科</span>
+          <span class="appt-time">09:00–10:00</span>
+        </div>
+        <div class="appt-doctor">陳奎閃 醫師</div>
+        <div class="appt-location">
+          <svg class="loc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          南平大樓 2F — 8202診
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 05/28 -->
+  <div class="day-section">
+    <div class="day-header">
+      <div class="day-num">28</div>
+      <div class="day-meta">週四</div>
+    </div>
+    <div class="appt-card gi">
+      <div class="appt-num-wrap">
+        <div class="appt-num-label">號碼</div>
+        <div class="appt-num">70</div>
+      </div>
+      <div class="appt-body">
+        <div class="appt-row1">
+          <span class="tag gi">胃腸肝臟內科</span>
+          <span class="appt-time">09:00–10:00</span>
+        </div>
+        <div class="appt-doctor">陳奎閃 醫師</div>
+        <div class="appt-location">
+          <svg class="loc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"/><circle cx="12" cy="9" r="2.5"/></svg>
+          南平大樓 2F — 8202診
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="page-footer">林育志　門診掛號　2026</div>
+
+</body>
+</html>
