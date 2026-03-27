@@ -25,38 +25,43 @@
   
   #secret-zone { position: fixed; top: 0; left: 0; width: 70px; height: 70px; z-index: 9999; cursor: default; }
   
-  /* Reset Header so it doesn't conflict with layout-manager.js */
-  header { 
-    position: relative; 
-    background: var(--white); 
-    border-bottom: var(--border); 
-    padding: 24px 30px; 
-    display: flex; 
-    flex-direction: column; 
-    gap: 4px; 
-    text-align: left;
-  }
-  .brand { font-family: var(--font-mono); font-size: 14px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; }
+  /* 
+    FIX: 
+    1. Padding-top is set to 80px so it fully clears the dark top bar's social buttons.
+    2. Padding-bottom is set to 120px so bottom-corner chat widgets won't block the calendar.
+  */
+  main { max-width: 680px; margin: 0 auto; padding: 80px 24px 120px; }
   
-  main { max-width: 680px; margin: 0 auto; padding: 40px 24px 80px; }
+  /* FIX: Isolated header class to prevent layout-manager.js from breaking it */
+  .local-page-header {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 36px;
+    padding-bottom: 24px;
+    border-bottom: var(--border);
+    text-align: left;
+    align-items: flex-start;
+  }
+  .brand { font-family: var(--font-mono); font-size: 15px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; line-height: 1.4; }
   
   /* Base (Cellphone) Sizes */
-  .page-title { font-size: 22px; font-weight: 400; margin-bottom: 8px; line-height: 1.4; }
-  .page-sub { font-size: 14px; color: var(--gray-400); margin-bottom: 40px; font-weight: 300; line-height: 1.5; }
+  .page-title { font-size: 22px; font-weight: 400; margin-bottom: 8px; line-height: 1.4; text-align: left; }
+  .page-sub { font-size: 14px; color: var(--gray-400); margin-bottom: 40px; font-weight: 300; line-height: 1.5; text-align: left; }
   .slot-btn { font-family: var(--font-mono); font-size: 14px; padding: 12px 20px; border: 1px solid var(--black); background: transparent; color: var(--black); border-radius: var(--radius); cursor: pointer; transition: 0.15s; }
 
   /* Tablet Sizes */
   @media (min-width: 768px) { 
-    .page-title { font-size: 28px; }
+    .page-title { font-size: 26px; }
     .page-sub { font-size: 16px; }
-    .slot-btn { font-size: 16px; padding: 14px 24px; }
+    .slot-btn { font-size: 15px; padding: 14px 24px; }
   }
 
   /* Desktop Sizes */
   @media (min-width: 1024px) { 
-    .page-title { font-size: 32px; }
-    .page-sub { font-size: 18px; }
-    .slot-btn { font-size: 18px; padding: 16px 28px; }
+    .page-title { font-size: 28px; }
+    .page-sub { font-size: 17px; }
+    .slot-btn { font-size: 16px; padding: 16px 28px; }
   }
 
   .loader { width: 26px; height: 26px; border: 2px solid var(--gray-200); border-top-color: var(--black); border-radius: 50%; animation: spin 0.8s linear infinite; margin: 0 auto 16px; }
@@ -82,7 +87,7 @@
   .slots-row { display: flex; flex-wrap: wrap; gap: 10px; padding-top: 6px; }
   .slot-btn:hover { background: var(--black); color: var(--white); }
 
-  .overlay { display: none; position: fixed; inset: 0; background: rgba(10,10,10,0.6); z-index: 10000; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(2px); }
+  .overlay { display: none; position: fixed; inset: 0; background: rgba(10,10,10,0.6); z-index: 100000; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(2px); }
   .overlay.open { display: flex; }
   .modal { background: var(--white); border: var(--border); border-radius: 12px; width: 100%; max-width: 420px; padding: 36px 32px; position: relative; box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
   .modal-close { position: absolute; top: 16px; right: 20px; background: none; border: none; font-size: 24px; cursor: pointer; color: var(--gray-400); transition: 0.15s; }
@@ -121,23 +126,23 @@
   
   .empty-state { text-align: center; padding: 60px 0; color: var(--gray-400); }
   .empty-line { display: block; width: 40px; height: 1px; background: var(--gray-200); margin: 0 auto 24px; }
-  .empty-state-small { text-align: center; font-size: 15px; color: var(--gray-400); margin: 20px 0 40px; line-height: 1.6; }
+  .empty-state-small { text-align: left; font-size: 15px; color: var(--gray-400); margin: 20px 0 40px; line-height: 1.6; }
 </style>
 </head>
 <body>
 
 <div id="secret-zone"></div>
 
-<header>
-  <span class="brand">Tony Online English Tutoring</span>
-  <span class="brand">Tony線上美語家教 / Book a Lesson</span>
-</header>
-
 <main>
+  <!-- FIX: Replaced <header> with a div inside <main> so the layout manager stops interfering -->
+  <div class="local-page-header">
+    <span class="brand">Tony Online English Tutoring</span>
+    <span class="brand">Tony線上美語家教 / Book a Lesson</span>
+  </div>
+
   <h1 class="page-title">Available slots / 可預約時段<br>特殊時段 Special time slots</h1>
   <p class="page-sub">Select a time (50 mins/session) <br> 請選擇時間（每堂 50 分鐘）</p>
   
-  <!-- Content Order Swapped: Slots first, Calendar bottom -->
   <div id="slots-view"></div>
   <div id="calendar-view"></div>
 </main>
@@ -320,7 +325,6 @@ async function init() {
 }
 
 function changeWeeks(delta) {
-  // delta=2 moves 2 weeks (14 days)
   currentStartOfWeek.setDate(currentStartOfWeek.getDate() + (delta * 7));
   renderStudentView();
 }
@@ -367,7 +371,7 @@ function renderStudentView() {
 
   const availableDates = Object.keys(grouped).sort();
   
-  // Auto-select earliest date & sync calendar view if nothing is selected yet
+  // Auto-select earliest date & sync calendar view
   if (!initializedSelection && availableDates.length > 0) {
       selectedDateStr = availableDates[0];
       const autoDate = new Date(selectedDateStr + 'T00:00:00');
@@ -390,9 +394,8 @@ function renderStudentView() {
   // --- Render 2-Week Calendar Grid (BOTTOM) ---
   const startDate = new Date(currentStartOfWeek);
   const endDate = new Date(currentStartOfWeek);
-  endDate.setDate(startDate.getDate() + 13); // +13 days to get exactly 14 days total
+  endDate.setDate(startDate.getDate() + 13);
 
-  // Setup header month display (e.g., "2026/03" or "03/01 - 03/14")
   const startMonth = startDate.getMonth() + 1;
   const endMonth = endDate.getMonth() + 1;
   let monthDisplay = `${startDate.getFullYear()} / ${String(startMonth).padStart(2, '0')}`;
