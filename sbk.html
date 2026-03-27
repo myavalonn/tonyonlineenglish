@@ -21,7 +21,7 @@
     --font-sans: 'DM Sans', 'Noto Sans TC', sans-serif;
   }
 
-  body { font-family: var(--font-sans); background: var(--white); color: var(--black); min-height: 100vh; -webkit-font-smoothing: antialiased; }
+  body { font-family: var(--font-sans); background: var(--white); color: var(--black); min-height: 100vh; -webkit-font-smoothing: antialiased; scroll-behavior: smooth; }
   
   #secret-zone { position: fixed; bottom: 0; left: 0; width: 80px; height: 80px; z-index: 999999; cursor: default; }
   
@@ -79,7 +79,7 @@
   .cal-cell.selected { background: var(--black) !important; color: var(--white) !important; border-color: var(--black) !important; font-weight: bold; }
 
   /* Slots styles */
-  .date-group { margin-bottom: 30px; }
+  .date-group { margin-bottom: 30px; transition: 0.3s; }
   .slots-row { display: flex; flex-wrap: wrap; gap: 10px; padding-top: 6px; }
 
   .overlay { display: none; position: fixed; inset: 0; background: rgba(10,10,10,0.6); z-index: 100000; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(2px); }
@@ -234,10 +234,9 @@ function toDateString(d) {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 }
 
-// 🚀 核心升級：加入自動同步與比對機制
+// 🚀 自動同步與比對機制
 async function fetchManualSlots() {
   try {
-    // 加上時間戳記強制瀏覽器不要使用快取，一定要去雲端抓最新資料
     const res = await fetch(`${API_URL}?action=getManualSlots&_t=${Date.now()}`);
     if (res.ok) {
       const data = await res.json();
@@ -245,13 +244,10 @@ async function fetchManualSlots() {
         const newSlotsStr = JSON.stringify(data.slots);
         const oldSlotsStr = JSON.stringify(manualSlots);
         
-        // 如果發現伺服器上的資料跟目前畫面上的不一樣 (例如用手機新增了)，就立刻更新畫面！
         if (newSlotsStr !== oldSlotsStr) {
           manualSlots = data.slots;
           localStorage.setItem('tony_manual_slots', newSlotsStr);
-          renderStudentView(); // 重新渲染學生的日曆與按鈕
-          
-          // 如果後台目前是打開的，也要更新後台的清單
+          renderStudentView(); 
           if (document.getElementById('admin-panel').classList.contains('open')) {
             renderAdminList();
             updateAdminTimeDropdown();
@@ -262,16 +258,9 @@ async function fetchManualSlots() {
   } catch (err) {}
 }
 
-// ── 自動同步機制開始 (Auto-Sync) ──
-// 1. 每 5 秒鐘在背景默默檢查一次雲端資料
 setInterval(fetchManualSlots, 5000);
-
-// 2. 當使用者「切換分頁回來看」或是「手機喚醒螢幕」時，強制立刻檢查一次
-document.addEventListener('visibilitychange', () => {
-  if (document.visibilityState === 'visible') fetchManualSlots();
-});
+document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') fetchManualSlots(); });
 window.addEventListener('focus', fetchManualSlots);
-// ── 自動同步機制結束 ──
 
 async function syncManualSlots() {
   try { await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'saveManualSlots', slots: manualSlots }) }); } catch (err) {}
@@ -347,9 +336,20 @@ function changeWeeks(delta) {
   renderStudentView();
 }
 
+// 🟢 點擊日曆時，除了標示選取外，平滑捲動至該日期區塊
 function selectDate(dateStr) {
   selectedDateStr = dateStr;
   renderStudentView();
+  
+  // 延遲一點點確保 DOM 已經渲染好，然後觸發滑動
+  setTimeout(() => {
+    const targetElement = document.getElementById('date-' + dateStr);
+    if (targetElement) {
+      // 計算位置 (扣除上方大約 20px 的緩衝空間)
+      const y = targetElement.getBoundingClientRect().top + window.scrollY - 20;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    }
+  }, 50);
 }
 
 function renderStudentView() {
@@ -383,13 +383,12 @@ function renderStudentView() {
 
   const grouped = {};
   validSlots.forEach(s => {
-    if (!grouped[s.date]) grouped[s.date] = [];
+    if (!grouped[s.date]) grouped[s.date] =[];
     grouped[s.date].push(s);
   });
 
   const availableDates = Object.keys(grouped).sort();
   
-  // Auto-select earliest date & sync calendar view
   if (!initializedSelection && availableDates.length > 0) {
       selectedDateStr = availableDates[0];
       const autoDate = new Date(selectedDateStr + 'T00:00:00');
@@ -397,20 +396,22 @@ function renderStudentView() {
       initializedSelection = true;
   }
 
-  // --- Render Slots View (TOP) ---
-  if (!selectedDateStr || !grouped[selectedDateStr]) {
-      view.innerHTML = `<p class="empty-state-small">Please select an available date from the calendar below.<br>請從下方日曆選擇可預約日期。</p>`;
-  } else {
-      let html = `<div class="date-group"><div class="date-label">${fmtDate(selectedDateStr)}</div><div class="slots-row">`;
-      grouped[selectedDateStr].forEach(s => { 
-          html += `<button class="slot-btn" onclick="openBooking('${s.id}')">
-                     <img src="https://ik.imagekit.io/lql1uveoc/clock-4.png" alt="clock" class="clock-icon">
-                     ${fmtTime(s.time)}
-                   </button>`; 
-      });
-      html += `</div></div>`;
-      view.innerHTML = html;
-  }
+  // 🟢 --- Render Slots View (TOP): 一次列出「所有」有空檔的日期與時段 ---
+  let html = '';
+  availableDates.forEach(dateStr => {
+    // 加上 id，讓點擊日曆時可以跳轉過來
+    html += `<div class="date-group" id="date-${dateStr}">
+               <div class="date-label">${fmtDate(dateStr)}</div>
+               <div class="slots-row">`;
+    grouped[dateStr].forEach(s => { 
+        html += `<button class="slot-btn" onclick="openBooking('${s.id}')">
+                   <img src="https://ik.imagekit.io/lql1uveoc/clock-4.png" alt="clock" class="clock-icon">
+                   ${fmtTime(s.time)}
+                 </button>`; 
+    });
+    html += `</div></div>`;
+  });
+  view.innerHTML = html;
 
   // --- Render 2-Week Calendar Grid (BOTTOM) ---
   const startDate = new Date(currentStartOfWeek);
