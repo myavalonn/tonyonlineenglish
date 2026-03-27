@@ -4,9 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tony Online English — Book a Lesson</title>
-<style>
-  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap');
 
+<!-- ⚡ SPEED UPGRADE: Preconnecting fonts loads the page instantly instead of waiting -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
@@ -283,13 +287,13 @@ function uid() { return Date.now().toString(36) + Math.random().toString(36).sli
 // ── 1. 初始化：抓取背景行事曆資料 ──
 async function init() {
   const view = document.getElementById('slots-view');
-  // 給予使用者明確的載入提示
-  view.innerHTML = `<div class="empty-state"><span class="empty-line"></span><p>Syncing with Google Calendar...<br><span style="font-size:12px; color:#aaa;">(Prevents double-booking)</span></p></div>`;
+  // 給予使用者明確的載入提示 (超快版載入狀態)
+  view.innerHTML = `<div class="empty-state"><span class="empty-line"></span><p>Syncing with Google Calendar...<br><span style="font-size:12px; color:#aaa;">(Fast Sync ⚡ 21 Days)</span></p></div>`;
 
   const todayStr = new Date().toISOString().split('T')[0];
   try {
-    // 將 days 降到 45 天，大幅加快 GAS 的運算與回傳速度
-    const res = await fetch(`${API_URL}?action=getBatchSlots&startDate=${todayStr}&days=45`);
+    // ⚡ SPEED UPGRADE: days=21 cuts server processing time drastically
+    const res = await fetch(`${API_URL}?action=getBatchSlots&startDate=${todayStr}&days=21`);
     if (!res.ok) throw new Error("Network response was not ok");
     
     gasData = await res.json();
@@ -321,8 +325,11 @@ function renderStudentView() {
     const d = new Date(ms.date + 'T00:00:00');
     if (d < today) return false; // 過去的不要顯示
     
+    // 如果是 21 天以外的手動時段，就強制隱藏 (因為我們無法確定它是否有空)
     const dayData = gasData[ms.date];
-    const isFreeInGas = dayData && dayData.slots && dayData.slots.some(gs => gs.time === ms.time);
+    if (!dayData) return false; 
+    
+    const isFreeInGas = dayData.slots && dayData.slots.some(gs => gs.time === ms.time);
     
     if (!isFreeInGas) return false; // 在 Google 行事曆上沒有空檔 -> 強制隱藏不顯示
     
@@ -408,7 +415,9 @@ function updateAdminTimeDropdown() {
 
     // 條件二：【絕對嚴格規則】去 GAS 檢查，如果 GAS 沒有宣告這個時間是空檔，一律不顯示！
     const dayData = gasData[dateVal];
-    const isFreeInGas = dayData && dayData.slots && dayData.slots.some(gs => gs.time === time);
+    if (!dayData) return; // 若超出 21 天範圍，直接不給選，防呆
+    
+    const isFreeInGas = dayData.slots && dayData.slots.some(gs => gs.time === time);
     
     // 如果被預約了、或是當天根本沒開，隱藏它！不再有任何例外！
     if (!isFreeInGas) return; 
