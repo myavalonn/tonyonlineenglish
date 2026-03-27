@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Tony Online English — Book a Lesson</title>
 
-<!-- ⚡ SPEED UPGRADE: Preconnecting fonts loads the page instantly instead of waiting -->
+<!-- ⚡ SPEED UPGRADE: Preconnecting fonts loads the page instantly -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
@@ -14,184 +14,71 @@
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
   :root {
-    --black: #0a0a0a;
-    --white: #fafafa;
-    --gray-100: #f0f0f0;
-    --gray-200: #e0e0e0;
-    --gray-400: #999;
-    --gray-600: #555;
-    --accent: #0a0a0a;
-    --border: 1px solid #e0e0e0;
-    --radius: 4px;
-    --font-mono: 'DM Mono', monospace;
-    --font-sans: 'DM Sans', sans-serif;
+    --black: #0a0a0a; --white: #fafafa; --gray-100: #f0f0f0;
+    --gray-200: #e0e0e0; --gray-400: #999; --gray-600: #555;
+    --border: 1px solid #e0e0e0; --radius: 4px;
+    --font-mono: 'DM Mono', monospace; --font-sans: 'DM Sans', sans-serif;
   }
 
-  body {
-    font-family: var(--font-sans);
-    background: var(--white);
-    color: var(--black);
-    min-height: 100vh;
-    -webkit-font-smoothing: antialiased;
-  }
-
+  body { font-family: var(--font-sans); background: var(--white); color: var(--black); min-height: 100vh; -webkit-font-smoothing: antialiased; }
+  
   /* ── 隱藏的管理員觸發區 (左上角) ── */
-  #secret-zone {
-    position: fixed;
-    top: 0; left: 0;
-    width: 70px; height: 70px;
-    z-index: 9999;
-    cursor: default;
-  }
-
-  header {
-    border-bottom: var(--border);
-    padding: 28px 40px;
-    display: flex;
-    align-items: baseline;
-    gap: 16px;
-  }
-  .brand {
-    font-family: var(--font-mono);
-    font-size: 13px;
-    font-weight: 500;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-  }
+  #secret-zone { position: fixed; top: 0; left: 0; width: 70px; height: 70px; z-index: 9999; cursor: default; }
+  
+  header { border-bottom: var(--border); padding: 28px 40px; display: flex; align-items: baseline; gap: 16px; }
+  .brand { font-family: var(--font-mono); font-size: 13px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; }
   .brand-sub { font-size: 13px; color: var(--gray-400); font-weight: 300; }
+  main { max-width: 680px; margin: 0 auto; padding: 48px 24px 80px; }
+  .page-title { font-size: 28px; font-weight: 300; letter-spacing: -0.02em; margin-bottom: 8px; }
+  .page-sub { font-size: 14px; color: var(--gray-400); margin-bottom: 48px; font-weight: 300; }
 
-  main {
-    max-width: 680px;
-    margin: 0 auto;
-    padding: 48px 24px 80px;
-  }
-  .page-title {
-    font-size: 28px;
-    font-weight: 300;
-    letter-spacing: -0.02em;
-    margin-bottom: 8px;
-  }
-  .page-sub {
-    font-size: 14px; color: var(--gray-400); margin-bottom: 48px; font-weight: 300;
-  }
-
-  /* ── DATE GROUPS ── */
   .date-group { margin-bottom: 32px; }
-  .date-label {
-    font-family: var(--font-mono);
-    font-size: 11px; font-weight: 500; letter-spacing: 0.12em;
-    text-transform: uppercase; color: var(--gray-400);
-    margin-bottom: 10px; padding-bottom: 10px; border-bottom: var(--border);
-  }
+  .date-label { font-family: var(--font-mono); font-size: 11px; font-weight: 500; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gray-400); margin-bottom: 10px; padding-bottom: 10px; border-bottom: var(--border); }
   .slots-row { display: flex; flex-wrap: wrap; gap: 8px; padding-top: 10px; }
-  .slot-btn {
-    font-family: var(--font-mono);
-    font-size: 13px; font-weight: 400; padding: 10px 20px;
-    border: 1px solid var(--black); background: transparent; color: var(--black);
-    border-radius: var(--radius); cursor: pointer;
-    transition: background 0.15s, color 0.15s; letter-spacing: 0.02em;
-  }
+  .slot-btn { font-family: var(--font-mono); font-size: 13px; padding: 10px 20px; border: 1px solid var(--black); background: transparent; color: var(--black); border-radius: var(--radius); cursor: pointer; transition: 0.15s; }
   .slot-btn:hover { background: var(--black); color: var(--white); }
 
-  /* ── MODAL OVERLAY ── */
-  .overlay {
-    display: none; position: fixed; inset: 0; background: rgba(10,10,10,0.5);
-    z-index: 1000; align-items: center; justify-content: center; padding: 20px;
-  }
+  .overlay { display: none; position: fixed; inset: 0; background: rgba(10,10,10,0.5); z-index: 1000; align-items: center; justify-content: center; padding: 20px; }
   .overlay.open { display: flex; }
-  .modal {
-    background: var(--white); border: var(--border); border-radius: 8px;
-    width: 100%; max-width: 420px; padding: 36px 32px; position: relative;
-  }
-  .modal-close {
-    position: absolute; top: 16px; right: 20px; background: none; border: none;
-    font-size: 20px; cursor: pointer; color: var(--gray-400); font-family: var(--font-mono);
-  }
+  .modal { background: var(--white); border: var(--border); border-radius: 8px; width: 100%; max-width: 420px; padding: 36px 32px; position: relative; }
+  .modal-close { position: absolute; top: 16px; right: 20px; background: none; border: none; font-size: 20px; cursor: pointer; color: var(--gray-400); }
   .modal-close:hover { color: var(--black); }
-  .modal-title { font-size: 18px; font-weight: 400; margin-bottom: 6px; letter-spacing: -0.01em; }
+  .modal-title { font-size: 18px; margin-bottom: 6px; }
   .modal-slot-info { font-family: var(--font-mono); font-size: 12px; color: var(--gray-400); margin-bottom: 28px; }
 
   .form-field { margin-bottom: 20px; }
-  .form-field label {
-    display: block; font-size: 11px; font-weight: 500; letter-spacing: 0.1em;
-    text-transform: uppercase; color: var(--gray-600); margin-bottom: 6px; font-family: var(--font-mono);
-  }
-  .form-field input {
-    width: 100%; padding: 12px 14px; border: var(--border); border-radius: var(--radius);
-    font-family: var(--font-sans); font-size: 15px; font-weight: 300; background: var(--white);
-    color: var(--black); outline: none; transition: border-color 0.15s;
-  }
-  .form-field input:focus { border-color: var(--black); }
-
-  .btn-primary {
-    width: 100%; padding: 14px; background: var(--black); color: var(--white);
-    border: none; border-radius: var(--radius); font-family: var(--font-mono);
-    font-size: 13px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
-    cursor: pointer; transition: opacity 0.15s; margin-top: 8px;
-  }
+  .form-field label { display: block; font-size: 11px; text-transform: uppercase; color: var(--gray-600); margin-bottom: 6px; font-family: var(--font-mono); }
+  .form-field input { width: 100%; padding: 12px 14px; border: var(--border); border-radius: var(--radius); font-size: 15px; background: var(--white); outline: none; }
+  .btn-primary { width: 100%; padding: 14px; background: var(--black); color: var(--white); border: none; border-radius: var(--radius); font-family: var(--font-mono); font-size: 13px; text-transform: uppercase; cursor: pointer; margin-top: 8px; }
   .btn-primary:hover { opacity: 0.8; }
   .btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
 
-  /* ── SUCCESS STATE ── */
   .success-view { text-align: center; padding: 16px 0; }
-  .success-check {
-    width: 48px; height: 48px; border: 2px solid var(--black); border-radius: 50%;
-    display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 20px;
-  }
-  .success-title { font-size: 18px; font-weight: 400; margin-bottom: 8px; }
-  .success-detail { font-size: 13px; color: var(--gray-400); font-weight: 300; line-height: 1.7; white-space: pre-wrap; }
+  .success-check { width: 48px; height: 48px; border: 2px solid var(--black); border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 20px; }
+  .success-detail { font-size: 13px; color: var(--gray-400); line-height: 1.7; white-space: pre-wrap; }
 
-  /* ── ADMIN PANEL ── */
-  #admin-panel {
-    display: none; position: fixed; top: 0; right: 0; width: min(420px, 100vw);
-    height: 100vh; background: var(--black); color: var(--white); z-index: 5000;
-    padding: 32px 28px; overflow-y: auto; border-left: 1px solid #222;
-  }
+  #admin-panel { display: none; position: fixed; top: 0; right: 0; width: min(420px, 100vw); height: 100vh; background: var(--black); color: var(--white); z-index: 5000; padding: 32px 28px; overflow-y: auto; }
   #admin-panel.open { display: block; }
-  .admin-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; }
-  .admin-title { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: #888; }
-  .admin-close { background: none; border: none; color: #888; font-size: 18px; cursor: pointer; font-family: var(--font-mono); }
-  .admin-close:hover { color: var(--white); }
-
+  .admin-header { display: flex; justify-content: space-between; margin-bottom: 32px; }
+  .admin-title { font-family: var(--font-mono); font-size: 11px; text-transform: uppercase; color: #888; }
+  .admin-close { background: none; border: none; color: #888; font-size: 18px; cursor: pointer; }
   .admin-form { border: 1px solid #222; border-radius: 6px; padding: 20px; margin-bottom: 32px; }
   .admin-field { margin-bottom: 14px; }
-  .admin-field label { display: block; font-family: var(--font-mono); font-size: 10px; text-transform: uppercase; color: #666; margin-bottom: 6px; }
-  .admin-field input, .admin-field select {
-    width: 100%; padding: 10px 12px; background: #111; border: 1px solid #333;
-    border-radius: 4px; color: var(--white); font-family: var(--font-mono); font-size: 13px; outline: none;
-  }
-  .admin-field input:focus, .admin-field select:focus { border-color: #666; }
-  
-  .btn-admin-add {
-    width: 100%; padding: 11px; background: var(--white); color: var(--black);
-    border: none; border-radius: 4px; font-family: var(--font-mono); font-size: 11px;
-    font-weight: 500; text-transform: uppercase; cursor: pointer; margin-top: 4px;
-  }
+  .admin-field label { display: block; font-family: var(--font-mono); font-size: 10px; color: #666; margin-bottom: 6px; }
+  .admin-field input, .admin-field select { width: 100%; padding: 10px 12px; background: #111; border: 1px solid #333; border-radius: 4px; color: var(--white); outline: none; }
+  .btn-admin-add { width: 100%; padding: 11px; background: var(--white); color: var(--black); border: none; border-radius: 4px; font-family: var(--font-mono); font-size: 11px; cursor: pointer; margin-top: 4px; }
   .btn-admin-add:disabled { opacity: 0.5; cursor: not-allowed; }
-
   .admin-slot-list { display: flex; flex-direction: column; gap: 8px; }
-  .admin-slot-item {
-    display: flex; align-items: center; justify-content: space-between;
-    padding: 12px 14px; border: 1px solid #222; border-radius: 4px; background: #0f0f0f;
-  }
+  .admin-slot-item { display: flex; justify-content: space-between; padding: 12px 14px; border: 1px solid #222; border-radius: 4px; background: #0f0f0f; }
   .admin-slot-info { font-family: var(--font-mono); font-size: 12px; color: #aaa; }
   .admin-slot-date { color: #fff; font-size: 13px; margin-bottom: 2px; }
-  
-  .btn-delete {
-    background: none; border: 1px solid #333; color: #666; padding: 6px 10px;
-    border-radius: 3px; font-family: var(--font-mono); font-size: 11px; cursor: pointer; margin-left: 12px;
-  }
-  .btn-delete:hover { border-color: #a55; color: #a55; }
-
-  /* ── EMPTY STATE ── */
+  .btn-delete { background: none; border: 1px solid #333; color: #666; padding: 6px 10px; border-radius: 3px; cursor: pointer; margin-left: 12px; }
   .empty-state { text-align: center; padding: 64px 0; color: var(--gray-400); }
   .empty-line { display: block; width: 40px; height: 1px; background: var(--gray-200); margin: 0 auto 20px; }
-  .empty-state p { font-size: 14px; font-weight: 300; line-height: 1.6;}
 </style>
 </head>
 <body>
 
-<!-- 左上角隱藏觸發區 -->
 <div id="secret-zone"></div>
 
 <header>
@@ -202,9 +89,7 @@
 <main>
   <h1 class="page-title">Available slots</h1>
   <p class="page-sub">Select a time — 60 min per session</p>
-  <div id="slots-view">
-    <!-- Initial empty state will be updated by JS immediately -->
-  </div>
+  <div id="slots-view"></div>
 </main>
 
 <!-- BOOKING MODAL -->
@@ -239,9 +124,8 @@
     <span class="admin-title">Admin — Slot Manager</span>
     <button class="admin-close" onclick="closeAdmin()">×</button>
   </div>
-
   <div class="admin-form">
-    <p class="admin-section-title">Add new slot (週一至週日 9AM - 10PM)</p>
+    <p class="admin-section-title" style="margin-bottom:12px; font-size:12px">Add new slot (週一至週日 9AM - 10PM)</p>
     <div class="admin-field">
       <label>Date</label>
       <input type="date" id="admin-date" onchange="updateAdminTimeDropdown()" />
@@ -254,89 +138,140 @@
     </div>
     <button class="btn-admin-add" id="admin-add-btn" onclick="adminAddSlot()" disabled>+ Add Slot</button>
   </div>
-
-  <p class="admin-section-title">All manually added slots</p>
+  <p class="admin-section-title" style="margin-bottom:12px; font-size:12px">All manually added slots</p>
   <div class="admin-slot-list" id="admin-slot-list"></div>
 </div>
 
 <script>
-// ══════════════════════════════════════════════════════
-//  核心設定：使用新的專屬後台 URL
-// ══════════════════════════════════════════════════════
+// 你的 Apps Script 網址
 const API_URL = "https://script.google.com/macros/s/AKfycbyFaTXNNblUQfsrqAwi-dcRb-ob9w2R7pLehyn8OpLB-hoorh2HFlXFFg26LZhHFNRZ/exec";
 
-let gasData = null; // null represents "currently loading"
+let gasData = {}; 
 let manualSlots = JSON.parse(localStorage.getItem('tony_manual_slots') || '[]');
+let loadedDates = new Set();
+let isGasLoading = true;
 
-// 定義所有的時間選單 (9:00 AM ~ 10:00 PM)
 const ALL_TIMES =['09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00'];
 
-// ── 格式化小工具 ──
 function fmtDate(dateStr) {
   const d = new Date(dateStr + 'T00:00:00');
   return d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
 }
 function fmtTime(timeStr) {
-  const [h, m] = timeStr.split(':').map(Number);
+  const[h, m] = timeStr.split(':').map(Number);
   const suffix = h >= 12 ? 'PM' : 'AM';
-  const h12 = ((h - 1 + 12) % 12) + 1;
-  return `${h12}:${m.toString().padStart(2,'0')} ${suffix}`;
+  return `${((h - 1 + 12) % 12) + 1}:${m.toString().padStart(2,'0')} ${suffix}`;
 }
 function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
-
-// ── 1. 初始化：抓取背景行事曆資料 ──
-async function init() {
-  const view = document.getElementById('slots-view');
-  // 給予使用者明確的載入提示 (超快版載入狀態)
-  view.innerHTML = `<div class="empty-state"><span class="empty-line"></span><p>Syncing with Google Calendar...<br><span style="font-size:12px; color:#aaa;">(Fast Sync ⚡ 21 Days)</span></p></div>`;
-
-  const todayStr = new Date().toISOString().split('T')[0];
-  try {
-    // ⚡ SPEED UPGRADE: days=21 cuts server processing time drastically
-    const res = await fetch(`${API_URL}?action=getBatchSlots&startDate=${todayStr}&days=21`);
-    if (!res.ok) throw new Error("Network response was not ok");
-    
-    gasData = await res.json();
-  } catch (err) {
-    console.error("無法取得日曆資料 (請確認 GAS 是否已授予權限)", err);
-    gasData = { _error: true }; // 標記錯誤狀態
-  }
-  renderStudentView();
+function toDateString(d) {
+  return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 }
 
-// ── 2. 學生端視角 ──
+// ── ⚡ 伺服器同步邏輯 (解決手機/電腦不同步的問題) ──
+async function fetchManualSlots() {
+  try {
+    const res = await fetch(`${API_URL}?action=getManualSlots`);
+    if (res.ok) {
+      const data = await res.json();
+      if (data.isInit) {
+        // 從伺服器拉取最新時段
+        manualSlots = data.slots;
+        localStorage.setItem('tony_manual_slots', JSON.stringify(manualSlots));
+      } else if (manualSlots.length > 0) {
+        syncManualSlots();
+      }
+    }
+  } catch (err) {
+    console.warn("Using local slots due to fetch error:", err);
+  }
+}
+
+async function syncManualSlots() {
+  try {
+    await fetch(API_URL, {
+      method: 'POST',
+      body: JSON.stringify({ action: 'saveManualSlots', slots: manualSlots })
+    });
+  } catch (err) {
+    console.error("Failed to sync to backend", err);
+  }
+}
+
+// ── ⚡ 背景分批載入邏輯 (先載入1-5天，背景載入剩下的) ──
+async function init() {
+  const view = document.getElementById('slots-view');
+  view.innerHTML = `<div class="empty-state"><span class="empty-line"></span><p>Syncing slots...<br><span style="font-size:12px; color:#aaa;">(Fast Sync ⚡ Days 1-5)</span></p></div>`;
+
+  await fetchManualSlots();
+  
+  const today = new Date();
+  
+  // 這裡就是你要求的切割： 1-5天, 6-12天, 13-18天, 18-21天 (一天一天處理)
+  const ranges =[
+    { startOffset: 0, days: 5 },   // Days 1-5
+    { startOffset: 5, days: 7 },   // Days 6-12
+    { startOffset: 12, days: 6 },  // Days 13-18
+    { startOffset: 18, days: 3 }   // Days 19-21
+  ];
+
+  for (let i = 0; i < ranges.length; i++) {
+    const chunkDate = new Date(today);
+    chunkDate.setDate(today.getDate() + ranges[i].startOffset);
+    const startDateStr = toDateString(chunkDate);
+
+    try {
+      const res = await fetch(`${API_URL}?action=getBatchSlots&startDate=${startDateStr}&days=${ranges[i].days}`);
+      if (!res.ok) throw new Error("Network error");
+      
+      const chunkData = await res.json();
+      Object.assign(gasData, chunkData);
+      
+      for (let d = 0; d < ranges[i].days; d++) {
+        const temp = new Date(today);
+        temp.setDate(today.getDate() + ranges[i].startOffset + d);
+        loadedDates.add(toDateString(temp));
+      }
+
+      // 每載入一個區塊，就更新一次畫面，讓使用者立刻看到
+      renderStudentView();
+      if (document.getElementById('admin-panel').classList.contains('open')) {
+        updateAdminTimeDropdown();
+      }
+    } catch (err) {
+      if (i === 0) gasData._error = true;
+      renderStudentView();
+      break; 
+    }
+  }
+  isGasLoading = false;
+  renderStudentView(); 
+}
+
 function renderStudentView() {
   const view = document.getElementById('slots-view');
-  
-  // 檢查連線是否因為權限或網路錯誤失敗
-  if (gasData && gasData._error) {
-     view.innerHTML = `<div class="empty-state"><span class="empty-line"></span><p style="color:#d93025; font-weight:500;">連線至 Google 日曆失敗。</p><p style="font-size:13px; margin-top:8px;">請確定您已在 Apps Script 點擊「執行」以授權日曆存取權。</p></div>`;
+  if (gasData._error) {
+     view.innerHTML = `<div class="empty-state"><span class="empty-line"></span><p style="color:#d93025; font-weight:500;">連線至 Google 日曆失敗。</p></div>`;
      return;
   }
 
-  // 若尚未載入完畢，直接返回等待
-  if (!gasData) return; 
+  const todayStr = toDateString(new Date());
 
-  const today = new Date(); today.setHours(0,0,0,0);
-
-  // 【絕對嚴格的雙重檢查】
-  // 學生只能看到手動加入的時段，且「Google 日曆必須認可該時段為空檔」
   const validSlots = manualSlots.filter(ms => {
-    const d = new Date(ms.date + 'T00:00:00');
-    if (d < today) return false; // 過去的不要顯示
+    if (ms.date < todayStr) return false;
+    if (!loadedDates.has(ms.date)) return false; 
     
-    // 如果是 21 天以外的手動時段，就強制隱藏 (因為我們無法確定它是否有空)
     const dayData = gasData[ms.date];
     if (!dayData) return false; 
-    
     const isFreeInGas = dayData.slots && dayData.slots.some(gs => gs.time === ms.time);
     
-    if (!isFreeInGas) return false; // 在 Google 行事曆上沒有空檔 -> 強制隱藏不顯示
-    
-    return true; 
+    return isFreeInGas;
   }).sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
 
   if (validSlots.length === 0) {
+    if (isGasLoading) {
+       view.innerHTML = `<div class="empty-state"><span class="empty-line"></span><p>Checking available slots...<br><span style="font-size:12px; color:#aaa;">Loading background dates...</span></p></div>`;
+       return;
+    }
     view.innerHTML = `<div class="empty-state"><span class="empty-line"></span><p>No upcoming slots available.<br>目前沒有可預約的時段，請稍後再來查看。</p></div>`;
     return;
   }
@@ -350,17 +285,13 @@ function renderStudentView() {
   let html = '';
   Object.keys(grouped).sort().forEach(date => {
     html += `<div class="date-group"><div class="date-label">${fmtDate(date)}</div><div class="slots-row">`;
-    grouped[date].forEach(s => {
-      html += `<button class="slot-btn" onclick="openBooking('${s.id}')">${fmtTime(s.time)}</button>`;
-    });
+    grouped[date].forEach(s => { html += `<button class="slot-btn" onclick="openBooking('${s.id}')">${fmtTime(s.time)}</button>`; });
     html += `</div></div>`;
   });
   view.innerHTML = html;
 }
 
-// ══════════════════════════════════════════════════════
-//  ADMIN PANEL 後台邏輯 (絕對防呆)
-// ══════════════════════════════════════════════════════
+// ── ADMIN EVENT HANDLERS ──
 document.getElementById('secret-zone').addEventListener('dblclick', openAdmin);
 let secretClickCount = 0, secretTimer = null;
 document.getElementById('secret-zone').addEventListener('click', () => {
@@ -370,73 +301,43 @@ document.getElementById('secret-zone').addEventListener('click', () => {
 });
 
 function openAdmin() {
-  const today = new Date().toISOString().split('T')[0];
-  document.getElementById('admin-date').value = today;
+  document.getElementById('admin-date').value = toDateString(new Date());
   updateAdminTimeDropdown(); 
   renderAdminList();
   document.getElementById('admin-panel').classList.add('open');
 }
 
-function closeAdmin() {
-  document.getElementById('admin-panel').classList.remove('open');
-}
+function closeAdmin() { document.getElementById('admin-panel').classList.remove('open'); }
 
 function updateAdminTimeDropdown() {
   const dateVal = document.getElementById('admin-date').value;
   const timeSelect = document.getElementById('admin-time');
   const addBtn = document.getElementById('admin-add-btn');
-  
-  timeSelect.innerHTML = '';
-  addBtn.disabled = true;
+  timeSelect.innerHTML = ''; addBtn.disabled = true;
 
-  if (!dateVal) {
-    timeSelect.innerHTML = '<option value="">請先選擇日期...</option>';
-    return;
-  }
+  if (!dateVal) { timeSelect.innerHTML = '<option value="">請先選擇日期...</option>'; return; }
+  if (gasData._error) { timeSelect.innerHTML = '<option value="">連線失敗</option>'; return; }
 
-  // 防護機制：如果日曆還在載入中，鎖住選單
-  if (!gasData) {
-    timeSelect.innerHTML = '<option value="">Google 日曆同步中，請稍候...</option>';
-    timeSelect.disabled = true;
-    return;
-  }
-  if (gasData._error) {
-    timeSelect.innerHTML = '<option value="">日曆連線失敗，無法載入時段</option>';
-    timeSelect.disabled = true;
+  if (!loadedDates.has(dateVal)) {
+    if (!isGasLoading) timeSelect.innerHTML = '<option value="">此日期超出 21 天可排程範圍</option>';
+    else timeSelect.innerHTML = '<option value="">Google 日曆同步中，請稍候...</option>';
     return;
   }
 
   let hasOption = false;
-
   ALL_TIMES.forEach(time => {
-    // 條件一：如果已經加在您的清單裡了，就不顯示
-    const isAlreadyAdded = manualSlots.some(m => m.date === dateVal && m.time === time);
-    if (isAlreadyAdded) return; 
-
-    // 條件二：【絕對嚴格規則】去 GAS 檢查，如果 GAS 沒有宣告這個時間是空檔，一律不顯示！
+    if (manualSlots.some(m => m.date === dateVal && m.time === time)) return; 
     const dayData = gasData[dateVal];
-    if (!dayData) return; // 若超出 21 天範圍，直接不給選，防呆
-    
-    const isFreeInGas = dayData.slots && dayData.slots.some(gs => gs.time === time);
-    
-    // 如果被預約了、或是當天根本沒開，隱藏它！不再有任何例外！
-    if (!isFreeInGas) return; 
+    if (!dayData || !dayData.slots || !dayData.slots.some(gs => gs.time === time)) return; 
 
-    // 通過檢查，把它加入選單
     const opt = document.createElement('option');
-    opt.value = time;
-    opt.textContent = fmtTime(time);
+    opt.value = time; opt.textContent = fmtTime(time);
     timeSelect.appendChild(opt);
     hasOption = true;
   });
 
-  if (hasOption) {
-    timeSelect.disabled = false;
-    addBtn.disabled = false;
-  } else {
-    timeSelect.innerHTML = '<option value="">此日已被預約滿或無可用時段</option>';
-    timeSelect.disabled = true;
-  }
+  if (hasOption) { timeSelect.disabled = false; addBtn.disabled = false; } 
+  else { timeSelect.innerHTML = '<option value="">已被預約或無可用空檔</option>'; timeSelect.disabled = true; }
 }
 
 function adminAddSlot() {
@@ -444,128 +345,83 @@ function adminAddSlot() {
   const timeVal = document.getElementById('admin-time').value;
   if (!dateVal || !timeVal) return;
 
-  const tsVal = new Date(`${dateVal}T${timeVal}:00`).getTime();
-  manualSlots.push({ id: uid(), date: dateVal, time: timeVal, timestamp: tsVal });
-  localStorage.setItem('tony_manual_slots', JSON.stringify(manualSlots));
+  manualSlots.push({ id: uid(), date: dateVal, time: timeVal, timestamp: new Date(`${dateVal}T${timeVal}:00`).getTime() });
   
-  updateAdminTimeDropdown();
-  renderAdminList();
-  renderStudentView();
+  localStorage.setItem('tony_manual_slots', JSON.stringify(manualSlots));
+  syncManualSlots(); // 告訴伺服器儲存變更
+  
+  updateAdminTimeDropdown(); renderAdminList(); renderStudentView();
 }
 
 function adminDeleteSlot(slotId) {
-  if (!confirm(`確定要刪除這個時段嗎？`)) return;
+  if (!confirm(`確定要刪除嗎？`)) return;
   manualSlots = manualSlots.filter(x => x.id !== slotId);
-  localStorage.setItem('tony_manual_slots', JSON.stringify(manualSlots));
   
-  updateAdminTimeDropdown();
-  renderAdminList();
-  renderStudentView();
+  localStorage.setItem('tony_manual_slots', JSON.stringify(manualSlots));
+  syncManualSlots(); // 告訴伺服器儲存變更
+  
+  updateAdminTimeDropdown(); renderAdminList(); renderStudentView();
 }
 
 function renderAdminList() {
   const list = document.getElementById('admin-slot-list');
   const sorted = [...manualSlots].sort((a,b) => (a.date+a.time).localeCompare(b.date+b.time));
-  
-  if (sorted.length === 0) {
-    list.innerHTML = `<p style="font-family:var(--font-mono);font-size:11px;color:#444;padding:12px 0">尚未新增任何時段</p>`;
-    return;
-  }
+  if (sorted.length === 0) { list.innerHTML = `<p style="font-family:var(--font-mono);font-size:11px;color:#444;padding:12px 0">尚未新增任何時段</p>`; return; }
   
   list.innerHTML = sorted.map(s => `
     <div class="admin-slot-item">
-      <div class="admin-slot-info">
-        <div class="admin-slot-date">${fmtDate(s.date)} · ${fmtTime(s.time)}</div>
-      </div>
+      <div class="admin-slot-info"><div class="admin-slot-date">${fmtDate(s.date)} · ${fmtTime(s.time)}</div></div>
       <button class="btn-delete" onclick="adminDeleteSlot('${s.id}')">Delete</button>
     </div>
   `).join('');
 }
 
-// ══════════════════════════════════════════════════════
-//  BOOKING FLOW (學生預約邏輯)
-// ══════════════════════════════════════════════════════
+// ── BOOKING SYSTEM ──
 let pendingSlotId = null;
 
 function openBooking(slotId) {
   pendingSlotId = slotId;
   const s = manualSlots.find(x => x.id === slotId);
   if (!s) return;
-  
-  document.getElementById('selected-slot-label').textContent = `${fmtDate(s.date)}  ·  ${fmtTime(s.time)}  ·  60 min`;
-  document.getElementById('inp-name').value = '';
-  document.getElementById('inp-email').value = '';
-  document.getElementById('booking-form-view').style.display = '';
-  document.getElementById('booking-success-view').style.display = 'none';
-  
-  const btn = document.getElementById('confirm-btn');
-  btn.disabled = false;
-  btn.textContent = 'Confirm →';
-  
+  document.getElementById('selected-slot-label').textContent = `${fmtDate(s.date)} · ${fmtTime(s.time)} · 60 min`;
+  document.getElementById('inp-name').value = ''; document.getElementById('inp-email').value = '';
+  document.getElementById('booking-form-view').style.display = ''; document.getElementById('booking-success-view').style.display = 'none';
+  const btn = document.getElementById('confirm-btn'); btn.disabled = false; btn.textContent = 'Confirm →';
   document.getElementById('booking-overlay').classList.add('open');
 }
 
-function closeBooking() {
-  document.getElementById('booking-overlay').classList.remove('open');
-  pendingSlotId = null;
-}
+function closeBooking() { document.getElementById('booking-overlay').classList.remove('open'); pendingSlotId = null; }
 
 function confirmBooking() {
   const name = document.getElementById('inp-name').value.trim();
   const email = document.getElementById('inp-email').value.trim();
-  if (!name || !email || !email.includes('@')) {
-    alert('Please enter a valid name and email.');
-    return;
-  }
+  if (!name || !email || !email.includes('@')) { alert('Please enter a valid email.'); return; }
 
-  const btn = document.getElementById('confirm-btn');
-  btn.disabled = true;
-  btn.textContent = 'Processing...';
-
+  const btn = document.getElementById('confirm-btn'); btn.disabled = true; btn.textContent = 'Processing...';
   const s = manualSlots.find(x => x.id === pendingSlotId);
   if (!s) return closeBooking();
 
-  const payload = {
-    name: name,
-    email: email,
-    appointments:[{ dateStr: s.date, time: s.time, timestamp: s.timestamp }]
-  };
-
   fetch(API_URL, {
     method: "POST",
-    body: JSON.stringify(payload)
-  })
-  .then(res => res.json())
-  .then(res => {
-      if (!res.success) {
-         alert("預約失敗：" + res.message);
-         btn.disabled = false;
-         btn.textContent = 'Confirm →';
-         return;
-      }
-
-      // 成功後從前端列表刪除
+    body: JSON.stringify({ name: name, email: email, appointments:[{ dateStr: s.date, time: s.time, timestamp: s.timestamp }] })
+  }).then(res => res.json()).then(res => {
+      if (!res.success) { alert("Failed: " + res.message); btn.disabled = false; btn.textContent = 'Confirm →'; return; }
+      
       manualSlots = manualSlots.filter(x => x.id !== pendingSlotId);
       localStorage.setItem('tony_manual_slots', JSON.stringify(manualSlots));
+      syncManualSlots(); // 預約成功後，通知伺服器刪除這個時段，這樣手機跟電腦都會同步消失
       
       renderStudentView();
-      if(document.getElementById('admin-panel').classList.contains('open')) {
-          renderAdminList();
-          updateAdminTimeDropdown();
-      }
-
+      if(document.getElementById('admin-panel').classList.contains('open')) { renderAdminList(); updateAdminTimeDropdown(); }
+      
       document.getElementById('booking-form-view').style.display = 'none';
-      document.getElementById('success-detail').textContent = `${fmtDate(s.date)} at ${fmtTime(s.time)}\n${name} · ${email}\n\n✓ 預約成功！\n確認信已寄出`;
+      document.getElementById('success-detail').textContent = `${fmtDate(s.date)} at ${fmtTime(s.time)}\n${name} · ${email}\n\n✓ Confirmed`;
       document.getElementById('booking-success-view').style.display = '';
-  })
-  .catch(err => {
-      alert("網路連線錯誤，請稍後再試。");
-      btn.disabled = false;
-      btn.textContent = 'Confirm →';
+  }).catch(err => {
+      alert("Network Error"); btn.disabled = false; btn.textContent = 'Confirm →';
   });
 }
 
-// 執行系統初始化
 init();
 </script>
 </body>
