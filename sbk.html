@@ -143,7 +143,6 @@
 </div>
 
 <script>
-// 你的 Apps Script 網址
 const API_URL = "https://script.google.com/macros/s/AKfycbyFaTXNNblUQfsrqAwi-dcRb-ob9w2R7pLehyn8OpLB-hoorh2HFlXFFg26LZhHFNRZ/exec";
 
 let gasData = {}; 
@@ -167,14 +166,13 @@ function toDateString(d) {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 }
 
-// ── ⚡ 伺服器同步邏輯 (解決手機/電腦不同步的問題) ──
+// ── ⚡ 伺服器同步邏輯 ──
 async function fetchManualSlots() {
   try {
     const res = await fetch(`${API_URL}?action=getManualSlots`);
     if (res.ok) {
       const data = await res.json();
       if (data.isInit) {
-        // 從伺服器拉取最新時段
         manualSlots = data.slots;
         localStorage.setItem('tony_manual_slots', JSON.stringify(manualSlots));
       } else if (manualSlots.length > 0) {
@@ -197,16 +195,14 @@ async function syncManualSlots() {
   }
 }
 
-// ── ⚡ 背景分批載入邏輯 (先載入1-5天，背景載入剩下的) ──
+// ── ⚡ 並行高速載入邏輯 (Parallel Loading) ──
 async function init() {
   const view = document.getElementById('slots-view');
-  view.innerHTML = `<div class="empty-state"><span class="empty-line"></span><p>Syncing slots...<br><span style="font-size:12px; color:#aaa;">(Fast Sync ⚡ Days 1-5)</span></p></div>`;
+  view.innerHTML = `<div class="empty-state"><span class="empty-line"></span><p>Syncing slots...<br><span style="font-size:12px; color:#aaa;">(Fast Sync ⚡)</span></p></div>`;
 
-  await fetchManualSlots();
-  
   const today = new Date();
   
-  // 這裡就是你要求的切割： 1-5天, 6-12天, 13-18天, 18-21天 (一天一天處理)
+  // 分批區塊
   const ranges =[
     { startOffset: 0, days: 5 },   // Days 1-5
     { startOffset: 5, days: 7 },   // Days 6-12
@@ -214,14 +210,50 @@ async function init() {
     { startOffset: 18, days: 3 }   // Days 19-21
   ];
 
-  for (let i = 0; i < ranges.length; i++) {
+  const firstChunkDate = new Date(today);
+  const firstDateStr = toDateString(firstChunkDate);
+
+  // 🔥 PARALLEL FETCH: 同時要 Manual Slots 跟 前5天的日曆資料 (最省時間)
+  const manualPromise = fetchManualSlots();
+  const firstBatchPromise = fetch(`${API_URL}?action=getBatchSlots&startDate=${firstDateStr}&days=5`);
+
+  // 等待 Manual Slots 確認回來 (這個通常超快)
+  await manualPromise;
+
+  try {
+    // 等待前 5 天的 Google 日曆空檔資料
+    const res = await firstBatchPromise;
+    if (!res.ok) throw new Error("Network error");
+    
+    const chunkData = await res.json();
+    Object.assign(gasData, chunkData);
+    
+    for (let d = 0; d < 5; d++) {
+      const temp = new Date(today);
+      temp.setDate(today.getDate() + d);
+      loadedDates.add(toDateString(temp));
+    }
+
+    // 🔥 立刻更新畫面！使用者在 1~3 秒內就會看到前五天
+    renderStudentView(); 
+    if (document.getElementById('admin-panel').classList.contains('open')) {
+      updateAdminTimeDropdown();
+    }
+  } catch (err) {
+    gasData._error = true;
+    renderStudentView();
+    return; // 第一包就失敗代表日曆連線有問題，直接終止
+  }
+
+  // 背景載入：剩下的天數，在背景默默抓取
+  for (let i = 1; i < ranges.length; i++) {
     const chunkDate = new Date(today);
     chunkDate.setDate(today.getDate() + ranges[i].startOffset);
     const startDateStr = toDateString(chunkDate);
 
     try {
       const res = await fetch(`${API_URL}?action=getBatchSlots&startDate=${startDateStr}&days=${ranges[i].days}`);
-      if (!res.ok) throw new Error("Network error");
+      if (!res.ok) continue;
       
       const chunkData = await res.json();
       Object.assign(gasData, chunkData);
@@ -232,17 +264,13 @@ async function init() {
         loadedDates.add(toDateString(temp));
       }
 
-      // 每載入一個區塊，就更新一次畫面，讓使用者立刻看到
-      renderStudentView();
-      if (document.getElementById('admin-panel').classList.contains('open')) {
-        updateAdminTimeDropdown();
-      }
+      // 每載入一包就偷偷更新畫面，讓往後幾天的按鈕浮現出來
+      renderStudentView(); 
     } catch (err) {
-      if (i === 0) gasData._error = true;
-      renderStudentView();
       break; 
     }
   }
+  
   isGasLoading = false;
   renderStudentView(); 
 }
@@ -348,7 +376,7 @@ function adminAddSlot() {
   manualSlots.push({ id: uid(), date: dateVal, time: timeVal, timestamp: new Date(`${dateVal}T${timeVal}:00`).getTime() });
   
   localStorage.setItem('tony_manual_slots', JSON.stringify(manualSlots));
-  syncManualSlots(); // 告訴伺服器儲存變更
+  syncManualSlots(); 
   
   updateAdminTimeDropdown(); renderAdminList(); renderStudentView();
 }
@@ -358,7 +386,7 @@ function adminDeleteSlot(slotId) {
   manualSlots = manualSlots.filter(x => x.id !== slotId);
   
   localStorage.setItem('tony_manual_slots', JSON.stringify(manualSlots));
-  syncManualSlots(); // 告訴伺服器儲存變更
+  syncManualSlots(); 
   
   updateAdminTimeDropdown(); renderAdminList(); renderStudentView();
 }
@@ -409,7 +437,7 @@ function confirmBooking() {
       
       manualSlots = manualSlots.filter(x => x.id !== pendingSlotId);
       localStorage.setItem('tony_manual_slots', JSON.stringify(manualSlots));
-      syncManualSlots(); // 預約成功後，通知伺服器刪除這個時段，這樣手機跟電腦都會同步消失
+      syncManualSlots(); 
       
       renderStudentView();
       if(document.getElementById('admin-panel').classList.contains('open')) { renderAdminList(); updateAdminTimeDropdown(); }
