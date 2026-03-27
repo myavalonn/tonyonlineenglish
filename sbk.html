@@ -23,7 +23,11 @@
 
   body { font-family: var(--font-sans); background: var(--white); color: var(--black); min-height: 100vh; -webkit-font-smoothing: antialiased; }
   
-  #secret-zone { position: fixed; top: 0; left: 0; width: 70px; height: 70px; z-index: 9999; cursor: default; }
+  /* 
+    🔴 重大修正：將管理員觸發區塊移至【左下角】，並把層級拉到最高 (999999) 
+    防止被上方黑框導覽列覆蓋 
+  */
+  #secret-zone { position: fixed; bottom: 0; left: 0; width: 80px; height: 80px; z-index: 999999; cursor: default; }
   
   main { max-width: 680px; margin: 0 auto; padding: 80px 24px 120px; }
   
@@ -380,7 +384,6 @@ function renderStudentView() {
   } else {
       let html = `<div class="date-group"><div class="date-label">${fmtDate(selectedDateStr)}</div><div class="slots-row">`;
       grouped[selectedDateStr].forEach(s => { 
-          // 這裡加入了您指定的時鐘 Icon
           html += `<button class="slot-btn" onclick="openBooking('${s.id}')">
                      <img src="https://ik.imagekit.io/lql1uveoc/clock-4.png" alt="clock" class="clock-icon">
                      ${fmtTime(s.time)}
