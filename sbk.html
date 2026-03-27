@@ -25,35 +25,32 @@
   
   #secret-zone { position: fixed; top: 0; left: 0; width: 70px; height: 70px; z-index: 9999; cursor: default; }
   
-  /* 
-    FIX: 
-    1. Padding-top is set to 80px so it fully clears the dark top bar's social buttons.
-    2. Padding-bottom is set to 120px so bottom-corner chat widgets won't block the calendar.
-  */
   main { max-width: 680px; margin: 0 auto; padding: 80px 24px 120px; }
   
-  /* FIX: Isolated header class to prevent layout-manager.js from breaking it */
   .local-page-header {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-bottom: 36px;
-    padding-bottom: 24px;
-    border-bottom: var(--border);
-    text-align: left;
-    align-items: flex-start;
+    display: flex; flex-direction: column; gap: 8px; margin-bottom: 36px;
+    padding-bottom: 24px; border-bottom: var(--border); text-align: left; align-items: flex-start;
   }
   .brand { font-family: var(--font-mono); font-size: 15px; font-weight: 500; letter-spacing: 0.05em; text-transform: uppercase; line-height: 1.4; }
   
   /* Base (Cellphone) Sizes */
   .page-title { font-size: 22px; font-weight: 400; margin-bottom: 8px; line-height: 1.4; text-align: left; }
   .page-sub { font-size: 14px; color: var(--gray-400); margin-bottom: 40px; font-weight: 300; line-height: 1.5; text-align: left; }
-  .slot-btn { font-family: var(--font-mono); font-size: 14px; padding: 12px 20px; border: 1px solid var(--black); background: transparent; color: var(--black); border-radius: var(--radius); cursor: pointer; transition: 0.15s; }
+  
+  /* 日期與時間按鈕大小同步 (Base) */
+  .date-label { font-family: var(--font-mono); font-size: 14px; font-weight: 500; letter-spacing: 0.05em; color: var(--black); margin-bottom: 16px; padding-bottom: 10px; border-bottom: var(--border); }
+  .slot-btn { font-family: var(--font-mono); font-size: 14px; padding: 12px 20px; border: 1px solid var(--black); background: transparent; color: var(--black); border-radius: var(--radius); cursor: pointer; transition: 0.15s; display: inline-flex; align-items: center; gap: 8px; justify-content: center; }
+  .clock-icon { width: 1.1em; height: 1.1em; transition: filter 0.15s; }
+  
+  .slot-btn:hover { background: var(--black); color: var(--white); }
+  /* Hover 時，將時鐘 Icon 反轉為白色 */
+  .slot-btn:hover .clock-icon { filter: brightness(0) invert(1); }
 
   /* Tablet Sizes */
   @media (min-width: 768px) { 
     .page-title { font-size: 26px; }
     .page-sub { font-size: 16px; }
+    .date-label { font-size: 15px; } /* 同步放大 */
     .slot-btn { font-size: 15px; padding: 14px 24px; }
   }
 
@@ -61,6 +58,7 @@
   @media (min-width: 1024px) { 
     .page-title { font-size: 28px; }
     .page-sub { font-size: 17px; }
+    .date-label { font-size: 16px; } /* 同步放大 */
     .slot-btn { font-size: 16px; padding: 16px 28px; }
   }
 
@@ -79,12 +77,11 @@
   .cal-cell.available { color: var(--black); background: var(--gray-100); cursor: pointer; border: 1px solid transparent; transition: 0.15s; font-weight: 500; }
   .cal-cell.available:hover { background: var(--gray-200); border-color: var(--black); }
   .cal-cell.today { font-weight: bold; text-decoration: underline; color: #555; }
- .cal-cell.selected { background: #000000 !important; /* 背景純黑 */ color: #ffffff !important;  /* 文字純白（反差才清楚） */ border-color: #000000 !important; font-weight: bold; transform: scale(1.1);  /* 讓選中的圓圈稍微放大一點，更有視覺重點 */ }
+  .cal-cell.selected { background: var(--black) !important; color: var(--white) !important; border-color: var(--black) !important; font-weight: bold; }
+
   /* Slots styles */
   .date-group { margin-bottom: 30px; }
-  .date-label { font-family: var(--font-mono); font-size: 13px; font-weight: 500; letter-spacing: 0.05em; color: var(--gray-600); margin-bottom: 16px; padding-bottom: 10px; border-bottom: var(--border); }
   .slots-row { display: flex; flex-wrap: wrap; gap: 10px; padding-top: 6px; }
-  .slot-btn:hover { background: var(--black); color: var(--white); }
 
   .overlay { display: none; position: fixed; inset: 0; background: rgba(10,10,10,0.6); z-index: 100000; align-items: center; justify-content: center; padding: 20px; backdrop-filter: blur(2px); }
   .overlay.open { display: flex; }
@@ -133,7 +130,6 @@
 <div id="secret-zone"></div>
 
 <main>
-  <!-- FIX: Replaced <header> with a div inside <main> so the layout manager stops interfering -->
   <div class="local-page-header">
     <span class="brand">Tony Online English Tutoring</span>
     <span class="brand">Tony線上美語家教 / Book a Lesson</span>
@@ -384,7 +380,11 @@ function renderStudentView() {
   } else {
       let html = `<div class="date-group"><div class="date-label">${fmtDate(selectedDateStr)}</div><div class="slots-row">`;
       grouped[selectedDateStr].forEach(s => { 
-          html += `<button class="slot-btn" onclick="openBooking('${s.id}')">${fmtTime(s.time)}</button>`; 
+          // 這裡加入了您指定的時鐘 Icon
+          html += `<button class="slot-btn" onclick="openBooking('${s.id}')">
+                     <img src="https://ik.imagekit.io/lql1uveoc/clock-4.png" alt="clock" class="clock-icon">
+                     ${fmtTime(s.time)}
+                   </button>`; 
       });
       html += `</div></div>`;
       view.innerHTML = html;
