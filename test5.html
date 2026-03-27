@@ -86,7 +86,7 @@
             padding: 0; 
             font-family: "Microsoft JhengHei", sans-serif; 
             color: white; 
-            overflow: hidden; /* 動畫期間鎖定滾動 */
+            overflow: hidden; 
             min-height: 100vh; 
         }
 
@@ -109,7 +109,6 @@
             transition: opacity 0.3s ease;
         }
 
-        /* 當 loader 結束時觸發的主網頁動畫 */
         .hero.start-animations {
             opacity: 1;
             visibility: visible;
@@ -260,7 +259,7 @@
             z-index: 9999; 
             background-color: #ffffff; 
             display: flex; align-items: center; justify-content: center;
-            overflow: hidden; /* 防止內部任何東西撐破畫面產生捲軸 */
+            overflow: hidden; 
         }
 
         .tony-loader-content {
@@ -269,38 +268,42 @@
             opacity: 0; visibility: hidden; 
         }
 
-        /* 🌟 修正點 1：股票列的字體大小放進父層，避免 em 計算錯誤切掉文字 */
+        /* 跑馬燈容器 */
         .tony__ticker {
             position: relative;
             width: 95vw;
-            font-size: clamp(1.2rem, 5vw, 2.8rem); /* 基準字體控制在這裡 */
-            height: 2.8em; /* 確保有足夠的高度容納文字，甚至容許換行顯示 */
+            font-size: clamp(1.2rem, 5vw, 2.8rem); 
+            height: 2.8em; 
             display: flex; justify-content: center; align-items: center;
             overflow: hidden;
             margin-bottom: 4vh;
         }
 
+        /* 跑馬燈每一行字 */
         .tony__ticker-line {
             position: absolute;
-            color: #FF8C00;
+            color: #FF8C00; /* 預設的橘色字 */
             font-weight: 900;
             text-align: center;
             line-height: 1.3;
             width: 100%;
-            /* 移除了 white-space: nowrap，確保超長字串在極小螢幕會換兩行而不是被切掉 */
             letter-spacing: 2px;
             opacity: 0;
+            display: flex; 
+            justify-content: center;
+            align-items: center;
+            flex-wrap: wrap; /* 避免極端小螢幕破版 */
+            gap: 0.4em;
         }
 
-        /* 🌟 修正點 2：拔掉 nowrap，加入 flex-wrap，並下修手機版的 min-size 避免撐破 100vw */
         .tony__h1 {
             display: flex; 
             flex-direction: row; 
-            flex-wrap: wrap; /* 允許在手機等窄螢幕自動折行，徹底防止爆版 */
+            flex-wrap: wrap; 
             justify-content: center;
             align-items: center;
             width: 98vw;
-            font-size: clamp(1.5rem, 8vw, 6rem); /* 安全的響應式範圍 */
+            font-size: clamp(1.5rem, 8vw, 6rem); 
             font-weight: 900; 
         }
 
@@ -339,11 +342,12 @@
     <!-- ====== 開場動畫遮罩區塊 (白底) ====== -->
     <section class="tony-loader-section">
       <div class="tony-loader-content">
-        
-        <!-- 上方股票橫條區塊 -->
+
+        <!-- 上方股票橫條區塊 (滑動字體) -->
         <div class="tony__ticker">
             <div class="tony__ticker-line">升學 檢定 公職 外商</div>
-            <div class="tony__ticker-line">全民英檢GEPT 多益TOEIC FLPT</div>
+            <!-- 恢復為原始橘色純文字 -->
+            <div class="tony__ticker-line">全民英檢 GEPT 多益 TOEIC FLPT</div>
             <div class="tony__ticker-line">國小 國中 高中 技職</div>
             <div class="tony__ticker-line">流利口說 專業寫作</div>
             <div class="tony__ticker-line">觀光美語 客製化</div>
@@ -448,14 +452,14 @@
       function initTonyLoadingAnimation() {
         const loaderSection = document.querySelector(".tony-loader-section");
         const loaderContent = document.querySelector(".tony-loader-content");
+        
         const lettersInner = document.querySelectorAll(".tony__letter-inner");
         const tickerLines = document.querySelectorAll(".tony__ticker-line");
         const hero = document.querySelector(".hero");
 
-        // 移除載入前的隱藏狀態
         gsap.set(loaderContent, { opacity: 1, visibility: 'visible' });
 
-        const mainTl = gsap.timeline({
+        const masterTl = gsap.timeline({
           onComplete: () => {
             gsap.to(loaderSection, {
               opacity: 0,
@@ -466,35 +470,51 @@
               },
               onComplete: () => {
                 loaderSection.style.display = 'none'; 
-                document.body.style.overflow = 'auto'; // 解除鎖定滾動
+                document.body.style.overflow = 'auto'; 
               }
             });
           }
         });
-        
-        // 1. "Tony線上美語家教" 由下往上冒出
-        mainTl.fromTo(lettersInner, 
+
+        // 1. "Tony線上美語家教" 文字時間軸 (改為先建立)
+        const titleTl = gsap.timeline();
+        titleTl.fromTo(lettersInner, 
           { yPercent: 120 }, 
           { yPercent: 0, stagger: 0.05, duration: 0.9, ease: "back.out(1.4)" }
         );
-        
-        // 2. 橘色上方橫條動畫：速度提升 1.5 倍
+
+        // 2. 跑馬燈時間軸
         const tickerTl = gsap.timeline();
-        
         tickerLines.forEach((line, index) => {
-          tickerTl
-            .fromTo(line, 
-              { yPercent: -100, opacity: 0 }, 
-              { yPercent: 0, opacity: 1, duration: 0.2, ease: "power2.out" }
-            )
-            .to(line, 
-              { yPercent: 100, opacity: 0, duration: 0.2, ease: "power2.in" }, 
-              "+=0.25" // 停留切換時間
+          const isLast = index === tickerLines.length - 1;
+          
+          // 冒出時間
+          tickerTl.fromTo(line, 
+            { yPercent: 100, opacity: 0 }, 
+            { yPercent: 0, opacity: 1, duration: 0.25, ease: "power2.out" }
+          );
+          
+          if (!isLast) {
+            // 消失時間與停留時間
+            tickerTl.to(line, 
+              { yPercent: -100, opacity: 0, duration: 0.2, ease: "power2.in" }, 
+              "+=0.45" 
             );
+          } else {
+            // 最後一行消失時間
+            tickerTl.to(line, 
+              { yPercent: -50, opacity: 0, duration: 0.25, ease: "power2.inOut" }, 
+              "+=0.5"
+            );
+          }
         });
 
-        // 加入到主時間軸，在主標題冒出後執行
-        mainTl.add(tickerTl, "-=0.2");
+        // 將動畫加入主時間軸：
+        // 先播放 "Tony線上美語家教"
+        masterTl.add(titleTl);
+        
+        // 接著播放跑馬燈 (設定在標題即將完成時提早0.2秒開始，銜接更順暢)
+        masterTl.add(tickerTl, "-=0.2");
       }
 
       document.addEventListener('DOMContentLoaded', () => {
