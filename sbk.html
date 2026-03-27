@@ -199,7 +199,7 @@
   <h1 class="page-title">Available slots</h1>
   <p class="page-sub">Select a time — 60 min per session</p>
   <div id="slots-view">
-    <div class="empty-state"><p>Loading system sync...</p></div>
+    <!-- Initial empty state will be updated by JS immediately -->
   </div>
 </main>
 
@@ -243,7 +243,7 @@
       <input type="date" id="admin-date" onchange="updateAdminTimeDropdown()" />
     </div>
     <div class="admin-field">
-      <label>Time (已過濾掉衝突時段，顯示的皆可新增)</label>
+      <label>Time (系統將即時確認 Google 行事曆空檔)</label>
       <select id="admin-time">
         <option value="">請先選擇日期...</option>
       </select>
@@ -257,32 +257,15 @@
 
 <script>
 // ══════════════════════════════════════════════════════
-//  核心設定：純靠您的 GAS API 處理
+//  核心設定：使用新的專屬後台 URL
 // ══════════════════════════════════════════════════════
 const API_URL = "https://script.google.com/macros/s/AKfycbyFaTXNNblUQfsrqAwi-dcRb-ob9w2R7pLehyn8OpLB-hoorh2HFlXFFg26LZhHFNRZ/exec";
 
-let gasData = {}; 
+let gasData = null; // null represents "currently loading"
 let manualSlots = JSON.parse(localStorage.getItem('tony_manual_slots') || '[]');
 
 // 定義所有的時間選單 (9:00 AM ~ 10:00 PM)
 const ALL_TIMES =['09:00', '10:00', '11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00', '22:00'];
-
-// ── 判斷是否為「營業時間內」的函數 ──
-function isCoreBusinessHour(dateStr, timeStr) {
-  const d = new Date(dateStr + 'T00:00:00');
-  const day = d.getDay(); // 0=週日, 1=週一 ... 6=週六
-  const h = parseInt(timeStr.split(':')[0], 10);
-  
-  if (day >= 1 && day <= 5) {
-    // 週一到週五: 10 am - 9:30 pm (涵蓋 10 到 21)
-    return h >= 10 && h <= 21;
-  } else if (day === 6) {
-    // 週六: 10 am - 5 pm (涵蓋 10 到 17)
-    return h >= 10 && h <= 17;
-  }
-  // 週日或營業時間外 (如 9AM 或 週六 6PM)
-  return false; 
-}
 
 // ── 格式化小工具 ──
 function fmtDate(dateStr) {
@@ -290,45 +273,59 @@ function fmtDate(dateStr) {
   return d.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' });
 }
 function fmtTime(timeStr) {
-  const[h, m] = timeStr.split(':').map(Number);
+  const [h, m] = timeStr.split(':').map(Number);
   const suffix = h >= 12 ? 'PM' : 'AM';
   const h12 = ((h - 1 + 12) % 12) + 1;
   return `${h12}:${m.toString().padStart(2,'0')} ${suffix}`;
 }
 function uid() { return Date.now().toString(36) + Math.random().toString(36).slice(2,6); }
 
-
 // ── 1. 初始化：抓取背景行事曆資料 ──
 async function init() {
+  const view = document.getElementById('slots-view');
+  // 給予使用者明確的載入提示
+  view.innerHTML = `<div class="empty-state"><span class="empty-line"></span><p>Syncing with Google Calendar...<br><span style="font-size:12px; color:#aaa;">(Prevents double-booking)</span></p></div>`;
+
   const todayStr = new Date().toISOString().split('T')[0];
   try {
-    const res = await fetch(`${API_URL}?action=getBatchSlots&startDate=${todayStr}&days=60`);
+    // 將 days 降到 45 天，大幅加快 GAS 的運算與回傳速度
+    const res = await fetch(`${API_URL}?action=getBatchSlots&startDate=${todayStr}&days=45`);
+    if (!res.ok) throw new Error("Network response was not ok");
+    
     gasData = await res.json();
   } catch (err) {
-    console.error("無法取得日曆資料", err);
+    console.error("無法取得日曆資料 (請確認 GAS 是否已授予權限)", err);
+    gasData = { _error: true }; // 標記錯誤狀態
   }
   renderStudentView();
 }
 
-
 // ── 2. 學生端視角 ──
 function renderStudentView() {
   const view = document.getElementById('slots-view');
+  
+  // 檢查連線是否因為權限或網路錯誤失敗
+  if (gasData && gasData._error) {
+     view.innerHTML = `<div class="empty-state"><span class="empty-line"></span><p style="color:#d93025; font-weight:500;">連線至 Google 日曆失敗。</p><p style="font-size:13px; margin-top:8px;">請確定您已在 Apps Script 點擊「執行」以授權日曆存取權。</p></div>`;
+     return;
+  }
+
+  // 若尚未載入完畢，直接返回等待
+  if (!gasData) return; 
+
   const today = new Date(); today.setHours(0,0,0,0);
 
-  // 學生只能看到您手動加入的時段，且排除掉「營業時間內且已被預約」的時段
+  // 【絕對嚴格的雙重檢查】
+  // 學生只能看到手動加入的時段，且「Google 日曆必須認可該時段為空檔」
   const validSlots = manualSlots.filter(ms => {
     const d = new Date(ms.date + 'T00:00:00');
     if (d < today) return false; // 過去的不要顯示
     
-    // 如果這個時段是營業時間，我們可以用 GAS API 來檢查它是否還活著
-    if (isCoreBusinessHour(ms.date, ms.time)) {
-      const dayData = gasData[ms.date];
-      const isFreeInGas = dayData && dayData.slots && dayData.slots.some(gs => gs.time === ms.time);
-      if (!isFreeInGas) return false; // 在 Google 行事曆上被預約走了 -> 隱藏不顯示
-    }
+    const dayData = gasData[ms.date];
+    const isFreeInGas = dayData && dayData.slots && dayData.slots.some(gs => gs.time === ms.time);
     
-    // 如果是非營業時間 (如週日)，因為 GAS 原本就不會回傳，所以我們以本地 manualSlots 為準
+    if (!isFreeInGas) return false; // 在 Google 行事曆上沒有空檔 -> 強制隱藏不顯示
+    
     return true; 
   }).sort((a, b) => (a.date + a.time).localeCompare(b.date + b.time));
 
@@ -339,7 +336,7 @@ function renderStudentView() {
 
   const grouped = {};
   validSlots.forEach(s => {
-    if (!grouped[s.date]) grouped[s.date] =[];
+    if (!grouped[s.date]) grouped[s.date] = [];
     grouped[s.date].push(s);
   });
 
@@ -354,9 +351,8 @@ function renderStudentView() {
   view.innerHTML = html;
 }
 
-
 // ══════════════════════════════════════════════════════
-//  ADMIN PANEL 後台邏輯 (嚴格防呆下拉選單)
+//  ADMIN PANEL 後台邏輯 (絕對防呆)
 // ══════════════════════════════════════════════════════
 document.getElementById('secret-zone').addEventListener('dblclick', openAdmin);
 let secretClickCount = 0, secretTimer = null;
@@ -378,7 +374,6 @@ function closeAdmin() {
   document.getElementById('admin-panel').classList.remove('open');
 }
 
-// 核心：動態產生下拉選單，只要被預約走就絕對不顯示
 function updateAdminTimeDropdown() {
   const dateVal = document.getElementById('admin-date').value;
   const timeSelect = document.getElementById('admin-time');
@@ -392,22 +387,33 @@ function updateAdminTimeDropdown() {
     return;
   }
 
+  // 防護機制：如果日曆還在載入中，鎖住選單
+  if (!gasData) {
+    timeSelect.innerHTML = '<option value="">Google 日曆同步中，請稍候...</option>';
+    timeSelect.disabled = true;
+    return;
+  }
+  if (gasData._error) {
+    timeSelect.innerHTML = '<option value="">日曆連線失敗，無法載入時段</option>';
+    timeSelect.disabled = true;
+    return;
+  }
+
   let hasOption = false;
 
-  // 掃描 09:00 到 22:00
   ALL_TIMES.forEach(time => {
-    // 條件一：如果這個時段已經加在您的清單裡了，就不顯示
+    // 條件一：如果已經加在您的清單裡了，就不顯示
     const isAlreadyAdded = manualSlots.some(m => m.date === dateVal && m.time === time);
     if (isAlreadyAdded) return; 
 
-    // 條件二：如果是「營業時間內」，去 GAS 檢查，如果 GAS 沒說它有空，代表被預約走了，不顯示
-    if (isCoreBusinessHour(dateVal, time)) {
-      const dayData = gasData[dateVal];
-      const isFreeInGas = dayData && dayData.slots && dayData.slots.some(gs => gs.time === time);
-      if (!isFreeInGas) return; // 衝突，隱藏
-    }
+    // 條件二：【絕對嚴格規則】去 GAS 檢查，如果 GAS 沒有宣告這個時間是空檔，一律不顯示！
+    const dayData = gasData[dateVal];
+    const isFreeInGas = dayData && dayData.slots && dayData.slots.some(gs => gs.time === time);
+    
+    // 如果被預約了、或是當天根本沒開，隱藏它！不再有任何例外！
+    if (!isFreeInGas) return; 
 
-    // 通過檢查 (營業時間內的空檔，或是非營業時間)，把它加入選單
+    // 通過檢查，把它加入選單
     const opt = document.createElement('option');
     opt.value = time;
     opt.textContent = fmtTime(time);
@@ -429,15 +435,8 @@ function adminAddSlot() {
   const timeVal = document.getElementById('admin-time').value;
   if (!dateVal || !timeVal) return;
 
-  // 計算 timestamp (為了餵給預約 API)
   const tsVal = new Date(`${dateVal}T${timeVal}:00`).getTime();
-
-  manualSlots.push({ 
-    id: uid(), 
-    date: dateVal, 
-    time: timeVal, 
-    timestamp: tsVal
-  });
+  manualSlots.push({ id: uid(), date: dateVal, time: timeVal, timestamp: tsVal });
   localStorage.setItem('tony_manual_slots', JSON.stringify(manualSlots));
   
   updateAdminTimeDropdown();
@@ -464,21 +463,18 @@ function renderAdminList() {
     return;
   }
   
-  list.innerHTML = sorted.map(s => {
-    return `
-      <div class="admin-slot-item">
-        <div class="admin-slot-info">
-          <div class="admin-slot-date">${fmtDate(s.date)} · ${fmtTime(s.time)}</div>
-        </div>
-        <button class="btn-delete" onclick="adminDeleteSlot('${s.id}')">Delete</button>
+  list.innerHTML = sorted.map(s => `
+    <div class="admin-slot-item">
+      <div class="admin-slot-info">
+        <div class="admin-slot-date">${fmtDate(s.date)} · ${fmtTime(s.time)}</div>
       </div>
-    `;
-  }).join('');
+      <button class="btn-delete" onclick="adminDeleteSlot('${s.id}')">Delete</button>
+    </div>
+  `).join('');
 }
 
-
 // ══════════════════════════════════════════════════════
-//  BOOKING FLOW (學生預約邏輯，串接原本的 GAS API)
+//  BOOKING FLOW (學生預約邏輯)
 // ══════════════════════════════════════════════════════
 let pendingSlotId = null;
 
@@ -520,7 +516,6 @@ function confirmBooking() {
   const s = manualSlots.find(x => x.id === pendingSlotId);
   if (!s) return closeBooking();
 
-  // 傳給原本的 API
   const payload = {
     name: name,
     email: email,
@@ -533,7 +528,14 @@ function confirmBooking() {
   })
   .then(res => res.json())
   .then(res => {
-      // 成功後，立刻從前端列表刪除，學生就不會再看到
+      if (!res.success) {
+         alert("預約失敗：" + res.message);
+         btn.disabled = false;
+         btn.textContent = 'Confirm →';
+         return;
+      }
+
+      // 成功後從前端列表刪除
       manualSlots = manualSlots.filter(x => x.id !== pendingSlotId);
       localStorage.setItem('tony_manual_slots', JSON.stringify(manualSlots));
       
