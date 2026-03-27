@@ -23,10 +23,6 @@
 
   body { font-family: var(--font-sans); background: var(--white); color: var(--black); min-height: 100vh; -webkit-font-smoothing: antialiased; }
   
-  /* 
-    🔴 重大修正：將管理員觸發區塊移至【左下角】，並把層級拉到最高 (999999) 
-    防止被上方黑框導覽列覆蓋 
-  */
   #secret-zone { position: fixed; bottom: 0; left: 0; width: 80px; height: 80px; z-index: 999999; cursor: default; }
   
   main { max-width: 680px; margin: 0 auto; padding: 80px 24px 120px; }
@@ -47,14 +43,13 @@
   .clock-icon { width: 1.1em; height: 1.1em; transition: filter 0.15s; }
   
   .slot-btn:hover { background: var(--black); color: var(--white); }
-  /* Hover 時，將時鐘 Icon 反轉為白色 */
   .slot-btn:hover .clock-icon { filter: brightness(0) invert(1); }
 
   /* Tablet Sizes */
   @media (min-width: 768px) { 
     .page-title { font-size: 26px; }
     .page-sub { font-size: 16px; }
-    .date-label { font-size: 15px; } /* 同步放大 */
+    .date-label { font-size: 15px; } 
     .slot-btn { font-size: 15px; padding: 14px 24px; }
   }
 
@@ -62,7 +57,7 @@
   @media (min-width: 1024px) { 
     .page-title { font-size: 28px; }
     .page-sub { font-size: 17px; }
-    .date-label { font-size: 16px; } /* 同步放大 */
+    .date-label { font-size: 16px; } 
     .slot-btn { font-size: 16px; padding: 16px 28px; }
   }
 
@@ -239,20 +234,44 @@ function toDateString(d) {
   return `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
 }
 
+// 🚀 核心升級：加入自動同步與比對機制
 async function fetchManualSlots() {
   try {
-    const res = await fetch(`${API_URL}?action=getManualSlots`);
+    // 加上時間戳記強制瀏覽器不要使用快取，一定要去雲端抓最新資料
+    const res = await fetch(`${API_URL}?action=getManualSlots&_t=${Date.now()}`);
     if (res.ok) {
       const data = await res.json();
       if (data.isInit) {
-        manualSlots = data.slots;
-        localStorage.setItem('tony_manual_slots', JSON.stringify(manualSlots));
-      } else if (manualSlots.length > 0) {
-        syncManualSlots();
+        const newSlotsStr = JSON.stringify(data.slots);
+        const oldSlotsStr = JSON.stringify(manualSlots);
+        
+        // 如果發現伺服器上的資料跟目前畫面上的不一樣 (例如用手機新增了)，就立刻更新畫面！
+        if (newSlotsStr !== oldSlotsStr) {
+          manualSlots = data.slots;
+          localStorage.setItem('tony_manual_slots', newSlotsStr);
+          renderStudentView(); // 重新渲染學生的日曆與按鈕
+          
+          // 如果後台目前是打開的，也要更新後台的清單
+          if (document.getElementById('admin-panel').classList.contains('open')) {
+            renderAdminList();
+            updateAdminTimeDropdown();
+          }
+        }
       }
     }
   } catch (err) {}
 }
+
+// ── 自動同步機制開始 (Auto-Sync) ──
+// 1. 每 5 秒鐘在背景默默檢查一次雲端資料
+setInterval(fetchManualSlots, 5000);
+
+// 2. 當使用者「切換分頁回來看」或是「手機喚醒螢幕」時，強制立刻檢查一次
+document.addEventListener('visibilitychange', () => {
+  if (document.visibilityState === 'visible') fetchManualSlots();
+});
+window.addEventListener('focus', fetchManualSlots);
+// ── 自動同步機制結束 ──
 
 async function syncManualSlots() {
   try { await fetch(API_URL, { method: 'POST', body: JSON.stringify({ action: 'saveManualSlots', slots: manualSlots }) }); } catch (err) {}
