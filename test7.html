@@ -510,24 +510,31 @@
         });
 
         // 1. 設定圖片容器初始狀態：往下平移且放大，製造先出現在畫面中央的錯覺
-        // (此時底下的滑動文字尚未出現，剛好利用視覺中心)
         gsap.set(imagesContainer, { y: "12vh", scale: 1.5 });
 
-        // 2. 圖片「一張接著一張」彈跳載入
+        // 2. 圖片「一張接著一張」彈跳載入 (在時間軸最開始，位置標籤設為 0)
         mainTl.fromTo(images, 
             { opacity: 0, scale: 0.5, y: 30 }, 
-            { opacity: 1, scale: 1, y: 0, stagger: 0.3, duration: 0.7, ease: "back.out(1.5)" }
+            { opacity: 1, scale: 1, y: 0, stagger: 0.3, duration: 0.7, ease: "back.out(1.5)" },
+            0
         );
 
-        // 3. 圖片皆載入完成後，整體往上移動並縮小至對應的正確位置(y: 0 也就是滑動字體的上方)
+        // 3. "Tony線上美語家教" 文字與圖片同步由下往上冒出 (同樣設在時間軸起點 0)
+        mainTl.fromTo(lettersInner, 
+          { yPercent: 120 }, 
+          { yPercent: 0, stagger: 0.05, duration: 0.9, ease: "back.out(1.4)" },
+          0
+        );
+
+        // 4. 圖片皆載入完成後，整體往上移動並縮小至對應的正確位置(y: 0 也就是滑動字體的上方)
         mainTl.to(imagesContainer, {
             y: 0,
             scale: 1,
             duration: 0.8,
             ease: "power3.inOut"
-        }, "+=0.4"); // 中間短暫停留0.4秒，讓畫面更有節奏感
+        }, "+=0.4"); // 停留 0.4 秒後圖片上移
 
-        // 4. 文字跑馬燈(滑動字體)動畫：使用獨立 timeline
+        // 5. 文字跑馬燈(滑動字體)動畫：使用獨立 timeline
         const tickerTl = gsap.timeline();
         tickerLines.forEach((line, index) => {
           tickerTl
@@ -543,13 +550,6 @@
 
         // 將跑馬燈動畫安排在「圖片即將到達上方定位時」開始執行
         mainTl.add(tickerTl, "-=0.3");
-
-        // 5. "Tony線上美語家教" 文字由下往上冒出
-        mainTl.fromTo(lettersInner, 
-          { yPercent: 120 }, 
-          { yPercent: 0, stagger: 0.05, duration: 0.9, ease: "back.out(1.4)" },
-          "<" // 與跑馬燈同步開始冒出
-        );
       }
 
       document.addEventListener('DOMContentLoaded', () => {
