@@ -79,8 +79,7 @@
   .cal-cell.available { color: var(--black); background: var(--gray-100); cursor: pointer; border: 1px solid transparent; transition: 0.15s; font-weight: 500; }
   .cal-cell.available:hover { background: var(--gray-200); border-color: var(--black); }
   .cal-cell.today { font-weight: bold; text-decoration: underline; color: #555; }
-  .cal-cell.selected { background: var(--black) !important; color: var(--white) !important; border-color: var(--black) !important; font-weight: bold; }
-
+ .cal-cell.selected { background: #000000 !important; /* 背景純黑 */ color: #ffffff !important;  /* 文字純白（反差才清楚） */ border-color: #000000 !important; font-weight: bold; transform: scale(1.1);  /* 讓選中的圓圈稍微放大一點，更有視覺重點 */ }
   /* Slots styles */
   .date-group { margin-bottom: 30px; }
   .date-label { font-family: var(--font-mono); font-size: 13px; font-weight: 500; letter-spacing: 0.05em; color: var(--gray-600); margin-bottom: 16px; padding-bottom: 10px; border-bottom: var(--border); }
