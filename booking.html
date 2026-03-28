@@ -1,4 +1,4 @@
-<!-- VERSION 11.40 (UX Overhaul: Clock icon, SAT red, unified cart mode, popover improvements) -->
+<!-- VERSION 11.41 (UX Refinement: Unified cart interaction, toggle badge static after intro, side-by-side rules button) -->
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -95,23 +95,21 @@
    
     .controls-container {
         display: flex; justify-content: center; align-items: center; padding-bottom: 5px;
-        flex-direction: row; gap: 15px;
+        flex-direction: row; gap: 8px; /* Reduced gap for mobile */
     }
 
     @keyframes spin-border { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
     /* =============================================
-       TOGGLE: now shows "單堂預約X多堂預約"
-       both sides are always clickable, highlight whichever is active
-       After intro animation, no side is permanently highlighted —
-       handled by .neutral class
+       TOGGLE: Unclickable badge after intro animation
        ============================================= */
     .toggle-wrapper {
         position: relative; display: flex; align-items: center;
-        width: 190px; height: 42px; background: transparent; border-radius: 25px;
-        cursor: pointer; overflow: hidden; z-index: 1;
+        width: 175px; height: 38px; background: transparent; border-radius: 20px;
+        overflow: hidden; z-index: 1;
         box-shadow: 0 4px 12px rgba(0,0,0,0.15);
         transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease;
+        pointer-events: none; /* User can no longer click this */
     }
     .toggle-wrapper.pulse-emphasis {
         transform: scale(1.15); box-shadow: 0 0 25px rgba(255, 84, 0, 0.7); z-index: 100;
@@ -124,13 +122,13 @@
     }
     .toggle-wrapper::after {
         content: ''; position: absolute; inset: 3px;
-        background: #f0f0f0; border-radius: 25px; z-index: -1;
+        background: #f0f0f0; border-radius: 20px; z-index: -1;
     }
     /* The sliding pill — hidden in neutral mode */
     .toggle-bg {
-        position: absolute; top: 5px; left: 5px; height: 32px;
-        width: calc(50% - 5px); background: var(--active-gradient);
-        border-radius: 20px;
+        position: absolute; top: 4px; left: 4px; height: 30px;
+        width: calc(50% - 4px); background: var(--active-gradient);
+        border-radius: 18px;
         transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), background 0.3s, opacity 0.3s, box-shadow 0.3s;
         box-shadow: 0 2px 5px var(--blue-glow); z-index: 1; opacity: 1;
     }
@@ -143,11 +141,11 @@
         font-size: 13px; font-weight: 800; color: #555;
         transition: color 0.3s; user-select: none;
     }
-    /* X separator between labels */
+    /* X separator between labels (made bigger) */
     .toggle-separator {
         display: flex; align-items: center; justify-content: center;
-        font-size: 11px; font-weight: 900; color: #999;
-        z-index: 3; flex-shrink: 0; padding: 0 1px;
+        font-size: 16px; font-weight: 900; color: #777;
+        z-index: 3; flex-shrink: 0; padding: 0 4px;
         pointer-events: none;
     }
 
@@ -163,45 +161,44 @@
     .toggle-wrapper.multi .toggle-bg { transform: translateX(102%); background: var(--multi-gradient); box-shadow: 0 2px 5px var(--multi-glow); opacity: 1; }
     .toggle-wrapper.multi .label-multi { color: #fff; }
 
-    /* Each half clickable */
     .toggle-half {
         flex: 1; display: flex; align-items: center; justify-content: center;
-        height: 100%; cursor: pointer; z-index: 4; position: relative;
+        height: 100%; z-index: 4; position: relative;
     }
 
     .cal-btn-trigger {
-        padding: 8px 16px; border-radius: 20px; border: 1px solid #ddd;
+        padding: 0 12px; border-radius: 19px; border: 1px solid #ddd;
         background: #fff; color: #333; cursor: pointer;
-        font-size: 15px; font-weight: bold; display: flex; align-items: center; justify-content: center;
-        white-space: nowrap; height: 40px;
+        font-size: 14px; font-weight: bold; display: flex; align-items: center; justify-content: center;
+        white-space: nowrap; height: 38px; box-sizing: border-box;
     }
 
     /* =============================================
-       RULE INFO: circle contains "!" on top + "規範" below
+       RULE INFO: Side-by-side icon and text
        ============================================= */
     .rule-info-wrapper {
         position: relative; display: inline-flex; align-items: center; justify-content: center;
     }
-    /* Hide old external label (not used anymore) */
     .rule-label-text { display: none; }
     .rule-info-btn {
-        width: 40px; height: 40px; border-radius: 50%; border: 2px solid #ccc;
+        width: auto; height: 38px; padding: 0 12px;
+        border-radius: 19px; border: 2px solid #ccc;
         background: #fff; color: #333; font-weight: bold;
-        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        display: flex; flex-direction: row; align-items: center; justify-content: center;
         cursor: pointer; transition: 0.2s, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
-        gap: 0; line-height: 1; padding: 2px 0;
+        gap: 4px; line-height: 1; box-sizing: border-box;
     }
     .rule-info-btn .btn-exclaim {
-        font-size: 15px; font-weight: 900; font-family: "Times New Roman", serif;
-        color: #333; line-height: 1; display: block;
+        font-size: 16px; font-weight: 900; font-family: "Times New Roman", serif;
+        color: #333; display: inline-block;
     }
     .rule-info-btn .btn-label {
-        font-size: 9px; font-weight: 900; color: #555; line-height: 1;
-        display: block; letter-spacing: 0.5px;
+        font-size: 14px; font-weight: 900; color: #555;
+        display: inline-block; letter-spacing: 0.5px;
     }
     .rule-info-btn:active { transform: scale(0.9); background: #eee; }
     .rule-info-btn.pulse-emphasis-icon {
-        transform: scale(1.3); box-shadow: 0 0 15px rgba(255, 84, 0, 0.7);
+        transform: scale(1.15); box-shadow: 0 0 15px rgba(255, 84, 0, 0.7);
         border-color: #ff5400; z-index: 100;
     }
     .rule-info-btn.pulse-emphasis-icon .btn-exclaim,
@@ -305,8 +302,7 @@
     .slot-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
    
     /* =============================================
-       SLOT BUTTON with clock icon prefix
-       Clock icon scales with the slot btn size
+       SLOT BUTTON
        ============================================= */
     .slot-btn {
         background: rgba(255,255,255,0.7); border: 1px solid #333; color: #333;
@@ -614,13 +610,14 @@
         .toggle-wrapper::after { inset: 3px; border-radius: 40px; }
         .toggle-bg { height: 48px; top: 6px; left: 6px; width: calc(50% - 6px); border-radius: 36px; }
         .toggle-label { font-size: 20px; }
-        .toggle-separator { font-size: 14px; }
+        .toggle-separator { font-size: 24px; padding: 0 8px; }
         .cal-grid { gap: 10px; }
         .cal-cell { height: 90px; font-size: 32px; border-radius: 20px; }
         .cal-head { font-size: 20px; margin-bottom: 10px; }
         .cal-head small { font-size: 16px; }
         .cal-nav { font-size: 36px; margin-bottom: 30px; }
         .cal-nav-btn { font-size: 40px; }
+        .cal-btn-trigger { font-size: 18px; padding: 0 20px; height: 48px; border-radius: 24px; }
         .simple-slot-grid { gap: 20px; grid-template-columns: repeat(3, 1fr); }
         .simple-slot-btn { padding: 25px 0; font-size: 24px; border-radius: 15px; }
         .simple-slot-btn .slot-clock-icon { width: 20px; height: 20px; }
@@ -632,9 +629,9 @@
         .hot-btn { padding: 20px; font-size: 20px; border-radius: 20px; }
         .close-hot { width: 40px; height: 40px; font-size: 24px; }
         .tap-icon { width: 30px; height: 30px; }
-        .rule-info-btn { width: 58px; height: 58px; border-width: 3px; }
-        .rule-info-btn .btn-exclaim { font-size: 22px; }
-        .rule-info-btn .btn-label { font-size: 12px; }
+        .rule-info-btn { height: 48px; padding: 0 20px; border-radius: 24px; border-width: 3px; gap: 6px; }
+        .rule-info-btn .btn-exclaim { font-size: 20px; }
+        .rule-info-btn .btn-label { font-size: 18px; }
         .rule-label-text { display: none; }
         .mob-br { display: none; }
         .rule-popover {
@@ -695,15 +692,15 @@
         <div class="duration-hint">50分/堂</div>
     </div>
     <div class="controls-container">
-        <!-- Toggle: each half independently clickable -->
+        <!-- Toggle badge: completely static/unclickable after intro animation -->
         <div class="toggle-wrapper neutral" id="main-mode-toggle">
             <div class="toggle-bg"></div>
             <div class="toggle-labels">
-                <div class="toggle-half" onclick="setMode('single')">
+                <div class="toggle-half">
                     <span class="toggle-label label-single">單堂預約</span>
                 </div>
                 <span class="toggle-separator">✕</span>
-                <div class="toggle-half" onclick="setMode('multi')">
+                <div class="toggle-half">
                     <span class="toggle-label label-multi">多堂預約</span>
                 </div>
             </div>
@@ -715,7 +712,7 @@
                  <button class="rule-popover-close" onclick="closePopover('mob-rules')">✕</button>
                  <img src="https://ik.imagekit.io/lql1uveoc/IMG_9614.PNG?updatedAt=1750437382543" class="rule-logo" alt="Logo">
                  <p>24小時內提出請假或調課, <span class="rule-highlight">扣除0.5 堂</span></p>
-                 <p>12小時內提出請假或調課, <span class="rule-highlight">扣除<br class="mob-br">1 堂</span></p>
+                 <p>12小時內提出請假或調課, <span class="rule-highlight">扣除 1 堂</span></p>
                  <p><span class="rule-highlight-red">週六及國定假日24小時內</span><br class="mob-br">請假或調課, 扣除1 堂</p>
                  <a href="https://tonyonlineenglish.netlify.app/regulations" target="_blank" class="rule-details-link">詳情請點這裡</a>
              </div>
@@ -786,15 +783,15 @@
                     <button class="back-btn" onclick="closeCalendar()" style="margin-bottom:0;">✕</button>
                     <div style="display:flex; align-items:center; gap: 10px;" class="cal-top-right-group">
                         <div class="cal-duration-hint">50分/堂</div>
-                        <!-- Calendar toggle: same dual-half design -->
+                        <!-- Calendar toggle badge: static after intro -->
                         <div class="toggle-wrapper neutral" id="cal-mode-toggle">
                             <div class="toggle-bg"></div>
                             <div class="toggle-labels">
-                                <div class="toggle-half" onclick="setMode('single')">
+                                <div class="toggle-half">
                                     <span class="toggle-label label-single">單堂預約</span>
                                 </div>
                                 <span class="toggle-separator">✕</span>
-                                <div class="toggle-half" onclick="setMode('multi')">
+                                <div class="toggle-half">
                                     <span class="toggle-label label-multi">多堂預約</span>
                                 </div>
                             </div>
@@ -805,7 +802,7 @@
                                  <button class="rule-popover-close" onclick="closePopover('cal-rules')">✕</button>
                                  <img src="https://ik.imagekit.io/lql1uveoc/IMG_9614.PNG?updatedAt=1750437382543" class="rule-logo" alt="Logo">
                                  <p>24小時內提出請假或調課, <span class="rule-highlight">扣除0.5 堂</span></p>
-                                 <p>12小時內提出請假或調課, <span class="rule-highlight">扣除<br class="mob-br">1 堂</span></p>
+                                 <p>12小時內提出請假或調課, <span class="rule-highlight">扣除 1 堂</span></p>
                                  <p><span class="rule-highlight-red">週六及國定假日24小時內</span><br class="mob-br">請假或調課, 扣除1 堂</p>
                                  <a href="https://tonyonlineenglish.netlify.app/regulations" target="_blank" class="rule-details-link">詳情請點這裡</a>
                              </div>
@@ -890,7 +887,7 @@
 
   const API_URL = "https://script.google.com/macros/s/AKfycbyWvhW6fp_ohPEvPK226KtNiQLCyAVMl77zV0Hq0k_TcEk3F1ni9qVcJystGUovVjTMGQ/exec";
   const STAGE_1_DAYS=3, STAGE_2_DAYS=11, BACKGROUND_BATCH=14, MAX_DAYS=60, MAX_SELECTION=10;
-  let cachedData={}, loadedDaysCount=0, selectedDateStr="", selectedSlots=[], currentMode='neutral';
+  let cachedData={}, loadedDaysCount=0, selectedDateStr="", selectedSlots=[];
   const dayNames=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"], chiDayNames=["日","一","二","三","四","五","六"];
   const monthNamesEng=["Jan","Feb","March","April","May","June","July","Aug","Sept","Oct","Nov","Dec"];
   let hotPanelShown=false, calYear, calMonth;
@@ -929,14 +926,13 @@
               setTimeout(() => {
                   toggleWrappers.forEach(el => el.classList.remove('pulse-emphasis'));
                   infoBtns.forEach(btn => btn.classList.remove('pulse-emphasis-icon'));
-                  // End neutral — no side highlighted
+                  // End neutral — background goes away permanently and user cannot click it.
                   setTimeout(() => { applyModeToUI('neutral', true); }, 300);
               }, 1200);
           }
       }, speed);
   }
 
-  // Apply mode to UI only (without changing currentMode or clearing cart)
   function applyModeToUI(mode, silent=false) {
       document.querySelectorAll('.toggle-wrapper').forEach(wrapper => {
           wrapper.className = `toggle-wrapper ${mode}`;
@@ -964,7 +960,7 @@
 
   function isValidSlot(slot) {
       if (!slot || !slot.time) return false;
-      const [hStr, mStr] = slot.time.split(":");
+      const[hStr, mStr] = slot.time.split(":");
       const h = parseInt(hStr); const m = parseInt(mStr);
       if (h >= 21) return false;
       if (h === 20 && m > 30) return false;
@@ -1084,7 +1080,7 @@
           const btn=document.createElement("button"); btn.className="simple-slot-btn";
           btn.appendChild(makeClockImg());
           btn.appendChild(document.createTextNode(formatTime12H(slot.time)));
-          if(currentMode==='multi'&&selectedSlots.some(s=>s.timestamp===slot.timestamp)) btn.classList.add("selected");
+          if(selectedSlots.some(s=>s.timestamp===slot.timestamp)) btn.classList.add("selected");
           btn.addEventListener('click',()=>{handleSlotClick(slot,dStr);renderSlotsInsideCalendar(dStr);});
           grid.appendChild(btn);
       });
@@ -1146,26 +1142,8 @@
       if(selectedDateStr) highlightWeekDay(selectedDateStr);
   }
 
-  // setMode: called when user explicitly clicks a toggle half
-  function setMode(mode) {
-      if(currentMode===mode) return; // already in this mode, no change
-      currentMode=mode;
-      applyModeToUI(mode);
-      selectedSlots=[];
-      updateBottomBar();
-      if(selectedDateStr){
-          renderSlots(selectedDateStr);
-          if(document.getElementById("cal-modal").classList.contains("active")) renderSlotsInsideCalendar(selectedDateStr);
-      }
-  }
-
   function handleSlotClick(slot, dateStr) {
-    if(currentMode==='single'||currentMode==='neutral'){
-        // If neutral, treat as single-select
-        selectedSlots=[]; addToCart(slot,dateStr); openBatchForm();
-    } else {
-        toggleSlot(slot,dateStr);
-    }
+      toggleSlot(slot, dateStr);
   }
   function addToCart(slot, dateStr) {
       const dObj=new Date(dateStr); const displayStr=`${dObj.getMonth()+1}/${dObj.getDate()} (${dayNames[dObj.getDay()]} ${chiDayNames[dObj.getDay()]}) ${formatTime12H(slot.time)}`;
@@ -1189,7 +1167,6 @@
   }
   function updateBottomBar() {
       const count=selectedSlots.length;
-      // Show cart whenever there are items (both single and multi modes)
       const show=(count>0);
       const btn=document.getElementById("floating-cart-btn"); const cartCount=document.getElementById("cart-count");
       const isCalActive=document.getElementById('cal-modal').classList.contains('active');
@@ -1287,7 +1264,7 @@
                  btn.onclick=()=>{
                      closeHotPanel();
                      if(window.innerWidth<768){closeCalendar();selectDate(dStr);}else{jumpToDate(dStr);}
-                     setTimeout(()=>{handleSlotClick(slot,dStr);if(currentMode==='single'||currentMode==='neutral')openBatchForm();},100);
+                     setTimeout(()=>{handleSlotClick(slot,dStr);},100);
                  };
                  hotItems.push(btn);
                }
@@ -1338,17 +1315,15 @@
         const slots=data.slots.filter(s=>s.type===key);const z=zones[key];
         if(slots.length>0){
             z.card.style.display="flex"; z.el.className="slot-grid";
-            // Add few-slots class for bigger layout
             if(slots.length<=3) z.el.classList.add('few-slots'); else z.el.classList.remove('few-slots');
             z.el.innerHTML="";
             const axisLine=z.card.querySelectorAll(".axis-line");
             if(slots.length<=3) axisLine.forEach(line=>line.style.display="none"); else axisLine.forEach(line=>line.style.display="block");
             slots.forEach(slot=>{
                 const btn=document.createElement("button"); btn.className="slot-btn"; btn.dataset.ts=slot.timestamp;
-                // Clock icon
                 const clockImg=makeClockImg(); btn.appendChild(clockImg);
                 btn.appendChild(document.createTextNode(formatTime12H(slot.time)));
-                if(currentMode==='multi'&&selectedSlots.some(s=>s.timestamp===slot.timestamp)) btn.classList.add("selected");
+                if(selectedSlots.some(s=>s.timestamp===slot.timestamp)) btn.classList.add("selected");
                 btn.onclick=()=>{handleSlotClick(slot,dStr);};
                 z.el.appendChild(btn);
             });
