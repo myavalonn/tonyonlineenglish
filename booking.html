@@ -1336,3 +1336,1341 @@
 </script>
 </body>
 </html>
+<!-- VERSION 11.41 (UX Refinement: Unified cart interaction, toggle badge static after intro, side-by-side rules button) -->
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <style>html { background-color: #060b1c !important; margin: 0; padding: 0; }</style>
+    <title>Tony 線上美語預約時段</title>
+    <meta property="og:title" content="50分鐘課程預約-Tony線上美語家教">
+    <meta property="og:description" content="升學 檢定 職場 公職 高考 面試 外商 觀光美語 展場英文 翻譯">
+    <meta property="og:url" content="https://tonyonlineenglish.netlify.app/booking">
+    <meta property="og:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/kalen-emsley-Bkci_8qcdvQ-unsplash.jpg?updatedAt=1773813236765">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/kalen-emsley-Bkci_8qcdvQ-unsplash.jpg?updatedAt=1773813236765">
+
+    <script src="layout-manager.js"></script>
+  <style>
+    :root {
+      --bg-color: #ffffff;
+      --cal-bg-color: #f8f9fa;
+      --text-main: #111111;
+      --pill-inactive: #f3f4f6;
+      --pill-active: #ff5400;
+      --blue-main: #007aff;
+      --blue-gradient: linear-gradient(135deg, #2980b9, #2c3e50);
+      --active-gradient: linear-gradient(135deg, #007aff, #00c6ff);
+      --blue-glow: rgba(0, 122, 255, 0.6);
+      --multi-gradient: linear-gradient(135deg, #ff5400, #ff2d55);
+      --multi-glow: rgba(255, 84, 0, 0.6);
+      --card-morning: #eaffea;
+      --card-afternoon: #eefaff;
+      --card-evening: #faf0ff;
+      --selected-bg: #ff5400;
+      --selected-color: #ffffff;
+    }
+   
+    html, body {
+        margin: 0 !important; padding: 0 !important;
+        background-color: var(--bg-color); color: var(--text-main);
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        -webkit-tap-highlight-color: transparent; overflow-x: hidden;
+        overscroll-behavior-y: none; min-height: 100vh;
+    }
+    button { font-family: inherit; outline: none; -webkit-tap-highlight-color: transparent; }
+
+    /* === Custom Result Modal === */
+    .result-overlay {
+        display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0,0,0,0.7); z-index: 10000;
+        justify-content: center; align-items: center; padding: 20px;
+        box-sizing: border-box; backdrop-filter: blur(4px);
+    }
+    .result-content {
+        background: #fff; width: 95%; max-width: 420px;
+        border-radius: 24px; padding: 40px 25px; text-align: center;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        animation: modalFadeIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        box-sizing: border-box;
+    }
+    .result-icon { font-size: 60px; margin-bottom: 20px; }
+    .result-title { font-size: 24px; font-weight: 800; margin-bottom: 12px; color: #111; }
+    .result-msg { font-size: 17px; color: #444; line-height: 1.6; margin-bottom: 30px; white-space: pre-wrap; word-wrap: break-word; }
+    .result-close-btn {
+        background: var(--pill-active); color: #fff; border: none;
+        padding: 16px 0; border-radius: 15px; font-size: 18px; font-weight: bold;
+        cursor: pointer; width: 100%; box-shadow: 0 4px 12px rgba(255, 84, 0, 0.3); box-sizing: border-box;
+    }
+    @keyframes modalFadeIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+   
+    .container#p-main { display: none !important; }
+
+    .header-section {
+        position: relative; background: rgba(255,255,255,0.98); z-index: 80;
+        padding-top: 0 !important; margin-top: 0 !important;
+        padding-bottom: 5px; box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    }
+   
+    .top-info-bar {
+        position: relative; display: flex; justify-content: center; align-items: center;
+        margin-top: 8px !important; margin-bottom: 5px; height: 30px;
+        padding: 0 100px 0 15px; box-sizing: border-box;
+    }
+    .full-date-display {
+        text-align: center; color: var(--text-main); font-size: 19px;
+        font-weight: 800; letter-spacing: 0.5px;
+        margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; line-height: 1.2;
+    }
+    .duration-hint {
+        position: absolute; right: 15px; top: 50%; transform: translateY(-50%);
+        font-size: 11px; font-weight: 800; letter-spacing: 0.5px; color: #ffffff;
+        background: linear-gradient(135deg, #8E2DE2, #4A00E0);
+        box-shadow: 0 2px 8px rgba(74, 0, 224, 0.4);
+        padding: 5px 12px; border-radius: 20px; border: none; white-space: nowrap;
+    }
+   
+    .controls-container {
+        display: flex; justify-content: center; align-items: center; padding-bottom: 5px;
+        flex-direction: row; gap: 8px; /* Reduced gap for mobile */
+    }
+
+    @keyframes spin-border { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+
+    /* =============================================
+       TOGGLE: Unclickable badge after intro animation
+       ============================================= */
+    .toggle-wrapper {
+        position: relative; display: flex; align-items: center;
+        width: 175px; height: 38px; background: transparent; border-radius: 20px;
+        overflow: hidden; z-index: 1;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease;
+        pointer-events: none; /* User can no longer click this */
+    }
+    .toggle-wrapper.pulse-emphasis {
+        transform: scale(1.15); box-shadow: 0 0 25px rgba(255, 84, 0, 0.7); z-index: 100;
+    }
+    .toggle-wrapper::before {
+        content: ''; position: absolute; top: -100%; left: -100%;
+        width: 300%; height: 300%;
+        background: conic-gradient(from 0deg, #007aff, #00c6ff, #ff5400, #ff2d55, #007aff);
+        animation: spin-border 3s linear infinite; z-index: -2;
+    }
+    .toggle-wrapper::after {
+        content: ''; position: absolute; inset: 3px;
+        background: #f0f0f0; border-radius: 20px; z-index: -1;
+    }
+    /* The sliding pill — hidden in neutral mode */
+    .toggle-bg {
+        position: absolute; top: 4px; left: 4px; height: 30px;
+        width: calc(50% - 4px); background: var(--active-gradient);
+        border-radius: 18px;
+        transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), background 0.3s, opacity 0.3s, box-shadow 0.3s;
+        box-shadow: 0 2px 5px var(--blue-glow); z-index: 1; opacity: 1;
+    }
+    .toggle-labels {
+        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+        display: flex; z-index: 2;
+    }
+    .toggle-label {
+        flex: 1; display: flex; justify-content: center; align-items: center;
+        font-size: 13px; font-weight: 800; color: #555;
+        transition: color 0.3s; user-select: none;
+    }
+    /* X separator between labels (made bigger) */
+    .toggle-separator {
+        display: flex; align-items: center; justify-content: center;
+        font-size: 16px; font-weight: 900; color: #777;
+        z-index: 3; flex-shrink: 0; padding: 0 4px;
+        pointer-events: none;
+    }
+
+    /* Neutral: no side highlighted */
+    .toggle-wrapper.neutral .toggle-bg { opacity: 0; }
+    .toggle-wrapper.neutral .toggle-label { color: #555; }
+
+    /* Single active */
+    .toggle-wrapper.single .toggle-bg { transform: translateX(0); background: var(--active-gradient); box-shadow: 0 2px 5px var(--blue-glow); opacity: 1; }
+    .toggle-wrapper.single .label-single { color: #fff; }
+
+    /* Multi active */
+    .toggle-wrapper.multi .toggle-bg { transform: translateX(102%); background: var(--multi-gradient); box-shadow: 0 2px 5px var(--multi-glow); opacity: 1; }
+    .toggle-wrapper.multi .label-multi { color: #fff; }
+
+    .toggle-half {
+        flex: 1; display: flex; align-items: center; justify-content: center;
+        height: 100%; z-index: 4; position: relative;
+    }
+
+    .cal-btn-trigger {
+        padding: 0 12px; border-radius: 19px; border: 1px solid #ddd;
+        background: #fff; color: #333; cursor: pointer;
+        font-size: 14px; font-weight: bold; display: flex; align-items: center; justify-content: center;
+        white-space: nowrap; height: 38px; box-sizing: border-box;
+    }
+
+    /* =============================================
+       RULE INFO: Side-by-side icon and text
+       ============================================= */
+    .rule-info-wrapper {
+        position: relative; display: inline-flex; align-items: center; justify-content: center;
+    }
+    .rule-label-text { display: none; }
+    .rule-info-btn {
+        width: auto; height: 38px; padding: 0 12px;
+        border-radius: 19px; border: 2px solid #ccc;
+        background: #fff; color: #333; font-weight: bold;
+        display: flex; flex-direction: row; align-items: center; justify-content: center;
+        cursor: pointer; transition: 0.2s, transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        gap: 4px; line-height: 1; box-sizing: border-box;
+    }
+    .rule-info-btn .btn-exclaim {
+        font-size: 16px; font-weight: 900; font-family: "Times New Roman", serif;
+        color: #333; display: inline-block;
+    }
+    .rule-info-btn .btn-label {
+        font-size: 14px; font-weight: 900; color: #555;
+        display: inline-block; letter-spacing: 0.5px;
+    }
+    .rule-info-btn:active { transform: scale(0.9); background: #eee; }
+    .rule-info-btn.pulse-emphasis-icon {
+        transform: scale(1.15); box-shadow: 0 0 15px rgba(255, 84, 0, 0.7);
+        border-color: #ff5400; z-index: 100;
+    }
+    .rule-info-btn.pulse-emphasis-icon .btn-exclaim,
+    .rule-info-btn.pulse-emphasis-icon .btn-label { color: #ff5400; }
+    
+    .rule-popover {
+        display: none; position: absolute; top: 40px; right: 0;
+        width: 260px; background: #fff; border: 1px solid #ddd; border-radius: 12px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.15); padding: 15px; z-index: 1000;
+        font-size: 13px; color: #000000; line-height: 1.5; text-align: center;
+    }
+    .rule-popover.show { display: block; animation: fadeIn 0.2s; }
+    .rule-popover p { margin: 0 0 8px 0; padding: 0; }
+    .rule-popover p:last-child { margin-bottom: 0; }
+    .rule-highlight { color: #000000; font-weight: bold; }
+    .rule-highlight-red { color: #d32f2f; font-weight: bold; }
+    .rule-logo {
+        width: 50px; height: auto; display: block; margin: 0 auto 10px auto; pointer-events: none;
+    }
+    /* Close button inside popover */
+    .rule-popover-close {
+        position: absolute; top: 8px; right: 8px;
+        width: 24px; height: 24px; border-radius: 50%;
+        background: #111; color: #fff; border: none;
+        font-size: 14px; font-weight: bold; cursor: pointer;
+        display: flex; align-items: center; justify-content: center;
+        line-height: 1;
+    }
+    /* Details link */
+    .rule-details-link {
+        display: inline-block; margin-top: 10px;
+        font-size: 13px; font-weight: bold; color: var(--blue-main);
+        text-decoration: underline;
+    }
+    
+    .mob-br { display: block; }
+
+    .date-scroller {
+        display: flex; overflow-x: auto; padding: 5px 15px 10px; scroll-behavior: smooth; min-height: 100px;
+    }
+    .date-scroller::-webkit-scrollbar { display: none; }
+   
+    .date-pill {
+        flex: 0 0 auto; width: 70px; height: 95px; background: var(--pill-inactive);
+        margin-right: 10px; border-radius: 28px;
+        display: flex; flex-direction: column; justify-content: center; align-items: center;
+        cursor: default; position: relative; border: 1px solid transparent;
+    }
+    .date-pill.loaded { background: var(--pill-inactive); color: #333; cursor: pointer; }
+    .date-pill.active {
+        background: var(--pill-active); color: #ffffff;
+        transform: scale(1.05) translateY(-3px); box-shadow: 0 8px 15px rgba(255, 84, 0, 0.3); z-index: 2;
+    }
+    .date-num-row { display: flex; align-items: flex-start; justify-content: center; margin-bottom: 0px; }
+    .date-text { font-size: 24px; font-weight: 800; color: inherit; font-family: "Arial", sans-serif; line-height: 1; }
+    .week-row { display: flex; flex-direction: row; align-items: baseline; justify-content: center; gap: 4px; margin-top: 4px; }
+    .week-eng { font-size: 14px; text-transform: uppercase; font-weight: 700; }
+    .week-chi { font-size: 13px; font-weight: 500; opacity: 0.9; }
+    .date-pill.active .week-eng, .date-pill.active .week-chi, .date-pill.active .date-text { color: white; }
+    /* SAT red on mobile */
+    @media (max-width: 767px) {
+        .date-pill.sat-pill .week-eng,
+        .date-pill.sat-pill .week-chi,
+        .date-pill.sat-pill .date-text { color: #d32f2f; }
+        .date-pill.sat-pill.active .week-eng,
+        .date-pill.sat-pill.active .week-chi,
+        .date-pill.sat-pill.active .date-text { color: #fff; }
+    }
+
+    .pill-loader {
+        width: 14px; height: 14px; border: 2px solid #ccc; border-top-color: #333;
+        border-radius: 50%; animation: spin 0.8s linear infinite; margin-top: 5px; display: none;
+    }
+    .date-pill.loading .pill-loader { display: block; }
+    .slots-container { padding: 10px; display: flex; flex-direction: column; gap: 10px; position: relative; z-index: 10; }
+   
+    #empty-msg {
+        text-align: center; display: none; color: #333; margin-top: 20px;
+        font-weight: bold; font-size: 16px; background: #f8f9fa; padding: 20px; border-radius: 12px;
+    }
+    .time-card {
+        border-radius: 16px; display: none; flex-direction: row; overflow: hidden;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05); border: 1px solid rgba(0,0,0,0.05); align-items: stretch; height: auto;
+    }
+    .time-card.force-show { display: flex !important; }
+    .time-card.morning { background-color: var(--card-morning); }
+    .time-card.afternoon { background-color: var(--card-afternoon); }
+    .time-card.evening { background-color: var(--card-evening); }
+    .time-card.evening .slot-btn { background: #ffffff; }
+    .time-axis {
+        width: 55px; background: rgba(255,255,255,0.4);
+        display: flex; flex-direction: column; justify-content: space-between; align-items: center;
+        padding: 12px 0; border-right: 1px solid rgba(0,0,0,0.05); flex-shrink: 0;
+        font-family: 'Arial Narrow', sans-serif;
+    }
+    .axis-time { font-size: 13px; font-weight: 800; color: #333; line-height: 1; text-align: center; }
+    .axis-time small { font-size: 10px; font-weight: 600; color: #666; display: block; }
+    .axis-line { flex-grow: 1; width: 0px; border-left: 2px dashed #999; margin: 3px 0; min-height: 10px; display: none; }
+    .axis-icon { font-size: 16px; line-height: 1; padding: 2px 0; opacity: 0.8; display: block !important; }
+    .card-content { flex-grow: 1; padding: 12px; display: flex; flex-direction: column; justify-content: center; }
+    .slot-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+   
+    /* =============================================
+       SLOT BUTTON
+       ============================================= */
+    .slot-btn {
+        background: rgba(255,255,255,0.7); border: 1px solid #333; color: #333;
+        padding: 8px 0; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.1s;
+        font-size: 14px; text-align: center; position: relative;
+        touch-action: manipulation; user-select: none;
+        display: flex; align-items: center; justify-content: center; gap: 4px;
+    }
+    .slot-btn .slot-clock-icon {
+        width: 14px; height: 14px; flex-shrink: 0; opacity: 0.75;
+        object-fit: contain;
+    }
+    .slot-btn:active { transform: scale(0.95); }
+    .slot-btn.selected {
+        background: var(--selected-bg) !important; color: var(--selected-color) !important;
+        transform: scale(1.05); box-shadow: 0 4px 10px rgba(0,0,0,0.2); border-color: var(--selected-bg);
+    }
+    .slot-btn.selected .slot-clock-icon { opacity: 1; filter: brightness(0) invert(1); }
+    .slot-btn.selected::after, .simple-slot-btn.selected::after {
+        content: '✓'; position: absolute; top: -6px; right: -6px; width: 20px; height: 20px;
+        background: white; color: var(--pill-active); border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 14px; font-weight: bold; box-shadow: 0 1px 3px rgba(0,0,0,0.2); border: 1px solid #eee;
+    }
+
+    /* few-slots: bigger buttons, bigger icon */
+    .slot-grid.few-slots .slot-btn { padding: 16px 0; font-size: 18px; }
+    .slot-grid.few-slots .slot-btn .slot-clock-icon { width: 18px; height: 18px; }
+    
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* =========================================================
+       INTRO ANIMATION
+       ========================================================= */
+    #loading-overlay {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background-color: #0d1117; z-index: 9999;
+        display: flex; flex-direction: column; justify-content: center; align-items: center;
+        transition: opacity 0.5s ease-out;
+    }
+    .intro-container {
+        width: 90%; max-width: 500px; display: flex; flex-direction: column; gap: 15px;
+        font-family: "PingFang TC", "Microsoft JhengHei", sans-serif;
+    }
+    .step {
+        padding: 25px 20px; border-radius: 20px; border: 2px solid #30363d;
+        background: rgba(22, 27, 34, 0.9); font-weight: bold; text-align: center;
+        transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        opacity: 0.1; font-size: 1.5rem; letter-spacing: 1px;
+    }
+    @media (max-width: 600px) {
+        .step { font-size: 1.85rem; padding: 35px 20px; border-radius: 25px; }
+    }
+    .color-1 { color: #58a6ff; border-color: #58a6ff; }
+    #step1.active { box-shadow: 0 0 25px rgba(88, 166, 255, 0.5); background: rgba(88, 166, 255, 0.15); }
+    .color-2 { color: #ffa657; border-color: #ffa657; }
+    #step2.active { box-shadow: 0 0 25px rgba(255, 166, 87, 0.5); background: rgba(255, 166, 87, 0.15); }
+    .color-3 { color: #d2a8ff; border-color: #d2a8ff; }
+    #step3.active { box-shadow: 0 0 25px rgba(210, 168, 255, 0.5); background: rgba(210, 168, 255, 0.15); }
+    .color-4 { color: #3fb950; border-color: #3fb950; }
+    #step4.active { box-shadow: 0 0 25px rgba(63, 185, 80, 0.5); background: rgba(63, 185, 80, 0.15); }
+    .step.active { opacity: 1; transform: scale(1.05); text-shadow: 0 0 10px currentColor; }
+    .step.completed { opacity: 0.5; transform: scale(1); box-shadow: none; background: rgba(255,255,255,0.02); }
+
+    /* === Confirmation Form === */
+    .page-form {
+        display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+        background: #fff; z-index: 2000; padding: 0; box-sizing: border-box; overflow: hidden;
+    }
+    .form-box {
+        background: #f8f9fa; border-radius: 24px; padding: 30px 20px;
+        margin-top: 40px; color: #333; max-width: 500px; margin: 40px auto;
+        border: 1px solid #eee; position: relative;
+    }
+    .form-box input {
+        width: 100%; padding: 20px; margin: 10px 0 20px;
+        background: #fff; border: 1px solid #ccc; color: #333;
+        border-radius: 10px; box-sizing: border-box; font-size: 16px;
+    }
+    .clear-all-btn {
+        width: 100%; padding: 15px; background: #ffebee; color: #d32f2f;
+        border: 2px solid #ef9a9a; border-radius: 12px; margin-bottom: 20px;
+        font-weight: 800; cursor: pointer; text-align: center; font-size: 16px; box-sizing: border-box;
+    }
+    .confirm-btn {
+        width: 100%; padding: 15px; background: var(--pill-active); color: #fff; border: none;
+        border-radius: 12px; font-size: 18px; font-weight: bold; cursor: pointer;
+        box-shadow: 0 4px 10px rgba(255,84,0,0.3); box-sizing: border-box;
+    }
+    .back-btn {
+        background: none; border: none; color: #333; font-size: 18px; font-weight: bold;
+        margin-bottom: 10px; cursor: pointer; display: block; text-align: left; padding: 5px 0;
+    }
+    .page-title { font-size: 20px; font-weight: bold; text-align: center; margin-bottom: 15px; }
+    .selected-item {
+        font-size: 18px; padding: 15px; background: #f3f4f6;
+        border-radius: 12px; margin-bottom: 8px;
+        display: flex; justify-content: space-between; align-items: center;
+        flex-shrink: 0; min-height: 50px;
+    }
+    .slot-index-badge {
+        display: inline-flex; justify-content: center; align-items: center;
+        background-color: #000000; color: #ffffff; width: 24px; height: 24px;
+        margin-right: 10px; font-size: 14px; font-weight: bold;
+        border-radius: 4px; flex-shrink: 0; line-height: 1;
+    }
+    .remove-slot-btn {
+        background: #ffebee; color: #d32f2f; border: 1px solid #ffcdd2; border-radius: 8px;
+        width: 36px; height: 36px; display: flex; align-items: center; justify-content: center;
+        font-weight: bold; font-size: 16px; cursor: pointer; margin-left: 10px;
+        flex-shrink: 0; transition: 0.2s;
+    }
+    .remove-slot-btn:active { transform: scale(0.9); }
+
+    .cal-modal {
+        display: block !important; position: relative !important;
+        width: 100%; height: auto !important; min-height: 100vh; z-index: 100;
+        animation: none !important; background: var(--bg-color); overflow: visible !important;
+    }
+    #cal-modal .back-btn { display: none !important; }
+
+    @media (max-width: 767px) {
+        .page-form.active { display: block; animation: slideUp 0.3s; }
+        .form-box {
+            margin: 0; width: 100%; height: 100%; max-width: 100%;
+            border-radius: 0; padding: 15px 20px;
+            display: flex; flex-direction: column; justify-content: flex-start;
+            border: none; background: #fff; box-sizing: border-box;
+        }
+        #checkout-list { flex: 0 1 auto; max-height: 40vh; overflow-y: auto; min-height: 0; margin-bottom: 15px; display: flex; flex-direction: column; }
+        .form-inputs-area { margin-top: 0; flex-shrink: 0; }
+        .form-box input { padding: 12px; margin: 5px 0 15px; font-size: 16px; }
+        .form-box label { font-size: 14px; font-weight: bold; margin-bottom: 2px; display: block; }
+        .confirm-btn { padding: 12px; font-size: 18px; margin-bottom: 10px; }
+        .clear-all-btn { padding: 10px; margin-bottom: 10px; font-size: 14px; }
+        .simple-slot-grid.few-slots { grid-template-columns: repeat(2, 1fr) !important; }
+        .simple-slot-grid.few-slots .simple-slot-btn { padding: 20px 0; font-size: 20px; }
+
+        /* Mobile popover: larger font + close button */
+        .rule-popover {
+            font-size: 17px !important;
+            line-height: 1.6 !important;
+            padding: 20px 16px 16px !important;
+            width: 280px !important;
+        }
+        .rule-popover .rule-logo { width: 60px !important; }
+    }
+    @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+    @media (min-width: 768px) {
+        .page-form { background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); padding: 20px; overflow-y: auto; }
+        .page-form.active { display: flex !important; justify-content: center; align-items: flex-start; animation: fadeIn 0.3s; padding-top: 50px; }
+        .form-box { margin: 0; width: 80%; max-width: 650px; padding: 70px 40px 40px; border-radius: 30px; position: relative; display: flex; flex-direction: column; box-sizing: border-box; }
+        #checkout-list { max-height: 300px; overflow-y: auto; margin-bottom: 20px; }
+        .page-title { font-size: 36px; margin-bottom: 30px; margin-top: 0; }
+        .form-box label { font-size: 28px; display: block; margin-bottom: 10px; font-weight: bold; }
+        .form-box input { padding: 30px; font-size: 24px; border-radius: 16px; margin-bottom: 30px; }
+        .confirm-btn { padding: 25px; font-size: 28px; border-radius: 20px; }
+        .clear-all-btn { padding: 25px; font-size: 24px; margin-bottom: 30px; border-width: 3px; }
+        .selected-item { font-size: 24px; padding: 20px; }
+        .remove-slot-btn { width: 44px; height: 44px; font-size: 20px; }
+        .back-btn {
+            display: inline-flex !important; align-items: center; justify-content: center;
+            position: absolute !important; top: 30px; left: 30px; margin: 0 !important;
+            font-size: 20px; color: #333; font-weight: bold; background: #f0f0f0;
+            padding: 10px 20px; border-radius: 30px; z-index: 1000; cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .back-btn:hover { background: #e0e0e0; transform: translateY(-2px); transition: 0.2s; }
+    }
+    @media (min-width: 1024px) {
+        .form-box { max-width: 800px; padding: 80px 50px 50px; }
+        .page-title { font-size: 42px; }
+        .back-btn { font-size: 24px; top: 40px; left: 40px; padding: 12px 24px; }
+    }
+    
+    @keyframes glow { from { filter: drop-shadow(0 0 4px rgba(255, 84, 0, 0.4)); } to { filter: drop-shadow(0 0 8px rgba(255, 84, 0, 0.8)); } }
+    #hot-panel {
+        position: fixed; top: 20%; left: 0; width: 85%; max-width: 280px;
+        background: linear-gradient(135deg, #ffebee, #fff0f5);
+        backdrop-filter: blur(10px); border-top-right-radius: 20px; border-bottom-right-radius: 20px;
+        box-shadow: 5px 5px 20px rgba(0,0,0,0.1); transform: translateX(-110%);
+        transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1);
+        padding: 20px; border: 1px solid #eee; border-left: none; z-index: 900; overflow: hidden;
+    }
+    #hot-panel::before {
+        content: '⚡'; position: absolute; top: 50%; left: 50%;
+        transform: translate(-50%, -50%); font-size: 200px; color: #ffab91;
+        opacity: 0.25; z-index: -1; text-shadow: 0 0 20px #ffccbc, 0 0 30px #ffccbc;
+    }
+    #hot-panel.show { transform: translateX(0); }
+    .hot-title { color: var(--text-main); font-size: 18px; font-weight: bold; margin-bottom: 15px; display: flex; align-items: center; }
+    .title-arrow-icon { width: 20px; height: 20px; margin-left: 8px; }
+    #hot-icon {
+        display: inline-block; margin-right: 8px; font-size: 22px;
+        background: linear-gradient(45deg, #ff5400, #ff8e53);
+        -webkit-background-clip: text; -webkit-text-fill-color: transparent;
+        animation: glow 1.5s infinite alternate;
+    }
+    .hot-list { display: flex; flex-direction: column; gap: 10px; max-height: 50vh; overflow-y: auto; }
+    .hot-btn { background: #ffffff; border: 1px solid #ffd0c0; color: #333; padding: 12px; border-radius: 12px; text-align: left; font-weight: bold; cursor: pointer; display: flex; justify-content: flex-start; align-items: center; font-size: 18px; }
+    .tap-icon { width: 20px; height: 20px; margin-left: 8px; display: inline-block; vertical-align: middle; }
+    .hot-show-more { text-align: center; color: #ff5400; font-weight: bold; font-size: 14px; padding: 8px; cursor: pointer; background: rgba(255,255,255,0.5); border-radius: 8px; margin-top: 5px; }
+    .hot-hidden { display: none; }
+    .close-hot { position: absolute; top: 10px; right: 10px; background: #eee; color: #333; border: none; border-radius: 50%; width: 25px; height: 25px; cursor: pointer; z-index: 5; }
+
+    @keyframes bump-anim { 0% { transform: scale(1); } 50% { transform: scale(1.6); } 100% { transform: scale(1); } }
+    .bump-effect { animation: bump-anim 0.3s ease-out; }
+    @keyframes glow-blue-btn {
+        from { box-shadow: 0 4px 12px rgba(0,0,0,0.1), 0 0 10px rgba(0, 122, 255, 0.4); }
+        to { box-shadow: 0 6px 16px rgba(0,0,0,0.2), 0 0 20px rgba(0, 122, 255, 0.8); }
+    }
+    #floating-cart-btn {
+        position: fixed; bottom: 30px; right: 20px; z-index: 999;
+        width: 60px; height: 60px; background: #ffffff; box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        display: none; cursor: pointer; transition: transform 0.2s, opacity 0.2s;
+        border: none; padding: 10px; border-radius: 50%; box-sizing: border-box;
+        animation: glow-blue-btn 1.5s infinite alternate;
+    }
+    #floating-cart-btn.in-cal-view {
+        position: absolute; width: 44px; height: 44px; padding: 7px;
+        top: 0px; right: 10px; bottom: auto; left: auto; border-radius: 10px;
+        background: #ffffff; box-shadow: 0 4px 12px rgba(0, 122, 255, 0.4);
+        animation: none; transform: none !important; z-index: 400;
+    }
+    #floating-cart-btn .cal-icon-svg { width: 100%; height: 100%; color: var(--blue-main); }
+    #floating-cart-btn.show { display: block; }
+    .cart-badge {
+        position: absolute; top: -5px; right: -5px; background: var(--active-gradient); color: white;
+        width: 24px; height: 24px; border-radius: 50%; font-size: 13px; font-weight: bold;
+        display: flex; justify-content: center; align-items: center; border: 2px solid white; box-shadow: 0 0 8px var(--blue-glow);
+    }
+    @media (min-width: 768px) {
+        #floating-cart-btn { width: 120px; height: 120px; padding: 25px; bottom: 50px; right: 40px; }
+        .cart-badge { width: 40px; height: 40px; font-size: 20px; top: 0; right: 0; border-width: 3px; }
+    }
+
+    .cal-header-wrap {
+        background: #fff; padding: 15px 10px; min-height: 100%; height: auto;
+        border-top-left-radius: 24px; border-top-right-radius: 24px;
+        border-bottom-left-radius: 0; border-bottom-right-radius: 0;
+        box-shadow: none; position: relative; z-index: 10; margin-bottom: 0;
+    }
+    .cal-top-info { text-align: center; margin: 5px 0; }
+    .cal-today-label { display: none !important; }
+    .cal-nav {
+        display: flex; justify-content: space-between; align-items: center;
+        margin-bottom: 10px; font-size: 18px; font-weight: bold; color: #333;
+    }
+    .cal-nav-btn { background: none; border: none; color: #333; font-size: 20px; padding: 5px 10px; cursor: pointer; transition: opacity 0.2s; }
+    .cal-nav-btn.disabled { opacity: 0.2; cursor: default; pointer-events: none; }
+    .cal-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; text-align: center; }
+    .cal-head {
+        color: #000; font-size: 12px; font-weight: 900; padding-bottom: 5px;
+        display: flex; flex-direction: column; line-height: 1.2; transition: 0.2s;
+    }
+    .cal-head small { font-size: 10px; opacity: 0.7; }
+    .cal-head.active-day { background-color: var(--pill-active); color: #ffffff; border-radius: 8px; padding-top: 5px; }
+    .cal-head.active-day small { color: #ffffff; opacity: 1; }
+    /* SAT header red on mobile */
+    @media (max-width: 767px) {
+        .cal-head.sat-head { color: #d32f2f !important; }
+        .cal-head.sat-head small { color: #d32f2f !important; opacity: 0.85; }
+        .cal-head.sat-head.active-day { color: #fff !important; }
+        .cal-head.sat-head.active-day small { color: #fff !important; }
+    }
+    
+    .cal-cell {
+        height: 48px; display: flex; align-items: center; justify-content: center;
+        border-radius: 12px; font-size: 20px; font-weight: bold; cursor: default;
+        transition: 0.2s; color: #333; position: relative; background: #fff; border: 1px solid transparent;
+    }
+    .cal-cell.loaded { cursor: pointer; border-color: #eee; }
+    .cal-cell.disabled { color: #ddd !important; background: #fafafa; pointer-events: none; }
+    .cal-cell.today { border: 2px solid var(--pill-active); color: var(--pill-active); }
+    .cal-cell.selected { background: var(--pill-active) !important; color: #fff !important; box-shadow: 0 4px 10px rgba(255,84,0,0.3); }
+    .cal-cell.loaded::after { content: ''; width: 4px; height: 4px; background: #ccc; border-radius: 50%; position: absolute; bottom: 3px; }
+    .cal-cell.selected::after { background: #fff; }
+    
+    #cal-slots-area { margin-top: 10px; padding-bottom: 100px; border-top: 1px solid #f0f0f0; padding-top: 15px; position: relative; }
+    .cal-slots-title { color: #333; font-size: 16px; font-weight: bold; margin-bottom: 10px; padding-left: 5px; border-left: 4px solid var(--pill-active); line-height: 1; }
+    
+    .simple-slot-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .simple-slot-btn {
+        background: #fff; border: 1px solid #ccc; color: #333; padding: 15px 0;
+        border-radius: 10px; font-weight: bold; font-size: 18px; cursor: pointer;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05); position: relative;
+        display: flex; align-items: center; justify-content: center; gap: 5px;
+    }
+    .simple-slot-btn .slot-clock-icon { width: 16px; height: 16px; flex-shrink: 0; opacity: 0.7; object-fit: contain; }
+    .simple-slot-btn.selected { background: var(--active-gradient); color: white; border-color: transparent; box-shadow: 0 4px 10px var(--blue-glow); }
+    .simple-slot-btn.selected .slot-clock-icon { opacity: 1; filter: brightness(0) invert(1); }
+    
+    /* few-slots: bigger buttons → bigger icon */
+    .simple-slot-grid.few-slots .simple-slot-btn .slot-clock-icon { width: 20px; height: 20px; }
+
+    .cal-duration-hint {
+        font-size: 13px; font-weight: 800; padding: 6px 12px; border-radius: 20px;
+        background: #fff; color: #111; border: 1px solid #eee; white-space: nowrap; margin-right: 5px;
+    }
+
+    @media (min-width: 768px) {
+        .cal-header-wrap { max-width: 100% !important; margin: 0 !important; border-radius: 0 !important; min-height: 100vh; padding: 40px; box-sizing: border-box; }
+        .toggle-wrapper { width: 300px; height: 60px; border-radius: 40px; }
+        .toggle-wrapper::after { inset: 3px; border-radius: 40px; }
+        .toggle-bg { height: 48px; top: 6px; left: 6px; width: calc(50% - 6px); border-radius: 36px; }
+        .toggle-label { font-size: 20px; }
+        .toggle-separator { font-size: 24px; padding: 0 8px; }
+        .cal-grid { gap: 10px; }
+        .cal-cell { height: 90px; font-size: 32px; border-radius: 20px; }
+        .cal-head { font-size: 20px; margin-bottom: 10px; }
+        .cal-head small { font-size: 16px; }
+        .cal-nav { font-size: 36px; margin-bottom: 30px; }
+        .cal-nav-btn { font-size: 40px; }
+        .cal-btn-trigger { font-size: 18px; padding: 0 20px; height: 48px; border-radius: 24px; }
+        .simple-slot-grid { gap: 20px; grid-template-columns: repeat(3, 1fr); }
+        .simple-slot-btn { padding: 25px 0; font-size: 24px; border-radius: 15px; }
+        .simple-slot-btn .slot-clock-icon { width: 20px; height: 20px; }
+        .simple-slot-grid.few-slots .simple-slot-btn .slot-clock-icon { width: 26px; height: 26px; }
+        .cal-slots-title { font-size: 28px; margin-bottom: 20px; border-left-width: 8px; }
+        #hot-panel { width: 500px; max-width: 80vw; padding: 30px; border-radius: 30px; transform: translateX(-120%); }
+        #hot-panel.show { transform: translateX(0); }
+        .hot-title { font-size: 28px; margin-bottom: 25px; }
+        .hot-btn { padding: 20px; font-size: 20px; border-radius: 20px; }
+        .close-hot { width: 40px; height: 40px; font-size: 24px; }
+        .tap-icon { width: 30px; height: 30px; }
+        .rule-info-btn { height: 48px; padding: 0 20px; border-radius: 24px; border-width: 3px; gap: 6px; }
+        .rule-info-btn .btn-exclaim { font-size: 20px; }
+        .rule-info-btn .btn-label { font-size: 18px; }
+        .rule-label-text { display: none; }
+        .mob-br { display: none; }
+        .rule-popover {
+            position: fixed; top: 15%; left: 50%; transform: translateX(-50%); width: auto; min-width: 600px;
+            font-size: 28px; line-height: 1.5; padding: 50px 40px 40px; border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3); border: 1px solid #ddd; z-index: 2100;
+        }
+        .rule-logo { width: 100px; margin-bottom: 20px; }
+        .rule-details-link { font-size: 20px; margin-top: 16px; }
+        .rule-popover-close { width: 36px; height: 36px; font-size: 20px; top: 12px; right: 12px; }
+        .simple-slot-grid.few-slots { grid-template-columns: repeat(2, 1fr) !important; }
+        .simple-slot-grid.few-slots .simple-slot-btn { padding: 35px 0 !important; font-size: 28px !important; }
+        .cal-duration-hint { background: linear-gradient(135deg, #8E2DE2, #4A00E0); color: #fff; border: none; box-shadow: 0 2px 8px rgba(74, 0, 224, 0.4); font-size: 16px; padding: 10px 20px; order: 3; margin-right: 0; margin-left: 10px; }
+        .cal-top-right-group .toggle-wrapper { order: 1; }
+        .cal-top-right-group .rule-info-wrapper { order: 2; }
+    }
+    @media (min-width: 1024px) {
+        .cal-header-wrap { display: flex; justify-content: center; width: 100%; padding: 40px; }
+        .cal-desktop-wrapper { display: flex; flex-direction: row; width: 100%; justify-content: space-between; gap: 40px; }
+        .cal-left-col { flex: 1; display: flex; flex-direction: column; }
+        #cal-slots-area { flex: 1; border-top: none; border-left: 1px solid #e0e0e0; padding-left: 40px; margin-top: 0; padding-top: 125px; height: calc(100vh - 80px); overflow-y: auto; padding-bottom: 100px; }
+        .cal-cell { height: auto; aspect-ratio: 1.2 / 1; }
+        .simple-slot-grid { grid-template-columns: repeat(2, 1fr); }
+        .simple-slot-grid.few-slots { grid-template-columns: repeat(2, 1fr) !important; }
+        .simple-slot-grid.few-slots .simple-slot-btn { padding: 45px 0 !important; font-size: 32px !important; }
+    }
+    @media (min-width: 1400px) { .simple-slot-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 400px) { .full-date-display { font-size: 18px; } }
+  </style>
+</head>
+<body>
+<div style="position:fixed; top:0; left:0; width:100vw; height:140px; background:#060b1c; z-index:-1; pointer-events:none;"></div>
+
+<!-- Custom Notification Modal -->
+<div id="result-modal" class="result-overlay">
+    <div class="result-content">
+        <div id="res-icon" class="result-icon">🎉</div>
+        <div id="res-title" class="result-title">預約成功</div>
+        <div id="res-msg" class="result-msg">時段已保留，請檢查您的電子郵件確認信。</div>
+        <button class="result-close-btn" onclick="closeResultModal()">確定 OK</button>
+    </div>
+</div>
+
+<!-- INTRO ANIMATION -->
+<div id="loading-overlay">
+    <div class="intro-container">
+        <div class="step color-1" id="step1">Tony 線上美語家教</div>
+        <div class="step color-2" id="step2">支援多堂預約</div>
+        <div class="step color-3" id="step3">50分鐘預約課程</div>
+        <div class="step color-4" id="step4">Thank You!</div>
+    </div>
+</div>
+
+<div class="container" id="p-main">
+  <div class="header-section">
+    <div class="top-info-bar">
+        <div id="full-date-display" class="full-date-display"></div>
+        <div class="duration-hint">50分/堂</div>
+    </div>
+    <div class="controls-container">
+        <!-- Toggle badge: completely static/unclickable after intro animation -->
+        <div class="toggle-wrapper neutral" id="main-mode-toggle">
+            <div class="toggle-bg"></div>
+            <div class="toggle-labels">
+                <div class="toggle-half">
+                    <span class="toggle-label label-single">支援一次</span>
+                </div>
+                <span class="toggle-separator">✕</span>
+                <div class="toggle-half">
+                    <span class="toggle-label label-multi">多堂預約</span>
+                </div>
+            </div>
+        </div>
+        <button class="cal-btn-trigger" onclick="openCalendar()">📅 月曆</button>
+        <div class="rule-info-wrapper">
+             <div class="rule-info-btn" onclick="toggleRules('mob-rules')"><span class="btn-exclaim">!</span><span class="btn-label">規範</span></div>
+             <div class="rule-popover" id="mob-rules">
+                 <button class="rule-popover-close" onclick="closePopover('mob-rules')">✕</button>
+                 <img src="https://ik.imagekit.io/lql1uveoc/IMG_9614.PNG?updatedAt=1750437382543" class="rule-logo" alt="Logo">
+                 <p>24小時內提出請假或調課, <span class="rule-highlight">扣除0.5 堂</span></p>
+                 <p>12小時內提出請假或調課, <span class="rule-highlight">扣除 1 堂</span></p>
+                 <p><span class="rule-highlight-red">週六及國定假日24小時內</span><br class="mob-br">請假或調課, 扣除1 堂</p>
+                 <a href="https://tonyonlineenglish.netlify.app/regulations" target="_blank" class="rule-details-link">詳情請點這裡</a>
+             </div>
+        </div>
+    </div>
+    <div class="date-scroller" id="dateScroller"></div>
+  </div>
+  <div class="slots-container" id="main-slots-container">
+    <div id="empty-msg"></div>
+    <div id="card-morning" class="time-card morning">
+      <div class="time-axis">
+          <div class="axis-time">10<small>AM</small></div><div class="axis-line"></div><div class="axis-icon">☀</div><div class="axis-line"></div><div class="axis-time">12<small>PM</small></div>
+      </div>
+      <div class="card-content"><div id="grid-morning" class="slot-grid"></div></div>
+    </div>
+    <div id="card-afternoon" class="time-card afternoon">
+      <div class="time-axis">
+          <div class="axis-time">01<small>PM</small></div><div class="axis-line"></div><div class="axis-icon">☕</div><div class="axis-line"></div><div class="axis-time">05<small>PM</small></div>
+      </div>
+      <div class="card-content"><div id="grid-afternoon" class="slot-grid"></div></div>
+    </div>
+    <div id="card-evening" class="time-card evening">
+      <div class="time-axis">
+          <div class="axis-time">06<small>PM</small></div><div class="axis-line"></div><div class="axis-icon">🌙</div><div class="axis-line"></div><div class="axis-time">10<small>PM</small></div>
+      </div>
+      <div class="card-content"><div id="grid-evening" class="slot-grid"></div></div>
+    </div>
+  </div>
+</div>
+
+<div id="hot-panel">
+  <button class="close-hot" onclick="closeHotPanel()">✕</button>
+  <div class="hot-title">
+    <span id="hot-icon">⚡</span>近期晚間時段
+    <img src="https://ik.imagekit.io/lql1uveoc/pointing-down-4.png" class="title-arrow-icon">
+  </div>
+  <div class="hot-list" id="hot-list"></div>
+</div>
+
+<button id="floating-cart-btn" onclick="toggleCartForm()">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="cal-icon-svg">
+        <path fill="currentColor" d="M19,4H18V2H16V4H8V2H6V4H5A2,2 0 0,0 3,6V20A2,2 0 0,0 5,22H19A2,2 0 0,0 21,20V6A2,2 0 0,0 19,4M19,20H5V10H19V20M19,8H5V6H19V8Z" />
+    </svg>
+    <span class="cart-badge" id="cart-count">0</span>
+</button>
+
+<div id="p-form" class="page-form">
+  <div class="form-box">
+    <button class="back-btn" onclick="closeForm()">❮ 返回</button>
+    <div class="page-title">確認預約</div>
+    <button class="clear-all-btn" onclick="clearCart()">🗑️ 清除所有時段</button>
+    <div style="margin-bottom:5px; font-weight:bold; color:#666;">預約內容 (共 <span id="form-total">0</span> 堂)：</div>
+    <div id="checkout-list"></div>
+    <div class="form-inputs-area">
+        <label>姓名 Name</label><input type="text" id="iptName" placeholder="請輸入姓名">
+        <label>Email</label>
+        <input type="email" id="iptEmail" placeholder="接收通知用" required pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$">
+        <button class="confirm-btn" onclick="submitData()">確認送出</button>
+    </div>
+  </div>
+</div>
+
+<div id="cal-modal" class="cal-modal">
+    <div class="cal-header-wrap">
+        <div class="cal-desktop-wrapper">
+            <div class="cal-left-col">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:5px;">
+                    <button class="back-btn" onclick="closeCalendar()" style="margin-bottom:0;">✕</button>
+                    <div style="display:flex; align-items:center; gap: 10px;" class="cal-top-right-group">
+                        <div class="cal-duration-hint">50分/堂</div>
+                        <!-- Calendar toggle badge: static after intro -->
+                        <div class="toggle-wrapper neutral" id="cal-mode-toggle">
+                            <div class="toggle-bg"></div>
+                            <div class="toggle-labels">
+                                <div class="toggle-half">
+                                    <span class="toggle-label label-single">支援一次</span>
+                                </div>
+                                <span class="toggle-separator">✕</span>
+                                <div class="toggle-half">
+                                    <span class="toggle-label label-multi">多堂預約</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="rule-info-wrapper">
+                             <div class="rule-info-btn" onclick="toggleRules('cal-rules')"><span class="btn-exclaim">!</span><span class="btn-label">規範</span></div>
+                             <div class="rule-popover" id="cal-rules">
+                                 <button class="rule-popover-close" onclick="closePopover('cal-rules')">✕</button>
+                                 <img src="https://ik.imagekit.io/lql1uveoc/IMG_9614.PNG?updatedAt=1750437382543" class="rule-logo" alt="Logo">
+                                 <p>24小時內提出請假或調課, <span class="rule-highlight">扣除0.5 堂</span></p>
+                                 <p>12小時內提出請假或調課, <span class="rule-highlight">扣除 1 堂</span></p>
+                                 <p><span class="rule-highlight-red">週六及國定假日24小時內</span><br class="mob-br">請假或調課, 扣除1 堂</p>
+                                 <a href="https://tonyonlineenglish.netlify.app/regulations" target="_blank" class="rule-details-link">詳情請點這裡</a>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cal-top-info">
+                    <div class="cal-today-label" id="cal-today-date"></div>
+                </div>
+                <div class="cal-nav">
+                    <button class="cal-nav-btn" id="cal-prev-btn" onclick="changeCalMonth(-1)">❮</button>
+                    <div id="cal-title"></div>
+                    <button class="cal-nav-btn" onclick="changeCalMonth(1)">❯</button>
+                </div>
+                <div class="cal-grid" id="cal-head-row">
+                    <div class="cal-head">MON<small>一</small></div>
+                    <div class="cal-head">TUE<small>二</small></div>
+                    <div class="cal-head">WED<small>三</small></div>
+                    <div class="cal-head">THU<small>四</small></div>
+                    <div class="cal-head">FRI<small>五</small></div>
+                    <div class="cal-head sat-head">SAT<small>六</small></div>
+                </div>
+                <div id="cal-body" class="cal-grid"></div>
+            </div>
+            <div id="cal-slots-area">
+                <div class="cal-slots-title" id="cal-slots-title">請選擇日期</div>
+                <div id="cal-slots-content"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+  const CLOCK_ICON_URL = "https://ik.imagekit.io/lql1uveoc/clock-4.png?updatedAt=1774630976142";
+
+  let modalCloseCallback = null;
+  function showNotice(title, message, isError = false, callback = null) {
+      document.getElementById('res-icon').innerText = isError ? "⚠️" : "🎉";
+      document.getElementById('res-title').innerText = title;
+      document.getElementById('res-msg').innerText = message;
+      document.getElementById('result-modal').style.display = 'flex';
+      modalCloseCallback = callback;
+  }
+  function closeResultModal() {
+      document.getElementById('result-modal').style.display = 'none';
+      if (modalCloseCallback) { modalCloseCallback(); modalCloseCallback = null; }
+  }
+
+  // === INTRO ANIMATION ===
+  let isLoadingStepsDone = false; let isCalendarDataReady = false;
+  let introCurrentIdx = 0; const introAnimationSpeed = 400;
+
+  function runLoadingSteps() {
+      const steps = document.querySelectorAll('.step');
+      if (introCurrentIdx === 0 && steps.length > 0) steps.forEach(s => s.classList.remove('active', 'completed'));
+      if (introCurrentIdx < steps.length) {
+          if (introCurrentIdx > 0) { steps[introCurrentIdx-1].classList.remove('active'); steps[introCurrentIdx-1].classList.add('completed'); }
+          steps[introCurrentIdx].classList.add('active'); introCurrentIdx++;
+          setTimeout(runLoadingSteps, introAnimationSpeed);
+      } else {
+          if (steps.length > 0) { steps[steps.length-1].classList.remove('active'); steps[steps.length-1].classList.add('completed'); }
+          isLoadingStepsDone = true; checkAndHideLoading();
+      }
+  }
+  function checkAndHideLoading() {
+      if (isLoadingStepsDone && isCalendarDataReady) {
+          const overlay = document.getElementById("loading-overlay");
+          if (overlay && overlay.style.display !== "none") {
+              overlay.style.opacity = "0"; overlay.style.pointerEvents = "none";
+              setTimeout(() => { overlay.style.display = "none"; playIntroAnimation(); }, 500);
+          }
+      }
+  }
+  function hideLoading(isForce = false) { isCalendarDataReady = true; checkAndHideLoading(); }
+
+  (function(){
+      setTimeout(function(){
+          var o = document.getElementById("loading-overlay");
+          if (o && o.style.display !== "none") { o.style.opacity="0"; o.style.pointerEvents="none"; setTimeout(function(){ o.style.display="none"; }, 500); }
+      }, 6000);
+  })();
+
+  const API_URL = "https://script.google.com/macros/s/AKfycbyWvhW6fp_ohPEvPK226KtNiQLCyAVMl77zV0Hq0k_TcEk3F1ni9qVcJystGUovVjTMGQ/exec";
+  const STAGE_1_DAYS=3, STAGE_2_DAYS=11, BACKGROUND_BATCH=14, MAX_DAYS=60, MAX_SELECTION=10;
+  let cachedData={}, loadedDaysCount=0, selectedDateStr="", selectedSlots=[];
+  const dayNames=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"], chiDayNames=["日","一","二","三","四","五","六"];
+  const monthNamesEng=["Jan","Feb","March","April","May","June","July","Aug","Sept","Oct","Nov","Dec"];
+  let hotPanelShown=false, calYear, calMonth;
+  let limitDate = new Date(); limitDate.setDate(limitDate.getDate()+MAX_DAYS); limitDate.setHours(23,59,59,999);
+
+  window.onload = function() {
+    setTimeout(runLoadingSteps, 100);
+    setTimeout(() => { hideLoading(true); }, 5000);
+    setTimeout(() => {
+        document.querySelectorAll('.date-pill.loading').forEach(pill => { pill.classList.remove('loading'); pill.classList.add('loaded','force-loaded'); });
+        const msg = document.getElementById("empty-msg"); if(msg && msg.innerText.includes("中...")) msg.innerText="請點選日期重新載入";
+    }, 5000);
+    const now = new Date();
+    document.getElementById("cal-today-date").innerText = `Today ${now.getMonth()+1}/${now.getDate()}`;
+    calYear = now.getFullYear(); calMonth = now.getMonth();
+    updateHeaderDate(); initDateScroller();
+    fetchBatchData(0, STAGE_1_DAYS, "STAGE1");
+    openCalendar();
+    document.getElementById("p-main").style.display = "none";
+    setTimeout(() => { const cal=document.getElementById("cal-modal"); if(cal) cal.scrollIntoView({behavior:"smooth",block:"start"}); }, 600);
+  };
+
+  // === INTRO ANIMATION: flicker toggle, end neutral ===
+  function playIntroAnimation() {
+      const toggleWrappers = document.querySelectorAll('.toggle-wrapper');
+      const infoBtns = document.querySelectorAll('.rule-info-btn');
+      if (toggleWrappers.length === 0) return;
+      let count = 0; const maxFlickers = 12; const speed = 100;
+      const interval = setInterval(() => {
+          const mode = (count % 2 === 0) ? 'multi' : 'single';
+          applyModeToUI(mode, true); count++;
+          if (count >= maxFlickers) {
+              clearInterval(interval);
+              toggleWrappers.forEach(el => el.classList.add('pulse-emphasis'));
+              infoBtns.forEach(btn => btn.classList.add('pulse-emphasis-icon'));
+              setTimeout(() => {
+                  toggleWrappers.forEach(el => el.classList.remove('pulse-emphasis'));
+                  infoBtns.forEach(btn => btn.classList.remove('pulse-emphasis-icon'));
+                  // End neutral — background goes away permanently and user cannot click it.
+                  setTimeout(() => { applyModeToUI('neutral', true); }, 300);
+              }, 1200);
+          }
+      }, speed);
+  }
+
+  function applyModeToUI(mode, silent=false) {
+      document.querySelectorAll('.toggle-wrapper').forEach(wrapper => {
+          wrapper.className = `toggle-wrapper ${mode}`;
+      });
+  }
+
+  function toggleRules(id) {
+      const el = document.getElementById(id);
+      document.querySelectorAll('.rule-popover').forEach(p => { if (p.id !== id) p.classList.remove('show'); });
+      el.classList.toggle('show');
+  }
+  function closePopover(id) {
+      document.getElementById(id).classList.remove('show');
+  }
+
+  document.addEventListener('click', function(e) {
+      if (!e.target.closest('.rule-info-wrapper') && !e.target.closest('.rule-popover-close')) {
+          document.querySelectorAll('.rule-popover').forEach(p => p.classList.remove('show'));
+      }
+      const hotPanel = document.getElementById("hot-panel");
+      if (hotPanel && hotPanel.classList.contains("show")) {
+          if (!e.target.closest("#hot-panel")) hotPanel.classList.remove("show");
+      }
+  });
+
+  function isValidSlot(slot) {
+      if (!slot || !slot.time) return false;
+      const[hStr, mStr] = slot.time.split(":");
+      const h = parseInt(hStr); const m = parseInt(mStr);
+      if (h >= 21) return false;
+      if (h === 20 && m > 30) return false;
+      return true;
+  }
+
+  function initDateScroller() {
+    const container = document.getElementById("dateScroller");
+    const today = new Date();
+    for (let i = 0; i < MAX_DAYS; i++) {
+      const d = new Date(); d.setDate(today.getDate()+i); const dStr = fmt(d);
+      if (d.getDay() === 0) continue;
+      const dayName = dayNames[d.getDay()]; const chiName = chiDayNames[d.getDay()]; const dateText = `${d.getMonth()+1}/${d.getDate()}`;
+      const isSat = d.getDay() === 6;
+      const pill = document.createElement("div");
+      pill.className = "date-pill loading" + (isSat ? " sat-pill" : "");
+      pill.id = `pill-${dStr}`; pill.dataset.date = dStr;
+      pill.innerHTML = `<div class="date-num-row"><span class="date-text">${dateText}</span></div><div class="week-row"><span class="week-eng">${dayName}</span><span class="week-chi">${chiName}</span></div><div class="pill-loader"></div>`;
+      pill.onclick = () => { if (pill.classList.contains('loading')) forceLoadDate(dStr); else selectDate(dStr); };
+      container.appendChild(pill);
+    }
+  }
+
+  function forceLoadDate(dStr) {
+      selectDatePillUI(dStr);
+      if (!cachedData[dStr]) { document.getElementById("empty-msg").innerText="資料載入中..."; document.getElementById("empty-msg").style.display="block"; }
+      document.querySelectorAll(".time-card").forEach(c => c.style.display="none");
+      fetch(`${API_URL}?action=getBatchSlots&startDate=${dStr}&days=1`).then(res=>res.json()).then(data=>{
+          Object.assign(cachedData, data); if(!cachedData[dStr]) cachedData[dStr]={slots:[]};
+          const pill=document.getElementById(`pill-${dStr}`); if(pill){pill.classList.remove('loading');pill.classList.add('loaded');}
+          renderSlots(dStr);
+      }).catch(()=>{ document.getElementById("empty-msg").innerText="連線失敗，請重試"; const pill=document.getElementById(`pill-${dStr}`); if(pill) pill.classList.remove('loading'); });
+  }
+
+  function updateDatePills(startDateStr, days) {
+      const start = new Date(startDateStr);
+      for (let i=0; i<days; i++) { const d=new Date(start); d.setDate(start.getDate()+i); const dStr=fmt(d); const pill=document.getElementById(`pill-${dStr}`); if(pill){pill.classList.remove('loading');pill.classList.add('loaded');} }
+  }
+
+  function fetchBatchData(startIndex, days, stage) {
+    const today=new Date(); const startD=new Date(); startD.setDate(today.getDate()+startIndex); const startStr=fmt(startD);
+    fetch(`${API_URL}?action=getBatchSlots&startDate=${startStr}&days=${days}`).then(res=>res.json()).then(data=>{
+        Object.assign(cachedData, data);
+        for(let i=0;i<days;i++){const d=new Date();d.setDate(today.getDate()+startIndex+i);const dStr=fmt(d);if(!cachedData[dStr])cachedData[dStr]={slots:[]};}
+        loadedDaysCount+=days; updateDatePills(startStr,days);
+        if(stage==="STAGE1"){
+          hideLoading(false); selectNearestAvailableDay();
+          if(document.getElementById("cal-modal").classList.contains("active")) jumpToDate(selectedDateStr);
+          checkHotSlots(14); fetchBatchData(loadedDaysCount,STAGE_2_DAYS,"STAGE2");
+        } else if(stage==="STAGE2"){
+          checkHotSlots(14); loadRestInBackground();
+        } else if(stage==="BG"){
+          loadRestInBackground();
+        }
+        if(document.getElementById("cal-modal").classList.contains("active")){
+            renderCalGrid(); if(selectedDateStr&&document.getElementById("cal-slots-content").innerHTML.includes("載入")) renderSlotsInsideCalendar(selectedDateStr);
+        }
+    }).catch(err=>{
+        console.error("Load error",err); hideLoading(true); updateDatePills(startStr,days);
+        if(stage==="STAGE1"){document.getElementById("empty-msg").innerText="連線不穩，請手動點選日期";document.getElementById("empty-msg").style.display="block";}
+        else setTimeout(()=>loadRestInBackground(),2000);
+    });
+  }
+
+  function loadRestInBackground(){if(loadedDaysCount<MAX_DAYS)setTimeout(()=>{fetchBatchData(loadedDaysCount,BACKGROUND_BATCH,"BG");},500);}
+
+  function selectNearestAvailableDay() {
+      const sortedDates=Object.keys(cachedData).sort(); const todayStr=fmt(new Date()); let foundDate=null;
+      for(const dStr of sortedDates){
+          if(dStr<todayStr)continue;
+          const dayData=cachedData[dStr];
+          if(dayData&&dayData.slots&&dayData.slots.length>0){const hasValid=dayData.slots.some(slot=>isValidSlot(slot));if(hasValid){foundDate=dStr;break;}}
+      }
+      if(foundDate) selectDate(foundDate); else autoSelectFirst();
+  }
+
+  function jumpToDate(dStr) {
+      selectedDateStr=dStr; renderCalGrid();
+      const container=document.getElementById("cal-slots-content");
+      const dObj=new Date(dStr); const wDay=chiDayNames[dObj.getDay()];
+      document.getElementById("cal-slots-title").innerText=`${dStr} 週${wDay} 可預約時段`;
+      highlightWeekDay(dStr);
+      if(cachedData[dStr]){renderSlotsInsideCalendar(dStr);}else{
+          container.innerHTML=`<div style="text-align:center;padding:30px;"><div class="spinner" style="width:30px;height:30px;margin:0 auto 10px auto;border:4px solid #ddd;border-top-color:#ff5400;border-radius:50%;animation:spin 0.8s linear infinite;"></div>讀取該日行程中...</div>`;
+          fetch(`${API_URL}?action=getBatchSlots&startDate=${dStr}&days=1`).then(r=>r.json()).then(data=>{
+              Object.assign(cachedData,data); if(!cachedData[dStr]) cachedData[dStr]={slots:[]};
+              const pill=document.getElementById(`pill-${dStr}`); if(pill){pill.classList.remove('loading');pill.classList.add('loaded');}
+              renderSlotsInsideCalendar(dStr);
+          }).catch(()=>{container.innerHTML=`<div style="text-align:center;padding:20px;color:red;">讀取失敗</div>`;});
+      }
+  }
+
+  function highlightWeekDay(dStr) {
+      const date=new Date(dStr); const dayIndex=date.getDay();
+      const headers=document.querySelectorAll('.cal-head');
+      headers.forEach(h=>h.classList.remove('active-day'));
+      if(dayIndex===0)return;
+      const targetIndex=dayIndex-1;
+      if(headers[targetIndex]) headers[targetIndex].classList.add('active-day');
+  }
+
+  function makeClockImg(extraClass='') {
+      const img = document.createElement('img');
+      img.src = CLOCK_ICON_URL; img.className = 'slot-clock-icon' + (extraClass ? ' '+extraClass : '');
+      img.alt = ''; img.draggable = false;
+      return img;
+  }
+
+  function renderSlotsInsideCalendar(dStr) {
+      const container=document.getElementById("cal-slots-content"); container.innerHTML="";
+      const data=cachedData[dStr];
+      if(!data||!data.slots||data.slots.length===0){container.innerHTML=`<div style="text-align:center;padding:20px;color:#aaa;font-weight:bold;">請選擇其他日期</div>`;return;}
+      const grid=document.createElement("div"); grid.className="simple-slot-grid";
+      const validSlots=data.slots.filter(s=>isValidSlot(s));
+      if(validSlots.length>0&&validSlots.length<=4) grid.classList.add('few-slots'); else grid.classList.remove('few-slots');
+      validSlots.forEach(slot=>{
+          const btn=document.createElement("button"); btn.className="simple-slot-btn";
+          btn.appendChild(makeClockImg());
+          btn.appendChild(document.createTextNode(formatTime12H(slot.time)));
+          if(selectedSlots.some(s=>s.timestamp===slot.timestamp)) btn.classList.add("selected");
+          btn.addEventListener('click',()=>{handleSlotClick(slot,dStr);renderSlotsInsideCalendar(dStr);});
+          grid.appendChild(btn);
+      });
+      if(validSlots.length===0) container.innerHTML=`<div style="text-align:center;padding:20px;color:#aaa;font-weight:bold;">本日無可預約時段</div>`;
+      else container.appendChild(grid);
+      updateBottomBar();
+  }
+
+  function updateHeaderDate() {
+      const now=new Date(); const y=now.getFullYear(); const m=now.getMonth()+1; const d=now.getDate(); const day=chiDayNames[now.getDay()];
+      document.getElementById("full-date-display").innerText=`今日 ${y}年${m}月${d}日 週${day}`;
+  }
+
+  function openCalendar() {
+      if(!selectedDateStr) selectedDateStr=fmt(new Date());
+      renderCalGrid(); jumpToDate(selectedDateStr);
+      const modal=document.getElementById("cal-modal"); modal.classList.add("active");
+      window.scrollTo(0,0); modal.scrollTop=0; updateBottomBar();
+  }
+  function closeCalendar() {
+      if(window.innerWidth>=768)return;
+      document.getElementById("cal-modal").classList.remove("active");
+      if(selectedDateStr){selectDatePillUI(selectedDateStr);renderSlots(selectedDateStr);const pill=document.getElementById(`pill-${selectedDateStr}`);if(pill&&pill.classList.contains('loading'))forceLoadDate(selectedDateStr);}
+      updateBottomBar();
+  }
+  function changeCalMonth(n) {
+      if(n<0){
+          const now=new Date(); const curY=now.getFullYear(); const curM=now.getMonth();
+          if(calYear===curY&&calMonth===curM)return;
+          const targetDate=new Date(calYear,calMonth+n,1); const minDate=new Date(curY,curM,1);
+          if(targetDate<minDate)return;
+      }
+      calMonth+=n; if(calMonth>11){calMonth=0;calYear++;}else if(calMonth<0){calMonth=11;calYear--;}
+      renderCalGrid();
+  }
+  function renderCalGrid() {
+      document.getElementById("cal-title").innerText=`${calYear}年 ${calMonth+1}月 ${monthNamesEng[calMonth]}`;
+      const now=new Date(); const prevBtn=document.getElementById('cal-prev-btn');
+      if(calYear===now.getFullYear()&&calMonth===now.getMonth()) prevBtn.classList.add('disabled'); else prevBtn.classList.remove('disabled');
+      const container=document.getElementById("cal-body"); container.innerHTML="";
+      const firstDay=new Date(calYear,calMonth,1).getDay(); const daysInMonth=new Date(calYear,calMonth+1,0).getDate();
+      const today=new Date(); today.setHours(0,0,0,0);
+      let emptyCells=firstDay===0?6:firstDay-1;
+      for(let i=0;i<emptyCells;i++) container.innerHTML+=`<div class="cal-cell empty"></div>`;
+      for(let d=1;d<=daysInMonth;d++){
+          const dateStr=`${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`; const currentD=new Date(dateStr);
+          if(currentD.getDay()===0)continue;
+          const cell=document.createElement("div"); cell.className="cal-cell"; cell.innerText=d;
+          if(currentD<today||currentD>limitDate) cell.classList.add("disabled");
+          else{
+              cell.classList.add("loaded");
+              if(dateStr===fmt(new Date())) cell.classList.add("today");
+              if(dateStr===selectedDateStr) cell.classList.add("selected");
+              if(cachedData[dateStr]&&cachedData[dateStr].slots&&cachedData[dateStr].slots.length>0) cell.classList.add("has-data");
+              cell.onclick=()=>jumpToDate(dateStr);
+          }
+          container.appendChild(cell);
+      }
+      if(selectedDateStr) highlightWeekDay(selectedDateStr);
+  }
+
+  function handleSlotClick(slot, dateStr) {
+      toggleSlot(slot, dateStr);
+  }
+  function addToCart(slot, dateStr) {
+      const dObj=new Date(dateStr); const displayStr=`${dObj.getMonth()+1}/${dObj.getDate()} (${dayNames[dObj.getDay()]} ${chiDayNames[dObj.getDay()]}) ${formatTime12H(slot.time)}`;
+      selectedSlots.push({dateStr,time:slot.time,timestamp:slot.timestamp,displayStr});
+  }
+  function toggleSlot(slot, dateStr) {
+      const index=selectedSlots.findIndex(s=>s.timestamp===slot.timestamp);
+      if(index>=0) selectedSlots.splice(index,1);
+      else{if(selectedSlots.length>=MAX_SELECTION)return showNotice("提醒",`最多 ${MAX_SELECTION} 個時段`,true);addToCart(slot,dateStr);}
+      updateBottomBar();
+      if(document.getElementById("cal-modal").classList.contains("active")) renderSlotsInsideCalendar(dateStr); else renderSlots(selectedDateStr);
+  }
+  function clearCart() {
+      selectedSlots=[]; updateBottomBar();
+      if(document.getElementById("cal-modal").classList.contains("active")){if(selectedDateStr) renderSlotsInsideCalendar(selectedDateStr);}else{renderSlots(selectedDateStr);}
+      closeForm();
+  }
+  function toggleCartForm() {
+      const form=document.getElementById("p-form");
+      if(form.classList.contains("active")) closeForm(); else openBatchForm();
+  }
+  function updateBottomBar() {
+      const count=selectedSlots.length;
+      const show=(count>0);
+      const btn=document.getElementById("floating-cart-btn"); const cartCount=document.getElementById("cart-count");
+      const isCalActive=document.getElementById('cal-modal').classList.contains('active');
+      if(show){
+          cartCount.innerText=count; cartCount.classList.remove("bump-effect"); void cartCount.offsetWidth; cartCount.classList.add("bump-effect");
+          btn.classList.add("show");
+          if(window.innerWidth<768&&isCalActive){
+              const calArea=document.getElementById('cal-slots-area');
+              if(btn.parentElement!==calArea){calArea.appendChild(btn);btn.classList.add('in-cal-view');}
+          }else{if(btn.parentElement!==document.body){document.body.appendChild(btn);btn.classList.remove('in-cal-view');}}
+      }else{
+          btn.classList.remove("show");
+      }
+  }
+  function removeSingleSlot(ts) {
+      selectedSlots=selectedSlots.filter(s=>s.timestamp!==ts);
+      if(selectedSlots.length===0){clearCart();return;}
+      openBatchForm();
+      if(document.getElementById("cal-modal").classList.contains("active")) renderSlotsInsideCalendar(selectedDateStr); else renderSlots(selectedDateStr);
+      updateBottomBar();
+  }
+  function openBatchForm() {
+    if(selectedSlots.length===0)return;
+    const list=document.getElementById("checkout-list"); list.innerHTML="";
+    selectedSlots.sort((a,b)=>a.timestamp-b.timestamp);
+    selectedSlots.forEach((s,index)=>{
+        const div=document.createElement("div"); div.className="selected-item";
+        div.innerHTML=`<div style="display:flex;align-items:center;"><span class="slot-index-badge">${index+1}</span><span>${s.displayStr}</span></div><button class="remove-slot-btn" onclick="removeSingleSlot(${s.timestamp})">🗑️</button>`;
+        list.appendChild(div);
+    });
+    document.getElementById("form-total").innerText=selectedSlots.length;
+    document.getElementById("p-form").classList.add("active");
+    if(window.innerWidth>=768&&window.innerWidth<1024){
+        const formPage=document.getElementById("p-form"); if(formPage) formPage.scrollTo({top:0,behavior:'smooth'});
+        window.scrollTo({top:0,behavior:'smooth'});
+    }
+  }
+  function closeForm(){document.getElementById("p-form").classList.remove("active");}
+
+  function submitData() {
+    const name=document.getElementById("iptName").value.trim(); const email=document.getElementById("iptEmail").value.trim();
+    const emailRegex=/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    if(!name||!email)return showNotice("提示","請填寫完整資訊",true);
+    if(!emailRegex.test(email))return showNotice("格式錯誤","Email 格式不正確，請輸入完整的 Email (例如: name@gmail.com)",true);
+    const btn=document.querySelector(".confirm-btn"); const orgText=btn.innerText; btn.innerText="處理中..."; btn.disabled=true;
+    const DURATION_MS=60*60*1000;
+    fetch(API_URL,{method:"POST",body:JSON.stringify({name,email,appointments:selectedSlots})})
+    .then(res=>res.json())
+    .then(res=>{
+       if(res.bookingSummary){
+           const summary=res.bookingSummary;
+           if(summary.failCount===0){showNotice("預約成功",`🎉 預約成功！\n共 ${summary.successCount} 堂課。\n確認信已寄至您的信箱。`);finishSuccessBooking();}
+           else{
+               let msg=`⚠️ 注意：有 ${summary.failCount} 堂課預約失敗 (已被搶先預約)。\n`;
+               msg+=`✅ 成功預約：${summary.successCount} 堂\n`;
+               if(summary.failedSlots&&summary.failedSlots.length>0){msg+="\n❌ 失敗時段：\n";summary.failedSlots.forEach(slot=>{const d=new Date(parseInt(slot.timestamp));const min=d.getMinutes();const timeStr=d.getHours()+":"+(min<10?'0':'')+min;const dateStr=(d.getMonth()+1)+"/"+d.getDate();msg+=`- ${dateStr} ${timeStr}\n`;});}
+               msg+="\n系統已保留成功的時段。\n頁面將重新整理以顯示最新剩餘名額。";
+               showNotice("部分預約成功",msg,true,()=>{location.reload();});
+           }
+       }else if(res.success){showNotice("預約成功","預約完成！");finishSuccessBooking();}
+       else{showNotice("預約失敗","預約發生錯誤："+res.message,true);}
+       btn.innerText=orgText; btn.disabled=false;
+    })
+    .catch(()=>{showNotice("網路錯誤","網路錯誤，請檢查連線",true);btn.innerText=orgText;btn.disabled=false;});
+
+    function finishSuccessBooking(){
+         selectedSlots.forEach(booked=>{
+           if(cachedData[booked.dateStr]){
+             cachedData[booked.dateStr].slots=cachedData[booked.dateStr].slots.filter(s=>{
+               const sStart=s.timestamp;const sEnd=sStart+DURATION_MS;const bookedStart=booked.timestamp;const bookedEnd=bookedStart+DURATION_MS;
+               return!(sStart<bookedEnd&&sEnd>bookedStart);
+             });
+           }
+         });
+         selectedSlots=[]; closeForm(); closeCalendar(); renderSlots(selectedDateStr); updateBottomBar(); checkHotSlots(loadedDaysCount>7?14:7);
+    }
+  }
+
+  function checkHotSlots(daysLimit) {
+    if(!daysLimit)daysLimit=14;
+    const list=document.getElementById("hot-list"); list.innerHTML=""; let hotItems=[];
+    const sortedDates=Object.keys(cachedData).sort(); const today=new Date(); today.setHours(0,0,0,0);
+    for(const dStr of sortedDates){
+      const d=new Date(dStr);d.setHours(0,0,0,0);const diff=(d-today)/(1000*60*60*24);
+      if(diff>=0&&diff<daysLimit){
+          const dateObj=new Date(dStr);const day=dateObj.getDay();
+          if(day>=1&&day<=6){
+            const slots=cachedData[dStr].slots||[];
+            slots.forEach(slot=>{
+               const h=parseInt(slot.time.split(":")[0]);
+               if(h>=18&&h<=20){
+                 const monDate=`${dateObj.getMonth()+1}/${dateObj.getDate()}`;const weekName=dayNames[day];const displayTime=formatHotTime(slot.time);
+                 const btn=document.createElement("button");btn.className="hot-btn";
+                 btn.innerHTML=`<div>${monDate} (${weekName}) &nbsp;&nbsp; ${displayTime} <img src="https://ik.imagekit.io/lql1uveoc/tap.png?updatedAt=1751188454925" class="tap-icon"></div>`;
+                 btn.onclick=()=>{
+                     closeHotPanel();
+                     if(window.innerWidth<768){closeCalendar();selectDate(dStr);}else{jumpToDate(dStr);}
+                     setTimeout(()=>{handleSlotClick(slot,dStr);},100);
+                 };
+                 hotItems.push(btn);
+               }
+            });
+          }
+      }
+    }
+    if(hotItems.length>0){
+        hotItems.forEach((btn,index)=>{if(window.innerWidth<768&&index>=4)btn.classList.add("hot-hidden");list.appendChild(btn);});
+        if(window.innerWidth<768&&hotItems.length>4){
+            const showMoreBtn=document.createElement("div");showMoreBtn.className="hot-show-more";showMoreBtn.innerText="顯示更多";
+            showMoreBtn.onclick=function(){document.querySelectorAll(".hot-hidden").forEach(el=>el.classList.remove("hot-hidden"));showMoreBtn.style.display="none";};
+            list.appendChild(showMoreBtn);
+        }
+        if(!hotPanelShown){hotPanelShown=true;const panel=document.getElementById("hot-panel");setTimeout(()=>{panel.classList.add("show");},100);}
+    }
+  }
+
+  function formatHotTime(timeStr){
+      if(!timeStr)return"";const[h,m]=timeStr.split(':');let hour=parseInt(h);const suffix=hour>=12?'pm':'am';hour=hour%12||12;
+      const isMobile=window.innerWidth<768;
+      if(isMobile){if(m==='00')return`${hour}${suffix}`;return`${hour}:${m}${suffix}`;}
+      else{return`${hour}:${m} ${suffix}`;}
+  }
+
+  function closeHotPanel(){document.getElementById("hot-panel").classList.remove("show");}
+  function autoSelectFirst(){
+    const firstLoaded=document.querySelector(".date-pill.loaded");
+    if(firstLoaded){selectDate(firstLoaded.dataset.date);}else{document.getElementById("empty-msg").innerText="資料讀取中...";document.getElementById("empty-msg").style.display="block";}
+  }
+  function selectDate(dStr){
+    selectedDateStr=dStr;selectDatePillUI(dStr);renderSlots(dStr);
+    if(window.innerWidth<768&&!document.getElementById('cal-modal').classList.contains('active')) document.querySelector('.header-section').scrollIntoView({behavior:'smooth'});
+  }
+  function selectDatePillUI(dStr){
+    document.querySelectorAll(".date-pill").forEach(e=>e.classList.remove("active"));
+    const el=document.getElementById(`pill-${dStr}`);
+    if(el){el.classList.add("active");el.scrollIntoView({behavior:"smooth",inline:"center",block:"nearest"});document.getElementById("empty-msg").style.display="none";}
+  }
+  function renderSlots(dStr) {
+    if(!cachedData[dStr]){document.getElementById("empty-msg").innerText="資料載入中...";document.getElementById("empty-msg").style.display="block";document.querySelectorAll(".time-card").forEach(c=>c.style.display="none");return;}
+    const data=cachedData[dStr];
+    const zones={morning:{el:document.getElementById("grid-morning"),card:document.getElementById("card-morning")},afternoon:{el:document.getElementById("grid-afternoon"),card:document.getElementById("card-afternoon")},evening:{el:document.getElementById("grid-evening"),card:document.getElementById("card-evening")}};
+    Object.values(zones).forEach(z=>{z.el.innerHTML="";z.card.style.display="none";});
+    if(!data.slots||data.slots.length===0){document.getElementById("empty-msg").innerHTML="<b>請選擇其他日期</b>";document.getElementById("empty-msg").style.display="block";return;}
+    document.getElementById("empty-msg").style.display="none";
+    Object.keys(zones).forEach(key=>{
+        const slots=data.slots.filter(s=>s.type===key);const z=zones[key];
+        if(slots.length>0){
+            z.card.style.display="flex"; z.el.className="slot-grid";
+            if(slots.length<=3) z.el.classList.add('few-slots'); else z.el.classList.remove('few-slots');
+            z.el.innerHTML="";
+            const axisLine=z.card.querySelectorAll(".axis-line");
+            if(slots.length<=3) axisLine.forEach(line=>line.style.display="none"); else axisLine.forEach(line=>line.style.display="block");
+            slots.forEach(slot=>{
+                const btn=document.createElement("button"); btn.className="slot-btn"; btn.dataset.ts=slot.timestamp;
+                const clockImg=makeClockImg(); btn.appendChild(clockImg);
+                btn.appendChild(document.createTextNode(formatTime12H(slot.time)));
+                if(selectedSlots.some(s=>s.timestamp===slot.timestamp)) btn.classList.add("selected");
+                btn.onclick=()=>{handleSlotClick(slot,dStr);};
+                z.el.appendChild(btn);
+            });
+        }
+    });
+    updateBottomBar();
+  }
+  function formatTime12H(timeStr){if(!timeStr)return"";const[h,m]=timeStr.split(':');let hour=parseInt(h);const suffix=hour>=12?'PM':'AM';hour=hour%12||12;return`${hour}:${m} ${suffix}`;}
+  function fmt(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+</script>
+</body>
+</html>
