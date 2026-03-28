@@ -1,4 +1,4 @@
-<!-- VERSION 11.31 (Fix: Custom Modal for LINE Browser & Wix Iframe Compatibility + Intro Animation) -->
+<!-- VERSION 11.32 (Fix: Unified Shopping Cart Mode) -->
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -38,7 +38,7 @@
       --card-afternoon: #eefaff;
       --card-evening: #faf0ff;
      
-      --selected-bg: #ff5400;
+      --selected-bg: #007aff; /* 設定選取時段顏色為藍色 */
       --selected-color: #ffffff;
     }
    
@@ -127,6 +127,7 @@
         to { transform: rotate(360deg); }
     }
 
+    /* 保留 toggle-wrapper 相關 CSS 以防影響其他佈局設計 */
     .toggle-wrapper {
         position: relative;
         display: flex; align-items: center;
@@ -140,76 +141,14 @@
         box-shadow: 0 4px 12px rgba(0,0,0,0.15); 
         transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease;
     }
-
-    .toggle-wrapper.pulse-emphasis {
-        transform: scale(1.15); 
-        box-shadow: 0 0 25px rgba(255, 84, 0, 0.7); 
-        z-index: 100; 
-    }
-
-    .toggle-wrapper::before {
-        content: '';
-        position: absolute;
-        top: -100%; left: -100%;
-        width: 300%; height: 300%;
-        background: conic-gradient(
-            from 0deg,
-            #007aff, 
-            #00c6ff, 
-            #ff5400, 
-            #ff2d55, 
-            #007aff
-        );
-        animation: spin-border 3s linear infinite;
-        z-index: -2;
-    }
-
-    .toggle-wrapper::after {
-        content: '';
-        position: absolute;
-        inset: 3px; 
-        background: #f0f0f0;
-        border-radius: 25px;
-        z-index: -1;
-    }
-
-    .toggle-bg {
-        position: absolute;
-        top: 5px; 
-        left: 5px;
-        height: 32px; 
-        width: calc(50% - 5px); 
-        background: var(--active-gradient);
-        border-radius: 20px;
-        transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), background 0.3s, box-shadow 0.3s;
-        box-shadow: 0 2px 5px var(--blue-glow);
-        z-index: 1;
-    }
-
-    .toggle-labels {
-        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-        display: flex; z-index: 2;
-    }
-    .toggle-label {
-        flex: 1; display: flex; justify-content: center; align-items: center;
-        font-size: 15px; 
-        font-weight: 800; 
-        color: #000000; 
-        transition: color 0.3s;
-    }
-
-    .toggle-wrapper.single .toggle-bg { 
-        transform: translateX(0); 
-        background: var(--active-gradient);
-        box-shadow: 0 2px 5px var(--blue-glow);
-    }
-    
-    .toggle-wrapper.multi .toggle-bg { 
-        transform: translateX(102%); 
-        background: var(--multi-gradient); 
-        box-shadow: 0 2px 5px var(--multi-glow);
-    }
-    
+    .toggle-wrapper.pulse-emphasis { transform: scale(1.15); box-shadow: 0 0 25px rgba(255, 84, 0, 0.7); z-index: 100; }
+    .toggle-wrapper::before { content: ''; position: absolute; top: -100%; left: -100%; width: 300%; height: 300%; background: conic-gradient( from 0deg, #007aff, #00c6ff, #ff5400, #ff2d55, #007aff ); animation: spin-border 3s linear infinite; z-index: -2; }
+    .toggle-wrapper::after { content: ''; position: absolute; inset: 3px; background: #f0f0f0; border-radius: 25px; z-index: -1; }
+    .toggle-bg { position: absolute; top: 5px; left: 5px; height: 32px; width: calc(50% - 5px); background: var(--active-gradient); border-radius: 20px; transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), background 0.3s, box-shadow 0.3s; box-shadow: 0 2px 5px var(--blue-glow); z-index: 1; }
+    .toggle-labels { position: absolute; top: 0; left: 0; width: 100%; height: 100%; display: flex; z-index: 2; }
+    .toggle-label { flex: 1; display: flex; justify-content: center; align-items: center; font-size: 15px; font-weight: 800; color: #000000; transition: color 0.3s; }
+    .toggle-wrapper.single .toggle-bg { transform: translateX(0); background: var(--active-gradient); box-shadow: 0 2px 5px var(--blue-glow); }
+    .toggle-wrapper.multi .toggle-bg { transform: translateX(102%); background: var(--multi-gradient); box-shadow: 0 2px 5px var(--multi-glow); }
     .toggle-wrapper.single .label-single { color: #fff; }
     .toggle-wrapper.multi .label-multi { color: #fff; }
 
@@ -349,12 +288,12 @@
     }
     .slot-btn:active { transform: scale(0.95); }
     .slot-btn.selected {
-        background: var(--selected-bg) !important; color: var(--selected-color) !important;
-        transform: scale(1.05); box-shadow: 0 4px 10px rgba(0,0,0,0.2); border-color: var(--selected-bg);
+        background: var(--active-gradient) !important; color: var(--selected-color) !important;
+        transform: scale(1.05); box-shadow: 0 4px 10px rgba(0, 122, 255, 0.4); border-color: transparent;
     }
     .slot-btn.selected::after, .simple-slot-btn.selected::after {
         content: '✓'; position: absolute; top: -6px; right: -6px; width: 20px; height: 20px;
-        background: white; color: var(--pill-active); border-radius: 50%;
+        background: white; color: var(--blue-main); border-radius: 50%;
         display: flex; align-items: center; justify-content: center;
         font-size: 14px; font-weight: bold; box-shadow: 0 1px 3px rgba(0,0,0,0.2); border: 1px solid #eee;
     }
@@ -893,14 +832,7 @@
     </div>
    
     <div class="controls-container">
-        <div class="toggle-wrapper single" id="main-mode-toggle" onclick="toggleMode()">
-            <div class="toggle-bg"></div>
-            <div class="toggle-labels">
-                <span class="toggle-label label-single">單堂預約</span>
-                <span class="toggle-label label-multi">多堂預約</span>
-            </div>
-        </div>
-        
+        <!-- 移除了原本的 mode toggle，直接保留月曆按鈕及資訊按鈕 -->
         <button class="cal-btn-trigger" onclick="openCalendar()">📅 月曆</button>
         
         <div class="rule-info-wrapper">
@@ -979,13 +911,7 @@
                     <div style="display:flex; align-items:center; gap: 10px;" class="cal-top-right-group">
                         <div class="cal-duration-hint">50分/堂</div>
 
-                        <div class="toggle-wrapper single" id="cal-mode-toggle" onclick="toggleMode()">
-                            <div class="toggle-bg"></div>
-                            <div class="toggle-labels">
-                                <span class="toggle-label label-single">單堂預約</span>
-                                <span class="toggle-label label-multi">多堂預約</span>
-                            </div>
-                        </div>
+                        <!-- 移除了原本的 cal-mode-toggle -->
                         <div class="rule-info-wrapper">
                              <div class="rule-info-btn" onclick="toggleRules('cal-rules')">!</div>
                              <div class="rule-popover" id="cal-rules">
@@ -1113,7 +1039,7 @@
 
   const API_URL = "https://script.google.com/macros/s/AKfycbyWvhW6fp_ohPEvPK226KtNiQLCyAVMl77zV0Hq0k_TcEk3F1ni9qVcJystGUovVjTMGQ/exec";
   const STAGE_1_DAYS = 3; const STAGE_2_DAYS = 11; const BACKGROUND_BATCH = 14; const MAX_DAYS = 60; const MAX_SELECTION = 10;
-  let cachedData = {}; let loadedDaysCount = 0; let selectedDateStr = ""; let selectedSlots =[]; let currentMode = 'single';
+  let cachedData = {}; let loadedDaysCount = 0; let selectedDateStr = ""; let selectedSlots =[];
   const dayNames =["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]; const chiDayNames =["日", "一", "二", "三", "四", "五", "六"];
   const monthNamesEng =["Jan", "Feb", "March", "April", "May", "June", "July", "Aug", "Sept", "Oct", "Nov", "Dec"];
   let hotPanelShown = false; let calYear, calMonth;
@@ -1153,37 +1079,14 @@
   };
 
   function playIntroAnimation() {
-      const toggleWrappers = document.querySelectorAll('.toggle-wrapper');
       const infoBtns = document.querySelectorAll('.rule-info-btn');
-      if (toggleWrappers.length === 0) return;
+      if (infoBtns.length === 0) return;
 
-      let count = 0;
-      const maxFlickers = 12; 
-      const speed = 100;      
-
-      const interval = setInterval(() => {
-          const mode = (count % 2 === 0) ? 'multi' : 'single';
-          switchMode(mode, true); 
-          count++;
-
-          if (count >= maxFlickers) {
-              clearInterval(interval);
-              switchMode('multi', true); 
-              
-              toggleWrappers.forEach(el => el.classList.add('pulse-emphasis'));
-              infoBtns.forEach(btn => btn.classList.add('pulse-emphasis-icon'));
-
-              setTimeout(() => {
-                  toggleWrappers.forEach(el => el.classList.remove('pulse-emphasis'));
-                  infoBtns.forEach(btn => btn.classList.remove('pulse-emphasis-icon'));
-                  
-                  setTimeout(() => {
-                      switchMode('single', false); 
-                  }, 300);
-                  
-              }, 1200); 
-          }
-      }, speed);
+      // 當讀取完成時，進行規則資訊圖示閃爍以吸引注意力
+      infoBtns.forEach(btn => btn.classList.add('pulse-emphasis-icon'));
+      setTimeout(() => {
+          infoBtns.forEach(btn => btn.classList.remove('pulse-emphasis-icon'));
+      }, 1200);
   }
 
   function toggleRules(id) {
@@ -1360,7 +1263,7 @@
 
       validSlots.forEach(slot => {
           const btn = document.createElement("button"); btn.className = "simple-slot-btn"; btn.innerText = formatTime12H(slot.time);
-          if (currentMode === 'multi' && selectedSlots.some(s => s.timestamp === slot.timestamp)) btn.classList.add("selected");
+          if (selectedSlots.some(s => s.timestamp === slot.timestamp)) btn.classList.add("selected");
           btn.addEventListener('click', () => { handleSlotClick(slot, dStr); renderSlotsInsideCalendar(dStr); });
           grid.appendChild(btn);
       });
@@ -1452,48 +1355,30 @@
       
       if (selectedDateStr) highlightWeekDay(selectedDateStr);
   }
-
-  function toggleMode() {
-      const newMode = (currentMode === 'single') ? 'multi' : 'single';
-      switchMode(newMode);
-  }
-
-  function switchMode(mode, silent = false) {
-    if (currentMode === mode && !document.querySelector('.toggle-wrapper')) return; 
-    currentMode = mode; 
-    
-    document.querySelectorAll('.toggle-wrapper').forEach(wrapper => {
-        wrapper.className = `toggle-wrapper ${mode}`;
-    });
-
-    if (silent) return;
-
-    selectedSlots =[]; 
-    updateBottomBar();
-    if (selectedDateStr) { 
-        renderSlots(selectedDateStr); 
-        if(document.getElementById("cal-modal").classList.contains("active")) renderSlotsInsideCalendar(selectedDateStr); 
-    }
-  }
  
+  // 統一為購物車選取模式
   function handleSlotClick(slot, dateStr) {
-    if (currentMode === 'single') { selectedSlots =[]; addToCart(slot, dateStr); openBatchForm(); } else { toggleSlot(slot, dateStr); }
+    toggleSlot(slot, dateStr);
   }
+
   function addToCart(slot, dateStr) {
       const dObj = new Date(dateStr); const displayStr = `${dObj.getMonth()+1}/${dObj.getDate()} (${dayNames[dObj.getDay()]} ${chiDayNames[dObj.getDay()]}) ${formatTime12H(slot.time)}`;
       selectedSlots.push({ dateStr, time: slot.time, timestamp: slot.timestamp, displayStr });
   }
+
   function toggleSlot(slot, dateStr) {
     const index = selectedSlots.findIndex(s => s.timestamp === slot.timestamp);
     if (index >= 0) selectedSlots.splice(index, 1); else { if (selectedSlots.length >= MAX_SELECTION) return showNotice("提醒", `最多 ${MAX_SELECTION} 個時段`, true); addToCart(slot, dateStr); }
     updateBottomBar();
     if(document.getElementById("cal-modal").classList.contains("active")) renderSlotsInsideCalendar(dateStr); else renderSlots(selectedDateStr);
   }
+
   function clearCart() {
       selectedSlots =[]; updateBottomBar();
       if(document.getElementById("cal-modal").classList.contains("active")) { if(selectedDateStr) renderSlotsInsideCalendar(selectedDateStr); } else { renderSlots(selectedDateStr); }
       closeForm();
   }
+
   function toggleCartForm() {
       const form = document.getElementById("p-form");
       if (form.classList.contains("active")) {
@@ -1502,10 +1387,10 @@
           openBatchForm();
       }
   }
+
   function updateBottomBar() {
     const count = selectedSlots.length;
-    const isMulti = currentMode === 'multi';
-    const show = (isMulti && count > 0);
+    const show = count > 0;
    
     const btn = document.getElementById("floating-cart-btn");
     const cartCount = document.getElementById("cart-count");
@@ -1684,7 +1569,7 @@
                  btn.onclick = () => {
                      closeHotPanel();
                      if (window.innerWidth < 768) { closeCalendar(); selectDate(dStr); } else { jumpToDate(dStr); }
-                     setTimeout(() => { handleSlotClick(slot, dStr); if (currentMode === 'single') openBatchForm(); }, 100);
+                     setTimeout(() => { handleSlotClick(slot, dStr); }, 100);
                  };
                  hotItems.push(btn);
                }
@@ -1762,7 +1647,7 @@
             if (slots.length <= 3) axisLine.forEach(line => line.style.display = "none"); else axisLine.forEach(line => line.style.display = "block");
             slots.forEach(slot => {
                 const btn = document.createElement("button"); btn.className = "slot-btn"; btn.innerText = formatTime12H(slot.time); btn.dataset.ts = slot.timestamp;
-                if (currentMode === 'multi' && selectedSlots.some(s => s.timestamp === slot.timestamp)) btn.classList.add("selected");
+                if (selectedSlots.some(s => s.timestamp === slot.timestamp)) btn.classList.add("selected");
                
                 btn.onclick = () => { handleSlotClick(slot, dStr); };
                 z.el.appendChild(btn);
