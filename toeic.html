@@ -88,7 +88,7 @@
             pointer-events: none; /* 讓滑鼠點擊穿透，避免干擾按鈕 */
             border-radius: 12px;
             box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-            transform: rotate(5deg); /* 加入微微的傾斜效果看起來更活潑 (不需要可刪除) */
+            transform: rotate(5deg); 
         }
 
         .hero h1 { color: var(--white); font-size: 2.8rem; margin-bottom: 20px; text-shadow: 0 4px 6px rgba(0,0,0,0.3); line-height: 1.3; }
@@ -124,30 +124,37 @@
         .level-card { background: var(--white); border-radius: 20px; box-shadow: 0 15px 30px -5px rgba(0,0,0,0.1); display: flex; flex-direction: column; overflow: hidden; transition: transform 0.3s; border-top: 5px solid; }
         .level-card:hover { transform: translateY(-5px); }
         
-        .cert-header { padding: 30px 20px 20px; text-align: center; background: #FAFAFA; border-bottom: 1px solid #E2E8F0; }
-        .cert-title { display: flex; align-items: center; justify-content: center; gap: 10px; font-size: 1.3rem; font-weight: 700; margin-bottom: 10px; }
-        .color-dot { width: 18px; height: 18px; border-radius: 50%; display: inline-block; box-shadow: inset 0 -2px 4px rgba(0,0,0,0.2); }
+        .cert-header { padding: 30px 20px 20px; text-align: center; background: #FAFAFA; border-bottom: 1px solid #E2E8F0; position: relative; }
+        
+        /* New Badge Styles */
+        .cert-badge {
+            display: inline-block;
+            padding: 5px 16px;
+            border-radius: 50px;
+            font-size: 0.95rem;
+            font-weight: 700;
+            margin-bottom: 12px;
+            color: var(--white);
+            letter-spacing: 1px;
+        }
+
         .cert-score { font-size: 3.2rem; font-weight: 900; line-height: 1; margin-bottom: 10px; font-family: 'Inter', sans-serif; letter-spacing: -1px; }
         .cert-desc { font-size: 1.2rem; font-weight: 600; color: var(--dark-text); }
 
         .theme-brown { border-top-color: var(--brown-cert); }
-        .theme-brown .cert-title { color: var(--dark-text); }
-        .theme-brown .color-dot { background: var(--brown-cert); }
+        .theme-brown .cert-badge { background: var(--brown-cert); }
         .theme-brown .cert-score, .theme-brown .author { color: var(--brown-cert); }
         
         .theme-green { border-top-color: var(--green-cert); }
-        .theme-green .cert-title { color: var(--dark-text); }
-        .theme-green .color-dot { background: var(--green-cert); }
+        .theme-green .cert-badge { background: var(--green-cert); }
         .theme-green .cert-score, .theme-green .author { color: var(--green-cert); }
 
         .theme-blue { border-top-color: var(--blue-cert); }
-        .theme-blue .cert-title { color: var(--dark-text); }
-        .theme-blue .color-dot { background: var(--blue-cert); }
+        .theme-blue .cert-badge { background: var(--blue-cert); }
         .theme-blue .cert-score, .theme-blue .author { color: var(--blue-cert); }
 
         .theme-gold { border-top-color: var(--gold-cert); }
-        .theme-gold .cert-title { color: var(--dark-text); }
-        .theme-gold .color-dot { background: var(--gold-cert); }
+        .theme-gold .cert-badge { background: var(--gold-cert); }
         .theme-gold .cert-score, .theme-gold .author { color: var(--gold-cert); }
 
         .level-body { padding: 25px 20px; flex-grow: 1; }
@@ -164,18 +171,10 @@
         .student-review .quote { font-style: italic; color: var(--gray-text); display: block; }
         .student-review .author { display: block; text-align: right; font-weight: 700; margin-top: 4px; }
 
-        /* 手機版卡片點擊提示（僅手機版顯示） */
-        .mobile-click-hint {
+        /* 手機版連結 Icon 預設隱藏 */
+        .mobile-link-icon {
             display: none;
-            text-align: center;
-            font-size: 0.95rem;
-            color: var(--primary-blue);
-            margin-top: 15px;
-            font-weight: 700;
-            background: var(--light-blue);
-            padding: 8px;
-            border-radius: 12px;
-            border: 1px dashed var(--secondary-blue);
+            pointer-events: none;
         }
 
         /* Modal Styles (彈出視窗) */
@@ -278,16 +277,29 @@
             .course-grid-container .level-card { 
                 border-radius: 16px; 
                 cursor: pointer; /* 讓卡片有可點擊的感覺 */
+                position: relative; /* 為了讓 Icon 定位 */
             }
             .course-grid-container .cert-header { padding: 15px 10px; }
-            .course-grid-container .cert-title { font-size: 0.95rem; }
+            .course-grid-container .cert-badge { font-size: 0.8rem; padding: 4px 12px; margin-bottom: 8px; }
             .course-grid-container .cert-score { font-size: 1.6rem; margin-bottom: 5px; } 
             .course-grid-container .cert-desc { font-size: 0.85rem; }
-            .course-grid-container .level-body { padding: 15px 10px 10px; }
+            /* 預留底部空間給 icon */
+            .course-grid-container .level-body { padding: 15px 10px 35px; } 
             .course-grid-container .level-body h3 { font-size: 1.1rem; margin-bottom: 0; }
             
             .desktop-details { display: none; }
-            .mobile-click-hint { display: block; } /* 顯示點擊提示 */
+            
+            /* 顯示卡片右下角的外部連結 Icon */
+            .mobile-link-icon {
+                display: block;
+                position: absolute;
+                bottom: 12px;
+                right: 12px;
+                width: 22px;
+                height: 22px;
+                opacity: 0.5;
+            }
+            
             #course-swipe-hint { display: none; }
         }
 
@@ -432,17 +444,15 @@
             <div class="course-grid-container">
                 
                 <!-- Level 1 -->
-                <!-- 加入 onclick 觸發 Modal -->
                 <div class="level-card theme-brown" onclick="openCourseModal('modal-level-1')">
+                    <img src="https://ik.imagekit.io/lql1uveoc/external-link.png?updatedAt=1754911187731" class="mobile-link-icon" alt="看詳情">
                     <div class="cert-header">
-                        <div class="cert-title"><span class="color-dot"></span> 棕色證書</div>
+                        <div class="cert-badge">棕色證書</div>
                         <div class="cert-score">220 - 465</div>
                         <div class="cert-desc">基礎英文能力</div>
                     </div>
                     <div class="level-body">
                         <h3>Level 1 基礎班</h3>
-                        <!-- 手機版專屬點擊提示 -->
-                        <div class="mobile-click-hint">👆 點擊看課程詳情</div>
                         <!-- Desktop/Tablet Details inside the card -->
                         <div class="desktop-details">
                             <h4><i class="fas fa-book-open"></i> 學習重點</h4>
@@ -473,14 +483,14 @@
 
                 <!-- Level 2 -->
                 <div class="level-card theme-green" onclick="openCourseModal('modal-level-2')">
+                    <img src="https://ik.imagekit.io/lql1uveoc/external-link.png?updatedAt=1754911187731" class="mobile-link-icon" alt="看詳情">
                     <div class="cert-header">
-                        <div class="cert-title"><span class="color-dot"></span> 綠色證書</div>
+                        <div class="cert-badge">綠色證書</div>
                         <div class="cert-score">470 - 725</div>
                         <div class="cert-desc">中等職場溝通</div>
                     </div>
                     <div class="level-body">
                         <h3>Level 2 進階班</h3>
-                        <div class="mobile-click-hint">👆 點擊看課程詳情</div>
                         <div class="desktop-details">
                             <h4><i class="fas fa-layer-group"></i> 學習重點</h4>
                             <ul>
@@ -510,14 +520,14 @@
 
                 <!-- Level 3 -->
                 <div class="level-card theme-blue" onclick="openCourseModal('modal-level-3')">
+                    <img src="https://ik.imagekit.io/lql1uveoc/external-link.png?updatedAt=1754911187731" class="mobile-link-icon" alt="看詳情">
                     <div class="cert-header">
-                        <div class="cert-title"><span class="color-dot"></span> 藍色證書</div>
+                        <div class="cert-badge">藍色證書</div>
                         <div class="cert-score">730 - 855</div>
                         <div class="cert-desc">熟練職場英語</div>
                     </div>
                     <div class="level-body">
                         <h3>Level 3 高分班</h3>
-                        <div class="mobile-click-hint">👆 點擊看課程詳情</div>
                         <div class="desktop-details">
                             <h4><i class="fas fa-chart-line"></i> 學習重點</h4>
                             <ul>
@@ -547,14 +557,14 @@
 
                 <!-- Level 4 -->
                 <div class="level-card theme-gold" onclick="openCourseModal('modal-level-4')">
+                    <img src="https://ik.imagekit.io/lql1uveoc/external-link.png?updatedAt=1754911187731" class="mobile-link-icon" alt="看詳情">
                     <div class="cert-header">
-                        <div class="cert-title"><span class="color-dot"></span> 金色證書</div>
+                        <div class="cert-badge">金色證書</div>
                         <div class="cert-score">860 - 990</div>
                         <div class="cert-desc">高階英語能力</div>
                     </div>
                     <div class="level-body">
                         <h3>Level 4 衝刺班</h3>
-                        <div class="mobile-click-hint">👆 點擊看課程詳情</div>
                         <div class="desktop-details">
                             <h4><i class="fas fa-trophy"></i> 學習重點</h4>
                             <ul>
@@ -588,7 +598,10 @@
             <div id="course-modal-templates" style="display: none;">
                 <!-- Modal Template: Level 1 -->
                 <div id="modal-level-1" class="theme-brown">
-                    <h3 style="text-align:center; color: var(--dark-text); font-size: 1.4rem; margin-bottom: 20px;">🟤 Level 1 基礎班 (220-465)</h3>
+                    <h3 style="text-align:center; color: var(--dark-text); font-size: 1.5rem; margin-bottom: 20px; line-height: 1.4;">
+                        Level 1 基礎班<br>
+                        <span style="font-size: 1.2rem; color: var(--brown-cert);">(220 - 465分)</span>
+                    </h3>
                     <h4 style="color: var(--primary-blue); margin-bottom: 12px; font-size: 1.15rem;"><i class="fas fa-book-open"></i> 學習重點</h4>
                     <ul style="list-style: none; padding-left: 0; margin-bottom: 25px;">
                         <li style="position: relative; padding-left: 25px; margin-bottom: 8px; color: var(--gray-text);"><span style="position: absolute; left: 0; color: var(--primary-blue); font-weight:bold;">✔</span>基礎文法與句型解析</li>
@@ -615,7 +628,10 @@
                 
                 <!-- Modal Template: Level 2 -->
                 <div id="modal-level-2" class="theme-green">
-                    <h3 style="text-align:center; color: var(--dark-text); font-size: 1.4rem; margin-bottom: 20px;">🟢 Level 2 進階班 (470-725)</h3>
+                    <h3 style="text-align:center; color: var(--dark-text); font-size: 1.5rem; margin-bottom: 20px; line-height: 1.4;">
+                        Level 2 進階班<br>
+                        <span style="font-size: 1.2rem; color: var(--green-cert);">(470 - 725分)</span>
+                    </h3>
                     <h4 style="color: var(--primary-blue); margin-bottom: 12px; font-size: 1.15rem;"><i class="fas fa-layer-group"></i> 學習重點</h4>
                     <ul style="list-style: none; padding-left: 0; margin-bottom: 25px;">
                         <li style="position: relative; padding-left: 25px; margin-bottom: 8px; color: var(--gray-text);"><span style="position: absolute; left: 0; color: var(--primary-blue); font-weight:bold;">✔</span>精準閱讀題型解析</li>
@@ -642,7 +658,10 @@
 
                 <!-- Modal Template: Level 3 -->
                 <div id="modal-level-3" class="theme-blue">
-                    <h3 style="text-align:center; color: var(--dark-text); font-size: 1.4rem; margin-bottom: 20px;">🔵 Level 3 高分班 (730-855)</h3>
+                    <h3 style="text-align:center; color: var(--dark-text); font-size: 1.5rem; margin-bottom: 20px; line-height: 1.4;">
+                        Level 3 高分班<br>
+                        <span style="font-size: 1.2rem; color: var(--blue-cert);">(730 - 855分)</span>
+                    </h3>
                     <h4 style="color: var(--primary-blue); margin-bottom: 12px; font-size: 1.15rem;"><i class="fas fa-chart-line"></i> 學習重點</h4>
                     <ul style="list-style: none; padding-left: 0; margin-bottom: 25px;">
                         <li style="position: relative; padding-left: 25px; margin-bottom: 8px; color: var(--gray-text);"><span style="position: absolute; left: 0; color: var(--primary-blue); font-weight:bold;">✔</span>高難度閱讀文章拆解</li>
@@ -669,7 +688,10 @@
 
                 <!-- Modal Template: Level 4 -->
                 <div id="modal-level-4" class="theme-gold">
-                    <h3 style="text-align:center; color: var(--dark-text); font-size: 1.4rem; margin-bottom: 20px;">🟡 Level 4 衝刺班 (860-990)</h3>
+                    <h3 style="text-align:center; color: var(--dark-text); font-size: 1.5rem; margin-bottom: 20px; line-height: 1.4;">
+                        Level 4 衝刺班<br>
+                        <span style="font-size: 1.2rem; color: var(--gold-cert);">(860 - 990分)</span>
+                    </h3>
                     <h4 style="color: var(--primary-blue); margin-bottom: 12px; font-size: 1.15rem;"><i class="fas fa-trophy"></i> 學習重點</h4>
                     <ul style="list-style: none; padding-left: 0; margin-bottom: 25px;">
                         <li style="position: relative; padding-left: 25px; margin-bottom: 8px; color: var(--gray-text);"><span style="position: absolute; left: 0; color: var(--primary-blue); font-weight:bold;">✔</span>外商求職高階閱讀分析</li>
