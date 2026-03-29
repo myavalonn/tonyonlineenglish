@@ -7,16 +7,16 @@
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg: #0d0d0d;
-    --surface: #161616;
-    --surface2: #1e1e1e;
-    --border: #2a2a2a;
+    --bg: #f3f4f6;
+    --surface: #ffffff;
+    --surface2: #f9fafb;
+    --border: #e5e7eb;
     --orange: #f97316;
-    --orange-dim: #7c3a0d;
-    --text: #f0f0f0;
-    --text-muted: #888;
-    --green: #22c55e;
-    --red: #ef4444;
+    --orange-dim: #ffedd5;
+    --text: #111827;
+    --text-muted: #6b7280;
+    --green: #16a34a;
+    --red: #dc2626;
     --radius: 12px;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -47,9 +47,10 @@
     padding: 36px;
     width: 100%;
     max-width: 760px;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
   }
   .start-title { font-family: 'Syne', sans-serif; font-size: 1.6rem; font-weight: 800; margin-bottom: 6px; }
-  .start-sub { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 28px; line-height: 1.5; }
+  .start-sub { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 28px; line-height: 1.6; }
   .section-tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
   .tab-btn {
     background: var(--surface2);
@@ -59,11 +60,13 @@
     cursor: pointer;
     font-family: 'DM Sans', sans-serif;
     font-size: 0.82rem;
-    padding: 6px 14px;
+    padding: 8px 14px;
     transition: all 0.2s;
+    line-height: 1.4;
+    text-align: center;
   }
   .tab-btn.active { background: var(--orange); border-color: var(--orange); color: #fff; font-weight: 500; }
-  label { display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 6px; }
+  label { display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 6px; font-weight: 500; }
   input[type=text], input[type=email] {
     width: 100%;
     background: var(--surface2);
@@ -79,14 +82,14 @@
   }
   input:focus { border-color: var(--orange); }
   .notice {
-    background: rgba(249,115,22,0.08);
-    border: 1px solid rgba(249,115,22,0.25);
+    background: #fff7ed;
+    border: 1px solid #fed7aa;
     border-radius: 8px;
-    color: #fdba74;
-    font-size: 0.83rem;
-    padding: 10px 14px;
+    color: #c2410c;
+    font-size: 0.85rem;
+    padding: 12px 14px;
     margin-bottom: 24px;
-    line-height: 1.5;
+    line-height: 1.6;
   }
   .btn {
     background: var(--orange);
@@ -124,8 +127,8 @@
     background: var(--orange-dim);
     color: var(--orange);
     font-size: 0.75rem;
-    font-weight: 600;
-    padding: 3px 10px;
+    font-weight: 700;
+    padding: 4px 10px;
     border-radius: 99px;
     margin-bottom: 20px;
     letter-spacing: 0.06em;
@@ -151,7 +154,7 @@
   .options { display: flex; flex-direction: column; gap: 8px; }
   .option-btn {
     align-items: center;
-    background: var(--surface2);
+    background: var(--surface);
     border: 1px solid var(--border);
     border-radius: 8px;
     color: var(--text);
@@ -165,10 +168,11 @@
     transition: border-color 0.15s, background 0.15s;
     width: 100%;
   }
-  .option-btn:hover { border-color: var(--orange); background: rgba(249,115,22,0.06); }
-  .option-btn.selected { border-color: var(--orange); background: rgba(249,115,22,0.12); color: #fff; }
+  .option-btn:hover { border-color: var(--orange); background: rgba(249,115,22,0.04); }
+  .option-btn.selected { border-color: var(--orange); background: rgba(249,115,22,0.1); color: var(--text); }
   .opt-letter {
-    background: var(--border);
+    background: var(--surface2);
+    border: 1px solid var(--border);
     border-radius: 5px;
     color: var(--text-muted);
     font-family: 'Syne', sans-serif;
@@ -178,7 +182,7 @@
     padding: 2px 6px;
     text-align: center;
   }
-  .option-btn.selected .opt-letter { background: var(--orange); color: #fff; }
+  .option-btn.selected .opt-letter { background: var(--orange); color: #fff; border-color: var(--orange); }
   .divider { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
   .nav-row { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
   .nav-info { color: var(--text-muted); font-size: 0.82rem; }
@@ -198,8 +202,8 @@
   .wrong-section { margin-top: 24px; }
   .wrong-title { font-family: 'Syne', sans-serif; font-size: 0.95rem; font-weight: 700; color: var(--red); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
   .wrong-item {
-    background: rgba(239,68,68,0.06);
-    border: 1px solid rgba(239,68,68,0.18);
+    background: rgba(239,68,68,0.04);
+    border: 1px solid rgba(239,68,68,0.15);
     border-radius: 8px;
     font-size: 0.85rem;
     line-height: 1.6;
@@ -216,9 +220,9 @@
     padding: 10px 14px;
     display: none;
   }
-  .status-msg.success { background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.25); color: #86efac; display: block; }
-  .status-msg.error { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.25); color: #fca5a5; display: block; }
-  .status-msg.loading { background: rgba(249,115,22,0.06); border: 1px solid rgba(249,115,22,0.2); color: #fdba74; display: block; }
+  .status-msg.success { background: #dcfce7; border: 1px solid #bbf7d0; color: #166534; display: block; }
+  .status-msg.error { background: #fee2e2; border: 1px solid #fecaca; color: #991b1b; display: block; }
+  .status-msg.loading { background: #fff7ed; border: 1px solid #fed7aa; color: #c2410c; display: block; }
   .hidden { display: none !important; }
 </style>
 </head>
@@ -231,22 +235,28 @@
 <!-- START SCREEN -->
 <div class="card" id="startScreen">
   <div class="start-title">English Quiz System</div>
-  <p class="start-sub">Choose which exam section(s) to take, enter your name, and begin.</p>
+  <p class="start-sub">
+    Choose which exam section(s) to take, enter your name, and begin.<br>
+    請選擇您要測驗的單元，輸入姓名後即可開始。
+  </p>
   <div style="margin-bottom:20px">
-    <label style="margin-bottom:10px;display:block;font-size:0.9rem;color:var(--text)">Select Exam Section</label>
+    <label style="margin-bottom:10px;display:block;font-size:0.9rem;color:var(--text)">Select Exam Section / 選擇測驗單元</label>
     <div class="section-tabs">
-      <button class="tab-btn active" data-section="vocab">Vocabulary &amp; Phrases (100 Qs)</button>
-      <button class="tab-btn" data-section="grammar">Grammar Focus (50 Qs)</button>
-      <button class="tab-btn" data-section="both">Both Sections (150 Qs)</button>
+      <button class="tab-btn active" data-section="vocab">Vocabulary &amp; Phrases<br>單字與片語 (100 Qs)</button>
+      <button class="tab-btn" data-section="grammar">Grammar Focus<br>文法焦點 (50 Qs)</button>
+      <button class="tab-btn" data-section="both">Both Sections<br>全部測驗 (150 Qs)</button>
     </div>
   </div>
-  <label for="studentName">Student Name <span style="color:var(--red)">*</span></label>
+  <label for="studentName">Student Name / 學生姓名 <span style="color:var(--red)">*</span></label>
   <input type="text" id="studentName" placeholder="e.g. William">
-  <label for="studentEmail">Email (optional)</label>
+  <label for="studentEmail">Email / 電子郵件 (optional / 選填)</label>
   <input type="email" id="studentEmail" placeholder="student@example.com">
-  <div class="notice">&#128231; If you provide an email, you will receive a copy of your results automatically.</div>
-  <button class="btn" onclick="startQuiz()">Start Quiz &#8594;</button>
-  <div id="startError" style="color:var(--red);font-size:0.85rem;margin-top:10px;display:none">Please enter your name to continue.</div>
+  <div class="notice">
+    &#128231; If you provide an email, you will receive a copy of your results automatically.<br>
+    若您提供電子郵件，系統將自動寄送一份成績結果給您。
+  </div>
+  <button class="btn" onclick="startQuiz()">Start Quiz 開始測驗 &#8594;</button>
+  <div id="startError" style="color:var(--red);font-size:0.85rem;margin-top:10px;display:none">Please enter your name to continue. (請輸入您的姓名以繼續)</div>
 </div>
 
 <!-- QUIZ SCREEN -->
