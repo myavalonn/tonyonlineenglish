@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tony 線上美語家教 — Quiz System</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0d0d0d;
+    --surface: #161616;
+    --surface2: #1e1e1e;
+    --border: #2a2a2a;
+    --orange: #f97316;
+    --orange-dim: #7c3a0d;
+    --text: #f0f0f0;
+    --text-muted: #888;
+    --green: #22c55e;
+    --red: #ef4444;
+    --radius: 12px;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px 16px 60px;
+  }
+  .header {
+    width: 100%;
+    max-width: 760px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 32px;
+  }
+  .logo { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 1.1rem; color: var(--orange); letter-spacing: 0.03em; }
+  .logo span { color: var(--text-muted); font-weight: 400; }
+  .card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 36px;
+    width: 100%;
+    max-width: 760px;
+  }
+  .start-title { font-family: 'Syne', sans-serif; font-size: 1.6rem; font-weight: 800; margin-bottom: 6px; }
+  .start-sub { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 28px; line-height: 1.5; }
+  .section-tabs { display: flex; gap: 8px; margin-bottom: 20px; flex-wrap: wrap; }
+  .tab-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    padding: 6px 14px;
+    transition: all 0.2s;
+  }
+  .tab-btn.active { background: var(--orange); border-color: var(--orange); color: #fff; font-weight: 500; }
+  label { display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 6px; }
+  input[type=text], input[type=email] {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.95rem;
+    padding: 11px 14px;
+    outline: none;
+    transition: border-color 0.2s;
+    margin-bottom: 16px;
+  }
+  input:focus { border-color: var(--orange); }
+  .notice {
+    background: rgba(249,115,22,0.08);
+    border: 1px solid rgba(249,115,22,0.25);
+    border-radius: 8px;
+    color: #fdba74;
+    font-size: 0.83rem;
+    padding: 10px 14px;
+    margin-bottom: 24px;
+    line-height: 1.5;
+  }
+  .btn {
+    background: var(--orange);
+    border: none;
+    border-radius: 8px;
+    color: #fff;
+    cursor: pointer;
+    font-family: 'Syne', sans-serif;
+    font-size: 0.92rem;
+    font-weight: 700;
+    padding: 12px 28px;
+    transition: opacity 0.2s, transform 0.1s;
+    letter-spacing: 0.02em;
+  }
+  .btn:hover { opacity: 0.88; }
+  .btn:active { transform: scale(0.98); }
+  .btn-ghost {
+    background: transparent;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text-muted);
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.92rem;
+    padding: 12px 28px;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .btn-ghost:hover { border-color: var(--orange); color: var(--orange); }
+  .progress-wrap { margin-bottom: 24px; }
+  .progress-label { display: flex; justify-content: space-between; font-size: 0.8rem; color: var(--text-muted); margin-bottom: 8px; }
+  .progress-track { background: var(--surface2); border-radius: 99px; height: 5px; overflow: hidden; }
+  .progress-fill { background: var(--orange); height: 100%; border-radius: 99px; transition: width 0.4s ease; }
+  .section-badge {
+    display: inline-block;
+    background: var(--orange-dim);
+    color: var(--orange);
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 3px 10px;
+    border-radius: 99px;
+    margin-bottom: 20px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .question-block { margin-bottom: 28px; }
+  .q-header { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 14px; }
+  .q-num {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--orange);
+    font-family: 'Syne', sans-serif;
+    font-size: 0.8rem;
+    font-weight: 700;
+    min-width: 40px;
+    padding: 4px 8px;
+    text-align: center;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .q-text { font-size: 0.97rem; line-height: 1.65; }
+  .options { display: flex; flex-direction: column; gap: 8px; }
+  .option-btn {
+    align-items: center;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    cursor: pointer;
+    display: flex;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.93rem;
+    gap: 10px;
+    padding: 11px 14px;
+    text-align: left;
+    transition: border-color 0.15s, background 0.15s;
+    width: 100%;
+  }
+  .option-btn:hover { border-color: var(--orange); background: rgba(249,115,22,0.06); }
+  .option-btn.selected { border-color: var(--orange); background: rgba(249,115,22,0.12); color: #fff; }
+  .opt-letter {
+    background: var(--border);
+    border-radius: 5px;
+    color: var(--text-muted);
+    font-family: 'Syne', sans-serif;
+    font-size: 0.75rem;
+    font-weight: 700;
+    min-width: 24px;
+    padding: 2px 6px;
+    text-align: center;
+  }
+  .option-btn.selected .opt-letter { background: var(--orange); color: #fff; }
+  .divider { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+  .nav-row { display: flex; justify-content: space-between; align-items: center; margin-top: 8px; }
+  .nav-info { color: var(--text-muted); font-size: 0.82rem; }
+  .result-header { text-align: center; margin-bottom: 32px; }
+  .score-ring {
+    width: 110px; height: 110px;
+    border-radius: 50%;
+    border: 4px solid var(--orange);
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    margin: 0 auto 16px;
+  }
+  .score-num { font-family: 'Syne', sans-serif; font-size: 2rem; font-weight: 800; color: var(--orange); }
+  .score-denom { font-size: 0.8rem; color: var(--text-muted); }
+  .result-name { font-family: 'Syne', sans-serif; font-size: 1.3rem; font-weight: 700; margin-bottom: 4px; }
+  .result-sub { color: var(--text-muted); font-size: 0.88rem; }
+  .wrong-section { margin-top: 24px; }
+  .wrong-title { font-family: 'Syne', sans-serif; font-size: 0.95rem; font-weight: 700; color: var(--red); margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+  .wrong-item {
+    background: rgba(239,68,68,0.06);
+    border: 1px solid rgba(239,68,68,0.18);
+    border-radius: 8px;
+    font-size: 0.85rem;
+    line-height: 1.6;
+    margin-bottom: 10px;
+    padding: 12px 14px;
+  }
+  .wrong-item .wi-q { color: var(--text-muted); margin-bottom: 4px; }
+  .wrong-item .wi-yours { color: var(--red); }
+  .wrong-item .wi-correct { color: var(--green); }
+  .status-msg {
+    border-radius: 8px;
+    font-size: 0.88rem;
+    margin-top: 16px;
+    padding: 10px 14px;
+    display: none;
+  }
+  .status-msg.success { background: rgba(34,197,94,0.08); border: 1px solid rgba(34,197,94,0.25); color: #86efac; display: block; }
+  .status-msg.error { background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.25); color: #fca5a5; display: block; }
+  .status-msg.loading { background: rgba(249,115,22,0.06); border: 1px solid rgba(249,115,22,0.2); color: #fdba74; display: block; }
+  .hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="logo">Tony <span>線上美語家教</span></div>
+</div>
+
+<!-- START SCREEN -->
+<div class="card" id="startScreen">
+  <div class="start-title">English Quiz System</div>
+  <p class="start-sub">Choose which exam section(s) to take, enter your name, and begin.</p>
+  <div style="margin-bottom:20px">
+    <label style="margin-bottom:10px;display:block;font-size:0.9rem;color:var(--text)">Select Exam Section</label>
+    <div class="section-tabs">
+      <button class="tab-btn active" data-section="vocab">Vocabulary &amp; Phrases (100 Qs)</button>
+      <button class="tab-btn" data-section="grammar">Grammar Focus (50 Qs)</button>
+      <button class="tab-btn" data-section="both">Both Sections (150 Qs)</button>
+    </div>
+  </div>
+  <label for="studentName">Student Name <span style="color:var(--red)">*</span></label>
+  <input type="text" id="studentName" placeholder="e.g. William">
+  <label for="studentEmail">Email (optional)</label>
+  <input type="email" id="studentEmail" placeholder="student@example.com">
+  <div class="notice">&#128231; If you provide an email, you will receive a copy of your results automatically.</div>
+  <button class="btn" onclick="startQuiz()">Start Quiz &#8594;</button>
+  <div id="startError" style="color:var(--red);font-size:0.85rem;margin-top:10px;display:none">Please enter your name to continue.</div>
+</div>
+
+<!-- QUIZ SCREEN -->
+<div class="card hidden" id="quizScreen">
+  <div class="progress-wrap">
+    <div class="progress-label">
+      <span id="progressText">Page 1 of 20</span>
+      <span id="answeredCount">0 / 100 answered</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+  </div>
+  <div class="section-badge" id="sectionBadge">Vocabulary &amp; Phrases</div>
+  <div id="questionsContainer"></div>
+  <hr class="divider">
+  <div class="nav-row">
+    <button class="btn-ghost" id="btnBack" onclick="changePage(-1)">&#8592; Back</button>
+    <span class="nav-info" id="navInfo"></span>
+    <button class="btn" id="btnNext" onclick="changePage(1)">Next &#8594;</button>
+  </div>
+</div>
+
+<!-- RESULT SCREEN -->
+<div class="card hidden" id="resultScreen">
+  <div class="result-header">
+    <div class="score-ring">
+      <span class="score-num" id="scoreNum">&#8212;</span>
+      <span class="score-denom" id="scoreDenom">/ 100</span>
+    </div>
+    <div class="result-name" id="resultName"></div>
+    <div class="result-sub" id="resultSub"></div>
+  </div>
+  <div class="wrong-section" id="wrongSection"></div>
+  <div id="submitStatus" class="status-msg"></div>
+  <div style="margin-top:20px">
+    <button class="btn" onclick="location.reload()">Take Again</button>
+  </div>
+</div>
+
+<script>
+const GAS_URL = "https://script.google.com/macros/s/AKfycbzErryf4UOZ5nmOv7Y1HlNlq_dp7srIWrzdbFHasYHw6EOJliHP15EO4mSYfW5d1Lzf/exec";
+
+const vocabQuestions = [
+  {id:1,section:"Vocabulary & Phrases",q:"The two politicians refused to reach an agreement and continued to ________ the issue of capital punishment in front of a live audience.",opts:["surrender","debate","devour","worship"],ans:"B"},
+  {id:2,section:"Vocabulary & Phrases",q:"The judge declared that the ________ for committing such a violent crime would be life imprisonment without the possibility of parole.",opts:["rumor","guilt","penalty","companion"],ans:"C"},
+  {id:3,section:"Vocabulary & Phrases",q:"After ten years behind bars, the ________ was finally released after new evidence proved he had been wrongly convicted.",opts:["resident","prisoner","companion","murderer"],ans:"B"},
+  {id:4,section:"Vocabulary & Phrases",q:"The activist ________ that the policy violated basic human rights, but the government refused to listen to her argument.",opts:["claimed","relieved","preserved","transported"],ans:"A"},
+  {id:5,section:"Vocabulary & Phrases",q:"Despite heavy opposition from local residents, the city council continued to ________ that the new highway was necessary for economic development.",opts:["abandon","insist","drown","acquire"],ans:"B"},
+  {id:6,section:"Vocabulary & Phrases",q:"The elderly couple had accumulated a great deal of ________, including several buildings in the city center and a large plot of farmland.",opts:["mission","property","volume","session"],ans:"B"},
+  {id:7,section:"Vocabulary & Phrases",q:"The young scholar's loyal ________ traveled with him across three continents, sharing both hardship and discovery throughout the long journey.",opts:["prisoner","murderer","companion","resident"],ans:"C"},
+  {id:8,section:"Vocabulary & Phrases",q:"After weeks of stress, the therapist helped her address the ________ strain caused by years of overwork and emotional neglect.",opts:["arched","solar","muddy","mental"],ans:"D"},
+  {id:9,section:"Vocabulary & Phrases",q:"The hungry child ________ the entire bowl of rice within minutes, as if she had not eaten a proper meal for several days.",opts:["abandoned","devoured","resisted","surrendered"],ans:"B"},
+  {id:10,section:"Vocabulary & Phrases",q:"The researcher published a multi-________ study on the history of urbanization, which took her more than a decade to complete.",opts:["panel","session","volume","mission"],ans:"C"},
+  {id:11,section:"Vocabulary & Phrases",q:"Living abroad for two years allowed her to ________ a level of fluency in French that formal classroom instruction had never provided.",opts:["acquire","abandon","preserve","flood"],ans:"A"},
+  {id:12,section:"Vocabulary & Phrases",q:"The professor offered ________ insights into the relationship between poverty and crime that challenged many commonly held assumptions.",opts:["vain","sufficient","profound","muddy"],ans:"C"},
+  {id:13,section:"Vocabulary & Phrases",q:"The old merchant was extremely ________, owning dozens of ships and warehouses filled with goods imported from across the globe.",opts:["resistant","urgent","practical","wealthy"],ans:"D"},
+  {id:14,section:"Vocabulary & Phrases",q:"The detective was filled with ________ when she realized that an innocent man had been imprisoned because of a false testimony she had once believed.",opts:["abundance","urgency","guilt","relief"],ans:"C"},
+  {id:15,section:"Vocabulary & Phrases",q:"The press spread an unfounded ________ that the CEO had resigned, which caused the company's stock price to plummet within hours.",opts:["penalty","rumor","claim","mission"],ans:"B"},
+  {id:16,section:"Vocabulary & Phrases",q:"The soldiers moved ________ across the field, carrying supplies in one direction while evacuating the wounded in the other.",opts:["around the clock","by no means","back and forth","at a time"],ans:"C"},
+  {id:17,section:"Vocabulary & Phrases",q:"The rescue teams worked ________ without any rest to search for survivors buried beneath the rubble after the devastating earthquake.",opts:["in the end","at a time","around the clock","all in all"],ans:"C"},
+  {id:18,section:"Vocabulary & Phrases",q:"It never ________ her that the documents she had signed might be used against her in a court of law.",opts:["crossed her mind","wore on","made waves","struck a balance"],ans:"A"},
+  {id:19,section:"Vocabulary & Phrases",q:"The weeks ________ slowly as the family waited anxiously for news about their missing son from the search and rescue team.",opts:["wore on","made waves","cleared out","rose above"],ans:"A"},
+  {id:20,section:"Vocabulary & Phrases",q:"The scientist's groundbreaking research into cancer treatment really ________ in the medical community, drawing both praise and heated criticism from experts worldwide.",opts:["wore on","made waves","depended on","made way"],ans:"B"},
+  {id:21,section:"Vocabulary & Phrases",q:"Achieving success in business is ________ easy; it demands persistence, strategic thinking, and a willingness to face repeated failure.",opts:["indeed","by no means","at a time","all in all"],ans:"B"},
+  {id:22,section:"Vocabulary & Phrases",q:"The heavy rain caused severe ________ in low-lying areas, forcing thousands of residents to evacuate their homes immediately.",opts:["resistance","flooding","imprisonment","urgency"],ans:"B"},
+  {id:23,section:"Vocabulary & Phrases",q:"The company decided to ________ solar panels on the rooftops of all its factories to significantly reduce its dependence on fossil fuels.",opts:["transport","resist","install","conclude"],ans:"C"},
+  {id:24,section:"Vocabulary & Phrases",q:"The students gathered in a study ________ every Friday afternoon to review vocabulary and prepare for their upcoming national exam.",opts:["panel","session","mission","volume"],ans:"B"},
+  {id:25,section:"Vocabulary & Phrases",q:"The city council issued a new ________ warning about the dangers of poor sanitation in densely populated neighborhoods during the summer months.",opts:["nutrition","hygiene","productivity","finance"],ans:"B"},
+  {id:26,section:"Vocabulary & Phrases",q:"Some varieties of bacteria have become ________ to common antibiotics, making it increasingly difficult for doctors to treat certain infections.",opts:["practical","sufficient","resistant","abundant"],ans:"C"},
+  {id:27,section:"Vocabulary & Phrases",q:"The factory's ________ dropped sharply after several key workers resigned, and management scrambled to recruit qualified replacements.",opts:["acquisition","productivity","resistance","preservation"],ans:"B"},
+  {id:28,section:"Vocabulary & Phrases",q:"The funding provided by the government was not ________ to cover the enormous costs of rebuilding the infrastructure damaged by the typhoon.",opts:["urgent","sufficient","promising","geographical"],ans:"B"},
+  {id:29,section:"Vocabulary & Phrases",q:"The family's monthly ________ from the small farm was barely enough to pay for food, school fees, and essential medical care.",opts:["wealth","income","abundance","guilt"],ans:"B"},
+  {id:30,section:"Vocabulary & Phrases",q:"Running a business in a remote location involves a high ________ of failure due to limited access to markets, poor infrastructure, and shortage of skilled workers.",opts:["barrier","risk","mission","campaign"],ans:"B"},
+  {id:31,section:"Vocabulary & Phrases",q:"The mountain range formed a natural ________ between the two countries, making trade and communication extremely difficult for centuries.",opts:["barrier","panel","arch","session"],ans:"A"},
+  {id:32,section:"Vocabulary & Phrases",q:"The government launched a nationwide ________ to promote awareness about the importance of recycling and reducing plastic waste in daily life.",opts:["rumor","campaign","issue","mission"],ans:"B"},
+  {id:33,section:"Vocabulary & Phrases",q:"After examining all the evidence carefully, the jury was able to ________ that the defendant had acted with full knowledge and premeditation.",opts:["resist","conclude","spare","relieve"],ans:"B"},
+  {id:34,section:"Vocabulary & Phrases",q:"The town is ________ at the foot of a steep mountain, making it a popular destination for hikers and nature lovers during the spring season.",opts:["arched","situated","muddy","fond"],ans:"B"},
+  {id:35,section:"Vocabulary & Phrases",q:"The medication successfully ________ the patient's chronic back pain, allowing her to resume daily activities that she had given up years ago.",opts:["relieved","resisted","acquired","preserved"],ans:"A"},
+  {id:36,section:"Vocabulary & Phrases",q:"The government was under pressure to address the ________ housing shortage in urban centers before more families were forced to live in poverty.",opts:["sufficient","intentional","severe","promising"],ans:"C"},
+  {id:37,section:"Vocabulary & Phrases",q:"The volunteers spent the weekend helping ________ old documents from the flooded archive so that future generations could still access them.",opts:["endanger","preserve","transport","project"],ans:"B"},
+  {id:38,section:"Vocabulary & Phrases",q:"The exhibit offered visitors a rare ________ into the daily life of ancient civilizations, with artifacts carefully arranged to tell a vivid human story.",opts:["glimpse","campaign","panel","arch"],ans:"A"},
+  {id:39,section:"Vocabulary & Phrases",q:"Growing up in two different cultures gave her a complex sense of ________ that she struggled to define even as an adult living abroad.",opts:["identity","abundance","resistance","urgency"],ans:"A"},
+  {id:40,section:"Vocabulary & Phrases",q:"The museum's collection contained countless ________ from past dynasties, including golden crowns, ceremonial swords, and rare painted scrolls.",opts:["residents","treasures","barriers","companions"],ans:"B"},
+  {id:41,section:"Vocabulary & Phrases",q:"The city decided to ________ the aging bus fleet with modern electric vehicles to reduce air pollution and improve public transportation efficiency.",opts:["endanger","replace","abandon","situate"],ans:"B"},
+  {id:42,section:"Vocabulary & Phrases",q:"Unregulated development along the coastline could seriously ________ the habitats of rare sea turtles that have nested there for thousands of years.",opts:["endanger","transport","spare","project"],ans:"A"},
+  {id:43,section:"Vocabulary & Phrases",q:"The forest offered an ________ of wild herbs, rare mushrooms, and medicinal plants that local communities had relied on for generations.",opts:["urgency","abundance","glimpse","mission"],ans:"B"},
+  {id:44,section:"Vocabulary & Phrases",q:"Goods are ________ by ship from the southern port to warehouses along the northern coast, a journey that typically takes four to five days.",opts:["concluded","surrendered","transported","endangered"],ans:"C"},
+  {id:45,section:"Vocabulary & Phrases",q:"The floodwaters ________ the entire lower floor of the community center, destroying furniture, records, and equipment that had been stored there.",opts:["drowned","flooded","spared","projected"],ans:"B"},
+  {id:46,section:"Vocabulary & Phrases",q:"The government's quick action in distributing food aid ________ many rural families from experiencing the worst effects of the prolonged drought.",opts:["spared","claimed","projected","resisted"],ans:"A"},
+  {id:47,section:"Vocabulary & Phrases",q:"The ancient jade sculpture was considered ________ by collectors worldwide, as it represented a unique artistic achievement that could never be reproduced.",opts:["promising","priceless","sufficient","urgent"],ans:"B"},
+  {id:48,section:"Vocabulary & Phrases",q:"The long-awaited news that the surgery had been successful brought enormous ________ to the patient's family who had been waiting anxiously outside the operating room.",opts:["disgust","guilt","relief","identity"],ans:"C"},
+  {id:49,section:"Vocabulary & Phrases",q:"The rapid development of the downtown area has attracted many new ________, transforming what was once a quiet neighborhood into a busy commercial district.",opts:["prisoners","residents","murderers","companions"],ans:"B"},
+  {id:50,section:"Vocabulary & Phrases",q:"Addressing the climate crisis is ________ and requires immediate cooperation among all nations, regardless of their economic or political differences.",opts:["practical","urgent","abundant","intentional"],ans:"B"},
+  {id:51,section:"Vocabulary & Phrases",q:"The young diplomat was assigned an ________ mission to negotiate peace between two nations that had been at war for more than two decades.",opts:["enormous","muddy","arched","vain"],ans:"A"},
+  {id:52,section:"Vocabulary & Phrases",q:"She had ________ memories of the long summers spent at her grandmother's house, where the smell of baked bread filled the entire cottage every morning.",opts:["guilty","resistant","fond","urban"],ans:"C"},
+  {id:53,section:"Vocabulary & Phrases",q:"The policy team recommended that the city ________ a careful balance between economic growth and the protection of green spaces for public wellbeing.",opts:["make waves","make way","strike a balance","rise above"],ans:"C"},
+  {id:54,section:"Vocabulary & Phrases",q:"The old warehouse was ________ to ________ for a new community park and playground that local families had been requesting for years.",opts:["cleared out / make way","worn on / depend on","risen above / make waves","struck a balance / clear out"],ans:"A"},
+  {id:55,section:"Vocabulary & Phrases",q:"Whether the project will succeed or fail entirely ________ how effectively the team manages its limited budget and human resources over the next six months.",opts:["depends on","rises above","wears on","makes way for"],ans:"A"},
+  {id:56,section:"Vocabulary & Phrases",q:"Despite losing his job and his savings, he managed to ________ the hardship and rebuild his life through sheer determination and the support of his family.",opts:["depend on","rise above","make waves","clear out"],ans:"B"},
+  {id:57,section:"Vocabulary & Phrases",q:"The mayor asked residents to donate their old furniture and belongings, which would be ________ to make room for emergency shelter units during the flood crisis.",opts:["cleared out","struck a balance","risen above","worn on"],ans:"A"},
+  {id:58,section:"Vocabulary & Phrases",q:"The ________ of the new bridge resting over the river gave the city skyline an elegant and historic feel that tourists frequently stopped to photograph.",opts:["panel","arch","session","mission"],ans:"B"},
+  {id:59,section:"Vocabulary & Phrases",q:"The engineer ________ the blueprints onto the white wall so that the entire construction team could review and discuss the building plan together.",opts:["installed","projected","concluded","issued"],ans:"B"},
+  {id:60,section:"Vocabulary & Phrases",q:"The government ________ new guidelines on food labeling so that consumers could more easily identify products that meet basic nutritional standards.",opts:["abandoned","drowned","issued","treasured"],ans:"C"},
+  {id:61,section:"Vocabulary & Phrases",q:"Diets that are rich in vegetables, whole grains, and lean protein are far more ________ than those that rely heavily on processed foods and refined sugar.",opts:["intentional","nutritious","priceless","guilty"],ans:"B"},
+  {id:62,section:"Vocabulary & Phrases",q:"The farmer's hard work throughout the growing season finally resulted in the ________ of a successful harvest that fed the entire village through the winter.",opts:["the fruit of","in the end","all in all","by no means"],ans:"A"},
+  {id:63,section:"Vocabulary & Phrases",q:"The nation's economy is ________ at risk of a serious recession unless policymakers take decisive action to restore confidence among investors and consumers alike.",opts:["indeed","on track","all in all","at a time"],ans:"A"},
+  {id:64,section:"Vocabulary & Phrases",q:"The construction project is still ________ and is expected to be completed by the end of the year despite the challenges caused by bad weather.",opts:["in need of","on track","at risk of","as a whole"],ans:"B"},
+  {id:65,section:"Vocabulary & Phrases",q:"The charity organization is ________ more volunteers to help distribute food packages to hundreds of elderly residents living alone in the city.",opts:["in need of","on track","at a time","as a whole"],ans:"A"},
+  {id:66,section:"Vocabulary & Phrases",q:"The committee reviewed the education system ________ and concluded that reforms were urgently needed at both the primary and secondary school levels.",opts:["by no means","around the clock","as a whole","at a time"],ans:"C"},
+  {id:67,section:"Vocabulary & Phrases",q:"________, the program was considered a success, even though it faced significant financial challenges and delays in its early stages of implementation.",opts:["Back and forth","All in all","Around the clock","In need of"],ans:"B"},
+  {id:68,section:"Vocabulary & Phrases",q:"He chose to ________ the project halfway through because unexpected funding cuts made it impossible to continue without compromising quality significantly.",opts:["worship","preserve","abandon","conclude"],ans:"C"},
+  {id:69,section:"Vocabulary & Phrases",q:"After months of negotiation, the rebel forces agreed to ________ their weapons and accept the terms of the peace agreement drafted by international mediators.",opts:["transport","surrender","endanger","install"],ans:"B"},
+  {id:70,section:"Vocabulary & Phrases",q:"The investigator confirmed that the fire was not accidental but ________, deliberately set to destroy evidence of financial fraud within the company.",opts:["sufficient","resistant","intentional","abundant"],ans:"C"},
+  {id:71,section:"Vocabulary & Phrases",q:"She openly expressed her deep ________ at the way the animals were being treated in the poorly run facility, calling for an immediate government inspection.",opts:["worship","guilt","disgust","relief"],ans:"C"},
+  {id:72,section:"Vocabulary & Phrases",q:"All efforts to convince the committee to approve the proposal were ________, as they had already made their decision before the meeting even began.",opts:["vain","fond","solar","crucial"],ans:"A"},
+  {id:73,section:"Vocabulary & Phrases",q:"The local community built a shrine where residents could come to ________ and pay respect to those who had given their lives during the war.",opts:["campaign","worship","debate","conclude"],ans:"B"},
+  {id:74,section:"Vocabulary & Phrases",q:"His original ________ was to leave the company quietly, but after speaking with his mentor, he decided to raise his concerns with management directly.",opts:["intention","identity","abundance","resistance"],ans:"A"},
+  {id:75,section:"Vocabulary & Phrases",q:"She decided to ________ to the jury that her client had acted out of fear and self-defense, not out of a desire to harm anyone.",opts:["make clear","make waves","make way","strike a balance"],ans:"A"},
+  {id:76,section:"Vocabulary & Phrases",q:"The nurse carefully administered only one dose of the medication ________ to ensure the patient received the correct amount and did not experience an overdose.",opts:["in the end","at a time","all in all","back and forth"],ans:"B"},
+  {id:77,section:"Vocabulary & Phrases",q:"The company's argument was ________ logical — its decision to reduce wages during a period of record profits could not be justified by any economic reasoning.",opts:["by no means","on track","at a time","as a whole"],ans:"A"},
+  {id:78,section:"Vocabulary & Phrases",q:"The coastal region was ________ of flooding each spring as melting snow from the mountains raised river levels to dangerous heights.",opts:["in need of","on track","at risk of","all in all"],ans:"C"},
+  {id:79,section:"Vocabulary & Phrases",q:"The ________ scale of the disaster overwhelmed the city's emergency services, requiring national military assistance for effective relief efforts.",opts:["fond","solar","enormous","muddy"],ans:"C"},
+  {id:80,section:"Vocabulary & Phrases",q:"Maintaining good ________ in school kitchens is essential for preventing foodborne illness and ensuring the safety of students eating cafeteria meals every day.",opts:["hygiene","nutrition","finance","productivity"],ans:"A"},
+  {id:81,section:"Vocabulary & Phrases",q:"Her ability to manage the company's ________ wisely allowed the business to survive the economic downturn while many competitors were forced to close permanently.",opts:["identity","finance","progress","glimpse"],ans:"B"},
+  {id:82,section:"Vocabulary & Phrases",q:"The archaeologist's discovery was ________ important for understanding how early humans adapted to environmental changes in the region over ten thousand years ago.",opts:["indeed","at a time","in the end","back and forth"],ans:"A"},
+  {id:83,section:"Vocabulary & Phrases",q:"The team made steady ________ on the new product despite early setbacks, and they were able to present a working prototype ahead of the original schedule.",opts:["resistance","abundance","progress","replacement"],ans:"C"},
+  {id:84,section:"Vocabulary & Phrases",q:"The foundation's mission focused on the ________ of endangered languages spoken by small indigenous communities that had lived in the region for centuries.",opts:["replacement","acquisition","preservation","development"],ans:"C"},
+  {id:85,section:"Vocabulary & Phrases",q:"Rapid ________ of the waterfront area has brought new jobs and investment, but it has also raised serious concerns about affordability for long-time residents.",opts:["resistance","development","glimpse","worship"],ans:"B"},
+  {id:86,section:"Vocabulary & Phrases",q:"She ________ the handwritten letters her grandfather had sent during the war, keeping them in a locked box and reading them every year on his birthday.",opts:["abandoned","treasured","resisted","drowned"],ans:"B"},
+  {id:87,section:"Vocabulary & Phrases",q:"A group of experts served on the ________ to evaluate applications for the scholarship and select the most deserving candidates from over three hundred submissions.",opts:["session","panel","volume","arch"],ans:"B"},
+  {id:88,section:"Vocabulary & Phrases",q:"The ________ impact of the policy change on the livelihoods of thousands of factory workers was something the officials had failed to fully consider before signing the agreement.",opts:["promising","profound","nutritious","muddy"],ans:"B"},
+  {id:89,section:"Vocabulary & Phrases",q:"Overcoming ________ barriers to healthcare access remains one of the greatest challenges for communities in remote and mountainous regions of the country.",opts:["financial","geographical","mental","urban"],ans:"B"},
+  {id:90,section:"Vocabulary & Phrases",q:"Young people living in ________ areas often face a very different set of social and economic challenges compared to those growing up in rural communities.",opts:["solar","urban","arched","appropriate"],ans:"B"},
+  {id:91,section:"Vocabulary & Phrases",q:"It is ________ that both the government and private sector cooperate to address the growing problem of food insecurity before it worsens significantly.",opts:["vain","priceless","crucial","fond"],ans:"C"},
+  {id:92,section:"Vocabulary & Phrases",q:"The young athlete showed ________ talent for track and field, and her coach believed that with proper training she could compete at the international level.",opts:["resistant","promising","vain","intentional"],ans:"B"},
+  {id:93,section:"Vocabulary & Phrases",q:"The suspect claimed the theft was a mistake, but the prosecutor argued the act was entirely ________, as the suspect had planned it for several weeks in advance.",opts:["appropriate","guilty","practical","intentional"],ans:"D"},
+  {id:94,section:"Vocabulary & Phrases",q:"The program director spent the entire morning going ________ between the two departments trying to find a compromise that would satisfy both sides.",opts:["back and forth","all in all","in the end","at risk of"],ans:"A"},
+  {id:95,section:"Vocabulary & Phrases",q:"The school decided to ________ its outdated computer lab with modern equipment, hoping to better prepare students for careers in a digital economy.",opts:["endanger","situate","replace","resist"],ans:"C"},
+  {id:96,section:"Vocabulary & Phrases",q:"The community center provided a suitable ________ for elderly residents who had no family nearby to spend the holidays with, offering meals and live entertainment.",opts:["residence","campaign","session","opportunity"],ans:"D"},
+  {id:97,section:"Vocabulary & Phrases",q:"The road was extremely ________ after days of heavy rain, making it difficult for trucks to deliver supplies to the isolated village without getting stuck.",opts:["resistant","appropriate","muddy","productive"],ans:"C"},
+  {id:98,section:"Vocabulary & Phrases",q:"Studying abroad offered her a rare ________ to improve her language skills, broaden her cultural understanding, and develop a global professional network.",opts:["mission","barrier","opportunity","session"],ans:"C"},
+  {id:99,section:"Vocabulary & Phrases",q:"The investigator confirmed that the convicted ________ had acted alone and had no prior criminal record, which the court took into consideration during sentencing.",opts:["resident","companion","murderer","prisoner"],ans:"C"},
+  {id:100,section:"Vocabulary & Phrases",q:"The children were eager to enjoy the ________ of fruit in the market — ripe mangoes, fresh pineapples, and dozens of other tropical varieties were piled high on every stall.",opts:["preservation","urgency","abundance","replacement"],ans:"C"},
+];
+
+const grammarQuestions = [
+  {id:101,section:"Grammar Focus",q:"The graduates often wonder ________ their future careers will be like in such a competitive market.",opts:["how","what","that","which"],ans:"B"},
+  {id:102,section:"Grammar Focus",q:"The doctor recommended that the patient ________ some weightlifting to strengthen his muscles.",opts:["does","did","doing","do"],ans:"D"},
+  {id:103,section:"Grammar Focus",q:"________ as he was, Sam continued to work for ten hours without taking a single rest.",opts:["Tired","Tiring","Being tired","As tired"],ans:"A"},
+  {id:104,section:"Grammar Focus",q:"It is boiling hot outside, but the coach insists that every one of us ________ twenty laps.",opts:["run","runs","ran","running"],ans:"A"},
+  {id:105,section:"Grammar Focus",q:"Mrs. Stevenson is not sure ________ she turned off the stove before she left her house.",opts:["if","what","which","that"],ans:"A"},
+  {id:106,section:"Grammar Focus",q:"If these countries ________ an innovative program, they would not be able to overcome geographical barriers.",opts:["don't have","didn't have","hadn't","wouldn't have"],ans:"B"},
+  {id:107,section:"Grammar Focus",q:"It is ________ that the patient be sent to the hospital for emergency care immediately.",opts:["urgent","urgently","urgency","urge"],ans:"A"},
+  {id:108,section:"Grammar Focus",q:"Jane finds ________ a great challenge to take care of three young children all by herself.",opts:["that","this","it","her"],ans:"C"},
+  {id:109,section:"Grammar Focus",q:"The thief ran away quickly. Yet, as fast ________ I drove, I just couldn't catch up with him.",opts:["than","as","that","for"],ans:"B"},
+  {id:110,section:"Grammar Focus",q:"It is necessary that the plane ________ all safety checks before it is allowed to take off.",opts:["undergoes","undergo","underwent","undergoing"],ans:"B"},
+  {id:111,section:"Grammar Focus",q:"If I ________ a superpower, I would use it to help people in need around the world.",opts:["have","had","would have","am having"],ans:"B"},
+  {id:112,section:"Grammar Focus",q:"The chairman proposed that the issue ________ at the next meeting instead of today.",opts:["be discussed","is discussed","was discussed","discussing"],ans:"A"},
+  {id:113,section:"Grammar Focus",q:"________ the ancient treasure was lost during the war remains a mystery to historians.",opts:["If","Whether","What","Which"],ans:"B"},
+  {id:114,section:"Grammar Focus",q:"It was ________ for the authorities to act quickly to save the historical building.",opts:["crucial","curiously","crude","cruise"],ans:"A"},
+  {id:115,section:"Grammar Focus",q:"If Nancy ________ stronger, she could move that heavy wooden box by herself.",opts:["is","was","were","had been"],ans:"C"},
+  {id:116,section:"Grammar Focus",q:"Parents think ________ horrible that campus bullying is becoming a serious problem.",opts:["it","that","very","to be"],ans:"A"},
+  {id:117,section:"Grammar Focus",q:"Before the performance started, the host requested that all smartphones ________ off.",opts:["are turned","be turned","were turned","turn"],ans:"B"},
+  {id:118,section:"Grammar Focus",q:"Wealthy ________ he is, Mr. Jackson never looks down on the poor or the homeless.",opts:["as","though","even","since"],ans:"A"},
+  {id:119,section:"Grammar Focus",q:"Dorian has not decided ________ he is coming to the graduation ceremony or not.",opts:["if","whether","what","that"],ans:"B"},
+  {id:120,section:"Grammar Focus",q:"New training methods make ________ possible for the villagers to increase their productivity.",opts:["that","it","them","which"],ans:"B"},
+  {id:121,section:"Grammar Focus",q:"Please tell me ________. I need to return these library books before noon.",opts:["where is the library","where the library is","the library is where","is where the library"],ans:"B"},
+  {id:122,section:"Grammar Focus",q:"It is critical that parents ________ their young children at home alone for any reason.",opts:["not leave","don't leave","shouldn't have left","not leaving"],ans:"A"},
+  {id:123,section:"Grammar Focus",q:"________ I a bird, I would fly to you across the ocean right now.",opts:["Was","If","Were","Am"],ans:"C"},
+  {id:124,section:"Grammar Focus",q:"The doctor strongly advised that Brian ________ a week off and rest in bed.",opts:["takes","took","take","taking"],ans:"C"},
+  {id:125,section:"Grammar Focus",q:"It is necessary ________ a tie for this formal business meeting at the embassy.",opts:["wearing","to wear","wear","worn"],ans:"B"},
+  {id:126,section:"Grammar Focus",q:"If the roof ________ built with such strong materials, the boat would be damaged by the rain.",opts:["isn't","wasn't","weren't","wouldn't be"],ans:"C"},
+  {id:127,section:"Grammar Focus",q:"Whether we see progress depends on ________ thought and effort we are willing to put in.",opts:["how many","how much","what much","whether"],ans:"B"},
+  {id:128,section:"Grammar Focus",q:"Sandy is very intelligent. However, as smart ________, she can't solve this math problem.",opts:["she is","is she","as she is","as is she"],ans:"C"},
+  {id:129,section:"Grammar Focus",q:"The rescue team thought ________ a miracle that the two-year-old baby survived the earthquake.",opts:["that","this","so","it"],ans:"D"},
+  {id:130,section:"Grammar Focus",q:"It is vital that the government ________ shelter and food for the earthquake victims.",opts:["provides","provide","provided","to provide"],ans:"B"},
+  {id:131,section:"Grammar Focus",q:"I would consider changing my college major if I ________ ten years younger than I am.",opts:["am","were","will be","had been"],ans:"B"},
+  {id:132,section:"Grammar Focus",q:"The king has ordered that all men over eighteen ________ the army to protect the border.",opts:["join","joins","joined","will join"],ans:"A"},
+  {id:133,section:"Grammar Focus",q:"________ Rita behaved on such a formal occasion was not appropriate at all.",opts:["How","What","That","Whether"],ans:"A"},
+  {id:134,section:"Grammar Focus",q:"The debate grew more heated, and the banker proposed that the lawyer ________ his claim.",opts:["proved","proves","proving","prove"],ans:"D"},
+  {id:135,section:"Grammar Focus",q:"If I ________ enough money now, I could lend you some to pay for your tuition.",opts:["have","were having","had","would have"],ans:"C"},
+  {id:136,section:"Grammar Focus",q:"John suggested that Lisa ________ on a diet and work out three times a week.",opts:["goes","went","go","going"],ans:"C"},
+  {id:137,section:"Grammar Focus",q:"If Jimmy doesn't pass the final exam, he won't graduate. It is important that he ________.",opts:["passes","passed","pass","will pass"],ans:"C"},
+  {id:138,section:"Grammar Focus",q:"Cathy was really stubborn. As hard ________, I just couldn't make her change her mind.",opts:["as I tried","as tried I","I tried","though I try"],ans:"A"},
+  {id:139,section:"Grammar Focus",q:"Jason considers ________ necessary to wear a suit when he meets with important clients.",opts:["it","that","which","what"],ans:"A"},
+  {id:140,section:"Grammar Focus",q:"In Kaohsiung, the city had to figure out ________ a priceless old structure could be preserved.",opts:["how","what","if","which"],ans:"A"},
+  {id:141,section:"Grammar Focus",q:"It is essential that the plane ________ safety checks before it takes off.",opts:["undergoes","undergo","underwent","undergoing"],ans:"B"},
+  {id:142,section:"Grammar Focus",q:"Mike had to go, but Josh insisted that he ________ for dinner.",opts:["stays","stayed","stay","staying"],ans:"C"},
+  {id:143,section:"Grammar Focus",q:"It is necessary that development ________ place, but we must protect our heritage.",opts:["takes","take","took","taking"],ans:"B"},
+  {id:144,section:"Grammar Focus",q:"Whether it is possible to see progress ________ how much effort we are willing to put in.",opts:["depends on","is depending","depend on","depending on"],ans:"A"},
+  {id:145,section:"Grammar Focus",q:"As kind and generous ________, Fred isn't really Jane's cup of tea.",opts:["he is","is he","as he is","as is he"],ans:"C"},
+  {id:146,section:"Grammar Focus",q:"If I ________ you, I would think twice before signing that legal contract.",opts:["am","was","were","be"],ans:"C"},
+  {id:147,section:"Grammar Focus",q:"It was a miracle ________ the two-year-old baby survived the massive earthquake.",opts:["that","for","which","what"],ans:"A"},
+  {id:148,section:"Grammar Focus",q:"I wonder ________ my new classmates will be like when school starts tomorrow.",opts:["how","what","who","that"],ans:"B"},
+  {id:149,section:"Grammar Focus",q:"If you are quite serious about the bet, then I insist we ________ it fifteen years!",opts:["make","makes","made","making"],ans:"A"},
+  {id:150,section:"Grammar Focus",q:"It is horrible ________ campus bullying is getting more and more serious lately.",opts:["that","to","what","which"],ans:"A"},
+];
+
+let activeQuestions = [];
+let answers = {};
+let currentPage = 0;
+const PAGE_SIZE = 5;
+let studentName = "";
+let studentEmail = "";
+let selectedSection = "vocab";
+
+document.querySelectorAll(".tab-btn").forEach(btn => {
+  btn.addEventListener("click", () => {
+    document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+    btn.classList.add("active");
+    selectedSection = btn.dataset.section;
+  });
+});
+
+function startQuiz() {
+  studentName = document.getElementById("studentName").value.trim();
+  if (!studentName) { document.getElementById("startError").style.display = "block"; return; }
+  document.getElementById("startError").style.display = "none";
+  studentEmail = document.getElementById("studentEmail").value.trim();
+  if (selectedSection === "vocab") activeQuestions = [...vocabQuestions];
+  else if (selectedSection === "grammar") activeQuestions = [...grammarQuestions];
+  else activeQuestions = [...vocabQuestions, ...grammarQuestions];
+  answers = {};
+  currentPage = 0;
+  document.getElementById("startScreen").classList.add("hidden");
+  document.getElementById("quizScreen").classList.remove("hidden");
+  renderPage();
+}
+
+function renderPage() {
+  const total = activeQuestions.length;
+  const totalPages = Math.ceil(total / PAGE_SIZE);
+  const start = currentPage * PAGE_SIZE;
+  const pageQs = activeQuestions.slice(start, start + PAGE_SIZE);
+  const answered = Object.keys(answers).length;
+  const pct = Math.round((answered / total) * 100);
+  document.getElementById("progressFill").style.width = pct + "%";
+  document.getElementById("progressText").textContent = "Page " + (currentPage + 1) + " of " + totalPages;
+  document.getElementById("answeredCount").textContent = answered + " / " + total + " answered";
+  document.getElementById("sectionBadge").textContent = pageQs[0] ? pageQs[0].section : "";
+  document.getElementById("btnBack").style.visibility = currentPage === 0 ? "hidden" : "visible";
+  const isLast = currentPage === totalPages - 1;
+  const btnNext = document.getElementById("btnNext");
+  btnNext.textContent = isLast ? "Submit \u2713" : "Next \u2192";
+  btnNext.onclick = isLast ? submitQuiz : function(){ changePage(1); };
+  document.getElementById("navInfo").textContent = (start + 1) + "\u2013" + Math.min(start + PAGE_SIZE, total) + " / " + total;
+  const container = document.getElementById("questionsContainer");
+  container.innerHTML = "";
+  pageQs.forEach(function(q, i) {
+    const div = document.createElement("div");
+    div.className = "question-block";
+    const letters = ["A","B","C","D"];
+    let optsHtml = q.opts.map(function(opt, oi) {
+      const sel = answers[q.id] === letters[oi] ? " selected" : "";
+      return '<button class="option-btn' + sel + '" onclick="selectAnswer(' + q.id + ',\'' + letters[oi] + '\',this)">' +
+        '<span class="opt-letter">' + letters[oi] + '</span><span>' + opt + '</span></button>';
+    }).join("");
+    div.innerHTML = '<div class="q-header"><div class="q-num">' + q.id + '</div><div class="q-text">' + q.q + '</div></div>' +
+      '<div class="options">' + optsHtml + '</div>' +
+      (i < pageQs.length - 1 ? '<hr class="divider">' : "");
+    container.appendChild(div);
+  });
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+function selectAnswer(qid, letter, btn) {
+  answers[qid] = letter;
+  const opts = btn.closest(".options").querySelectorAll(".option-btn");
+  opts.forEach(function(b){ b.classList.remove("selected"); });
+  btn.classList.add("selected");
+  const total = activeQuestions.length;
+  const answered = Object.keys(answers).length;
+  document.getElementById("progressFill").style.width = Math.round((answered/total)*100) + "%";
+  document.getElementById("answeredCount").textContent = answered + " / " + total + " answered";
+}
+
+function changePage(dir) {
+  const totalPages = Math.ceil(activeQuestions.length / PAGE_SIZE);
+  currentPage = Math.max(0, Math.min(totalPages - 1, currentPage + dir));
+  renderPage();
+}
+
+function submitQuiz() {
+  const unanswered = activeQuestions.filter(function(q){ return !answers[q.id]; });
+  if (unanswered.length > 0) {
+    if (!confirm("You have " + unanswered.length + " unanswered question(s). Submit anyway?")) return;
+  }
+  let correct = 0;
+  const wrongList = [];
+  const letters = ["A","B","C","D"];
+  activeQuestions.forEach(function(q) {
+    const given = answers[q.id] || "—";
+    if (given === q.ans) { correct++; }
+    else {
+      wrongList.push({
+        id: q.id,
+        section: q.section,
+        question: q.q,
+        yourAnswer: given === "—" ? "Not answered" : given + ": " + (letters.indexOf(given) >= 0 ? q.opts[letters.indexOf(given)] : ""),
+        correct: q.ans + ": " + q.opts[letters.indexOf(q.ans)]
+      });
+    }
+  });
+  const total = activeQuestions.length;
+  document.getElementById("quizScreen").classList.add("hidden");
+  document.getElementById("resultScreen").classList.remove("hidden");
+  document.getElementById("scoreNum").textContent = correct;
+  document.getElementById("scoreDenom").textContent = "/ " + total;
+  document.getElementById("resultName").textContent = studentName;
+  const pct = Math.round((correct/total)*100);
+  document.getElementById("resultSub").textContent = "Score: " + correct + "/" + total + " (" + pct + "%) \u2014 " +
+    (pct >= 80 ? "Great work! \uD83C\uDF89" : pct >= 60 ? "Keep it up! \uD83D\uDCAA" : "Review the mistakes below \uD83D\uDCDA");
+  const ws = document.getElementById("wrongSection");
+  if (wrongList.length === 0) {
+    ws.innerHTML = '<div style="color:var(--green);font-size:0.95rem;font-weight:600">\uD83C\uDFAF Perfect score! All answers correct.</div>';
+  } else {
+    ws.innerHTML = '<div class="wrong-title">\u2717 Incorrect Answers (' + wrongList.length + ')</div>' +
+      wrongList.map(function(w){
+        return '<div class="wrong-item"><div class="wi-q"><strong>Q' + w.id + '</strong> [' + w.section + '] \u2014 ' + w.question + '</div>' +
+          '<div class="wi-yours">\u2717 Your answer: ' + w.yourAnswer + '</div>' +
+          '<div class="wi-correct">\u2713 Correct: ' + w.correct + '</div></div>';
+      }).join("");
+  }
+  sendToGAS(correct, total, wrongList);
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+
+async function sendToGAS(correct, total, wrongList) {
+  const statusEl = document.getElementById("submitStatus");
+  statusEl.className = "status-msg loading";
+  statusEl.textContent = "\u23F3 Sending results...";
+  const payload = {
+    name: studentName,
+    email: studentEmail,
+    score: correct + "/" + total,
+    section: selectedSection,
+    wrongAnswers: wrongList
+  };
+  try {
+    await fetch(GAS_URL, {
+      method: "POST",
+      mode: "no-cors",
+      headers: {"Content-Type":"application/json"},
+      body: JSON.stringify(payload)
+    });
+    statusEl.className = "status-msg success";
+    statusEl.textContent = "\u2713 Results sent successfully!" + (studentEmail ? " A copy has been emailed to you." : "");
+  } catch(err) {
+    statusEl.className = "status-msg error";
+    statusEl.textContent = "\u26A0 Could not send results. Please inform your teacher.";
+  }
+}
+</script>
+</body>
+</html>
