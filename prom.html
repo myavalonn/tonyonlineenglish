@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Promotion Interview Deep Dive Questionnaire</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #0f172a;
+            --accent: #3b82f6;
+            --text-main: #1e293b;
+            --text-sub: #64748b;
+            --bg: #ffffff;
+            --input-bg: #f8fafc;
+            --border: #e2e8f0;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, sans-serif;
+            background-color: #f1f5f9;
+            color: var(--text-main);
+            margin: 0;
+            padding: 50px 20px;
+            line-height: 1.6;
+        }
+
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: var(--bg);
+            padding: 50px 60px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.05);
+        }
+
+        header {
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 25px;
+            margin-bottom: 40px;
+            text-align: center;
+        }
+
+        h1 { font-size: 26px; font-weight: 700; margin: 0; color: var(--primary); }
+        .en-title { font-size: 18px; color: var(--text-sub); margin-top: 5px; font-weight: 400; }
+        .subtitle { font-size: 15px; color: var(--text-sub); margin-top: 15px; background: #eff6ff; padding: 10px; border-radius: 6px;}
+
+        .section-box { margin-bottom: 50px; }
+        .section-header {
+            font-size: 14px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            color: var(--accent);
+            margin-bottom: 20px;
+            display: block;
+            border-left: 4px solid var(--accent);
+            padding-left: 10px;
+        }
+
+        .question-group { margin-bottom: 30px; }
+        
+        label { display: block; font-weight: 600; font-size: 16px; margin-bottom: 4px; color: var(--primary); }
+        .en-label { display: block; font-size: 14px; font-weight: 400; color: var(--text-sub); margin-bottom: 8px; }
+        
+        .label-desc { font-size: 14px; color: var(--text-main); margin-bottom: 2px; display: block; }
+        .en-desc { font-size: 13px; color: var(--text-sub); margin-bottom: 12px; display: block; font-style: italic; }
+
+        input[type="text"], textarea {
+            width: 100%;
+            padding: 15px;
+            border: 1px solid var(--border);
+            background-color: var(--input-bg);
+            border-radius: 6px;
+            font-size: 15px;
+            transition: all 0.2s;
+            box-sizing: border-box;
+            font-family: inherit;
+        }
+
+        .row { display: flex; gap: 20px; margin-bottom: 30px; }
+        .col { flex: 1; }
+
+        input:focus, textarea:focus {
+            outline: none;
+            border-color: var(--accent);
+            background-color: #fff;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.15);
+        }
+
+        textarea { resize: vertical; min-height: 120px; }
+
+        .submit-area { margin-top: 40px; text-align: center; }
+
+        .btn {
+            background: var(--primary);
+            color: white;
+            padding: 18px 40px;
+            font-size: 16px;
+            font-weight: 600;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.3s;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .btn .en-btn { font-size: 13px; font-weight: 400; opacity: 0.8; margin-top: 4px; }
+        .btn:hover { background: var(--accent); }
+        .btn:disabled { background: #94a3b8; cursor: not-allowed; }
+
+        @media (max-width: 600px) {
+            .form-container { padding: 30px 20px; }
+            .row { flex-direction: column; gap: 0; margin-bottom: 0;}
+            .col { margin-bottom: 30px; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="form-container">
+    <header>
+        <h1>晉升英語面試：深度需求挖掘表</h1>
+        <div class="en-title">Promotion Interview Deep Dive Questionnaire</div>
+        <p class="subtitle">這份問卷是為了幫你梳理職業高度，請以「決策者」的角度思考並填寫。<br>
+        <span style="font-size:13px;">Please fill out this form from a "decision-maker's" perspective to help us structure your career narrative.</span></p>
+    </header>
+
+    <form id="promoForm">
+        
+        <!-- Section 0: 基本資訊 -->
+        <div class="section-box">
+            <span class="section-header">00 基本資訊 / Basic Info</span>
+            <div class="question-group">
+                <label>你的姓名 <span class="en-label">Full Name</span></label>
+                <input type="text" name="studentName" required>
+            </div>
+            <div class="row">
+                <div class="col">
+                    <label>目前職稱 <span class="en-label">Current Title</span></label>
+                    <input type="text" name="currentTitle" required>
+                </div>
+                <div class="col">
+                    <label>目標職稱 <span class="en-label">Target Title</span></label>
+                    <input type="text" name="targetTitle" required>
+                </div>
+            </div>
+        </div>
+
+        <!-- Section 1 -->
+        <div class="section-box">
+            <span class="section-header">01 晉升定位 / Promotion Positioning</span>
+            <div class="question-group">
+                <label>目標職位與職責 <span class="en-label">Target Role & Responsibilities</span></label>
+                <span class="label-desc">請列出新職位中最重要的三個關鍵績效指標 (KPI)。</span>
+                <span class="en-desc">Please list the top 3 Key Performance Indicators (KPIs) expected in the new role.</span>
+                <textarea name="kpis" placeholder="1. ...&#10;2. ...&#10;3. ..." required></textarea>
+            </div>
+            <div class="question-group">
+                <label>為什麼是現在？ <span class="en-label">Why Now?</span></label>
+                <span class="label-desc">過去半年內，發生了什麼關鍵事件讓你認為自己「準備好了」？</span>
+                <span class="en-desc">What key events in the past 6 months have proven that you are "ready" for this level?</span>
+                <textarea name="whyNow" required></textarea>
+            </div>
+            <div class="question-group">
+                <label>為什麼是你？ <span class="en-label">Why You? (Unique Value Proposition)</span></label>
+                <span class="label-desc">與其他競爭者或外部候選人相比，你具備什麼獨特的優勢？</span>
+                <span class="en-desc">Compared to other internal/external candidates, what is your unique advantage?</span>
+                <textarea name="whyYou" required></textarea>
+            </div>
+        </div>
+
+        <!-- Section 2 -->
+        <div class="section-box">
+            <span class="section-header">02 績效與影響力 / Performance & Impact</span>
+            <div class="question-group">
+                <label>最具代表性的數據成就 <span class="en-label">Biggest Data-Driven Achievement (STAR)</span></label>
+                <span class="label-desc">請提供一個你利用專業能力，直接為公司節省預算或增加營收的案例。(包含具體數字與對比)</span>
+                <span class="en-desc">Provide an example of how you saved budget or generated revenue. (Include specific numbers/metrics)</span>
+                <textarea name="achievement" required></textarea>
+            </div>
+            <div class="question-group">
+                <label>超越職責的行為 <span class="en-label">Going Beyond (Proactivity)</span></label>
+                <span class="label-desc">描述一次你「主動」發現問題並解決，而非只是等待指令的經驗。</span>
+                <span class="en-desc">Describe a time you proactively identified and solved a problem without being asked.</span>
+                <textarea name="goingBeyond" required></textarea>
+            </div>
+        </div>
+
+        <!-- Section 3 -->
+        <div class="section-box">
+            <span class="section-header">03 領導力與軟實力 / Leadership & Soft Skills</span>
+            <div class="question-group">
+                <label>利害關係人管理 <span class="en-label">Stakeholder Management</span></label>
+                <span class="label-desc">描述一次你如何說服「不同部門」或「高層主管」支持你的提案，或處理意見分歧的經驗。</span>
+                <span class="en-desc">Describe a time you persuaded cross-functional teams/senior management, or resolved a conflict.</span>
+                <textarea name="stakeholder" required></textarea>
+            </div>
+            <div class="question-group">
+                <label>失敗經驗與學習 <span class="en-label">Failure & Lessons Learned</span></label>
+                <span class="label-desc">高階主管面試必考：分享一次你搞砸的專案，以及你從中學到了什麼？</span>
+                <span class="en-desc">Share a project that failed or didn't go as planned, and the specific lessons you learned.</span>
+                <textarea name="failure" required></textarea>
+            </div>
+            <div class="question-group">
+                <label>面試官最可能挑戰你的點 <span class="en-label">Anticipated Challenge / Vulnerability</span></label>
+                <span class="label-desc">如果你是面試官，你會質疑目前的自己哪個部分還不夠資深？打算如何回應？</span>
+                <span class="en-desc">If you were the interviewer, what gap or weakness would you challenge yourself on? How will you address it?</span>
+                <textarea name="weakness" required></textarea>
+            </div>
+        </div>
+
+        <!-- Section 4 -->
+        <div class="section-box">
+            <span class="section-header">04 願景規劃 / Vision & Roadmap</span>
+            <div class="question-group">
+                <label>上任後的第一個 90 天計畫 <span class="en-label">The First 90-Day Plan</span></label>
+                <span class="label-desc">如果你成功晉升，你打算解決的第一個問題是什麼？有什麼具體行動？</span>
+                <span class="en-desc">If promoted, what is the very first problem you will tackle? What are your concrete action items?</span>
+                <textarea name="plan" required></textarea>
+            </div>
+        </div>
+
+        <div class="submit-area">
+            <button type="submit" class="btn" id="submitBtn">
+                <span>提交資訊，開啟專屬培訓</span>
+                <span class="en-btn">Submit and Start Your Training</span>
+            </button>
+        </div>
+    </form>
+</div>
+
+<script>
+    // ==========================================
+    // 請將下方的網址替換為你在 Step 1 取得的 Web App URL
+    // ==========================================
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwuoMJxsuLWuufhy_svgyDcvfkAMfpnd0enaLwO-dw_J5XAjRp8f7NlKGAZQs2Xd787/exec';
+    
+    const form = document.getElementById('promoForm');
+    const btn = document.getElementById('submitBtn');
+
+    form.addEventListener('submit', e => {
+        e.preventDefault();
+        
+        // 改變按鈕狀態，避免重複點擊
+        btn.disabled = true;
+        btn.innerHTML = '<span>提交中...</span><span class="en-btn">Submitting...</span>';
+
+        // 收集表單資料
+        const formData = new FormData(form);
+
+        // 傳送資料到 Google Apps Script
+        fetch(scriptURL, { method: 'POST', body: formData })
+            .then(response => response.json())
+            .then(data => {
+                if(data.result === 'success') {
+                    alert('🎉 提交成功！我們已經收到你的資料。\nSuccess! We have received your information.');
+                    form.reset();
+                } else {
+                    alert('⚠️ 發生錯誤，請稍後再試。\nError occurred. Please try again later.');
+                }
+                // 恢復按鈕狀態
+                btn.disabled = false;
+                btn.innerHTML = '<span>提交資訊，開啟專屬培訓</span><span class="en-btn">Submit and Start Your Training</span>';
+            })
+            .catch(error => {
+                console.error('Error!', error.message);
+                alert('⚠️ 網路連線錯誤，請確定設定是否正確。\nNetwork error, please check the settings.');
+                btn.disabled = false;
+                btn.innerHTML = '<span>提交資訊，開啟專屬培訓</span><span class="en-btn">Submit and Start Your Training</span>';
+            });
+    });
+</script>
+
+</body>
+</html>
