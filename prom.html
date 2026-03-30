@@ -66,7 +66,7 @@
         .label-desc { font-size: 14px; color: var(--text-main); margin-bottom: 2px; display: block; }
         .en-desc { font-size: 13px; color: var(--text-sub); margin-bottom: 12px; display: block; font-style: italic; }
 
-        input[type="text"], textarea {
+        input[type="text"], input[type="email"], textarea {
             width: 100%;
             padding: 15px;
             border: 1px solid var(--border);
@@ -134,9 +134,16 @@
         <!-- Section 0: 基本資訊 -->
         <div class="section-box">
             <span class="section-header">00 基本資訊 / Basic Info</span>
-            <div class="question-group">
-                <label>你的姓名 <span class="en-label">Full Name</span></label>
-                <input type="text" name="studentName" required>
+            <div class="row">
+                <div class="col">
+                    <label>你的姓名 <span class="en-label">Full Name</span></label>
+                    <input type="text" name="studentName" required>
+                </div>
+                <!-- 新增：信箱欄位 -->
+                <div class="col">
+                    <label>聯絡信箱 <span class="en-label">Email Address</span></label>
+                    <input type="email" name="studentEmail" placeholder="your@email.com" required>
+                </div>
             </div>
             <div class="row">
                 <div class="col">
@@ -235,9 +242,9 @@
 
 <script>
     // ==========================================
-    // 請將下方的網址替換為你在 Step 1 取得的 Web App URL
+    // 請確認下方已貼上你的 Google Apps Script Web App URL
     // ==========================================
-    const scriptURL = 'https://script.google.com/macros/s/AKfycbwuoMJxsuLWuufhy_svgyDcvfkAMfpnd0enaLwO-dw_J5XAjRp8f7NlKGAZQs2Xd787/exec';
+    const scriptURL = 'https://script.google.com/macros/s/AKfycbwuoMJxsuLWuufhy_svgyDcvfkAMfpnd0enaLwO-dw_J5XAjRp8f7NlKGAZQs2Xd787/exec'; 
     
     const form = document.getElementById('promoForm');
     const btn = document.getElementById('submitBtn');
@@ -245,24 +252,21 @@
     form.addEventListener('submit', e => {
         e.preventDefault();
         
-        // 改變按鈕狀態，避免重複點擊
         btn.disabled = true;
         btn.innerHTML = '<span>提交中...</span><span class="en-btn">Submitting...</span>';
 
-        // 收集表單資料
         const formData = new FormData(form);
 
-        // 傳送資料到 Google Apps Script
         fetch(scriptURL, { method: 'POST', body: formData })
             .then(response => response.json())
             .then(data => {
                 if(data.result === 'success') {
-                    alert('🎉 提交成功！我們已經收到你的資料。\nSuccess! We have received your information.');
+                    // 提示文字加入 Email 收件提醒
+                    alert('🎉 提交成功！一封確認信已發送至您的 Email。\nSuccess! A confirmation email has been sent to you.');
                     form.reset();
                 } else {
                     alert('⚠️ 發生錯誤，請稍後再試。\nError occurred. Please try again later.');
                 }
-                // 恢復按鈕狀態
                 btn.disabled = false;
                 btn.innerHTML = '<span>提交資訊，開啟專屬培訓</span><span class="en-btn">Submit and Start Your Training</span>';
             })
