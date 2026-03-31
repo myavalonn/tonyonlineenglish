@@ -201,27 +201,25 @@
             transform: translateY(-50%); /* 垂直居中於那條線 */
             width: 48px;
             height: 48px;
-            border-radius: 50%; /* 圓形按鈕 */
-            font-size: 1.5em;
+            font-size: 2em; /* 字體稍微放大，因為沒有圓框了 */
             font-weight: bold;
             color: var(--primary);
+            opacity: 0.4; /* 半透明效果 */
             
-            /* 半透明白色 + 毛玻璃背景模糊效果 */
-            background: rgba(255, 255, 255, 0.7); 
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-            
-            border: 1px solid rgba(0, 0, 0, 0.1);
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* 加點陰影增加浮動感 */
+            /* 移除背景、邊框與陰影，只保留箭頭本體 */
+            background: transparent; 
+            border: none;
+            box-shadow: none;
             
             display: flex;
             align-items: center;
             justify-content: center;
             cursor: pointer;
             transition: all 0.2s ease;
+            padding: 0;
         }
 
-        /* 將箭頭外推到卡片邊緣附近，不擋住文字 */
+        /* 將箭頭外推到卡片邊緣附近 */
         .mobile-floating-nav .prev-btn {
             left: -15px;
         }
@@ -230,14 +228,13 @@
         }
 
         .mobile-floating-nav button:active {
-            background: rgba(255, 255, 255, 0.9);
-            transform: translateY(-50%) scale(0.95); /* 按下時微縮 */
+            opacity: 1; /* 按下時變成實色不透明 */
+            transform: translateY(-50%) scale(0.85); /* 按下時微縮 */
         }
         
         .mobile-floating-nav button:disabled {
             color: #cbd5e1;
-            background: rgba(255, 255, 255, 0.4);
-            box-shadow: none;
+            opacity: 0.2;
             cursor: not-allowed;
         }
 
