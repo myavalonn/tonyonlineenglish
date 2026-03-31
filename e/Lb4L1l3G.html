@@ -40,13 +40,12 @@
     padding: 0 0 60px;
   }
 
-  /* 為了不跟頂部導覽列衝突，加上一點上方邊距 */
   .page-header {
     background: #1e1510;
     color: #f5f0e8;
     padding: 36px 40px 28px;
     border-bottom: 4px solid var(--accent);
-    margin-top: 60px; /* 預留給 layout-manager 的導覽列空間，可視情況調整 */
+    margin-top: 0; /* 移除上方空白 */
   }
 
   .page-header h1 {
@@ -98,9 +97,10 @@
 
   .q-header {
     display: flex;
-    align-items: flex-start;
-    gap: 14px;
+    align-items: baseline; /* 讓文字底部對齊 */
+    gap: 12px;
     margin-bottom: 10px;
+    flex-wrap: nowrap; /* 強制不換行 */
   }
 
   .q-num {
@@ -109,7 +109,7 @@
     font-weight: 600;
     color: var(--muted);
     min-width: 28px;
-    padding-top: 2px;
+    flex-shrink: 0; /* 防止縮水 */
   }
 
   .answer-badge {
@@ -122,7 +122,8 @@
     font-weight: 700;
     padding: 2px 10px;
     white-space: nowrap;
-    margin-top: 1px;
+    flex-shrink: 0; /* 防止標籤被擠壓換行 */
+    transform: translateY(-1px);
   }
 
   .q-text {
@@ -198,11 +199,12 @@
   }
 
   @media (max-width: 600px) {
-    .page-header { padding: 24px 18px 20px; }
+    /* 手機版縮小上下留白與字體間距 */
+    .page-header { padding: 20px 16px 16px; margin-top: 0; }
     .container { padding: 20px 12px 0; }
     .q-card { padding: 18px 14px; }
     .options, .zh-translation { margin-left: 0; }
-    .q-header { flex-wrap: wrap; }
+    .q-header { gap: 8px; } /* 手機版題號標籤間距稍微縮小，但依然保持同行 */
   }
 </style>
 </head>
@@ -1033,7 +1035,6 @@
 
 </div><!-- /.container -->
 
-<!-- 加入斜線的絕對路徑！這能解決 99% 跨資料夾載入失敗的問題 -->
 <script src="/layout-manager.js"></script>
 </body>
 </html>
