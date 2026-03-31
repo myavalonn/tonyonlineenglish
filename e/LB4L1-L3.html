@@ -37,16 +37,6 @@
             line-height: 1.6;
         }
 
-        /* 平板與桌機版調整 */
-        @media (min-width: 768px) {
-            body {
-                font-size: 18px; /* 在大螢幕上稍微縮小一點點，保持排版美觀 */
-                max-width: 800px;
-                margin: 0 auto;
-                padding: 30px 20px;
-            }
-        }
-
         h1 {
             font-size: 1.5em;
             text-align: center;
@@ -188,6 +178,35 @@
             color: var(--text-light);
             font-size: 0.85em;
         }
+
+        /* 手機版導航專用樣式 (預設為手機版顯示) */
+        .desktop-only {
+            display: none;
+        }
+        .mobile-nav {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .mobile-nav .btn-nav {
+            flex: 1;
+        }
+
+        /* 平板與桌機版調整 */
+        @media (min-width: 768px) {
+            body {
+                font-size: 18px; /* 在大螢幕上稍微縮小一點點，保持排版美觀 */
+                max-width: 800px;
+                margin: 0 auto;
+                padding: 30px 20px;
+            }
+            .desktop-only {
+                display: block; /* 桌機恢復顯示原來的按鈕 */
+            }
+            .mobile-nav {
+                display: none; /* 桌機隱藏卡片內的按鈕 */
+            }
+        }
     </style>
 </head>
      <script src="layout-manager.js"></script>
@@ -211,9 +230,9 @@
 
     <!-- 導航選單 -->
     <div class="controls">
-        <button id="btn-prev" class="btn-nav" onclick="prevQuestion()">&larr; 上一題</button>
+        <button id="btn-prev" class="btn-nav desktop-only" onclick="prevQuestion()">&larr; 上一題</button>
         <select id="q-select" onchange="jumpToQuestion()"></select>
-        <button id="btn-next" class="btn-nav" onclick="nextQuestion()">下一題 &rarr;</button>
+        <button id="btn-next" class="btn-nav desktop-only" onclick="nextQuestion()">下一題 &rarr;</button>
     </div>
 
     <!-- 題目顯示區塊 -->
@@ -221,6 +240,13 @@
         <div class="q-number" id="q-number">載入中...</div>
         <div class="q-english" id="q-english"></div>
         <div class="q-chinese" id="q-chinese"></div>
+        
+        <!-- 手機版專用：在選項上方顯示的上下題按鈕 -->
+        <div class="mobile-nav">
+            <button id="btn-prev-mobile" class="btn-nav" onclick="prevQuestion()">&larr; 上一題</button>
+            <button id="btn-next-mobile" class="btn-nav" onclick="nextQuestion()">下一題 &rarr;</button>
+        </div>
+
         <div class="options-container" id="options-container"></div>
     </div>
 
@@ -1123,7 +1149,7 @@ Overcoming ________ barriers to healthcare access remains one of the greatest ch
 
 ------------------------------------------------------------
 Q90  ✓ B  urban
-Young people living in ________ areas often face a very different set of social and economic challenges compared to those growing up in rural communities.
+Young people living in ________ areas often face a very different set of social and economic challenges compared to reduction those growing up in rural communities.
 生活在城市地區的年輕人往往面臨著與在農村社區成長的人截然不同的社會和經濟挑戰。
 
 (A) solar       adj. /ˈsoʊlər/    太陽的；太陽能的
@@ -1340,9 +1366,17 @@ The children were eager to enjoy the ________ of fruit in the market — ripe ma
             // 更新下拉選單狀態
             document.getElementById('q-select').value = currentIndex;
 
-            // 更新按鈕狀態
-            document.getElementById('btn-prev').disabled = (currentIndex === 0);
-            document.getElementById('btn-next').disabled = (currentIndex === list.length - 1);
+            // 更新按鈕狀態 (同時更新桌機版與手機版的按鈕狀態)
+            const isFirst = (currentIndex === 0);
+            const isLast = (currentIndex === list.length - 1);
+            
+            document.getElementById('btn-prev').disabled = isFirst;
+            document.getElementById('btn-next').disabled = isLast;
+            
+            const btnPrevMobile = document.getElementById('btn-prev-mobile');
+            const btnNextMobile = document.getElementById('btn-next-mobile');
+            if (btnPrevMobile) btnPrevMobile.disabled = isFirst;
+            if (btnNextMobile) btnNextMobile.disabled = isLast;
         }
 
         // 切換類別 (單字 / 語法)
