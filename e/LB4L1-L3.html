@@ -1,13 +1,22 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
-     <script src="layout-manager.js" defer></script>
-     <head>
+      
+    <head>
     <meta charset="UTF-8">
-    <!-- 確保在手機上有正確的縮放比例 (RWD) -->
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Tony 線上美語家教 - 單字片語考題解析</title>
-        <script src="layout-manager.js" defer></script>
-        <style>
+
+    <!-- 1. 先放 CSS：讓瀏覽器先渲染出漂亮的顏色與版面 -->
+    <style>
+        :root {
+            --primary: #2563eb;
+            /* ... 其他變數 */
+        }
+    </style>
+
+    <!-- 2. 後放 JS，並加上 defer：避免腳本執行時找不到 <main> 裡的內容 -->
+    <script src="layout-manager.js" defer></script>
+</head>
         :root {
             --primary: #2563eb;
             --primary-hover: #1d4ed8;
