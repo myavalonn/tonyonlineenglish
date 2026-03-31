@@ -124,6 +124,7 @@
             padding: 25px;
             border-radius: 15px;
             box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            position: relative; /* 為了讓浮動按鈕定位 */
         }
 
         .q-number {
@@ -152,6 +153,7 @@
             display: flex;
             flex-direction: column;
             gap: 12px;
+            position: relative; /* 內部浮動按鈕的參考點 */
         }
 
         .option {
@@ -184,36 +186,55 @@
             display: none;
         }
 
-        /* 手機版：插入選項中的純箭頭半透明按鈕 */
-        .mobile-inline-nav {
-            display: flex;
-            justify-content: space-between;
-            gap: 15px;
-            margin: 4px 0;
+        /* 手機版：懸浮在選項 2 (B) 與 3 (C) 之間的半透明箭頭 */
+        .mobile-floating-nav {
+            position: relative;
+            width: 100%;
+            height: 0;
+            margin: -6px 0; /* 剛好抵銷選項間的 gap: 12px，使其完美置中 */
+            z-index: 10;
         }
-        .mobile-inline-nav button {
-            flex: 1;
-            padding: 10px;
-            font-size: 1.8em; /* 放大箭頭 */
+        
+        .mobile-floating-nav button {
+            position: absolute;
+            top: 0;
+            transform: translateY(-50%); /* 垂直居中於那條線 */
+            width: 48px;
+            height: 48px;
+            border-radius: 50%; /* 圓形按鈕 */
+            font-size: 1.5em;
             font-weight: bold;
-            background: rgba(255, 255, 255, 0.65); /* 半透明白色 */
-            backdrop-filter: blur(4px); /* 毛玻璃效果 */
-            -webkit-backdrop-filter: blur(4px);
-            border: 1px solid rgba(0, 0, 0, 0.08);
-            border-radius: 10px;
             color: var(--primary);
-            cursor: pointer;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.06); /* 輕微陰影提升立體感 */
+            
+            /* 半透明白色 + 毛玻璃背景模糊效果 */
+            background: rgba(255, 255, 255, 0.7); 
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15); /* 加點陰影增加浮動感 */
+            
             display: flex;
             align-items: center;
             justify-content: center;
+            cursor: pointer;
             transition: all 0.2s ease;
         }
-        .mobile-inline-nav button:active {
-            background: rgba(255, 255, 255, 0.9);
-            transform: scale(0.98);
+
+        /* 將箭頭外推到卡片邊緣附近，不擋住文字 */
+        .mobile-floating-nav .prev-btn {
+            left: -15px;
         }
-        .mobile-inline-nav button:disabled {
+        .mobile-floating-nav .next-btn {
+            right: -15px;
+        }
+
+        .mobile-floating-nav button:active {
+            background: rgba(255, 255, 255, 0.9);
+            transform: translateY(-50%) scale(0.95); /* 按下時微縮 */
+        }
+        
+        .mobile-floating-nav button:disabled {
             color: #cbd5e1;
             background: rgba(255, 255, 255, 0.4);
             box-shadow: none;
@@ -231,8 +252,8 @@
             .desktop-only {
                 display: block; /* 桌機恢復顯示頂部按鈕 */
             }
-            .mobile-inline-nav {
-                display: none !important; /* 桌機隱藏選項間的按鈕 */
+            .mobile-floating-nav {
+                display: none !important; /* 桌機隱藏浮動箭頭 */
             }
         }
     </style>
@@ -340,7 +361,7 @@ The elderly couple had accumulated a great deal of ________, including several b
 ------------------------------------------------------------
 Q7  ✓ C  companion
 The young scholar's loyal ________ traveled with him across three continents, sharing both hardship and discovery throughout the long journey.
-這位年輕學者忠實的同伴與他走遍三大洲，在漫長旅途中共同承擔艱辛與發現。
+這位年輕學者忠實的同伴與他走遍三大洲，分享漫長旅途中的艱辛與發現。
 
 (A) prisoner    n. /ˈprɪzənər/   囚犯；犯人
 (B) murderer    n. /ˈmɜːrdərər/  殺人犯
@@ -1383,21 +1404,23 @@ The children were eager to enjoy the ________ of fruit in the market — ripe ma
                 div.textContent = opt.text;
                 optsContainer.appendChild(div);
 
-                // 在選項 (B) [index 1] 之後，插入手機版的箭頭按鈕
+                // 在選項 (B) [index 1] 之後，插入浮動箭頭按鈕層
                 if (index === 1) {
                     const navDiv = document.createElement('div');
-                    navDiv.className = 'mobile-inline-nav';
+                    navDiv.className = 'mobile-floating-nav';
                     
                     const isFirst = (currentIndex === 0);
                     const isLast = (currentIndex === list.length - 1);
 
                     const prevBtn = document.createElement('button');
-                    prevBtn.innerHTML = '&#8592;'; // 左箭頭
+                    prevBtn.className = 'prev-btn';
+                    prevBtn.innerHTML = '&#10094;'; // 粗體左箭頭 ❮
                     prevBtn.onclick = prevQuestion;
                     prevBtn.disabled = isFirst;
                     
                     const nextBtn = document.createElement('button');
-                    nextBtn.innerHTML = '&#8594;'; // 右箭頭
+                    nextBtn.className = 'next-btn';
+                    nextBtn.innerHTML = '&#10095;'; // 粗體右箭頭 ❯
                     nextBtn.onclick = nextQuestion;
                     nextBtn.disabled = isLast;
 
