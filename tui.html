@@ -1,323 +1,1034 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>線上美語家教學費資訊-Tony線上美語家教</title>
-
-    <!-- 3. Message Preview Picture (貼到 Line, FB, iMessage 時的預覽小圖與文字) -->
-    <meta property="og:title" content="線上美語家教學費資訊-Tony線上美語家教">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B4 L1–L3 語法考題解析（附答案與中文翻譯）</title>
+   <meta property="og:title" content="線上美語家教學費資訊-Tony線上美語家教">
     <meta property="og:description" content="升學 檢定 職場 公職 高考 面試 外商 觀光美語 展場英文 翻譯">
-    <meta property="og:url" content="https://tonyonlineenglish.netlify.app/tui">
+    <meta property="og:url" content="https://tonyonlineenglish.netlify.app/e/Lb4L1l3G">
     <meta property="og:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/shutter-speed-3LXPDYb83MY-unsplash.jpg?updatedAt=1772773916191">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/shutter-speed-3LXPDYb83MY-unsplash.jpg?updatedAt=1772773916191">
-
     <script src="layout-manager.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700;900&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
-    <style>
-        body { font-family: 'Noto Sans TC', sans-serif; background-color: #f1f5f9; }
-        
-        /* 基礎卡片樣式 */
-        .pricing-block {
-            position: relative;
-            background-color: white !important;
-            border: 2px solid #e2e8f0;
-            border-radius: 24px;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            cursor: pointer;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05);
-        }
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700&family=Source+Code+Pro:wght@500&family=Lato:wght@400;700&display=swap" rel="stylesheet">
+  
+<style>
+  :root {
+    --bg: #f7f5f0;
+    --card: #ffffff;
+    --border: #e0dbd0;
+    --accent: #b5451b;
+    --accent2: #2a6496;
+    --correct: #1a6b3c;
+    --correct-bg: #eaf7ef;
+    --muted: #7a7060;
+    --tag-bg: #f0ede6;
+    --shadow: 0 2px 10px rgba(0,0,0,0.07);
+    --font-body: 'Lato', 'Noto Serif TC', serif;
+    --font-serif: 'Noto Serif TC', serif;
+    --font-mono: 'Source Code Pro', monospace;
+  }
 
-        .pricing-block:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 15px 20px -5px rgba(0, 0, 0, 0.1);
-            border-color: #cbd5e1;
-        }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        /* 20堂課預設邊框 */
-        .plan-best-border { border: 2px solid #d4af37 !important; }
+  body {
+    background: var(--bg);
+    color: #2c2820;
+    font-family: var(--font-body);
+    line-height: 1.7;
+    padding: 0 0 60px;
+  }
 
-        /* 選中狀態：強力對比與深藍色投影 */
-        .pricing-block.selected {
-            border: 4px solid #1e3a8a !important;
-            transform: translateY(-6px);
-            box-shadow: 0 25px 30px -10px rgba(30, 58, 138, 0.3) !important;
-            z-index: 10;
-        }
+  header {
+    background: #1e1510;
+    color: #f5f0e8;
+    padding: 36px 40px 28px;
+    border-bottom: 4px solid var(--accent);
+  }
 
-        /* 20堂課選中：強力金色投影 */
-        .pricing-block.selected.plan-best-border {
-            border: 4px solid #d4af37 !important;
-            box-shadow: 0 25px 30px -10px rgba(212, 175, 55, 0.4) !important;
-        }
+  header h1 {
+    font-family: var(--font-serif);
+    font-size: 1.6rem;
+    font-weight: 700;
+    letter-spacing: .02em;
+    margin-bottom: 6px;
+  }
 
-        /* 手機版強制換行邏輯：僅在選中且是手機版時生效 */
-        .toggle-br { display: none; }
-        @media (max-width: 639px) {
-            .selected .toggle-br { display: block; }
-            .selected .plan-label { white-space: normal !important; }
-        }
+  header p {
+    font-size: .92rem;
+    color: #c8bfa8;
+    margin-top: 4px;
+  }
 
-        /* Radio 樣式 */
-        .radio-circle {
-            width: 28px; height: 28px; border: 2px solid #94a3b8; border-radius: 50%;
-            display: flex; align-items: center; justify-content: center; background: #fff;
-        }
-        .selected .radio-circle { border-color: #1e3a8a; border-width: 4px; }
-        .selected.plan-best-border .radio-circle { border-color: #d4af37; } 
+  header .scope {
+    margin-top: 12px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
 
-        .radio-dot {
-            width: 10px; height: 10px; background-color: #1e3a8a; border-radius: 50%;
-            transform: scale(0); transition: transform 0.2s ease;
-        }
-        .selected .radio-dot { transform: scale(1); }
-        .selected.plan-best-border .radio-dot { background-color: #d4af37; }
+  header .scope span {
+    background: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #f0e8d8;
+    font-size: .8rem;
+    padding: 3px 12px;
+    border-radius: 20px;
+    font-family: var(--font-serif);
+  }
 
-        /* 立即購買按鈕 */
-        .buy-now-btn {
-            display: none; width: 100%; background-color: #1e3a8a; color: white;
-            padding: 16px 0; font-weight: 900; font-size: 1.25rem; border: none;
-            border-bottom-left-radius: 20px; border-bottom-right-radius: 20px;
-        }
-        .selected.plan-best-border .buy-now-btn { background-color: #d4af37 !important; color: #000; } 
-        .selected .buy-now-btn { display: block; }
+  .container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 36px 24px 0;
+  }
 
-        .modal-overlay {
-            display: none; position: fixed; inset: 0; background: rgba(0,0,0,0.65);
-            backdrop-filter: blur(6px); z-index: 1000; align-items: center; justify-content: center; padding: 20px;
-        }
-        .modal-overlay.open { display: flex; }
+  .q-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px 28px;
+    margin-bottom: 22px;
+    box-shadow: var(--shadow);
+    position: relative;
+  }
 
-        .ty-container { display: flex; flex-direction: column; gap: 20px; max-width: 900px; margin: 0 auto; background: white; border-radius: 24px; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); }
-        @media (min-width: 768px) { .ty-container { flex-direction: row; } }
-    </style>
+  .q-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 10px;
+  }
+
+  .q-num {
+    font-family: var(--font-mono);
+    font-size: .88rem;
+    font-weight: 600;
+    color: var(--muted);
+    min-width: 28px;
+    padding-top: 2px;
+  }
+
+  .answer-badge {
+    background: var(--correct-bg);
+    color: var(--correct);
+    border: 1.5px solid #a8d8ba;
+    border-radius: 6px;
+    font-family: var(--font-mono);
+    font-size: .82rem;
+    font-weight: 700;
+    padding: 2px 10px;
+    white-space: nowrap;
+    margin-top: 1px;
+  }
+
+  .q-text {
+    font-size: 1.05rem;
+    line-height: 1.75;
+    flex: 1;
+  }
+
+  .q-text strong {
+    color: var(--accent);
+    font-weight: 700;
+  }
+
+  .zh-translation {
+    background: #f9f6f0;
+    border-left: 3px solid var(--accent);
+    color: #5c4f3a;
+    font-family: var(--font-serif);
+    font-size: .9rem;
+    padding: 7px 14px;
+    margin: 10px 0 16px 42px;
+    border-radius: 0 6px 6px 0;
+    line-height: 1.8;
+  }
+
+  .options {
+    list-style: none;
+    margin-left: 42px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .option {
+    border: 1.5px solid var(--border);
+    border-radius: 8px;
+    padding: 9px 14px;
+    font-size: .95rem;
+    transition: background .2s;
+  }
+
+  .option.correct {
+    background: var(--correct-bg);
+    border-color: #7ec8a0;
+  }
+
+  .opt-label {
+    font-family: var(--font-mono);
+    font-weight: 700;
+    color: var(--accent2);
+    margin-right: 6px;
+  }
+
+  .option.correct .opt-label {
+    color: var(--correct);
+  }
+
+  .opt-word {
+    font-weight: 700;
+    color: #1e1510;
+  }
+
+  .option.correct .opt-word {
+    color: var(--correct);
+  }
+
+  footer {
+    text-align: center;
+    color: var(--muted);
+    font-size: .82rem;
+    margin-top: 48px;
+    font-family: var(--font-serif);
+  }
+
+  @media (max-width: 600px) {
+    header { padding: 24px 18px 20px; }
+    .container { padding: 20px 12px 0; }
+    .q-card { padding: 18px 14px; }
+    .options, .zh-translation { margin-left: 0; }
+    .q-header { flex-wrap: wrap; }
+  }
+</style>
 </head>
 <body>
 
-<div id="product-page-container">
-    <!-- HEADER -->
-    <div class="w-full relative overflow-hidden bg-gray-900 flex items-center justify-center" style="border-bottom-left-radius: 50% 20px; border-bottom-right-radius: 50% 20px;">
-        <div class="absolute inset-0 z-0">
-            <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/shutter-speed-3LXPDYb83MY-unsplash.jpg" class="w-full h-full object-cover" />
-            <div class="absolute inset-0 bg-black/50"></div>
-        </div>
-        <div class="relative z-10 w-full max-w-4xl mx-auto px-4 pt-16 pb-24 text-center text-white">
-            <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">Tony線上美語家教</h1>
-            <p class="text-gray-100 text-base md:text-lg lg:text-xl font-light">升學 檢定 職場 公職 高考 面試 外商 觀光美語 <br class="md:hidden">展場英文 翻譯</p>
-        </div>
-    </div>
+<header>
+<h1>
+  <a href="https://tonyonlineenglish.netlify.app/" target="_blank" style="text-decoration: none; color: inherit;">
+    Tony 線上美語家教
+    <img src="https://ik.imagekit.io/lql1uveoc/external-link.png?updatedAt=1754911187731" 
+         alt="external link"
+         style="width:18px; height:18px; margin-left:6px; vertical-align:middle;">
+  </a>
+</h1>
+  <p>Intermediate Grammar Examination · 50 Questions · 含答案、中文翻譯、詞性、KK 音標</p>
+  <div class="scope">
+    <span>Concessive Clauses 讓步子句</span>
+    <span>Subjunctive Mood 假設語氣</span>
+    <span>Conditionals 條件句</span>
+    <span>Dummy It 虛主詞 it</span>
+    <span>Noun Clauses 名詞子句</span>
+  </div>
+</header>
 
-    <div class="w-full max-w-5xl mx-auto px-4 -mt-10 pb-12 relative z-20">
-        <div id="pricing-list" class="flex flex-col gap-5 max-w-md mx-auto w-full">
-            
-            <!-- 1堂 -->
-            <div class="pricing-block" data-id="course-1" data-name="1堂課程" data-price="800">
-                <div class="flex items-stretch h-[110px] sm:h-[120px] px-6">
-                    <div class="w-[15%] flex items-center"><div class="radio-circle"><div class="radio-dot"></div></div></div>
-                    <div class="w-[35%] flex flex-col justify-center text-[24px] font-black text-gray-900 leading-tight plan-label">1堂<br class="toggle-br">課程</div>
-                    <div class="w-[50%] flex justify-end items-center text-[28px] sm:text-[32px] font-black text-gray-900">
-                        <span class="text-lg font-black text-black mr-1">NT$</span>800
-                    </div>
-                </div>
-                <button class="buy-now-btn">立即購買</button>
-            </div>
+<div class="container">
 
-            <!-- 6堂 -->
-            <div class="pricing-block" data-id="course-6" data-name="6堂課程" data-price="4200">
-                <div class="absolute top-0 right-0 bg-red-600 text-white text-xs px-3 py-1 rounded-bl-lg font-bold">-12.5%</div>
-                <div class="flex items-stretch h-[110px] sm:h-[120px] px-6">
-                    <div class="w-[15%] flex items-center"><div class="radio-circle"><div class="radio-dot"></div></div></div>
-                    <div class="w-[35%] flex flex-col justify-center text-[24px] font-black text-gray-900 leading-tight plan-label">6堂<br class="toggle-br">課程</div>
-                    <div class="w-[50%] flex justify-end items-center text-[28px] sm:text-[32px] font-black text-gray-900">
-                        <span class="text-lg font-black text-black mr-1">NT$</span>4,200
-                    </div>
-                </div>
-                <button class="buy-now-btn">立即購買</button>
-            </div>
-
-            <!-- 10堂 -->
-            <div class="pricing-block" data-id="course-10" data-name="10堂課程" data-price="6600">
-                <div class="absolute top-0 right-0 bg-red-600 text-white text-xs px-3 py-1 rounded-bl-lg font-bold">-17.5%</div>
-                <div class="flex items-stretch h-[110px] sm:h-[120px] px-6">
-                    <div class="w-[15%] flex items-center"><div class="radio-circle"><div class="radio-dot"></div></div></div>
-                    <div class="w-[35%] flex flex-col justify-center text-[24px] font-black text-gray-900 leading-tight plan-label">10堂<br class="toggle-br">課程</div>
-                    <div class="w-[50%] flex justify-end items-center text-[28px] sm:text-[32px] font-black text-gray-900">
-                        <span class="text-lg font-black text-black mr-1">NT$</span>6,600
-                    </div>
-                </div>
-                <button class="buy-now-btn">立即購買</button>
-            </div>
-
-            <!-- 16堂 -->
-            <div class="pricing-block" data-id="course-16" data-name="16堂課程" data-price="10000">
-                <div class="absolute top-0 right-0 bg-red-600 text-white text-xs px-3 py-1 rounded-bl-lg font-bold">-22%</div>
-                <div class="flex items-stretch h-[110px] sm:h-[120px] px-6">
-                    <div class="w-[15%] flex items-center"><div class="radio-circle"><div class="radio-dot"></div></div></div>
-                    <div class="w-[35%] flex flex-col justify-center text-[24px] font-black text-gray-900 leading-tight plan-label">16堂<br class="toggle-br">課程</div>
-                    <div class="w-[50%] flex justify-end items-center text-[28px] sm:text-[32px] font-black text-gray-900">
-                        <span class="text-lg font-black text-black mr-1">NT$</span>10,000
-                    </div>
-                </div>
-                <button class="buy-now-btn">立即購買</button>
-            </div>
-
-            <!-- 20堂 -->
-            <div class="pricing-block plan-best-border" data-id="course-20" data-name="20堂課程" data-price="12000">
-                <div class="absolute top-0 right-0 bg-red-600 text-white text-xs px-3 py-1 rounded-bl-lg font-bold z-50">-25%</div>
-                <div class="absolute top-0 right-[52px] z-40">
-                    <div class="relative bg-blue-900 text-white text-sm px-6 py-2 rounded-bl-2xl font-black shadow-md flex items-center">
-                        <span class="absolute -left-12 -top-10 text-6xl drop-shadow-xl transform -rotate-12 pointer-events-none">👑</span>
-                        <span>最優惠</span>
-                    </div>
-                </div>
-                <div class="flex items-stretch h-[110px] sm:h-[120px] px-6">
-                    <div class="w-[15%] flex items-center"><div class="radio-circle"><div class="radio-dot"></div></div></div>
-                    <div class="w-[35%] flex flex-col justify-center text-[24px] font-black text-black leading-tight plan-label">20堂<br class="toggle-br">課程</div>
-                    <div class="w-[50%] flex justify-end items-center text-[28px] sm:text-[32px] font-black text-blue-900">
-                        <span class="text-lg font-black text-black mr-1">NT$</span>12,000
-                    </div>
-                </div>
-                <button class="buy-now-btn">立即購買</button>
-            </div>
-        </div>
-
-        <!-- 連結與50分鐘資訊 -->
-        <div class="max-w-md mx-auto flex justify-between items-center mt-8 px-2">
-            <div class="flex flex-col gap-3">
-                <a href="https://tonyonlineenglish.netlify.app/allcourses" target="_blank" class="inline-flex items-center gap-2 text-[#1e3a8a] font-black text-lg hover:underline">
-                    課程詳細介紹
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
-                </a>
-                <!-- 新增：請假調課規範 (紫色) -->
-                <a href="https://tonyonlineenglish.netlify.app/regulations" target="_blank" class="inline-flex items-center gap-2 text-purple-600 font-black text-lg hover:underline">
-                    請假調課規範
-                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M19 19H5V5h7V3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2v-7h-2v7zM14 3v2h3.59l-9.83 9.83 1.41 1.41L19 6.41V10h2V3h-7z"/></svg>
-                </a>
-            </div>
-            <div class="text-black text-2xl font-black">50分鐘/堂</div>
-        </div>
-
-        <div class="text-center mt-12">
-             <p class="text-gray-700 text-lg leading-relaxed max-w-lg mx-auto font-medium">我將持續以穩定且高品質的授課方式，陪伴孩子在接下來的階段逐步提升英文能力與考試表現。</p>
-        </div>
-        <div class="border-t border-gray-300 pt-8 mt-12 text-gray-500 font-bold text-center sm:text-left">Tony | 線上美語家教</div>
-    </div>
+<!-- Q1 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">1.</span>
+    <span class="answer-badge">答案 B</span>
+    <span class="q-text">The graduates often wonder ________ their future careers will be like in such a competitive market.</span>
+  </div>
+  <div class="zh-translation">這些畢業生常常想知道，在如此競爭激烈的市場中，他們未來的職涯將會是什麼樣子。</div>
+  <ul class="options">
+    <li class="option"><span class="opt-label">(A)</span><span class="opt-word">how</span></li>
+    <li class="option correct"><span class="opt-label">(B)</span><span class="opt-word"><strong>what</strong></span></li>
+    <li class="option"><span class="opt-label">(C)</span><span class="opt-word">that</span></li>
+    <li class="option"><span class="opt-label">(D)</span><span class="opt-word">which</span></li>
+  </ul>
 </div>
 
-<!-- (彈窗與 JS 邏輯不變，已整合) -->
-<div id="checkout-modal" class="modal-overlay">
-    <div class="bg-white w-full max-w-md rounded-3xl p-8 shadow-2xl relative">
-        <button id="close-modal" class="absolute top-4 right-4 text-gray-400 text-3xl">&times;</button>
-        <h3 class="text-2xl font-black text-gray-900 mb-2">確認訂購項目</h3>
-        <p id="modal-item-name" class="text-blue-900 font-black text-xl mb-6"></p>
-        <form id="order-form" class="space-y-4">
-            <div>
-                <label class="block text-sm font-bold text-gray-700 mb-1">電子信箱</label>
-                <input type="email" id="email" required placeholder="example@email.com" class="w-full px-4 py-4 border-2 border-gray-100 rounded-2xl focus:border-blue-900 outline-none transition-all">
-            </div>
-            <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="flex items-center justify-center gap-2 w-full py-4 bg-[#00B900] text-white rounded-2xl font-black">點此加入官方 Line: Myavalon</a>
-            <button type="submit" id="submit-btn" class="w-full py-5 bg-blue-900 text-white rounded-2xl font-black text-xl shadow-xl hover:bg-blue-800 transition-all transform hover:scale-[1.02]">確認送出訂單</button>
-            <p class="text-center text-gray-600 font-bold text-sm mt-4">轉帳/Line Pay/iPassMoney</p>
-        </form>
-    </div>
+<!-- Q2 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">2.</span>
+    <span class="answer-badge">答案 D</span>
+    <span class="q-text">The doctor recommended that the patient ________ some weightlifting to strengthen his muscles.</span>
+  </div>
+  <div class="zh-translation">醫生建議那位病人做一些重量訓練以強化他的肌肉。</div>
+  <ul class="options">
+    <li class="option"><span class="opt-label">(A)</span><span class="opt-word">does</span></li>
+    <li class="option"><span class="opt-label">(B)</span><span class="opt-word">did</span></li>
+    <li class="option"><span class="opt-label">(C)</span><span class="opt-word">doing</span></li>
+    <li class="option correct"><span class="opt-label">(D)</span><span class="opt-word"><strong>do</strong></span></li>
+  </ul>
 </div>
 
-<div id="thank-you-page" class="hidden fixed inset-0 bg-[#f0f2f5] z-[2000] overflow-y-auto py-10 px-4">
-    <div class="ty-container">
-        <div class="flex-1 p-10">
-            <div class="text-[#10b981] text-6xl mb-4">✓</div>
-            <h2 class="text-3xl font-black text-gray-900 mb-4">感謝您的訂購！ 🎉</h2>
-            <p class="text-gray-600 mb-8">您的訂單已成功建立。確認信已寄送至您的信箱。</p>
-            <div class="space-y-4 border-t border-gray-100 pt-6">
-                <div class="flex justify-between items-center"><span class="text-gray-500">訂單編號</span><span id="ty-order-id" class="text-[#1e3a8a] font-bold text-lg"></span></div>
-                <div class="flex justify-between items-center"><span class="text-gray-500">訂單時間</span><span id="ty-timestamp" class="text-gray-800"></span></div>
-                <div class="flex justify-between items-center"><span class="text-gray-500">電子信箱</span><span id="ty-customer-email" class="text-gray-800"></span></div>
-            </div>
-            <div class="mt-10 bg-blue-50 p-6 rounded-2xl">
-                <p class="text-gray-900 font-bold mb-4">請加入LINE聯絡付款事宜</p>
-                <div class="flex flex-col gap-2">
-                    <div class="flex items-center gap-2">
-                        <span class="text-gray-600">Line ID:</span>
-                        <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="text-2xl font-black text-[#00B900] underline">Myavalon (點此)</a>
-                    </div>
-                    <p class="text-gray-900 font-bold mt-2">轉帳/Line Pay/iPassMoney</p>
-                </div>
-            </div>
-            <button onclick="location.reload()" class="mt-10 w-full py-4 bg-gray-100 text-gray-600 rounded-xl font-bold">返回前頁</button>
-        </div>
-        <div class="w-full md:w-[380px] bg-gray-50 p-10 border-l border-gray-100">
-            <h3 class="text-xl font-black text-gray-900 mb-6 border-b-2 border-gray-200 pb-4">訂單摘要</h3>
-            <div id="ty-summary-list" class="space-y-6"></div>
-            <div class="mt-8 pt-6 border-t-2 border-gray-200 flex justify-between items-center">
-                <span class="text-xl font-black">總計</span><span id="ty-total-price" class="text-2xl font-black text-[#1e3a8a]"></span>
-            </div>
-        </div>
-    </div>
+<!-- Q3 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">3.</span>
+    <span class="answer-badge">答案 A</span>
+    <span class="q-text">________ as he was, Sam continued to work for ten hours without taking a single rest.</span>
+  </div>
+  <div class="zh-translation">儘管山姆累得要命，他仍繼續工作了十個小時，一刻也沒有休息。</div>
+  <ul class="options">
+    <li class="option correct"><span class="opt-label">(A)</span><span class="opt-word"><strong>Tired</strong></span></li>
+    <li class="option"><span class="opt-label">(B)</span><span class="opt-word">Tiring</span></li>
+    <li class="option"><span class="opt-label">(C)</span><span class="opt-word">Being tired</span></li>
+    <li class="option"><span class="opt-label">(D)</span><span class="opt-word">As tired</span></li>
+  </ul>
 </div>
 
-<script>
-    let selectedPlan = null;
-    const blocks = document.querySelectorAll('.pricing-block');
-    const modal = document.getElementById('checkout-modal');
+<!-- Q4 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">4.</span>
+    <span class="answer-badge">答案 A</span>
+    <span class="q-text">It is boiling hot outside, but the coach insists that every one of us ________ twenty laps.</span>
+  </div>
+  <div class="zh-translation">外面熱得要命，但教練堅持要我們每個人都跑二十圈。</div>
+  <ul class="options">
+    <li class="option correct"><span class="opt-label">(A)</span><span class="opt-word"><strong>run</strong></span></li>
+    <li class="option"><span class="opt-label">(B)</span><span class="opt-word">runs</span></li>
+    <li class="option"><span class="opt-label">(C)</span><span class="opt-word">ran</span></li>
+    <li class="option"><span class="opt-label">(D)</span><span class="opt-word">running</span></li>
+  </ul>
+</div>
 
-    function generateOrderId() {
-        const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        const numbers = "0123456789";
-        let l = ""; let n = "";
-        for (let i = 0; i < 3; i++) l += letters.charAt(Math.floor(Math.random() * letters.length));
-        for (let i = 0; i < 2; i++) n += numbers.charAt(Math.floor(Math.random() * numbers.length));
-        return "#" + (l + n).split('').sort(() => 0.5 - Math.random()).join('');
-    }
+<!-- Q5 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">5.</span>
+    <span class="answer-badge">答案 A</span>
+    <span class="q-text">Mrs. Stevenson is not sure ________ she turned off the stove before she left her house.</span>
+  </div>
+  <div class="zh-translation">史蒂文森太太不確定她離家前是否有關瓦斯爐。</div>
+  <ul class="options">
+    <li class="option correct"><span class="opt-label">(A)</span><span class="opt-word"><strong>if</strong></span></li>
+    <li class="option"><span class="opt-label">(B)</span><span class="opt-word">what</span></li>
+    <li class="option"><span class="opt-label">(C)</span><span class="opt-word">which</span></li>
+    <li class="option"><span class="opt-label">(D)</span><span class="opt-word">that</span></li>
+  </ul>
+</div>
 
-    blocks.forEach(block => {
-        block.addEventListener('click', function(e) {
-            if (e.target.classList.contains('buy-now-btn')) return;
-            blocks.forEach(b => b.classList.remove('selected'));
-            this.classList.add('selected');
-            selectedPlan = { name: this.dataset.name, price: this.dataset.price };
-        });
-    });
+<!-- Q6 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">6.</span>
+    <span class="answer-badge">答案 B</span>
+    <span class="q-text">If these countries ________ an innovative program, they would not be able to overcome geographical barriers.</span>
+  </div>
+  <div class="zh-translation">如果這些國家沒有一套創新的計畫，他們將無法克服地理障礙。</div>
+  <ul class="options">
+    <li class="option"><span class="opt-label">(A)</span><span class="opt-word">don't have</span></li>
+    <li class="option correct"><span class="opt-label">(B)</span><span class="opt-word"><strong>didn't have</strong></span></li>
+    <li class="option"><span class="opt-label">(C)</span><span class="opt-word">hadn't</span></li>
+    <li class="option"><span class="opt-label">(D)</span><span class="opt-word">wouldn't have</span></li>
+  </ul>
+</div>
 
-    document.querySelectorAll('.buy-now-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            if (selectedPlan) {
-                // 新增：在訂購項目名稱後加上「 每堂50分」
-                document.getElementById('modal-item-name').innerText = `${selectedPlan.name} (NT$ ${parseInt(selectedPlan.price).toLocaleString()}) 每堂50分`;
-                modal.classList.add('open');
-            }
-        });
-    });
+<!-- Q7 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">7.</span>
+    <span class="answer-badge">答案 A</span>
+    <span class="q-text">It is ________ that the patient be sent to the hospital for emergency care immediately.</span>
+  </div>
+  <div class="zh-translation">那位病人立即被送往醫院進行緊急救治是非常迫切的。</div>
+  <ul class="options">
+    <li class="option correct"><span class="opt-label">(A)</span><span class="opt-word"><strong>urgent</strong></span></li>
+    <li class="option"><span class="opt-label">(B)</span><span class="opt-word">urgently</span></li>
+    <li class="option"><span class="opt-label">(C)</span><span class="opt-word">urgency</span></li>
+    <li class="option"><span class="opt-label">(D)</span><span class="opt-word">urge</span></li>
+  </ul>
+</div>
 
-    document.getElementById('close-modal').onclick = () => modal.classList.remove('open');
+<!-- Q8 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">8.</span>
+    <span class="answer-badge">答案 C</span>
+    <span class="q-text">Jane finds ________ a great challenge to take care of three young children all by herself.</span>
+  </div>
+  <div class="zh-translation">珍發現獨自照顧三個幼兒是一大挑戰。</div>
+  <ul class="options">
+    <li class="option"><span class="opt-label">(A)</span><span class="opt-word">that</span></li>
+    <li class="option"><span class="opt-label">(B)</span><span class="opt-word">this</span></li>
+    <li class="option correct"><span class="opt-label">(C)</span><span class="opt-word"><strong>it</strong></span></li>
+    <li class="option"><span class="opt-label">(D)</span><span class="opt-word">her</span></li>
+  </ul>
+</div>
 
-    document.getElementById('order-form').onsubmit = function(e) {
-        e.preventDefault();
-        const email = document.getElementById('email').value;
-        const orderId = generateOrderId();
-        const timestamp = new Date().toLocaleString("zh-TW", { year: "numeric", month: "long", day: "numeric", hour: "2-digit", minute: "2-digit" });
-        const imageUrl = "https://ik.imagekit.io/lql1uveoc/%E5%AD%B8%E8%B2%BB%20tuition/%E6%88%AA%E5%9C%96%202026-03-06%20%E4%B8%8B%E5%8D%884.49.39.png";
+<!-- Q9 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">9.</span>
+    <span class="answer-badge">答案 B</span>
+    <span class="q-text">The thief ran away quickly. Yet, as fast ________ I drove, I just couldn't catch up with him.</span>
+  </div>
+  <div class="zh-translation">那個小偷跑得很快。然而，不管我開得多快，就是追不上他。</div>
+  <ul class="options">
+    <li class="option"><span class="opt-label">(A)</span><span class="opt-word">than</span></li>
+    <li class="option correct"><span class="opt-label">(B)</span><span class="opt-word"><strong>as</strong></span></li>
+    <li class="option"><span class="opt-label">(C)</span><span class="opt-word">that</span></li>
+    <li class="option"><span class="opt-label">(D)</span><span class="opt-word">for</span></li>
+  </ul>
+</div>
 
-        document.getElementById('ty-order-id').innerText = orderId;
-        document.getElementById('ty-timestamp').innerText = timestamp;
-        document.getElementById('ty-customer-email').innerText = email;
-        document.getElementById('ty-total-price').innerText = "NT$ " + parseInt(selectedPlan.price).toLocaleString();
-        document.getElementById('ty-summary-list').innerHTML = `<div class="flex justify-between"><div><div class="font-bold">${selectedPlan.name}</div><div class="text-sm text-gray-500">50分鐘 x 1</div></div><div class="font-bold text-[#1e3a8a]">NT$ ${parseInt(selectedPlan.price).toLocaleString()}</div></div>`;
-        
-        modal.classList.remove('open');
-        document.getElementById('product-page-container').style.display = 'none';
-        document.getElementById('thank-you-page').classList.remove('hidden');
-        window.scrollTo(0,0);
+<!-- Q10 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">10.</span>
+    <span class="answer-badge">答案 B</span>
+    <span class="q-text">It is necessary that the plane ________ all safety checks before it is allowed to take off.</span>
+  </div>
+  <div class="zh-translation">這架飛機在獲准起飛之前，必須通過所有安全檢查。</div>
+  <ul class="options">
+    <li class="option"><span class="opt-label">(A)</span><span class="opt-word">undergoes</span></li>
+    <li class="option correct"><span class="opt-label">(B)</span><span class="opt-word"><strong>undergo</strong></span></li>
+    <li class="option"><span class="opt-label">(C)</span><span class="opt-word">underwent</span></li>
+    <li class="option"><span class="opt-label">(D)</span><span class="opt-word">undergoing</span></li>
+  </ul>
+</div>
 
-        fetch("https://script.google.com/macros/s/AKfycbyU13Wivs341DMPupk9EKrL9u908zrHNOVqZUXri-hGezkk6qj_7loQGIf0GCfmvj_f/exec", {
-            method: "POST",
-            mode: "no-cors",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: new URLSearchParams({ orderId, email, productName: selectedPlan.name, totalPrice: selectedPlan.price, status: "未付款", imageUrls: imageUrl })
-        });
-    };
-</script>
-<script src="layout-manager.js"></script>
+<!-- Q11 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">11.</span>
+    <span class="answer-badge">答案 B</span>
+    <span class="q-text">If I ________ a superpower, I would use it to help people in need around the world.</span>
+  </div>
+  <div class="zh-translation">如果我擁有超能力，我會用它來幫助世界各地有需要的人。</div>
+  <ul class="options">
+    <li class="option"><span class="opt-label">(A)</span><span class="opt-word">have</span></li>
+    <li class="option correct"><span class="opt-label">(B)</span><span class="opt-word"><strong>had</strong></span></li>
+    <li class="option"><span class="opt-label">(C)</span><span class="opt-word">would have</span></li>
+    <li class="option"><span class="opt-label">(D)</span><span class="opt-word">am having</span></li>
+  </ul>
+</div>
+
+<!-- Q12 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">12.</span>
+    <span class="answer-badge">答案 A</span>
+    <span class="q-text">The chairman proposed that the issue ________ at the next meeting instead of today.</span>
+  </div>
+  <div class="zh-translation">主席提議這個議題改在下次會議討論，而不是今天。</div>
+  <ul class="options">
+    <li class="option correct"><span class="opt-label">(A)</span><span class="opt-word"><strong>be discussed</strong></span></li>
+    <li class="option"><span class="opt-label">(B)</span><span class="opt-word">is discussed</span></li>
+    <li class="option"><span class="opt-label">(C)</span><span class="opt-word">was discussed</span></li>
+    <li class="option"><span class="opt-label">(D)</span><span class="opt-word">discussing</span></li>
+  </ul>
+</div>
+
+<!-- Q13 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">13.</span>
+    <span class="answer-badge">答案 B</span>
+    <span class="q-text">________ the ancient treasure was lost during the war remains a mystery to historians.</span>
+  </div>
+  <div class="zh-translation">這批古代寶藏究竟是否在戰爭中遺失，對歷史學家來說至今仍是個謎。</div>
+  <ul class="options">
+    <li class="option"><span class="opt-label">(A)</span><span class="opt-word">If</span></li>
+    <li class="option correct"><span class="opt-label">(B)</span><span class="opt-word"><strong>Whether</strong></span></li>
+    <li class="option"><span class="opt-label">(C)</span><span class="opt-word">What</span></li>
+    <li class="option"><span class="opt-label">(D)</span><span class="opt-word">Which</span></li>
+  </ul>
+</div>
+
+<!-- Q14 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">14.</span>
+    <span class="answer-badge">答案 A</span>
+    <span class="q-text">It was ________ for the authorities to act quickly to save the historical building.</span>
+  </div>
+  <div class="zh-translation">當局迅速採取行動以保護這棟歷史建築，這是至關重要的。</div>
+  <ul class="options">
+    <li class="option correct"><span class="opt-label">(A)</span><span class="opt-word"><strong>crucial</strong></span></li>
+    <li class="option"><span class="opt-label">(B)</span><span class="opt-word">curiously</span></li>
+    <li class="option"><span class="opt-label">(C)</span><span class="opt-word">crude</span></li>
+    <li class="option"><span class="opt-label">(D)</span><span class="opt-word">cruise</span></li>
+  </ul>
+</div>
+
+<!-- Q15 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">15.</span>
+    <span class="answer-badge">答案 C</span>
+    <span class="q-text">If Nancy ________ stronger, she could move that heavy wooden box by herself.</span>
+  </div>
+  <div class="zh-translation">如果南希更強壯，她就能獨自搬動那個沉重的木箱。</div>
+  <ul class="options">
+    <li class="option"><span class="opt-label">(A)</span><span class="opt-word">is</span></li>
+    <li class="option"><span class="opt-label">(B)</span><span class="opt-word">was</span></li>
+    <li class="option correct"><span class="opt-label">(C)</span><span class="opt-word"><strong>were</strong></span></li>
+    <li class="option"><span class="opt-label">(D)</span><span class="opt-word">had been</span></li>
+  </ul>
+</div>
+
+<!-- Q16 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">16.</span>
+    <span class="answer-badge">答案 A</span>
+    <span class="q-text">Parents think ________ horrible that campus bullying is becoming a serious problem.</span>
+  </div>
+  <div class="zh-translation">家長們認為校園霸凌日趨嚴重是件可怕的事。</div>
+  <ul class="options">
+    <li class="option correct"><span class="opt-label">(A)</span><span class="opt-word"><strong>it</strong></span></li>
+    <li class="option"><span class="opt-label">(B)</span><span class="opt-word">that</span></li>
+    <li class="option"><span class="opt-label">(C)</span><span class="opt-word">very</span></li>
+    <li class="option"><span class="opt-label">(D)</span><span class="opt-word">to be</span></li>
+  </ul>
+</div>
+
+<!-- Q17 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">17.</span>
+    <span class="answer-badge">答案 B</span>
+    <span class="q-text">Before the performance started, the host requested that all smartphones ________ off.</span>
+  </div>
+  <div class="zh-translation">表演開始前，主持人要求所有智慧型手機都要關機。</div>
+  <ul class="options">
+    <li class="option"><span class="opt-label">(A)</span><span class="opt-word">are turned</span></li>
+    <li class="option correct"><span class="opt-label">(B)</span><span class="opt-word"><strong>be turned</strong></span></li>
+    <li class="option"><span class="opt-label">(C)</span><span class="opt-word">were turned</span></li>
+    <li class="option"><span class="opt-label">(D)</span><span class="opt-word">turn</span></li>
+  </ul>
+</div>
+
+<!-- Q18 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">18.</span>
+    <span class="answer-badge">答案 A</span>
+    <span class="q-text">Wealthy ________ he is, Mr. Jackson never looks down on the poor or the homeless.</span>
+  </div>
+  <div class="zh-translation">儘管傑克森先生很富有，他從不輕視窮人或無家可歸者。</div>
+  <ul class="options">
+    <li class="option correct"><span class="opt-label">(A)</span><span class="opt-word"><strong>as</strong></span></li>
+    <li class="option"><span class="opt-label">(B)</span><span class="opt-word">though</span></li>
+    <li class="option"><span class="opt-label">(C)</span><span class="opt-word">even</span></li>
+    <li class="option"><span class="opt-label">(D)</span><span class="opt-word">since</span></li>
+  </ul>
+</div>
+
+<!-- Q19 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">19.</span>
+    <span class="answer-badge">答案 B</span>
+    <span class="q-text">Dorian has not decided ________ he is coming to the graduation ceremony or not.</span>
+  </div>
+  <div class="zh-translation">多里安尚未決定他是否要來參加畢業典禮。</div>
+  <ul class="options">
+    <li class="option"><span class="opt-label">(A)</span><span class="opt-word">if</span></li>
+    <li class="option correct"><span class="opt-label">(B)</span><span class="opt-word"><strong>whether</strong></span></li>
+    <li class="option"><span class="opt-label">(C)</span><span class="opt-word">what</span></li>
+    <li class="option"><span class="opt-label">(D)</span><span class="opt-word">that</span></li>
+  </ul>
+</div>
+
+<!-- Q20 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">20.</span>
+    <span class="answer-badge">答案 B</span>
+    <span class="q-text">New training methods make ________ possible for the villagers to increase their productivity.</span>
+  </div>
+  <div class="zh-translation">新的訓練方法讓村民有可能提高他們的生產力。</div>
+  <ul class="options">
+    <li class="option"><span class="opt-label">(A)</span><span class="opt-word">that</span></li>
+    <li class="option correct"><span class="opt-label">(B)</span><span class="opt-word"><strong>it</strong></span></li>
+    <li class="option"><span class="opt-label">(C)</span><span class="opt-word">them</span></li>
+    <li class="option"><span class="opt-label">(D)</span><span class="opt-word">which</span></li>
+  </ul>
+</div>
+
+<!-- Q21 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">21.</span>
+    <span class="answer-badge">答案 B</span>
+    <span class="q-text">Please tell me ________. I need to return these library books before noon.</span>
+  </div>
+  <div class="zh-translation">請告訴我圖書館在哪裡。我需要在中午之前歸還這些圖書館的書。</div>
+  <ul class="options">
+    <li class="option"><span class="opt-label">(A)</span><span class="opt-word">where is the library</span></li>
+    <li class="option correct"><span class="opt-label">(B)</span><span class="opt-word"><strong>where the library is</strong></span></li>
+    <li class="option"><span class="opt-label">(C)</span><span class="opt-word">the library is where</span></li>
+    <li class="option"><span class="opt-label">(D)</span><span class="opt-word">is where the library</span></li>
+  </ul>
+</div>
+
+<!-- Q22 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">22.</span>
+    <span class="answer-badge">答案 A</span>
+    <span class="q-text">It is critical that parents ________ their young children at home alone for any reason.</span>
+  </div>
+  <div class="zh-translation">家長們絕不能因任何理由讓年幼的孩子獨自留在家中，這一點非常重要。</div>
+  <ul class="options">
+    <li class="option correct"><span class="opt-label">(A)</span><span class="opt-word"><strong>not leave</strong></span></li>
+    <li class="option"><span class="opt-label">(B)</span><span class="opt-word">don't leave</span></li>
+    <li class="option"><span class="opt-label">(C)</span><span class="opt-word">shouldn't have left</span></li>
+    <li class="option"><span class="opt-label">(D)</span><span class="opt-word">not leaving</span></li>
+  </ul>
+</div>
+
+<!-- Q23 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">23.</span>
+    <span class="answer-badge">答案 C</span>
+    <span class="q-text">________ I a bird, I would fly to you across the ocean right now.</span>
+  </div>
+  <div class="zh-translation">如果我是一隻鳥，我現在就會飛越大洋去找你。</div>
+  <ul class="options">
+    <li class="option"><span class="opt-label">(A)</span><span class="opt-word">Was</span></li>
+    <li class="option"><span class="opt-label">(B)</span><span class="opt-word">If</span></li>
+    <li class="option correct"><span class="opt-label">(C)</span><span class="opt-word"><strong>Were</strong></span></li>
+    <li class="option"><span class="opt-label">(D)</span><span class="opt-word">Am</span></li>
+  </ul>
+</div>
+
+<!-- Q24 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">24.</span>
+    <span class="answer-badge">答案 C</span>
+    <span class="q-text">The doctor strongly advised that Brian ________ a week off and rest in bed.</span>
+  </div>
+  <div class="zh-translation">醫生強烈建議布萊恩請一週假並臥床休息。</div>
+  <ul class="options">
+    <li class="option"><span class="opt-label">(A)</span><span class="opt-word">takes</span></li>
+    <li class="option"><span class="opt-label">(B)</span><span class="opt-word">took</span></li>
+    <li class="option correct"><span class="opt-label">(C)</span><span class="opt-word"><strong>take</strong></span></li>
+    <li class="option"><span class="opt-label">(D)</span><span class="opt-word">taking</span></li>
+  </ul>
+</div>
+
+<!-- Q25 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">25.</span>
+    <span class="answer-badge">答案 B</span>
+    <span class="q-text">It is necessary ________ a tie for this formal business meeting at the embassy.</span>
+  </div>
+  <div class="zh-translation">在大使館這場正式商務會議上繫領帶是必要的。</div>
+  <ul class="options">
+    <li class="option"><span class="opt-label">(A)</span><span class="opt-word">wearing</span></li>
+    <li class="option correct"><span class="opt-label">(B)</span><span class="opt-word"><strong>to wear</strong></span></li>
+    <li class="option"><span class="opt-label">(C)</span><span class="opt-word">wear</span></li>
+    <li class="option"><span class="opt-label">(D)</span><span class="opt-word">worn</span></li>
+  </ul>
+</div>
+
+<!-- Q26 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">26.</span>
+    <span class="answer-badge">答案 C</span>
+    <span class="q-text">If the roof ________ built with such strong materials, the boat would be damaged by the rain.</span>
+  </div>
+  <div class="zh-translation">如果船頂不是用如此堅固的材料建造的，這艘船就會被雨水損壞。</div>
+  <ul class="options">
+    <li class="option"><span class="opt-label">(A)</span><span class="opt-word">isn't</span></li>
+    <li class="option"><span class="opt-label">(B)</span><span class="opt-word">wasn't</span></li>
+    <li class="option correct"><span class="opt-label">(C)</span><span class="opt-word"><strong>weren't</strong></span></li>
+    <li class="option"><span class="opt-label">(D)</span><span class="opt-word">wouldn't be</span></li>
+  </ul>
+</div>
+
+<!-- Q27 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">27.</span>
+    <span class="answer-badge">答案 B</span>
+    <span class="q-text">Whether we see progress depends on ________ thought and effort we are willing to put in.</span>
+  </div>
+  <div class="zh-translation">我們能否看到進展，取決於我們願意投入多少思考和努力。</div>
+  <ul class="options">
+    <li class="option"><span class="opt-label">(A)</span><span class="opt-word">how many</span></li>
+    <li class="option correct"><span class="opt-label">(B)</span><span class="opt-word"><strong>how much</strong></span></li>
+    <li class="option"><span class="opt-label">(C)</span><span class="opt-word">what much</span></li>
+    <li class="option"><span class="opt-label">(D)</span><span class="opt-word">whether</span></li>
+  </ul>
+</div>
+
+<!-- Q28 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">28.</span>
+    <span class="answer-badge">答案 C</span>
+    <span class="q-text">Sandy is very intelligent. However, as smart ________, she can't solve this math problem.</span>
+  </div>
+  <div class="zh-translation">珊蒂非常聰明。然而，儘管她很聰明，她就是解不開這道數學題。</div>
+  <ul class="options">
+    <li class="option"><span class="opt-label">(A)</span><span class="opt-word">she is</span></li>
+    <li class="option"><span class="opt-label">(B)</span><span class="opt-word">is she</span></li>
+    <li class="option correct"><span class="opt-label">(C)</span><span class="opt-word"><strong>as she is</strong></span></li>
+    <li class="option"><span class="opt-label">(D)</span><span class="opt-word">as is she</span></li>
+  </ul>
+</div>
+
+<!-- Q29 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">29.</span>
+    <span class="answer-badge">答案 D</span>
+    <span class="q-text">The rescue team thought ________ a miracle that the two-year-old baby survived the earthquake.</span>
+  </div>
+  <div class="zh-translation">救援隊認為那個兩歲的嬰兒能從地震中生還是個奇蹟。</div>
+  <ul class="options">
+    <li class="option"><span class="opt-label">(A)</span><span class="opt-word">that</span></li>
+    <li class="option"><span class="opt-label">(B)</span><span class="opt-word">this</span></li>
+    <li class="option"><span class="opt-label">(C)</span><span class="opt-word">so</span></li>
+    <li class="option correct"><span class="opt-label">(D)</span><span class="opt-word"><strong>it</strong></span></li>
+  </ul>
+</div>
+
+<!-- Q30 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">30.</span>
+    <span class="answer-badge">答案 B</span>
+    <span class="q-text">It is vital that the government ________ shelter and food for the earthquake victims.</span>
+  </div>
+  <div class="zh-translation">政府為地震災民提供庇護所和食物是至關重要的。</div>
+  <ul class="options">
+    <li class="option"><span class="opt-label">(A)</span><span class="opt-word">provides</span></li>
+    <li class="option correct"><span class="opt-label">(B)</span><span class="opt-word"><strong>provide</strong></span></li>
+    <li class="option"><span class="opt-label">(C)</span><span class="opt-word">provided</span></li>
+    <li class="option"><span class="opt-label">(D)</span><span class="opt-word">to provide</span></li>
+  </ul>
+</div>
+
+<!-- Q31 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">31.</span>
+    <span class="answer-badge">答案 B</span>
+    <span class="q-text">I would consider changing my college major if I ________ ten years younger than I am.</span>
+  </div>
+  <div class="zh-translation">如果我比現在小十歲，我會考慮換大學主修。</div>
+  <ul class="options">
+    <li class="option"><span class="opt-label">(A)</span><span class="opt-word">am</span></li>
+    <li class="option correct"><span class="opt-label">(B)</span><span class="opt-word"><strong>were</strong></span></li>
+    <li class="option"><span class="opt-label">(C)</span><span class="opt-word">will be</span></li>
+    <li class="option"><span class="opt-label">(D)</span><span class="opt-word">had been</span></li>
+  </ul>
+</div>
+
+<!-- Q32 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">32.</span>
+    <span class="answer-badge">答案 A</span>
+    <span class="q-text">The king has ordered that all men over eighteen ________ the army to protect the border.</span>
+  </div>
+  <div class="zh-translation">國王下令所有十八歲以上的男性都要參軍保衛邊境。</div>
+  <ul class="options">
+    <li class="option correct"><span class="opt-label">(A)</span><span class="opt-word"><strong>join</strong></span></li>
+    <li class="option"><span class="opt-label">(B)</span><span class="opt-word">joins</span></li>
+    <li class="option"><span class="opt-label">(C)</span><span class="opt-word">joined</span></li>
+    <li class="option"><span class="opt-label">(D)</span><span class="opt-word">will join</span></li>
+  </ul>
+</div>
+
+<!-- Q33 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">33.</span>
+    <span class="answer-badge">答案 A</span>
+    <span class="q-text">________ Rita behaved on such a formal occasion was not appropriate at all.</span>
+  </div>
+  <div class="zh-translation">麗塔在這種正式場合的舉止完全不恰當。</div>
+  <ul class="options">
+    <li class="option correct"><span class="opt-label">(A)</span><span class="opt-word"><strong>How</strong></span></li>
+    <li class="option"><span class="opt-label">(B)</span><span class="opt-word">What</span></li>
+    <li class="option"><span class="opt-label">(C)</span><span class="opt-word">That</span></li>
+    <li class="option"><span class="opt-label">(D)</span><span class="opt-word">Whether</span></li>
+  </ul>
+</div>
+
+<!-- Q34 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">34.</span>
+    <span class="answer-badge">答案 D</span>
+    <span class="q-text">The debate grew more heated, and the banker proposed that the lawyer ________ his claim.</span>
+  </div>
+  <div class="zh-translation">辯論愈來愈激烈，銀行家提議律師應提出他的主張的佐證。</div>
+  <ul class="options">
+    <li class="option"><span class="opt-label">(A)</span><span class="opt-word">proved</span></li>
+    <li class="option"><span class="opt-label">(B)</span><span class="opt-word">proves</span></li>
+    <li class="option"><span class="opt-label">(C)</span><span class="opt-word">proving</span></li>
+    <li class="option correct"><span class="opt-label">(D)</span><span class="opt-word"><strong>prove</strong></span></li>
+  </ul>
+</div>
+
+<!-- Q35 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">35.</span>
+    <span class="answer-badge">答案 C</span>
+    <span class="q-text">If I ________ enough money now, I could lend you some to pay for your tuition.</span>
+  </div>
+  <div class="zh-translation">如果我現在有足夠的錢，我可以借你一些來支付學費。</div>
+  <ul class="options">
+    <li class="option"><span class="opt-label">(A)</span><span class="opt-word">have</span></li>
+    <li class="option"><span class="opt-label">(B)</span><span class="opt-word">were having</span></li>
+    <li class="option correct"><span class="opt-label">(C)</span><span class="opt-word"><strong>had</strong></span></li>
+    <li class="option"><span class="opt-label">(D)</span><span class="opt-word">would have</span></li>
+  </ul>
+</div>
+
+<!-- Q36 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">36.</span>
+    <span class="answer-badge">答案 C</span>
+    <span class="q-text">John suggested that Lisa ________ on a diet and work out three times a week.</span>
+  </div>
+  <div class="zh-translation">約翰建議麗莎節食並且每週運動三次。</div>
+  <ul class="options">
+    <li class="option"><span class="opt-label">(A)</span><span class="opt-word">goes</span></li>
+    <li class="option"><span class="opt-label">(B)</span><span class="opt-word">went</span></li>
+    <li class="option correct"><span class="opt-label">(C)</span><span class="opt-word"><strong>go</strong></span></li>
+    <li class="option"><span class="opt-label">(D)</span><span class="opt-word">going</span></li>
+  </ul>
+</div>
+
+<!-- Q37 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">37.</span>
+    <span class="answer-badge">答案 C</span>
+    <span class="q-text">If Jimmy doesn't pass the final exam, he won't graduate. It is important that he ________.</span>
+  </div>
+  <div class="zh-translation">如果吉米期末考沒有通過，他就不能畢業。因此他通過考試非常重要。</div>
+  <ul class="options">
+    <li class="option"><span class="opt-label">(A)</span><span class="opt-word">passes</span></li>
+    <li class="option"><span class="opt-label">(B)</span><span class="opt-word">passed</span></li>
+    <li class="option correct"><span class="opt-label">(C)</span><span class="opt-word"><strong>pass</strong></span></li>
+    <li class="option"><span class="opt-label">(D)</span><span class="opt-word">will pass</span></li>
+  </ul>
+</div>
+
+<!-- Q38 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">38.</span>
+    <span class="answer-badge">答案 A</span>
+    <span class="q-text">Cathy was really stubborn. As hard ________, I just couldn't make her change her mind.</span>
+  </div>
+  <div class="zh-translation">凱西非常頑固。不管我多努力嘗試，就是無法讓她改變心意。</div>
+  <ul class="options">
+    <li class="option correct"><span class="opt-label">(A)</span><span class="opt-word"><strong>as I tried</strong></span></li>
+    <li class="option"><span class="opt-label">(B)</span><span class="opt-word">as tried I</span></li>
+    <li class="option"><span class="opt-label">(C)</span><span class="opt-word">I tried</span></li>
+    <li class="option"><span class="opt-label">(D)</span><span class="opt-word">though I try</span></li>
+  </ul>
+</div>
+
+<!-- Q39 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">39.</span>
+    <span class="answer-badge">答案 A</span>
+    <span class="q-text">Jason considers ________ necessary to wear a suit when he meets with important clients.</span>
+  </div>
+  <div class="zh-translation">傑森認為在與重要客戶會面時穿西裝是必要的。</div>
+  <ul class="options">
+    <li class="option correct"><span class="opt-label">(A)</span><span class="opt-word"><strong>it</strong></span></li>
+    <li class="option"><span class="opt-label">(B)</span><span class="opt-word">that</span></li>
+    <li class="option"><span class="opt-label">(C)</span><span class="opt-word">which</span></li>
+    <li class="option"><span class="opt-label">(D)</span><span class="opt-word">what</span></li>
+  </ul>
+</div>
+
+<!-- Q40 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">40.</span>
+    <span class="answer-badge">答案 A</span>
+    <span class="q-text">In Kaohsiung, the city had to figure out ________ a priceless old structure could be preserved.</span>
+  </div>
+  <div class="zh-translation">在高雄，市政府必須想出辦法，讓一棟無價的古老建築能夠被保存下來。</div>
+  <ul class="options">
+    <li class="option correct"><span class="opt-label">(A)</span><span class="opt-word"><strong>how</strong></span></li>
+    <li class="option"><span class="opt-label">(B)</span><span class="opt-word">what</span></li>
+    <li class="option"><span class="opt-label">(C)</span><span class="opt-word">if</span></li>
+    <li class="option"><span class="opt-label">(D)</span><span class="opt-word">which</span></li>
+  </ul>
+</div>
+
+<!-- Q41 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">41.</span>
+    <span class="answer-badge">答案 B</span>
+    <span class="q-text">It is essential that the plane ________ safety checks before it takes off.</span>
+  </div>
+  <div class="zh-translation">飛機起飛之前進行安全檢查是不可或缺的。</div>
+  <ul class="options">
+    <li class="option"><span class="opt-label">(A)</span><span class="opt-word">undergoes</span></li>
+    <li class="option correct"><span class="opt-label">(B)</span><span class="opt-word"><strong>undergo</strong></span></li>
+    <li class="option"><span class="opt-label">(C)</span><span class="opt-word">underwent</span></li>
+    <li class="option"><span class="opt-label">(D)</span><span class="opt-word">undergoing</span></li>
+  </ul>
+</div>
+
+<!-- Q42 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">42.</span>
+    <span class="answer-badge">答案 C</span>
+    <span class="q-text">Mike had to go, but Josh insisted that he ________ for dinner.</span>
+  </div>
+  <div class="zh-translation">麥克必須離開，但喬許堅持要他留下來吃晚餐。</div>
+  <ul class="options">
+    <li class="option"><span class="opt-label">(A)</span><span class="opt-word">stays</span></li>
+    <li class="option"><span class="opt-label">(B)</span><span class="opt-word">stayed</span></li>
+    <li class="option correct"><span class="opt-label">(C)</span><span class="opt-word"><strong>stay</strong></span></li>
+    <li class="option"><span class="opt-label">(D)</span><span class="opt-word">staying</span></li>
+  </ul>
+</div>
+
+<!-- Q43 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">43.</span>
+    <span class="answer-badge">答案 B</span>
+    <span class="q-text">It is necessary that development ________ place, but we must protect our heritage.</span>
+  </div>
+  <div class="zh-translation">發展是必要的，但我們也必須保護我們的文化遺產。</div>
+  <ul class="options">
+    <li class="option"><span class="opt-label">(A)</span><span class="opt-word">takes</span></li>
+    <li class="option correct"><span class="opt-label">(B)</span><span class="opt-word"><strong>take</strong></span></li>
+    <li class="option"><span class="opt-label">(C)</span><span class="opt-word">took</span></li>
+    <li class="option"><span class="opt-label">(D)</span><span class="opt-word">taking</span></li>
+  </ul>
+</div>
+
+<!-- Q44 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">44.</span>
+    <span class="answer-badge">答案 A</span>
+    <span class="q-text">Whether it is possible to see progress ________ how much effort we are willing to put in.</span>
+  </div>
+  <div class="zh-translation">我們能否看到進步，取決於我們願意付出多少努力。</div>
+  <ul class="options">
+    <li class="option correct"><span class="opt-label">(A)</span><span class="opt-word"><strong>depends on</strong></span></li>
+    <li class="option"><span class="opt-label">(B)</span><span class="opt-word">is depending</span></li>
+    <li class="option"><span class="opt-label">(C)</span><span class="opt-word">depend on</span></li>
+    <li class="option"><span class="opt-label">(D)</span><span class="opt-word">depending on</span></li>
+  </ul>
+</div>
+
+<!-- Q45 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">45.</span>
+    <span class="answer-badge">答案 C</span>
+    <span class="q-text">As kind and generous ________, Fred isn't really Jane's cup of tea.</span>
+  </div>
+  <div class="zh-translation">儘管弗雷德既善良又慷慨，他其實並不是珍的菜。</div>
+  <ul class="options">
+    <li class="option"><span class="opt-label">(A)</span><span class="opt-word">he is</span></li>
+    <li class="option"><span class="opt-label">(B)</span><span class="opt-word">is he</span></li>
+    <li class="option correct"><span class="opt-label">(C)</span><span class="opt-word"><strong>as he is</strong></span></li>
+    <li class="option"><span class="opt-label">(D)</span><span class="opt-word">as is he</span></li>
+  </ul>
+</div>
+
+<!-- Q46 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">46.</span>
+    <span class="answer-badge">答案 C</span>
+    <span class="q-text">If I ________ you, I would think twice before signing that legal contract.</span>
+  </div>
+  <div class="zh-translation">如果我是你，我會在簽那份法律合約之前再三考慮。</div>
+  <ul class="options">
+    <li class="option"><span class="opt-label">(A)</span><span class="opt-word">am</span></li>
+    <li class="option"><span class="opt-label">(B)</span><span class="opt-word">was</span></li>
+    <li class="option correct"><span class="opt-label">(C)</span><span class="opt-word"><strong>were</strong></span></li>
+    <li class="option"><span class="opt-label">(D)</span><span class="opt-word">be</span></li>
+  </ul>
+</div>
+
+<!-- Q47 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">47.</span>
+    <span class="answer-badge">答案 A</span>
+    <span class="q-text">It was a miracle ________ the two-year-old baby survived the massive earthquake.</span>
+  </div>
+  <div class="zh-translation">那個兩歲的嬰兒在強烈地震中生還，真是個奇蹟。</div>
+  <ul class="options">
+    <li class="option correct"><span class="opt-label">(A)</span><span class="opt-word"><strong>that</strong></span></li>
+    <li class="option"><span class="opt-label">(B)</span><span class="opt-word">for</span></li>
+    <li class="option"><span class="opt-label">(C)</span><span class="opt-word">which</span></li>
+    <li class="option"><span class="opt-label">(D)</span><span class="opt-word">what</span></li>
+  </ul>
+</div>
+
+<!-- Q48 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">48.</span>
+    <span class="answer-badge">答案 B</span>
+    <span class="q-text">I wonder ________ my new classmates will be like when school starts tomorrow.</span>
+  </div>
+  <div class="zh-translation">我很好奇明天學校開學時，我的新同學們會是什麼樣的人。</div>
+  <ul class="options">
+    <li class="option"><span class="opt-label">(A)</span><span class="opt-word">how</span></li>
+    <li class="option correct"><span class="opt-label">(B)</span><span class="opt-word"><strong>what</strong></span></li>
+    <li class="option"><span class="opt-label">(C)</span><span class="opt-word">who</span></li>
+    <li class="option"><span class="opt-label">(D)</span><span class="opt-word">that</span></li>
+  </ul>
+</div>
+
+<!-- Q49 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">49.</span>
+    <span class="answer-badge">答案 A</span>
+    <span class="q-text">If you are quite serious about the bet, then I insist we ________ it fifteen years!</span>
+  </div>
+  <div class="zh-translation">如果你對這個賭注是認定的，那我堅持我們要賭十五年！</div>
+  <ul class="options">
+    <li class="option correct"><span class="opt-label">(A)</span><span class="opt-word"><strong>make</strong></span></li>
+    <li class="option"><span class="opt-label">(B)</span><span class="opt-word">makes</span></li>
+    <li class="option"><span class="opt-label">(C)</span><span class="opt-word">made</span></li>
+    <li class="option"><span class="opt-label">(D)</span><span class="opt-word">making</span></li>
+  </ul>
+</div>
+
+<!-- Q50 -->
+<div class="q-card">
+  <div class="q-header">
+    <span class="q-num">50.</span>
+    <span class="answer-badge">答案 A</span>
+    <span class="q-text">It is horrible ________ campus bullying is getting more and more serious lately.</span>
+  </div>
+  <div class="zh-translation">校園霸凌近來愈來愈嚴重，真是令人感到可怕。</div>
+  <ul class="options">
+    <li class="option correct"><span class="opt-label">(A)</span><span class="opt-word"><strong>that</strong></span></li>
+    <li class="option"><span class="opt-label">(B)</span><span class="opt-word">to</span></li>
+    <li class="option"><span class="opt-label">(C)</span><span class="opt-word">what</span></li>
+    <li class="option"><span class="opt-label">(D)</span><span class="opt-word">which</span></li>
+  </ul>
+</div>
+
+<footer>Tony 線上美語家教 ｜ tonyonlineenglish.netlify.app ｜ B4 L1–L3 語法考題解析 · 共 50 題</footer>
+
+</div><!-- /.container -->
 </body>
 </html>
