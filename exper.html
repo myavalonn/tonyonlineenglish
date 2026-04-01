@@ -171,7 +171,7 @@
       max-width: 900px;
       margin: 0 auto 30px;
       display: flex;
-      flex-wrap: nowrap; /* 強制並排 */
+      flex-wrap: nowrap; /* 手機版並排 */
       justify-content: center;
       gap: 30px;
       padding: 0 20px;
@@ -227,7 +227,11 @@
       );
     }
 
-    .inner-container { position: relative; }
+    .inner-container { 
+      position: relative; 
+      overflow: hidden; /* 防止邊緣閃電溢出 */
+      border-radius: 1.5em;
+    }
     .border-outer {
       border: 2px solid oklch(from var(--electric-border-color) l c h / 0.5);
       border-radius: 1.5em;
@@ -243,6 +247,13 @@
       margin-top: -4px;
       margin-left: -4px;
       filter: var(--f);
+    }
+
+    /* 針對平板尺寸 (Tablet) 取消 SVG 閃電濾鏡，防止破圖 */
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .main-card {
+        filter: none !important;
+      }
     }
 
     .glow-layer-1, .glow-layer-2, .overlay-1, .overlay-2, .background-glow {
@@ -272,7 +283,11 @@
       border-radius: inherit; mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; pointer-events: none;
     }
 
-    .card-title { font-size: 2.2em; font-weight: 700; margin-top: auto; margin-bottom: 0; color: #ffffff; text-shadow: 0 4px 15px rgba(0,0,0,0.6); }
+    .card-title { font-size: 2.2em; font-weight: 700; margin-top: auto; margin-bottom: 5px; color: #ffffff; text-shadow: 0 4px 15px rgba(0,0,0,0.6); }
+    
+    /* 新增方格內輔助文字 CSS */
+    .card-desc { font-size: 0.95rem; color: rgba(255,255,255,0.85); line-height: 1.4; margin: 0; text-shadow: 0 2px 10px rgba(0,0,0,0.5); font-weight: 500;}
+    
     .card-price { font-size: 1.6em; font-weight: 600; color: #ffffff; margin: 0; text-shadow: 0 4px 15px rgba(0,0,0,0.6); }
 
     .divider {
@@ -280,10 +295,10 @@
       mask-image: linear-gradient(to right, transparent, black, transparent); -webkit-mask-image: linear-gradient(to right, transparent, black, transparent);
     }
 
-    /* --- COURSE DETAILS (NEW TEXT SECTION) --- */
+    /* --- COURSE DETAILS (TEXT SECTION) --- */
     .course-details {
       max-width: 900px;
-      margin: 0 auto 60px;
+      margin: 0 auto 40px;
       padding: 40px;
       background: white;
       border-radius: 16px;
@@ -293,56 +308,84 @@
       border: 1px solid #eee;
     }
     .course-details h3 {
-      font-size: 1.8rem;
-      color: var(--primary-color);
-      margin-top: 0;
-      margin-bottom: 15px;
-      text-align: center;
-      border-bottom: 2px solid #f0f0f0;
-      padding-bottom: 15px;
+      font-size: 1.8rem; color: var(--primary-color); margin-top: 0; margin-bottom: 15px; text-align: center; border-bottom: 2px solid #f0f0f0; padding-bottom: 15px;
     }
-    .course-details .intro-text {
-      font-size: 1.15rem;
-      text-align: justify;
-      margin-bottom: 25px;
-    }
-    .topics-box {
-      background: #f8fbff;
-      border-left: 4px solid var(--accent-blue);
-      padding: 20px 25px;
-      border-radius: 0 12px 12px 0;
-      margin-bottom: 25px;
-    }
-    .topics-box h4 {
-      margin: 0 0 15px 0;
-      font-size: 1.15rem;
-      color: #222;
-    }
-    .topics-box ul {
-      list-style-type: none;
-      padding: 0;
-      margin: 0;
-    }
-    .topics-box li {
-      margin-bottom: 10px;
-      font-size: 1.1rem;
-    }
+    .course-details .intro-text { font-size: 1.15rem; text-align: justify; margin-bottom: 25px; }
+    .topics-box { background: #f8fbff; border-left: 4px solid var(--accent-blue); padding: 20px 25px; border-radius: 0 12px 12px 0; margin-bottom: 25px; }
+    .topics-box h4 { margin: 0 0 15px 0; font-size: 1.15rem; color: #222; }
+    .topics-box ul { list-style-type: none; padding: 0; margin: 0; }
+    .topics-box li { margin-bottom: 10px; font-size: 1.1rem; }
     .topics-box li strong { color: #333; }
-    .note-box {
-      background: #fff3cd;
-      color: #856404;
-      padding: 15px 20px;
-      border-radius: 8px;
-      font-size: 1rem;
-      font-weight: 500;
+    .note-box { background: #fff3cd; color: #856404; padding: 15px 20px; border-radius: 8px; font-size: 1rem; font-weight: 500; }
+    .cta-text { text-align: center; font-size: 1.25rem; font-weight: bold; color: var(--line-green); margin-top: 25px; }
+
+
+    /* --- NEW: BOTTOM GLASS TAGS SECTION --- */
+    .glass-tags-section {
+      max-width: 900px;
+      margin: 0 auto 60px;
+      padding: 0 20px;
     }
-    .cta-text {
+    .glass-tags-wrapper {
+      background: linear-gradient(135deg, #1e2530, #0a0c10);
+      border-radius: 16px;
+      padding: 40px 25px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.15);
       text-align: center;
-      font-size: 1.25rem;
-      font-weight: bold;
-      color: var(--line-green);
-      margin-top: 25px;
     }
+    /* 背景微光效果 */
+    .glass-tags-wrapper::before {
+      content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
+      background: radial-gradient(circle at center, rgba(0, 123, 255, 0.1) 0%, transparent 60%);
+      z-index: 0; pointer-events: none;
+    }
+    .tags-container {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 12px;
+      margin-bottom: 25px;
+    }
+    .glass-tag {
+      display: inline-block;
+      padding: 10px 20px;
+      border-radius: 50px;
+      background: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      color: #fff;
+      text-decoration: none;
+      font-size: 1.05rem;
+      letter-spacing: 0.5px;
+      transition: all 0.3s ease;
+    }
+    .glass-tag:hover {
+      background: rgba(255, 255, 255, 0.2);
+      border-color: rgba(255, 255, 255, 0.5);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+    }
+    .all-courses-btn {
+      position: relative;
+      z-index: 1;
+      display: inline-block;
+      margin-top: 15px;
+      padding: 12px 30px;
+      background: var(--accent-blue);
+      color: white;
+      text-decoration: none;
+      border-radius: 30px;
+      font-weight: bold;
+      font-size: 1.15rem;
+      transition: background 0.3s, transform 0.2s;
+      box-shadow: 0 4px 15px rgba(0,123,255,0.4);
+    }
+    .all-courses-btn:hover { background: #0056b3; transform: scale(1.05); }
 
 
     /* --- EMAIL POPUP WITH PAYMENT INFO --- */
@@ -362,16 +405,8 @@
     #email-popup-overlay.visible .email-popup-content { transform: scale(1); }
     
     .email-popup-content h3 { font-size: 22px; color: #333; margin-top: 0; margin-bottom: 15px; }
-    .email-popup-content input[type="email"] {
-      width: 100%; padding: 15px; font-size: 18px;
-      border: 1px solid #ccc; border-radius: 8px;
-      box-sizing: border-box; text-align: center; margin-bottom: 20px;
-    }
-    #popup-checkout-btn {
-      width: 100%; background-color: #3b414a; color: white; border: none;
-      padding: 15px; font-size: 20px; font-weight: bold; border-radius: 8px;
-      cursor: pointer; transition: background-color 0.3s ease;
-    }
+    .email-popup-content input[type="email"] { width: 100%; padding: 15px; font-size: 18px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; text-align: center; margin-bottom: 20px; }
+    #popup-checkout-btn { width: 100%; background-color: #3b414a; color: white; border: none; padding: 15px; font-size: 20px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: background-color 0.3s ease; }
     #popup-checkout-btn:hover { background-color: #525964; }
     .large-cancel-btn { font-size: 24px; font-weight: bold; color: #888; background: none; border: none; margin-top: 25px; cursor: pointer; text-decoration: underline; }
     .large-cancel-btn:hover { color: #555; }
@@ -400,14 +435,8 @@
     .ty-item-price { font-weight: bold; white-space: nowrap; color: #333;}
     .cart-total { margin-top: 20px; padding-top: 20px; border-top: 2px solid #333; }
     .cart-total .total-row { display: flex; justify-content: space-between; font-size: 22px; font-weight: bold; color: #000; }
-    #celebration-icon { font-size: 1.5em; position: relative; }
-    @keyframes confetti-fall { 0% { transform: translateY(-100%) rotate(0deg); opacity: 1; } 100% { transform: translateY(100px) rotate(360deg); opacity: 0; } }
-    .celebration-icon::before, .celebration-icon::after { content: '🎊'; position: absolute; top: -20px; left: 0; font-size: 20px; opacity: 0; animation: confetti-fall 2s ease-in-out infinite; }
-    .celebration-icon::after { content: '🎉'; left: 20px; animation-delay: 0.5s; }
-    #ty-order-id { font-size: 1.5em; color: var(--accent-blue); font-weight: bold; }
-    .ty-line-link { color: var(--line-green); font-weight: bold; text-decoration: none; font-size: 1.1rem; }
 
-    /* --- NEW MINI CALENDAR STYLES --- */
+    /* --- MINI CALENDAR --- */
     .mini-cal-wrapper { border: 1px solid #e0e0e0; border-radius: 12px; background: #fff; overflow: hidden; margin-top: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
     .mini-cal-header { display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #f8f9fa; border-bottom: 1px solid #eee; font-weight: bold; font-size: 1.1rem; color: #333; }
     .mini-cal-header button { background: none; border: none; font-size: 1.2rem; cursor: pointer; color: #007bff; padding: 0 10px; transition: transform 0.2s, opacity 0.2s; }
@@ -428,7 +457,6 @@
     .time-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(105px, 1fr)); gap: 12px; }
     .time-slot-badge { display: flex; align-items: center; justify-content: center; background: #fff; color: #007bff; padding: 12px 10px; border-radius: 8px; font-size: 0.95rem; cursor: default; font-weight: bold; border: 1px solid #b8daff; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
     .slot-clock-icon { width: 16px; height: 16px; margin-right: 6px; }
-    .tony-highlight { color: #0000FF !important; font-style: italic !important; font-weight: bold !important; }
 
     /* --- RESPONSIVE ADJUSTMENTS --- */
     @media (min-width: 768px) {
@@ -454,7 +482,8 @@
       .product-grid { gap: 10px; padding: 0 10px; flex-direction: row; }
       .content-top, .content-bottom { padding: 15px; }
       .scrollbar-glass { font-size: 0.65em; padding: 0.4em 0.6em; }
-      .card-title { font-size: 1.4em; }
+      .card-title { font-size: 1.3em; margin-bottom: 2px;}
+      .card-desc { font-size: 0.75rem; }
       .card-price { font-size: 1.1em; }
 
       .course-details { padding: 25px 15px; margin: 0 15px 40px; border-radius: 12px; }
@@ -464,6 +493,9 @@
       .topics-box h4 { font-size: 1.05rem; }
       .topics-box li { font-size: 1rem; }
       
+      .glass-tags-wrapper { padding: 30px 15px; margin: 0 10px; border-radius: 12px;}
+      .glass-tag { padding: 8px 15px; font-size: 0.9rem; }
+
       .email-popup-content { width: 100%; height: 100%; max-width: 100%; border-radius: 0; display: flex; flex-direction: column; justify-content: center; padding: 30px 20px; }
       #thank-you-page { padding: 20px 0; }
       .thank-you-container { border-radius: 0; border-left: none; border-right: none; box-shadow: none; }
@@ -584,6 +616,7 @@
               客製化體驗
             </div>
             <p class="card-title">25 分鐘</p>
+            <p class="card-desc">短時精準練習<br>考前衝刺・自由對話</p>
           </div>
 
           <hr class="divider" />
@@ -614,6 +647,7 @@
               客製化體驗
             </div>
             <p class="card-title">50 分鐘</p>
+            <p class="card-desc">完整深度學習<br>主題教學・全面加強</p>
           </div>
 
           <hr class="divider" />
@@ -648,6 +682,42 @@
 
       <div class="cta-text">
         👆 現在就點擊上方卡片，開始你的客製化學習之旅！
+      </div>
+    </section>
+
+    <!-- 全新區塊：底部玻璃半透明標籤 -->
+    <section class="glass-tags-section">
+      <div class="glass-tags-wrapper">
+        
+        <!-- Group 1 -->
+        <div class="tags-container">
+          <a href="https://tonyonlineenglish.netlify.app/allcourses" class="glass-tag">升學</a>
+          <a href="https://tonyonlineenglish.netlify.app/allcourses" class="glass-tag">檢定</a>
+          <a href="https://tonyonlineenglish.netlify.app/allcourses" class="glass-tag">國中會考</a>
+          <a href="https://tonyonlineenglish.netlify.app/allcourses" class="glass-tag">高中學測+作文</a>
+          <a href="https://tonyonlineenglish.netlify.app/allcourses" class="glass-tag">技高統測＋作文</a>
+          <a href="https://tonyonlineenglish.netlify.app/allcourses" class="glass-tag">全民英檢</a>
+          <a href="https://tonyonlineenglish.netlify.app/allcourses" class="glass-tag">多益</a>
+          <a href="https://tonyonlineenglish.netlify.app/allcourses" class="glass-tag">FLPT外語能力測驗</a>
+        </div>
+        
+        <!-- Group 2 -->
+        <div class="tags-container">
+          <a href="https://tonyonlineenglish.netlify.app/allcourses" class="glass-tag">國小英文</a>
+          <a href="https://tonyonlineenglish.netlify.app/allcourses" class="glass-tag">聽說讀寫</a>
+          <a href="https://tonyonlineenglish.netlify.app/allcourses" class="glass-tag">作文</a>
+          <a href="https://tonyonlineenglish.netlify.app/allcourses" class="glass-tag">觀光美語</a>
+          <a href="https://tonyonlineenglish.netlify.app/allcourses" class="glass-tag">展場英文</a>
+          <a href="https://tonyonlineenglish.netlify.app/allcourses" class="glass-tag">客製化</a>
+          <a href="https://tonyonlineenglish.netlify.app/allcourses" class="glass-tag">職場</a>
+          <a href="https://tonyonlineenglish.netlify.app/allcourses" class="glass-tag">公職</a>
+          <a href="https://tonyonlineenglish.netlify.app/allcourses" class="glass-tag">英文面試</a>
+          <a href="https://tonyonlineenglish.netlify.app/allcourses" class="glass-tag">體驗課程</a>
+        </div>
+
+        <a href="https://tonyonlineenglish.netlify.app/allcourses" target="_blank" class="all-courses-btn">
+          👉 點此查看所有課程介紹
+        </a>
       </div>
     </section>
 
