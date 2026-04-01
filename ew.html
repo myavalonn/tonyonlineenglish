@@ -221,7 +221,7 @@
     flex-shrink: 0;
   }
 
-  /* ─── INPUT PANEL ───────────────────────────────────── */
+  /* ─── INPUT PANEL (DEFAULT/DESKTOP) ─────────────────── */
   .input-panel {
     background: var(--surf);
     padding: 14px 16px;
@@ -266,17 +266,74 @@
   .btn-add:hover { opacity: 0.85; }
   .btn-add:active { transform: scale(0.96); }
 
-  /* ─── GRID ──────────────────────────────────────────── */
+  /* ─── GRID (BASE) ───────────────────────────────────── */
   .grid {
     display: grid;
-    grid-template-columns: 1fr;
+    /* Default to 2 columns */
+    grid-template-columns: repeat(2, 1fr);
     gap: 14px;
     padding: 16px;
     will-change: transform;
   }
 
-  @media (min-width: 600px) { .grid { grid-template-columns: repeat(2, 1fr); padding: 20px; } }
-  @media (min-width: 980px) { .grid { grid-template-columns: repeat(4, 1fr); max-width: 1400px; margin: 0 auto; } }
+  /* ─── MOBILE & TABLET MODS (Up to 979px) ────────────── */
+  @media (max-width: 979px) {
+    /* 1) Twice bigger Input columns stacked on top of each other */
+    .input-panel {
+      padding: 20px 16px;
+    }
+    .input-row {
+      flex-direction: column;
+      align-items: stretch;
+      gap: 12px;
+    }
+    .input-row input, .input-row select {
+      font-size: 1.4rem;        /* TWICE BIGGER FONT */
+      padding: 16px;            /* LARGER PADDING */
+      height: 56px;             /* TALLER ELEMENT */
+      width: 100% !important;   /* OVERRIDE INLINE WIDTHS */
+      border-radius: 8px;
+    }
+    .btn-add {
+      font-size: 1.4rem;
+      padding: 16px;
+      height: 56px;
+      margin-top: 4px;
+      border-radius: 8px;
+      width: 100%;
+    }
+
+    /* 2) Specific Left / Right Column Assigning */
+    /* Day IDs: 0=Mon, 1=Tue, 2=Wed, 3=Thu, 4=Fri, 5=Sat, 6=Sun */
+    
+    /* Mon, Wed, Fri, Sun on the left */
+    .card.day-0, .card.day-2, .card.day-4, .card.day-6 {
+      grid-column: 1;
+    }
+    /* Tue, Thu, Sat on the right */
+    .card.day-1, .card.day-3, .card.day-5 {
+      grid-column: 2;
+    }
+
+    /* 3) Today's card on top */
+    .card.today {
+      order: -1;                     /* Bring to top */
+      grid-column: 1 / -1 !important;/* Span both columns fully like a hero banner */
+    }
+  }
+
+  /* ─── DESKTOP MODS (980px and up) ───────────────────── */
+  @media (min-width: 600px) { 
+    .grid { padding: 20px; } 
+  }
+  
+  @media (min-width: 980px) { 
+    .grid { 
+      grid-template-columns: repeat(4, 1fr); /* Back to 4 Columns for Desktop */
+      max-width: 1400px; 
+      margin: 0 auto; 
+    } 
+  }
 
   /* ─── DAY CARD ──────────────────────────────────────── */
   .card {
@@ -653,7 +710,8 @@ function renderGrid() {
     const records = appData[currentMode][dateStr] ||[];
 
     const card = document.createElement('div');
-    card.className = `card${isToday ? ' today' : ''}`;
+    // We add `day-${i}` so the CSS can uniquely target Monday (0), Tuesday (1), etc. for positioning
+    card.className = `card day-${i}${isToday ? ' today' : ''}`;
     
     // Calculate daily summary for the badge
     let badgeText = '—';
@@ -906,7 +964,7 @@ function switchMode(mode) {
 
 function toggleOther(selectId, otherId) {
   const val = document.getElementById(selectId).value;
-  document.getElementById(otherId).style.display = (val === '其他') ? 'inline-block' : 'none';
+  document.getElementById(otherId).style.display = (val === '其他') ? 'block' : 'none';
 }
 
 function setSaving(isSaving) {
