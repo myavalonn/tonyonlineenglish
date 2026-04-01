@@ -474,7 +474,7 @@
       .mini-cal-day { font-size: 1.1rem; }
     }
     
-    /* 手機版 (Mobile View) - 保持原本精緻縮小版 */
+    /* 手機版 (Mobile View) - 重點放大字體 */
     @media (max-width: 768px) {
       .hero h1 { font-size: 2rem; }
       
@@ -484,13 +484,17 @@
       }
       .step-number { width: 30px; height: 30px; font-size: 1rem; }
       
+      /* 強制左右並排縮小設計 */
       .product-grid { gap: 10px; padding: 0 10px; flex-direction: row; }
       .content-top { padding: 15px 15px 10px 15px; }
       .content-bottom { padding: 10px 15px 15px 15px; }
-      .scrollbar-glass { font-size: 0.65em; padding: 0.4em 0.6em; }
-      .card-title { font-size: 1.3em; margin-bottom: 2px;}
-      .card-desc { font-size: 0.75rem; line-height: 1.4; margin-bottom: 0; }
-      .card-price { font-size: 1.1em; }
+      .scrollbar-glass { font-size: 0.65em; padding: 0.4em 0.6em; margin-bottom: 5px; }
+      
+      /* ★ 修改這裡：大幅放大手機版 25/50 分鐘的字體 ★ */
+      .card-title { font-size: 1.8em; margin-bottom: 6px;} 
+      .card-desc { font-size: 0.8rem; line-height: 1.4; margin-bottom: 0; }
+      /* ★ 修改這裡：稍微加大手機版價格字體平衡視覺 ★ */
+      .card-price { font-size: 1.25em; } 
 
       .course-details { padding: 25px 15px; margin: 0 15px 40px; border-radius: 12px; }
       .course-details h3 { font-size: 1.5rem; margin-bottom: 15px; }
