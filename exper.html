@@ -13,10 +13,12 @@
   <script src="layout-manager.js"></script>
 
   <style>
+    /* --- CSS Variables --- */
     :root {
       --primary-color: #3b414a;
       --accent-blue: #007bff;
       --line-green: #00B900;
+      --color-neutral-900: oklch(0.185 0 0);
     }
 
     body {
@@ -25,6 +27,10 @@
       margin: 0;
       padding: 0;
       color: #333;
+    }
+
+    * {
+      box-sizing: border-box;
     }
 
     /* --- HERO SECTION --- */
@@ -159,49 +165,267 @@
       60% { transform: translateY(-2px); }
     }
 
-    /* --- PRODUCT BLOCKS --- */
+    /* --- PRODUCT BLOCKS (NEW SVG CARD STYLES) --- */
     .product-grid {
-      max-width: 900px;
-      margin: 0 auto 40px;
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 30px;
+      max-width: 1000px;
+      margin: 0 auto 60px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 40px;
       padding: 0 20px;
     }
-    .course-block {
-      background: white;
-      border-radius: 16px;
-      padding: 50px 20px;
-      text-align: center;
-      border: 2px solid #eee;
-      transition: border-color 0.3s, transform 0.2s;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      cursor: pointer;
-    }
-    .course-block:hover { 
-      border-color: var(--accent-blue); 
-      transform: translateY(-5px);
-    }
-    .course-block h2 { font-size: 1.8rem; margin-bottom: 15px; }
-    .course-block .price {
-      font-size: 2rem;
-      font-weight: bold;
-      color: var(--accent-blue);
+
+    .svg-container {
+      position: absolute;
+      width: 0;
+      height: 0;
+      pointer-events: none;
     }
 
-    /* --- PROMO IMAGE --- */
-    .promo-image-container {
-      text-align: center;
-      margin: 40px 20px 60px;
+    .card-container {
+      padding: 2px;
+      border-radius: 1.5em;
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.3s ease;
+      background: linear-gradient(
+          -30deg,
+          var(--gradient-color),
+          transparent,
+          var(--gradient-color)
+        ),
+        linear-gradient(
+          to bottom,
+          var(--color-neutral-900),
+          var(--color-neutral-900)
+        );
     }
-    .promo-image-container img {
-      max-width: 100%;
-      height: auto;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    
+    .card-container:hover {
+      transform: translateY(-8px);
     }
+
+    .card-container[↖️] {
+      --f: url(#🌀↖️);
+      --electric-border-color: #dd8448;
+      --electric-light-color: oklch(from var(--electric-border-color) l c h);
+      --gradient-color: oklch(
+        from var(--electric-border-color) 0.3 calc(c / 2) h / 0.4
+      );
+    }
+
+    .card-container[🎨] {
+      --f: url(#🌀🎨);
+      --electric-border-color: DodgerBlue;
+      --electric-light-color: oklch(from var(--electric-border-color) l c h);
+      --gradient-color: oklch(
+        from var(--electric-border-color) 0.3 calc(c / 2) h / 0.4
+      );
+    }
+
+    .inner-container {
+      position: relative;
+    }
+
+    .border-outer {
+      border: 2px solid oklch(from var(--electric-border-color) l c h / 0.5);
+      border-radius: 1.5em;
+      padding-right: .15em;
+      padding-bottom: .15em;
+    }
+
+    .main-card {
+      width: 100%;
+      min-width: 280px;
+      max-width: 22rem;
+      aspect-ratio: 7 / 10;
+      border-radius: 1.5em;
+      border: 2px solid var(--electric-border-color);
+      margin-top: -4px;
+      margin-left: -4px;
+      filter: var(--f);
+    }
+
+    .glow-layer-1 {
+      border: 2px solid oklch(from var(--electric-border-color) l c h / 0.6);
+      border-radius: 24px;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      filter: blur(1px);
+    }
+
+    .glow-layer-2 {
+      border: 2px solid var(--electric-light-color);
+      border-radius: 24px;
+      width: 100%;
+      height: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      filter: blur(4px);
+    }
+
+    .overlay-1 {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border-radius: 24px;
+      opacity: 1;
+      mix-blend-mode: overlay;
+      transform: scale(1.1);
+      filter: blur(16px);
+      background: linear-gradient(-30deg, white, transparent 30%, transparent 70%, white);
+    }
+
+    .overlay-2 {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border-radius: 24px;
+      opacity: 0.5;
+      mix-blend-mode: overlay;
+      transform: scale(1.1);
+      filter: blur(16px);
+      background: linear-gradient(-30deg, white, transparent 30%, transparent 70%, white);
+    }
+
+    .background-glow {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      border-radius: 24px;
+      filter: blur(32px);
+      transform: scale(1.1);
+      opacity: 0.3;
+      z-index: -1;
+      background: linear-gradient(-30deg, var(--electric-light-color), transparent, var(--electric-border-color));
+    }
+
+    .content-container {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .content-top {
+      display: flex;
+      flex-direction: column;
+      padding: 40px;
+      padding-bottom: 16px;
+      height: 100%;
+    }
+
+    .content-bottom {
+      display: flex;
+      flex-direction: column;
+      padding: 40px;
+      padding-top: 16px;
+    }
+
+    .scrollbar-glass {
+      background: radial-gradient(
+          47.2% 50% at 50.39% 88.37%,
+          rgba(255, 255, 255, 0.12) 0%,
+          rgba(255, 255, 255, 0) 100%
+        ),
+        rgba(255, 255, 255, 0.04);
+      position: relative;
+      transition: background 0.3s ease;
+      border-radius: 14px;
+      width: fit-content;
+      height: fit-content;
+      padding: .6em 1.2em;
+      text-transform: uppercase;
+      font-weight: bold;
+      font-size: .95em;
+      color: rgba(255, 255, 255, 0.95);
+      letter-spacing: 1px;
+    }
+
+    .scrollbar-glass:hover {
+      background: radial-gradient(
+          47.2% 50% at 50.39% 88.37%,
+          rgba(255, 255, 255, 0.12) 0%,
+          rgba(255, 255, 255, 0) 100%
+        ),
+        rgba(255, 255, 255, 0.08);
+    }
+
+    .scrollbar-glass::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      padding: 1px;
+      background: linear-gradient(
+        150deg,
+        rgba(255, 255, 255, 0.48) 16.73%,
+        rgba(255, 255, 255, 0.08) 30.2%,
+        rgba(255, 255, 255, 0.08) 68.2%,
+        rgba(255, 255, 255, 0.6) 81.89%
+      );
+      border-radius: inherit;
+      mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+      mask-composite: xor;
+      -webkit-mask-composite: xor;
+      pointer-events: none;
+    }
+
+    .card-title {
+      font-size: 2.8em;
+      font-weight: 700;
+      margin-top: auto;
+      margin-bottom: 0;
+      color: #ffffff;
+      text-shadow: 0 4px 15px rgba(0,0,0,0.4);
+    }
+
+    .card-price {
+      font-size: 2em;
+      font-weight: 600;
+      color: #ffffff;
+      margin: 0;
+      text-shadow: 0 4px 15px rgba(0,0,0,0.4);
+    }
+
+    .divider {
+      margin-top: auto;
+      border: none;
+      height: 1px;
+      background-color: #ffffff;
+      opacity: 0.2;
+      mask-image: linear-gradient(to right, transparent, black, transparent);
+      -webkit-mask-image: linear-gradient(to right, transparent, black, transparent);
+    }
+
 
     /* --- EMAIL POPUP WITH PAYMENT INFO --- */
     #email-popup-overlay {
@@ -316,16 +540,13 @@
         transition: transform 0.2s, opacity 0.2s;
     }
     .mini-cal-header button:active { transform: scale(0.8); }
-    /* 超過限制時按鈕反灰失效 */
     .mini-cal-header button.disabled { opacity: 0.2; cursor: default; pointer-events: none; }
     
     .mini-cal-weekdays {
-        /* 移除星期日，改為 6 欄 */
         display: grid; grid-template-columns: repeat(6, 1fr);
         text-align: center; padding: 10px 0; font-size: 0.85rem; color: #888; font-weight: bold;
     }
 
-    /* 星期幾動態高亮的樣式 */
     .mini-cal-weekday {
         display: inline-flex;
         justify-content: center;
@@ -348,7 +569,6 @@
     }
 
     .mini-cal-days {
-        /* 移除星期日，改為 6 欄 */
         display: grid; grid-template-columns: repeat(6, 1fr);
         gap: 6px; padding: 10px; text-align: center;
     }
@@ -360,7 +580,6 @@
     .mini-cal-day:not(.disabled):not(.empty):hover {
         background: #eefaff; border-color: #b8daff;
     }
-    /* 過去日期及超過20天的日期一律反灰失效 */
     .mini-cal-day.disabled {
         color: #ccc; cursor: not-allowed; font-weight: normal; pointer-events: none; background: #fcfcfc;
     }
@@ -408,7 +627,6 @@
       .mini-cal-day { font-size: 1.1rem; }
     }
     
-    /* 手機版滿版設計 Mobile View */
     @media (max-width: 768px) {
       .hero h1 { font-size: 2rem; }
       
@@ -422,12 +640,6 @@
       }
       .step-number { width: 30px; height: 30px; font-size: 1rem; }
       
-      .product-grid { grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 15px; }
-      .course-block { padding: 30px 10px; } 
-      .course-block h2 { font-size: 1.3rem; margin-bottom: 10px; }
-      .course-block .price { font-size: 1.2rem; }
-      
-      /* Email Popup Full Width */
       .email-popup-content {
         width: 100%;
         height: 100%;
@@ -440,31 +652,76 @@
         box-sizing: border-box;
       }
 
-      /* Thank You Widget 完全滿版 (移除兩側留白) */
       #thank-you-page {
-        padding: 20px 0; /* 移除左右邊界 padding */
+        padding: 20px 0;
       }
       .thank-you-container {
-        border-radius: 0; /* 移除圓角貼齊螢幕 */
+        border-radius: 0;
         border-left: none;
         border-right: none;
         box-shadow: none;
       }
       .ty-left-panel, .ty-right-panel {
-        padding: 30px 20px; /* 內部 padding 縮小，給予內容更多空間 */
+        padding: 30px 20px;
       }
       .ty-header {
-        font-size: 24px; /* 手機版標題略縮 */
+        font-size: 24px;
       }
       .ty-checkmark {
         font-size: 36px;
       }
       .ty-detail-item span:first-child { white-space: nowrap; margin-right: 15px; flex-shrink: 0; }
       .ty-detail-item span:last-child { text-align: right; word-break: break-all; }
+      
+      .card-title { font-size: 2.2em; }
+      .card-price { font-size: 1.6em; }
+      .content-top, .content-bottom { padding: 30px; }
     }
   </style>
 </head>
 <body>
+
+  <!-- SVG Filter Definitions (Hidden visually) -->
+  <svg class="svg-container">
+    <defs>
+      <filter id="🌀↖️" colorInterpolationFilters="sRGB" x="-20%" y="-20%" width="140%" height="140%">
+        <feTurbulence type="turbulence" baseFrequency="0.02" numOctaves="10" result="noise1" seed="1" />
+        <feOffset in="noise1" dx="0" dy="0" result="offsetNoise1">
+          <animate attributeName="dy" values="700; 0" dur="6s" repeatCount="indefinite" calcMode="linear" />
+        </feOffset>
+        <feTurbulence type="turbulence" baseFrequency="0.02" numOctaves="10" result="noise2" seed="1" />
+        <feOffset in="noise2" dx="0" dy="0" result="offsetNoise2">
+          <animate attributeName="dy" values="0; -700" dur="6s" repeatCount="indefinite" calcMode="linear" />
+        </feOffset>
+        <feTurbulence type="turbulence" baseFrequency="0.02" numOctaves="10" result="noise1" seed="2" />
+        <feOffset in="noise1" dx="0" dy="0" result="offsetNoise3">
+          <animate attributeName="dx" values="490; 0" dur="6s" repeatCount="indefinite" calcMode="linear" />
+        </feOffset>
+        <feTurbulence type="turbulence" baseFrequency="0.02" numOctaves="10" result="noise2" seed="2" />
+        <feOffset in="noise2" dx="0" dy="0" result="offsetNoise4">
+          <animate attributeName="dx" values="0; -490" dur="6s" repeatCount="indefinite" calcMode="linear" />
+        </feOffset>
+        <feComposite in="offsetNoise1" in2="offsetNoise2" result="part1" />
+        <feComposite in="offsetNoise3" in2="offsetNoise4" result="part2" />
+        <feBlend in="part1" in2="part2" mode="color-dodge" result="combinedNoise" />
+        <feDisplacementMap in="SourceGraphic" in2="combinedNoise" scale="30" xChannelSelector="R" yChannelSelector="B" />
+      </filter>
+      
+      <filter id="🌀🎨" colorInterpolationFilters="sRGB" x="-20%" y="-20%" width="140%" height="140%">
+        <feTurbulence type="turbulence" baseFrequency="0.02" numOctaves="7" />
+        <feColorMatrix type="hueRotate" result="pt1" >
+          <animate attributeName="values" values="0;360;" dur=".6s" repeatCount="indefinite" calcMode="paced" />
+        </feColorMatrix>
+        <feComposite />
+        <feTurbulence type="turbulence" baseFrequency="0.03" numOctaves="7" seed="5" />
+        <feColorMatrix type="hueRotate" result="pt2">
+          <animate attributeName="values" values="0; 333; 199; 286; 64; 168; 256; 157; 360;" dur="5s" repeatCount="indefinite" calcMode="paced" />
+        </feColorMatrix>
+        <feBlend in="pt1" in2="pt2" mode="normal" result="combinedNoise" />
+        <feDisplacementMap in="SourceGraphic" scale="30" xChannelSelector="R" yChannelSelector="B" />
+      </filter>
+    </defs>
+  </svg>
 
   <!-- HERO SECTION -->
   <header class="hero">
@@ -508,23 +765,70 @@
       </svg>
     </div>
 
-    <!-- PRODUCT BLOCKS -->
+    <!-- PRODUCT BLOCKS (NEW SVG CARDS) -->
     <section class="product-grid">
-      <div class="course-block" onclick="directCheckout('trial-25')">
-        <h2>25 分鐘</h2>
-        <div class="price">NT$ 350</div>
+      
+      <!-- 卡片 1: 25 分鐘 -->
+      <div ↖️ class="card-container" onclick="directCheckout('trial-25')">
+        <div class="inner-container">
+          <div class="border-outer">
+            <div ↖️ class="main-card"></div>
+          </div>
+          <div class="glow-layer-1"></div>
+          <div class="glow-layer-2"></div>
+        </div>
+
+        <div class="overlay-1"></div>
+        <div class="overlay-2"></div>
+        <div class="background-glow"></div>
+
+        <div class="content-container">
+          <div class="content-top">
+            <div class="scrollbar-glass">
+              關於線上美語家教
+            </div>
+            <p class="card-title">25 分鐘</p>
+          </div>
+
+          <hr class="divider" />
+
+          <div class="content-bottom">
+            <p class="card-price">NT$ 350</p>
+          </div>
+        </div>
+      </div>
+      
+      <!-- 卡片 2: 50 分鐘 -->
+      <div 🎨 class="card-container" onclick="directCheckout('trial-50')">
+        <div class="inner-container">
+          <div class="border-outer">
+            <div class="main-card"></div>
+          </div>
+          <div class="glow-layer-1"></div>
+          <div class="glow-layer-2"></div>
+        </div>
+
+        <div class="overlay-1"></div>
+        <div class="overlay-2"></div>
+        <div class="background-glow"></div>
+
+        <div class="content-container">
+          <div class="content-top">
+            <div class="scrollbar-glass">
+              關於線上美語家教
+            </div>
+            <p class="card-title">50 分鐘</p>
+          </div>
+
+          <hr class="divider" />
+
+          <div class="content-bottom">
+            <p class="card-price">NT$ 550</p>
+          </div>
+        </div>
       </div>
 
-      <div class="course-block" onclick="directCheckout('trial-50')">
-        <h2>50 分鐘</h2>
-        <div class="price">NT$ 550</div>
-      </div>
     </section>
-
-    <!-- PROMO IMAGE -->
-    <div class="promo-image-container">
-      <img src="https://ik.imagekit.io/lql1uveoc/Abstract%20Special%20Offer%20Announcement%20Free%20Facebook%20Post.png?updatedAt=1754673537869" alt="Special Offer">
-    </div>
   </main>
 
   <!-- DIRECT EMAIL CHECKOUT POPUP -->
@@ -610,17 +914,14 @@
     let miniCalDate = new Date();
     let selectedMiniDate = "";
     
-    // 全新：快取系統，已讀取的資料不用重讀
     let cachedSlots = {};
     let userHasManuallyClicked = false;
     
-    // ★ 核心修復：嚴格限制只能點選未來 20 天以內 ★
     const MAX_DAYS_LIMIT = 20;
 
     function directCheckout(id) {
       currentCheckoutItem = products.find(p => p.id === id);
       if (currentCheckoutItem) {
-        // 恢復彈出視窗初始狀態
         const popupContent = document.getElementById('popup-inner-content');
         if(popupContent.querySelector('.error-container')) {
           popupContent.innerHTML = `
@@ -688,7 +989,6 @@
           timestamp: timestamp 
       });
 
-      // 傳送購買資訊給您的訂單系統
       fetch("https://script.google.com/macros/s/AKfycbyU13Wivs341DMPupk9EKrL9u908zrHNOVqZUXri-hGezkk6qj_7loQGIf0GCfmvj_f/exec", {
         method: "POST",
         mode: "no-cors",
@@ -709,8 +1009,6 @@
     function showThankYouPage(orderData) {
         document.getElementById("product-page").style.display = "none";
         document.getElementById("thank-you-page").style.display = "block";
-        
-        // 畫面瞬間跳到最上方，讓使用者清楚看到結帳完成
         window.scrollTo(0, 0);
 
         document.getElementById('ty-order-id').innerText = orderData.orderId;
@@ -735,7 +1033,6 @@
         `;
         document.getElementById('ty-total-price').innerText = `NT$ ${orderData.item.price.toLocaleString()}`;
 
-        // 初始化並啟動智慧型日曆加載
         initMiniCalendar(orderData.item.gasUrl);
     }
 
@@ -752,7 +1049,6 @@
         return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, '0') + "-" + String(d.getDate()).padStart(2, '0');
     }
 
-    // --- 全新輕量級互動式日曆 (支援快取與背景分段加載) --- //
     function initMiniCalendar(gasUrl) {
         previewGasUrl = gasUrl;
         miniCalDate = new Date();
@@ -768,7 +1064,6 @@
                     <span id="mini-cal-title"></span>
                     <button id="cal-next-btn" onclick="changeMiniMonth(1)">❯</button>
                 </div>
-                <!-- 改為動態產生星期表頭以便高亮 -->
                 <div class="mini-cal-weekdays" id="mini-cal-weekdays">
                 </div>
                 <div class="mini-cal-days" id="mini-cal-days"></div>
@@ -779,7 +1074,6 @@
         `;
         
         renderMiniCalendar();
-        // 1. 優先請求第 0-2 天 (前 3 天)
         fetchBatchSlots(0, 3, true);
     }
 
@@ -788,14 +1082,12 @@
         const month = miniCalDate.getMonth();
         document.getElementById('mini-cal-title').innerText = `${year}年 ${month + 1}月`;
 
-        // 取得「今天」和「最高上限(第20天)」的日期物件，用來鎖死不給亂點
         const today = new Date();
         today.setHours(0,0,0,0);
         
         const maxDate = new Date(today);
         maxDate.setDate(maxDate.getDate() + MAX_DAYS_LIMIT);
 
-        // 控制翻頁按鈕是否鎖死
         const prevBtn = document.getElementById('cal-prev-btn');
         const nextBtn = document.getElementById('cal-next-btn');
 
@@ -811,13 +1103,9 @@
             nextBtn.classList.remove('disabled');
         }
 
-        // ==========================================
-        // 處理星期幾的動態高亮標頭 (藍底白字 or 藍色框線)
-        // ==========================================
         let selectedDayOfWeek = -1;
         if (selectedMiniDate) {
             const [y, m, d] = selectedMiniDate.split('-');
-            // 只有在目前查看的月份才顯示該月份所選的高亮星期
             if (parseInt(y) === year && parseInt(m) - 1 === month) {
                 const sd = new Date(y, m - 1, d);
                 selectedDayOfWeek = sd.getDay();
@@ -825,7 +1113,6 @@
         }
 
         let todayDayOfWeek = -1;
-        // 若今天在此月份畫面中，取得「今天」對應的星期 (用來畫藍色框線)
         if (today.getFullYear() === year && today.getMonth() === month) {
             todayDayOfWeek = today.getDay();
         }
@@ -833,27 +1120,18 @@
         const weekdaysArr =['一', '二', '三', '四', '五', '六'];
         let weekdaysHtml = '';
         for (let i = 0; i < 6; i++) {
-            let dayIndex = i + 1; // 代表星期一到星期六 (1~6)
+            let dayIndex = i + 1; 
             let classes = 'mini-cal-weekday';
-            
-            // 如果是今天，給藍色框線
             if (dayIndex === todayDayOfWeek) classes += ' today-weekday';
-            // 如果是選取日，給藍底白字 (此處CSS有 !important 會覆蓋掉 today 的框線)
             if (dayIndex === selectedDayOfWeek) classes += ' selected-weekday';
-            
             weekdaysHtml += `<div><span class="${classes}">${weekdaysArr[i]}</span></div>`;
         }
         document.getElementById('mini-cal-weekdays').innerHTML = weekdaysHtml;
 
-        // ==========================================
-        // 處理日期格子的產生
-        // ==========================================
         const firstDay = new Date(year, month, 1).getDay();
         const daysInMonth = new Date(year, month + 1, 0).getDate();
 
         let html = '';
-        
-        // 星期日(0)跳過，因此首日如果是星期日，不需要留空；其餘星期幾(1-6)需留空 (星期幾 - 1) 個空格
         let emptyCells = firstDay === 0 ? 0 : firstDay - 1;
         for(let i = 0; i < emptyCells; i++) {
             html += `<div class="mini-cal-day empty"></div>`;
@@ -861,22 +1139,17 @@
 
         for(let d = 1; d <= daysInMonth; d++) {
             const cellDate = new Date(year, month, d);
-            
-            // 完全跳過星期日，不進行渲染
             if (cellDate.getDay() === 0) continue;
 
             const cellDateStr = fmtDate(cellDate);
             let classes = "mini-cal-day";
             
-            // ★ 防線：如果比今天早，或者超過了 20 天以後，一律徹底反灰鎖死
             if (cellDate < today || cellDate > maxDate) {
                 classes += " disabled";
                 html += `<div class="${classes}">${d}</div>`;
             } else {
                 if (cellDateStr === selectedMiniDate) classes += " selected";
                 if (cellDate.getTime() === today.getTime()) classes += " today";
-
-                // 只有在範圍內的合法日期才允許點擊觸發
                 html += `<div class="${classes}" onclick="handleMiniDateClick('${cellDateStr}')">${d}</div>`;
             }
         }
@@ -888,7 +1161,6 @@
         renderMiniCalendar();
     }
 
-    // 背景分批抓取資料邏輯，最高就讀到第 20 天
     async function fetchBatchSlots(offset, days, isInitial) {
         const baseDate = new Date();
         baseDate.setDate(baseDate.getDate() + offset);
@@ -899,7 +1171,6 @@
             const res = await fetch(fetchUrl);
             const data = await res.json();
 
-            // 標記這些天數為已抓取
             for(let i = 0; i < days; i++) {
                 let d = new Date(baseDate);
                 d.setDate(d.getDate() + i);
@@ -907,29 +1178,21 @@
                 if (!cachedSlots[dStr]) cachedSlots[dStr] = { slots:[] };
             }
 
-            // 將真實資料合併入快取
             if (data && typeof data === 'object') {
                 Object.keys(data).forEach(key => {
                     cachedSlots[key] = data[key];
                 });
             }
 
-            // 判斷並自動選取最近有空的一天
             checkAndAutoSelect();
 
-            // 觸發下一個背景抓取階段，嚴格停在 20 天以內 (0-20 天共21天)
             if (isInitial) {
-                // 讀完 0~2 天後，接著讀取第 3~6 天 (共 4 天)
                 fetchBatchSlots(3, 4, false);
             } else if (offset === 3) {
-                // 讀完 3~6 天後，接著讀取第 7~13 天 (共 7 天)
                 fetchBatchSlots(7, 7, false);
             } else if (offset === 7) {
-                // 讀完 7~13 天後，接著讀取最後的 14~20 天 (共 7 天)
                 fetchBatchSlots(14, 7, false);
             }
-            // 到達第 14 階段後 (14+7-1 = 20) 就停止載入。
-
         } catch (e) {
             console.error("Batch fetch failed:", e);
             if (isInitial) {
@@ -938,11 +1201,8 @@
         }
     }
 
-    // 檢查快取，如果還沒選擇日期或當前選的日期沒空檔，自動幫用戶選最近有空的那一天
     function checkAndAutoSelect() {
-        if (userHasManuallyClicked) return; // 尊重使用者手動點擊的意願
-
-        // 如果目前已選取的日期有空檔，就不覆蓋
+        if (userHasManuallyClicked) return; 
         if (selectedMiniDate && cachedSlots[selectedMiniDate] && cachedSlots[selectedMiniDate].slots && cachedSlots[selectedMiniDate].slots.length > 0) {
             return;
         }
@@ -952,44 +1212,37 @@
 
         for (let dStr of sortedDates) {
             if (dStr < todayStr) continue;
-
-            // 避免自動選中星期日
             const[y, m, d] = dStr.split('-');
             const dObj = new Date(y, m - 1, d);
             if (dObj.getDay() === 0) continue;
 
             if (cachedSlots[dStr] && cachedSlots[dStr].slots && cachedSlots[dStr].slots.length > 0) {
                 selectedMiniDate = dStr;
-                renderMiniCalendar(); // 更新日曆及頂端星期幾高亮
+                renderMiniCalendar(); 
                 renderSlotsForDate(dStr);
-                return; // 找到就停止
+                return; 
             }
         }
 
-        // 如果目前抓回來的資料完全沒空檔，預設選取今天並顯示無時段 (等待下一批資料覆蓋)
-        // 若今天剛好是星期日，則往後推一天預設為星期一
         if (!selectedMiniDate) {
             let fallbackDate = new Date();
             if (fallbackDate.getDay() === 0) {
                 fallbackDate.setDate(fallbackDate.getDate() + 1);
             }
             selectedMiniDate = fmtDate(fallbackDate);
-            renderMiniCalendar(); // 更新日曆及頂端星期幾高亮
+            renderMiniCalendar(); 
             renderSlotsForDate(selectedMiniDate);
         }
     }
 
-    // 當使用者「手動」點擊某一天 (超過 20 天的日期已無法被點擊)
     async function handleMiniDateClick(dateStr) {
         userHasManuallyClicked = true;
         selectedMiniDate = dateStr;
-        renderMiniCalendar(); // 觸發重繪，讓星期幾也會同步變為藍底白字
+        renderMiniCalendar(); 
 
         if (cachedSlots[dateStr]) {
-            // 如果這天已經被背景讀取過了，零延遲瞬間顯示！
             renderSlotsForDate(dateStr);
         } else {
-            // 如果點擊了尚未讀取的日期，單獨為這天發送請求
             const slotsBox = document.getElementById('mini-cal-slots-content');
             slotsBox.innerHTML = '<div style="text-align:center; padding: 20px; color: #666;">⏳ 正在為您查詢該日時段...</div>';
 
@@ -1006,17 +1259,14 @@
         }
     }
 
-    // 將時段內容繪製到畫面上
     function renderSlotsForDate(dateStr) {
-        if (selectedMiniDate !== dateStr) return; // 避免異步回傳覆蓋當前畫面
+        if (selectedMiniDate !== dateStr) return; 
 
         const slotsBox = document.getElementById('mini-cal-slots-content');
         const dayData = cachedSlots[dateStr];
 
         if (dayData && dayData.slots && dayData.slots.length > 0) {
             const times = dayData.slots.map(s => s.time).sort();
-            
-            // 替每個時段加入指定的時鐘 Icon
             const clockIcon = '<img src="https://ik.imagekit.io/lql1uveoc/Booking%20Website%20%E9%A0%90%E7%B4%84/clock-2.png" class="slot-clock-icon" alt="clock">';
             
             slotsBox.innerHTML = `<div class="time-grid">` +
