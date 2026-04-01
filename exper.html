@@ -190,19 +190,11 @@
       padding: 2px;
       border-radius: 1.5em;
       position: relative;
+      display: flex; /* 讓內容決定高度 */
       cursor: pointer;
       transition: transform 0.3s ease;
-      background: linear-gradient(
-          -30deg,
-          var(--gradient-color),
-          transparent,
-          var(--gradient-color)
-        ),
-        linear-gradient(
-          to bottom,
-          var(--color-neutral-900),
-          var(--color-neutral-900)
-        );
+      background: linear-gradient(-30deg, var(--gradient-color), transparent, var(--gradient-color)),
+                  linear-gradient(to bottom, var(--color-neutral-900), var(--color-neutral-900));
     }
     
     .card-container:hover {
@@ -213,59 +205,67 @@
       --f: url(#🌀↖️);
       --electric-border-color: #dd8448;
       --electric-light-color: oklch(from var(--electric-border-color) l c h);
-      --gradient-color: oklch(
-        from var(--electric-border-color) 0.3 calc(c / 2) h / 0.4
-      );
+      --gradient-color: oklch(from var(--electric-border-color) 0.3 calc(c / 2) h / 0.4);
     }
 
     .card-container[🎨] {
       --f: url(#🌀🎨);
       --electric-border-color: DodgerBlue;
       --electric-light-color: oklch(from var(--electric-border-color) l c h);
-      --gradient-color: oklch(
-        from var(--electric-border-color) 0.3 calc(c / 2) h / 0.4
-      );
+      --gradient-color: oklch(from var(--electric-border-color) 0.3 calc(c / 2) h / 0.4);
     }
 
     .inner-container { 
-      position: relative; 
-      overflow: hidden; /* 防止邊緣閃電溢出 */
+      position: absolute; /* 改為絕對定位，鋪滿容器 */
+      top: 0; left: 0; right: 0; bottom: 0;
+      overflow: hidden; 
       border-radius: 1.5em;
+      z-index: 0;
     }
+    
     .border-outer {
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
       border: 2px solid oklch(from var(--electric-border-color) l c h / 0.5);
       border-radius: 1.5em;
-      padding-right: .15em;
-      padding-bottom: .15em;
     }
 
     .main-card {
-      width: 100%;
-      aspect-ratio: 7 / 10;
+      position: absolute;
+      top: 0; left: 0; right: 0; bottom: 0;
       border-radius: 1.5em;
       border: 2px solid var(--electric-border-color);
-      margin-top: -4px;
-      margin-left: -4px;
+      transform: translate(-4px, -4px); /* 保持偏移效果 */
       filter: var(--f);
     }
 
+    /* 針對平板尺寸 (Tablet) 取消 SVG 閃電濾鏡，防止破圖 */
+    @media (min-width: 769px) and (max-width: 1024px) {
+      .main-card { filter: none !important; }
+    }
+
     .glow-layer-1, .glow-layer-2, .overlay-1, .overlay-2, .background-glow {
-      position: absolute; width: 100%; height: 100%; top: 0; left: 0; border-radius: 24px;
+      position: absolute; width: 100%; height: 100%; top: 0; left: 0; border-radius: 24px; pointer-events: none;
     }
     .glow-layer-1 { border: 2px solid oklch(from var(--electric-border-color) l c h / 0.6); filter: blur(1px); }
     .glow-layer-2 { border: 2px solid var(--electric-light-color); filter: blur(4px); }
-    .overlay-1 { opacity: 1; mix-blend-mode: overlay; transform: scale(1.1); filter: blur(16px); background: linear-gradient(-30deg, white, transparent 30%, transparent 70%, white); }
-    .overlay-2 { opacity: 0.5; mix-blend-mode: overlay; transform: scale(1.1); filter: blur(16px); background: linear-gradient(-30deg, white, transparent 30%, transparent 70%, white); }
+    .overlay-1 { opacity: 1; mix-blend-mode: overlay; transform: scale(1.1); filter: blur(16px); background: linear-gradient(-30deg, white, transparent 30%, transparent 70%, white); z-index: 1; }
+    .overlay-2 { opacity: 0.5; mix-blend-mode: overlay; transform: scale(1.1); filter: blur(16px); background: linear-gradient(-30deg, white, transparent 30%, transparent 70%, white); z-index: 1;}
     .background-glow { filter: blur(32px); transform: scale(1.1); opacity: 0.3; z-index: -1; background: linear-gradient(-30deg, var(--electric-light-color), transparent, var(--electric-border-color)); }
 
+    /* --- 核心修正：讓內容自己撐開高度，移除巨大留白 --- */
     .content-container {
-      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-      width: 100%; height: 100%; display: flex; flex-direction: column;
+      position: relative; /* 改為相對定位 */
+      z-index: 2; /* 確保在背景之上 */
+      width: 100%;
+      height: auto; /* 讓內容自然撐開 */
+      display: flex; 
+      flex-direction: column;
     }
     
-    /* Desktop (預設) 排版，加大字體填補空白 */
-    .content-top { display: flex; flex-direction: column; padding: 40px 40px 20px 40px; height: 100%; }
-    .content-bottom { display: flex; flex-direction: column; padding: 20px 40px 40px 40px; }
+    /* Desktop 排版 */
+    .content-top { display: flex; flex-direction: column; padding: 35px 35px 20px 35px; }
+    .content-bottom { display: flex; flex-direction: column; padding: 20px 35px 35px 35px; }
 
     .scrollbar-glass {
       background: radial-gradient(47.2% 50% at 50.39% 88.37%, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 100%), rgba(255, 255, 255, 0.04);
@@ -278,17 +278,11 @@
       border-radius: inherit; mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; pointer-events: none;
     }
 
-    .card-title { font-size: 3.5em; font-weight: 700; margin-top: auto; margin-bottom: 15px; color: #ffffff; text-shadow: 0 4px 15px rgba(0,0,0,0.6); }
-    
-    /* 新增方格內輔助文字 CSS (Desktop 加大版) */
-    .card-desc { font-size: 1.25rem; color: rgba(255,255,255,0.85); line-height: 1.6; margin: 0 0 10px 0; text-shadow: 0 2px 10px rgba(0,0,0,0.5); font-weight: 500;}
-    
-    .card-price { font-size: 2.5em; font-weight: 600; color: #ffffff; margin: 0; text-shadow: 0 4px 15px rgba(0,0,0,0.6); }
+    .card-title { font-size: 3.2em; font-weight: 700; margin-top: 25px; margin-bottom: 12px; color: #ffffff; text-shadow: 0 4px 15px rgba(0,0,0,0.6); }
+    .card-desc { font-size: 1.15rem; color: rgba(255,255,255,0.85); line-height: 1.6; margin: 0; text-shadow: 0 2px 10px rgba(0,0,0,0.5); font-weight: 500;}
+    .card-price { font-size: 2.2em; font-weight: 600; color: #ffffff; margin: 0; text-shadow: 0 4px 15px rgba(0,0,0,0.6); }
 
-    .divider {
-      margin-top: auto; border: none; height: 1px; background-color: #ffffff; opacity: 0.2;
-      mask-image: linear-gradient(to right, transparent, black, transparent); -webkit-mask-image: linear-gradient(to right, transparent, black, transparent);
-    }
+    .divider { margin: 0; border: none; height: 1px; background-color: #ffffff; opacity: 0.2; mask-image: linear-gradient(to right, transparent, black, transparent); -webkit-mask-image: linear-gradient(to right, transparent, black, transparent); }
 
     /* --- COURSE DETAILS (TEXT SECTION) --- */
     .course-details {
@@ -313,7 +307,6 @@
     .topics-box li strong { color: #333; }
     .note-box { background: #fff3cd; color: #856404; padding: 18px 25px; border-radius: 8px; font-size: 1.15rem; font-weight: 500; }
     .cta-text { text-align: center; font-size: 1.35rem; font-weight: bold; color: var(--line-green); margin-top: 30px; }
-
 
     /* --- NEW: BOTTOM GLASS TAGS SECTION --- */
     .glass-tags-section {
@@ -391,14 +384,8 @@
       opacity: 0; transition: opacity 0.3s ease-in-out;
     }
     #email-popup-overlay.visible { display: flex; opacity: 1; }
-    .email-popup-content {
-      background-color: white; padding: 40px; border-radius: 12px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2); position: relative;
-      width: 90%; max-width: 500px; text-align: center;
-      transform: scale(0.9); transition: transform 0.3s ease-in-out;
-    }
+    .email-popup-content { background-color: white; padding: 40px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); position: relative; width: 90%; max-width: 500px; text-align: center; transform: scale(0.9); transition: transform 0.3s ease-in-out; }
     #email-popup-overlay.visible .email-popup-content { transform: scale(1); }
-    
     .email-popup-content h3 { font-size: 22px; color: #333; margin-top: 0; margin-bottom: 15px; }
     .email-popup-content input[type="email"] { width: 100%; padding: 15px; font-size: 18px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; text-align: center; margin-bottom: 20px; }
     #popup-checkout-btn { width: 100%; background-color: #3b414a; color: white; border: none; padding: 15px; font-size: 20px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: background-color 0.3s ease; }
@@ -455,12 +442,11 @@
 
     /* --- RESPONSIVE ADJUSTMENTS --- */
     
-    /* 平板尺寸 (Tablet View) - 中間過渡，關閉 SVG 防止破圖 */
+    /* 平板尺寸 (Tablet View) */
     @media (min-width: 769px) and (max-width: 1024px) {
-      .main-card { filter: none !important; }
-      .card-title { font-size: 2.8em; }
-      .card-desc { font-size: 1.1rem; }
-      .card-price { font-size: 2em; }
+      .card-title { font-size: 2.5em; }
+      .card-desc { font-size: 1rem; }
+      .card-price { font-size: 1.8em; }
       .content-top { padding: 30px 30px 15px 30px; }
       .content-bottom { padding: 15px 30px 30px 30px; }
     }
@@ -474,26 +460,19 @@
       .mini-cal-day { font-size: 1.1rem; }
     }
     
-    /* 手機版 (Mobile View) - 重點放大字體 */
+    /* 手機版 (Mobile View) */
     @media (max-width: 768px) {
       .hero h1 { font-size: 2rem; }
-      
-      .steps-container { 
-        font-size: 1rem; padding: 20px 10px; margin: 0 0 30px 0; 
-        border-radius: 0; box-shadow: 0 2px 8px rgba(0,0,0,0.05); gap: 15px; 
-      }
+      .steps-container { font-size: 1rem; padding: 20px 10px; margin: 0 0 30px 0; border-radius: 0; box-shadow: 0 2px 8px rgba(0,0,0,0.05); gap: 15px; }
       .step-number { width: 30px; height: 30px; font-size: 1rem; }
       
-      /* 強制左右並排縮小設計 */
       .product-grid { gap: 10px; padding: 0 10px; flex-direction: row; }
-      .content-top { padding: 15px 15px 10px 15px; }
-      .content-bottom { padding: 10px 15px 15px 15px; }
+      .content-top { padding: 20px 15px 12px 15px; }
+      .content-bottom { padding: 12px 15px 20px 15px; }
       .scrollbar-glass { font-size: 0.65em; padding: 0.4em 0.6em; margin-bottom: 5px; }
       
-      /* ★ 修改這裡：大幅放大手機版 25/50 分鐘的字體 ★ */
-      .card-title { font-size: 1.8em; margin-bottom: 6px;} 
+      .card-title { font-size: 1.8em; margin-top: 15px; margin-bottom: 6px;} 
       .card-desc { font-size: 0.8rem; line-height: 1.4; margin-bottom: 0; }
-      /* ★ 修改這裡：稍微加大手機版價格字體平衡視覺 ★ */
       .card-price { font-size: 1.25em; } 
 
       .course-details { padding: 25px 15px; margin: 0 15px 40px; border-radius: 12px; }
@@ -567,7 +546,7 @@
   <header class="hero">
     <div class="hero-bg"></div>
     <div class="hero-content">
-      <h1>Tony線上美語家教<br>體驗課程</h1>
+      <h1>Tony線上美語家教</h1>
       <p>English is the Future!</p>
       <p>Let's get your English Boosted!</p>
     </div>
@@ -611,9 +590,8 @@
       <!-- 卡片 1: 25 分鐘 -->
       <div ↖️ class="card-container" onclick="directCheckout('trial-25')">
         <div class="inner-container">
-          <div class="border-outer">
-            <div ↖️ class="main-card"></div>
-          </div>
+          <div class="border-outer"></div>
+          <div ↖️ class="main-card"></div>
           <div class="glow-layer-1"></div>
           <div class="glow-layer-2"></div>
         </div>
@@ -624,9 +602,7 @@
 
         <div class="content-container">
           <div class="content-top">
-            <div class="scrollbar-glass">
-              客製化體驗
-            </div>
+            <div class="scrollbar-glass">客製化體驗</div>
             <p class="card-title">25 分鐘</p>
             <p class="card-desc">短時精準練習<br>考前衝刺・自由對話</p>
           </div>
@@ -642,9 +618,8 @@
       <!-- 卡片 2: 50 分鐘 -->
       <div 🎨 class="card-container" onclick="directCheckout('trial-50')">
         <div class="inner-container">
-          <div class="border-outer">
-            <div class="main-card"></div>
-          </div>
+          <div class="border-outer"></div>
+          <div class="main-card"></div>
           <div class="glow-layer-1"></div>
           <div class="glow-layer-2"></div>
         </div>
@@ -655,9 +630,7 @@
 
         <div class="content-container">
           <div class="content-top">
-            <div class="scrollbar-glass">
-              客製化體驗
-            </div>
+            <div class="scrollbar-glass">客製化體驗</div>
             <p class="card-title">50 分鐘</p>
             <p class="card-desc">完整深度學習<br>主題教學・全面加強</p>
           </div>
