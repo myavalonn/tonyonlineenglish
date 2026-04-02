@@ -3,19 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-   <meta property="og:url" content="https://tonyonlineenglish.netlify.app/joec">
-    <meta property="og:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/evgeny-tchebotarev-ZPQE4XssoBc-unsplash.jpg?updatedAt=1773813234495">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/evgeny-tchebotarev-ZPQE4XssoBc-unsplash.jpg?updatedAt=1773813234495">
-
-  <title>Joe 專屬 — 訂閱制方案</title>
+  <title>Joe 專屬訂閱方案</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
-  <script src="layout-manager.js"></script>
   <style>
     :root {
       --accent: #66ccff;
-      --green: #34d399;
       --orange: #f97316;
       --red: #dc2626;
       --purple: #8b5cf6;
@@ -36,25 +29,65 @@
       line-height: 1.6;
     }
 
-    /* ─── HERO ─── */
+    /* ══════════════════════════════
+       TOP TITLE BAR
+    ══════════════════════════════ */
+    .top-bar {
+      background: var(--dark);
+      padding: 18px 40px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+    }
+
+    .top-bar-logo {
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--accent), #34d399);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 700;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+
+    .top-bar-title {
+      font-size: clamp(1.2rem, 2.8vw, 1.75rem);
+      font-weight: 700;
+      color: #ffffff;
+      letter-spacing: 0.02em;
+    }
+
+    .top-bar-title span {
+      color: var(--accent);
+    }
+
+    /* ══════════════════════════════
+       HERO  — bg uses <img> so filter works
+    ══════════════════════════════ */
     .hero {
       position: relative;
-      min-height: 90vh;
+      min-height: 88vh;
       display: flex;
       flex-direction: column;
       justify-content: flex-end;
-      padding: 40px 28px 52px;
+      padding: 48px 48px 60px;
       overflow: hidden;
     }
 
-    .hero-bg {
+    /* actual <img> carries the photo */
+    .hero-img {
       position: absolute;
       inset: 0;
-      background-image: url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/wes-hicks-4-EeTnaC1S4-unsplash.jpg');
-      background-size: cover;
-      background-position: center 30%;
-      filter: blur(3px) brightness(0.5);
-      transform: scale(1.07);
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 30%;
+      filter: blur(4px) brightness(0.45);
+      transform: scale(1.07); /* hide blur edge */
       z-index: 0;
     }
 
@@ -63,9 +96,9 @@
       inset: 0;
       background: linear-gradient(
         to bottom,
-        rgba(5,10,20,0.38) 0%,
-        rgba(5,10,20,0.62) 45%,
-        rgba(5,10,20,0.93) 100%
+        rgba(5,10,20,0.30) 0%,
+        rgba(5,10,20,0.58) 40%,
+        rgba(5,10,20,0.94) 100%
       );
       z-index: 1;
     }
@@ -73,32 +106,32 @@
     .hero-content {
       position: relative;
       z-index: 2;
-      max-width: 820px;
+      max-width: 860px;
     }
 
     .hero-badge {
       display: inline-block;
-      background: rgba(102,204,255,0.15);
-      border: 1px solid rgba(102,204,255,0.55);
+      background: rgba(102,204,255,0.14);
+      border: 1px solid rgba(102,204,255,0.5);
       color: var(--accent);
-      font-size: clamp(11px, 1.4vw, 14px);
+      font-size: clamp(11px, 1.2vw, 14px);
       font-weight: 700;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      padding: 7px 16px;
+      padding: 7px 18px;
       border-radius: 100px;
-      margin-bottom: 20px;
+      margin-bottom: 22px;
       backdrop-filter: blur(6px);
     }
 
     .hero h1 {
       font-family: 'Playfair Display', Georgia, serif;
-      font-size: clamp(2.6rem, 8vw, 5.6rem);
+      font-size: clamp(2.8rem, 7.5vw, 6rem);
       font-weight: 900;
       color: #ffffff;
-      line-height: 1.08;
+      line-height: 1.07;
       letter-spacing: -0.01em;
-      margin-bottom: 18px;
+      margin-bottom: 20px;
     }
 
     .hero h1 em {
@@ -107,55 +140,51 @@
     }
 
     .hero-sub {
-      font-size: clamp(1.05rem, 2.2vw, 1.45rem);
-      color: rgba(255,255,255,0.80);
-      margin-bottom: 36px;
-      max-width: 560px;
+      font-size: clamp(1.05rem, 2vw, 1.5rem);
+      color: rgba(255,255,255,0.78);
+      margin-bottom: 40px;
+      max-width: 600px;
       line-height: 1.7;
     }
 
-    /* Bilingual price card */
+    /* bilingual price card */
     .hero-price-card {
       display: inline-flex;
       flex-direction: column;
-      background: rgba(255,255,255,0.08);
+      background: rgba(10,20,40,0.55);
       backdrop-filter: blur(20px);
-      border: 1px solid rgba(255,255,255,0.22);
+      border: 1px solid rgba(255,255,255,0.18);
       border-radius: var(--radius);
-      padding: 22px 30px;
-      gap: 2px;
-      min-width: 260px;
+      padding: 24px 32px;
+      gap: 3px;
     }
 
     .hero-price-bilabel {
       display: flex;
       gap: 8px;
-      flex-wrap: wrap;
       align-items: baseline;
-      margin-bottom: 6px;
+      flex-wrap: wrap;
+      margin-bottom: 8px;
     }
 
-    .hero-price-label-en {
-      font-size: clamp(11px, 1.3vw, 13px);
+    .lbl-en {
+      font-size: clamp(11px, 1.1vw, 13px);
       letter-spacing: 0.13em;
       text-transform: uppercase;
-      color: rgba(255,255,255,0.55);
+      color: rgba(255,255,255,0.50);
       font-weight: 600;
     }
 
-    .hero-price-label-sep {
-      color: rgba(255,255,255,0.28);
-      font-size: 12px;
-    }
+    .lbl-sep { color: rgba(255,255,255,0.22); font-size: 12px; }
 
-    .hero-price-label-zh {
-      font-size: clamp(12px, 1.4vw, 14px);
-      color: rgba(255,255,255,0.50);
+    .lbl-zh {
+      font-size: clamp(12px, 1.2vw, 14px);
+      color: rgba(255,255,255,0.46);
     }
 
     .hero-price-amount {
       font-family: 'Playfair Display', serif;
-      font-size: clamp(2.2rem, 6vw, 3.6rem);
+      font-size: clamp(2.4rem, 5.5vw, 4rem);
       font-weight: 700;
       color: #ffffff;
       line-height: 1;
@@ -163,118 +192,151 @@
 
     .hero-price-amount span { color: var(--accent); }
 
-    .hero-price-detail-en {
-      font-size: clamp(12px, 1.5vw, 14px);
-      color: rgba(255,255,255,0.58);
-      margin-top: 8px;
+    .price-detail-en {
+      font-size: clamp(12px, 1.3vw, 15px);
+      color: rgba(255,255,255,0.55);
+      margin-top: 10px;
     }
 
-    .hero-price-detail-zh {
-      font-size: clamp(12px, 1.5vw, 14px);
-      color: rgba(255,255,255,0.46);
-      margin-top: 3px;
+    .price-detail-zh {
+      font-size: clamp(12px, 1.3vw, 15px);
+      color: rgba(255,255,255,0.40);
+      margin-top: 4px;
     }
 
-    /* ─── PLAN CHOICE BUTTONS ─── */
+    /* ══════════════════════════════
+       PLAN CHOICE BUTTONS
+    ══════════════════════════════ */
     .plan-choice {
-      background: var(--dark);
-      padding: 32px 24px 38px;
+      background: #0f1f38;
+      padding: 36px 48px 42px;
       display: flex;
       flex-direction: column;
       align-items: center;
-      gap: 16px;
+      gap: 18px;
     }
 
     .plan-choice-label {
-      font-size: clamp(1rem, 2.4vw, 1.28rem);
-      color: rgba(255,255,255,0.68);
+      font-size: clamp(1rem, 2vw, 1.3rem);
+      color: rgba(255,255,255,0.62);
       font-weight: 600;
-      letter-spacing: 0.03em;
+      letter-spacing: 0.04em;
     }
 
     .plan-choice-btns {
       display: flex;
-      gap: 16px;
+      gap: 20px;
       flex-wrap: wrap;
       justify-content: center;
       width: 100%;
-      max-width: 660px;
+      max-width: 700px;
     }
 
     .plan-btn {
       flex: 1;
-      min-width: 200px;
+      min-width: 220px;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 5px;
+      gap: 6px;
       text-decoration: none;
       border-radius: 14px;
-      padding: 22px 20px;
-      font-weight: 700;
+      padding: 24px 24px;
       transition: transform 0.17s, box-shadow 0.17s;
       text-align: center;
     }
 
-    .plan-btn:hover { transform: translateY(-3px); }
+    .plan-btn:hover { transform: translateY(-4px); }
 
     .plan-btn .btn-en {
-      font-size: clamp(0.78rem, 1.7vw, 0.9rem);
-      letter-spacing: 0.10em;
+      font-size: clamp(0.78rem, 1.5vw, 0.92rem);
+      letter-spacing: 0.12em;
       text-transform: uppercase;
-      opacity: 0.75;
+      opacity: 0.72;
       font-weight: 600;
+      color: white;
     }
 
     .plan-btn .btn-zh {
-      font-size: clamp(1.15rem, 2.8vw, 1.5rem);
+      font-size: clamp(1.2rem, 2.8vw, 1.6rem);
       font-weight: 700;
+      color: white;
     }
 
     .plan-btn .btn-arrow {
-      font-size: clamp(1.1rem, 2.3vw, 1.3rem);
+      font-size: 1.3rem;
+      color: rgba(255,255,255,0.7);
       margin-top: 2px;
     }
 
     .plan-btn-sub {
       background: linear-gradient(135deg, #0ea5e9, #6366f1);
-      color: white;
-      box-shadow: 0 6px 20px rgba(14,165,233,0.40);
+      box-shadow: 0 6px 22px rgba(14,165,233,0.42);
     }
 
-    .plan-btn-sub:hover { box-shadow: 0 10px 30px rgba(14,165,233,0.55); }
+    .plan-btn-sub:hover { box-shadow: 0 12px 32px rgba(14,165,233,0.55); }
 
     .plan-btn-single {
       background: linear-gradient(135deg, var(--orange), #fbbf24);
-      color: white;
-      box-shadow: 0 6px 20px rgba(249,115,22,0.38);
+      box-shadow: 0 6px 22px rgba(249,115,22,0.40);
     }
 
-    .plan-btn-single:hover { box-shadow: 0 10px 28px rgba(249,115,22,0.52); }
+    .plan-btn-single:hover { box-shadow: 0 12px 32px rgba(249,115,22,0.55); }
 
-    /* ─── MAIN CONTENT ─── */
+    /* ══════════════════════════════
+       MAIN — full width with inner max-width
+    ══════════════════════════════ */
     .main {
-      max-width: 900px;
+      width: 100%;
+      padding: 0;
+    }
+
+    .section-wrap {
+      width: 100%;
+      padding: 28px 40px;
+    }
+
+    /* alternating section backgrounds */
+    .section-wrap:nth-child(odd)  { background: var(--page-bg); }
+    .section-wrap:nth-child(even) { background: #e8eef6; }
+
+    .section-inner {
+      max-width: 1100px;
       margin: 0 auto;
-      padding: 44px 18px 90px;
-      display: flex;
-      flex-direction: column;
-      gap: 30px;
     }
 
     .card {
       background: var(--card-bg);
       border-radius: var(--radius);
-      box-shadow: 0 4px 18px rgba(15,23,42,0.07);
-      padding: 32px 28px;
+      box-shadow: 0 4px 20px rgba(15,23,42,0.07);
+      padding: 36px 40px;
+    }
+
+    .card-red {
+      background: #fff5f5;
+      border: 3px solid #fecaca;
+      border-radius: var(--radius);
+      padding: 36px 40px;
+    }
+
+    .total-box {
+      background: linear-gradient(135deg, #0f172a, #1e3a5f);
+      border-radius: var(--radius);
+      padding: 40px 44px;
+      color: white;
+    }
+
+    .total-box .section-title {
+      color: white;
+      border-bottom-color: rgba(255,255,255,0.15);
     }
 
     .section-title {
-      font-size: clamp(1.28rem, 3vw, 1.9rem);
+      font-size: clamp(1.3rem, 2.8vw, 2rem);
       font-weight: 700;
       color: var(--dark);
-      margin-bottom: 20px;
+      margin-bottom: 22px;
       padding-bottom: 14px;
       border-bottom: 2px solid var(--border);
       display: flex;
@@ -283,16 +345,17 @@
     }
 
     .section-title .icon {
-      width: 42px;
-      height: 42px;
+      width: 44px;
+      height: 44px;
       border-radius: 10px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 20px;
+      font-size: 22px;
       flex-shrink: 0;
     }
 
+    /* ── Plan list ── */
     .plan-list {
       list-style: none;
       display: flex;
@@ -304,10 +367,9 @@
       background: #f0f9ff;
       border-left: 5px solid var(--accent);
       border-radius: 10px;
-      padding: 16px 20px;
-      font-size: clamp(1.02rem, 2.3vw, 1.25rem);
+      padding: 18px 22px;
+      font-size: clamp(1rem, 2vw, 1.25rem);
       line-height: 1.7;
-      color: var(--dark);
     }
 
     .plan-list li strong { color: #0369a1; }
@@ -326,26 +388,28 @@
       text-decoration: none;
       text-align: center;
       font-weight: 700;
-      font-size: clamp(1rem, 2.3vw, 1.22rem);
-      padding: 18px 20px;
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      padding: 20px 24px;
       border-radius: 12px;
       transition: transform 0.15s, box-shadow 0.15s;
-      box-shadow: 0 4px 14px rgba(249,115,22,0.35);
+      box-shadow: 0 4px 16px rgba(249,115,22,0.35);
     }
 
     .btn-orange:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 22px rgba(249,115,22,0.45);
+      box-shadow: 0 8px 24px rgba(249,115,22,0.45);
     }
 
+    /* ── Grid ── */
     .grid-2 {
       display: grid;
-      grid-template-columns: 1fr;
-      gap: 22px;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px;
     }
 
-    @media (min-width: 640px) { .grid-2 { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 700px) { .grid-2 { grid-template-columns: 1fr; } }
 
+    /* ── Tables ── */
     .table-wrap {
       border-radius: 10px;
       overflow: hidden;
@@ -355,9 +419,9 @@
     table { width: 100%; border-collapse: collapse; }
 
     th, td {
-      padding: 15px 18px;
+      padding: 16px 20px;
       text-align: left;
-      font-size: clamp(0.97rem, 2vw, 1.15rem);
+      font-size: clamp(0.95rem, 1.8vw, 1.15rem);
       line-height: 1.65;
       vertical-align: top;
     }
@@ -366,12 +430,12 @@
       background: #dbeafe;
       font-weight: 700;
       color: #1e40af;
-      font-size: clamp(0.94rem, 1.9vw, 1.1rem);
     }
 
     tbody tr:nth-child(odd) td  { background: #f0fdf4; }
     tbody tr:nth-child(even) td { background: #ffffff; }
 
+    /* ── Glow red button ── */
     .btn-glow-red {
       display: block;
       background: var(--red);
@@ -379,40 +443,35 @@
       text-decoration: none;
       text-align: center;
       font-weight: 700;
-      font-size: clamp(1rem, 2.2vw, 1.18rem);
-      padding: 17px 20px;
+      font-size: clamp(1rem, 2vw, 1.18rem);
+      padding: 18px 20px;
       border-radius: 10px;
-      margin-bottom: 16px;
+      margin-bottom: 18px;
       animation: glowing 2.2s ease-in-out infinite;
     }
 
     @keyframes glowing {
-      0%   { box-shadow: 0 0 5px #ff6b6b; transform: scale(1); }
-      50%  { box-shadow: 0 0 24px #ff6b6b, 0 0 44px rgba(255,107,107,0.28); transform: scale(1.015); }
-      100% { box-shadow: 0 0 5px #ff6b6b; transform: scale(1); }
+      0%   { box-shadow: 0 0 6px #ff6b6b; transform: scale(1); }
+      50%  { box-shadow: 0 0 26px #ff6b6b, 0 0 48px rgba(255,107,107,0.28); transform: scale(1.015); }
+      100% { box-shadow: 0 0 6px #ff6b6b; transform: scale(1); }
     }
 
+    /* ── Purple badge ── */
     .badge-purple {
       background: var(--purple);
       color: white;
       font-weight: 700;
-      font-size: clamp(0.94rem, 2vw, 1.1rem);
+      font-size: clamp(0.95rem, 1.8vw, 1.1rem);
       text-align: center;
-      padding: 13px 16px;
+      padding: 14px 18px;
       border-radius: 10px;
-      margin-top: 16px;
+      margin-top: 18px;
     }
 
-    .card-red {
-      background: #fff5f5;
-      border: 3px solid #fecaca;
-      border-radius: var(--radius);
-      padding: 28px 24px;
-    }
-
+    /* ── Makeup rows ── */
     .makeup-item {
-      padding-bottom: 24px;
-      margin-bottom: 24px;
+      padding-bottom: 26px;
+      margin-bottom: 26px;
       border-bottom: 2px dashed #fca5a5;
     }
 
@@ -425,7 +484,7 @@
     .makeup-title {
       font-weight: 700;
       color: #b91c1c;
-      font-size: clamp(1.02rem, 2.3vw, 1.2rem);
+      font-size: clamp(1rem, 2vw, 1.2rem);
       margin-bottom: 14px;
       line-height: 1.5;
     }
@@ -435,56 +494,64 @@
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
-      gap: 6px;
+      gap: 8px;
       background: rgba(255,255,255,0.75);
       border-radius: 8px;
-      padding: 13px 16px;
+      padding: 14px 18px;
       margin-top: 10px;
-      font-size: clamp(0.97rem, 2.2vw, 1.12rem);
+      font-size: clamp(0.98rem, 2vw, 1.15rem);
     }
 
     .makeup-row .label { font-weight: 600; }
     .makeup-row .pts   { font-weight: 700; color: #0f172a; }
 
     .makeup-note {
-      font-size: clamp(0.88rem, 1.9vw, 1.02rem);
+      font-size: clamp(0.88rem, 1.7vw, 1.02rem);
       color: #6b7280;
-      margin-top: 9px;
+      margin-top: 10px;
       line-height: 1.55;
     }
 
-    .total-box {
-      background: linear-gradient(135deg, #0f172a, #1e3a5f);
-      border-radius: var(--radius);
-      padding: 34px 30px;
-      color: white;
-    }
-
-    .total-box .section-title {
-      color: white;
-      border-bottom-color: rgba(255,255,255,0.15);
-    }
-
+    /* ── Total ── */
     .total-amount {
       font-family: 'Playfair Display', serif;
-      font-size: clamp(2.5rem, 7vw, 4.4rem);
+      font-size: clamp(2.6rem, 6.5vw, 4.6rem);
       font-weight: 700;
       color: var(--accent);
       line-height: 1;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
     .total-detail {
-      font-size: clamp(1.02rem, 2.2vw, 1.22rem);
+      font-size: clamp(1.02rem, 2vw, 1.25rem);
       color: rgba(255,255,255,0.70);
-      line-height: 1.8;
+      line-height: 1.85;
     }
 
     .total-detail span { display: block; }
 
+    /* ── Sick leave ── */
+    .btn-sick {
+      display: block;
+      margin-top: 16px;
+      background: #f0fdf4;
+      border: 2px solid #86efac;
+      border-radius: 10px;
+      padding: 16px 18px;
+      text-align: center;
+      font-weight: 700;
+      color: #15803d;
+      text-decoration: none;
+      font-size: clamp(1rem, 2vw, 1.18rem);
+      transition: background 0.15s;
+    }
+
+    .btn-sick:hover { background: #dcfce7; }
+
+    /* ── Scroll fade ── */
     .fade-up {
       opacity: 0;
-      transform: translateY(24px);
+      transform: translateY(26px);
       transition: opacity 0.55s ease, transform 0.55s ease;
     }
 
@@ -493,46 +560,60 @@
       transform: translateY(0);
     }
 
-    @media (min-width: 768px) {
-      .card { padding: 40px 38px; }
-      .card-red { padding: 36px 32px; }
-      .main { padding: 56px 28px 110px; gap: 38px; }
+    /* ══════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════ */
+    @media (max-width: 768px) {
+      .top-bar       { padding: 14px 20px; }
+      .hero          { min-height: 78vh; padding: 26px 22px 44px; }
+      .plan-choice   { padding: 28px 18px 34px; }
+      .section-wrap  { padding: 22px 18px; }
+      .card          { padding: 24px 20px; }
+      .card-red      { padding: 24px 20px; }
+      .total-box     { padding: 28px 22px; }
     }
 
     @media (max-width: 480px) {
-      .hero { min-height: 75vh; padding: 22px 20px 38px; }
-      .plan-choice { padding: 26px 16px 30px; }
-      .plan-btn { min-width: 155px; padding: 18px 12px; }
-      .main { padding: 28px 14px 60px; }
-      .card { padding: 22px 18px; }
-      .card-red { padding: 22px 16px; }
+      .plan-btn      { min-width: 150px; padding: 18px 12px; }
     }
   </style>
 </head>
 <body>
 
-  <!-- HERO -->
+  <!-- ══ TOP BAR ══ -->
+  <div class="top-bar">
+    <div class="top-bar-logo">JOE</div>
+    <div class="top-bar-title">Joe 的<span>專屬訂閱方案</span></div>
+  </div>
+
+  <!-- ══ HERO ══ -->
   <section class="hero">
-    <div class="hero-bg"></div>
+    <!-- <img> tag ensures filter:blur works in all browsers/renderers -->
+    <img
+      class="hero-img"
+      src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/wes-hicks-4-EeTnaC1S4-unsplash.jpg"
+      alt=""
+      aria-hidden="true"
+    >
     <div class="hero-overlay"></div>
     <div class="hero-content">
       <div class="hero-badge">Exclusive Subscription Plan · 專屬訂閱制方案</div>
       <h1>Your Personal<br>English <em>Journey</em></h1>
-      <p class="hero-sub">One-on-one lessons designed around your schedule and learning goals. Flexible, consistent, and built for real progress.</p>
+      <p class="hero-sub">One-on-one lessons designed around your schedule and goals — flexible, consistent, and built for real progress.</p>
       <div class="hero-price-card">
         <div class="hero-price-bilabel">
-          <span class="hero-price-label-en">Total Plan Value</span>
-          <span class="hero-price-label-sep">·</span>
-          <span class="hero-price-label-zh">方案總價</span>
+          <span class="lbl-en">Total Plan Value</span>
+          <span class="lbl-sep">·</span>
+          <span class="lbl-zh">方案總價</span>
         </div>
         <div class="hero-price-amount">NT$<span>15,300</span></div>
-        <div class="hero-price-detail-en">~34 lessons &nbsp;·&nbsp; 50 min each &nbsp;·&nbsp; 15,300 pts</div>
-        <div class="hero-price-detail-zh">共 15,300 點 &nbsp;·&nbsp; 約 34 堂課 &nbsp;·&nbsp; 每堂 50 分鐘</div>
+        <div class="price-detail-en">~34 lessons &nbsp;·&nbsp; 50 min each &nbsp;·&nbsp; 15,300 pts</div>
+        <div class="price-detail-zh">共 15,300 點 &nbsp;·&nbsp; 約 34 堂課 &nbsp;·&nbsp; 每堂 50 分鐘</div>
       </div>
     </div>
   </section>
 
-  <!-- PLAN CHOICE -->
+  <!-- ══ PLAN CHOICE ══ -->
   <div class="plan-choice">
     <p class="plan-choice-label">請選擇您的方案 &nbsp;·&nbsp; Choose your plan</p>
     <div class="plan-choice-btns">
@@ -549,138 +630,161 @@
     </div>
   </div>
 
-  <!-- MAIN -->
+  <!-- ══ MAIN ══ -->
   <main class="main">
 
     <!-- Subscription -->
-    <div class="card fade-up" id="subscription">
-      <h2 class="section-title">
-        <span class="icon" style="background:#e0f2fe;">📋</span>
-        訂閱方案內容
-      </h2>
-      <ul class="plan-list">
-        <li>適用時段：<strong>週一～週五（平日）上午 10am ～ 下午 5pm 前</strong></li>
-        <li>每週自動扣除 <strong>550 點</strong></li>
-        <li>
-          每週兩堂，每堂課以 <strong>450 點</strong> 計算
-          <hr class="divider-dashed">
-          非適用時段 ／ 週六 ／ 國定假日 — <strong>550 點</strong> 計算
-        </li>
-        <li>每週可享 <strong>2 堂優惠課程</strong></li>
-        <li>訂閱期間有 <strong>兩次</strong> 暫停 ／ 恢復課程權益</li>
-        <li style="padding:0; background:none; border:none;">
-          <a href="https://tonyonlineenglish.netlify.app/450" target="_blank" class="btn-orange">
-            原先方案詳情 — 點選 450 訂閱方案 →
-          </a>
-        </li>
-      </ul>
+    <div class="section-wrap fade-up" id="subscription">
+      <div class="section-inner">
+        <div class="card">
+          <h2 class="section-title">
+            <span class="icon" style="background:#e0f2fe;">📋</span>
+            訂閱方案內容
+          </h2>
+          <ul class="plan-list">
+            <li>適用時段：<strong>週一～週五（平日）上午 10am ～ 下午 5pm 前</strong></li>
+            <li>每週自動扣除 <strong>550 點</strong></li>
+            <li>
+              每週兩堂，每堂課以 <strong>450 點</strong> 計算
+              <hr class="divider-dashed">
+              非適用時段 ／ 週六 ／ 國定假日 — <strong>550 點</strong> 計算
+            </li>
+            <li>每週可享 <strong>2 堂優惠課程</strong></li>
+            <li>訂閱期間有 <strong>兩次</strong> 暫停 ／ 恢復課程權益</li>
+            <li style="padding:0;background:none;border:none;">
+              <a href="https://tonyonlineenglish.netlify.app/450" target="_blank" class="btn-orange">
+                原先方案詳情 — 點選 450 訂閱方案 →
+              </a>
+            </li>
+          </ul>
+        </div>
+      </div>
     </div>
 
     <!-- Flex Rules -->
-    <div class="card fade-up">
-      <h2 class="section-title">
-        <span class="icon" style="background:#fef3c7;">⚡</span>
-        未滿兩堂之彈性規則
-      </h2>
-      <div class="grid-2">
-        <div>
-          <div class="table-wrap">
-            <table>
-              <thead><tr><th>當週上課堂數</th><th>上課點數</th></tr></thead>
-              <tbody>
-                <tr>
-                  <td>上 2 堂</td>
-                  <td><strong>900 點</strong><br><span style="font-size:0.82em;color:#6b7280">（原優惠）</span></td>
-                </tr>
-                <tr>
-                  <td>上 1 堂</td>
-                  <td><strong>550 點</strong><br><span style="font-size:0.82em;color:#6b7280">（彈性優惠）</span></td>
-                </tr>
-                <tr>
-                  <td>0 堂</td>
-                  <td><strong>550 點</strong><br><span style="font-size:0.82em;color:#6b7280">（未上課訂閱優惠，原 900 點）</span></td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-          <div class="badge-purple">以上優惠適用於保持訂閱期間內。</div>
-        </div>
+    <div class="section-wrap fade-up">
+      <div class="section-inner">
+        <div class="card">
+          <h2 class="section-title">
+            <span class="icon" style="background:#fef3c7;">⚡</span>
+            未滿兩堂之彈性規則
+          </h2>
+          <div class="grid-2">
 
-        <div>
-          <a href="https://tonyonlineenglish.netlify.app/regulations" target="_blank" class="btn-glow-red">
-            請假 ／ 調課規範（點選查看詳情）
-          </a>
-          <div class="table-wrap">
-            <table>
-              <thead><tr><th>請假 ／ 調課時間</th><th>規範</th></tr></thead>
-              <tbody>
-                <tr>
-                  <td>24 小時內<br>請假 ／ 調課</td>
-                  <td>扣 <strong>0.5 堂點數</strong><br><span style="font-size:0.82em;color:#6b7280">（週六、國定假日扣 1 堂）</span></td>
-                </tr>
-                <tr>
-                  <td>12 小時內<br>請假 ／ 調課</td>
-                  <td>扣 <strong>1 堂點數</strong></td>
-                </tr>
-              </tbody>
-            </table>
+            <div>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>當週上課堂數</th><th>上課點數</th></tr></thead>
+                  <tbody>
+                    <tr>
+                      <td>上 2 堂</td>
+                      <td><strong>900 點</strong><br><span style="font-size:0.82em;color:#6b7280">（原優惠）</span></td>
+                    </tr>
+                    <tr>
+                      <td>上 1 堂</td>
+                      <td><strong>550 點</strong><br><span style="font-size:0.82em;color:#6b7280">（彈性優惠）</span></td>
+                    </tr>
+                    <tr>
+                      <td>0 堂</td>
+                      <td><strong>550 點</strong><br><span style="font-size:0.82em;color:#6b7280">（未上課訂閱優惠，原 900 點）</span></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="badge-purple">以上優惠適用於保持訂閱期間內。</div>
+            </div>
+
+            <div>
+              <a href="https://tonyonlineenglish.netlify.app/regulations" target="_blank" class="btn-glow-red">
+                請假 ／ 調課規範（點選查看詳情）
+              </a>
+              <div class="table-wrap">
+                <table>
+                  <thead><tr><th>請假 ／ 調課時間</th><th>規範</th></tr></thead>
+                  <tbody>
+                    <tr>
+                      <td>24 小時內<br>請假 ／ 調課</td>
+                      <td>扣 <strong>0.5 堂點數</strong><br><span style="font-size:0.82em;color:#6b7280">（週六、國定假日扣 1 堂）</span></td>
+                    </tr>
+                    <tr>
+                      <td>12 小時內<br>請假 ／ 調課</td>
+                      <td>扣 <strong>1 堂點數</strong></td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <p style="font-size:clamp(0.94rem,1.8vw,1.08rem);color:var(--muted);margin-top:12px;">請多注意課程表，謝謝。</p>
+              <a href="https://tonyonlineenglish.netlify.app/sickleave" target="_blank" class="btn-sick">
+                🤒 病假申請 →
+              </a>
+            </div>
+
           </div>
-          <p style="font-size:clamp(0.94rem,2vw,1.08rem); color:var(--muted); margin-top:12px;">請多注意課程表，謝謝。</p>
-          <a href="https://tonyonlineenglish.netlify.app/sickleave" target="_blank"
-             style="display:block;margin-top:14px;background:#f0fdf4;border:2px solid #86efac;border-radius:10px;padding:15px 18px;text-align:center;font-weight:700;color:#15803d;text-decoration:none;font-size:clamp(1rem,2.2vw,1.15rem);">
-            🤒 病假申請 →
-          </a>
         </div>
       </div>
     </div>
 
     <!-- Makeup -->
-    <div class="card-red fade-up">
-      <h2 class="section-title" style="border-bottom-color:#fca5a5;">
-        <span class="icon" style="background:#fee2e2;">🔢</span>
-        補課與扣點計算
-      </h2>
-      <div class="makeup-item">
-        <p class="makeup-title">情況一：當週因 24 ／ 12 小時內請假被扣點，且有補課</p>
-        <div class="makeup-row"><span class="label">第二堂補課</span><span class="pts">每堂 450 點</span></div>
-        <div class="makeup-row"><span class="label">第三堂補課</span><span class="pts">每堂 450 點</span></div>
-        <p class="makeup-note">若為非優惠時段，則每堂 550 點。</p>
-      </div>
-      <div class="makeup-item">
-        <p class="makeup-title">情況二：當週被扣點後無補課</p>
-        <div class="makeup-row"><span class="label">該堂扣除</span><span class="pts">550 點</span></div>
-        <p class="makeup-note">當週未完成課程之訂閱制優惠扣點。</p>
-        <div class="makeup-row" style="margin-top:12px;"><span class="label">若週六前仍無補課</span><span class="pts">每週扣 550 點</span></div>
-        <p class="makeup-note">訂閱制優惠扣點。</p>
+    <div class="section-wrap fade-up">
+      <div class="section-inner">
+        <div class="card-red">
+          <h2 class="section-title" style="border-bottom-color:#fca5a5;">
+            <span class="icon" style="background:#fee2e2;">🔢</span>
+            補課與扣點計算
+          </h2>
+
+          <div class="makeup-item">
+            <p class="makeup-title">情況一：當週因 24 ／ 12 小時內請假被扣點，且有補課</p>
+            <div class="makeup-row"><span class="label">第二堂補課</span><span class="pts">每堂 450 點</span></div>
+            <div class="makeup-row"><span class="label">第三堂補課</span><span class="pts">每堂 450 點</span></div>
+            <p class="makeup-note">若為非優惠時段，則每堂 550 點。</p>
+          </div>
+
+          <div class="makeup-item">
+            <p class="makeup-title">情況二：當週被扣點後無補課</p>
+            <div class="makeup-row"><span class="label">該堂扣除</span><span class="pts">550 點</span></div>
+            <p class="makeup-note">當週未完成課程之訂閱制優惠扣點。</p>
+            <div class="makeup-row" style="margin-top:12px;"><span class="label">若週六前仍無補課</span><span class="pts">每週扣 550 點</span></div>
+            <p class="makeup-note">訂閱制優惠扣點。</p>
+          </div>
+        </div>
       </div>
     </div>
 
-    <!-- Non-subscription / change plan -->
-    <div class="card fade-up" id="single">
-      <h2 class="section-title">
-        <span class="icon" style="background:#fef9c3;">🔄</span>
-        非訂閱方案 ／ 變更方案規範
-      </h2>
-      <p style="font-size:clamp(1rem,2.3vw,1.2rem); color:var(--muted); margin-bottom:16px;">
-        如未訂閱、中途停止訂閱、改為單次課程制，費率如下：
-      </p>
-      <ul class="plan-list">
-        <li>單堂 <strong>550 點</strong>，週一～週五 10am ～ 5pm 前</li>
-        <li>其他時段（週六 ／ 晚間 ／ 國定假日）每堂 <strong>600 點</strong></li>
-      </ul>
+    <!-- Non-subscription -->
+    <div class="section-wrap fade-up" id="single">
+      <div class="section-inner">
+        <div class="card">
+          <h2 class="section-title">
+            <span class="icon" style="background:#fef9c3;">🔄</span>
+            非訂閱方案 ／ 變更方案規範
+          </h2>
+          <p style="font-size:clamp(1rem,2vw,1.22rem);color:var(--muted);margin-bottom:18px;">
+            如未訂閱、中途停止訂閱、改為單次課程制，費率如下：
+          </p>
+          <ul class="plan-list">
+            <li>單堂 <strong>550 點</strong>，週一～週五 10am ～ 5pm 前</li>
+            <li>其他時段（週六 ／ 晚間 ／ 國定假日）每堂 <strong>600 點</strong></li>
+          </ul>
+        </div>
+      </div>
     </div>
 
     <!-- Total -->
-    <div class="total-box fade-up">
-      <h2 class="section-title">
-        <span class="icon" style="background:rgba(102,204,255,0.2);color:var(--accent);">💰</span>
-        方案總額
-      </h2>
-      <div class="total-amount">NT$15,300</div>
-      <div class="total-detail">
-        <span>共 15,300 點</span>
-        <span>大約 34 堂課</span>
-        <span>每堂 50 分鐘</span>
+    <div class="section-wrap fade-up">
+      <div class="section-inner">
+        <div class="total-box">
+          <h2 class="section-title">
+            <span class="icon" style="background:rgba(102,204,255,0.18);color:var(--accent);">💰</span>
+            方案總額
+          </h2>
+          <div class="total-amount">NT$15,300</div>
+          <div class="total-detail">
+            <span>共 15,300 點</span>
+            <span>大約 34 堂課</span>
+            <span>每堂 50 分鐘</span>
+          </div>
+        </div>
       </div>
     </div>
 
@@ -695,8 +799,10 @@
     });
 
     const obs = new IntersectionObserver(entries => {
-      entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('visible'); obs.unobserve(en.target); } });
-    }, { threshold: 0.06 });
+      entries.forEach(en => {
+        if (en.isIntersecting) { en.target.classList.add('visible'); obs.unobserve(en.target); }
+      });
+    }, { threshold: 0.05 });
 
     document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
   </script>
