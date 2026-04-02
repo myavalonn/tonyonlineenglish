@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>軟組織超音波報告</title>
+<style>
+    :root {
+        --primary-color: #2c3e50;
+        --secondary-color: #34495e;
+        --translation-color: #16a085;
+        --bg-color: #f8f9fa;
+        --card-bg: #ffffff;
+        --border-color: #e0e0e0;
+    }
+
+    body {
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        background-color: var(--bg-color);
+        color: #333;
+        line-height: 1.6;
+        margin: 0;
+        padding: 10px;
+    }
+
+    .report-container {
+        background-color: var(--card-bg);
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        padding: 15px;
+        max-width: 600px;
+        margin: 0 auto;
+    }
+
+    .report-header {
+        text-align: center;
+        border-bottom: 2px solid var(--primary-color);
+        padding-bottom: 10px;
+        margin-bottom: 15px;
+    }
+
+    .report-header h2 {
+        margin: 0;
+        color: var(--primary-color);
+        font-size: 1.2rem;
+    }
+
+    .patient-info {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+        font-size: 0.9rem;
+        border-bottom: 1px dashed var(--border-color);
+        padding-bottom: 15px;
+        margin-bottom: 15px;
+    }
+
+    .patient-info .full-width {
+        grid-column: 1 / -1;
+    }
+
+    .section {
+        margin-bottom: 20px;
+    }
+
+    .section-title {
+        font-weight: bold;
+        color: var(--primary-color);
+        font-size: 1.05rem;
+        background-color: #ecf0f1;
+        padding: 5px 10px;
+        border-left: 4px solid var(--primary-color);
+        border-radius: 3px;
+        margin-bottom: 10px;
+    }
+
+    .content-block {
+        margin-bottom: 12px;
+        padding-left: 5px;
+    }
+
+    .translation {
+        display: block;
+        color: var(--translation-color);
+        font-size: 0.85rem;
+        margin-top: 2px;
+        margin-bottom: 8px;
+    }
+
+    ul.finding-list {
+        padding-left: 20px;
+        margin: 0;
+    }
+
+    ul.finding-list li {
+        margin-bottom: 10px;
+    }
+
+    ul.sub-list {
+        padding-left: 15px;
+        list-style-type: circle;
+        margin-top: 5px;
+    }
+
+    .note-box {
+        background-color: #fff8e1;
+        border: 1px solid #ffe082;
+        padding: 10px;
+        border-radius: 5px;
+        font-size: 0.85rem;
+        margin-top: 15px;
+    }
+
+    .footer {
+        border-top: 1px solid var(--border-color);
+        padding-top: 15px;
+        font-size: 0.9rem;
+    }
+
+    .hospital-name {
+        text-align: center;
+        font-weight: bold;
+        color: var(--secondary-color);
+        margin-top: 20px;
+        font-size: 1rem;
+    }
+</style>
+</head>
+<body>
+
+<div class="report-container">
+    
+    <div class="report-header">
+        <h2>軟組織超音波報告</h2>
+    </div>
+
+    <div class="patient-info">
+        <div><strong>病歷號碼:</strong> 0300012</div>
+        <div><strong>床號:</strong></div>
+        <div><strong>姓名:</strong> 林育志</div>
+        <div><strong>性別:</strong> 男</div>
+        <div class="full-width"><strong>檢查時間:</strong> 2026/02/24 &nbsp; <strong>報告時間:</strong> 2026/02/24</div>
+        <div><strong>頁次:</strong> 1/1</div>
+        <div><strong>生日:</strong> 1983/06/17(42)</div>
+        <div class="full-width"><strong>單號:</strong> F139266200</div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">Brief History</div>
+        <div class="content-block">
+            RIGHT FOREARM PALPABLE MASS ABOUT 2 CM R/O LIPOMA
+            <span class="translation">(簡要病史：右前臂可觸及約2公分腫塊，懷疑脂肪瘤)</span>
+            ARRANGE SOFT TISSUE ECHO
+            <span class="translation">(安排軟組織超音波)</span>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">Finding <span style="font-size: 0.9rem; font-weight: normal; color: var(--translation-color);">(發現：)</span></div>
+        <ul class="finding-list">
+            <li>
+                1. Location: R'T FOREARM & R'T THIGH
+                <span class="translation">(1. 位置：右前臂與右大腿)</span>
+            </li>
+            <li>
+                2. Size:
+                <ul class="sub-list">
+                    <li>(2.6*0.7 CM)(0.9*0.3 CM) OVER R'T FOREARM
+                    <span class="translation">(2. 大小：(2.6*0.7 公分)(0.9*0.3 公分) 在右前臂)</span></li>
+                    <li>(2.7*1.3 CM)(2.2*1.2 CM)(0.7*0.4 CM)(0.9*0.4 CM)(0.6*0.3 MC) ..OVER R'T THIGH AREA
+                    <span class="translation">( (2.7*1.3 公分)(2.2*1.2 公分)(0.7*0.4 公分)(0.9*0.4 公分)(0.6*0.3 MC) ..在右側大腿區域 )</span></li>
+                </ul>
+            </li>
+            <li>
+                3. Shape: Round (
+                <span class="translation">(3. 形狀：圓形 ()</span>
+                Border: ill-defined
+                <span class="translation">(邊界：不清楚)</span>
+            </li>
+            <li>
+                4. Echogenecity: Hyperechoic
+                <span class="translation">(4. 迴音性：高迴音)</span>
+                Homogenous
+                <span class="translation">(均勻)</span>
+            </li>
+            <li>
+                5. Component: Solid
+                <span class="translation">(5. 成分：實質)</span>
+            </li>
+            <li>
+                6. Acoustic enhancement (NO) Acoustic shadowing NO()
+                <span class="translation">(6. 音響加強 (無) 音響陰影 無())</span>
+            </li>
+            <li>
+                7. CDUS: Grade 0
+                <span class="translation">(7. 彩色都卜勒超音波：0級)</span>
+            </li>
+            <li>
+                8. Others:
+                <span class="translation">(8. 其他：)</span>
+            </li>
+        </ul>
+
+        <div class="note-box">
+            Grade 0=no Doppler signal, Grade 1= up to 3 single spots or 1 confluent spot +2 single spots , Grade 2= less than 50% of the target area, Grade 3= > 50% of the target area.
+            <span class="translation" style="margin-top: 5px;">(0級=無都卜勒訊號，1級=最多3個單點或1個匯合點+2個單點，2級=小於目標區域的50%，3級=大於50%的目標區域。)</span>
+        </div>
+    </div>
+
+    <div class="section">
+        <div class="section-title">Sonar Diagnosis</div>
+        <div class="content-block">
+            1. SUBCUSTANSOUS MASSES ,SUSPECT LIPOMA (R'T FOREARM & R'T THIGH)
+            <span class="translation">(超音波診斷：1.皮下腫塊，懷疑脂肪瘤 (右前臂與右大腿))</span>
+            2.<br>
+            3.<br>
+            4.<br>
+            <br>
+            Advise or comment:
+            <span class="translation">(建議或評論：)</span>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="content-block">
+            <strong>錄影帶編號 :</strong> <br>
+            <strong>通報醫師 :</strong> <br>
+            <strong>Examiner :</strong> 洪育雯/洪敏章/
+            <span class="translation">(檢查者：洪育雯/洪敏章/)</span>
+        </div>
+        <div class="hospital-name">秀傳醫療社團法人秀傳紀念醫院</div>
+    </div>
+
+</div>
+
+</body>
+</html>
