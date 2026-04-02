@@ -3,145 +3,616 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>內容鎖定</title>
-</head>
-<body>
-
-<div id="secure-container">
+  <title>Joe 專屬 — 訂閱制方案</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
   <style>
-    /* 登入介面的樣式 */
-    #secure-login-box { 
-      /* 手機版設定：寬度 90% 避免死貼邊緣 */
-      width: 90%;
-      max-width: 400px; 
-      margin: 60px auto; 
-      padding: 40px 25px; 
-      border: 1px solid #e2e8f0; 
-      border-radius: 16px; 
-      text-align: center; 
-      box-shadow: 0 10px 25px rgba(0,0,0,0.08); 
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      background: #ffffff;
-      box-sizing: border-box; /* 確保內距不影響寬度 */
+    :root {
+      --accent: #66ccff;
+      --green: #34d399;
+      --orange: #f97316;
+      --red: #dc2626;
+      --purple: #8b5cf6;
+      --dark: #0f172a;
+      --muted: #64748b;
+      --card-bg: #ffffff;
+      --page-bg: #f1f5f9;
+      --border: #e2e8f0;
+      --radius: 16px;
     }
-    #secure-login-box h3 {
-      margin-top: 0;
-      color: #1e293b;
-      font-size: 22px;
-    }
-    #secure-login-box p {
-      color: #64748b;
-      font-size: 14px;
-      margin-bottom: 20px;
-    }
-    #secure-login-box input { 
-      width: 100%; 
-      padding: 14px; 
-      margin-top: 10px; 
-      box-sizing: border-box; 
-      border: 2px solid #e2e8f0; 
-      border-radius: 10px; 
-      font-size: 16px; /* 16px 防 iOS 自動放大畫面 */
-      transition: 0.2s;
-      outline: none;
-    }
-    #secure-login-box input:focus {
-      border-color: #66ccff;
-    }
-    #secure-login-box button { 
-      width: 100%; 
-      padding: 14px; 
-      margin-top: 20px; 
-      background: linear-gradient(135deg, #66ccff, #34d399); 
-      color: white; 
-      border: none; 
-      border-radius: 10px; 
-      font-size: 18px; 
-      font-weight: bold;
-      cursor: pointer; 
-      transition: opacity 0.2s; 
-    }
-    #secure-login-box button:hover { opacity: 0.9; }
-    #secure-login-box button:disabled { background: #cbd5e1; cursor: not-allowed; }
-    #secure-msg { color: #ef4444; margin-top: 15px; font-size: 14px; min-height: 20px; font-weight: bold;}
 
-    /* 電腦版微調 (讓大螢幕看起來更舒適) */
-    @media (min-width: 768px) {
-      #secure-login-box {
-        max-width: 450px;
-        padding: 50px 40px;
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--page-bg);
+      color: var(--dark);
+      line-height: 1.6;
+    }
+
+    /* ─── HERO ─── */
+    .hero {
+      position: relative;
+      min-height: 85vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 40px 24px 48px;
+      overflow: hidden;
+    }
+
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      background-image: url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/wes-hicks-4-EeTnaC1S4-unsplash.jpg');
+      background-size: cover;
+      background-position: center 30%;
+      z-index: 0;
+    }
+
+    .hero-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(
+        to bottom,
+        rgba(10,15,30,0.25) 0%,
+        rgba(10,15,30,0.55) 50%,
+        rgba(10,15,30,0.88) 100%
+      );
+      z-index: 1;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 2;
+      max-width: 760px;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: rgba(102,204,255,0.18);
+      border: 1px solid rgba(102,204,255,0.5);
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 100px;
+      margin-bottom: 18px;
+      backdrop-filter: blur(6px);
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-size: clamp(2.4rem, 7vw, 4.8rem);
+      font-weight: 900;
+      color: #ffffff;
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      margin-bottom: 16px;
+    }
+
+    .hero h1 em {
+      font-style: normal;
+      color: var(--accent);
+    }
+
+    .hero-sub {
+      font-size: clamp(1rem, 2.5vw, 1.25rem);
+      color: rgba(255,255,255,0.78);
+      margin-bottom: 32px;
+      max-width: 520px;
+      line-height: 1.65;
+    }
+
+    /* Price hero card */
+    .hero-price-card {
+      display: inline-flex;
+      flex-direction: column;
+      background: rgba(255,255,255,0.1);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255,255,255,0.2);
+      border-radius: var(--radius);
+      padding: 20px 26px;
+      gap: 4px;
+      min-width: 240px;
+    }
+
+    .hero-price-label {
+      font-size: 12px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.6);
+      font-weight: 600;
+    }
+
+    .hero-price-amount {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 6vw, 3.2rem);
+      font-weight: 700;
+      color: #ffffff;
+      line-height: 1;
+    }
+
+    .hero-price-amount span {
+      color: var(--accent);
+    }
+
+    .hero-price-detail {
+      font-size: 13px;
+      color: rgba(255,255,255,0.65);
+      margin-top: 4px;
+    }
+
+    /* ─── MAIN CONTENT ─── */
+    .main {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 40px 16px 80px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    /* ─── SECTION CARDS ─── */
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      box-shadow: 0 4px 16px rgba(15,23,42,0.06);
+      padding: 28px 24px;
+    }
+
+    .section-title {
+      font-size: clamp(1.2rem, 3.5vw, 1.6rem);
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 18px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--border);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .section-title .icon {
+      width: 36px;
+      height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    /* ─── PLAN LIST ─── */
+    .plan-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .plan-list li {
+      background: #f0f9ff;
+      border-left: 5px solid var(--accent);
+      border-radius: 10px;
+      padding: 14px 18px;
+      font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+      line-height: 1.65;
+      color: var(--dark);
+    }
+
+    .plan-list li strong {
+      color: #0369a1;
+    }
+
+    .divider-dashed {
+      border: none;
+      border-top: 1px dashed #93c5fd;
+      margin: 10px 0;
+      opacity: 0.6;
+    }
+
+    /* Orange CTA button */
+    .btn-orange {
+      display: block;
+      background: linear-gradient(135deg, var(--orange), #fb923c);
+      color: white !important;
+      text-decoration: none;
+      text-align: center;
+      font-weight: 700;
+      font-size: clamp(1rem, 2.5vw, 1.15rem);
+      padding: 16px 20px;
+      border-radius: 12px;
+      border-left: none;
+      transition: transform 0.15s, box-shadow 0.15s;
+      box-shadow: 0 4px 14px rgba(249,115,22,0.35);
+    }
+
+    .btn-orange:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 22px rgba(249,115,22,0.45);
+    }
+
+    /* ─── TWO COLUMN GRID ─── */
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    @media (min-width: 640px) {
+      .grid-2 {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    /* ─── TABLES ─── */
+    .table-wrap {
+      border-radius: 10px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 13px 16px;
+      text-align: left;
+      font-size: clamp(0.88rem, 2.2vw, 1.05rem);
+      line-height: 1.6;
+      vertical-align: top;
+    }
+
+    thead th {
+      background: #dbeafe;
+      font-weight: 700;
+      color: #1e40af;
+      font-size: clamp(0.85rem, 2vw, 1rem);
+    }
+
+    tbody tr:nth-child(odd) td { background: #f0fdf4; }
+    tbody tr:nth-child(even) td { background: #ffffff; }
+
+    /* ─── GLOWING RED BUTTON ─── */
+    .btn-glow-red {
+      display: block;
+      background: var(--red);
+      color: white !important;
+      text-decoration: none;
+      text-align: center;
+      font-weight: 700;
+      font-size: clamp(1rem, 2.5vw, 1.1rem);
+      padding: 15px 20px;
+      border-radius: 10px;
+      margin-bottom: 14px;
+      animation: glowing 2.2s ease-in-out infinite;
+    }
+
+    @keyframes glowing {
+      0%   { box-shadow: 0 0 5px #ff6b6b; transform: scale(1); }
+      50%  { box-shadow: 0 0 22px #ff6b6b, 0 0 40px rgba(255,107,107,0.3); transform: scale(1.015); }
+      100% { box-shadow: 0 0 5px #ff6b6b; transform: scale(1); }
+    }
+
+    /* ─── PURPLE BADGE ─── */
+    .badge-purple {
+      background: var(--purple);
+      color: white;
+      font-weight: 700;
+      font-size: clamp(0.85rem, 2.2vw, 1rem);
+      text-align: center;
+      padding: 12px 16px;
+      border-radius: 10px;
+      margin-top: 14px;
+    }
+
+    /* ─── MAKEUP / HIGHLIGHT RED ─── */
+    .card-red {
+      background: #fff5f5;
+      border: 3px solid #fecaca;
+      border-radius: var(--radius);
+      padding: 24px 20px;
+    }
+
+    .makeup-item {
+      padding-bottom: 22px;
+      margin-bottom: 22px;
+      border-bottom: 2px dashed #fca5a5;
+    }
+
+    .makeup-item:last-child {
+      padding-bottom: 0;
+      margin-bottom: 0;
+      border-bottom: none;
+    }
+
+    .makeup-title {
+      font-weight: 700;
+      color: #b91c1c;
+      font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+      margin-bottom: 12px;
+      line-height: 1.45;
+    }
+
+    .makeup-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 6px;
+      background: rgba(255,255,255,0.7);
+      border-radius: 8px;
+      padding: 11px 14px;
+      margin-top: 8px;
+      font-size: clamp(0.9rem, 2.3vw, 1.05rem);
+    }
+
+    .makeup-row .label { font-weight: 600; }
+    .makeup-row .pts   { font-weight: 700; color: #0f172a; }
+
+    .makeup-note {
+      font-size: clamp(0.8rem, 2vw, 0.92rem);
+      color: #6b7280;
+      margin-top: 8px;
+      line-height: 1.5;
+    }
+
+    /* ─── TOTAL ─── */
+    .total-box {
+      background: linear-gradient(135deg, #0f172a, #1e3a5f);
+      border-radius: var(--radius);
+      padding: 30px 28px;
+      color: white;
+    }
+
+    .total-box .section-title {
+      color: white;
+      border-bottom-color: rgba(255,255,255,0.15);
+    }
+
+    .total-amount {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 7vw, 3.8rem);
+      font-weight: 700;
+      color: var(--accent);
+      line-height: 1;
+      margin-bottom: 10px;
+    }
+
+    .total-detail {
+      font-size: clamp(0.9rem, 2.3vw, 1.05rem);
+      color: rgba(255,255,255,0.7);
+      line-height: 1.7;
+    }
+
+    .total-detail span {
+      display: block;
+    }
+
+    /* ─── SCROLL ANIMATION ─── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.55s ease, transform 0.55s ease;
+    }
+
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ─── MOBILE TWEAKS ─── */
+    @media (max-width: 480px) {
+      .hero {
+        min-height: 70vh;
+        padding: 24px 20px 40px;
+      }
+      .main {
+        padding: 28px 14px 60px;
+      }
+      .card {
+        padding: 22px 18px;
       }
     }
   </style>
-  
-  <div id="secure-login-box">
-    <h3>🔒 內容已鎖定</h3>
-    <p>請輸入提供的Email以查看方案詳情</p>
-    <input type="email" id="email-input" placeholder="請輸入提供的Email">
-    <button id="unlock-btn" onclick="verifyEmail()">解鎖內容</button>
-    <div id="secure-msg"></div>
-  </div>
-</div>
+</head>
+<body>
 
-<script>
-  // 保持你原本的 GAS 網址
-  const GAS_URL = "https://script.google.com/macros/s/AKfycbxwGY6cu2Z_XfoJF38-YRhynO2JlRxfqMTsRt66ouuYXEw8bdgItjbNRrCTZWcGXy-u/exec"; 
+  <!-- ─── HERO SECTION ─── -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div class="hero-badge">Exclusive Subscription Plan</div>
+      <h1>Your Personal<br>English <em>Journey</em></h1>
+      <p class="hero-sub">One-on-one lessons designed around your schedule and learning goals. Flexible, consistent, and built for real progress.</p>
+      <div class="hero-price-card">
+        <span class="hero-price-label">Total Plan Value</span>
+        <div class="hero-price-amount">NT$<span>15,300</span></div>
+        <div class="hero-price-detail">~34 lessons · 50 min each · 15,300 pts</div>
+      </div>
+    </div>
+  </section>
 
-  async function verifyEmail() {
-    const emailInput = document.getElementById("email-input");
-    const email = emailInput.value;
-    const btn = document.getElementById("unlock-btn");
-    const msg = document.getElementById("secure-msg");
+  <!-- ─── MAIN CONTENT ─── -->
+  <main class="main">
 
-    if (!email) { msg.innerText = "請輸入 Email"; return; }
-    if (!email.includes("@")) { msg.innerText = "Email 格式不正確"; return; }
+    <!-- Plan Details -->
+    <div class="card fade-up">
+      <h2 class="section-title">
+        <span class="icon" style="background:#e0f2fe;">📋</span>
+        訂閱方案內容
+      </h2>
+      <ul class="plan-list">
+        <li>適用時段：<strong>週一～週五（平日）上午 10am ～ 下午 5pm 前</strong></li>
+        <li>每週自動扣除 <strong>550 點</strong></li>
+        <li>
+          每週兩堂，每堂課以 <strong>450 點</strong> 計算
+          <hr class="divider-dashed">
+          非適用時段 ／ 週六 ／ 國定假日 — <strong>550 點</strong> 計算
+        </li>
+        <li>每週可享 <strong>2 堂優惠課程</strong></li>
+        <li>訂閱期間有 <strong>兩次</strong> 暫停 ／ 恢復課程權益</li>
+        <li style="padding:0; background:none; border:none;">
+          <a href="https://tonyonlineenglish.netlify.app/450" target="_blank" class="btn-orange">
+            原先方案詳情 — 點選 450 訂閱方案 →
+          </a>
+        </li>
+      </ul>
+    </div>
 
-    btn.disabled = true;
-    btn.innerText = "驗證中...";
-    msg.innerText = "";
+    <!-- Flex Rules -->
+    <div class="card fade-up">
+      <h2 class="section-title">
+        <span class="icon" style="background:#fef3c7;">⚡</span>
+        未滿兩堂之彈性規則
+      </h2>
+      <div class="grid-2">
 
-    try {
-      const response = await fetch(GAS_URL, {
-        method: "POST",
-        body: JSON.stringify({ email: email })
+        <!-- Left: deduction table -->
+        <div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>當週上課堂數</th><th>上課點數</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>上 2 堂</td>
+                  <td><strong>900 點</strong><br><span style="font-size:0.82em;color:#6b7280">（原優惠）</span></td>
+                </tr>
+                <tr>
+                  <td>上 1 堂</td>
+                  <td><strong>550 點</strong><br><span style="font-size:0.82em;color:#6b7280">（彈性優惠）</span></td>
+                </tr>
+                <tr>
+                  <td>0 堂</td>
+                  <td><strong>550 點</strong><br><span style="font-size:0.82em;color:#6b7280">（未上課訂閱優惠，原 900 點）</span></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="badge-purple">以上優惠適用於保持訂閱期間內。</div>
+        </div>
+
+        <!-- Right: leave rules -->
+        <div>
+          <a href="https://tonyonlineenglish.netlify.app/regulations" target="_blank" class="btn-glow-red">
+            請假 ／ 調課規範（點選查看詳情）
+          </a>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr><th>請假 ／ 調課時間</th><th>規範</th></tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>24 小時內<br>請假 ／ 調課</td>
+                  <td>扣 <strong>0.5 堂點數</strong><br><span style="font-size:0.82em;color:#6b7280">（週六、國定假日扣 1 堂）</span></td>
+                </tr>
+                <tr>
+                  <td>12 小時內<br>請假 ／ 調課</td>
+                  <td>扣 <strong>1 堂點數</strong></td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <p style="font-size:0.9rem; color:var(--muted); margin-top:10px;">請多注意課程表，謝謝。</p>
+
+          <!-- Sick leave link -->
+          <a href="https://tonyonlineenglish.netlify.app/sickleave" target="_blank"
+             style="display:block; margin-top:14px; background:#f0fdf4; border:2px solid #86efac; border-radius:10px; padding:13px 16px; text-align:center; font-weight:700; color:#15803d; text-decoration:none; font-size:clamp(0.92rem,2.3vw,1.05rem);">
+            🤒 病假申請 →
+          </a>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- Makeup & Deductions -->
+    <div class="card-red fade-up">
+      <h2 class="section-title" style="border-bottom-color:#fca5a5;">
+        <span class="icon" style="background:#fee2e2;">🔢</span>
+        補課與扣點計算
+      </h2>
+
+      <div class="makeup-item">
+        <p class="makeup-title">情況一：當週因 24 ／ 12 小時內請假被扣點，且有補課</p>
+        <div class="makeup-row">
+          <span class="label">第二堂補課</span>
+          <span class="pts">每堂 450 點</span>
+        </div>
+        <div class="makeup-row">
+          <span class="label">第三堂補課</span>
+          <span class="pts">每堂 450 點</span>
+        </div>
+        <p class="makeup-note">若為非優惠時段，則每堂 550 點。</p>
+      </div>
+
+      <div class="makeup-item">
+        <p class="makeup-title">情況二：當週被扣點後無補課</p>
+        <div class="makeup-row">
+          <span class="label">該堂扣除</span>
+          <span class="pts">550 點</span>
+        </div>
+        <p class="makeup-note">當週未完成課程之訂閱制優惠扣點。</p>
+        <div class="makeup-row" style="margin-top:12px;">
+          <span class="label">若週六前仍無補課</span>
+          <span class="pts">每週扣 550 點</span>
+        </div>
+        <p class="makeup-note">訂閱制優惠扣點。</p>
+      </div>
+    </div>
+
+    <!-- Change Plan -->
+    <div class="card fade-up">
+      <h2 class="section-title">
+        <span class="icon" style="background:#fae8ff;">🔄</span>
+        變更方案規範
+      </h2>
+      <p style="font-size:clamp(0.95rem,2.5vw,1.1rem); color:var(--muted); margin-bottom:14px;">
+        如中途停止訂閱、改為單次課程制，費率調整如下：
+      </p>
+      <ul class="plan-list">
+        <li>單堂 <strong>550 點</strong>，週一～週五 10am ～ 5pm 前<br>其他時段每堂 <strong>600 點</strong></li>
+      </ul>
+    </div>
+
+    <!-- Total -->
+    <div class="total-box fade-up">
+      <h2 class="section-title">
+        <span class="icon" style="background:rgba(102,204,255,0.2); color:var(--accent);">💰</span>
+        方案總額
+      </h2>
+      <div class="total-amount">NT$15,300</div>
+      <div class="total-detail">
+        <span>共 15,300 點</span>
+        <span>大約 34 堂課</span>
+        <span>每堂 50 分鐘</span>
+      </div>
+    </div>
+
+  </main>
+
+  <script>
+    // Scroll fade-in
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
       });
-      const data = await response.json();
+    }, { threshold: 0.08 });
 
-      if (data.success) {
-        const container = document.getElementById("secure-container");
-        container.innerHTML = data.html;
-        executeScripts(container);
-      } else {
-        msg.innerText = data.message;
-        btn.disabled = false;
-        btn.innerText = "解鎖內容";
-        emailInput.style.borderColor = "#ef4444";
-        setTimeout(() => emailInput.style.borderColor = "#e2e8f0", 500);
-      }
-    } catch (e) {
-      console.error(e);
-      msg.innerText = "連線錯誤，請稍後再試";
-      btn.disabled = false;
-      btn.innerText = "解鎖內容";
-    }
-  }
-
-  function executeScripts(element) {
-    const scripts = element.querySelectorAll("script");
-    scripts.forEach(oldScript => {
-      const newScript = document.createElement("script");
-      Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
-      newScript.appendChild(document.createTextNode(oldScript.innerHTML));
-      oldScript.parentNode.replaceChild(newScript, oldScript);
-    });
-  }
-  
-  document.getElementById("email-input").addEventListener("keyup", function(event) {
-    if (event.key === "Enter") {
-        verifyEmail();
-    }
-  });
-</script>
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+  </script>
 
 </body>
 </html>
