@@ -1,642 +1,148 @@
-<!DOCTYPE html>
-<html lang="zh-TW">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>技術支援 | 網路障礙排除系統</title>
+// ═══════════════════════════════════════════════════════
+// Tony Online English — Network Troubleshooting Upload
+// Google Apps Script Backend  (Fixed version)
+// ═══════════════════════════════════════════════════════
 
-    <!-- Social / LINE / iMessage preview -->
-    <meta property="og:title"       content="線上課程障礙排除-Tony線上美語家教">
-    <meta property="og:description" content="升學 檢定 職場 公職 高考 面試 外商 觀光美語 展場英文 翻譯">
-    <meta property="og:url"         content="https://tonyonlineenglish.netlify.app/tshooting">
-    <meta property="og:image"       content="https://ik.imagekit.io/lql1uveoc/%E6%88%AA%E5%9C%96%202026-04-04%20%E4%B8%8B%E5%8D%887.07.21.png">
-    <meta name="twitter:card"       content="summary_large_image">
-    <meta name="twitter:image"      content="https://ik.imagekit.io/lql1uveoc/%E6%88%AA%E5%9C%96%202026-04-04%20%E4%B8%8B%E5%8D%887.07.21.png">
+var SPREADSHEET_ID  = '1A5Li5TF3v-Uoc90MwEVaplaRDY_Jbwgt1F7MADpfw_k';
+var TONY_EMAIL      = 'TonyOnlineEnglish@gmail.com';
+var DRIVE_FOLDER_ID = '1qnffhTtAwLaNLHJZ_DDna3hcuwLVjJkm';
 
-    <style>
-        /* ══ RESET ══ */
-        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+// ── CORS headers helper ─────────────────────────────────
+function corsHeaders() {
+  return {
+    'Access-Control-Allow-Origin': '*',
+    'Access-Control-Allow-Methods': 'POST, GET, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type'
+  };
+}
 
-        /* ══ FONT SIZES ══ */
-        html {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, 'Microsoft JhengHei';
-            font-size: 20px;
-            background: #f3f4f6;
-            color: #333;
-            line-height: 1.85;
-        }
-        @media (min-width: 768px)  { html { font-size: 23px; } }
-        @media (min-width: 1024px) { html { font-size: 26px; } }
+// ── Handle preflight OPTIONS request ───────────────────
+function doOptions(e) {
+  return ContentService
+    .createTextOutput('')
+    .setMimeType(ContentService.MimeType.TEXT);
+}
 
-        /* ══ BODY & CONTAINER ══ */
-        body { padding: 0; margin: 0; }
-        .container {
-            width: 100%;
-            max-width: 1280px;
-            margin: 0 auto;
-            background: #fff;
-            padding: 1.6rem 1rem;
-        }
-        @media (min-width: 768px) {
-            body { padding: 2rem 1rem; }
-            .container { padding: 2.5rem 3rem; border-radius: 14px; box-shadow: 0 10px 28px rgba(0,0,0,.08); }
-        }
-        @media (min-width: 1024px) {
-            body { padding: 2.5rem 2rem; }
-            .container { padding: 3rem 4.5rem; }
-        }
-
-        /* ══ CUSTOM AUDIO PLAYER ══ */
-        .audio-section {
-            margin: 1.8rem 0;
-            background: #e8f0fe;
-            border: 2px solid #93c5fd;
-            border-radius: 14px;
-            padding: 1.4rem 1.6rem 1.8rem;
-        }
-        .audio-label {
-            font-size: 1em; font-weight: 700; color: #1e40af;
-            margin-bottom: 1rem; display: flex; align-items: center; gap: .5rem;
-        }
-        .player {
-            display: flex; align-items: center; gap: 1rem;
-            background: #fff; border: 1px solid #bfdbfe; border-radius: 50px;
-            padding: .7rem 1.3rem .7rem .7rem;
-            box-shadow: 0 2px 10px rgba(37,99,235,.13);
-        }
-        .play-btn {
-            width: 3.6rem; height: 3.6rem; min-width: 3.6rem;
-            border-radius: 50%; background: #2563eb; border: none; cursor: pointer;
-            display: flex; align-items: center; justify-content: center;
-            box-shadow: 0 3px 12px rgba(37,99,235,.38);
-            transition: background .18s, transform .1s; flex-shrink: 0;
-        }
-        .play-btn:hover  { background: #1d4ed8; }
-        .play-btn:active { transform: scale(.92); }
-        .play-btn svg { width: 1.45rem; height: 1.45rem; fill: #fff; }
-        .progress-wrap { flex: 1; display: flex; flex-direction: column; gap: .38rem; min-width: 0; }
-        .progress-bar {
-            -webkit-appearance: none; appearance: none;
-            width: 100%; height: .6rem; border-radius: 99px;
-            background: #dbeafe; cursor: pointer; outline: none;
-        }
-        .progress-bar::-webkit-slider-thumb {
-            -webkit-appearance: none;
-            width: 1.15rem; height: 1.15rem; border-radius: 50%;
-            background: #2563eb; cursor: pointer; box-shadow: 0 0 0 3px rgba(37,99,235,.22);
-        }
-        .progress-bar::-moz-range-thumb {
-            width: 1.15rem; height: 1.15rem; border-radius: 50%;
-            background: #2563eb; border: none; cursor: pointer;
-        }
-        .time-row {
-            display: flex; justify-content: space-between;
-            font-size: .7em; color: #64748b; font-variant-numeric: tabular-nums;
-        }
-        .vol-btn {
-            background: none; border: none; cursor: pointer; padding: .3rem;
-            color: #2563eb; flex-shrink: 0; line-height: 0;
-        }
-        .vol-btn svg { width: 1.5rem; height: 1.5rem; fill: currentColor; }
-        @media (max-width: 380px) { .play-btn { width: 3rem; height: 3rem; min-width: 3rem; } }
-
-        /* ══ HEADINGS ══ */
-        h2 {
-            font-size: 1.15rem; color: #1e40af;
-            margin-top: 2.4rem; margin-bottom: .9rem;
-            border-bottom: 3px solid #bfdbfe; padding-bottom: .45rem;
-        }
-        h3 { font-size: 1.02rem; color: #15803d; margin-bottom: .5rem; }
-        p  { margin-bottom: 1.15rem; text-align: justify; }
-        .highlight  { color: #2563eb; font-weight: 700; }
-        .alert-text { color: #dc2626; font-weight: 700; }
-
-        /* ══ LISTS ══ */
-        .instruction-list { list-style: none; margin-bottom: 1.4rem; }
-        .instruction-list li { margin-bottom: .85rem; padding-left: 1.5rem; position: relative; }
-        .instruction-list li::before {
-            content: "•"; color: #2563eb;
-            position: absolute; left: 0; font-weight: 700; font-size: 1.2em;
-        }
-
-        /* ══ TWO-COLUMN ══ */
-        @media (min-width: 768px) {
-            .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: start; }
-        }
-
-        /* ══ SOLUTION CARDS ══ */
-        .solution-grid { display: grid; grid-template-columns: 1fr; gap: 1.3rem; margin: 1.4rem 0 2rem; }
-        @media (min-width: 768px) { .solution-grid { grid-template-columns: 1fr 1fr; } }
-        .solution-card { background: #f8fafc; border: 1px solid #cbd5e1; padding: 1.3rem; border-radius: 10px; }
-
-        /* ══ SPEED-TEST IMAGE ══ */
-        .img-container { text-align: center; padding: 1rem; background: #f1f5f9; border-radius: 10px; }
-        @media (max-width: 767px) { .img-container { margin-top: 1.5rem; } }
-        .img-container img { max-width: 100%; height: auto; border-radius: 6px; border: 1px solid #cbd5e1; }
-        .img-caption { display: block; margin-bottom: .5rem; color: #64748b; font-size: .74em; }
-
-        /* ══ BUTTON LINK ══ */
-        a.btn-link {
-            color: #fff; background: #2563eb; padding: .22rem .9rem;
-            border-radius: 5px; text-decoration: none; font-weight: 700; display: inline-block;
-        }
-        a.btn-link:hover { background: #1d4ed8; }
-
-        /* ══ SIGN-OFF ══ */
-        .sign-off {
-            text-align: right; margin-top: 2rem; color: #475569;
-            padding-top: 1rem; border-top: 1px solid #e2e8f0; line-height: 2;
-        }
-
-        /* ══ PROFILE CARD ══ */
-        .profile-card {
-            display: flex; flex-direction: column; align-items: center;
-            margin-top: 3.5rem; background: #f8fafc;
-            border: 1px solid #e2e8f0; border-left: 8px solid #2563eb;
-            padding: 1.8rem; border-radius: 10px;
-        }
-        @media (min-width: 768px) { .profile-card { flex-direction: row; align-items: flex-start; } }
-        .profile-photo {
-            width: 140px; height: 140px; border-radius: 50%; object-fit: cover;
-            border: 4px solid #fff; box-shadow: 0 4px 12px rgba(0,0,0,.1);
-            margin-bottom: 1.4rem; flex-shrink: 0;
-        }
-        @media (min-width: 768px) { .profile-photo { margin-bottom: 0; margin-right: 2rem; } }
-        .profile-text h3 { color: #1e40af; font-size: 1.3rem; margin-bottom: .35rem; }
-        .profile-text h4 { color: #64748b; font-size: .88rem; margin-bottom: .75rem; border-bottom: 1px dashed #cbd5e1; padding-bottom: .4rem; }
-        .duty-list { list-style: none; margin-top: .35rem; }
-        .duty-list li { margin-bottom: .65rem; padding-left: 1.8rem; position: relative; font-size: .87em; }
-        .duty-list li::before { content: "✓"; color: #10b981; position: absolute; left: 0; font-weight: 700; }
-
-        /* ══ UPLOAD SECTION ══ */
-        .upload-section {
-            margin-top: 2.8rem;
-            background: #f0fdf4;
-            border: 2px solid #86efac;
-            border-radius: 14px;
-            padding: 1.6rem;
-        }
-        .upload-section h2 {
-            margin-top: 0;
-            color: #15803d;
-            border-bottom-color: #86efac;
-        }
-        .upload-section p { margin-bottom: 1rem; }
-
-        /* Name + email row */
-        .upload-fields { display: flex; flex-direction: column; gap: 1rem; margin-bottom: 1.4rem; }
-        @media (min-width: 768px) { .upload-fields { flex-direction: row; } }
-        .upload-fields .field { flex: 1; display: flex; flex-direction: column; gap: .4rem; }
-        .upload-fields label { font-weight: 700; font-size: .88em; color: #374151; }
-        .upload-fields input {
-            width: 100%; padding: .65rem .9rem;
-            border: 1.5px solid #d1d5db; border-radius: 8px;
-            font-size: .9em; font-family: inherit;
-            transition: border-color .2s;
-        }
-        .upload-fields input:focus { outline: none; border-color: #16a34a; }
-        .upload-fields input.field-error { border-color: #dc2626; }
-        .field-err-msg { font-size: .72em; color: #dc2626; min-height: 1em; }
-
-        /* Drop zone */
-        #upload-drop-zone {
-            border: 2.5px dashed #86efac; border-radius: 12px;
-            padding: 2rem 1rem; text-align: center; cursor: pointer;
-            background: #fff; transition: border-color .2s, background .2s;
-            position: relative;
-        }
-        #upload-drop-zone.drag-over { border-color: #16a34a; background: #f0fdf4; }
-        #upload-drop-zone .dz-icon { font-size: 3rem; margin-bottom: .5rem; }
-        #upload-drop-zone .dz-label { font-size: .9em; color: #374151; margin-bottom: .8rem; }
-        #upload-file-input { display: none; }
-        .browse-btn {
-            display: inline-block; background: #16a34a; color: #fff;
-            padding: .55rem 1.4rem; border-radius: 8px; font-weight: 700;
-            font-size: .9em; cursor: pointer; border: none;
-            transition: background .18s;
-        }
-        .browse-btn:hover { background: #15803d; }
-
-        /* File list */
-        #upload-file-list { list-style: none; margin-top: 1rem; }
-        #upload-file-list li {
-            background: #f3f4f6; border-radius: 6px; padding: .5rem .8rem;
-            margin-bottom: .5rem; font-size: .82em;
-            display: flex; justify-content: space-between; align-items: center;
-        }
-        .rm-file-btn { background: none; border: none; color: #9ca3af; font-size: 1.2em; cursor: pointer; font-weight: 700; line-height: 1; }
-        .rm-file-btn:hover { color: #dc2626; }
-
-        /* Upload error */
-        #upload-zone-error { font-size: .78em; color: #dc2626; margin-top: .5rem; min-height: 1em; }
-
-        /* Submit button */
-        #upload-submit-btn {
-            width: 100%; margin-top: 1.4rem; padding: .85rem;
-            background: #16a34a; color: #fff; border: none; border-radius: 10px;
-            font-size: 1em; font-weight: 700; cursor: pointer;
-            transition: background .18s; letter-spacing: .03em;
-        }
-        #upload-submit-btn:hover:not(:disabled) { background: #15803d; }
-        #upload-submit-btn:disabled { background: #9ca3af; cursor: not-allowed; }
-        #upload-submit-btn.done { background: #2563eb; }
-
-        /* Progress overlay inside drop zone */
-        .upload-overlay {
-            display: none; position: absolute; inset: 0;
-            background: rgba(255,255,255,.92); border-radius: 10px;
-            flex-direction: column; align-items: center; justify-content: center;
-            font-size: .85em; color: #374151; gap: .8rem; z-index: 2;
-        }
-        .upload-overlay.visible { display: flex; }
-        .upload-prog-bar-wrap { width: 70%; height: 8px; background: #e5e7eb; border-radius: 99px; overflow: hidden; }
-        .upload-prog-bar { height: 100%; width: 0%; background: #16a34a; border-radius: 99px; transition: width .4s; }
-
-        /* Success overlay */
-        .success-overlay {
-            display: none; position: absolute; inset: 0;
-            background: rgba(255,255,255,.96); border-radius: 10px;
-            flex-direction: column; align-items: center; justify-content: center;
-            text-align: center; padding: 1.5rem; z-index: 3;
-        }
-        .success-overlay.visible { display: flex; }
-        .success-overlay .s-icon { font-size: 3.5rem; margin-bottom: .5rem; }
-        .success-overlay .s-title { font-size: 1.1em; font-weight: 700; color: #15803d; margin-bottom: .3rem; }
-        .success-overlay .s-case { font-size: .9em; color: #374151; }
-        .success-overlay .s-case span { color: #7c3aed; font-weight: 700; }
-        .success-overlay .s-close {
-            margin-top: 1rem; padding: .5rem 1.4rem;
-            background: #2563eb; color: #fff; border: none; border-radius: 8px;
-            font-size: .85em; font-weight: 700; cursor: pointer;
-        }
-    </style>
-</head>
-<body>
-<div class="container">
-
-    <!-- Intro -->
-    <p>您好，我是 Tony 線上美語家教的技術人員 <span class="highlight">Oliver</span>。我負責線上視訊軟體的障礙排除。</p>
-
-    <!-- ══ AUDIO PLAYER ══ -->
-    <div class="audio-section">
-        <div class="audio-label">
-            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="#1e40af">
-                <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
-            </svg>
-            音訊說明：網速不足障礙排除
-        </div>
-        <div class="player">
-            <button class="play-btn" id="playBtn" aria-label="播放">
-                <svg id="iconPlay" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                <svg id="iconPause" viewBox="0 0 24 24" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
-            </button>
-            <div class="progress-wrap">
-                <input class="progress-bar" id="progressBar" type="range" min="0" max="100" value="0" step="0.1">
-                <div class="time-row">
-                    <span id="currentTime">0:00</span>
-                    <span id="totalTime">0:00</span>
-                </div>
-            </div>
-            <button class="vol-btn" id="volBtn" aria-label="靜音切換">
-                <svg id="iconVol" viewBox="0 0 24 24">
-                    <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
-                </svg>
-                <svg id="iconMute" viewBox="0 0 24 24" style="display:none">
-                    <path d="M16.5 12A4.5 4.5 0 0 0 14 7.97v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06a8.99 8.99 0 0 0 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
-                </svg>
-            </button>
-        </div>
-        <audio id="mainAudio" preload="auto">
-            <source src="https://ik.imagekit.io/lql1uveoc/tshooting%202" type="audio/mpeg">
-        </audio>
-    </div>
-
-    <!-- Event description -->
-    <p><strong><span class="alert-text">異常紀錄：</span> 2026年4月4日，週六下午兩點。</strong><br>
-    線上美語課程中，發生網路速度不足，而有畫面及聲音延遲的障礙發生。為了使學生有最佳的上課體驗，Tony 線上美語家教誠摯地邀請您一起排除網速不足的障礙。</p>
-
-    <!-- Speed test -->
-    <h2>連線標準與測試方式</h2>
-    <div class="two-col">
-        <div>
-            <p>由於我們課堂上使用 <span class="highlight">Zoom</span> 進行視訊教學，若要維持 <strong>1080P 高畫質</strong>與流暢度，對網路的穩定性要求較高。為了確保同學聽課不卡頓、教材字體清晰，想請您協助進行簡單的網路速度測試，讓我們一起找出原因。</p>
-            <p>根據 Zoom 官方建議標準，測速結果建議：<br>
-            👉 <strong>下載與上傳速度都要超過 <span class="highlight">25 Mbps</span></strong><br>
-            👉 <strong>延遲 Ping 值要低於 <span class="highlight">20</span></strong>，才能保證完全不延遲。</p>
-            <p>接下來請依照您目前的裝置，選擇測試方式：</p>
-            <ul class="instruction-list">
-                <li><strong>手機或平板：</strong>請到商店下載 <strong>Speedtest App</strong>，開啟後按下 GO 開始測試。</li>
-                <li><strong>電腦：</strong>請點擊 <a href="https://www.speedtest.net/" target="_blank" class="btn-link">速度測試</a>，進入後點擊 GO 按鈕。</li>
-            </ul>
-        </div>
-        <div class="img-container">
-            <span class="img-caption">▼ 測速結果畫面範例參考 ▼</span>
-            <img src="https://ik.imagekit.io/lql1uveoc/%E6%88%AA%E5%9C%96%202026-04-04%20%E4%B8%8B%E5%8D%884.57.01.png" alt="網路測速範例圖片">
-        </div>
-    </div>
-
-    <!-- Solutions -->
-    <h2>專業優化建議</h2>
-    <p>如果您發現 Wi-Fi 訊號不穩，這裡提供以下解決方案：</p>
-    <div class="solution-grid">
-        <div class="solution-card">
-            <h3>方案 A：USB 網路共享 (最推薦)</h3>
-            <p>使用手機熱點的 <strong>USB 直接連線</strong>。用充電線連接手機與電腦，在手機設定中開啟個人熱點並選擇透過 USB 分享網路。<br><br>
-            <span class="alert-text">※ 關鍵步驟：</span>連接後請務必<strong>關閉電腦的 Wi-Fi 開關</strong>，避開無線干擾，讓電腦百分之百利用手機網速。</p>
-        </div>
-        <div class="solution-card">
-            <h3>方案 B：優化路由器環境</h3>
-            <p>若必須使用 Wi-Fi，請確保電腦與路由器之間沒有牆壁或大型家具遮擋，並建議上課時與路由器<strong>保持在五公尺以內</strong>。<br><br>
-            請避開微波爐、藍牙喇叭等電磁波干擾源，並定期將路由器<strong>電源關閉重開</strong>以改善連線品質。</p>
-        </div>
-    </div>
-
-    <!-- Follow-up + Upload -->
-    <h2>後續處理步驟</h2>
-    <p>測試完成後，畫面會顯示<span class="highlight">延遲、下載與上傳</span>這三項數據。請將截圖直接透過下方上傳區回傳，系統會自動通知 Oliver 分析您的結果。</p>
-
-    <!-- ══════════════════════════════════════════
-         UPLOAD SECTION
-    ══════════════════════════════════════════ -->
-    <div class="upload-section">
-        <h2>📤 上傳測速截圖 / Upload Speed Test Screenshot</h2>
-        <p>請填寫您的姓名與 E-mail，然後上傳截圖（最多 3 張）。提交後您與 Oliver 都會收到確認信。<br>
-        <em style="font-size:.85em; color:#6b7280;">Please enter your name and email, then upload your screenshot(s). Both you and Oliver will receive a confirmation email.</em></p>
-
-        <!-- Name + Email -->
-        <div class="upload-fields">
-            <div class="field">
-                <label for="u-name">學生姓名 / Your Name <span style="color:#dc2626">*</span></label>
-                <input type="text" id="u-name" placeholder="e.g. 王小明 / Ming Wang">
-                <div class="field-err-msg" id="u-name-err"></div>
-            </div>
-            <div class="field">
-                <label for="u-email">E-mail <span style="color:#dc2626">*</span></label>
-                <input type="email" id="u-email" placeholder="your.email@example.com">
-                <div class="field-err-msg" id="u-email-err"></div>
-            </div>
-        </div>
-
-        <!-- Drop zone -->
-        <div id="upload-drop-zone">
-            <!-- Uploading overlay -->
-            <div class="upload-overlay" id="uploading-overlay">
-                <div>⏫ 上傳中 / Uploading...</div>
-                <div class="upload-prog-bar-wrap"><div class="upload-prog-bar" id="upload-prog-bar"></div></div>
-                <div id="upload-prog-pct">0%</div>
-            </div>
-            <!-- Success overlay -->
-            <div class="success-overlay" id="success-overlay">
-                <div class="s-icon">✅</div>
-                <div class="s-title">上傳成功 / Upload Successful!</div>
-                <div class="s-case" id="s-case-text"></div>
-                <button class="s-close" id="s-close-btn">關閉 / Close</button>
-            </div>
-
-            <div class="dz-icon">📁</div>
-            <div class="dz-label">
-                拖曳圖片到這裡，或點選下方按鈕<br>
-                <em style="font-size:.85em; color:#6b7280;">Drag &amp; drop images here, or click below</em>
-            </div>
-            <input type="file" id="upload-file-input" multiple accept="image/*,.pdf">
-            <label for="upload-file-input" class="browse-btn">選擇檔案 / Browse Files</label>
-            <ul id="upload-file-list"></ul>
-            <div id="upload-zone-error"></div>
-        </div>
-
-        <button id="upload-submit-btn">提交截圖 / Submit Screenshot</button>
-    </div>
-    <!-- ══ END UPLOAD SECTION ══ -->
-
-    <div class="sign-off" style="margin-top:2rem;">
-        感謝您的配合與對教學品質的重視，我們一起讓學習過程更加順暢。<br><br>
-        Best regards,<br>
-        <strong style="font-size:1.2em; color:#0f172a;">Oliver</strong><br>
-        Tony 線上美語家教 I.T. Support
-    </div>
-
-    <!-- Profile -->
-    <section class="profile-card">
-        <img class="profile-photo" src="https://ik.imagekit.io/lql1uveoc/Oliver" alt="Oliver G.">
-        <div class="profile-text">
-            <h3>Oliver G.</h3>
-            <h4>I.T. 資訊部門職責</h4>
-            <p style="font-size:.88em; color:#475569; margin-bottom:.5rem;">負責平台與技術支援，確保線上教學順利進行，主要職責包括：</p>
-            <ul class="duty-list">
-                <li><strong>A.</strong> 維護並優化線上教學平台的穩定性與安全性、協助老師與學生處理連線、音訊、視訊等技術問題。</li>
-                <li><strong>B.</strong> 定期進行系統更新與資料備份，確保教學資料完整。</li>
-                <li><strong>C.</strong> 提供上課連結、課程預約系統等技術支援、分析使用者反饋，持續改善學習體驗。</li>
-            </ul>
-        </div>
-    </section>
-
-</div><!-- /.container -->
-
-<!-- ══ SCRIPTS ══ -->
-<script>
-/* ─────────────────────────────────────────────
-   AUDIO PLAYER
-───────────────────────────────────────────── */
-(function () {
-    var audio       = document.getElementById('mainAudio');
-    var playBtn     = document.getElementById('playBtn');
-    var iconPlay    = document.getElementById('iconPlay');
-    var iconPause   = document.getElementById('iconPause');
-    var progressBar = document.getElementById('progressBar');
-    var elCurrent   = document.getElementById('currentTime');
-    var elTotal     = document.getElementById('totalTime');
-    var volBtn      = document.getElementById('volBtn');
-    var iconVol     = document.getElementById('iconVol');
-    var iconMute    = document.getElementById('iconMute');
-
-    function fmt(s) {
-        var m = Math.floor(s / 60), sec = Math.floor(s % 60);
-        return m + ':' + (sec < 10 ? '0' : '') + sec;
-    }
-    playBtn.addEventListener('click', function () { audio.paused ? audio.play() : audio.pause(); });
-    audio.addEventListener('play',  function () { iconPlay.style.display='none'; iconPause.style.display=''; });
-    audio.addEventListener('pause', function () { iconPlay.style.display='';     iconPause.style.display='none'; });
-    audio.addEventListener('loadedmetadata', function () { elTotal.textContent = fmt(audio.duration); });
-    audio.addEventListener('timeupdate', function () {
-        if (!audio.duration) return;
-        progressBar.value = (audio.currentTime / audio.duration) * 100;
-        elCurrent.textContent = fmt(audio.currentTime);
-    });
-    progressBar.addEventListener('input', function () {
-        if (audio.duration) audio.currentTime = (progressBar.value / 100) * audio.duration;
-    });
-    volBtn.addEventListener('click', function () {
-        audio.muted = !audio.muted;
-        iconVol.style.display  = audio.muted ? 'none' : '';
-        iconMute.style.display = audio.muted ? ''     : 'none';
-    });
-    audio.addEventListener('ended', function () {
-        iconPlay.style.display=''; iconPause.style.display='none';
-        progressBar.value=0; elCurrent.textContent='0:00';
-    });
-    audio.play().catch(function(){});
-})();
-
-/* ─────────────────────────────────────────────
-   FILE UPLOAD
-   Replace GAS_URL below with your deployed
-   Google Apps Script Web App URL.
-───────────────────────────────────────────── */
-(function () {
-    var GAS_URL = 'https://script.google.com/macros/s/AKfycbw1UP-Dly85MheiOBgHkeqFhtmFnMAfN7VTimvjcmY8zTYuTjOHjEjQnuzPQnn9VbLd/exec';   // ← replace after deploying GAS
-
-    var dropZone    = document.getElementById('upload-drop-zone');
-    var fileInput   = document.getElementById('upload-file-input');
-    var fileList    = document.getElementById('upload-file-list');
-    var zoneErr     = document.getElementById('upload-zone-error');
-    var submitBtn   = document.getElementById('upload-submit-btn');
-    var nameInput   = document.getElementById('u-name');
-    var emailInput  = document.getElementById('u-email');
-    var nameErr     = document.getElementById('u-name-err');
-    var emailErr    = document.getElementById('u-email-err');
-    var uploadOverlay  = document.getElementById('uploading-overlay');
-    var successOverlay = document.getElementById('success-overlay');
-    var progBar     = document.getElementById('upload-prog-bar');
-    var progPct     = document.getElementById('upload-prog-pct');
-    var sCaseText   = document.getElementById('s-case-text');
-    var sCloseBtn   = document.getElementById('s-close-btn');
-
-    var uploadedFiles = [];
-
-    /* Drag & drop */
-    ['dragenter','dragover','dragleave','drop'].forEach(function(ev) {
-        dropZone.addEventListener(ev, function(e) { e.preventDefault(); e.stopPropagation(); });
-    });
-    ['dragenter','dragover'].forEach(function(ev) {
-        dropZone.addEventListener(ev, function() { dropZone.classList.add('drag-over'); });
-    });
-    ['dragleave','drop'].forEach(function(ev) {
-        dropZone.addEventListener(ev, function() { dropZone.classList.remove('drag-over'); });
-    });
-    dropZone.addEventListener('drop', function(e) { addFiles(e.dataTransfer.files); });
-    fileInput.addEventListener('change', function() { addFiles(fileInput.files); fileInput.value=''; });
-
-    function addFiles(files) {
-        zoneErr.textContent = '';
-        if (uploadedFiles.length + files.length > 3) {
-            zoneErr.textContent = '最多上傳 3 個檔案 / Max 3 files';
-            return;
-        }
-        Array.from(files).forEach(function(f) { uploadedFiles.push(f); });
-        renderList();
+// ── Main POST handler ───────────────────────────────────
+function doPost(e) {
+  try {
+    var raw = e.postData ? e.postData.contents : '';
+    if (!raw) {
+      return jsonResponse({ status: 'error', message: 'No data received' });
     }
 
-    function renderList() {
-        fileList.innerHTML = '';
-        uploadedFiles.forEach(function(f, i) {
-            var li = document.createElement('li');
-            li.textContent = f.name;
-            var btn = document.createElement('button');
-            btn.className = 'rm-file-btn';
-            btn.innerHTML = '&times;';
-            btn.onclick = function(e) { e.stopPropagation(); uploadedFiles.splice(i,1); renderList(); };
-            li.appendChild(btn);
-            fileList.appendChild(li);
-        });
+    var payload     = JSON.parse(raw);
+    var studentName = payload.studentName || '(未填)';
+    var email       = payload.email       || '';
+    var submittedAt = payload.submittedAt || new Date().toLocaleString('zh-TW');
+    var files       = payload.files       || [];
+
+    // Generate submission ID
+    var submissionId = 'TSH-' + new Date().getTime().toString().slice(-6);
+
+    // ── Save files to Google Drive ──────────────────────
+    var folder    = DriveApp.getFolderById(DRIVE_FOLDER_ID);
+    var fileLinks = [];
+
+    for (var i = 0; i < files.length; i++) {
+      var f         = files[i];
+      // Strip the "data:mime/type;base64," prefix
+      var base64Data = f.fileData.split(',')[1];
+      var mimeType   = f.mimeType || 'image/jpeg';
+      var fileName   = f.fileName || ('file_' + i);
+
+      var decoded    = Utilities.base64Decode(base64Data);
+      var blob       = Utilities.newBlob(decoded, mimeType, fileName);
+      var driveFile  = folder.createFile(blob);
+      driveFile.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+      fileLinks.push(driveFile.getUrl());
     }
 
-    /* Submit */
-    submitBtn.addEventListener('click', function() {
-        // Validate
-        nameErr.textContent = ''; emailErr.textContent = ''; zoneErr.textContent = '';
-        nameInput.classList.remove('field-error');
-        emailInput.classList.remove('field-error');
-        var ok = true;
+    // ── Write row to Google Sheet ───────────────────────
+    var ss    = SpreadsheetApp.openById(SPREADSHEET_ID);
+    var sheet = ss.getSheets()[0];
+    sheet.appendRow([
+      submittedAt,
+      studentName,
+      email,
+      files.length,
+      fileLinks.join('\n'),
+      submissionId
+    ]);
 
-        if (!nameInput.value.trim()) {
-            nameErr.textContent = '請填寫姓名 / Name required';
-            nameInput.classList.add('field-error'); ok = false;
-        }
-        var emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailInput.value.trim()) {
-            emailErr.textContent = '請填寫 E-mail / Email required';
-            emailInput.classList.add('field-error'); ok = false;
-        } else if (!emailRe.test(emailInput.value)) {
-            emailErr.textContent = 'E-mail 格式錯誤 / Invalid email format';
-            emailInput.classList.add('field-error'); ok = false;
-        }
-        if (uploadedFiles.length === 0) {
-            zoneErr.textContent = '請至少上傳一張截圖 / Please upload at least 1 file';
-            ok = false;
-        }
-        if (!ok) return;
+    // ── Email Tony ──────────────────────────────────────
+    var fileLinksHtml = fileLinks.map(function(url, idx) {
+      return '<a href="' + url + '" style="color:#2563eb">📎 截圖 ' + (idx + 1) + '</a>';
+    }).join('<br>');
 
-        /* Show upload progress */
-        uploadOverlay.classList.add('visible');
-        submitBtn.disabled = true;
-        var w = 0;
-        var ticker = setInterval(function() {
-            if (w < 88) { w++; progBar.style.width = w+'%'; progPct.textContent = w+'%'; }
-            else clearInterval(ticker);
-        }, 70);
-
-        /* Read files as base64 */
-        var promises = uploadedFiles.map(function(f) {
-            return new Promise(function(res, rej) {
-                var r = new FileReader();
-                r.onload  = function() { res({ fileName: f.name, mimeType: f.type, fileData: r.result }); };
-                r.onerror = rej;
-                r.readAsDataURL(f);
-            });
-        });
-
-        Promise.all(promises).then(function(filesArr) {
-            var payload = {
-                studentName: nameInput.value.trim(),
-                email:       emailInput.value.trim(),
-                files:       filesArr,
-                submittedAt: new Date().toLocaleString('zh-TW', { timeZone: 'Asia/Taipei' })
-            };
-            return fetch(GAS_URL, {
-                method:  'POST',
-                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                body:    JSON.stringify(payload)
-            });
-        })
-        .then(function(r) { return r.json(); })
-        .then(function(data) {
-            clearInterval(ticker);
-            progBar.style.width = '100%'; progPct.textContent = '100%';
-            setTimeout(function() {
-                uploadOverlay.classList.remove('visible');
-                if (data.status === 'success') {
-                    sCaseText.innerHTML = '編號 Case #<span>' + data.submissionId + '</span><br>' +
-                        '<small style="color:#6b7280">確認信已寄至您的信箱<br>A confirmation email has been sent.</small>';
-                    successOverlay.classList.add('visible');
-                    submitBtn.textContent = '已提交 / Submitted';
-                    submitBtn.classList.add('done');
-                } else {
-                    zoneErr.textContent = '上傳失敗：' + (data.message || 'Unknown error');
-                    submitBtn.disabled = false;
-                }
-            }, 400);
-        })
-        .catch(function() {
-            clearInterval(ticker);
-            uploadOverlay.classList.remove('visible');
-            zoneErr.textContent = '網路錯誤，請再試一次 / Network error, please try again.';
-            submitBtn.disabled = false;
-        });
+    MailApp.sendEmail({
+      to:       TONY_EMAIL,
+      subject:  '【網速回報】' + studentName + ' — ' + submissionId,
+      htmlBody:
+        '<div style="font-family:sans-serif;max-width:600px">' +
+        '<h2 style="color:#1e40af">新網路測速截圖回報</h2>' +
+        '<table style="font-size:15px;border-collapse:collapse;width:100%">' +
+        '<tr style="background:#f0f7ff"><td style="padding:10px;font-weight:bold;width:140px">提交編號</td>' +
+          '<td style="padding:10px;color:#7c3aed;font-weight:bold">' + submissionId + '</td></tr>' +
+        '<tr><td style="padding:10px;font-weight:bold">學生姓名</td>' +
+          '<td style="padding:10px">' + studentName + '</td></tr>' +
+        '<tr style="background:#f0f7ff"><td style="padding:10px;font-weight:bold">E-mail</td>' +
+          '<td style="padding:10px">' + email + '</td></tr>' +
+        '<tr><td style="padding:10px;font-weight:bold">提交時間</td>' +
+          '<td style="padding:10px">' + submittedAt + '</td></tr>' +
+        '<tr style="background:#f0f7ff"><td style="padding:10px;font-weight:bold">截圖連結</td>' +
+          '<td style="padding:10px">' + (fileLinksHtml || '(無檔案)') + '</td></tr>' +
+        '</table>' +
+        '<p style="color:#888;font-size:13px;margin-top:20px">Tony 線上美語家教 I.T. Support</p>' +
+        '</div>'
     });
 
-    /* Close success & reset */
-    sCloseBtn.addEventListener('click', function() {
-        successOverlay.classList.remove('visible');
-        uploadedFiles = [];
-        renderList();
-        nameInput.value = '';
-        emailInput.value = '';
-        progBar.style.width = '0%';
-        submitBtn.textContent = '提交截圖 / Submit Screenshot';
-        submitBtn.classList.remove('done');
-        submitBtn.disabled = false;
-    });
-})();
-</script>
-</body>
-</html>
+    // ── Confirmation email to student ───────────────────
+    if (email && email.indexOf('@') > -1) {
+      MailApp.sendEmail({
+        to:       email,
+        subject:  '【Tony 線上美語】測速截圖已收到 — ' + submissionId,
+        htmlBody:
+          '<div style="font-family:sans-serif;max-width:600px">' +
+          '<h2 style="color:#15803d">您的截圖已成功送出 ✅</h2>' +
+          '<p>您好 <strong>' + studentName + '</strong>，</p>' +
+          '<p>我們已收到您的網路測速截圖，Oliver 將盡快為您分析並回覆。</p>' +
+          '<table style="font-size:15px;border-collapse:collapse;width:100%;margin-top:16px">' +
+          '<tr style="background:#f0fdf4"><td style="padding:10px;font-weight:bold;width:140px">提交編號</td>' +
+            '<td style="padding:10px;color:#7c3aed;font-weight:bold">' + submissionId + '</td></tr>' +
+          '<tr><td style="padding:10px;font-weight:bold">提交時間</td>' +
+            '<td style="padding:10px">' + submittedAt + '</td></tr>' +
+          '</table>' +
+          '<p style="margin-top:20px">如有任何問題，請聯絡 Oliver。</p>' +
+          '<hr style="border:none;border-top:1px solid #e2e8f0;margin-top:24px">' +
+          '<p style="color:#888;font-size:13px">Tony 線上美語家教 I.T. Support<br>' +
+          '<a href="https://tonyonlineenglish.netlify.app" style="color:#2563eb">tonyonlineenglish.netlify.app</a></p>' +
+          '</div>'
+      });
+    }
+
+    return jsonResponse({ status: 'success', submissionId: submissionId });
+
+  } catch (err) {
+    // Log to sheet for debugging
+    try {
+      var ss2 = SpreadsheetApp.openById(SPREADSHEET_ID);
+      var s2  = ss2.getSheets()[0];
+      s2.appendRow(['ERROR', new Date().toString(), err.toString()]);
+    } catch(logErr) {}
+
+    return jsonResponse({ status: 'error', message: err.toString() });
+  }
+}
+
+// ── GET: connectivity test ──────────────────────────────
+function doGet(e) {
+  return jsonResponse({ status: 'ok', service: 'Tshooting Upload', time: new Date().toString() });
+}
+
+// ── Helper: return JSON with CORS ──────────────────────
+function jsonResponse(obj) {
+  return ContentService
+    .createTextOutput(JSON.stringify(obj))
+    .setMimeType(ContentService.MimeType.JSON);
+}
