@@ -1,0 +1,1346 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>學測英文作文衝刺班 | Tony線上美語家教</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Sans+TC:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+    /* ─────────────────────────────────────────────
+       TOKENS
+    ───────────────────────────────────────────── */
+    :root {
+        --white:       #ffffff;
+        --off-white:   #faf9f7;
+        --stone-50:    #f7f5f2;
+        --stone-100:   #ede9e4;
+        --stone-200:   #d6cfc6;
+        --stone-400:   #9a9085;
+        --stone-700:   #4a4540;
+        --ink:         #1a1714;
+        --gold:        #b8934a;
+        --gold-light:  #d4aa6a;
+        --gold-pale:   #f5eedd;
+        --red:         #c0392b;
+        --green:       #27ae60;
+        --blue:        #1a6bbd;
+
+        --font-display: 'Cormorant Garamond', Georgia, serif;
+        --font-body:    'Noto Sans TC', system-ui, sans-serif;
+        --font-mono:    'DM Mono', monospace;
+
+        --r-sm:  8px;
+        --r-md:  16px;
+        --r-lg:  24px;
+        --r-xl:  40px;
+        --r-pill:999px;
+
+        --shadow-sm: 0 1px 4px rgba(0,0,0,.06), 0 4px 12px rgba(0,0,0,.04);
+        --shadow-md: 0 4px 20px rgba(0,0,0,.09), 0 1px 4px rgba(0,0,0,.04);
+        --shadow-lg: 0 12px 40px rgba(0,0,0,.12), 0 4px 12px rgba(0,0,0,.05);
+
+        --ease-out: cubic-bezier(.22,.68,0,1.2);
+        --ease-in:  cubic-bezier(.4,0,1,1);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+        background: var(--white);
+        color: var(--ink);
+        font-family: var(--font-body);
+        font-weight: 400;
+        line-height: 1.7;
+        overflow-x: hidden;
+    }
+
+    /* ─────────────────────────────────────────────
+       ANIMATIONS
+    ───────────────────────────────────────────── */
+    @keyframes fadeUp {
+        from { opacity:0; transform: translateY(28px); }
+        to   { opacity:1; transform: translateY(0); }
+    }
+    @keyframes lineGrow {
+        from { transform: scaleX(0); }
+        to   { transform: scaleX(1); }
+    }
+    @keyframes pulse-gold {
+        0%,100% { box-shadow: 0 0 0 0 rgba(184,147,74,.35); }
+        50%      { box-shadow: 0 0 0 12px rgba(184,147,74,0); }
+    }
+    @keyframes confetti-burst {
+        0%   { opacity:1; transform: translate(-50%,0) scale(0); }
+        100% { opacity:0; box-shadow: -20px -50px 0 -3px #e74c3c, 20px -50px 0 -3px #3498db, -35px -30px 0 -3px #f1c40f, 35px -30px 0 -3px #2ecc71, 0 -65px 0 -3px #9b59b6, -15px -70px 0 -3px orange, 15px -70px 0 -3px hotpink; transform: translate(-50%,-25px) scale(1.6) rotate(20deg); }
+    }
+
+    .reveal {
+        opacity:0;
+        animation: fadeUp .65s var(--ease-out) forwards;
+    }
+
+    /* ─────────────────────────────────────────────
+       TOP BAR
+    ───────────────────────────────────────────── */
+    .topbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 18px 48px;
+        border-bottom: 1px solid var(--stone-100);
+        background: var(--white);
+        position: sticky;
+        top: 0;
+        z-index: 500;
+    }
+    .topbar-logo {
+        font-family: var(--font-display);
+        font-size: 1.25rem;
+        font-weight: 600;
+        color: var(--gold);
+        letter-spacing: .02em;
+    }
+    .topbar-badge {
+        font-family: var(--font-mono);
+        font-size: .72rem;
+        letter-spacing: .08em;
+        color: var(--stone-400);
+        text-transform: uppercase;
+    }
+
+    /* ─────────────────────────────────────────────
+       HERO
+    ───────────────────────────────────────────── */
+    .hero {
+        max-width: 900px;
+        margin: 80px auto 0;
+        padding: 0 32px;
+        text-align: center;
+    }
+    .hero-eyebrow {
+        font-family: var(--font-mono);
+        font-size: .78rem;
+        letter-spacing: .16em;
+        color: var(--gold);
+        text-transform: uppercase;
+        animation: fadeUp .5s var(--ease-out) .1s both;
+    }
+    .hero-title {
+        font-family: var(--font-display);
+        font-size: clamp(2.4rem, 6vw, 5rem);
+        font-weight: 300;
+        line-height: 1.18;
+        color: var(--ink);
+        margin: 20px 0 12px;
+        animation: fadeUp .6s var(--ease-out) .2s both;
+    }
+    .hero-title em {
+        font-style: italic;
+        color: var(--gold);
+    }
+    .hero-rule {
+        width: 56px;
+        height: 2px;
+        background: var(--gold);
+        margin: 0 auto 32px;
+        transform-origin: left;
+        animation: lineGrow .7s var(--ease-out) .4s both;
+    }
+    .hero-body {
+        font-size: 1.08rem;
+        color: var(--stone-700);
+        max-width: 640px;
+        margin: 0 auto 48px;
+        animation: fadeUp .6s var(--ease-out) .45s both;
+        line-height: 2;
+    }
+    .hero-body strong { color: var(--gold); font-weight: 700; }
+
+    /* ─────────────────────────────────────────────
+       STORY CARDS (copywriting section)
+    ───────────────────────────────────────────── */
+    .story-section {
+        background: var(--stone-50);
+        padding: 80px 32px;
+        margin-top: 80px;
+    }
+    .story-inner {
+        max-width: 840px;
+        margin: 0 auto;
+        display: grid;
+        gap: 32px;
+    }
+    .story-card {
+        background: var(--white);
+        border-radius: var(--r-lg);
+        padding: 40px 48px;
+        border-left: 3px solid var(--gold);
+        box-shadow: var(--shadow-sm);
+        opacity: 0;
+        animation: fadeUp .6s var(--ease-out) forwards;
+    }
+    .story-card:nth-child(1) { animation-delay: .1s; }
+    .story-card:nth-child(2) { animation-delay: .2s; }
+    .story-card:nth-child(3) { animation-delay: .3s; }
+    .story-card p { color: var(--stone-700); font-size: 1rem; line-height: 2; }
+    .story-card p strong { color: var(--gold); }
+    .story-card .card-icon {
+        font-size: 1.5rem;
+        margin-bottom: 12px;
+        display: block;
+    }
+
+    /* ─────────────────────────────────────────────
+       COURSE INFO STRIP
+    ───────────────────────────────────────────── */
+    .info-strip {
+        max-width: 960px;
+        margin: 80px auto;
+        padding: 0 32px;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+    }
+    .info-tile {
+        background: var(--white);
+        border: 1px solid var(--stone-100);
+        border-radius: var(--r-lg);
+        padding: 36px 28px;
+        text-align: center;
+        box-shadow: var(--shadow-sm);
+        opacity: 0;
+        animation: fadeUp .6s var(--ease-out) forwards;
+    }
+    .info-tile:nth-child(1) { animation-delay:.1s; }
+    .info-tile:nth-child(2) { animation-delay:.2s; }
+    .info-tile:nth-child(3) { animation-delay:.3s; }
+    .info-tile:nth-child(4) { animation-delay:.4s; }
+    .info-tile:nth-child(5) { animation-delay:.5s; }
+    .info-tile:nth-child(6) { animation-delay:.6s; }
+    .tile-icon { font-size: 2rem; margin-bottom: 10px; }
+    .tile-label {
+        font-family: var(--font-mono);
+        font-size: .7rem;
+        letter-spacing: .1em;
+        text-transform: uppercase;
+        color: var(--stone-400);
+        margin-bottom: 8px;
+    }
+    .tile-value {
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--ink);
+        line-height: 1.5;
+    }
+
+    /* ─────────────────────────────────────────────
+       COUNTDOWN
+    ───────────────────────────────────────────── */
+    .countdown-section {
+        background: var(--ink);
+        padding: 72px 32px;
+        text-align: center;
+    }
+    .countdown-label {
+        font-family: var(--font-mono);
+        font-size: .76rem;
+        letter-spacing: .14em;
+        text-transform: uppercase;
+        color: var(--gold-light);
+        margin-bottom: 14px;
+    }
+    .countdown-title {
+        font-family: var(--font-display);
+        font-size: clamp(1.4rem, 3vw, 2.2rem);
+        color: var(--white);
+        margin-bottom: 48px;
+        font-weight: 300;
+    }
+    .timer-grid {
+        display: flex;
+        justify-content: center;
+        gap: 24px;
+    }
+    .time-block {
+        background: rgba(255,255,255,.06);
+        border: 1px solid rgba(255,255,255,.1);
+        border-radius: var(--r-md);
+        padding: 28px 40px;
+        min-width: 120px;
+    }
+    .time-block .value {
+        font-family: var(--font-display);
+        font-size: clamp(3rem, 7vw, 5.5rem);
+        font-weight: 300;
+        color: var(--gold-light);
+        line-height: 1;
+    }
+    .time-block .lbl {
+        font-family: var(--font-mono);
+        font-size: .72rem;
+        letter-spacing: .12em;
+        text-transform: uppercase;
+        color: rgba(255,255,255,.45);
+        margin-top: 10px;
+    }
+    #countdown-expired-message {
+        font-family: var(--font-display);
+        font-size: 2rem;
+        color: var(--gold-light);
+        font-style: italic;
+    }
+
+    /* ─────────────────────────────────────────────
+       PRODUCT / PRICING
+    ───────────────────────────────────────────── */
+    .product-section {
+        max-width: 800px;
+        margin: 80px auto;
+        padding: 0 32px;
+    }
+    .section-eyebrow {
+        font-family: var(--font-mono);
+        font-size: .76rem;
+        letter-spacing: .14em;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: 12px;
+    }
+    .section-title {
+        font-family: var(--font-display);
+        font-size: clamp(2rem, 4vw, 3.2rem);
+        font-weight: 300;
+        line-height: 1.25;
+        margin-bottom: 48px;
+    }
+
+    /* Image gallery */
+    .gallery-wrap {
+        border-radius: var(--r-xl);
+        overflow: hidden;
+        background: var(--stone-50);
+        position: relative;
+        margin-bottom: 40px;
+        box-shadow: var(--shadow-md);
+    }
+    .gallery-track { display: flex; transition: transform .5s ease-in-out; }
+    .gallery-slide { min-width: 100%; }
+    .gallery-slide img { width: 100%; display: block; max-height: 380px; object-fit: cover; }
+    .gallery-nav { position: absolute; top:50%; transform:translateY(-50%); width:100%; display:flex; justify-content:space-between; pointer-events:none; z-index:5; }
+    .gallery-nav button { pointer-events:auto; background:rgba(255,255,255,.85); backdrop-filter:blur(4px); color:var(--ink); border:none; font-size:1.4rem; cursor:pointer; border-radius:50%; width:40px; height:40px; display:flex; align-items:center; justify-content:center; margin:0 14px; transition:background .2s; }
+    .gallery-nav button:hover { background:var(--white); }
+    .gallery-dots { position:absolute; bottom:14px; left:50%; transform:translateX(-50%); display:flex; gap:8px; z-index:5; }
+    .gallery-dot { width:8px; height:8px; background:rgba(255,255,255,.6); border-radius:50%; cursor:pointer; border:1px solid rgba(0,0,0,.15); transition: all .3s; }
+    .gallery-dot.active { background:var(--white); transform:scale(1.2); }
+
+    /* Pricing card */
+    .pricing-card {
+        background: var(--white);
+        border: 1px solid var(--stone-100);
+        border-radius: var(--r-xl);
+        padding: 48px;
+        box-shadow: var(--shadow-md);
+        position: relative;
+    }
+    .pricing-card::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        border-radius: var(--r-xl);
+        border: 2px solid transparent;
+        background: linear-gradient(135deg, var(--gold), transparent 60%) border-box;
+        -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+        -webkit-mask-composite: destination-out;
+        mask-composite: exclude;
+        pointer-events: none;
+    }
+
+    .pricing-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 20px;
+        margin-bottom: 32px;
+        flex-wrap: wrap;
+    }
+    .pricing-header h2 {
+        font-family: var(--font-display);
+        font-size: 1.9rem;
+        font-weight: 400;
+        line-height: 1.3;
+    }
+    .pricing-tag {
+        background: var(--gold-pale);
+        color: var(--gold);
+        border: 1px solid rgba(184,147,74,.25);
+        border-radius: var(--r-pill);
+        padding: 6px 16px;
+        font-size: .82rem;
+        font-weight: 700;
+        white-space: nowrap;
+    }
+
+    .select-label {
+        font-size: .82rem;
+        color: var(--stone-400);
+        font-family: var(--font-mono);
+        letter-spacing: .06em;
+        text-transform: uppercase;
+        margin-bottom: 10px;
+    }
+    .styled-select {
+        width: 100%;
+        padding: 16px 20px;
+        font-size: 1rem;
+        font-family: var(--font-body);
+        font-weight: 700;
+        color: var(--blue);
+        border: 2px solid var(--stone-100);
+        border-radius: var(--r-md);
+        background: var(--off-white);
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239a9085' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 16px center;
+        cursor: pointer;
+        transition: border-color .2s;
+        margin-bottom: 28px;
+    }
+    .styled-select:focus { outline: none; border-color: var(--gold); }
+
+    .add-cart-btn {
+        width: 100%;
+        padding: 20px 32px;
+        font-size: 1.1rem;
+        font-family: var(--font-body);
+        font-weight: 700;
+        color: var(--white);
+        background: var(--ink);
+        border: none;
+        border-radius: var(--r-md);
+        cursor: pointer;
+        transition: background .25s, transform .15s;
+        letter-spacing: .02em;
+    }
+    .add-cart-btn:hover { background: var(--gold); transform: translateY(-1px); }
+    .add-cart-btn:active { transform: translateY(0); }
+
+    /* Cart icon */
+    .cart-fab {
+        position: fixed;
+        bottom: 32px;
+        right: 32px;
+        width: 60px;
+        height: 60px;
+        background: var(--ink);
+        color: var(--white);
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.5rem;
+        cursor: pointer;
+        box-shadow: var(--shadow-lg);
+        z-index: 400;
+        transition: background .2s, transform .2s;
+    }
+    .cart-fab:hover { background: var(--gold); transform: scale(1.07); }
+    .cart-badge {
+        position: absolute;
+        top: -5px;
+        right: -5px;
+        background: var(--red);
+        color: var(--white);
+        border-radius: 50%;
+        width: 22px;
+        height: 22px;
+        font-size: .72rem;
+        font-weight: 700;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transform: scale(0);
+        transition: transform .2s var(--ease-out);
+    }
+    .cart-badge.visible { transform: scale(1); animation: pulse-gold 1.5s 1; }
+
+    /* ─────────────────────────────────────────────
+       CART PANEL
+    ───────────────────────────────────────────── */
+    .cart-overlay {
+        position: fixed; inset: 0;
+        background: rgba(0,0,0,.45);
+        backdrop-filter: blur(3px);
+        z-index: 800;
+        opacity: 0; visibility: hidden;
+        transition: opacity .35s, visibility .35s;
+    }
+    .cart-overlay.open { opacity: 1; visibility: visible; }
+
+    .cart-panel {
+        position: fixed;
+        top: 0; right: -100%;
+        width: 90%; max-width: 980px;
+        height: 100%;
+        background: var(--white);
+        z-index: 900;
+        transition: right .4s cubic-bezier(.25,.8,.25,1);
+        display: flex;
+        flex-direction: column;
+        box-shadow: -12px 0 48px rgba(0,0,0,.12);
+    }
+    .cart-panel.open { right: 0; }
+
+    .cart-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 28px 40px;
+        border-bottom: 1px solid var(--stone-100);
+        flex-shrink: 0;
+    }
+    .cart-header h3 {
+        font-family: var(--font-display);
+        font-size: 1.6rem;
+        font-weight: 400;
+    }
+    .close-cart-btn {
+        background: none;
+        border: 1px solid var(--stone-200);
+        border-radius: 50%;
+        width: 38px; height: 38px;
+        font-size: 1.2rem;
+        cursor: pointer;
+        color: var(--stone-400);
+        display: flex; align-items: center; justify-content: center;
+        transition: all .2s;
+    }
+    .close-cart-btn:hover { background: var(--stone-50); color: var(--ink); }
+
+    .cart-body {
+        display: flex;
+        flex: 1;
+        overflow: hidden;
+    }
+    .cart-left {
+        flex: 1;
+        padding: 36px 40px;
+        overflow-y: auto;
+        border-right: 1px solid var(--stone-100);
+    }
+    .cart-right {
+        width: 380px;
+        flex-shrink: 0;
+        padding: 36px 40px;
+        background: var(--stone-50);
+        overflow-y: auto;
+    }
+
+    .cart-empty { color: var(--stone-400); font-style: italic; padding: 20px 0; }
+
+    .cart-item {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 20px;
+        padding: 24px 0;
+        border-bottom: 1px solid var(--stone-100);
+    }
+    .cart-item-name { font-weight: 700; color: var(--ink); margin-bottom: 6px; }
+    .remove-item-btn {
+        background: none; border: none;
+        color: var(--stone-400); font-size: .8rem;
+        cursor: pointer; text-decoration: underline;
+        padding: 0; transition: color .2s;
+    }
+    .remove-item-btn:hover { color: var(--red); }
+    .cart-item-price { font-family: var(--font-mono); font-size: .95rem; font-weight: 700; white-space: nowrap; }
+
+    .cart-total-block {
+        margin-top: 24px;
+        padding-top: 20px;
+        border-top: 2px solid var(--ink);
+    }
+    .total-row {
+        display: flex;
+        justify-content: space-between;
+        font-size: .95rem;
+        color: var(--stone-700);
+        line-height: 2;
+    }
+    .total-row.final {
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: var(--ink);
+        font-family: var(--font-mono);
+    }
+
+    /* Checkout right panel */
+    .checkout-section h4 {
+        font-family: var(--font-display);
+        font-size: 1.4rem;
+        font-weight: 400;
+        margin-bottom: 8px;
+    }
+    .checkout-section p { color: var(--stone-400); font-size: .88rem; margin-bottom: 20px; }
+
+    .checkout-email-field {
+        width: 100%;
+        padding: 14px 16px;
+        font-size: .95rem;
+        font-family: var(--font-body);
+        border: 1.5px solid var(--stone-200);
+        border-radius: var(--r-md);
+        background: var(--white);
+        cursor: pointer;
+        color: var(--stone-400);
+        margin-bottom: 16px;
+        transition: border-color .2s;
+    }
+    .checkout-email-field:focus { outline: none; border-color: var(--gold); color: var(--ink); }
+
+    .line-cta {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        justify-content: center;
+        background: #06c755;
+        color: var(--white);
+        text-decoration: none;
+        font-weight: 700;
+        border-radius: var(--r-md);
+        padding: 13px 20px;
+        font-size: .95rem;
+        margin-bottom: 24px;
+        transition: opacity .2s;
+    }
+    .line-cta:hover { opacity: .88; }
+
+    .payment-box {
+        background: var(--white);
+        border: 1.5px solid var(--stone-100);
+        border-radius: var(--r-md);
+        padding: 16px 18px;
+        display: flex;
+        gap: 12px;
+        align-items: center;
+        font-size: .88rem;
+        color: var(--stone-700);
+        margin-bottom: 16px;
+    }
+    .payment-dot {
+        width: 16px; height: 16px;
+        border: 2px solid var(--ink);
+        border-radius: 50%;
+        flex-shrink: 0;
+        display: flex; align-items: center; justify-content: center;
+    }
+    .payment-dot::after {
+        content:''; width:6px; height:6px;
+        background: var(--ink); border-radius: 50%;
+    }
+    .tls-note { font-size: .72rem; color: var(--stone-400); text-align: center; margin-top: 12px; }
+
+    /* ─────────────────────────────────────────────
+       EMAIL POPUP
+    ───────────────────────────────────────────── */
+    .popup-overlay {
+        position: fixed; inset: 0;
+        background: rgba(0,0,0,.6);
+        z-index: 1000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        opacity: 0; visibility: hidden;
+        transition: opacity .3s;
+    }
+    .popup-overlay.open { opacity: 1; visibility: visible; }
+    .popup-box {
+        background: var(--white);
+        border-radius: var(--r-xl);
+        padding: 48px;
+        width: 90%;
+        max-width: 460px;
+        position: relative;
+        transform: scale(.92);
+        transition: transform .3s var(--ease-out);
+        box-shadow: var(--shadow-lg);
+    }
+    .popup-overlay.open .popup-box { transform: scale(1); }
+    .popup-close {
+        position: absolute; top: 18px; right: 18px;
+        background: none; border: none;
+        font-size: 1.3rem; cursor: pointer;
+        color: var(--stone-400);
+        width: 32px; height: 32px;
+        border-radius: 50%;
+        display: flex; align-items: center; justify-content: center;
+        transition: background .2s;
+    }
+    .popup-close:hover { background: var(--stone-50); }
+    .popup-label {
+        font-family: var(--font-display);
+        font-size: 1.6rem;
+        font-weight: 400;
+        margin-bottom: 8px;
+    }
+    .popup-sub { font-size: .88rem; color: var(--stone-400); margin-bottom: 24px; }
+    .popup-input {
+        width: 100%;
+        padding: 16px 18px;
+        font-size: 1rem;
+        border: 2px solid var(--stone-200);
+        border-radius: var(--r-md);
+        font-family: var(--font-body);
+        text-align: center;
+        margin-bottom: 16px;
+        transition: border-color .2s;
+    }
+    .popup-input:focus { outline: none; border-color: var(--gold); }
+    .popup-submit {
+        width: 100%;
+        padding: 16px;
+        font-size: 1rem;
+        font-weight: 700;
+        font-family: var(--font-body);
+        color: var(--white);
+        background: var(--ink);
+        border: none;
+        border-radius: var(--r-md);
+        cursor: pointer;
+        transition: background .25s;
+    }
+    .popup-submit:hover { background: var(--gold); }
+
+    /* ─────────────────────────────────────────────
+       THANK YOU PAGE
+    ───────────────────────────────────────────── */
+    #thank-you-page {
+        display: none;
+        min-height: 100vh;
+        background: var(--stone-50);
+    }
+    .ty-wrap {
+        max-width: 1040px;
+        margin: 0 auto;
+        padding: 80px 32px;
+        display: grid;
+        grid-template-columns: 1fr 400px;
+        gap: 40px;
+        align-items: start;
+    }
+    .ty-card {
+        background: var(--white);
+        border-radius: var(--r-xl);
+        padding: 56px;
+        box-shadow: var(--shadow-md);
+    }
+    .ty-check { font-size: 3.5rem; margin-bottom: 16px; }
+    .ty-head {
+        font-family: var(--font-display);
+        font-size: 2.4rem;
+        font-weight: 400;
+        color: var(--ink);
+        margin-bottom: 12px;
+    }
+    .ty-msg { color: var(--stone-700); line-height: 1.9; margin-bottom: 32px; }
+    .ty-details { border-top: 1px solid var(--stone-100); padding-top: 24px; }
+    .ty-row { display: flex; justify-content: space-between; padding: 10px 0; border-bottom: 1px solid var(--stone-100); font-size: .9rem; }
+    .ty-row span:first-child { color: var(--stone-400); }
+    #ty-order-id { font-family: var(--font-mono); color: var(--blue); font-weight: 700; font-size: 1.3em; }
+
+    .ty-sidebar {
+        background: var(--white);
+        border-radius: var(--r-xl);
+        padding: 40px;
+        box-shadow: var(--shadow-md);
+    }
+    .ty-sidebar h4 {
+        font-family: var(--font-display);
+        font-size: 1.4rem;
+        font-weight: 400;
+        margin-bottom: 24px;
+        padding-bottom: 14px;
+        border-bottom: 1px solid var(--stone-100);
+        color: var(--stone-400);
+        letter-spacing: .02em;
+    }
+    .ty-item { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--stone-100); font-size: .9rem; }
+    .ty-item-price { font-family: var(--font-mono); font-weight: 700; }
+    .ty-grand { display: flex; justify-content: space-between; padding-top: 20px; font-family: var(--font-mono); font-weight: 700; font-size: 1.1rem; }
+
+    .ty-payment {
+        margin-top: 32px;
+        padding-top: 24px;
+        border-top: 1px solid var(--stone-100);
+    }
+    .ty-payment h5 { font-size: .82rem; text-transform: uppercase; letter-spacing: .1em; color: var(--stone-400); font-family: var(--font-mono); margin-bottom: 14px; }
+    .ty-payment p { font-size: .9rem; color: var(--stone-700); line-height: 1.9; }
+
+    .ty-line-link { color: var(--green); font-weight: 700; text-decoration: none; }
+    .ty-line-link:hover { text-decoration: underline; }
+    .ty-booking-btn {
+        display: block;
+        background: var(--blue);
+        color: var(--white);
+        text-decoration: none;
+        font-weight: 700;
+        border-radius: var(--r-md);
+        padding: 14px 20px;
+        text-align: center;
+        margin-top: 10px;
+        transition: opacity .2s;
+    }
+    .ty-booking-btn:hover { opacity: .85; }
+
+    .ty-actions { margin-top: 32px; display: flex; gap: 16px; }
+    .ty-btn-continue { color: var(--blue); cursor: pointer; background: none; border: none; font-size: .9rem; text-decoration: underline; }
+    .ty-btn-close { color: var(--red); cursor: pointer; background: none; border: none; font-size: .9rem; text-decoration: underline; }
+
+    /* celebration */
+    #celebration-icon { position: relative; display: inline-block; }
+    #celebration-icon::before {
+        content: '';
+        position: absolute; bottom: 4px; left: 50%;
+        width: 8px; height: 8px; border-radius: 2px;
+        background: transparent;
+        box-shadow: none;
+        animation: confetti-burst 1.8s ease-out infinite;
+        z-index: -1;
+    }
+
+    /* ─────────────────────────────────────────────
+       CTA BUTTON
+    ───────────────────────────────────────────── */
+    .cta-section {
+        padding: 80px 32px;
+        text-align: center;
+        background: var(--stone-50);
+    }
+    .cta-pill {
+        display: inline-flex;
+        align-items: center;
+        gap: 14px;
+        padding: 22px 52px;
+        font-size: 1.2rem;
+        font-weight: 700;
+        color: var(--white);
+        text-decoration: none;
+        border-radius: var(--r-pill);
+        background: linear-gradient(135deg, #1a6bbd, #0ec27a);
+        box-shadow: 0 6px 24px rgba(26,107,189,.25);
+        transition: transform .2s, box-shadow .2s;
+        font-family: var(--font-body);
+    }
+    .cta-pill:hover { transform: translateY(-2px); box-shadow: 0 12px 32px rgba(26,107,189,.35); }
+    .cta-pill:active { transform: translateY(0); }
+    .cta-pill img { width: 24px; height: 24px; }
+    .cta-note { margin-top: 18px; font-size: .85rem; color: var(--stone-400); }
+
+    /* ─────────────────────────────────────────────
+       FOOTER
+    ───────────────────────────────────────────── */
+    footer {
+        border-top: 1px solid var(--stone-100);
+        padding: 40px 48px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 16px;
+    }
+    .footer-brand {
+        font-family: var(--font-display);
+        font-size: 1.1rem;
+        font-weight: 600;
+        color: var(--gold);
+    }
+    .footer-note { font-size: .8rem; color: var(--stone-400); }
+
+    /* ─────────────────────────────────────────────
+       RESPONSIVE
+    ───────────────────────────────────────────── */
+    @media (max-width: 900px) {
+        .info-strip { grid-template-columns: repeat(2, 1fr); }
+        .ty-wrap { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+        .topbar { padding: 16px 20px; }
+        .hero { margin-top: 48px; padding: 0 20px; }
+        .story-card { padding: 28px 24px; }
+        .info-strip { grid-template-columns: repeat(2,1fr); padding: 0 16px; margin: 48px auto; }
+        .time-block { padding: 18px 20px; min-width: 80px; }
+        .timer-grid { gap: 12px; }
+        .product-section { padding: 0 16px; }
+        .pricing-card { padding: 28px 24px; }
+        .cart-body { flex-direction: column; }
+        .cart-right { width: 100%; }
+        .cart-panel { width: 100%; max-width: 100%; }
+        .cart-left, .cart-right { padding: 24px 20px; }
+        .cart-header { padding: 20px 20px; }
+        .cta-section { padding: 60px 20px; }
+        .cta-pill { padding: 18px 32px; font-size: 1rem; }
+        footer { padding: 28px 20px; }
+        .ty-card, .ty-sidebar { padding: 32px 24px; }
+    }
+    @media (max-width: 480px) {
+        .info-strip { grid-template-columns: 1fr 1fr; }
+        .timer-grid { gap: 8px; flex-wrap: wrap; justify-content: center; }
+        .time-block { min-width: 100px; }
+    }
+    </style>
+</head>
+<body>
+
+<!-- ══════════════════════════════════════════
+     PRODUCT PAGE
+══════════════════════════════════════════ -->
+<div id="product-page">
+
+    <!-- TOP BAR -->
+    <header class="topbar">
+        <span class="topbar-logo">Tony 線上美語家教</span>
+        <span class="topbar-badge">2026 學測衝刺班</span>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero">
+        <p class="hero-eyebrow">高中學測英文作文</p>
+        <h1 class="hero-title">學得會，<em>也用得出來</em></h1>
+        <div class="hero-rule"></div>
+        <div class="hero-body">
+            在這個關鍵時刻，你是否開始覺得那些曾經背得滾瓜爛熟的高難度單字，到了寫作時卻完全派不上用場？
+            <br><br>
+            原因不是你不夠努力，也不是英文程度不足，<br>
+            而是缺乏適當的訓練與提醒，讓你無法在寫作中<strong>自然地運用進階字彙與片語</strong>。
+        </div>
+    </section>
+
+    <!-- STORY CARDS -->
+    <section class="story-section">
+        <div class="story-inner">
+            <div class="story-card">
+                <span class="card-icon">📖</span>
+                <p>以建國高中的一位學生為例，他在第一次模擬考中作文僅拿到 8 分，原因正是作文中大量使用了國中階段就學過的單字，缺乏高階的形容詞、片語與連接句型。</p>
+            </div>
+            <div class="story-card">
+                <span class="card-icon">✍️</span>
+                <p>意識到問題後，他選擇參加了<strong>【學測英文作文訓練課程】</strong>，透過系統化的練習與針對性指導，他逐漸能靈活運用自己早已學會的單字，讓作文更自然、有層次。</p>
+            </div>
+            <div class="story-card">
+                <span class="card-icon">🏆</span>
+                <p><em>學測英文作文課程</em>——讓你從「背過」到「用出來」，寫出真正能脫穎而出的<strong>高分學測英文作文</strong>。</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- INFO TILES -->
+    <section class="info-strip">
+        <div class="info-tile">
+            <div class="tile-icon">📚</div>
+            <div class="tile-label">課程規劃</div>
+            <div class="tile-value">共 10 堂<br>高強度衝刺</div>
+        </div>
+        <div class="info-tile">
+            <div class="tile-icon">⏱️</div>
+            <div class="tile-label">課程時長</div>
+            <div class="tile-value">每堂 50 分鐘<br>專注高效</div>
+        </div>
+        <div class="info-tile">
+            <div class="tile-icon">🎯</div>
+            <div class="tile-label">課程目標</div>
+            <div class="tile-value">掌握關鍵寫作<br>技巧提升實力</div>
+        </div>
+        <div class="info-tile">
+            <div class="tile-icon">👤</div>
+            <div class="tile-label">教學模式</div>
+            <div class="tile-value">一對一<br>線上家教</div>
+        </div>
+        <div class="info-tile">
+            <div class="tile-icon">💻</div>
+            <div class="tile-label">使用軟體</div>
+            <div class="tile-value">Zoom</div>
+        </div>
+        <div class="info-tile">
+            <div class="tile-icon">💬</div>
+            <div class="tile-label">聯絡方式</div>
+            <div class="tile-value"><a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" rel="noopener" style="color:var(--gold);text-decoration:none;font-weight:700;">Line: myavalon</a></div>
+        </div>
+    </section>
+
+    <!-- COUNTDOWN -->
+    <section class="countdown-section">
+        <p class="countdown-label">考試倒數</p>
+        <h2 class="countdown-title">距離 116 學年度學測（2027/01/16）還有</h2>
+        <div class="timer-grid" id="timer-grid">
+            <div class="time-block"><div class="value" id="days">00</div><div class="lbl">Days</div></div>
+            <div class="time-block"><div class="value" id="hours">00</div><div class="lbl">Hours</div></div>
+            <div class="time-block"><div class="value" id="mins">00</div><div class="lbl">Mins</div></div>
+            <div class="time-block"><div class="value" id="secs">00</div><div class="lbl">Secs</div></div>
+        </div>
+        <div id="countdown-expired-message" style="display:none;">考試已開始！祝你好運！🎉</div>
+    </section>
+
+    <!-- PRODUCT / PRICING -->
+    <section class="product-section" style="animation-delay:.1s">
+        <p class="section-eyebrow">課程方案</p>
+        <h2 class="section-title">學費資訊</h2>
+
+        <!-- Image gallery -->
+        <div class="gallery-wrap" id="gallery-wrap">
+            <div class="gallery-track" id="gallery-track"></div>
+        </div>
+
+        <!-- Pricing card -->
+        <div class="pricing-card">
+            <div class="pricing-header">
+                <h2>高中學測英文作文<br><span style="font-size:.65em;color:var(--stone-400);font-style:italic;">每堂課 50 分鐘</span></h2>
+                <span class="pricing-tag">10堂衝刺優惠</span>
+            </div>
+            <div class="select-label">選擇課程方案</div>
+            <select class="styled-select" id="course-options"></select>
+            <button class="add-cart-btn" id="add-to-cart-btn">加入購物車</button>
+        </div>
+    </section>
+
+    <!-- CTA Button -->
+    <section class="cta-section">
+        <a href="https://tonyonlineenglish.mydurable.com/experience" class="cta-pill" target="_blank" rel="noopener">
+            預約體驗課程
+            <img src="https://ik.imagekit.io/lql1uveoc/external-link.png?updatedAt=1754911187731" alt="外部連結">
+        </a>
+        <p class="cta-note">一對一線上美語家教・Zoom 授課</p>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <span class="footer-brand">Tony 線上美語家教</span>
+        <span class="footer-note">© 2026 Tony Online English · tonyonlineenglish.netlify.app</span>
+    </footer>
+
+</div><!-- /product-page -->
+
+<!-- ══════════════════════════════════════════
+     CART FAB
+══════════════════════════════════════════ -->
+<div class="cart-fab" id="cart-icon">
+    🛒<span class="cart-badge" id="cart-count">0</span>
+</div>
+
+<!-- ══════════════════════════════════════════
+     CART PANEL
+══════════════════════════════════════════ -->
+<div class="cart-overlay" id="cart-overlay"></div>
+<div class="cart-panel" id="cart-panel">
+    <div class="cart-header">
+        <h3>購物車</h3>
+        <button class="close-cart-btn" id="close-cart-btn">✕</button>
+    </div>
+    <div class="cart-body">
+        <div class="cart-left">
+            <div id="cart-items-container"><p class="cart-empty">您的購物車是空的。</p></div>
+            <div id="cart-total-container" class="cart-total-block"></div>
+        </div>
+        <div class="cart-right">
+            <div class="checkout-section">
+                <h4>結帳</h4>
+                <p>請輸入您的電子信箱以完成訂購。</p>
+                <input type="email" id="email-display" class="checkout-email-field" readonly placeholder="點擊這裡輸入信箱">
+                <a class="line-cta" href="https://line.me/ti/p/T9YdimtG8_" target="_blank" rel="noopener">
+                    <span>💬</span> 加入 Line: Myavalon
+                </a>
+                <div style="padding-top:16px;border-top:1px solid var(--stone-100);">
+                    <p style="font-size:.82rem;color:var(--stone-400);font-family:var(--font-mono);letter-spacing:.06em;text-transform:uppercase;margin-bottom:12px;">付款方式</p>
+                    <div class="payment-box">
+                        <div class="payment-dot"></div>
+                        <span>匯款 或 Line Pay / iPass Money</span>
+                    </div>
+                </div>
+                <p class="tls-note">🔒 所有資料透過安全 TLS 連線加密傳輸</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     EMAIL POPUP
+══════════════════════════════════════════ -->
+<div class="popup-overlay" id="popup-overlay">
+    <div class="popup-box">
+        <button class="popup-close" id="popup-close">✕</button>
+        <p class="popup-label">輸入電子信箱</p>
+        <p class="popup-sub">確認信將寄送至您的信箱，請確認地址正確。</p>
+        <input type="email" class="popup-input" id="popup-email" placeholder="example@email.com">
+        <button class="popup-submit" id="popup-submit">確認送出</button>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     THANK YOU PAGE
+══════════════════════════════════════════ -->
+<div id="thank-you-page">
+    <div class="ty-wrap">
+        <div class="ty-card">
+            <div class="ty-check">✓</div>
+            <h2 class="ty-head">感謝您的訂購！<span id="celebration-icon">🎉</span></h2>
+            <p class="ty-msg">您的訂單已成功建立。確認信已寄送至您的電子信箱，請檢查您的收件匣。</p>
+            <div class="ty-details">
+                <div class="ty-row"><span>訂單編號</span><span id="ty-order-id"></span></div>
+                <div class="ty-row"><span>訂單時間</span><span id="ty-order-time"></span></div>
+                <div class="ty-row"><span>電子信箱</span><span id="ty-email"></span></div>
+            </div>
+            <div id="ty-booking-container" style="display:none;margin-top:28px;">
+                <h4 style="font-family:var(--font-display);font-size:1.3rem;font-weight:400;margin-bottom:10px;">下一步：預約課程</h4>
+                <div id="ty-booking-links"></div>
+            </div>
+            <div class="ty-payment">
+                <h5>如何付款</h5>
+                <p>
+                    <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="ty-line-link">加入 Line: myavalon</a><br>
+                    匯款或使用 Line Pay / iPass Money 付款<br>
+                    交易成功後煩請告知，將提供學費證明。感謝 ＾＾
+                </p>
+            </div>
+            <div class="ty-actions">
+                <button class="ty-btn-continue" id="continue-btn">繼續購物</button>
+                <button class="ty-btn-close" id="close-ty-btn">關閉</button>
+            </div>
+        </div>
+        <div class="ty-sidebar">
+            <h4>訂單摘要</h4>
+            <div id="ty-items"></div>
+            <div id="ty-total" class="ty-grand"></div>
+        </div>
+    </div>
+</div>
+
+<!-- ══════════════════════════════════════════
+     SCRIPTS
+══════════════════════════════════════════ -->
+<script>
+/* ── DATA ── */
+const products = [
+    { id: 'lessons-10', name: '10堂學測英文作文', price: 6000,  bookingLink: null },
+    { id: 'lessons-20', name: '20堂學測英文作文', price: 12000, bookingLink: null },
+    { id: 'lessons-16', name: '16堂學測英文作文', price: 10000, bookingLink: null },
+    { id: 'lessons-6',  name: '6堂學測英文作文',  price: 4200,  bookingLink: null },
+];
+const images = [
+    "https://ik.imagekit.io/lql1uveoc/%E6%88%AA%E5%9C%96%202025-10-13%20%E4%B8%8B%E5%8D%881.19.21.png?updatedAt=1760332772798"
+];
+
+let cart = {};
+let currentSlide = 0;
+let autoTimer;
+let touchX = 0;
+
+/* ── GALLERY ── */
+function showSlide(n) {
+    if (!images.length) return;
+    currentSlide = ((n % images.length) + images.length) % images.length;
+    document.getElementById('gallery-track').style.transform = `translateX(${-currentSlide * 100}%)`;
+    document.querySelectorAll('.gallery-dot').forEach((d, i) => d.classList.toggle('active', i === currentSlide));
+}
+function initGallery() {
+    const wrap = document.getElementById('gallery-wrap');
+    const track = document.getElementById('gallery-track');
+    if (!images.length) { wrap.style.display = 'none'; return; }
+    track.innerHTML = images.map(src => `<div class="gallery-slide"><img src="${src}" alt="課程圖"></div>`).join('');
+    if (images.length > 1) {
+        wrap.insertAdjacentHTML('beforeend', `<div class="gallery-nav"><button id="g-prev">‹</button><button id="g-next">›</button></div>`);
+        const dots = document.createElement('div'); dots.className = 'gallery-dots';
+        images.forEach((_, i) => dots.innerHTML += `<div class="gallery-dot" data-i="${i}"></div>`);
+        wrap.appendChild(dots);
+        document.getElementById('g-prev').onclick = () => { clearInterval(autoTimer); showSlide(currentSlide - 1); };
+        document.getElementById('g-next').onclick = () => { clearInterval(autoTimer); showSlide(currentSlide + 1); };
+        dots.onclick = e => { if (e.target.dataset.i) { clearInterval(autoTimer); showSlide(+e.target.dataset.i); } };
+        wrap.addEventListener('touchstart', e => { clearInterval(autoTimer); touchX = e.touches[0].clientX; }, { passive: true });
+        wrap.addEventListener('touchend', e => { const dx = e.changedTouches[0].clientX - touchX; if (Math.abs(dx) > 40) showSlide(currentSlide + (dx < 0 ? 1 : -1)); }, { passive: true });
+        autoTimer = setInterval(() => showSlide(currentSlide + 1), 4000);
+    }
+    showSlide(0);
+}
+
+/* ── COUNTDOWN ── */
+function initCountdown() {
+    const target = new Date("2027-01-16T09:00:00").getTime();
+    const pad = n => String(n).padStart(2, '0');
+    function tick() {
+        const diff = target - Date.now();
+        if (diff <= 0) {
+            document.getElementById('timer-grid').style.display = 'none';
+            document.getElementById('countdown-expired-message').style.display = 'block';
+            return;
+        }
+        document.getElementById('days').textContent  = pad(Math.floor(diff / 86400000));
+        document.getElementById('hours').textContent = pad(Math.floor(diff % 86400000 / 3600000));
+        document.getElementById('mins').textContent  = pad(Math.floor(diff % 3600000 / 60000));
+        document.getElementById('secs').textContent  = pad(Math.floor(diff % 60000 / 1000));
+    }
+    tick();
+    setInterval(tick, 1000);
+}
+
+/* ── PRODUCT SELECT ── */
+function initSelect() {
+    const sel = document.getElementById('course-options');
+    sel.innerHTML = products.map(p => `<option value="${p.id}">${p.name}　NT$ ${p.price.toLocaleString()}</option>`).join('');
+    updateAddBtn();
+    sel.addEventListener('change', updateAddBtn);
+}
+function updateAddBtn() {
+    const p = products.find(p => p.id === document.getElementById('course-options').value);
+    if (p) document.getElementById('add-to-cart-btn').textContent = `NT$ ${p.price.toLocaleString()} ｜ 加入購物車`;
+}
+
+/* ── CART ── */
+function updateCartUI() {
+    const items = Object.values(cart);
+    const container = document.getElementById('cart-items-container');
+    const totalEl = document.getElementById('cart-total-container');
+    const badge = document.getElementById('cart-count');
+
+    container.innerHTML = items.length
+        ? items.map(i => `
+            <div class="cart-item">
+                <div>
+                    <div class="cart-item-name">${i.name}</div>
+                    <button class="remove-item-btn" data-id="${i.id}">移除</button>
+                </div>
+                <div class="cart-item-price">NT$ ${i.price.toLocaleString()}</div>
+            </div>`).join('')
+        : '<p class="cart-empty">您的購物車是空的。</p>';
+
+    const total = items.reduce((s, i) => s + i.price, 0);
+    totalEl.innerHTML = items.length
+        ? `<div class="total-row final"><span>總計</span><span>NT$ ${total.toLocaleString()}</span></div>`
+        : '';
+
+    badge.textContent = items.length;
+    badge.classList.toggle('visible', items.length > 0);
+}
+
+function openCart() {
+    document.getElementById('cart-overlay').classList.add('open');
+    document.getElementById('cart-panel').classList.add('open');
+}
+function closeCart() {
+    document.getElementById('cart-overlay').classList.remove('open');
+    document.getElementById('cart-panel').classList.remove('open');
+}
+
+/* ── POPUP ── */
+function openPopup() {
+    document.getElementById('popup-overlay').classList.add('open');
+    setTimeout(() => document.getElementById('popup-email').focus(), 150);
+}
+function closePopup() {
+    document.getElementById('popup-overlay').classList.remove('open');
+}
+
+/* ── CHECKOUT ── */
+function handleCheckout() {
+    const email = document.getElementById('popup-email').value.trim();
+    if (!Object.keys(cart).length) return alert('購物車是空的！');
+    if (!email || !email.includes('@')) { alert('請輸入有效的電子信箱！'); return; }
+
+    const items = Object.values(cart);
+    const total = items.reduce((s, i) => s + i.price, 0);
+    const orderId = '#' + Math.random().toString(36).substr(2, 5).toUpperCase();
+    const ts = new Date().toLocaleString('zh-TW', { year:'numeric', month:'long', day:'numeric', hour:'2-digit', minute:'2-digit' });
+
+    closePopup();
+    closeCart();
+    showThankYou({ email, items, total, orderId, ts });
+
+    // Submit to GAS
+    fetch("https://script.google.com/macros/s/AKfycbyU13Wivs341DMPupk9EKrL9u908zrHNOVqZUXri-hGezkk6qj_7loQGIf0GCfmvj_f/exec", {
+        method: "POST",
+        headers: { "Content-Type": "application/x-www-form-urlencoded" },
+        body: new URLSearchParams({
+            orderId, email,
+            productName: items.map(i => i.name).join(', '),
+            totalPrice: total,
+            status: "未付款",
+            imageUrls: images[0] || ''
+        })
+    }).catch(() => {});
+
+    cart = {};
+    updateCartUI();
+}
+
+/* ── THANK YOU ── */
+function showThankYou({ email, items, total, orderId, ts }) {
+    document.getElementById('ty-order-id').textContent = orderId;
+    document.getElementById('ty-order-time').textContent = ts;
+    document.getElementById('ty-email').textContent = email;
+
+    document.getElementById('ty-items').innerHTML = items.map(i =>
+        `<div class="ty-item"><span>${i.name}</span><span class="ty-item-price">NT$ ${i.price.toLocaleString()}</span></div>`
+    ).join('');
+    document.getElementById('ty-total').innerHTML =
+        `<span>總計</span><span>NT$ ${total.toLocaleString()}</span>`;
+
+    const links = items.filter(i => i.bookingLink);
+    if (links.length) {
+        document.getElementById('ty-booking-links').innerHTML =
+            links.map(i => `<a href="${i.bookingLink}" target="_blank" class="ty-booking-btn">預約：${i.name}</a>`).join('');
+        document.getElementById('ty-booking-container').style.display = 'block';
+    }
+
+    document.getElementById('product-page').style.display = 'none';
+    document.getElementById('thank-you-page').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function resetToProduct() {
+    document.getElementById('thank-you-page').style.display = 'none';
+    document.getElementById('product-page').style.display = 'block';
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ── INIT ── */
+document.addEventListener('DOMContentLoaded', () => {
+    initGallery();
+    initCountdown();
+    initSelect();
+    updateCartUI();
+
+    document.getElementById('add-to-cart-btn').addEventListener('click', () => {
+        const p = products.find(p => p.id === document.getElementById('course-options').value);
+        if (p) { cart = {}; cart[p.id] = { ...p }; }
+        updateCartUI();
+        openCart();
+    });
+
+    document.getElementById('cart-icon').addEventListener('click', openCart);
+    document.getElementById('close-cart-btn').addEventListener('click', closeCart);
+    document.getElementById('cart-overlay').addEventListener('click', e => { if (e.target === e.currentTarget) closeCart(); });
+
+    document.getElementById('cart-items-container').addEventListener('click', e => {
+        if (e.target.classList.contains('remove-item-btn')) {
+            delete cart[e.target.dataset.id];
+            updateCartUI();
+            if (!Object.keys(cart).length) closeCart();
+        }
+    });
+
+    document.getElementById('email-display').addEventListener('click', openPopup);
+    document.getElementById('popup-close').addEventListener('click', closePopup);
+    document.getElementById('popup-overlay').addEventListener('click', e => { if (e.target === e.currentTarget) closePopup(); });
+    document.getElementById('popup-submit').addEventListener('click', handleCheckout);
+    document.getElementById('popup-email').addEventListener('keydown', e => { if (e.key === 'Enter') handleCheckout(); });
+    document.getElementById('popup-email').addEventListener('input', e => document.getElementById('email-display').value = e.target.value);
+
+    document.getElementById('continue-btn').addEventListener('click', e => { e.preventDefault(); resetToProduct(); });
+    document.getElementById('close-ty-btn').addEventListener('click', e => { e.preventDefault(); resetToProduct(); });
+});
+</script>
+</body>
+</html>
