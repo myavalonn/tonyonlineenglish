@@ -1,42 +1,196 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>技術支援 | 網路障礙排除系統</title>
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        /* ── Base: mobile-first, sensible font size ── */
+    <!-- Social / LINE / iMessage preview -->
+    <meta property="og:title"       content="線上課程障礙排除-Tony線上美語家教">
+    <meta property="og:description" content="升學 檢定 職場 公職 高考 面試 外商 觀光美語 展場英文 翻譯">
+    <meta property="og:url"         content="https://tonyonlineenglish.netlify.app/tshooting">
+    <meta property="og:image"       content="https://ik.imagekit.io/lql1uveoc/%E6%88%AA%E5%9C%96%202026-04-04%20%E4%B8%8B%E5%8D%887.07.21.png">
+    <meta name="twitter:card"       content="summary_large_image">
+    <meta name="twitter:image"      content="https://ik.imagekit.io/lql1uveoc/%E6%88%AA%E5%9C%96%202026-04-04%20%E4%B8%8B%E5%8D%887.07.21.png">
+
+    <style>
+        /* ══ RESET ══ */
+        *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+        /* ══ FONT SIZES ══
+           Mobile  : 20px
+           Tablet  : 23px  (≥768px)
+           Desktop : 26px  (≥1024px)
+        ══════════════════ */
         html {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, 'Microsoft JhengHei';
-            font-size: 16px;          /* sensible mobile base */
-            background-color: #f3f4f6;
-            color: #333333;
-            line-height: 1.8;
+            font-size: 20px;
+            background: #f3f4f6;
+            color: #333;
+            line-height: 1.85;
         }
+        @media (min-width: 768px)  { html { font-size: 23px; } }
+        @media (min-width: 1024px) { html { font-size: 26px; } }
 
-        /* ── Desktop: larger but not absurd ── */
-        @media (min-width: 768px) {
-            html { font-size: 18px; }
-        }
+        /* ══ BODY & CONTAINER ══
+           Mobile : zero margins, full-bleed white
+           Tablet+: centred card
+        ════════════════════════ */
+        body { padding: 0; margin: 0; }
 
-        body { padding: 2rem 1rem; }
-
-        /* ── Main container ── */
         .container {
-            max-width: 1200px;
+            width: 100%;
+            max-width: 1280px;
             margin: 0 auto;
-            background: #ffffff;
-            padding: 2.5rem 3.5rem;
-            border-radius: 12px;
-            box-shadow: 0 10px 25px rgba(0,0,0,.08);
+            background: #fff;
+            padding: 1.6rem 1rem;
         }
-        @media (max-width: 767px) {
-            .container { padding: 2rem 1.2rem; }
+        @media (min-width: 768px) {
+            body { padding: 2rem 1rem; }
+            .container {
+                padding: 2.5rem 3rem;
+                border-radius: 14px;
+                box-shadow: 0 10px 28px rgba(0,0,0,.08);
+            }
+        }
+        @media (min-width: 1024px) {
+            body { padding: 2.5rem 2rem; }
+            .container { padding: 3rem 4.5rem; }
         }
 
-        /* ── Desktop two-column layout ── */
+        /* ══ CUSTOM AUDIO PLAYER ══ */
+        .audio-section {
+            margin: 1.8rem 0;
+            background: #e8f0fe;
+            border: 2px solid #93c5fd;
+            border-radius: 14px;
+            padding: 1.4rem 1.6rem 1.8rem;
+        }
+        .audio-label {
+            font-size: 1em;
+            font-weight: 700;
+            color: #1e40af;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: .5rem;
+        }
+        .player {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            background: #fff;
+            border: 1px solid #bfdbfe;
+            border-radius: 50px;
+            padding: .7rem 1.3rem .7rem .7rem;
+            box-shadow: 0 2px 10px rgba(37,99,235,.13);
+        }
+        /* ── Big play/pause button ── */
+        .play-btn {
+            width: 3.6rem;
+            height: 3.6rem;
+            min-width: 3.6rem;
+            border-radius: 50%;
+            background: #2563eb;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 3px 12px rgba(37,99,235,.38);
+            transition: background .18s, transform .1s;
+            flex-shrink: 0;
+        }
+        .play-btn:hover  { background: #1d4ed8; }
+        .play-btn:active { transform: scale(.92); }
+        .play-btn svg { width: 1.45rem; height: 1.45rem; fill: #fff; }
+
+        /* ── Progress track ── */
+        .progress-wrap {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: .38rem;
+            min-width: 0;
+        }
+        .progress-bar {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 100%;
+            height: .6rem;
+            border-radius: 99px;
+            background: #dbeafe;
+            cursor: pointer;
+            outline: none;
+        }
+        .progress-bar::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 1.15rem; height: 1.15rem;
+            border-radius: 50%;
+            background: #2563eb;
+            cursor: pointer;
+            box-shadow: 0 0 0 3px rgba(37,99,235,.22);
+        }
+        .progress-bar::-moz-range-thumb {
+            width: 1.15rem; height: 1.15rem;
+            border-radius: 50%;
+            background: #2563eb;
+            border: none;
+            cursor: pointer;
+        }
+        .time-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: .7em;
+            color: #64748b;
+            font-variant-numeric: tabular-nums;
+        }
+        /* ── Volume button ── */
+        .vol-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: .3rem;
+            color: #2563eb;
+            flex-shrink: 0;
+            line-height: 0;
+        }
+        .vol-btn svg { width: 1.5rem; height: 1.5rem; fill: currentColor; }
+
+        @media (max-width: 380px) {
+            .play-btn { width: 3rem; height: 3rem; min-width: 3rem; }
+        }
+
+        /* ══ HEADINGS ══ */
+        h2 {
+            font-size: 1.15rem;
+            color: #1e40af;
+            margin-top: 2.4rem;
+            margin-bottom: .9rem;
+            border-bottom: 3px solid #bfdbfe;
+            padding-bottom: .45rem;
+        }
+        h3 { font-size: 1.02rem; color: #15803d; margin-bottom: .5rem; }
+        p  { margin-bottom: 1.15rem; text-align: justify; }
+
+        .highlight  { color: #2563eb; font-weight: 700; }
+        .alert-text { color: #dc2626; font-weight: 700; }
+
+        /* ══ LISTS ══ */
+        .instruction-list { list-style: none; margin-bottom: 1.4rem; }
+        .instruction-list li {
+            margin-bottom: .85rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        .instruction-list li::before {
+            content: "•";
+            color: #2563eb;
+            position: absolute; left: 0;
+            font-weight: 700; font-size: 1.2em;
+        }
+
+        /* ══ TWO-COLUMN (tablet+) ══ */
         @media (min-width: 768px) {
             .two-col {
                 display: grid;
@@ -46,206 +200,163 @@
             }
         }
 
-        /* ── Audio player ── */
-        .audio-section {
-            margin: 2rem 0;
-            background: #f0f7ff;
-            border: 1px solid #bfdbfe;
-            border-radius: 10px;
-            padding: 1.4rem 1.6rem;
-        }
-        .audio-section p {
-            font-size: 0.9em;
-            color: #1e40af;
-            font-weight: 600;
-            margin-bottom: 0.8rem;
-        }
-        .audio-section audio {
-            width: 100%;
-            border-radius: 6px;
-            outline: none;
-        }
-
-        /* ── Headings ── */
-        h2 {
-            font-size: 1.25rem;
-            color: #1e40af;
-            margin-top: 2.5rem;
-            margin-bottom: 1rem;
-            border-bottom: 3px solid #bfdbfe;
-            padding-bottom: .5rem;
-        }
-        h3 { font-size: 1.05rem; color: #15803d; margin-bottom: .5rem; }
-
-        p { margin-bottom: 1.2rem; text-align: justify; }
-
-        .highlight  { color: #2563eb; font-weight: bold; }
-        .alert-text { color: #dc2626; font-weight: bold; }
-
-        /* ── Lists ── */
-        .instruction-list { list-style: none; margin-bottom: 1.5rem; }
-        .instruction-list li {
-            margin-bottom: .9rem;
-            padding-left: 1.5rem;
-            position: relative;
-        }
-        .instruction-list li::before {
-            content: "•";
-            color: #2563eb;
-            position: absolute; left: 0;
-            font-weight: bold; font-size: 1.2em;
-        }
-
-        /* ── Solution cards ── */
+        /* ══ SOLUTION CARDS ══ */
         .solution-grid {
             display: grid;
             grid-template-columns: 1fr;
-            gap: 1.5rem;
-            margin: 1.5rem 0 2rem;
+            gap: 1.3rem;
+            margin: 1.4rem 0 2rem;
         }
-        @media (min-width: 768px) {
-            .solution-grid { grid-template-columns: 1fr 1fr; }
-        }
+        @media (min-width: 768px) { .solution-grid { grid-template-columns: 1fr 1fr; } }
         .solution-card {
             background: #f8fafc;
             border: 1px solid #cbd5e1;
-            padding: 1.4rem;
-            border-radius: 8px;
+            padding: 1.3rem;
+            border-radius: 10px;
         }
 
-        /* ── Speed-test image ── */
+        /* ══ SPEED-TEST IMAGE ══ */
         .img-container {
             text-align: center;
-            margin: 2.5rem 0;
             padding: 1rem;
             background: #f1f5f9;
-            border-radius: 8px;
+            border-radius: 10px;
         }
+        @media (max-width: 767px) { .img-container { margin-top: 1.5rem; } }
         .img-container img {
             max-width: 100%; height: auto;
-            border-radius: 4px;
+            border-radius: 6px;
             border: 1px solid #cbd5e1;
         }
+        .img-caption { display: block; margin-bottom: .5rem; color: #64748b; font-size: .74em; }
 
-        /* ── Button link ── */
+        /* ══ BUTTON LINK ══ */
         a.btn-link {
             color: #fff;
             background: #2563eb;
-            padding: .2rem .8rem;
-            border-radius: 4px;
+            padding: .22rem .9rem;
+            border-radius: 5px;
             text-decoration: none;
-            font-weight: bold;
+            font-weight: 700;
             display: inline-block;
         }
         a.btn-link:hover { background: #1d4ed8; }
 
-        /* ── Sign-off ── */
+        /* ══ SIGN-OFF ══ */
         .sign-off {
             text-align: right;
             margin-top: 2rem;
             color: #475569;
             padding-top: 1rem;
             border-top: 1px solid #e2e8f0;
+            line-height: 2;
         }
 
-        /* ── Profile card ── */
+        /* ══ PROFILE CARD ══ */
         .profile-card {
             display: flex;
             flex-direction: column;
             align-items: center;
-            margin-top: 4rem;
+            margin-top: 3.5rem;
             background: #f8fafc;
             border: 1px solid #e2e8f0;
             border-left: 8px solid #2563eb;
-            padding: 2rem;
-            border-radius: 8px;
+            padding: 1.8rem;
+            border-radius: 10px;
         }
-        @media (min-width: 768px) {
-            .profile-card { flex-direction: row; align-items: flex-start; }
-        }
-
+        @media (min-width: 768px) { .profile-card { flex-direction: row; align-items: flex-start; } }
         .profile-photo {
             width: 140px; height: 140px;
             border-radius: 50%;
             object-fit: cover;
             border: 4px solid #fff;
-            box-shadow: 0 4px 10px rgba(0,0,0,.1);
-            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,.1);
+            margin-bottom: 1.4rem;
             flex-shrink: 0;
         }
-        @media (min-width: 768px) {
-            .profile-photo { margin-bottom: 0; margin-right: 2rem; }
-        }
-
-        .profile-text h3 { color: #1e40af; margin-bottom: .4rem; font-size: 1.4rem; }
-        .profile-text h4 { color: #64748b; font-size: .95rem; margin-bottom: .8rem; border-bottom: 1px dashed #cbd5e1; padding-bottom: .4rem; }
-
-        .duty-list { list-style: none; margin-top: .4rem; }
-        .duty-list li {
-            margin-bottom: .7rem;
-            padding-left: 1.8rem;
-            position: relative;
-            font-size: .9em;
-        }
-        .duty-list li::before { content: "✓"; color: #10b981; position: absolute; left: 0; font-weight: bold; }
+        @media (min-width: 768px) { .profile-photo { margin-bottom: 0; margin-right: 2rem; } }
+        .profile-text h3 { color: #1e40af; font-size: 1.3rem; margin-bottom: .35rem; }
+        .profile-text h4 { color: #64748b; font-size: .88rem; margin-bottom: .75rem; border-bottom: 1px dashed #cbd5e1; padding-bottom: .4rem; }
+        .duty-list { list-style: none; margin-top: .35rem; }
+        .duty-list li { margin-bottom: .65rem; padding-left: 1.8rem; position: relative; font-size: .87em; }
+        .duty-list li::before { content: "✓"; color: #10b981; position: absolute; left: 0; font-weight: 700; }
     </style>
 </head>
 <body>
 <div class="container">
 
-    <!-- ── Intro ── -->
+    <!-- Intro -->
     <p>您好，我是 Tony 線上美語家教的技術人員 <span class="highlight">Oliver</span>。我負責線上視訊軟體的障礙排除。</p>
 
-    <!-- ── Audio player (autoplay) ── -->
+    <!-- ══ CUSTOM AUDIO PLAYER ══ -->
     <div class="audio-section">
-        <p>🔊 音訊說明：網速不足障礙排除</p>
-        <audio id="mainAudio" controls preload="auto">
+        <div class="audio-label">
+            <svg xmlns="http://www.w3.org/2000/svg" width="22" height="22" viewBox="0 0 24 24" fill="#1e40af">
+                <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+            </svg>
+            音訊說明：網速不足障礙排除
+        </div>
+
+        <div class="player">
+            <!-- Play / Pause -->
+            <button class="play-btn" id="playBtn" aria-label="播放">
+                <svg id="iconPlay" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                <svg id="iconPause" viewBox="0 0 24 24" style="display:none"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+            </button>
+
+            <!-- Progress + time -->
+            <div class="progress-wrap">
+                <input class="progress-bar" id="progressBar" type="range" min="0" max="100" value="0" step="0.1">
+                <div class="time-row">
+                    <span id="currentTime">0:00</span>
+                    <span id="totalTime">0:00</span>
+                </div>
+            </div>
+
+            <!-- Volume / Mute -->
+            <button class="vol-btn" id="volBtn" aria-label="靜音切換">
+                <svg id="iconVol" viewBox="0 0 24 24">
+                    <path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3A4.5 4.5 0 0 0 14 7.97v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/>
+                </svg>
+                <svg id="iconMute" viewBox="0 0 24 24" style="display:none">
+                    <path d="M16.5 12A4.5 4.5 0 0 0 14 7.97v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06a8.99 8.99 0 0 0 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/>
+                </svg>
+            </button>
+        </div>
+
+        <!-- Hidden native audio -->
+        <audio id="mainAudio" preload="auto">
             <source src="https://ik.imagekit.io/lql1uveoc/tshooting%202" type="audio/mpeg">
-            您的瀏覽器不支援 audio 播放器。
         </audio>
     </div>
-    <script>
-        // Autoplay on page load (browsers require a user gesture on mobile, but desktop usually allows it)
-        window.addEventListener('DOMContentLoaded', function() {
-            var audio = document.getElementById('mainAudio');
-            audio.play().catch(function() {
-                // Silently fail if browser blocks autoplay; controls still visible
-            });
-        });
-    </script>
 
-    <!-- ── Event description ── -->
+    <!-- Event description -->
     <p><strong><span class="alert-text">異常紀錄：</span> 2026年4月4日，週六下午兩點。</strong><br>
     線上美語課程中，發生網路速度不足，而有畫面及聲音延遲的障礙發生。為了使學生有最佳的上課體驗，Tony 線上美語家教誠摯地邀請您一起排除網速不足的障礙。</p>
 
-    <!-- ── Speed test section (desktop two-col: text left, image right) ── -->
+    <!-- Speed test -->
     <h2>連線標準與測試方式</h2>
-
     <div class="two-col">
         <div>
             <p>由於我們課堂上使用 <span class="highlight">Zoom</span> 進行視訊教學，若要維持 <strong>1080P 高畫質</strong>與流暢度，對網路的穩定性要求較高。為了確保同學聽課不卡頓、教材字體清晰，想請您協助進行簡單的網路速度測試，讓我們一起找出原因。</p>
-
             <p>根據 Zoom 官方建議標準，測速結果建議：<br>
             👉 <strong>下載與上傳速度都要超過 <span class="highlight">25 Mbps</span></strong><br>
             👉 <strong>延遲 Ping 值要低於 <span class="highlight">20</span></strong>，才能保證完全不延遲。</p>
-
             <p>接下來請依照您目前的裝置，選擇測試方式：</p>
             <ul class="instruction-list">
                 <li><strong>手機或平板：</strong>請到商店下載 <strong>Speedtest App</strong>，開啟後按下 GO 開始測試。</li>
                 <li><strong>電腦：</strong>請點擊 <a href="https://www.speedtest.net/" target="_blank" class="btn-link">速度測試</a>，進入後點擊 GO 按鈕。</li>
             </ul>
         </div>
-
-        <div class="img-container" style="margin: 0;">
-            <span style="display:block; margin-bottom:.5rem; color:#64748b; font-size:.8em;">▼ 測速結果畫面範例參考 ▼</span>
+        <div class="img-container">
+            <span class="img-caption">▼ 測速結果畫面範例參考 ▼</span>
             <img src="https://ik.imagekit.io/lql1uveoc/%E6%88%AA%E5%9C%96%202026-04-04%20%E4%B8%8B%E5%8D%884.57.01.png" alt="網路測速範例圖片">
         </div>
     </div>
 
-    <!-- ── Solutions ── -->
+    <!-- Solutions -->
     <h2>專業優化建議</h2>
     <p>如果您發現 Wi-Fi 訊號不穩，這裡提供以下解決方案：</p>
-
     <div class="solution-grid">
         <div class="solution-card">
             <h3>方案 A：USB 網路共享 (最推薦)</h3>
@@ -259,7 +370,7 @@
         </div>
     </div>
 
-    <!-- ── Follow-up steps ── -->
+    <!-- Follow-up -->
     <h2>後續處理步驟</h2>
     <p>測試完成後，畫面會顯示<span class="highlight">延遲、下載與上傳</span>這三項數據。請將測試結果<strong>截圖或拍照</strong>後，直接回傳到這個對話視窗，或是傳送到我們的官方 LINE。</p>
     <p>我收到後會立刻為您分析數據，並協助您找到最流暢的上課方案。感謝您的配合與對教學品質的重視，我們一起讓學習過程更加順暢。</p>
@@ -270,13 +381,13 @@
         Tony 線上美語家教 I.T. Support
     </div>
 
-    <!-- ── Profile card ── -->
+    <!-- Profile -->
     <section class="profile-card">
         <img class="profile-photo" src="https://ik.imagekit.io/lql1uveoc/Oliver" alt="Oliver G.">
         <div class="profile-text">
             <h3>Oliver G.</h3>
             <h4>I.T. 資訊部門職責</h4>
-            <p style="font-size:.9em; color:#475569; margin-bottom:.5rem;">負責平台與技術支援，確保線上教學順利進行，主要職責包括：</p>
+            <p style="font-size:.88em; color:#475569; margin-bottom:.5rem;">負責平台與技術支援，確保線上教學順利進行，主要職責包括：</p>
             <ul class="duty-list">
                 <li><strong>A.</strong> 維護並優化線上教學平台的穩定性與安全性、協助老師與學生處理連線、音訊、視訊等技術問題。</li>
                 <li><strong>B.</strong> 定期進行系統更新與資料備份，確保教學資料完整。</li>
@@ -286,5 +397,60 @@
     </section>
 
 </div>
+
+<!-- ══ AUDIO PLAYER LOGIC ══ -->
+<script>
+(function () {
+    var audio       = document.getElementById('mainAudio');
+    var playBtn     = document.getElementById('playBtn');
+    var iconPlay    = document.getElementById('iconPlay');
+    var iconPause   = document.getElementById('iconPause');
+    var progressBar = document.getElementById('progressBar');
+    var elCurrent   = document.getElementById('currentTime');
+    var elTotal     = document.getElementById('totalTime');
+    var volBtn      = document.getElementById('volBtn');
+    var iconVol     = document.getElementById('iconVol');
+    var iconMute    = document.getElementById('iconMute');
+
+    function fmt(s) {
+        var m = Math.floor(s / 60);
+        var sec = Math.floor(s % 60);
+        return m + ':' + (sec < 10 ? '0' : '') + sec;
+    }
+
+    playBtn.addEventListener('click', function () {
+        audio.paused ? audio.play() : audio.pause();
+    });
+
+    audio.addEventListener('play',  function () { iconPlay.style.display='none'; iconPause.style.display=''; });
+    audio.addEventListener('pause', function () { iconPlay.style.display='';     iconPause.style.display='none'; });
+
+    audio.addEventListener('loadedmetadata', function () { elTotal.textContent = fmt(audio.duration); });
+
+    audio.addEventListener('timeupdate', function () {
+        if (!audio.duration) return;
+        progressBar.value = (audio.currentTime / audio.duration) * 100;
+        elCurrent.textContent = fmt(audio.currentTime);
+    });
+
+    progressBar.addEventListener('input', function () {
+        if (audio.duration) audio.currentTime = (progressBar.value / 100) * audio.duration;
+    });
+
+    volBtn.addEventListener('click', function () {
+        audio.muted = !audio.muted;
+        iconVol.style.display  = audio.muted ? 'none' : '';
+        iconMute.style.display = audio.muted ? ''     : 'none';
+    });
+
+    audio.addEventListener('ended', function () {
+        iconPlay.style.display=''; iconPause.style.display='none';
+        progressBar.value=0; elCurrent.textContent='0:00';
+    });
+
+    /* Autoplay — works on desktop; mobile browsers may block until first tap */
+    audio.play().catch(function(){});
+})();
+</script>
 </body>
 </html>
