@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>技術支援 | 網路障礙排除系統</title>
+    <style>
+        /* 基礎設定與 RWD 字體大小控制 */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* 手機版超大字體 */
+        html {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif, 'Microsoft JhengHei';
+            font-size: 22px; /* 手機版基礎字體非常大 */
+            background-color: #f3f4f6;
+            color: #333333;
+            line-height: 1.8;
+        }
+
+        /* 平板與桌機版字體進一步放大 */
+        @media (min-width: 768px) {
+            html {
+                font-size: 28px; /* 桌機/平板基礎字體極大化 */
+            }
+        }
+
+        body {
+            padding: 2rem 1rem;
+        }
+
+        /* 主內容區塊 - 純白底色，乾淨專業 */
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            background-color: #ffffff;
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        /* YouTube 影片嵌入響應式區塊 */
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%; /* 16:9 比例 */
+            height: 0;
+            overflow: hidden;
+            margin: 2rem 0;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            background-color: #000; /* 載入前的底色 */
+        }
+        
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* 標題設計 */
+        h2 { 
+            font-size: 1.4rem; 
+            color: #1e40af; 
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            border-bottom: 3px solid #bfdbfe;
+            padding-bottom: 0.5rem;
+        }
+        
+        h3 {
+            font-size: 1.2rem;
+            color: #15803d;
+            margin-bottom: 0.5rem;
+        }
+
+        p { margin-bottom: 1.5rem; text-align: justify; }
+
+        .highlight {
+            color: #2563eb;
+            font-weight: bold;
+        }
+
+        .alert-text {
+            color: #dc2626; /* 專業的紅色提醒 */
+            font-weight: bold;
+        }
+
+        /* 列表樣式 */
+        .instruction-list {
+            list-style: none;
+            margin-bottom: 1.5rem;
+        }
+        
+        .instruction-list li {
+            margin-bottom: 1rem;
+            padding-left: 1.5rem;
+            position: relative;
+        }
+        
+        .instruction-list li::before {
+            content: "•";
+            color: #2563eb;
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        /* 方案卡片 */
+        .solution-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        @media (min-width: 768px) {
+            .solution-grid { grid-template-columns: 1fr 1fr; }
+        }
+
+        .solution-card {
+            background: #f8fafc;
+            border: 1px solid #cbd5e1;
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+
+        /* 圖片容器 */
+        .img-container {
+            text-align: center;
+            margin: 2.5rem 0;
+            padding: 1rem;
+            background: #f1f5f9;
+            border-radius: 8px;
+        }
+        .img-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 4px;
+            border: 1px solid #cbd5e1;
+        }
+
+        /* 連結樣式 */
+        a.btn-link {
+            color: #ffffff;
+            background: #2563eb;
+            padding: 0.2rem 0.8rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+        }
+        a.btn-link:hover { background: #1d4ed8; }
+
+        /* 簽名區塊 */
+        .sign-off {
+            text-align: right;
+            margin-top: 2rem;
+            color: #475569;
+            padding-top: 1rem;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        /* --- Oliver 職責與照片介紹 (網頁最底端) --- */
+        .profile-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: 4rem; /* 與上方內容保持距離 */
+            background: #f8fafc;
+            border: 1px solid #e2e8f0;
+            border-left: 8px solid #2563eb;
+            padding: 2rem;
+            border-radius: 8px;
+        }
+
+        @media (min-width: 768px) {
+            .profile-card {
+                flex-direction: row;
+                align-items: flex-start;
+            }
+        }
+
+        .profile-photo {
+            width: 160px;
+            height: 160px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #ffffff;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            margin-bottom: 1.5rem;
+        }
+
+        @media (min-width: 768px) {
+            .profile-photo {
+                margin-bottom: 0;
+                margin-right: 2rem;
+                flex-shrink: 0;
+            }
+        }
+
+        .profile-text {
+            width: 100%;
+        }
+
+        .profile-text h3 { color: #1e40af; margin-bottom: 0.5rem; font-size: 1.5rem;}
+        .profile-text h4 { color: #64748b; font-size: 1rem; margin-bottom: 1rem; border-bottom: 1px dashed #cbd5e1; padding-bottom: 0.5rem;}
+        
+        .duty-list {
+            list-style: none;
+            margin-top: 0.5rem;
+        }
+        
+        .duty-list li {
+            margin-bottom: 0.8rem;
+            padding-left: 1.8rem;
+            position: relative;
+            font-size: 0.9em;
+        }
+        
+        .duty-list li::before {
+            content: "✓";
+            color: #10b981;
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        <!-- 開場白 -->
+        <p>您好，我是 Tony 線上美語家教的技術人員 <span class="highlight">Oliver</span>。我負責線上視訊軟體的障礙排除。</p>
+
+        <!-- YouTube 影片嵌入區塊 (已修正為您的專屬影片，並設定自動播放) -->
+        <div class="video-container">
+            <iframe 
+                src="https://www.youtube.com/embed/hM_uN_0_LFE?autoplay=1" 
+                title="網速不足障礙排除說明" 
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" 
+                allowfullscreen>
+            </iframe>
+        </div>
+        
+        <!-- 事件描述 -->
+        <p><strong><span class="alert-text">異常紀錄：</span> 2026年4月4日，週六下午兩點。</strong><br>
+        線上美語課程中，發生網路速度不足，而有畫面及聲音延遲的障礙發生。為了使學生有最佳的上課體驗，Tony 線上美語家教誠摯地邀請您一起排除網速不足的障礙。</p>
+
+        <!-- 測速說明 -->
+        <h2>連線標準與測試方式</h2>
+        <p>由於我們課堂上使用 <span class="highlight">Zoom</span> 進行視訊教學，若要維持 <strong>1080P 高畫質</strong>與流暢度，對網路的穩定性要求較高。為了確保同學聽課不卡頓、教材字體清晰，想請您協助進行簡單的網路速度測試，讓我們一起找出原因。</p>
+        
+        <p>為什麼網速很重要呢？根據 Zoom 官方建議標準，考慮到家庭網路的波動，測速結果建議：<br>
+        👉 <strong>下載與上傳速度都要超過 <span class="highlight">25 Mbps</span></strong><br>
+        👉 <strong>延遲 Ping 值要低於 <span class="highlight">20</span></strong>，才能保證完全不延遲。</p>
+
+        <p>接下來請依照您目前的裝置，選擇測試方式：</p>
+        <ul class="instruction-list">
+            <li><strong>第一：</strong>如果您使用手機或平板，請先到商店搜尋並下載 <strong>Speedtest App</strong>。開啟後按下畫面中央的 GO 開始測試。</li>
+            <li><strong>第二：</strong>如果您使用電腦，請直接點擊網址 <a href="https://www.speedtest.net/" target="_blank" class="btn-link">速度測試</a>。進入後同樣點擊頁面中央的 GO 按鈕。</li>
+        </ul>
+
+        <!-- 圖片插入點 -->
+        <div class="img-container">
+            <span style="display:block; margin-bottom: 0.5rem; color: #64748b; font-size: 0.8em;">▼ 測速結果畫面範例參考 ▼</span>
+            <img src="https://ik.imagekit.io/lql1uveoc/%E6%88%AA%E5%9C%96%202026-04-04%20%E4%B8%8B%E5%8D%884.57.01.png" alt="網路測速範例圖片">
+        </div>
+
+        <!-- 優化建議方案 -->
+        <h2>專業優化建議</h2>
+        <p>如果您發現 Wi-Fi 訊號不穩，這裡提供以下解決方案：</p>
+        
+        <div class="solution-grid">
+            <div class="solution-card">
+                <h3>方案 A：USB 網路共享 (最推薦)</h3>
+                <p>使用手機熱點的 <strong>USB 直接連線</strong>。您可以利用手機充電線將手機連接到電腦，在手機設定中開啟個人熱點，並選擇透過 USB 分享網路。<br><br>
+                <span class="alert-text">※ 關鍵步驟：</span>連接後請務必<strong>關閉電腦的 Wi-Fi 開關</strong>，這樣能避開無線干擾，讓電腦百分之百利用手機網速。</p>
+            </div>
+            <div class="solution-card">
+                <h3>方案 B：優化路由器環境</h3>
+                <p>若必須使用 Wi-Fi，請確保電腦與路由器之間沒有牆壁或大型家具遮擋，並建議上課時與路由器的距離<strong>保持在五公尺以內</strong>。<br><br>
+                另外，請避開微波爐、藍牙喇叭或冰箱等會產生電磁波的家電。定期將路由器<strong>電源關閉重開</strong>，也能有效改善連線品質。</p>
+            </div>
+        </div>
+
+        <!-- 結尾 -->
+        <h2>後續處理步驟</h2>
+        <p>測試完成後，畫面會顯示<span class="highlight">延遲、下載與上傳</span>這三項數據。請將測試結果畫面<strong>截圖或拍照</strong>後，直接回傳到這個對話視窗，或是傳送到我們的官方 LINE。</p>
+        
+        <p>我收到後會立刻為您分析數據，並協助您找到最流暢的上課方案。</p>
+        <p>最後感謝您的配合與對教學品質的重視，我們一起讓學生的學習過程更加順暢。</p>
+
+        <div class="sign-off">
+            Best regards,<br>
+            <strong style="font-size: 1.2em; color: #0f172a;">Oliver</strong><br>
+            Tony 線上美語家教 I.T. Support
+        </div>
+
+        <!-- ============================================== -->
+        <!-- 最下方的 Oliver 照片與職責介紹 (絕對不會消失) -->
+        <!-- ============================================== -->
+        <section class="profile-card">
+            <!-- 您的專屬照片網址 -->
+            <img class="profile-photo" src="https://ik.imagekit.io/lql1uveoc/Oliver" alt="Oliver G.">
+            
+            <div class="profile-text">
+                <h3>Oliver G.</h3>
+                <h4>I.T. 資訊部門職責</h4>
+                <p style="font-size: 0.9em; color: #475569; margin-bottom: 0.5rem;">負責平台與技術支援，確保線上教學順利進行，主要職責包括：</p>
+                <ul class="duty-list">
+                    <li><strong>A.</strong> 維護並優化線上教學平台的穩定性與安全性、協助老師與學生處理連線、音訊、視訊等技術問題。</li>
+                    <li><strong>B.</strong> 定期進行系統更新與資料備份，確保教學資料完整。</li>
+                    <li><strong>C.</strong> 提供上課連結、課程預約系統等技術支援、分析使用者反饋，持續改善學習體驗。</li>
+                </ul>
+            </div>
+        </section>
+
+    </div>
+
+</body>
+</html>
