@@ -3,176 +3,458 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>私人課程方案</title>
-  <script src="layout-manager.js" defer></script>
+  <title>Harry Liao 專屬課程</title>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #1a1a2e;
+      --ink-mid: #3a3a5c;
+      --ink-soft: #6b6b8a;
+      --cream: #f8f5f0;
+      --cream-dark: #ede9e2;
+      --gold: #c9a84c;
+      --gold-light: #f0dfa0;
+      --gold-dim: #7a6030;
+      --teal: #2a7c75;
+      --teal-light: #e0f2f0;
+      --amber: #b85c1a;
+      --amber-light: #fcebd9;
+      --green: #2d6a30;
+      --green-light: #e2f0e2;
+      --purple: #5c2d8a;
+      --purple-light: #f0e8fc;
+      --border: rgba(26,26,46,0.12);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--cream);
+      font-family: 'Noto Sans TC', sans-serif;
+      color: var(--ink);
+      min-height: 100vh;
+    }
+
+    /* ── Header ── */
+    .site-header {
+      background: var(--ink);
+      padding: 28px 24px 24px;
+      text-align: center;
+      position: relative;
+    }
+    .site-header::after {
+      content: '';
+      display: block;
+      height: 3px;
+      background: linear-gradient(90deg, var(--gold) 0%, #e8c97a 50%, var(--gold) 100%);
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+    }
+    .header-eyebrow {
+      font-size: 11px;
+      letter-spacing: 0.25em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      font-weight: 500;
+    }
+    .header-name {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 32px;
+      font-weight: 700;
+      color: #fff;
+      line-height: 1.2;
+      margin-bottom: 8px;
+    }
+    .header-date {
+      font-size: 13px;
+      color: rgba(255,255,255,0.5);
+      letter-spacing: 0.08em;
+    }
+
+    /* ── Tab nav ── */
+    .tab-nav {
+      display: flex;
+      background: var(--ink);
+      padding: 0 24px 20px;
+      gap: 10px;
+      justify-content: center;
+    }
+    .tab-btn {
+      padding: 9px 22px;
+      border: 1.5px solid rgba(201,168,76,0.5);
+      border-radius: 50px;
+      background: transparent;
+      color: rgba(255,255,255,0.7);
+      font-size: 14px;
+      font-family: 'Noto Sans TC', sans-serif;
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.25s;
+      letter-spacing: 0.03em;
+    }
+    .tab-btn:hover { border-color: var(--gold); color: var(--gold); }
+    .tab-btn.active {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: var(--ink);
+      font-weight: 700;
+    }
+
+    /* ── Main layout ── */
+    .main-wrap {
+      max-width: 780px;
+      margin: 0 auto;
+      padding: 36px 20px 60px;
+    }
+
+    /* ── Section heading ── */
+    .section-label {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+      scroll-margin-top: 16px;
+    }
+    .section-label-line {
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+    .section-label-text {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--ink);
+      white-space: nowrap;
+    }
+
+    /* ── Plan cards ── */
+    .plan-card {
+      background: #fff;
+      border-radius: 16px;
+      border: 1px solid var(--border);
+      overflow: hidden;
+      margin-bottom: 40px;
+    }
+    .plan-card-header {
+      padding: 22px 28px 18px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+    .plan-card-header .plan-name {
+      font-family: 'Noto Serif TC', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--ink);
+    }
+    .plan-price-tag {
+      text-align: right;
+    }
+    .plan-price-main {
+      font-size: 26px;
+      font-weight: 700;
+      color: var(--gold-dim);
+      letter-spacing: -0.02em;
+    }
+    .plan-price-sub {
+      font-size: 12px;
+      color: var(--ink-soft);
+      margin-top: 2px;
+    }
+
+    /* ── Time slot rows ── */
+    .slot-list { padding: 8px 0; }
+    .slot-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 28px;
+      border-bottom: 1px solid var(--cream-dark);
+      transition: background 0.15s;
+    }
+    .slot-row:last-child { border-bottom: none; }
+    .slot-row:hover { background: var(--cream); }
+
+    .slot-label { font-size: 16px; font-weight: 600; }
+    .slot-sub { font-size: 12px; font-weight: 400; color: var(--ink-soft); display: block; margin-top: 2px; }
+    .slot-badge {
+      padding: 6px 16px;
+      border-radius: 50px;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+    }
+
+    .color-teal .slot-label { color: var(--teal); }
+    .color-teal .slot-badge { background: var(--teal-light); color: var(--teal); }
+    .color-amber .slot-label { color: var(--amber); }
+    .color-amber .slot-badge { background: var(--amber-light); color: var(--amber); }
+    .color-green .slot-label { color: var(--green); }
+    .color-green .slot-badge { background: var(--green-light); color: var(--green); }
+
+    /* ── Subscription notice ── */
+    .notice-box {
+      margin: 0 28px 20px;
+      background: var(--amber-light);
+      border-left: 4px solid var(--amber);
+      border-radius: 0 8px 8px 0;
+      padding: 14px 16px;
+      font-size: 14px;
+      color: var(--ink-mid);
+      line-height: 1.7;
+    }
+    .notice-box strong { color: var(--amber); display: block; margin-bottom: 6px; font-size: 15px; }
+    .notice-box li { margin-left: 16px; margin-bottom: 3px; }
+
+    /* ── Promo banner ── */
+    .promo-banner {
+      margin: 4px 28px 20px;
+      background: var(--ink);
+      border-radius: 10px;
+      padding: 16px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .promo-banner .promo-text {
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--gold);
+      letter-spacing: 0.04em;
+    }
+    .promo-banner .promo-duration {
+      font-size: 13px;
+      color: rgba(255,255,255,0.6);
+    }
+
+    /* ── Post-promo box ── */
+    .post-promo {
+      margin: 0 28px 28px;
+      background: var(--cream);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px 18px;
+      font-size: 14px;
+      color: var(--ink-mid);
+      line-height: 1.8;
+    }
+    .post-promo strong {
+      font-size: 15px;
+      color: var(--ink);
+      display: block;
+      margin-bottom: 6px;
+    }
+
+    /* ── Divider ── */
+    .section-divider {
+      border: none;
+      height: 1px;
+      background: var(--border);
+      margin: 40px 0;
+    }
+
+    /* ── Rules ── */
+    .rules-grid {
+      display: grid;
+      gap: 12px;
+    }
+    .rule-card {
+      border-radius: 12px;
+      padding: 16px 20px;
+      font-size: 15px;
+      font-weight: 600;
+      line-height: 1.55;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .rule-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+    .rule-card.r-green { background: var(--green-light); color: var(--green); }
+    .rule-card.r-teal  { background: var(--teal-light);  color: var(--teal); }
+    .rule-card.r-amber { background: var(--amber-light); color: var(--amber); }
+    .rule-card.r-dark  { background: var(--ink); color: rgba(255,255,255,0.85); text-align: center; display: block; }
+    .rule-card.r-dark .rule-sub { font-size: 13px; opacity: 0.6; font-weight: 400; margin-top: 4px; }
+
+    /* ── Warning ── */
+    .warning-footer {
+      margin-top: 36px;
+      background: #fff;
+      border: 1px solid #fecaca;
+      border-radius: 12px;
+      padding: 20px 24px;
+      font-size: 14px;
+      color: #7f1d1d;
+      text-align: center;
+      line-height: 1.7;
+    }
+    .warning-footer a { color: #dc2626; font-weight: 700; }
+    .warning-footer strong { display: block; margin-bottom: 6px; font-size: 15px; color: #991b1b; }
+
+    /* ── Footer credit ── */
+    .page-footer {
+      text-align: center;
+      padding: 24px 0 8px;
+      font-size: 12px;
+      color: var(--ink-soft);
+      letter-spacing: 0.08em;
+    }
+
+    /* ── Mobile ── */
+    @media (max-width: 600px) {
+      .header-name { font-size: 24px; }
+      .plan-card-header { flex-direction: column; align-items: flex-start; }
+      .plan-price-tag { text-align: left; }
+      .slot-row { padding: 14px 18px; }
+      .plan-card-header { padding: 18px 18px 14px; }
+      .notice-box, .promo-banner, .post-promo { margin-left: 18px; margin-right: 18px; }
+    }
+  </style>
 </head>
 <body>
 
-<div id="secure-container">
-  <style>
-    /* === 手機版 (預設) 樣式 === */
-    #secure-login-box { 
-      width: 90%; /* 讓手機版寬度佔 90% */
-      max-width: 420px; 
-      margin: 60px auto; 
-      padding: 40px 25px; 
-      border: 1px solid #e2e8f0; 
-      border-radius: 16px; 
-      text-align: center; 
-      box-shadow: 0 10px 25px rgba(0,0,0,0.08); 
-      font-family: 'Noto Sans TC', sans-serif;
-      background: #ffffff;
-      scroll-margin-top: 100px; 
-      box-sizing: border-box;
-    }
-    #secure-login-box h3 {
-      margin-top: 0;
-      color: #2a3d45; 
-      font-size: 24px;
-      margin-bottom: 10px;
-    }
-    #secure-login-box p {
-      color: #64748b;
-      font-size: 15px;
-      margin-bottom: 25px;
-    }
-    #secure-login-box input { 
-      width: 100%; 
-      padding: 14px; 
-      margin-top: 5px; 
-      box-sizing: border-box; 
-      border: 2px solid #e2e8f0; 
-      border-radius: 10px; 
-      font-size: 16px; /* 16px 可防止 iOS 點擊時自動放大頁面 */
-      transition: 0.2s;
-      outline: none;
-    }
-    #secure-login-box input:focus {
-      border-color: #2a3d45;
-    }
-    #secure-login-box button { 
-      width: 100%; 
-      padding: 14px; 
-      margin-top: 20px; 
-      background-color: #2a3d45; 
-      color: white; 
-      border: none; 
-      border-radius: 10px; 
-      font-size: 18px;
-      font-weight: bold;
-      cursor: pointer; 
-      transition: opacity 0.2s; 
-    }
-    #secure-login-box button:hover { opacity: 0.9; }
-    #secure-login-box button:disabled { background: #cbd5e1; cursor: not-allowed; }
-    #secure-msg { color: #f87171; margin-top: 15px; font-size: 14px; min-height: 20px; font-weight: bold;}
+<header class="site-header">
+  <div class="header-eyebrow">私人專屬方案</div>
+  <div class="header-name">Harry Liao 課程方案</div>
+  <div class="header-date">2026.03.01 起適用</div>
+</header>
 
-    /* === 電腦版強制放大 (加入 !important) === */
-    @media screen and (min-width: 768px) {
-      #secure-login-box {
-        max-width: 600px !important; 
-        padding: 60px 50px !important;
-      }
-      #secure-login-box h3 {
-        font-size: 36px !important; 
-        margin-bottom: 20px !important;
-      }
-      #secure-login-box p {
-        font-size: 20px !important; 
-        margin-bottom: 35px !important;
-      }
-      #secure-login-box input {
-        font-size: 20px !important;
-        padding: 18px !important;
-      }
-      #secure-login-box button {
-        font-size: 22px !important;
-        padding: 18px !important;
-      }
-      #secure-container {
-        font-size: 18px !important;
-        line-height: 1.8 !important;
-      }
-    }
-  </style>
-  
-  <div id="secure-login-box">
-    <h3>🔒 私人課程方案</h3>
-    <p>此頁面受保護</p>
-    <input type="email" id="email-input" placeholder="請輸入提供的Email">
-    <button id="unlock-btn" onclick="verifyEmail()">解鎖內容</button>
-    <div id="secure-msg"></div>
+<nav class="tab-nav">
+  <button class="tab-btn active" onclick="goToPlan('standard', this)">標準課程</button>
+  <button class="tab-btn" onclick="goToPlan('subscription', this)">訂閱方案</button>
+</nav>
+
+<main class="main-wrap">
+
+  <!-- ══ 方案一 ══ -->
+  <div id="standard" class="section-label">
+    <div class="section-label-line"></div>
+    <div class="section-label-text">方案一：標準課程</div>
+    <div class="section-label-line"></div>
   </div>
-</div>
+
+  <div class="plan-card">
+    <div class="plan-card-header">
+      <div class="plan-name">單次購點制</div>
+      <div class="plan-price-tag">
+        <div class="plan-price-main">NTD 9,000 <span style="font-size:16px;opacity:0.6">/ 9,000 點</span></div>
+        <div class="plan-price-sub">約 18 堂課 · 每堂 50 分鐘</div>
+      </div>
+    </div>
+    <div class="slot-list">
+      <div class="slot-row color-teal">
+        <div class="slot-label">平日白天<span class="slot-sub">10am – 5pm</span></div>
+        <div class="slot-badge">500 點</div>
+      </div>
+      <div class="slot-row color-amber">
+        <div class="slot-label">平日晚間<span class="slot-sub">6pm – 10pm</span></div>
+        <div class="slot-badge">550 點</div>
+      </div>
+      <div class="slot-row color-green">
+        <div class="slot-label">週六／國定假日</div>
+        <div class="slot-badge">600 點</div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- ══ 方案二 ══ -->
+  <div id="subscription" class="section-label">
+    <div class="section-label-line"></div>
+    <div class="section-label-text">方案二：會員訂閱制</div>
+    <div class="section-label-line"></div>
+  </div>
+
+  <div class="plan-card">
+    <div class="plan-card-header">
+      <div class="plan-name">每週固定一堂</div>
+      <div class="plan-price-tag">
+        <div class="plan-price-main">NTD 13,500 <span style="font-size:16px;opacity:0.6">/ 13,500 點</span></div>
+        <div class="plan-price-sub">約 30 堂課 · 每堂 50 分鐘</div>
+      </div>
+    </div>
+
+    <div class="notice-box" style="margin-top:20px;">
+      <strong>⚠️ 訂閱制扣點規範</strong>
+      <ul>
+        <li><strong>當週未上課：</strong>仍需扣除 450 點</li>
+        <li><strong>當週第二堂：</strong>需 550 點</li>
+        <li><strong>會員權益：</strong>享有一次暫停訂閱方案的資格</li>
+      </ul>
+    </div>
+
+    <div class="slot-list">
+      <div class="slot-row color-teal">
+        <div class="slot-label">平日白天<span class="slot-sub">10am – 5pm</span></div>
+        <div class="slot-badge">450 點</div>
+      </div>
+      <div class="slot-row color-amber">
+        <div class="slot-label">平日晚間<span class="slot-sub">6pm – 10pm</span></div>
+        <div class="slot-badge">550 點</div>
+      </div>
+      <div class="slot-row color-green">
+        <div class="slot-label">週六／國定假日</div>
+        <div class="slot-badge">600 點</div>
+      </div>
+    </div>
+
+  </div>
+
+  <hr class="section-divider">
+
+  <!-- ══ 請假規範 ══ -->
+  <div class="section-label">
+    <div class="section-label-line"></div>
+    <div class="section-label-text">請假與調課規範</div>
+    <div class="section-label-line"></div>
+  </div>
+
+  <div class="rules-grid">
+    <div class="rule-card r-green">
+      <div class="rule-icon">📅</div>
+      <div>24 小時前提出請假或調課，扣除 0.5 堂 (週六/國定假日 1堂）</div>
+    </div>
+    <div class="rule-card r-teal">
+      <div class="rule-icon">⏰</div>
+      <div>12 小時前提出請假或調課，扣除 1 堂</div>
+    </div>
+    <div class="rule-card r-amber">
+      <div class="rule-icon">⚠️</div>
+      <div>週六課程需於上課前 24 小時提出；未於時限前提出，當堂課視為已使用。</div>
+    </div>
+    <div class="rule-card r-dark">
+      規範適用全部上課時段
+      <div class="rule-sub">（請假或缺席頻繁，將取消該固定時段課程）</div>
+    </div>
+  </div>
+
+  <div class="warning-footer">
+    <strong>⚠️ 重要提醒</strong>
+    此方案為私人專屬，請勿與其他人分享。<br>
+    目前正常學費方案請參閱：<a href="https://tonyonlineenglish.netlify.app/tui" target="_blank">正常學費方案</a>
+  </div>
+
+  <div class="page-footer">Tony 線上美語家教</div>
+
+</main>
 
 <script>
-  const GAS_URL = "https://script.google.com/macros/s/AKfycbzbDMqxb0GZw2Pa1pgcxcK4C3dzfCyfg4LhxwjlqHarMA-WHEtojLXWpBN-osMVArjECQ/exec"; 
-
-  document.addEventListener("DOMContentLoaded", function() {
-    setTimeout(function() {
-      const loginBox = document.getElementById("secure-login-box");
-      if (loginBox) {
-        loginBox.scrollIntoView({ behavior: "smooth", block: "center" });
-        document.getElementById("email-input").focus(); 
-      }
-    }, 500); 
-  });
-
-  async function verifyEmail() {
-    const emailInput = document.getElementById("email-input");
-    const email = emailInput.value;
-    const btn = document.getElementById("unlock-btn");
-    const msg = document.getElementById("secure-msg");
-
-    if (!email) { msg.innerText = "請輸入 Email"; return; }
-    if (!email.includes("@")) { msg.innerText = "Email 格式不正確"; return; }
-
-    btn.disabled = true;
-    btn.innerText = "驗證中...";
-    msg.innerText = "";
-
-    try {
-      const response = await fetch(GAS_URL, {
-        method: "POST",
-        body: JSON.stringify({ email: email })
-      });
-      const data = await response.json();
-
-      if (data.success) {
-        const container = document.getElementById("secure-container");
-        container.innerHTML = data.html;
-        container.scrollIntoView({ behavior: "smooth", block: "start" });
-        executeScripts(container);
-      } else {
-        msg.innerText = data.message;
-        btn.disabled = false;
-        btn.innerText = "解鎖內容";
-        emailInput.style.borderColor = "#f87171";
-        setTimeout(() => emailInput.style.borderColor = "#e2e8f0", 500);
-      }
-    } catch (e) {
-      console.error(e);
-      msg.innerText = "連線錯誤，請稍後再試";
-      btn.disabled = false;
-      btn.innerText = "解鎖內容";
+  function goToPlan(id, btn) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    var el = document.getElementById(id);
+    if (el) {
+      var top = el.getBoundingClientRect().top + window.pageYOffset - 20;
+      window.scrollTo({ top: top, behavior: 'smooth' });
     }
   }
-
-  function executeScripts(element) {
-    const scripts = element.querySelectorAll("script");
-    scripts.forEach(oldScript => {
-      const newScript = document.createElement("script");
-      Array.from(oldScript.attributes).forEach(attr => newScript.setAttribute(attr.name, attr.value));
-      newScript.appendChild(document.createTextNode(oldScript.innerHTML));
-      oldScript.parentNode.replaceChild(newScript, oldScript);
-    });
-  }
-  
-  document.getElementById("email-input").addEventListener("keyup", function(event) {
-    if (event.key === "Enter") {
-        verifyEmail();
-    }
-  });
 </script>
 
 </body>
