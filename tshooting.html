@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
@@ -25,12 +25,15 @@
 
         /* ── Main container ── */
         .container {
-            max-width: 960px;
+            max-width: 1200px;
             margin: 0 auto;
             background: #ffffff;
-            padding: 2.5rem;
+            padding: 2.5rem 3.5rem;
             border-radius: 12px;
             box-shadow: 0 10px 25px rgba(0,0,0,.08);
+        }
+        @media (max-width: 767px) {
+            .container { padding: 2rem 1.2rem; }
         }
 
         /* ── Desktop two-column layout ── */
@@ -41,24 +44,6 @@
                 gap: 2rem;
                 align-items: start;
             }
-        }
-
-        /* ── YouTube embed (16:9) ── */
-        .video-container {
-            position: relative;
-            padding-bottom: 56.25%;
-            height: 0;
-            overflow: hidden;
-            margin: 2rem 0;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0,0,0,.1);
-            background: #000;
-        }
-        .video-container iframe {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%; height: 100%;
-            border: none;
         }
 
         /* ── Audio player ── */
@@ -211,28 +196,23 @@
     <!-- ── Intro ── -->
     <p>您好，我是 Tony 線上美語家教的技術人員 <span class="highlight">Oliver</span>。我負責線上視訊軟體的障礙排除。</p>
 
-    <!-- ── Audio player (ImageKit MP3) ── -->
+    <!-- ── Audio player (autoplay) ── -->
     <div class="audio-section">
         <p>🔊 音訊說明：網速不足障礙排除</p>
-        <audio controls preload="metadata">
-            <source src="https://ik.imagekit.io/lql1uveoc/%E7%B6%B2%E9%80%9F%E4%B8%8D%E8%B6%B3%E9%9A%9C%E7%A4%99%E6%8E%92%E9%99%A4%20?updatedAt=1775292787055" type="audio/mpeg">
+        <audio id="mainAudio" controls preload="auto">
+            <source src="https://ik.imagekit.io/lql1uveoc/tshooting%202" type="audio/mpeg">
             您的瀏覽器不支援 audio 播放器。
         </audio>
     </div>
-
-    <!-- ── YouTube embed (muted to allow autoplay; unmute button optional) ── -->
-    <!--
-        Browsers block autoplay WITH sound.
-        Fix: add mute=1 so autoplay works. Viewer can unmute inside the player.
-    -->
-    <div class="video-container">
-        <iframe
-            src="https://www.youtube.com/embed/hM_uN_0_LFE?autoplay=1&mute=1&rel=0"
-            title="網速不足障礙排除說明"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowfullscreen>
-        </iframe>
-    </div>
+    <script>
+        // Autoplay on page load (browsers require a user gesture on mobile, but desktop usually allows it)
+        window.addEventListener('DOMContentLoaded', function() {
+            var audio = document.getElementById('mainAudio');
+            audio.play().catch(function() {
+                // Silently fail if browser blocks autoplay; controls still visible
+            });
+        });
+    </script>
 
     <!-- ── Event description ── -->
     <p><strong><span class="alert-text">異常紀錄：</span> 2026年4月4日，週六下午兩點。</strong><br>
