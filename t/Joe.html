@@ -452,7 +452,7 @@
                  <div class="sub-item-row border-bottom">
                     <div class="sub-label">期間轉方案</div>
                     <div class="sub-content">
-                        改為非訂閱制，每堂 <span class="text-accent font-mono" style="font-size: 22px;">550/600</span> 點
+                        改為非訂閱制，每堂 <span class="text-accent font-mono" style="font-size: 22px;">550</span> 點
                     </div>
                 </div>
 
@@ -474,9 +474,6 @@
         </div>
 
         <div class="footer-section">
-          <div class="sig-block">
-            <div class="sig-title cn-regular"> </div>
-          </div>
           <div class="footer-meta-row">
              <span class="order-text number-font">NO. <b id="outOrderSub">15TEY</b></span>
              <span class="url-text cn-text" style="font-size: 10px;">詳情請上 tonyonlineenglish.netlify.app/450</span>
@@ -502,10 +499,10 @@
         </div>
 
         <!-- CONTENT -->
-        <div class="sub-container" style="display:flex; flex-direction:column; justify-content:center; height:100%;">
+        <div class="sub-container" style="display:flex; flex-direction:column; gap:16px; padding-top:4px;">
             
             <!-- TOTAL AMOUNT BLOCK -->
-            <div class="ref-black-box" style="height: auto; padding: 25px; margin-bottom: 25px; border-bottom: 5px solid var(--primary-blue);">
+            <div class="ref-black-box" style="height: auto; padding: 16px 20px; margin-bottom: 0; border-bottom: 5px solid var(--primary-blue);">
                 <div class="top-line-group" style="margin-bottom: 10px;">
                     <span class="label-sm text-white" style="font-size: 18px;">方案總額 (Total Amount)</span>
                 </div>
@@ -513,13 +510,13 @@
                     <span class="currency-inline" style="font-size:32px;">NT$</span>
                     <span class="amount-large" style="font-size: 64px;" id="outPlanTotal">15,300</span>
                 </div>
-                <div class="text-white cn-text" style="margin-top: 15px; font-size: 18px; border-top: 1px solid #717A85; padding-top: 10px;" id="outPlanDetail">
+                <div class="text-white cn-text" style="margin-top: 8px; font-size: 17px; border-top: 1px solid #717A85; padding-top: 8px;" id="outPlanDetail">
                     共15300點, 大約34堂課, 每堂50分鐘
                 </div>
             </div>
 
             <!-- CHANGE RULES BLOCK -->
-            <div class="ref-border-box" style="padding: 20px; background: var(--slate-light); border: 3px solid var(--slate-dark);">
+            <div class="ref-border-box" style="padding: 14px; background: var(--slate-light); border: 3px solid var(--slate-dark);">
                 <div style="display:flex; align-items:center; gap: 10px; margin-bottom: 15px;">
                     <div class="rule-h" style="font-size: 20px;">變更方案規範</div>
                     <span class="cn-text" style="font-size: 14px; color:var(--text-gray);">CHANGE OF PLAN</span>
@@ -756,16 +753,13 @@
               Thanks a lot.
             </div>
             <div style="margin-top:8px;">
-              <span class="tony-script" style=“font-size:28px;">Tony 線上美語家教</span>
+              <span class="tony-script" style="font-size:28px;">Tony</span>
             </div>
           </div>
 
         </div>
 
         <div class="footer-section" style="margin-top: 8px; flex-shrink:0;">
-          <div class="sig-block">
-            <div class="sig-title cn-regular”> </div>
-          </div>
           <div class="footer-meta-row">
              <span class="order-text number-font">NO. <b id="outOrderPage8">15TEY</b></span>
              <span class="url-text cn-text" style="font-size: 10px;">Policy Version 2026.04</span>
@@ -890,11 +884,11 @@
 
   .points-row { height: 45px; display: flex; align-items: center; justify-content: space-between; padding: 0 10px; }
 
-  .col-right-info { flex: 1; display: flex; flex-direction: column; justify-content: flex-start; padding-top: 5px; }
+  .col-right-info { flex: 1; min-width: 0; display: flex; flex-direction: column; justify-content: flex-start; padding-top: 5px; overflow: hidden; }
   .info-group-right { display: flex; flex-direction: column; gap: 13px; }
   .info-line { border-bottom: 2px dotted #ccc; padding-bottom: 4px; }
   .info-l { display: block; font-size: 16px; font-weight: 700; color: var(--text-gray); margin-bottom: 4px; }
-  .info-v { display: block; font-size: 24px; text-align: right; font-weight: 500; line-height: 1.1; color: var(--text-dark); }
+  .info-v { display: block; font-size: 20px; text-align: right; font-weight: 500; line-height: 1.2; color: var(--text-dark); word-break: break-all; overflow-wrap: anywhere; }
 
   /* KEY FIX: rules-container — reduced margins */
   .rules-container { margin-top: auto; margin-bottom: 4px; flex-shrink: 0; }
