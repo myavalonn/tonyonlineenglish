@@ -638,7 +638,6 @@
     /* ══════════════════════════════════════
        CART PANEL
     ══════════════════════════════════════ */
-    /* ... (Cart CSS remains unchanged) ... */
     .cart-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.45); backdrop-filter: blur(3px); z-index: 800; opacity: 0; visibility: hidden; transition: opacity .35s, visibility .35s; }
     .cart-overlay.open { opacity:1; visibility:visible; }
     .cart-panel { position: fixed; top: 0; right: -100%; width: 90%; max-width: 900px; height: 100%; background: var(--white); z-index: 900; transition: right .4s cubic-bezier(.25,.8,.25,1); display: flex; flex-direction: column; box-shadow: -10px 0 40px rgba(0,0,0,.12); }
@@ -715,57 +714,81 @@
     #celebration-icon::before { content:''; position:absolute; bottom:4px; left:50%; width:8px; height:8px; border-radius:2px; background:transparent; animation:confetti-burst 1.8s ease-out infinite; z-index:-1; }
 
     /* ══════════════════════════════════════
-       RESPONSIVE (Desktop Enlarged)
+       RESPONSIVE (Desktop Enlarged - 除了 Hero 外放大 1.5 倍)
     ══════════════════════════════════════ */
     @media (min-width: 1025px) {
-        .hero-inner { max-width: 1350px; }
-        .section-inner { max-width: 1250px; }
+        /* Topbar 放大的比例 */
+        .topbar { padding: 24px 80px; }
+        .topbar-link { font-size: 1.25rem; }
 
-        .hero-h1 { font-size: clamp(4.5rem, 6vw, 6.2rem); line-height: 1.15; }
-        .hero-sub { font-size: 1.25rem; max-width: 600px; line-height: 1.9; }
-        .hero-eyebrow { font-size: 1rem; padding: 8px 20px; }
-        .btn-primary { font-size: 1.15rem; padding: 18px 36px; }
-        .btn-ghost { font-size: 1.1rem; padding: 18px 32px; }
+        /* 一般區塊的版面與間距放大 */
+        .section { padding: 140px 0; }
+        .section-inner { max-width: 1500px; padding: 0 60px; }
+        .sec-eyebrow { font-size: 1.1rem; margin-bottom: 15px; }
+        .sec-title { font-size: clamp(3rem, 5vw, 4.5rem); margin-bottom: 20px; }
+        .sec-rule { width: 60px; height: 3px; margin-bottom: 60px; }
 
-        .score-card { padding: 50px 46px; }
-        .score-title { font-size: 1.35rem; }
-        .score-subject { font-size: 1.1rem; }
-        .score-num { font-size: 1.1rem; }
-        .score-card-note { font-size: 1rem; line-height: 1.8; }
+        /* Features (為何選擇這堂課) */
+        #features .sec-eyebrow { font-size: 1.5rem; }
+        #features .sec-title { font-size: clamp(3.5rem, 5vw, 5rem); }
+        .features-grid { gap: 24px; margin-top: 60px; }
+        .feature-card { padding: 40px 32px; border-radius: var(--r-xl); }
+        .f-title { font-size: 2.25rem; margin-bottom: 16px; }
+        .f-body { font-size: 1.4rem; line-height: 1.8; }
 
-        .sec-eyebrow { font-size: 0.9rem; }
-        .sec-title { font-size: 3.5rem; }
+        /* Who is this for (適合對象) */
+        .who-list-styled { gap: 30px; margin-top: 60px; }
+        .who-list-styled li { padding: 45px 55px; gap: 20px; border-radius: var(--r-xl); }
+        .who-list-styled .who-tag { font-size: 1.4rem; padding: 10px 28px; }
+        .who-list-styled .who-text { font-size: 1.6rem; line-height: 1.8; margin-top: 8px; }
 
-        #features .sec-eyebrow { font-size: 1.1rem; }
-        #features .sec-title { font-size: 4rem; }
-        .feature-card { padding: 36px 30px; }
-        .f-title { font-size: 1.7rem; }
-        .f-body { font-size: 1.15rem; }
+        /* Countdown (倒數計時) */
+        .countdown-section { padding: 120px 60px; }
+        .cd-eyebrow { font-size: 1.1rem; margin-bottom: 20px; }
+        .cd-title { font-size: 3rem; margin-bottom: 70px; }
+        .timer-grid { gap: 30px; }
+        .time-block { padding: 42px 54px; min-width: 160px; border-radius: var(--r-lg); }
+        .tv { font-size: 7.5rem; }
+        .tl { font-size: 1.1rem; margin-top: 12px; }
 
-        .who-list-styled li { padding: 36px 48px; }
-        .who-list-styled .who-tag { font-size: 1.1rem; padding: 8px 24px; }
-        .who-list-styled .who-text { font-size: 1.2rem; }
+        /* Pricing (學費資訊) */
+        .product-wrap { max-width: 1140px; }
+        .pricing-card { padding: 75px; }
+        .pricing-top { margin-bottom: 50px; }
+        .pricing-top h2 { font-size: 3rem; }
+        .pricing-badge { font-size: 1.25rem; padding: 10px 28px; }
+        .sel-label { font-size: 1.1rem; margin-bottom: 15px; }
+        .styled-select { font-size: 1.5rem; padding: 24px 30px; margin-bottom: 36px; border-radius: var(--r-lg); }
+        .add-btn { font-size: 1.65rem; padding: 30px 48px; border-radius: var(--r-lg); }
 
-        .cd-title { font-size: 2.2rem; }
-        .tv { font-size: 6.5rem; }
-        .time-block { padding: 36px 46px; }
+        /* Testimonials (學生回饋) */
+        .testimonials-track-wrap { margin-top: 70px; }
+        .tcard { padding: 54px 48px; border-radius: var(--r-xl); }
+        .tcard-stars { font-size: 1.65rem; margin-bottom: 24px; }
+        .tcard-quote { font-size: 1.4rem; line-height: 1.85; margin-bottom: 36px; }
+        .tcard-avatar { width: 70px; height: 70px; font-size: 1.8rem; }
+        .tcard-name { font-size: 1.35rem; }
+        .tcard-info { font-size: 1.15rem; margin-top: 4px; }
 
-        .pricing-card { padding: 64px; }
-        .pricing-top h2 { font-size: 2.5rem; }
-        .styled-select { font-size: 1.25rem; padding: 20px 24px; }
-        .add-btn { font-size: 1.35rem; padding: 24px; }
+        /* FAQ (常見問題) */
+        .faq-list { gap: 18px; margin-top: 70px; max-width: 1200px; }
+        .faq-q { padding: 32px 42px; gap: 30px; }
+        .faq-q-text { font-size: 1.45rem; }
+        .faq-icon { width: 36px; height: 36px; font-size: 1.2rem; }
+        .faq-a { padding: 0 42px; }
+        .faq-a-inner { padding-bottom: 32px; font-size: 1.35rem; line-height: 1.9; }
 
-        .tcard { padding: 46px 40px; }
-        .tcard-quote { font-size: 1.1rem; }
-        .tcard-name { font-size: 1.05rem; }
+        /* CTA Strip (結尾呼籲區塊) */
+        .cta-strip { padding: 120px 60px; }
+        .cta-strip h2 { font-size: 4.5rem; margin-bottom: 18px; }
+        .cta-strip p { font-size: 1.5rem; margin-bottom: 54px; }
+        .cta-pill { font-size: 1.7rem; padding: 30px 75px; }
+        .cta-pill img { width: 30px; height: 30px; }
 
-        .faq-q-text { font-size: 1.15rem; }
-        .faq-a-inner { font-size: 1.1rem; }
-        .faq-list { max-width: 900px; }
-
-        .cta-strip h2 { font-size: 3.5rem; }
-        .cta-strip p { font-size: 1.25rem; }
-        .cta-pill { font-size: 1.35rem; padding: 24px 60px; }
+        /* Footer */
+        footer { padding: 60px 80px; }
+        .footer-brand { font-size: 1.65rem; }
+        .footer-note { font-size: 1.2rem; }
     }
 
     @media (max-width:1024px) {
@@ -1221,9 +1244,9 @@ const products = [
 ];
 let cart = {};
 
-/* ── COUNTDOWN WITH SCROLL ANIMATION ── */
+/* ── COUNTDOWN (從 1 開始增加動畫) ── */
 (function initCountdown() {
-    const target = new Date('2027-01-16T09:00:00').getTime();
+    const targetDate = new Date('2027-01-16T09:00:00').getTime();
     const pad = n => String(n).padStart(2,'0');
     
     const daysEl = document.getElementById('cd-days');
@@ -1234,8 +1257,9 @@ let cart = {};
     
     let countdownInterval;
 
+    // 更新到實際真實時間
     function updateActualTime() {
-        const diff = target - Date.now();
+        const diff = targetDate - Date.now();
         if (diff <= 0) {
             if(countdownInterval) clearInterval(countdownInterval);
             gridEl.style.display = 'none';
@@ -1247,41 +1271,64 @@ let cart = {};
         minsEl.textContent  = pad(Math.floor(diff % 3600000 / 60000));
     }
 
-    function runSlotAnimation() {
-        const duration = 1500; // 特效持續 1.5 秒
-        const frameRate = 30; // 每格毫秒
-        let elapsed = 0;
-        
-        const animInterval = setInterval(() => {
-            elapsed += frameRate;
-            if (elapsed >= duration) {
-                clearInterval(animInterval);
-                updateActualTime(); // 設定最終真實時間
-                countdownInterval = setInterval(updateActualTime, 1000); // 啟動正常倒數
+    // 從 1 增加到真實數字的動畫效果
+    function animateCountUp() {
+        const diff = targetDate - Date.now();
+        if (diff <= 0) {
+            updateActualTime();
+            return;
+        }
+
+        const finalDays = Math.floor(diff / 86400000);
+        const finalHours = Math.floor(diff % 86400000 / 3600000);
+        const finalMins = Math.floor(diff % 3600000 / 60000);
+
+        const duration = 2000; // 動畫持續 2 秒
+        const startTime = performance.now();
+
+        // 緩動函數 (先快後慢)
+        function easeOutQuart(t) { return 1 - Math.pow(1 - t, 4); }
+
+        function step(now) {
+            let progress = (now - startTime) / duration;
+            if (progress > 1) progress = 1;
+            
+            const easeProgress = easeOutQuart(progress);
+
+            // 從 1 開始計算目前的數字 (如果實際為 0 就顯示 0)
+            let curDays = Math.max(finalDays > 0 ? 1 : 0, Math.floor(finalDays * easeProgress));
+            let curHours = Math.max(finalHours > 0 ? 1 : 0, Math.floor(finalHours * easeProgress));
+            let curMins = Math.max(finalMins > 0 ? 1 : 0, Math.floor(finalMins * easeProgress));
+
+            daysEl.textContent = pad(curDays);
+            hoursEl.textContent = pad(curHours);
+            minsEl.textContent = pad(curMins);
+
+            if (progress < 1) {
+                requestAnimationFrame(step);
             } else {
-                // 亂數滾動效果
-                daysEl.textContent = pad(Math.floor(Math.random() * 999));
-                hoursEl.textContent = pad(Math.floor(Math.random() * 24));
-                minsEl.textContent = pad(Math.floor(Math.random() * 60));
+                // 動畫結束，停在正確數字並開始正常倒數
+                updateActualTime();
+                countdownInterval = setInterval(updateActualTime, 1000);
             }
-        }, frameRate);
+        }
+        requestAnimationFrame(step);
     }
 
-    // 使用 Intersection Observer 偵測何時滾動到該區塊
+    // 運用 Intersection Observer 當滾動到該區域時觸發動畫
     const observer = new IntersectionObserver((entries, obs) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                runSlotAnimation(); // 觸發動畫
-                obs.disconnect();   // 只觸發一次
+                animateCountUp();
+                obs.disconnect(); // 觸發一次後解除監聽
             }
         });
-    }, { threshold: 0.3 }); // 當區塊進入畫面 30% 時觸發
+    }, { threshold: 0.3 });
 
     const cdSection = document.querySelector('.countdown-section');
     if (cdSection) {
         observer.observe(cdSection);
     } else {
-        // Fallback
         updateActualTime();
         countdownInterval = setInterval(updateActualTime, 1000);
     }
