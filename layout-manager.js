@@ -180,7 +180,7 @@ document.addEventListener("DOMContentLoaded", function() {
             <a href="index.html" class="menu-link">回首頁</a>
             <a href="https://tonyonlineenglish.netlify.app/allcourses" target="_blank" class="menu-link highlight-course">課程詳細介紹<span>升學 檢定 職場 公職 客製化</span></a>
 
-            <a href="https://tonyonlineenglish.netlify.app/hsw" target="_blank" class="menu-link sat-course">學測英文作文班＋衝刺<span><small style="font-size:13px; opacity:0.85;">116年</small> &nbsp;#學測作文 #高中英文 #衝刺班</span></a>
+            <a href="https://tonyonlineenglish.netlify.app/hsw" target="_blank" class="menu-link sat-course">學測英文作文班衝刺<span><small style="font-size:13px; opacity:0.85;">116年</small> &nbsp;學測英文作文/高中英文/衝刺班</span></a>
 
             <a href="https://tonyonlineenglish.netlify.app/inter36w" target="_blank" class="menu-link gept-course">全民英檢中級寫作<span>三/六回影片課程+家教+批改</span></a>
             
