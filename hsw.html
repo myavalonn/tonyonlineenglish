@@ -135,8 +135,8 @@
         position: absolute; inset: 0;
         background-image: url('https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=1600&q=80');
         background-size: cover;
-        background-position: center 30%;
-        opacity: .18;
+        background-position: center 55%;
+        opacity: .22;
     }
     /* geometric accent lines */
     .hero-accent {
@@ -448,11 +448,8 @@
         border-top: 1px solid var(--stone-100);
         border-bottom: 1px solid var(--stone-100);
     }
-    .info-cell {
-        background: var(--white);
-        padding: 36px 24px;
-        text-align: center;
-    }
+    .info-cell { background: var(--white); padding: 36px 24px; text-align: center; transition: background .2s; }
+    .info-cell:hover { background: var(--stone-50); }
     .ic-icon { font-size: 1.8rem; margin-bottom: 8px; }
     .ic-label {
         font-family: var(--f-mono);
@@ -858,7 +855,52 @@
         .tcard { flex:0 0 calc(50% - 12px); }
         .ty-wrap { grid-template-columns:1fr; }
     }
+    /* ── iPad specific: much larger fonts ── */
+    @media (min-width:768px) and (max-width:1024px) {
+        .hero-bg { background-position: 40% 50%; }
+        .hero-inner { padding: 80px 48px; }
+        .hero-h1 { font-size: 4.8rem !important; line-height: 1.08; }
+        .hero-eyebrow { font-size: 1rem; padding: 8px 20px; margin-bottom: 32px; }
+        .hero-sub { font-size: 1.3rem; line-height: 2; max-width: 100%; }
+        .hero-badge { font-size: 1rem; padding: 10px 20px; }
+        .hero-badges { gap: 12px; margin-bottom: 48px; }
+        .btn-primary { font-size: 1.25rem; padding: 20px 40px; }
+        .btn-ghost { font-size: 1.2rem; padding: 20px 36px; }
+        .score-title { font-size: .9rem; }
+        .score-subject { font-size: 1.1rem; }
+        .score-num { font-size: 1rem; }
+        .score-card { padding: 48px 44px; }
+        .score-card-note { font-size: 1rem; }
+        .topbar-logo { font-size: 1.6rem; }
+        .topbar-link { font-size: 1.05rem; }
+        .topbar-cta { font-size: 1rem; padding: 12px 26px; }
+        .sec-eyebrow { font-size: .9rem; }
+        .sec-title { font-size: 2.8rem; }
+        .f-title { font-size: 1.7rem; }
+        .f-body { font-size: 1.1rem; }
+        .ic-icon { font-size: 2.4rem; }
+        .ic-label { font-size: .85rem; }
+        .ic-val { font-size: 1.15rem; }
+        .tcard-quote { font-size: 1.1rem; }
+        .tcard-name { font-size: 1.05rem; }
+        .faq-q-text { font-size: 1.15rem; }
+        .faq-a-inner { font-size: 1.05rem; }
+        .cta-strip h2 { font-size: 2.6rem; }
+        .cta-strip p { font-size: 1.2rem; }
+        .cta-pill { font-size: 1.3rem; padding: 22px 56px; }
+        .cd-title { font-size: 1.6rem; }
+        .tv { font-size: 5rem; }
+        .tl { font-size: .85rem; }
+        .pricing-top h2 { font-size: 2.4rem; }
+        .styled-select { font-size: 1.2rem; padding: 18px 22px; }
+        .add-btn { font-size: 1.3rem; padding: 22px; }
+        .who-text { font-size: 1.1rem; }
+        .who-tag { font-size: .95rem; padding: 6px 18px; }
+        .section-inner { padding: 0 48px; }
+        .section { padding: 88px 0; }
+    }
     @media (max-width:768px) {
+        .hero-bg { background-position: 30% 60%; opacity: .20; }
         .topbar { padding:16px 20px; }
         .topbar-right .topbar-link { display:none; }
         .section-inner { padding:0 20px; }
@@ -901,7 +943,7 @@
     <div class="topbar-right">
         <a href="#pricing" class="topbar-link">課程方案</a>
         <a href="#faq" class="topbar-link">常見問題</a>
-        <a href="https://tonyonlineenglish.netlify.app/exper" target="_blank" class="topbar-cta">預約體驗課</a>
+        <a href="https://tonyonlineenglish.netlify.app/exPlain Englishr" target="_blank" class="topbar-cta">預約體驗課</a>
     </div>
 </header>
 
@@ -930,7 +972,7 @@
             </div>
             <div class="hero-btns">
                 <a href="#pricing" class="btn-primary">查看課程方案 →</a>
-                <a href="https://tonyonlineenglish.netlify.app/exper" target="_blank" class="btn-ghost">免費體驗課</a>
+                <a href="https://tonyonlineenglish.netlify.app/exPlain Englishr" target="_blank" class="btn-ghost">預約體驗課程</a>
             </div>
         </div>
         <div class="hero-right">
@@ -995,10 +1037,14 @@
         <div class="ic-label">使用軟體</div>
         <div class="ic-val">Zoom</div>
     </div>
-    <div class="info-cell">
-        <div class="ic-icon">💬</div>
+    <div class="info-cell" style="cursor:pointer;" onclick="window.open('https://line.me/ti/p/T9YdimtG8_','_blank')">
+        <div class="ic-icon"><img src="https://ik.imagekit.io/lql1uveoc/line.png?updatedAt=1761926064215" alt="LINE" style="width:2rem;height:2rem;object-fit:contain;"></div>
         <div class="ic-label">聯絡方式</div>
-        <div class="ic-val"><a href="https://line.me/ti/p/T9YdimtG8_" target="_blank">Line: myavalon</a></div>
+        <div class="ic-val">
+            <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" onclick="event.stopPropagation();" style="display:inline-flex;align-items:center;gap:6px;background:#06c755;color:#fff;font-weight:700;border-radius:999px;padding:8px 18px;text-decoration:none;font-size:.85rem;">
+                <img src="https://ik.imagekit.io/lql1uveoc/line.png?updatedAt=1761926064215" alt="LINE" style="width:18px;height:18px;object-fit:contain;filter:brightness(0) invert(1);"> 點選加入 LINE
+            </a>
+        </div>
     </div>
 </div>
 
@@ -1219,8 +1265,8 @@
             </div>
 
             <div class="faq-item">
-                <div class="faq-q"><span class="faq-q-text">體驗課是免費的嗎？內容是什麼？</span><span class="faq-icon">+</span></div>
-                <div class="faq-a"><div class="faq-a-inner">是的，體驗課免費。在體驗課中，老師會先了解你目前的英文程度與寫作狀況，進行一對一診斷，並說明課程方向，讓你充分了解課程是否適合自己，再決定是否報名正式課程。</div></div>
+                <div class="faq-q"><span class="faq-q-text">體驗課程內容和要如何預約？</span><span class="faq-icon">+</span></div>
+                <div class="faq-a"><div class="faq-a-inner">請先完成一篇由老師提供的作文題目，完成後提供給老師批改，老師會先了解你目前的英文程度與寫作狀況，進行一對一診斷，並說明課程方向，讓你充分了解課程是否適合自己，再決定是否報名正式課程。<br><br><a href="https://tonyonlineenglish.netlify.app/exPlain Englishr" target="_blank" style="display:inline-flex;align-items:center;gap:8px;margin-top:8px;background:var(--gold);color:var(--white);font-weight:700;padding:12px 24px;border-radius:999px;text-decoration:none;font-size:.9rem;transition:opacity .2s;">體驗課程頁面 →</a></div></div>
             </div>
 
         </div>
@@ -1230,8 +1276,8 @@
 <!-- ════ CTA STRIP ════ -->
 <section class="cta-strip">
     <h2>準備好了嗎？<em style="font-style:italic;color:var(--gold-light)">先來一堂體驗課</em></h2>
-    <p>完全免費・一對一診斷・了解課程後再決定是否報名</p>
-    <a href="https://tonyonlineenglish.netlify.app/exper" class="cta-pill" target="_blank" rel="noopener">
+    <p>一對一線上評估，加強學測英文寫作。</p>
+    <a href="https://tonyonlineenglish.netlify.app/exPlain Englishr" class="cta-pill" target="_blank" rel="noopener">
         預約體驗課程
         <img src="https://ik.imagekit.io/lql1uveoc/external-link.png?updatedAt=1754911187731" alt="外部連結">
     </a>
@@ -1263,7 +1309,7 @@
             <h4 class="co-title">結帳</h4>
             <p class="co-sub">請輸入您的電子信箱以完成訂購。</p>
             <input type="email" id="email-display" class="co-email-field" readonly placeholder="點擊這裡輸入信箱">
-            <a class="line-btn" href="https://line.me/ti/p/T9YdimtG8_" target="_blank" rel="noopener">💬 加入 Line: Myavalon</a>
+            <a class="line-btn" href="https://line.me/ti/p/T9YdimtG8_" target="_blank" rel="noopener"><img src="https://ik.imagekit.io/lql1uveoc/line.png?updatedAt=1761926064215" alt="LINE" style="width:20px;height:20px;object-fit:contain;filter:brightness(0) invert(1);"> 點選加入 LINE</a>
             <p style="font-size:.75rem;font-family:var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--stone-400);margin-bottom:10px;">付款方式</p>
             <div class="pay-box"><div class="pay-dot"></div><span>匯款 或 Line Pay / iPass Money</span></div>
             <p class="tls-note">🔒 所有資料透過 TLS 安全加密傳輸</p>
@@ -1297,7 +1343,7 @@
             <div class="ty-pay">
                 <h5>如何付款</h5>
                 <p>
-                    <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="ty-line">加入 Line: myavalon</a><br>
+                    <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="ty-line" style="display:inline-flex;align-items:center;gap:8px;background:#06c755;color:#fff;font-weight:700;border-radius:999px;padding:10px 22px;text-decoration:none;font-size:.9rem;"><img src="https://ik.imagekit.io/lql1uveoc/line.png?updatedAt=1761926064215" alt="LINE" style="width:18px;height:18px;object-fit:contain;filter:brightness(0) invert(1);"> 點選加入 LINE</a><br>
                     匯款或使用 Line Pay / iPass Money 付款<br>
                     交易成功後煩請告知，將提供學費證明。感謝 ＾＾
                 </p>
