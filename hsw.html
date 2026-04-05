@@ -714,81 +714,91 @@
     #celebration-icon::before { content:''; position:absolute; bottom:4px; left:50%; width:8px; height:8px; border-radius:2px; background:transparent; animation:confetti-burst 1.8s ease-out infinite; z-index:-1; }
 
     /* ══════════════════════════════════════
-       RESPONSIVE (Desktop Enlarged - 除了 Hero 外放大 1.5 倍)
+       RESPONSIVE (Desktop Enlarged - 除了 Hero 外放大 1.5 倍，FAQ 放大 2 倍)
     ══════════════════════════════════════ */
     @media (min-width: 1025px) {
-        /* Topbar 放大的比例 */
-        .topbar { padding: 24px 80px; }
-        .topbar-link { font-size: 1.25rem; }
+        /* ==== 主視覺區塊 (Hero Section) 維持原本大小不變 ==== */
+        .hero-inner { max-width: 1350px; }
+        .hero-h1 { font-size: clamp(4.5rem, 6vw, 6.2rem); line-height: 1.15; }
+        .hero-sub { font-size: 1.25rem; max-width: 600px; line-height: 1.9; }
+        .hero-eyebrow { font-size: 1rem; padding: 8px 20px; }
+        .btn-primary { font-size: 1.15rem; padding: 18px 36px; }
+        .btn-ghost { font-size: 1.1rem; padding: 18px 32px; }
 
-        /* 一般區塊的版面與間距放大 */
-        .section { padding: 140px 0; }
-        .section-inner { max-width: 1500px; padding: 0 60px; }
-        .sec-eyebrow { font-size: 1.1rem; margin-bottom: 15px; }
-        .sec-title { font-size: clamp(3rem, 5vw, 4.5rem); margin-bottom: 20px; }
-        .sec-rule { width: 60px; height: 3px; margin-bottom: 60px; }
+        .score-card { padding: 50px 46px; }
+        .score-title { font-size: 1.35rem; }
+        .score-subject { font-size: 1.1rem; }
+        .score-num { font-size: 1.1rem; }
+        .score-card-note { font-size: 1rem; line-height: 1.8; }
 
-        /* Features (為何選擇這堂課) */
-        #features .sec-eyebrow { font-size: 1.5rem; }
-        #features .sec-title { font-size: clamp(3.5rem, 5vw, 5rem); }
-        .features-grid { gap: 24px; margin-top: 60px; }
-        .feature-card { padding: 40px 32px; border-radius: var(--r-xl); }
-        .f-title { font-size: 2.25rem; margin-bottom: 16px; }
-        .f-body { font-size: 1.4rem; line-height: 1.8; }
+        /* ==== 以下所有區塊設定再放大 1.5 倍 ==== */
+        .topbar { padding: 36px 120px; }
+        .topbar-link { font-size: 1.875rem; }
 
-        /* Who is this for (適合對象) */
-        .who-list-styled { gap: 30px; margin-top: 60px; }
-        .who-list-styled li { padding: 45px 55px; gap: 20px; border-radius: var(--r-xl); }
-        .who-list-styled .who-tag { font-size: 1.4rem; padding: 10px 28px; }
-        .who-list-styled .who-text { font-size: 1.6rem; line-height: 1.8; margin-top: 8px; }
+        .section { padding: 210px 0; }
+        .section-inner { max-width: 2250px; padding: 0 90px; }
+        .sec-eyebrow { font-size: 1.65rem; margin-bottom: 22px; }
+        .sec-title { font-size: clamp(4.5rem, 7.5vw, 6.75rem); margin-bottom: 30px; }
+        .sec-rule { width: 90px; height: 4px; margin-bottom: 90px; }
 
-        /* Countdown (倒數計時) */
-        .countdown-section { padding: 120px 60px; }
-        .cd-eyebrow { font-size: 1.1rem; margin-bottom: 20px; }
-        .cd-title { font-size: 3rem; margin-bottom: 70px; }
-        .timer-grid { gap: 30px; }
-        .time-block { padding: 42px 54px; min-width: 160px; border-radius: var(--r-lg); }
-        .tv { font-size: 7.5rem; }
-        .tl { font-size: 1.1rem; margin-top: 12px; }
+        #features .sec-eyebrow { font-size: 2.25rem; }
+        #features .sec-title { font-size: clamp(5.25rem, 7.5vw, 7.5rem); }
+        .features-grid { gap: 36px; margin-top: 90px; }
+        .feature-card { padding: 60px 48px; border-radius: 36px; }
+        .f-title { font-size: 3.375rem; margin-bottom: 24px; }
+        .f-body { font-size: 2.1rem; line-height: 1.8; }
 
-        /* Pricing (學費資訊) */
-        .product-wrap { max-width: 1140px; }
-        .pricing-card { padding: 75px; }
-        .pricing-top { margin-bottom: 50px; }
-        .pricing-top h2 { font-size: 3rem; }
-        .pricing-badge { font-size: 1.25rem; padding: 10px 28px; }
-        .sel-label { font-size: 1.1rem; margin-bottom: 15px; }
-        .styled-select { font-size: 1.5rem; padding: 24px 30px; margin-bottom: 36px; border-radius: var(--r-lg); }
-        .add-btn { font-size: 1.65rem; padding: 30px 48px; border-radius: var(--r-lg); }
+        .who-list-styled { gap: 45px; margin-top: 90px; }
+        .who-list-styled li { padding: 67px 82px; gap: 30px; border-radius: 36px; }
+        .who-list-styled .who-tag { font-size: 2.1rem; padding: 15px 42px; }
+        .who-list-styled .who-text { font-size: 2.4rem; line-height: 1.8; margin-top: 12px; }
 
-        /* Testimonials (學生回饋) */
-        .testimonials-track-wrap { margin-top: 70px; }
-        .tcard { padding: 54px 48px; border-radius: var(--r-xl); }
-        .tcard-stars { font-size: 1.65rem; margin-bottom: 24px; }
-        .tcard-quote { font-size: 1.4rem; line-height: 1.85; margin-bottom: 36px; }
-        .tcard-avatar { width: 70px; height: 70px; font-size: 1.8rem; }
-        .tcard-name { font-size: 1.35rem; }
-        .tcard-info { font-size: 1.15rem; margin-top: 4px; }
+        .countdown-section { padding: 180px 90px; }
+        .cd-eyebrow { font-size: 1.65rem; margin-bottom: 30px; }
+        .cd-title { font-size: 4.5rem; margin-bottom: 105px; }
+        .timer-grid { gap: 45px; }
+        .time-block { padding: 63px 81px; min-width: 240px; border-radius: 24px; }
+        .tv { font-size: 11.25rem; }
+        .tl { font-size: 1.65rem; margin-top: 18px; }
 
-        /* FAQ (常見問題) */
-        .faq-list { gap: 18px; margin-top: 70px; max-width: 1200px; }
-        .faq-q { padding: 32px 42px; gap: 30px; }
-        .faq-q-text { font-size: 1.45rem; }
-        .faq-icon { width: 36px; height: 36px; font-size: 1.2rem; }
-        .faq-a { padding: 0 42px; }
-        .faq-a-inner { padding-bottom: 32px; font-size: 1.35rem; line-height: 1.9; }
+        .product-wrap { max-width: 1710px; }
+        .pricing-card { padding: 112px; border-radius: 60px; }
+        .pricing-top { margin-bottom: 75px; }
+        .pricing-top h2 { font-size: 4.5rem; }
+        .pricing-badge { font-size: 1.875rem; padding: 15px 42px; }
+        .sel-label { font-size: 1.65rem; margin-bottom: 22px; }
+        .styled-select { font-size: 2.25rem; padding: 36px 45px; margin-bottom: 54px; border-radius: 24px; background-size: 24px; background-position: right 30px center;}
+        .add-btn { font-size: 2.475rem; padding: 45px 72px; border-radius: 24px; }
 
-        /* CTA Strip (結尾呼籲區塊) */
-        .cta-strip { padding: 120px 60px; }
-        .cta-strip h2 { font-size: 4.5rem; margin-bottom: 18px; }
-        .cta-strip p { font-size: 1.5rem; margin-bottom: 54px; }
-        .cta-pill { font-size: 1.7rem; padding: 30px 75px; }
-        .cta-pill img { width: 30px; height: 30px; }
+        .testimonials-track-wrap { margin-top: 105px; }
+        .tcard { padding: 81px 72px; border-radius: 36px; }
+        .tcard-stars { font-size: 2.475rem; margin-bottom: 36px; }
+        .tcard-quote { font-size: 2.1rem; line-height: 1.85; margin-bottom: 54px; }
+        .tcard-avatar { width: 105px; height: 105px; font-size: 2.7rem; }
+        .tcard-name { font-size: 2.025rem; }
+        .tcard-info { font-size: 1.725rem; margin-top: 6px; }
+        .t-controls { margin-top: 48px; gap: 24px; }
+        .t-arrow { width: 63px; height: 63px; font-size: 1.5rem; }
+        .t-dot { width: 12px; height: 12px; }
 
-        /* Footer */
-        footer { padding: 60px 80px; }
-        .footer-brand { font-size: 1.65rem; }
-        .footer-note { font-size: 1.2rem; }
+        /* ==== FAQ (常見問題) 相對上一版本放大 2 倍 ==== */
+        .faq-list { gap: 27px; margin-top: 105px; max-width: 1600px; }
+        .faq-q { padding: 50px 65px; gap: 40px; }
+        .faq-q-text { font-size: 2.9rem; } /* 放大2倍的標題 */
+        .faq-icon { width: 60px; height: 60px; font-size: 2.4rem; }
+        .faq-a { padding: 0 65px; }
+        .faq-a-inner { padding-bottom: 50px; font-size: 2.7rem; line-height: 1.9; } /* 放大2倍的內文 */
+
+        /* ==== CTA Strip 1.5x ==== */
+        .cta-strip { padding: 180px 90px; }
+        .cta-strip h2 { font-size: 5.25rem; margin-bottom: 27px; }
+        .cta-strip p { font-size: 1.875rem; margin-bottom: 81px; }
+        .cta-pill { font-size: 2.025rem; padding: 36px 90px; border-radius: 999px; }
+        .cta-pill img { width: 45px; height: 45px; }
+
+        footer { padding: 90px 120px; }
+        .footer-brand { font-size: 2.475rem; }
+        .footer-note { font-size: 1.8rem; }
     }
 
     @media (max-width:1024px) {
