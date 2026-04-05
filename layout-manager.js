@@ -112,15 +112,25 @@ document.addEventListener("DOMContentLoaded", function() {
             font-weight: 700;
         }
 
+        /* 學測英文作文班 - 藍紫漸層樣式 */
+        .sat-course {
+            background: linear-gradient(135deg, #3b4fd8 0%, #6f42c1 100%) !important;
+            color: #ffffff !important;
+            box-shadow: 0 4px 12px rgba(111, 66, 193, 0.3);
+        }
+        .sat-course span {
+            color: rgba(255, 255, 255, 0.9) !important;
+        }
+
         /* 全民英檢中級寫作 - 專屬漸層樣式 */
         .gept-course {
-    background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%) !important; /* 飽和的質感紅 */
-    color: #ffffff !important; /* 純白大字 */
-    box-shadow: 0 4px 12px rgba(197, 48, 48, 0.3);
-}
-.gept-course span {
-    color: rgba(255, 255, 255, 0.9) !important; /* 白色小字，帶一點點透明度增加層次 */
-}
+            background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%) !important;
+            color: #ffffff !important;
+            box-shadow: 0 4px 12px rgba(197, 48, 48, 0.3);
+        }
+        .gept-course span {
+            color: rgba(255, 255, 255, 0.9) !important;
+        }
 
         .menu-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 99998; display: none; }
         .menu-overlay.open { display: block; }
@@ -147,16 +157,15 @@ document.addEventListener("DOMContentLoaded", function() {
         @media (max-width: 600px) {
             .tony-banner { height: 100px; padding: 0 10px; }
             .logo-box { height: 70px; }
-            .nav-links { gap: 5px; } /* 微調間距以容納4個Icon */
+            .nav-links { gap: 5px; }
             .pill-btn { 
-                padding: 0; /* 改為0，靠固定寬高來撐起圓形 */
-                width: 40px; height: 40px; /* 設定固定寬高維持完美圓形 */
+                padding: 0;
+                width: 40px; height: 40px;
                 justify-content: center; 
                 border-radius: 50%; 
-                /* 移除了 border: none，讓全域的白色圓圈邊框重新顯示 */
             }
             .pill-btn span { display: none; }
-            .social-icon { height: 20px; } /* 恢復原本的大小以適應白圈內部 */
+            .social-icon { height: 20px; }
             .hamburger-icon { font-size: 32px !important; }
         }
     `;
@@ -170,8 +179,9 @@ document.addEventListener("DOMContentLoaded", function() {
             </div>
             <a href="index.html" class="menu-link">回首頁</a>
             <a href="https://tonyonlineenglish.netlify.app/allcourses" target="_blank" class="menu-link highlight-course">課程詳細介紹<span>升學 檢定 職場 公職 客製化</span></a>
-            
-            <!-- 新增的全民英檢中級寫作選項 (加上漸層 class) -->
+
+            <a href="https://tonyonlineenglish.netlify.app/hsw" target="_blank" class="menu-link sat-course">學測英文作文班＋衝刺<span><small style="font-size:13px; opacity:0.85;">116年</small> &nbsp;#學測作文 #高中英文 #衝刺班</span></a>
+
             <a href="https://tonyonlineenglish.netlify.app/inter36w" target="_blank" class="menu-link gept-course">全民英檢中級寫作<span>三/六回影片課程+家教+批改</span></a>
             
             <a href="https://tonyonlineenglish.netlify.app/ycs" target="_blank" class="menu-link">你的課表查詢<span>即時查看課程安排狀況</span></a>
@@ -193,7 +203,6 @@ document.addEventListener("DOMContentLoaded", function() {
                     <img src="https://ik.imagekit.io/lql1uveoc/Banner%20Front%20page/facebook.png" class="social-icon">
                     <span>Facebook</span>
                 </a>
-                <!-- Instagram 按鈕 -->
                 <a href="https://www.instagram.com/tonyonlineenglish" target="_blank" class="pill-btn">
                     <img src="https://ik.imagekit.io/lql1uveoc/instagram.png" class="social-icon">
                     <span>Instagram</span>
