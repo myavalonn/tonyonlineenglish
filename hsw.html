@@ -3,14 +3,10 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <!-- ═══ SEO ═══ -->
     <title>學測英文作文衝刺班｜高中生必選・一對一線上英文家教 | Tony線上美語家教</title>
     <meta name="description" content="專為高一、高二、高三設計的學測英文作文一對一衝刺課程。英文翻譯＋寫作目標 24 分以上（滿分 28）。線上 Zoom 授課，靈活排課，立即預約體驗課。">
     <meta name="keywords" content="學測英文作文, 高中英文家教, 學測衝刺, 一對一英文, 線上英文家教, 英文寫作, 學測英文, 高三英文補習, Tony線上美語家教">
     <link rel="canonical" href="https://tonyonlineenglish.netlify.app/hsw">
-
-    <!-- ═══ OG / Social Preview ═══ -->
     <meta property="og:title" content="學測英文作文班+衝刺班・寫出頂標英文 | Tony線上美語家教">
     <meta property="og:description" content="一對一線上英文家教・10堂衝刺課程・英文翻譯＋寫作目標 24/28 分。適合高一、高二、高三生。">
     <meta property="og:url" content="https://tonyonlineenglish.netlify.app/hsw">
@@ -18,14 +14,9 @@
     <meta property="og:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/highschool2.png">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/highschool2.png">
-
-    <!-- ═══ Layout Manager ═══ -->
     <script src="layout-manager.js"></script>
-
-    <!-- ═══ Fonts ═══ -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <!-- Noto Sans TC 900 for heavy Chinese, Oswald/Barlow Condensed for heavy Latin -->
     <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Noto+Sans+TC:wght@300;400;500;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 
     <style>
@@ -41,18 +32,19 @@
         --stone-400:   #9a9085;
         --stone-700:   #4a4540;
         --ink:         #1a1714;
-        --gold:        #b8934a;
+        --orange:      #f07020;      /* primary hero accent — replaces gold in hero */
+        --orange-lt:   #f5934a;
+        --gold:        #b8934a;      /* kept for non-hero sections */
         --gold-light:  #d4aa6a;
         --gold-pale:   #f5eedd;
         --red:         #c0392b;
         --green:       #27ae60;
         --blue:        #1a6bbd;
-        --hero-blue:   #4b9fea;   /* accent blue matching image */
+        --hero-blue:   #4b9fea;
 
         --f-display: 'Cormorant Garamond', Georgia, serif;
         --f-body:    'Noto Sans TC', system-ui, sans-serif;
         --f-mono:    'DM Mono', monospace;
-        --f-heavy:   'Barlow Condensed', 'Noto Sans TC', sans-serif;
 
         --r-sm:  8px;
         --r-md:  16px;
@@ -81,157 +73,196 @@
     @keyframes fadeIn   { from { opacity:0; } to { opacity:1; } }
     @keyframes lineGrow { from { transform:scaleX(0); } to { transform:scaleX(1); } }
     @keyframes float    { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-10px)} }
-    @keyframes pulse-badge { 0%,100%{box-shadow:0 0 0 0 rgba(184,147,74,.4)} 50%{box-shadow:0 0 0 10px rgba(184,147,74,0)} }
     @keyframes confetti-burst {
         0%   { opacity:1; transform:translate(-50%,0) scale(0); }
         100% { opacity:0; box-shadow:-20px -50px 0 -3px #e74c3c,20px -50px 0 -3px #3498db,-35px -30px 0 -3px #f1c40f,35px -30px 0 -3px #2ecc71,0 -65px 0 -3px #9b59b6,-15px -70px 0 -3px orange,15px -70px 0 -3px hotpink; transform:translate(-50%,-25px) scale(1.6) rotate(20deg); }
     }
 
-    .reveal { opacity:0; animation:fadeUp .65s cubic-bezier(.22,.68,0,1.2) forwards; }
+    /* heartbeat glow for eyebrow */
+    @keyframes heartbeatGlow {
+        0%,100% {
+            text-shadow: 0 0 0px rgba(255,255,255,0), 0 0 0px rgba(255,255,255,0);
+            opacity: 0.9;
+        }
+        30% {
+            text-shadow: 0 0 12px rgba(255,255,255,0.9), 0 0 28px rgba(255,255,255,0.5), 0 0 50px rgba(255,255,255,0.25);
+            opacity: 1;
+        }
+        60% {
+            text-shadow: 0 0 6px rgba(255,255,255,0.5), 0 0 14px rgba(255,255,255,0.25);
+            opacity: 0.95;
+        }
+        80% {
+            text-shadow: 0 0 18px rgba(255,255,255,1), 0 0 36px rgba(255,255,255,0.6), 0 0 60px rgba(255,255,255,0.3);
+            opacity: 1;
+        }
+    }
 
     /* ══════════════════════════════════════
-       TOP BAR
-    ══════════════════════════════════════ */
-    .topbar {
-        display: flex;
-        align-items: center;
-        justify-content: flex-end;
-        padding: 18px 56px;
-        border-bottom: 1px solid var(--stone-100);
-        background: rgba(255,255,255,.95);
-        backdrop-filter: blur(8px);
-        position: sticky; top: 0; z-index: 500;
-    }
-    .topbar-right { display:flex; align-items:center; gap:24px; }
-    .topbar-link {
-        font-size: .85rem; color: var(--stone-700);
-        text-decoration: none; letter-spacing: .03em;
-        transition: color .2s;
-    }
-    .topbar-link:hover { color: var(--gold); }
-
-    /* ══════════════════════════════════════
-       HERO  — new heavy-type style
+       HERO
     ══════════════════════════════════════ */
     .hero {
         position: relative;
-        min-height: 92vh;
+        min-height: 100vh;
         display: flex;
-        align-items: center;
+        align-items: stretch;
         overflow: hidden;
-        background: #111110;   /* near-black, like image */
-    }
-    /* subtle noise texture overlay */
-    .hero::after {
-        content: '';
-        position: absolute; inset: 0;
-        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
-        pointer-events: none;
-        z-index: 1;
-        opacity: .6;
+        background: #111110;
     }
     .hero-bg {
         position: absolute; inset: 0;
         background-image: url('https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=1600&q=80');
         background-size: cover;
         background-position: center 55%;
-        opacity: .08;   /* much more subtle — let text dominate */
+        opacity: .08;
     }
 
+    /* full-bleed inner on all sizes */
     .hero-inner {
         position: relative;
         z-index: 10;
-        max-width: 1200px;
+        width: 100%;
+        max-width: 1400px;
         margin: 0 auto;
-        padding: 80px 56px;
+        padding: 56px 64px 72px;
         display: grid;
         grid-template-columns: 1fr 1fr;
-        gap: 64px;
+        gap: 56px;
         align-items: center;
-        width: 100%;
     }
 
-    /* ── eyebrow tag ── */
+    /* ── mini countdown at very top of left col ── */
+    .hero-mini-cd {
+        margin-bottom: 22px;
+        animation: fadeUp .4s ease forwards .05s; opacity:0;
+    }
+    .hero-mini-cd-label {
+        font-family: var(--f-mono);
+        font-size: .72rem;
+        letter-spacing: .14em;
+        text-transform: uppercase;
+        color: rgba(255,255,255,.45);
+        margin-bottom: 8px;
+    }
+    .hero-mini-timer {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+    .hero-mini-block {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        background: rgba(255,255,255,.07);
+        border: 1px solid rgba(255,255,255,.12);
+        border-radius: 8px;
+        padding: 6px 12px;
+        min-width: 54px;
+    }
+    .hero-mini-num {
+        font-family: var(--f-display);
+        font-size: 1.6rem;
+        font-weight: 300;
+        color: var(--orange-lt);
+        line-height: 1;
+    }
+    .hero-mini-lbl {
+        font-family: var(--f-mono);
+        font-size: .55rem;
+        letter-spacing: .1em;
+        text-transform: uppercase;
+        color: rgba(255,255,255,.35);
+        margin-top: 3px;
+    }
+    .hero-mini-sep {
+        font-family: var(--f-display);
+        font-size: 1.4rem;
+        color: rgba(255,255,255,.2);
+        margin-top: -4px;
+    }
+    .hero-mini-expired {
+        font-family: var(--f-display);
+        font-style: italic;
+        color: var(--orange-lt);
+        font-size: 1rem;
+        display: none;
+    }
+
+    /* ── eyebrow ── */
     .hero-eyebrow {
         display: inline-block;
         font-family: var(--f-body);
         font-weight: 700;
-        font-size: .82rem;
-        letter-spacing: .12em;
-        text-transform: uppercase;
-        color: rgba(255,255,255,.55);
-        border: 1px solid rgba(255,255,255,.18);
-        padding: 6px 16px;
+        font-size: 1rem;
+        letter-spacing: .1em;
+        color: #ffffff;
+        border: 1.5px solid rgba(255,255,255,.5);
+        padding: 7px 20px;
         border-radius: var(--r-pill);
-        margin-bottom: 24px;
-        animation: fadeUp .5s ease forwards .1s; opacity:0;
+        margin-bottom: 28px;
+        animation: fadeUp .5s ease forwards .15s, heartbeatGlow 3.2s ease-in-out infinite 1s;
+        opacity: 0;
     }
 
-    /* ── MAIN H1: heavy black font ── */
+    /* ── H1 ── */
     .hero-h1 {
         font-family: 'Noto Sans TC', sans-serif;
         font-weight: 900;
-        line-height: 1.05;
-        color: var(--white);
-        margin-bottom: 28px;
-        animation: fadeUp .6s ease forwards .2s; opacity:0;
+        line-height: 1.03;
+        color: #ffffff;
+        margin-bottom: 16px;
+        animation: fadeUp .6s ease forwards .25s; opacity:0;
         letter-spacing: -0.01em;
     }
-
-    /* line 1: "一對一衝刺" — plain white, very large */
     .hero-h1 .line-1 {
         display: block;
-        font-size: clamp(3rem, 8.5vw, 5.8rem);
-        color: var(--white);
+        font-size: clamp(3.2rem, 8vw, 5.8rem);
+        color: #ffffff;
     }
-
-    /* line 2: "學測英文作文" — hero-blue accent, even larger */
     .hero-h1 .line-2 {
         display: block;
-        font-size: clamp(3.2rem, 9vw, 6.2rem);
+        font-size: clamp(3.4rem, 8.5vw, 6.2rem);
         color: var(--hero-blue);
-        /* slight text shadow for pop */
-        text-shadow: 0 0 60px rgba(75,159,234,.35);
+        text-shadow: 0 0 60px rgba(75,159,234,.3);
     }
-
-    /* line 3: sub-label in italic serif — gold */
     .hero-h1 .line-3 {
         display: block;
         font-family: 'Cormorant Garamond', Georgia, serif;
         font-weight: 400;
         font-style: italic;
-        font-size: clamp(1.4rem, 3vw, 2.2rem);
-        color: var(--gold-light);
+        font-size: clamp(1.4rem, 3vw, 2rem);
+        color: var(--orange);     /* was gold, now orange */
         margin-top: 10px;
         letter-spacing: .02em;
     }
 
-    /* left-border detail block (mimics image's vertical bar) */
+    /* ── detail bar ── */
     .hero-detail {
         border-left: 3px solid rgba(255,255,255,.22);
         padding-left: 18px;
-        margin: 20px 0 28px;
-        animation: fadeUp .6s ease forwards .35s; opacity:0;
+        margin: 20px 0 18px;
+        animation: fadeUp .6s ease forwards .38s; opacity:0;
     }
     .hero-detail p {
-        font-size: clamp(.9rem, 2vw, 1rem);
-        color: rgba(255,255,255,.55);
+        font-size: clamp(.88rem, 1.8vw, 1rem);
+        color: #ffffff;
         line-height: 1.75;
     }
-    .hero-detail p strong { color: rgba(255,255,255,.85); font-weight: 700; }
+    .hero-detail p strong { color: #ffffff; font-weight: 700; }
 
-    /* bullet list under detail bar */
+    /* ── bullets ── */
     .hero-bullets {
         list-style: none;
-        margin: 14px 0 36px;
+        margin: 12px 0 32px;
         display: flex;
         flex-direction: column;
         gap: 8px;
-        animation: fadeUp .6s ease forwards .45s; opacity:0;
+        animation: fadeUp .6s ease forwards .48s; opacity:0;
     }
     .hero-bullets li {
-        font-size: clamp(.9rem, 2vw, 1rem);
-        color: rgba(255,255,255,.7);
+        font-size: clamp(.88rem, 1.8vw, 1rem);
+        color: #ffffff;
         display: flex;
         align-items: flex-start;
         gap: 10px;
@@ -239,59 +270,59 @@
     }
     .hero-bullets li::before {
         content: '•';
-        color: var(--hero-blue);
+        color: var(--orange);
         font-size: 1.2em;
         flex-shrink: 0;
         margin-top: 1px;
     }
-    .hero-bullets li strong { color: var(--gold-light); }
+    .hero-bullets li strong { color: var(--orange-lt); }
 
+    /* ── buttons ── */
     .hero-btns {
         display: flex; gap: 14px; flex-wrap: wrap;
-        animation: fadeUp .6s ease forwards .6s; opacity:0;
+        animation: fadeUp .6s ease forwards .58s; opacity:0;
     }
     .btn-primary {
         display: inline-flex; align-items: center; gap: 8px;
-        background: var(--gold);
-        color: var(--ink);
+        background: var(--orange);
+        color: #ffffff;
         padding: 16px 32px;
         border-radius: var(--r-pill);
         font-weight: 700; font-size: 1rem;
         text-decoration: none;
-        transition: transform .2s, box-shadow .2s;
-        box-shadow: 0 6px 24px rgba(184,147,74,.35);
+        transition: transform .2s, box-shadow .2s, background .2s;
+        box-shadow: 0 6px 24px rgba(240,112,32,.4);
     }
-    .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 10px 32px rgba(184,147,74,.45); }
+    .btn-primary:hover { transform: translateY(-2px); background: var(--orange-lt); box-shadow: 0 10px 32px rgba(240,112,32,.5); }
     .btn-ghost {
         display: inline-flex; align-items: center; gap: 8px;
         background: transparent;
-        color: rgba(255,255,255,.75);
-        border: 1px solid rgba(255,255,255,.25);
+        color: #ffffff;
+        border: 1.5px solid rgba(255,255,255,.35);
         padding: 16px 28px;
         border-radius: var(--r-pill);
-        font-size: .95rem;
+        font-size: .95rem; font-weight: 600;
         text-decoration: none;
         transition: all .2s;
     }
-    .btn-ghost:hover { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.5); }
+    .btn-ghost:hover { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.6); }
 
-    /* hero right: score card */
+    /* ── score card (hero right) ── */
     .hero-right {
         animation: fadeUp .7s ease forwards .4s; opacity:0;
     }
     .score-card {
-        background: rgba(255,255,255,.04);
-        border: 1px solid rgba(255,255,255,.1);
+        background: rgba(255,255,255,.05);
+        border: 1px solid rgba(255,255,255,.12);
         border-radius: var(--r-xl);
         padding: 40px 36px;
-        backdrop-filter: blur(8px);
+        backdrop-filter: blur(10px);
     }
     .score-title {
         font-family: var(--f-body);
         font-weight: 700;
         font-size: 1.15rem;
-        letter-spacing: .05em;
-        color: var(--white);
+        color: #ffffff;
         margin-bottom: 24px;
     }
     .score-row {
@@ -303,39 +334,39 @@
         gap: 12px;
     }
     .score-row:last-child { border-bottom: none; }
-    .score-subject { font-size: .95rem; color: rgba(255,255,255,.85); font-weight: 500;}
-    .score-bar-wrap { flex: 1; height: 6px; background: rgba(255,255,255,.1); border-radius: 3px; margin: 0 16px; overflow: hidden; }
+    .score-subject { font-size: .95rem; color: #ffffff; font-weight: 500; }
+    .score-bar-wrap { flex: 1; height: 6px; background: rgba(255,255,255,.12); border-radius: 3px; margin: 0 16px; overflow: hidden; }
     .score-bar { height: 100%; border-radius: 3px; transition: width 1.5s ease; width: 0; }
-    .score-num { font-family: var(--f-mono); font-size: .9rem; color: var(--white); font-weight: 700; white-space: nowrap; }
+    .score-num { font-family: var(--f-mono); font-size: .9rem; color: #ffffff; font-weight: 700; white-space: nowrap; }
     .score-card-note {
         margin-top: 24px;
         padding: 14px 16px;
-        background: rgba(184,147,74,.1);
-        border-left: 2px solid var(--gold);
+        background: rgba(240,112,32,.12);
+        border-left: 2px solid var(--orange);
         border-radius: 0 var(--r-sm) var(--r-sm) 0;
         font-size: .85rem;
-        color: rgba(255,255,255,.65);
+        color: #ffffff;
         line-height: 1.7;
     }
-    .score-card-note strong { color: var(--gold-light); }
+    .score-card-note strong { color: var(--orange-lt); }
 
-    /* hero scroll hint */
+    /* ── scroll hint ── */
     .hero-scroll {
         position: absolute;
-        bottom: 32px; left: 50%;
+        bottom: 28px; left: 50%;
         transform: translateX(-50%);
         display: flex; flex-direction: column;
         align-items: center; gap: 8px;
         color: rgba(255,255,255,.25);
-        font-size: .72rem;
+        font-size: .68rem;
         font-family: var(--f-mono);
         letter-spacing: .1em;
         text-transform: uppercase;
-        animation: fadeIn 1s ease forwards 1.2s; opacity: 0;
+        animation: fadeIn 1s ease forwards 1.4s; opacity: 0;
         z-index: 10;
     }
     .scroll-line {
-        width: 1px; height: 40px;
+        width: 1px; height: 36px;
         background: linear-gradient(to bottom, rgba(255,255,255,.25), transparent);
     }
 
@@ -360,11 +391,9 @@
     /* ══════════════════════════════════════
        WHY / FEATURES
     ══════════════════════════════════════ */
-    .features-bg { background: var(--stone-50); padding-bottom: 50px; } 
-    
+    .features-bg { background: var(--stone-50); padding-bottom: 50px; }
     #features .sec-eyebrow { font-size: 1rem; color: var(--gold); font-weight: 700; }
     #features .sec-title { font-size: clamp(2.5rem, 4.5vw, 3.5rem); }
-
     .features-grid {
         display: grid;
         grid-template-columns: repeat(3, 1fr);
@@ -374,7 +403,7 @@
     .feature-card {
         background: var(--white);
         border-radius: var(--r-lg);
-        padding: 26px 22px; 
+        padding: 26px 22px;
         border-top: 3px solid transparent;
         box-shadow: var(--sh-sm);
         transition: transform .25s, box-shadow .25s, border-color .25s;
@@ -386,19 +415,14 @@
     .feature-card:nth-child(3){animation-delay:.3s}
     .feature-card:nth-child(4){animation-delay:.4s}
     .feature-card:nth-child(5){animation-delay:.5s}
-    .f-title {
-        font-family: var(--f-display);
-        font-size: 1.5rem; font-weight: 600;
-        margin-bottom: 10px; line-height: 1.3;
-    }
+    .f-title { font-family: var(--f-display); font-size: 1.5rem; font-weight: 600; margin-bottom: 10px; line-height: 1.3; }
     .f-body { font-size: .95rem; color: var(--stone-700); line-height: 1.8; }
 
     /* ══════════════════════════════════════
-       WHO IS THIS FOR
+       WHO
     ══════════════════════════════════════ */
-    .who-section { padding-top: 50px; } 
-    
-    .who-list-styled { list-style: none; display: flex; flex-direction: column; gap: 20px; margin-top: 40px;}
+    .who-section { padding-top: 50px; }
+    .who-list-styled { list-style: none; display: flex; flex-direction: column; gap: 20px; margin-top: 40px; }
     .who-list-styled li {
         padding: 28px 36px;
         border-radius: var(--r-lg);
@@ -408,28 +432,21 @@
     .who-list-styled li:nth-child(1){animation-delay:.1s}
     .who-list-styled li:nth-child(2){animation-delay:.2s}
     .who-list-styled li:nth-child(3){animation-delay:.3s}
-    
     .bg-card-1 { background: #f0f7ff; border-left: 4px solid #3498db; }
     .bg-card-2 { background: #f4fdf8; border-left: 4px solid #2ecc71; }
     .bg-card-3 { background: #fffbf0; border-left: 4px solid #f1c40f; }
-
     .who-list-styled .who-tag {
-        background: var(--white);
-        border: 1px solid rgba(0,0,0,0.05);
-        border-radius: var(--r-pill);
-        padding: 6px 18px;
-        font-size: .95rem;
-        font-weight: 700;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        background: var(--white); border: 1px solid rgba(0,0,0,0.05);
+        border-radius: var(--r-pill); padding: 6px 18px;
+        font-size: .95rem; font-weight: 700; box-shadow: 0 2px 8px rgba(0,0,0,0.04);
     }
     .bg-card-1 .who-tag { color: #3498db; }
     .bg-card-2 .who-tag { color: #27ae60; }
     .bg-card-3 .who-tag { color: #d4aa6a; }
-
     .who-list-styled .who-text { font-size: 1.05rem; color: var(--stone-700); line-height: 1.8; margin-top: 4px; }
 
     /* ══════════════════════════════════════
-       COUNTDOWN
+       COUNTDOWN (standalone section — below features)
     ══════════════════════════════════════ */
     .countdown-section {
         background: var(--ink);
@@ -460,7 +477,7 @@
     #cd-expired { font-family: var(--f-display); font-size: 2rem; color: var(--gold-light); font-style: italic; display:none; }
 
     /* ══════════════════════════════════════
-       PRODUCT / PRICING
+       PRICING
     ══════════════════════════════════════ */
     .product-wrap { max-width: 760px; margin: 0 auto; }
     .pricing-card {
@@ -469,8 +486,7 @@
         border-radius: var(--r-xl);
         padding: 52px;
         box-shadow: var(--sh-md);
-        position: relative;
-        overflow: hidden;
+        position: relative; overflow: hidden;
     }
     .pricing-card::before {
         content:''; position:absolute; top:0; left:0; right:0; height:3px;
@@ -480,38 +496,31 @@
         display: flex; justify-content: space-between; align-items: flex-start;
         gap: 20px; flex-wrap: wrap; margin-bottom: 36px;
     }
-    .pricing-top h2 {
-        font-family: var(--f-display);
-        font-size: 2rem; font-weight: 400; line-height: 1.3;
-    }
+    .pricing-top h2 { font-family: var(--f-display); font-size: 2rem; font-weight: 400; line-height: 1.3; }
     .pricing-top h2 span { font-size: .55em; color: var(--stone-400); font-style: italic; display:block; }
     .pricing-badge {
-        background: var(--gold-pale);
-        color: var(--gold);
+        background: var(--gold-pale); color: var(--gold);
         border: 1px solid rgba(184,147,74,.25);
-        border-radius: var(--r-pill);
-        padding: 7px 18px;
+        border-radius: var(--r-pill); padding: 7px 18px;
         font-size: .82rem; font-weight: 700; white-space: nowrap;
     }
     .sel-label {
-        font-family: var(--f-mono);
-        font-size: .7rem; letter-spacing: .1em; text-transform: uppercase;
+        font-family: var(--f-mono); font-size: .7rem; letter-spacing: .1em; text-transform: uppercase;
         color: var(--stone-400); margin-bottom: 10px;
     }
     .styled-select {
         width: 100%; padding: 16px 20px;
         font-size: 1rem; font-family: var(--f-body); font-weight: 700;
         color: var(--blue);
-        border: 2px solid var(--stone-100);
-        border-radius: var(--r-md);
-        background: var(--off);
-        appearance: none;
+        border: 2px solid var(--stone-100); border-radius: var(--r-md);
+        background: var(--off); appearance: none;
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239a9085' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
         background-repeat: no-repeat; background-position: right 16px center;
-        cursor: pointer; margin-bottom: 24px;
-        transition: border-color .2s;
+        cursor: pointer; margin-bottom: 24px; transition: border-color .2s;
     }
     .styled-select:focus { outline:none; border-color:var(--gold); }
+    /* placeholder option styling */
+    .styled-select option[value=""] { color: var(--stone-400); font-weight: 400; }
     .add-btn {
         width: 100%; padding: 20px 32px;
         font-size: 1.1rem; font-family: var(--f-body); font-weight: 700;
@@ -522,61 +531,37 @@
     }
     .add-btn:hover { background: var(--gold); transform: translateY(-1px); }
     .add-btn:active { transform: translateY(0); }
+    .add-btn:disabled { background: var(--stone-200); cursor: not-allowed; transform: none; }
 
     /* ══════════════════════════════════════
        TESTIMONIALS
     ══════════════════════════════════════ */
     .testimonials-bg { background: var(--stone-50); }
-    .testimonials-track-wrap {
-        overflow: hidden;
-        position: relative;
-        margin-top: 48px;
-        touch-action: pan-y;
-    }
-    .testimonials-track {
-        display: flex;
-        gap: 24px;
-        transition: transform .4s cubic-bezier(.25,.8,.25,1);
-        will-change: transform;
-    }
+    .testimonials-track-wrap { overflow: hidden; position: relative; margin-top: 48px; touch-action: pan-y; }
+    .testimonials-track { display: flex; gap: 24px; transition: transform .4s cubic-bezier(.25,.8,.25,1); will-change: transform; }
     .tcard {
-        flex: 0 0 calc(33.333% - 16px);
-        min-width: 0;
-        background: var(--white);
-        border-radius: var(--r-lg);
-        padding: 36px 32px;
-        box-shadow: var(--sh-sm);
+        flex: 0 0 calc(33.333% - 16px); min-width: 0;
+        background: var(--white); border-radius: var(--r-lg);
+        padding: 36px 32px; box-shadow: var(--sh-sm);
         border-bottom: 3px solid var(--gold);
     }
     .tcard-stars { color: var(--gold); font-size: 1.1rem; letter-spacing: 2px; margin-bottom: 16px; }
-    .tcard-quote {
-        font-size: .95rem; color: var(--stone-700);
-        line-height: 1.85; margin-bottom: 24px;
-        font-style: italic;
-    }
+    .tcard-quote { font-size: .95rem; color: var(--stone-700); line-height: 1.85; margin-bottom: 24px; font-style: italic; }
     .tcard-author { display: flex; align-items: center; gap: 14px; }
     .tcard-avatar {
         width: 46px; height: 46px; border-radius: 50%;
         background: linear-gradient(135deg, var(--gold-pale), var(--gold));
         display: flex; align-items: center; justify-content: center;
-        font-size: 1.2rem; flex-shrink: 0;
-        font-weight: 700; color: var(--gold);
+        font-size: 1.2rem; flex-shrink: 0; font-weight: 700; color: var(--gold);
     }
     .tcard-name { font-weight: 700; font-size: .9rem; }
     .tcard-info { font-size: .78rem; color: var(--stone-400); margin-top: 2px; }
-
-    .t-controls {
-        display: flex; justify-content: center;
-        align-items: center; gap: 16px;
-        margin-top: 32px;
-    }
+    .t-controls { display: flex; justify-content: center; align-items: center; gap: 16px; margin-top: 32px; }
     .t-arrow {
-        background: var(--white);
-        border: 1px solid var(--stone-200);
+        background: var(--white); border: 1px solid var(--stone-200);
         border-radius: 50%; width: 42px; height: 42px;
         display: flex; align-items: center; justify-content: center;
-        cursor: pointer; font-size: 1rem; color: var(--ink);
-        transition: all .2s;
+        cursor: pointer; font-size: 1rem; color: var(--ink); transition: all .2s;
     }
     .t-arrow:hover { background: var(--ink); color: var(--white); border-color: var(--ink); }
     .t-dots { display: flex; gap: 8px; }
@@ -588,51 +573,37 @@
     ══════════════════════════════════════ */
     .faq-list { display: flex; flex-direction: column; gap: 12px; margin-top: 48px; max-width: 820px; }
     .faq-item {
-        background: var(--white);
-        border: 1px solid var(--stone-100);
-        border-radius: var(--r-md);
-        overflow: hidden;
-        box-shadow: var(--sh-sm);
-        transition: box-shadow .2s;
+        background: var(--white); border: 1px solid var(--stone-100);
+        border-radius: var(--r-md); overflow: hidden;
+        box-shadow: var(--sh-sm); transition: box-shadow .2s;
     }
     .faq-item:hover { box-shadow: var(--sh-md); }
-    .faq-q {
-        display: flex; justify-content: space-between; align-items: center;
-        padding: 22px 28px;
-        cursor: pointer;
-        gap: 20px;
-    }
+    .faq-q { display: flex; justify-content: space-between; align-items: center; padding: 22px 28px; cursor: pointer; gap: 20px; }
     .faq-q-text { font-weight: 700; font-size: .97rem; line-height: 1.5; }
     .faq-icon {
-        width: 28px; height: 28px;
-        border: 1.5px solid var(--stone-200); border-radius: 50%;
+        width: 28px; height: 28px; border: 1.5px solid var(--stone-200); border-radius: 50%;
         display: flex; align-items: center; justify-content: center;
         flex-shrink: 0; font-size: .9rem; color: var(--stone-400);
         transition: transform .3s, background .2s, border-color .2s;
     }
     .faq-item.open .faq-icon { transform: rotate(45deg); background: var(--gold); border-color: var(--gold); color: var(--white); }
-    .faq-a {
-        max-height: 0; overflow: hidden;
-        transition: max-height .4s ease, padding .3s ease;
-        padding: 0 28px;
-    }
+    .faq-a { max-height: 0; overflow: hidden; transition: max-height .4s ease, padding .3s ease; padding: 0 28px; }
     .faq-a-inner { padding-bottom: 22px; font-size: .92rem; color: var(--stone-700); line-height: 1.9; }
     .faq-item.open .faq-a { max-height: 400px; }
 
     /* ══════════════════════════════════════
+       CART WIDGET (inline section, above CTA)
+    ══════════════════════════════════════ */
+    .cart-widget-section {
+        background: var(--stone-50);
+        padding: 80px 0;
+    }
+
+    /* ══════════════════════════════════════
        CTA STRIP
     ══════════════════════════════════════ */
-    .cta-strip {
-        background: var(--ink);
-        padding: 80px 48px;
-        text-align: center;
-    }
-    .cta-strip h2 {
-        font-family: var(--f-display);
-        font-size: clamp(1.8rem, 3.5vw, 3rem);
-        font-weight: 300; color: var(--white);
-        margin-bottom: 12px;
-    }
+    .cta-strip { background: var(--ink); padding: 80px 48px; text-align: center; }
+    .cta-strip h2 { font-family: var(--f-display); font-size: clamp(1.8rem, 3.5vw, 3rem); font-weight: 300; color: var(--white); margin-bottom: 12px; }
     .cta-strip p { color: rgba(255,255,255,.55); margin-bottom: 36px; font-size: .95rem; }
     .cta-pill {
         display: inline-flex; align-items: center; gap: 12px;
@@ -659,7 +630,7 @@
     .footer-note { font-size: .78rem; color: var(--stone-400); }
 
     /* ══════════════════════════════════════
-       CART PANEL
+       CART PANEL (slide-in)
     ══════════════════════════════════════ */
     .cart-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.45); backdrop-filter: blur(3px); z-index: 800; opacity: 0; visibility: hidden; transition: opacity .35s, visibility .35s; }
     .cart-overlay.open { opacity:1; visibility:visible; }
@@ -724,7 +695,6 @@
     .ty-pay { margin-top:28px; padding-top:20px; border-top:1px solid var(--stone-100); }
     .ty-pay h5 { font-size:.75rem; text-transform:uppercase; letter-spacing:.1em; color:var(--stone-400); font-family:var(--f-mono); margin-bottom:12px; }
     .ty-pay p { font-size:.88rem; color:var(--stone-700); line-height:1.9; }
-    .ty-line { color:var(--green); font-weight:700; text-decoration:none; }
     .ty-actions { margin-top:24px; display:flex; gap:16px; }
     .ty-btn { background:none; border:none; font-size:.85rem; cursor:pointer; text-decoration:underline; }
     .ty-btn.continue { color:var(--blue); }
@@ -739,33 +709,45 @@
     /* ══════════════════════════════════════
        RESPONSIVE
     ══════════════════════════════════════ */
-    @media (min-width: 1025px) {
-        .hero-inner { max-width: 1350px; }
-        .hero-h1 .line-1 { font-size: clamp(4.5rem, 6vw, 6rem); }
-        .hero-h1 .line-2 { font-size: clamp(4.8rem, 6.5vw, 6.5rem); }
-        .hero-h1 .line-3 { font-size: clamp(1.6rem, 2.2vw, 2.4rem); }
 
-        .topbar { padding: 36px 120px; }
-        .topbar-link { font-size: 1.5rem; }
+    /* ── Desktop ≥1025px ── */
+    @media (min-width: 1025px) {
+        .hero-inner {
+            max-width: 100%;
+            padding: 72px 100px 88px;
+            min-height: 100vh;
+            gap: 80px;
+        }
+        .hero-h1 .line-1 { font-size: clamp(5rem, 6.5vw, 7rem); }
+        .hero-h1 .line-2 { font-size: clamp(5.4rem, 7vw, 7.6rem); }
+        .hero-h1 .line-3 { font-size: clamp(1.8rem, 2.4vw, 2.6rem); }
+        .hero-mini-num { font-size: 2rem; }
+        .hero-eyebrow { font-size: 1.1rem; padding: 8px 24px; }
+        .hero-detail p { font-size: 1.05rem; }
+        .hero-bullets li { font-size: 1.05rem; }
+        .btn-primary { font-size: 1.15rem; padding: 18px 40px; }
+        .btn-ghost { font-size: 1.1rem; padding: 18px 36px; }
+        .score-card { padding: 50px 46px; }
+        .score-title { font-size: 1.35rem; }
+        .score-subject { font-size: 1.1rem; }
+        .score-num { font-size: 1.1rem; }
+        .score-card-note { font-size: 1rem; line-height: 1.8; }
 
         .section { padding: 210px 0; }
         .section-inner { max-width: 2250px; padding: 0 90px; }
         .sec-eyebrow { font-size: 1.32rem; margin-bottom: 22px; }
         .sec-title { font-size: clamp(3.6rem, 6vw, 5.4rem); margin-bottom: 30px; }
         .sec-rule { width: 90px; height: 4px; margin-bottom: 90px; }
-
         #features .sec-eyebrow { font-size: 1.8rem; }
         #features .sec-title { font-size: clamp(4.2rem, 6vw, 6rem); }
         .features-grid { gap: 36px; margin-top: 90px; }
         .feature-card { padding: 60px 48px; border-radius: 36px; }
         .f-title { font-size: 2.7rem; margin-bottom: 24px; }
         .f-body { font-size: 1.68rem; line-height: 1.8; }
-
         .who-list-styled { gap: 45px; margin-top: 90px; }
         .who-list-styled li { padding: 67px 82px; gap: 30px; border-radius: 36px; }
         .who-list-styled .who-tag { font-size: 1.68rem; padding: 15px 42px; }
         .who-list-styled .who-text { font-size: 1.92rem; line-height: 1.8; margin-top: 12px; }
-
         .countdown-section { padding: 180px 90px; }
         .cd-eyebrow { font-size: 1.32rem; margin-bottom: 30px; }
         .cd-title { font-size: 3.6rem; margin-bottom: 105px; }
@@ -773,7 +755,6 @@
         .time-block { padding: 63px 81px; min-width: 240px; border-radius: 24px; }
         .tv { font-size: 9rem; }
         .tl { font-size: 1.32rem; margin-top: 18px; }
-
         .product-wrap { max-width: 1710px; }
         .pricing-card { padding: 112px; border-radius: 60px; }
         .pricing-top { margin-bottom: 75px; }
@@ -782,7 +763,6 @@
         .sel-label { font-size: 1.32rem; margin-bottom: 22px; }
         .styled-select { font-size: 1.8rem; padding: 36px 45px; margin-bottom: 54px; border-radius: 24px; background-size: 24px; background-position: right 30px center;}
         .add-btn { font-size: 1.98rem; padding: 45px 72px; border-radius: 24px; }
-
         .testimonials-track-wrap { margin-top: 105px; }
         .tcard { padding: 81px 72px; border-radius: 36px; }
         .tcard-stars { font-size: 1.98rem; margin-bottom: 36px; }
@@ -793,165 +773,164 @@
         .t-controls { margin-top: 48px; gap: 24px; }
         .t-arrow { width: 63px; height: 63px; font-size: 1.2rem; }
         .t-dot { width: 12px; height: 12px; }
-
         .faq-list { gap: 27px; margin-top: 105px; max-width: 1600px; }
         .faq-q { padding: 50px 65px; gap: 40px; }
         .faq-q-text { font-size: 2.32rem; }
         .faq-icon { width: 60px; height: 60px; font-size: 1.92rem; }
         .faq-a { padding: 0 65px; }
         .faq-a-inner { padding-bottom: 50px; font-size: 2.16rem; line-height: 1.9; }
-
         .cta-strip { padding: 180px 90px; }
         .cta-strip h2 { font-size: 4.2rem; margin-bottom: 27px; }
         .cta-strip p { font-size: 1.5rem; margin-bottom: 81px; }
         .cta-pill { font-size: 1.62rem; padding: 36px 90px; border-radius: 999px; }
         .cta-pill img { width: 45px; height: 45px; }
-
         footer { padding: 90px 120px; }
         .footer-brand { font-size: 1.98rem; }
         .footer-note { font-size: 1.44rem; }
     }
 
-    @media (max-width:1024px) {
-        .hero-inner { grid-template-columns:1fr; gap:40px; padding:60px 32px; }
-        .hero { min-height:auto; }
-        .score-card { max-width:520px; }
-        .features-grid { grid-template-columns:repeat(2,1fr); }
-        .tcard { flex:0 0 calc(50% - 12px); }
-        .ty-wrap { grid-template-columns:1fr; }
-    }
-    /* ── iPad ── */
-    @media (min-width:768px) and (max-width:1024px) {
-        .hero-inner { padding: 80px 48px; }
-        .hero-h1 .line-1 { font-size: 4.2rem; }
-        .hero-h1 .line-2 { font-size: 4.5rem; }
-        .hero-h1 .line-3 { font-size: 1.6rem; }
+    /* ── iPad 768–1024px: hero fills full viewport ── */
+    @media (min-width: 768px) and (max-width: 1024px) {
+        .hero { min-height: 100svh; }
+        .hero-inner {
+            grid-template-columns: 1fr;
+            padding: 60px 48px 80px;
+            min-height: 100svh;
+            gap: 40px;
+        }
+        .hero-h1 .line-1 { font-size: clamp(4rem, 9vw, 5.5rem); }
+        .hero-h1 .line-2 { font-size: clamp(4.3rem, 9.5vw, 6rem); }
+        .hero-h1 .line-3 { font-size: clamp(1.5rem, 3vw, 2rem); }
+        .score-card { max-width: 560px; }
         .hero-detail p { font-size: 1.05rem; }
         .hero-bullets li { font-size: 1.05rem; }
-        .btn-primary { font-size: 1.25rem; padding: 20px 40px; }
-        .btn-ghost { font-size: 1.2rem; padding: 20px 36px; }
-        .topbar-link { font-size: 1.05rem; }
+        .btn-primary { font-size: 1.2rem; padding: 18px 36px; }
+        .btn-ghost { font-size: 1.15rem; padding: 18px 32px; }
+        .features-grid { grid-template-columns: repeat(2, 1fr); }
+        .tcard { flex: 0 0 calc(50% - 12px); }
+        .ty-wrap { grid-template-columns: 1fr; }
         .sec-eyebrow { font-size: .9rem; }
         .sec-title { font-size: 2.8rem; }
         .f-title { font-size: 1.7rem; }
         .f-body { font-size: 1.1rem; }
-        .tcard-quote { font-size: 1.1rem; }
-        .tcard-name { font-size: 1.05rem; }
-        .faq-q-text { font-size: 1.15rem; }
-        .faq-a-inner { font-size: 1.05rem; }
+        .section-inner { padding: 0 48px; }
+        .section { padding: 88px 0; }
         .cta-strip h2 { font-size: 2.6rem; }
-        .cta-strip p { font-size: 1.2rem; }
-        .cta-pill { font-size: 1.3rem; padding: 22px 56px; }
         .cd-title { font-size: 1.6rem; }
         .tv { font-size: 5rem; }
-        .tl { font-size: .85rem; }
         .pricing-top h2 { font-size: 2.4rem; }
         .styled-select { font-size: 1.2rem; padding: 18px 22px; }
         .add-btn { font-size: 1.3rem; padding: 22px; }
-        .who-list-styled .who-text { font-size: 1.15rem; }
-        .who-list-styled .who-tag { font-size: 1rem; padding: 8px 20px; }
-        .section-inner { padding: 0 48px; }
-        .section { padding: 88px 0; }
     }
 
-    /* ── Mobile ── */
-    @media (max-width:767px) {
-        .features-bg { padding-bottom: 30px; }
-        .who-section { padding-top: 30px; }
-        .topbar { padding:16px 20px; justify-content: center; }
-        .section-inner { padding:0 20px; }
-        .section { padding:64px 0; }
-
-        /* Hero mobile: single column, full-width heavy type */
+    /* ── Mobile <768px ── */
+    @media (max-width: 767px) {
         .hero { min-height: 100svh; }
-        .hero-inner { padding: 52px 24px 64px; gap: 36px; }
-
-        /* BIG on mobile — key requirement */
-        .hero-h1 .line-1 { font-size: clamp(2.8rem, 11vw, 3.8rem); }
-        .hero-h1 .line-2 { font-size: clamp(3rem, 12vw, 4rem); }
-        .hero-h1 .line-3 { font-size: clamp(1.1rem, 4.5vw, 1.4rem); margin-top: 8px; }
-
-        .hero-detail { padding-left: 14px; margin: 14px 0 18px; }
-        .hero-detail p { font-size: .92rem; }
-        .hero-bullets { gap: 6px; margin-bottom: 28px; }
-        .hero-bullets li { font-size: .92rem; }
-
-        .btn-primary, .btn-ghost {
-            font-size: 1.1rem; padding: 16px 28px;
-            text-align: center; justify-content: center; width: 100%;
+        .hero-inner {
+            grid-template-columns: 1fr;
+            padding: 44px 24px 60px;
+            gap: 32px;
+            min-height: 100svh;
         }
-
-        .features-grid { grid-template-columns:1fr; gap: 12px;}
+        .hero-h1 .line-1 { font-size: clamp(2.8rem, 11.5vw, 3.8rem); }
+        .hero-h1 .line-2 { font-size: clamp(3rem, 12.5vw, 4.2rem); }
+        .hero-h1 .line-3 { font-size: clamp(1.05rem, 4.5vw, 1.35rem); margin-top: 6px; }
+        .hero-eyebrow { font-size: .82rem; padding: 6px 16px; }
+        .hero-detail { padding-left: 14px; margin: 14px 0 16px; }
+        .hero-detail p { font-size: .88rem; }
+        .hero-bullets { gap: 6px; margin-bottom: 26px; }
+        .hero-bullets li { font-size: .88rem; }
+        .hero-mini-num { font-size: 1.4rem; }
+        .hero-mini-block { padding: 5px 10px; min-width: 44px; }
+        .btn-primary, .btn-ghost { font-size: 1.05rem; padding: 15px 24px; text-align: center; justify-content: center; width: 100%; }
+        .section-inner { padding: 0 20px; }
+        .section { padding: 64px 0; }
+        .features-grid { grid-template-columns: 1fr; gap: 12px; }
         .feature-card { padding: 20px 16px; }
         .who-list-styled { gap: 12px; }
         .who-list-styled li { padding: 20px; }
-        .tcard { flex:0 0 100%; }
-        .pricing-card { padding:32px 24px; }
-        .cart-body { flex-direction:column; }
-        .cart-right { width:100%; }
-        .cart-panel { width:100%; max-width:100%; }
-        .cart-left,.cart-right { padding:20px; }
-        .cart-hdr { padding:20px; }
-        .ty-card,.ty-sidebar { padding:28px 20px; }
-        footer { padding:28px 20px; }
-        .cta-strip { padding:60px 20px; }
+        .tcard { flex: 0 0 100%; }
+        .pricing-card { padding: 32px 24px; }
+        .cart-body { flex-direction: column; }
+        .cart-right { width: 100%; }
+        .cart-panel { width: 100%; max-width: 100%; }
+        .cart-left, .cart-right { padding: 20px; }
+        .cart-hdr { padding: 20px; }
+        .ty-card, .ty-sidebar { padding: 28px 20px; }
+        .ty-wrap { grid-template-columns: 1fr; }
+        footer { padding: 28px 20px; }
+        .cta-strip { padding: 60px 20px; }
     }
-
-    @media (max-width:480px) {
-        .hero-h1 .line-1 { font-size: clamp(2.4rem, 10.5vw, 3rem); }
-        .hero-h1 .line-2 { font-size: clamp(2.6rem, 11.5vw, 3.3rem); }
-        .timer-grid { gap:10px; }
-        .time-block { min-width:80px; padding:20px 16px; }
-        .hero-btns { flex-direction:column; }
+    @media (max-width: 480px) {
+        .hero-h1 .line-1 { font-size: clamp(2.5rem, 11vw, 3.2rem); }
+        .hero-h1 .line-2 { font-size: clamp(2.7rem, 12vw, 3.5rem); }
+        .hero-btns { flex-direction: column; }
+        .timer-grid { gap: 10px; }
+        .time-block { min-width: 80px; padding: 20px 16px; }
     }
     </style>
 </head>
 <body>
 
-<!-- ════════════════════════════════════════════
-     PRODUCT PAGE
-════════════════════════════════════════════ -->
 <div id="product-page">
-
-<!-- TOP BAR -->
-<header class="topbar">
-    <div class="topbar-right">
-        <a href="#pricing" class="topbar-link">課程方案</a>
-        <a href="#faq" class="topbar-link">常見問題</a>
-    </div>
-</header>
 
 <!-- ════ HERO ════ -->
 <section class="hero">
     <div class="hero-bg"></div>
     <div class="hero-inner">
 
-        <!-- LEFT: heavy-type text block -->
+        <!-- LEFT -->
         <div class="hero-left">
+
+            <!-- mini countdown at top -->
+            <div class="hero-mini-cd">
+                <div class="hero-mini-cd-label">距離116年學測還有</div>
+                <div class="hero-mini-timer" id="mini-timer">
+                    <div class="hero-mini-block">
+                        <span class="hero-mini-num" id="mcd-days">--</span>
+                        <span class="hero-mini-lbl">Days</span>
+                    </div>
+                    <span class="hero-mini-sep">:</span>
+                    <div class="hero-mini-block">
+                        <span class="hero-mini-num" id="mcd-hours">--</span>
+                        <span class="hero-mini-lbl">Hours</span>
+                    </div>
+                    <span class="hero-mini-sep">:</span>
+                    <div class="hero-mini-block">
+                        <span class="hero-mini-num" id="mcd-mins">--</span>
+                        <span class="hero-mini-lbl">Mins</span>
+                    </div>
+                    <div class="hero-mini-expired" id="mcd-expired">考試已開始！</div>
+                </div>
+            </div>
+
+            <!-- eyebrow tag with heartbeat glow -->
             <span class="hero-eyebrow">116年 學測英文作文班＋衝刺</span>
 
+            <!-- H1 -->
             <h1 class="hero-h1">
                 <span class="line-1">一對一衝刺</span>
                 <span class="line-2">學測英文作文。</span>
                 <span class="line-3">寫出真正得分的英文。</span>
             </h1>
 
-            <!-- detail block matching left-border style from image -->
+            <!-- detail bar -->
             <div class="hero-detail">
                 <p>方案 A–D・6堂 / 10堂 / 16堂 / 20堂方案</p>
                 <p>適合 <strong>#追求頂標</strong> <strong>#大量寫作</strong> <strong>#一對一指導</strong></p>
             </div>
 
-            <!-- bullets matching image layout -->
+            <!-- bullets -->
             <ul class="hero-bullets">
                 <li>目標英文翻譯＋寫作 <strong>24 分以上</strong>（滿分 28）</li>
                 <li>每堂課 50 分鐘・線上 Zoom 授課・靈活排課</li>
                 <li>每週針對你的弱點客製化練習題與批改</li>
             </ul>
 
+            <!-- buttons -->
             <div class="hero-btns">
-                <a href="#pricing" class="btn-primary">查看課程方案 →</a>
-                <a href="https://tonyonlineenglish.netlify.app/exper" target="_blank" class="btn-ghost">預約體驗課程</a>
+                <a href="#features" class="btn-primary">查看課程特色 →</a>
+                <a href="#faq" class="btn-ghost">常見問題</a>
             </div>
         </div>
 
@@ -971,12 +950,12 @@
                 </div>
                 <div class="score-row">
                     <span class="score-subject">閱讀理解</span>
-                    <div class="score-bar-wrap"><div class="score-bar" style="background: linear-gradient(90deg, var(--gold), var(--gold-light));" data-width="90"></div></div>
+                    <div class="score-bar-wrap"><div class="score-bar" style="background: linear-gradient(90deg, var(--orange), var(--orange-lt));" data-width="90"></div></div>
                     <span class="score-num">提升感受</span>
                 </div>
                 <div class="score-row">
                     <span class="score-subject">寫作邏輯</span>
-                    <div class="score-bar-wrap"><div class="score-bar" style="background: linear-gradient(90deg, var(--gold), var(--gold-light));" data-width="95"></div></div>
+                    <div class="score-bar-wrap"><div class="score-bar" style="background: linear-gradient(90deg, var(--orange), var(--orange-lt));" data-width="95"></div></div>
                     <span class="score-num">系統養成</span>
                 </div>
                 <p class="score-card-note">
@@ -992,7 +971,7 @@
     </div>
 </section>
 
-<!-- ════ WHY ════ -->
+<!-- ════ WHY / FEATURES ════ -->
 <section class="section features-bg" id="features">
     <div class="section-inner">
         <p class="sec-eyebrow">課程特色</p>
@@ -1023,13 +1002,12 @@
     </div>
 </section>
 
-<!-- ════ WHO IS THIS FOR ════ -->
+<!-- ════ WHO ════ -->
 <section class="section who-section">
     <div class="section-inner">
         <p class="sec-eyebrow">適合對象</p>
         <h2 class="sec-title">這堂課適合你嗎？</h2>
         <div class="sec-rule"></div>
-        
         <ul class="who-list-styled">
             <li class="bg-card-1">
                 <span class="who-tag">高一生</span>
@@ -1047,7 +1025,7 @@
     </div>
 </section>
 
-<!-- ════ COUNTDOWN ════ -->
+<!-- ════ COUNTDOWN (standalone) ════ -->
 <section class="countdown-section">
     <p class="cd-eyebrow">考試倒數</p>
     <h2 class="cd-title">距離 116 學年度學測（2027 / 01 / 16）還有</h2>
@@ -1069,11 +1047,11 @@
             <div class="pricing-card">
                 <div class="pricing-top">
                     <h2>高中學測英文作文<br><span>每堂課 50 分鐘・一對一線上家教</span></h2>
-                    <span class="pricing-badge">10堂衝刺優惠</span>
+                    <span class="pricing-badge">多堂數優惠高達 -25% 👑</span>
                 </div>
                 <p class="sel-label">選擇課程方案</p>
                 <select class="styled-select" id="course-options"></select>
-                <button class="add-btn" id="add-to-cart-btn">加入購物車</button>
+                <button class="add-btn" id="add-to-cart-btn" disabled>請先選擇課堂數</button>
             </div>
         </div>
     </div>
@@ -1092,10 +1070,7 @@
                     <p class="tcard-quote">「上完幾堂課後，我才發現自己以前寫作文完全是在堆砌國中字彙。Tony 老師讓我學會如何把早就背過的進階單字真正用在句子裡，模擬考的作文分數明顯提升。」</p>
                     <div class="tcard-author">
                         <div class="tcard-avatar">😊</div>
-                        <div>
-                            <div class="tcard-name">Jason W.</div>
-                            <div class="tcard-info">建國高中・高三生</div>
-                        </div>
+                        <div><div class="tcard-name">Jason W.</div><div class="tcard-info">建國高中・高三生</div></div>
                     </div>
                 </div>
                 <div class="tcard">
@@ -1103,10 +1078,7 @@
                     <p class="tcard-quote">「我以為自己文法不好，但老師說問題根本不在文法，而是寫作邏輯。上完課之後讀英文文章也感覺完全不同，理解速度變快很多，很推薦！」</p>
                     <div class="tcard-author">
                         <div class="tcard-avatar">😄</div>
-                        <div>
-                            <div class="tcard-name">Chloe L.</div>
-                            <div class="tcard-info">北一女中・高二生</div>
-                        </div>
+                        <div><div class="tcard-name">Chloe L.</div><div class="tcard-info">北一女中・高二生</div></div>
                     </div>
                 </div>
                 <div class="tcard">
@@ -1114,10 +1086,7 @@
                     <p class="tcard-quote">「每次課後都有練習題，但不是無聊的填空，而是真的讓你思考的題目。老師會針對我個人的弱點給建議，感覺進步比補習班快很多。」</p>
                     <div class="tcard-author">
                         <div class="tcard-avatar">🙋‍♀️</div>
-                        <div>
-                            <div class="tcard-name">Emily C.</div>
-                            <div class="tcard-info">附中・高三生</div>
-                        </div>
+                        <div><div class="tcard-name">Emily C.</div><div class="tcard-info">附中・高三生</div></div>
                     </div>
                 </div>
                 <div class="tcard">
@@ -1125,21 +1094,15 @@
                     <p class="tcard-quote">「一對一上課效率超高。老師會當場修改我的句子，解釋為什麼這樣寫比較好，不是給你一份批改後的卷子而已。學測英文最後拿到頂標，非常感謝！」</p>
                     <div class="tcard-author">
                         <div class="tcard-avatar">💪</div>
-                        <div>
-                            <div class="tcard-name">Kevin H.</div>
-                            <div class="tcard-info">成功高中・高三畢業生</div>
-                        </div>
+                        <div><div class="tcard-name">Kevin H.</div><div class="tcard-info">成功高中・高三畢業生</div></div>
                     </div>
                 </div>
                 <div class="tcard">
                     <div class="tcard-stars">★★★★★</div>
-                    <p class="tcard-quote">「我高一就開始上課，打好基礎真的差很多。現在高三練習模擬考，英文作文部分都很有把握，同學還來問我怎麼準備的。線上 Zoom 很方便，完全不用浪費通勤時間。」</p>
+                    <p class="tcard-quote">「我高一就開始上課，打好基礎真的差很多。現在高三練習模擬考，英文作文部分都很有把握。線上 Zoom 很方便，完全不用浪費通勤時間。」</p>
                     <div class="tcard-author">
                         <div class="tcard-avatar">🌟</div>
-                        <div>
-                            <div class="tcard-name">Mia T.</div>
-                            <div class="tcard-info">中山女高・高三生</div>
-                        </div>
+                        <div><div class="tcard-name">Mia T.</div><div class="tcard-info">中山女高・高三生</div></div>
                     </div>
                 </div>
             </div>
@@ -1159,49 +1122,61 @@
         <h2 class="sec-title">你可能想知道的事</h2>
         <div class="sec-rule"></div>
         <div class="faq-list" id="faq-list">
-
             <div class="faq-item">
                 <div class="faq-q"><span class="faq-q-text">這堂課適合英文程度不好的學生嗎？</span><span class="faq-icon">+</span></div>
                 <div class="faq-a"><div class="faq-a-inner">適合！課程不假設你的英文已經很好，而是從你現有的詞彙量出發，訓練你如何「用出來」。不論起點在哪裡，都可以透過課程系統性地提升寫作表達能力。</div></div>
             </div>
-
             <div class="faq-item">
-                <div class="faq-q"><span class="faq-q-text">線上上課效果?？</span><span class="faq-icon">+</span></div>
-                <div class="faq-a"><div class="faq-a-inner">面對現代英文寫作對『高頻產出』與『極致速度』的迫切需求，傳統實體模式已面臨效能瓶頸。數據顯示，線上課程的學習轉化率較傳統模式提升 2.5 倍以上，不僅能有效突破寫作量能，更能提供精準、具啟發性的個人化學習體驗。相比之下，傳統實體教學多受限於大班集體授課模式，難以針對學員的個體差異進行深度引導，在資訊傳遞與思維啟發上，已難以應對數位時代的學習節奏。</div></div>
+                <div class="faq-q"><span class="faq-q-text">線上上課效果？</span><span class="faq-icon">+</span></div>
+                <div class="faq-a"><div class="faq-a-inner">面對現代英文寫作對『高頻產出』與『極致速度』的迫切需求，傳統實體模式已面臨效能瓶頸。數據顯示，線上課程的學習轉化率較傳統模式提升 2.5 倍以上，不僅能有效突破寫作量能，更能提供精準、具啟發性的個人化學習體驗。</div></div>
             </div>
-
             <div class="faq-item">
                 <div class="faq-q"><span class="faq-q-text">10 堂課真的夠衝刺學測嗎？</span><span class="faq-icon">+</span></div>
                 <div class="faq-a"><div class="faq-a-inner">10 堂是高強度衝刺方案，適合已有一定基礎、需要快速聚焦突破的學生。若希望從更早開始打基礎，也可以選擇 16 或 20 堂方案，時間越充裕，進步空間越大。</div></div>
             </div>
-
             <div class="faq-item">
                 <div class="faq-q"><span class="faq-q-text">如何付款？</span><span class="faq-icon">+</span></div>
                 <div class="faq-a"><div class="faq-a-inner">目前接受銀行匯款、Line Pay 及 iPass Money 付款。</div></div>
             </div>
-
             <div class="faq-item">
                 <div class="faq-q"><span class="faq-q-text">課程可以彈性調整上課時間嗎？</span><span class="faq-icon">+</span></div>
                 <div class="faq-a"><div class="faq-a-inner">可以。一對一課程的最大優勢就是時間彈性。請在報名後透過線上預約系統或LINE老師確認您方便的時段，老師會依個人行程排定課表。</div></div>
             </div>
-
             <div class="faq-item">
                 <div class="faq-q"><span class="faq-q-text">需要預先準備什麼教材嗎？</span><span class="faq-icon">+</span></div>
                 <div class="faq-a"><div class="faq-a-inner">老師會根據你的程度與學測考綱準備專屬題目與練習材料，你只需要準備一台可以開 Zoom 的設備即可。</div></div>
             </div>
-
             <div class="faq-item">
                 <div class="faq-q"><span class="faq-q-text">體驗課程內容和要如何預約？</span><span class="faq-icon">+</span></div>
-                <div class="faq-a"><div class="faq-a-inner">請先完成一篇由老師提供的作文題目，完成後提供給老師批改，老師會先了解你目前的英文程度與寫作狀況，進行一對一診斷，並說明課程方向，讓你充分了解課程是否適合自己，再決定是否報名正式課程。<br><br><a href="https://tonyonlineenglish.netlify.app/exper" target="_blank" style="display:inline-flex;align-items:center;gap:8px;margin-top:8px;background:var(--gold);color:var(--white);font-weight:700;padding:12px 24px;border-radius:999px;text-decoration:none;font-size:.9rem;transition:opacity .2s;">體驗課程頁面 →</a></div></div>
+                <div class="faq-a"><div class="faq-a-inner">請先完成一篇由老師提供的作文題目，完成後提供給老師批改，老師會先了解你目前的英文程度與寫作狀況，進行一對一診斷，並說明課程方向，讓你充分了解課程是否適合自己，再決定是否報名正式課程。<br><br><a href="https://tonyonlineenglish.netlify.app/exper" target="_blank" style="display:inline-flex;align-items:center;gap:8px;margin-top:8px;background:var(--gold);color:var(--white);font-weight:700;padding:12px 24px;border-radius:999px;text-decoration:none;font-size:.9rem;">體驗課程頁面 →</a></div></div>
             </div>
+        </div>
+    </div>
+</section>
 
+<!-- ════ CART WIDGET (倒數第二，在 CTA 上面) ════ -->
+<section class="cart-widget-section" id="cart-widget">
+    <div class="section-inner">
+        <p class="sec-eyebrow">立即報名</p>
+        <h2 class="sec-title">選擇你的課程方案</h2>
+        <div class="sec-rule"></div>
+        <div class="product-wrap">
+            <div class="pricing-card">
+                <div class="pricing-top">
+                    <h2>高中學測英文作文<br><span>每堂課 50 分鐘・一對一線上家教</span></h2>
+                    <span class="pricing-badge">多堂數優惠高達 -25% 👑</span>
+                </div>
+                <p class="sel-label">選擇課程方案</p>
+                <select class="styled-select" id="course-options-2"></select>
+                <button class="add-btn" id="add-to-cart-btn-2" disabled>請先選擇課堂數</button>
+            </div>
         </div>
     </div>
 </section>
 
 <!-- ════ CTA STRIP ════ -->
 <section class="cta-strip">
-    <h2>準備好了嗎？<em style="font-style:italic;color:var(--gold-light)"> <br>先來一堂體驗課</em></h2>
+    <h2>準備好了嗎？<em style="font-style:italic;color:var(--gold-light)"><br>先來一堂體驗課</em></h2>
     <p>一對一線上體驗，加強學測英文寫作。</p>
     <a href="https://tonyonlineenglish.netlify.app/exper" class="cta-pill" target="_blank" rel="noopener">
         預約體驗課程
@@ -1232,7 +1207,9 @@
             <h4 class="co-title">結帳</h4>
             <p class="co-sub">請輸入您的電子信箱以完成訂購。</p>
             <input type="email" id="email-display" class="co-email-field" readonly placeholder="點擊這裡輸入信箱">
-            <a class="line-btn" href="https://line.me/ti/p/T9YdimtG8_" target="_blank" rel="noopener"><img src="https://ik.imagekit.io/lql1uveoc/line.png?updatedAt=1761926064215" alt="LINE" style="width:20px;height:20px;object-fit:contain;filter:brightness(0) invert(1);"> 點選加入 LINE</a>
+            <a class="line-btn" href="https://line.me/ti/p/T9YdimtG8_" target="_blank" rel="noopener">
+                <img src="https://ik.imagekit.io/lql1uveoc/line.png?updatedAt=1761926064215" alt="LINE" style="width:20px;height:20px;object-fit:contain;filter:brightness(0) invert(1);"> 點選加入 LINE
+            </a>
             <p style="font-size:.75rem;font-family:var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--stone-400);margin-bottom:10px;">付款方式</p>
             <div class="pay-box"><div class="pay-dot"></div><span>匯款 或 Line Pay / iPass Money</span></div>
             <p class="tls-note">🔒 所有資料透過 TLS 安全加密傳輸</p>
@@ -1266,7 +1243,9 @@
             <div class="ty-pay">
                 <h5>如何付款</h5>
                 <p>
-                    <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="ty-line" style="display:inline-flex;align-items:center;gap:8px;background:#06c755;color:#fff;font-weight:700;border-radius:999px;padding:10px 22px;text-decoration:none;font-size:.9rem;"><img src="https://ik.imagekit.io/lql1uveoc/line.png?updatedAt=1761926064215" alt="LINE" style="width:18px;height:18px;object-fit:contain;filter:brightness(0) invert(1);"> 點選加入 LINE</a><br>
+                    <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:#06c755;color:#fff;font-weight:700;border-radius:999px;padding:10px 22px;text-decoration:none;font-size:.9rem;">
+                        <img src="https://ik.imagekit.io/lql1uveoc/line.png?updatedAt=1761926064215" alt="LINE" style="width:18px;height:18px;object-fit:contain;filter:brightness(0) invert(1);"> 點選加入 LINE
+                    </a><br>
                     匯款或使用 Line Pay / iPass Money 付款<br>
                     交易成功後煩請告知，將提供學費證明。感謝 ＾＾
                 </p>
@@ -1288,68 +1267,119 @@
      SCRIPTS
 ════════════════════════════════════════════ -->
 <script>
-/* ── DATA ── */
+/* ── DATA (updated prices) ── */
 const products = [
-    { id:'p10', name:'10堂學測英文作文', price:6000,  bookingLink:null },
-    { id:'p20', name:'20堂學測英文作文', price:12000, bookingLink:null },
-    { id:'p16', name:'16堂學測英文作文', price:10000, bookingLink:null },
-    { id:'p6',  name:'6堂學測英文作文',  price:4200,  bookingLink:null },
+    { id:'p6',  name:'6堂學測英文作文',   price:4200,  label:'6堂課程' },
+    { id:'p10', name:'10堂學測英文作文',  price:6600,  label:'10堂課程' },
+    { id:'p16', name:'16堂學測英文作文',  price:10000, label:'16堂課程' },
+    { id:'p20', name:'20堂學測英文作文',  price:12000, label:'20堂課程 👑 最優惠' },
 ];
 let cart = {};
 
-/* ── COUNTDOWN ── */
-(function initCountdown() {
-    const targetDate = new Date('2027-01-16T09:00:00').getTime();
-    const pad = n => String(n).padStart(2,'0');
-    const daysEl = document.getElementById('cd-days');
-    const hoursEl = document.getElementById('cd-hours');
-    const minsEl = document.getElementById('cd-mins');
-    const gridEl = document.getElementById('timer-grid');
-    const expiredEl = document.getElementById('cd-expired');
-    let countdownInterval;
+/* ── COUNTDOWN shared logic ── */
+const EXAM_DATE = new Date('2027-01-16T09:00:00').getTime();
+const pad = n => String(n).padStart(2,'0');
 
-    function updateActualTime() {
-        const diff = targetDate - Date.now();
-        if (diff <= 0) {
-            if(countdownInterval) clearInterval(countdownInterval);
-            gridEl.style.display = 'none';
-            expiredEl.style.display = 'block';
+function getTimeLeft() {
+    const diff = EXAM_DATE - Date.now();
+    if (diff <= 0) return null;
+    return {
+        days:  Math.floor(diff / 86400000),
+        hours: Math.floor(diff % 86400000 / 3600000),
+        mins:  Math.floor(diff % 3600000 / 60000),
+    };
+}
+
+/* ── Mini countdown in hero ── */
+(function initMiniCountdown() {
+    const dEl = document.getElementById('mcd-days');
+    const hEl = document.getElementById('mcd-hours');
+    const mEl = document.getElementById('mcd-mins');
+    const timerEl = document.getElementById('mini-timer');
+    const expEl = document.getElementById('mcd-expired');
+
+    function update() {
+        const t = getTimeLeft();
+        if (!t) {
+            timerEl.querySelectorAll('.hero-mini-block, .hero-mini-sep').forEach(e => e.style.display='none');
+            expEl.style.display = 'block';
             return;
         }
-        daysEl.textContent  = pad(Math.floor(diff / 86400000));
-        hoursEl.textContent = pad(Math.floor(diff % 86400000 / 3600000));
-        minsEl.textContent  = pad(Math.floor(diff % 3600000 / 60000));
+        dEl.textContent = pad(t.days);
+        hEl.textContent = pad(t.hours);
+        mEl.textContent = pad(t.mins);
+    }
+
+    // Animate count-up from 0 on load
+    function animateUp() {
+        const t = getTimeLeft();
+        if (!t) { update(); return; }
+        const duration = 1800;
+        const start = performance.now();
+        function ease(x) { return 1 - Math.pow(1 - x, 3); }
+        function step(now) {
+            const p = Math.min((now - start) / duration, 1);
+            const e = ease(p);
+            dEl.textContent = pad(Math.max(t.days > 0 ? 1 : 0, Math.floor(t.days * e)));
+            hEl.textContent = pad(Math.max(t.hours > 0 ? 1 : 0, Math.floor(t.hours * e)));
+            mEl.textContent = pad(Math.max(t.mins > 0 ? 1 : 0, Math.floor(t.mins * e)));
+            if (p < 1) requestAnimationFrame(step);
+            else { update(); setInterval(update, 1000); }
+        }
+        requestAnimationFrame(step);
+    }
+    animateUp();
+})();
+
+/* ── Standalone countdown section ── */
+(function initCountdown() {
+    const dEl = document.getElementById('cd-days');
+    const hEl = document.getElementById('cd-hours');
+    const mEl = document.getElementById('cd-mins');
+    const gridEl = document.getElementById('timer-grid');
+    const expEl = document.getElementById('cd-expired');
+    let interval;
+
+    function updateActual() {
+        const t = getTimeLeft();
+        if (!t) {
+            if(interval) clearInterval(interval);
+            gridEl.style.display = 'none';
+            expEl.style.display = 'block';
+            return;
+        }
+        dEl.textContent = pad(t.days);
+        hEl.textContent = pad(t.hours);
+        mEl.textContent = pad(t.mins);
     }
 
     function animateCountUp() {
-        const diff = targetDate - Date.now();
-        if (diff <= 0) { updateActualTime(); return; }
-        const finalDays = Math.floor(diff / 86400000);
-        const finalHours = Math.floor(diff % 86400000 / 3600000);
-        const finalMins = Math.floor(diff % 3600000 / 60000);
+        const t = getTimeLeft();
+        if (!t) { updateActual(); return; }
         const duration = 2000;
-        const startTime = performance.now();
-        function easeOutQuart(t) { return 1 - Math.pow(1 - t, 4); }
+        const start = performance.now();
+        function ease(x) { return 1 - Math.pow(1 - x, 4); }
         function step(now) {
-            let progress = Math.min((now - startTime) / duration, 1);
-            const ep = easeOutQuart(progress);
-            daysEl.textContent = pad(Math.max(finalDays > 0 ? 1 : 0, Math.floor(finalDays * ep)));
-            hoursEl.textContent = pad(Math.max(finalHours > 0 ? 1 : 0, Math.floor(finalHours * ep)));
-            minsEl.textContent = pad(Math.max(finalMins > 0 ? 1 : 0, Math.floor(finalMins * ep)));
-            if (progress < 1) { requestAnimationFrame(step); }
-            else { updateActualTime(); countdownInterval = setInterval(updateActualTime, 1000); }
+            const p = Math.min((now - start) / duration, 1);
+            const ep = ease(p);
+            dEl.textContent = pad(Math.max(t.days > 0 ? 1 : 0, Math.floor(t.days * ep)));
+            hEl.textContent = pad(Math.max(t.hours > 0 ? 1 : 0, Math.floor(t.hours * ep)));
+            mEl.textContent = pad(Math.max(t.mins > 0 ? 1 : 0, Math.floor(t.mins * ep)));
+            if (p < 1) requestAnimationFrame(step);
+            else { updateActual(); interval = setInterval(updateActual, 1000); }
         }
         requestAnimationFrame(step);
     }
 
-    const observer = new IntersectionObserver((entries, obs) => {
-        entries.forEach(entry => { if (entry.isIntersecting) { animateCountUp(); obs.disconnect(); } });
+    const obs = new IntersectionObserver((entries, o) => {
+        entries.forEach(e => { if (e.isIntersecting) { animateCountUp(); o.disconnect(); } });
     }, { threshold: 0.3 });
-    const cdSection = document.querySelector('.countdown-section');
-    if (cdSection) { observer.observe(cdSection); } else { updateActualTime(); countdownInterval = setInterval(updateActualTime, 1000); }
+    const sec = document.querySelector('.countdown-section');
+    if (sec) obs.observe(sec);
+    else { updateActual(); interval = setInterval(updateActual, 1000); }
 })();
 
-/* ── SCORE BARS ── */
+/* ── Score bars ── */
 (function initBars() {
     const bars = document.querySelectorAll('.score-bar');
     const obs = new IntersectionObserver(entries => {
@@ -1358,15 +1388,15 @@ let cart = {};
     bars.forEach(b => obs.observe(b));
 })();
 
-/* ── TESTIMONIALS SLIDER ── */
+/* ── Testimonials ── */
 (function initTestimonials() {
     const track = document.getElementById('t-track');
     const wrap  = document.getElementById('t-wrap');
     const dotsEl = document.getElementById('t-dots');
     const cards = track.querySelectorAll('.tcard');
     let cur = 0, startX = 0;
-    function getVisible() { return window.innerWidth < 768 ? 1 : window.innerWidth < 1024 ? 2 : 3; }
-    function maxIdx() { return cards.length - getVisible(); }
+    const getVis = () => window.innerWidth < 768 ? 1 : window.innerWidth < 1024 ? 2 : 3;
+    const maxIdx = () => cards.length - getVis();
     function goTo(n) {
         cur = Math.max(0, Math.min(n, maxIdx()));
         track.style.transform = `translateX(${-cur * (cards[0].offsetWidth + 24)}px)`;
@@ -1402,18 +1432,34 @@ document.getElementById('faq-list').addEventListener('click', e => {
     if (!wasOpen) item.classList.add('open');
 });
 
-/* ── PRODUCT SELECT ── */
-(function initSelect() {
-    const sel = document.getElementById('course-options');
-    sel.innerHTML = products.map(p => `<option value="${p.id}">${p.name}　NT$ ${p.price.toLocaleString()}</option>`).join('');
-    updateBtn(); sel.addEventListener('change', updateBtn);
-})();
-function updateBtn() {
-    const p = products.find(p => p.id === document.getElementById('course-options').value);
-    if (p) document.getElementById('add-to-cart-btn').textContent = `NT$ ${p.price.toLocaleString()} ｜ 加入購物車`;
+/* ── Product Select (both instances) ── */
+function buildOptions(selEl) {
+    // placeholder first
+    selEl.innerHTML = '<option value="" disabled selected>請點選選取課堂數</option>' +
+        products.map(p => `<option value="${p.id}">${p.label}　NT$ ${p.price.toLocaleString()}</option>`).join('');
+}
+function syncBtn(selEl, btnEl) {
+    const val = selEl.value;
+    if (!val) {
+        btnEl.disabled = true;
+        btnEl.textContent = '請先選擇課堂數';
+    } else {
+        const p = products.find(x => x.id === val);
+        btnEl.disabled = false;
+        btnEl.textContent = `NT$ ${p.price.toLocaleString()} ｜ 加入購物車`;
+    }
 }
 
-/* ── CART ── */
+const sel1 = document.getElementById('course-options');
+const btn1 = document.getElementById('add-to-cart-btn');
+const sel2 = document.getElementById('course-options-2');
+const btn2 = document.getElementById('add-to-cart-btn-2');
+
+buildOptions(sel1); buildOptions(sel2);
+sel1.addEventListener('change', () => syncBtn(sel1, btn1));
+sel2.addEventListener('change', () => syncBtn(sel2, btn2));
+
+/* ── Cart ── */
 function updateCartUI() {
     const items = Object.values(cart);
     const el = document.getElementById('cart-items');
@@ -1429,10 +1475,17 @@ function closeCart() { document.getElementById('cart-overlay').classList.remove(
 function openPopup() { document.getElementById('popup-overlay').classList.add('open'); setTimeout(()=>document.getElementById('popup-email').focus(),120); }
 function closePopup(){ document.getElementById('popup-overlay').classList.remove('open'); }
 
+function addToCart(selEl) {
+    const p = products.find(x => x.id === selEl.value);
+    if (!p) return;
+    cart = {}; cart[p.id] = {...p};
+    updateCartUI(); openCart();
+}
+
 function handleCheckout() {
     const email = document.getElementById('popup-email').value.trim();
     if (!Object.keys(cart).length) return alert('購物車是空的！');
-    if (!email||!email.includes('@')) { alert('請輸入有效的電子信箱！'); return; }
+    if (!email || !email.includes('@')) { alert('請輸入有效的電子信箱！'); return; }
     const items = Object.values(cart);
     const total = items.reduce((s,i)=>s+i.price,0);
     const orderId = '#'+Math.random().toString(36).substr(2,5).toUpperCase();
@@ -1456,27 +1509,26 @@ function resetPage() {
     window.scrollTo({top:0,behavior:'smooth'});
 }
 
-/* ── EVENTS ── */
-document.addEventListener('DOMContentLoaded',()=>{
+/* ── Events ── */
+document.addEventListener('DOMContentLoaded', () => {
     updateCartUI();
-    document.getElementById('add-to-cart-btn').addEventListener('click',()=>{
-        const p = products.find(p=>p.id===document.getElementById('course-options').value);
-        if(p){cart={}; cart[p.id]={...p};}
-        updateCartUI(); openCart();
+
+    btn1.addEventListener('click', () => addToCart(sel1));
+    btn2.addEventListener('click', () => addToCart(sel2));
+
+    document.getElementById('close-cart').addEventListener('click', closeCart);
+    document.getElementById('cart-overlay').addEventListener('click', e => { if(e.target===e.currentTarget) closeCart(); });
+    document.getElementById('cart-items').addEventListener('click', e => {
+        if(e.target.classList.contains('ci-remove')){ delete cart[e.target.dataset.id]; updateCartUI(); if(!Object.keys(cart).length) closeCart(); }
     });
-    document.getElementById('close-cart').addEventListener('click',closeCart);
-    document.getElementById('cart-overlay').addEventListener('click',e=>{if(e.target===e.currentTarget)closeCart();});
-    document.getElementById('cart-items').addEventListener('click',e=>{
-        if(e.target.classList.contains('ci-remove')){delete cart[e.target.dataset.id]; updateCartUI(); if(!Object.keys(cart).length)closeCart();}
-    });
-    document.getElementById('email-display').addEventListener('click',openPopup);
-    document.getElementById('popup-close').addEventListener('click',closePopup);
-    document.getElementById('popup-overlay').addEventListener('click',e=>{if(e.target===e.currentTarget)closePopup();});
-    document.getElementById('popup-submit').addEventListener('click',handleCheckout);
-    document.getElementById('popup-email').addEventListener('keydown',e=>{if(e.key==='Enter')handleCheckout();});
-    document.getElementById('popup-email').addEventListener('input',e=>{document.getElementById('email-display').value=e.target.value;});
-    document.getElementById('continue-btn').addEventListener('click',e=>{e.preventDefault();resetPage();});
-    document.getElementById('close-ty-btn').addEventListener('click',e=>{e.preventDefault();resetPage();});
+    document.getElementById('email-display').addEventListener('click', openPopup);
+    document.getElementById('popup-close').addEventListener('click', closePopup);
+    document.getElementById('popup-overlay').addEventListener('click', e => { if(e.target===e.currentTarget) closePopup(); });
+    document.getElementById('popup-submit').addEventListener('click', handleCheckout);
+    document.getElementById('popup-email').addEventListener('keydown', e => { if(e.key==='Enter') handleCheckout(); });
+    document.getElementById('popup-email').addEventListener('input', e => { document.getElementById('email-display').value = e.target.value; });
+    document.getElementById('continue-btn').addEventListener('click', e => { e.preventDefault(); resetPage(); });
+    document.getElementById('close-ty-btn').addEventListener('click', e => { e.preventDefault(); resetPage(); });
 });
 </script>
 
