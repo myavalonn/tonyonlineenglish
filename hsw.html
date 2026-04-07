@@ -25,7 +25,8 @@
     <!-- ═══ Fonts ═══ -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Noto+Sans+TC:wght@300;400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <!-- Noto Sans TC 900 for heavy Chinese, Oswald/Barlow Condensed for heavy Latin -->
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Noto+Sans+TC:wght@300;400;500;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 
     <style>
     /* ══════════════════════════════════════
@@ -46,10 +47,12 @@
         --red:         #c0392b;
         --green:       #27ae60;
         --blue:        #1a6bbd;
+        --hero-blue:   #4b9fea;   /* accent blue matching image */
 
         --f-display: 'Cormorant Garamond', Georgia, serif;
         --f-body:    'Noto Sans TC', system-ui, sans-serif;
         --f-mono:    'DM Mono', monospace;
+        --f-heavy:   'Barlow Condensed', 'Noto Sans TC', sans-serif;
 
         --r-sm:  8px;
         --r-md:  16px;
@@ -108,7 +111,7 @@
     .topbar-link:hover { color: var(--gold); }
 
     /* ══════════════════════════════════════
-       HERO
+       HERO  — new heavy-type style
     ══════════════════════════════════════ */
     .hero {
         position: relative;
@@ -116,39 +119,23 @@
         display: flex;
         align-items: center;
         overflow: hidden;
-        background: var(--ink);
+        background: #111110;   /* near-black, like image */
+    }
+    /* subtle noise texture overlay */
+    .hero::after {
+        content: '';
+        position: absolute; inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+        pointer-events: none;
+        z-index: 1;
+        opacity: .6;
     }
     .hero-bg {
         position: absolute; inset: 0;
         background-image: url('https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=1600&q=80');
         background-size: cover;
         background-position: center 55%;
-        opacity: .22;
-    }
-    .hero-accent {
-        position: absolute;
-        top: 0; right: 0;
-        width: 42%;
-        height: 100%;
-        border-left: 1px solid rgba(184,147,74,.15);
-        pointer-events: none;
-    }
-    .hero-accent::before {
-        content: '';
-        position: absolute;
-        top: 12%; left: 15%;
-        width: 220px; height: 220px;
-        border: 1px solid rgba(184,147,74,.12);
-        border-radius: 50%;
-        animation: float 8s ease-in-out infinite;
-    }
-    .hero-accent::after {
-        content: '';
-        position: absolute;
-        bottom: 16%; right: 10%;
-        width: 80px; height: 80px;
-        background: rgba(184,147,74,.07);
-        border-radius: 50%;
+        opacity: .08;   /* much more subtle — let text dominate */
     }
 
     .hero-inner {
@@ -164,65 +151,100 @@
         width: 100%;
     }
 
+    /* ── eyebrow tag ── */
     .hero-eyebrow {
         display: inline-block;
         font-family: var(--f-body);
         font-weight: 700;
-        font-size: .85rem;
-        letter-spacing: .15em;
+        font-size: .82rem;
+        letter-spacing: .12em;
         text-transform: uppercase;
-        color: #ffffff;
-        border: 1px solid rgba(255,255,255,0.6);
+        color: rgba(255,255,255,.55);
+        border: 1px solid rgba(255,255,255,.18);
         padding: 6px 16px;
         border-radius: var(--r-pill);
-        margin-bottom: 28px;
-        box-shadow: 0 0 12px rgba(255,255,255,0.3), inset 0 0 8px rgba(255,255,255,0.2);
-        text-shadow: 0 0 6px rgba(255,255,255,0.7);
+        margin-bottom: 24px;
         animation: fadeUp .5s ease forwards .1s; opacity:0;
     }
+
+    /* ── MAIN H1: heavy black font ── */
     .hero-h1 {
-        font-family: var(--f-display);
-        font-size: clamp(2.8rem, 5.5vw, 5.2rem);
-        font-weight: 300;
-        line-height: 1.2;
+        font-family: 'Noto Sans TC', sans-serif;
+        font-weight: 900;
+        line-height: 1.05;
         color: var(--white);
-        margin-bottom: 24px;
+        margin-bottom: 28px;
         animation: fadeUp .6s ease forwards .2s; opacity:0;
-    }
-    .hero-h1 em {
-        font-style: italic;
-        color: var(--gold-light);
-    }
-    .hero-h1 .block { display: inline-block; margin-top: 16px; }
-    
-    /* 膠囊標題 */
-    .pill-title {
-        display: inline-block;
-        background: var(--gold);
-        color: var(--white);
-        padding: 8px 36px;
-        border-radius: var(--r-pill);
-        font-style: normal;
-        line-height: 1.2;
+        letter-spacing: -0.01em;
     }
 
-    .hero-rule {
-        width: 48px; height: 2px;
-        background: var(--gold);
-        margin-bottom: 28px;
-        transform-origin: left;
-        animation: lineGrow .7s ease forwards .45s; opacity:0;
-        border: none;
+    /* line 1: "一對一衝刺" — plain white, very large */
+    .hero-h1 .line-1 {
+        display: block;
+        font-size: clamp(3rem, 8.5vw, 5.8rem);
+        color: var(--white);
     }
-    .hero-sub {
-        font-size: 1.05rem;
-        color: rgba(255,255,255,.72);
-        line-height: 1.9;
-        margin-bottom: 40px;
-        animation: fadeUp .6s ease forwards .5s; opacity:0;
-        max-width: 480px;
+
+    /* line 2: "學測英文作文" — hero-blue accent, even larger */
+    .hero-h1 .line-2 {
+        display: block;
+        font-size: clamp(3.2rem, 9vw, 6.2rem);
+        color: var(--hero-blue);
+        /* slight text shadow for pop */
+        text-shadow: 0 0 60px rgba(75,159,234,.35);
     }
-    .hero-sub strong { color: var(--gold-light); font-weight: 700; }
+
+    /* line 3: sub-label in italic serif — gold */
+    .hero-h1 .line-3 {
+        display: block;
+        font-family: 'Cormorant Garamond', Georgia, serif;
+        font-weight: 400;
+        font-style: italic;
+        font-size: clamp(1.4rem, 3vw, 2.2rem);
+        color: var(--gold-light);
+        margin-top: 10px;
+        letter-spacing: .02em;
+    }
+
+    /* left-border detail block (mimics image's vertical bar) */
+    .hero-detail {
+        border-left: 3px solid rgba(255,255,255,.22);
+        padding-left: 18px;
+        margin: 20px 0 28px;
+        animation: fadeUp .6s ease forwards .35s; opacity:0;
+    }
+    .hero-detail p {
+        font-size: clamp(.9rem, 2vw, 1rem);
+        color: rgba(255,255,255,.55);
+        line-height: 1.75;
+    }
+    .hero-detail p strong { color: rgba(255,255,255,.85); font-weight: 700; }
+
+    /* bullet list under detail bar */
+    .hero-bullets {
+        list-style: none;
+        margin: 14px 0 36px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        animation: fadeUp .6s ease forwards .45s; opacity:0;
+    }
+    .hero-bullets li {
+        font-size: clamp(.9rem, 2vw, 1rem);
+        color: rgba(255,255,255,.7);
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        line-height: 1.6;
+    }
+    .hero-bullets li::before {
+        content: '•';
+        color: var(--hero-blue);
+        font-size: 1.2em;
+        flex-shrink: 0;
+        margin-top: 1px;
+    }
+    .hero-bullets li strong { color: var(--gold-light); }
 
     .hero-btns {
         display: flex; gap: 14px; flex-wrap: wrap;
@@ -243,8 +265,8 @@
     .btn-ghost {
         display: inline-flex; align-items: center; gap: 8px;
         background: transparent;
-        color: rgba(255,255,255,.82);
-        border: 1px solid rgba(255,255,255,.3);
+        color: rgba(255,255,255,.75);
+        border: 1px solid rgba(255,255,255,.25);
         padding: 16px 28px;
         border-radius: var(--r-pill);
         font-size: .95rem;
@@ -258,8 +280,8 @@
         animation: fadeUp .7s ease forwards .4s; opacity:0;
     }
     .score-card {
-        background: rgba(255,255,255,.05);
-        border: 1px solid rgba(255,255,255,.12);
+        background: rgba(255,255,255,.04);
+        border: 1px solid rgba(255,255,255,.1);
         border-radius: var(--r-xl);
         padding: 40px 36px;
         backdrop-filter: blur(8px);
@@ -267,7 +289,7 @@
     .score-title {
         font-family: var(--f-body);
         font-weight: 700;
-        font-size: 1.15rem; 
+        font-size: 1.15rem;
         letter-spacing: .05em;
         color: var(--white);
         margin-bottom: 24px;
@@ -288,11 +310,11 @@
     .score-card-note {
         margin-top: 24px;
         padding: 14px 16px;
-        background: rgba(184,147,74,.12);
+        background: rgba(184,147,74,.1);
         border-left: 2px solid var(--gold);
         border-radius: 0 var(--r-sm) var(--r-sm) 0;
         font-size: .85rem;
-        color: rgba(255,255,255,.7);
+        color: rgba(255,255,255,.65);
         line-height: 1.7;
     }
     .score-card-note strong { color: var(--gold-light); }
@@ -304,16 +326,17 @@
         transform: translateX(-50%);
         display: flex; flex-direction: column;
         align-items: center; gap: 8px;
-        color: rgba(255,255,255,.35);
+        color: rgba(255,255,255,.25);
         font-size: .72rem;
         font-family: var(--f-mono);
         letter-spacing: .1em;
         text-transform: uppercase;
         animation: fadeIn 1s ease forwards 1.2s; opacity: 0;
+        z-index: 10;
     }
     .scroll-line {
         width: 1px; height: 40px;
-        background: linear-gradient(to bottom, rgba(255,255,255,.35), transparent);
+        background: linear-gradient(to bottom, rgba(255,255,255,.25), transparent);
     }
 
     /* ══════════════════════════════════════
@@ -714,24 +737,14 @@
     #celebration-icon::before { content:''; position:absolute; bottom:4px; left:50%; width:8px; height:8px; border-radius:2px; background:transparent; animation:confetti-burst 1.8s ease-out infinite; z-index:-1; }
 
     /* ══════════════════════════════════════
-       RESPONSIVE (Desktop - 字體縮小20%，間距不變，Hero 不變)
+       RESPONSIVE
     ══════════════════════════════════════ */
     @media (min-width: 1025px) {
-        /* ==== 主視覺區塊 (Hero Section) 維持原本大小不變 ==== */
         .hero-inner { max-width: 1350px; }
-        .hero-h1 { font-size: clamp(4.5rem, 6vw, 6.2rem); line-height: 1.15; }
-        .hero-sub { font-size: 1.25rem; max-width: 600px; line-height: 1.9; }
-        .hero-eyebrow { font-size: 1rem; padding: 8px 20px; }
-        .btn-primary { font-size: 1.15rem; padding: 18px 36px; }
-        .btn-ghost { font-size: 1.1rem; padding: 18px 32px; }
+        .hero-h1 .line-1 { font-size: clamp(4.5rem, 6vw, 6rem); }
+        .hero-h1 .line-2 { font-size: clamp(4.8rem, 6.5vw, 6.5rem); }
+        .hero-h1 .line-3 { font-size: clamp(1.6rem, 2.2vw, 2.4rem); }
 
-        .score-card { padding: 50px 46px; }
-        .score-title { font-size: 1.35rem; }
-        .score-subject { font-size: 1.1rem; }
-        .score-num { font-size: 1.1rem; }
-        .score-card-note { font-size: 1rem; line-height: 1.8; }
-
-        /* ==== 以下區塊字體大小縮小 20% (乘以 0.8)，其餘版面間距不變 ==== */
         .topbar { padding: 36px 120px; }
         .topbar-link { font-size: 1.5rem; }
 
@@ -781,7 +794,6 @@
         .t-arrow { width: 63px; height: 63px; font-size: 1.2rem; }
         .t-dot { width: 12px; height: 12px; }
 
-        /* ==== FAQ ==== */
         .faq-list { gap: 27px; margin-top: 105px; max-width: 1600px; }
         .faq-q { padding: 50px 65px; gap: 40px; }
         .faq-q-text { font-size: 2.32rem; }
@@ -789,7 +801,6 @@
         .faq-a { padding: 0 65px; }
         .faq-a-inner { padding-bottom: 50px; font-size: 2.16rem; line-height: 1.9; }
 
-        /* ==== CTA Strip ==== */
         .cta-strip { padding: 180px 90px; }
         .cta-strip h2 { font-size: 4.2rem; margin-bottom: 27px; }
         .cta-strip p { font-size: 1.5rem; margin-bottom: 81px; }
@@ -802,26 +813,23 @@
     }
 
     @media (max-width:1024px) {
-        .hero-inner { grid-template-columns:1fr; gap:48px; padding:60px 32px; }
+        .hero-inner { grid-template-columns:1fr; gap:40px; padding:60px 32px; }
         .hero { min-height:auto; }
         .score-card { max-width:520px; }
         .features-grid { grid-template-columns:repeat(2,1fr); }
         .tcard { flex:0 0 calc(50% - 12px); }
         .ty-wrap { grid-template-columns:1fr; }
     }
-    /* ── iPad specific ── */
+    /* ── iPad ── */
     @media (min-width:768px) and (max-width:1024px) {
-        .hero-bg { background-position: 40% 50%; }
         .hero-inner { padding: 80px 48px; }
-        .hero-h1 { font-size: 4.8rem !important; line-height: 1.08; }
-        .hero-sub { font-size: 1.3rem; line-height: 2; max-width: 100%; }
+        .hero-h1 .line-1 { font-size: 4.2rem; }
+        .hero-h1 .line-2 { font-size: 4.5rem; }
+        .hero-h1 .line-3 { font-size: 1.6rem; }
+        .hero-detail p { font-size: 1.05rem; }
+        .hero-bullets li { font-size: 1.05rem; }
         .btn-primary { font-size: 1.25rem; padding: 20px 40px; }
         .btn-ghost { font-size: 1.2rem; padding: 20px 36px; }
-        .score-title { font-size: 1.3rem; }
-        .score-subject { font-size: 1.1rem; }
-        .score-num { font-size: 1rem; }
-        .score-card { padding: 48px 44px; }
-        .score-card-note { font-size: 1rem; }
         .topbar-link { font-size: 1.05rem; }
         .sec-eyebrow { font-size: .9rem; }
         .sec-title { font-size: 2.8rem; }
@@ -845,21 +853,39 @@
         .section-inner { padding: 0 48px; }
         .section { padding: 88px 0; }
     }
-    @media (max-width:768px) {
+
+    /* ── Mobile ── */
+    @media (max-width:767px) {
         .features-bg { padding-bottom: 30px; }
         .who-section { padding-top: 30px; }
-        .hero-bg { background-position: 30% 60%; opacity: .20; }
         .topbar { padding:16px 20px; justify-content: center; }
         .section-inner { padding:0 20px; }
         .section { padding:64px 0; }
-        .hero-inner { padding:52px 20px; }
-        .hero-h1 { font-size:2.5rem; }
-        .btn-primary, .btn-ghost { font-size: 1.25rem; padding: 18px 32px; text-align: center; justify-content: center; width: 100%;}
+
+        /* Hero mobile: single column, full-width heavy type */
+        .hero { min-height: 100svh; }
+        .hero-inner { padding: 52px 24px 64px; gap: 36px; }
+
+        /* BIG on mobile — key requirement */
+        .hero-h1 .line-1 { font-size: clamp(2.8rem, 11vw, 3.8rem); }
+        .hero-h1 .line-2 { font-size: clamp(3rem, 12vw, 4rem); }
+        .hero-h1 .line-3 { font-size: clamp(1.1rem, 4.5vw, 1.4rem); margin-top: 8px; }
+
+        .hero-detail { padding-left: 14px; margin: 14px 0 18px; }
+        .hero-detail p { font-size: .92rem; }
+        .hero-bullets { gap: 6px; margin-bottom: 28px; }
+        .hero-bullets li { font-size: .92rem; }
+
+        .btn-primary, .btn-ghost {
+            font-size: 1.1rem; padding: 16px 28px;
+            text-align: center; justify-content: center; width: 100%;
+        }
+
         .features-grid { grid-template-columns:1fr; gap: 12px;}
         .feature-card { padding: 20px 16px; }
         .who-list-styled { gap: 12px; }
         .who-list-styled li { padding: 20px; }
-        .tcard { flex:0 0 calc(100% - 0px); }
+        .tcard { flex:0 0 100%; }
         .pricing-card { padding:32px 24px; }
         .cart-body { flex-direction:column; }
         .cart-right { width:100%; }
@@ -870,7 +896,10 @@
         footer { padding:28px 20px; }
         .cta-strip { padding:60px 20px; }
     }
+
     @media (max-width:480px) {
+        .hero-h1 .line-1 { font-size: clamp(2.4rem, 10.5vw, 3rem); }
+        .hero-h1 .line-2 { font-size: clamp(2.6rem, 11.5vw, 3.3rem); }
         .timer-grid { gap:10px; }
         .time-block { min-width:80px; padding:20px 16px; }
         .hero-btns { flex-direction:column; }
@@ -895,25 +924,38 @@
 <!-- ════ HERO ════ -->
 <section class="hero">
     <div class="hero-bg"></div>
-    <div class="hero-accent"></div>
     <div class="hero-inner">
+
+        <!-- LEFT: heavy-type text block -->
         <div class="hero-left">
             <span class="hero-eyebrow">116年 學測英文作文班＋衝刺</span>
+
             <h1 class="hero-h1">
-                <span style="white-space: nowrap;">寫出<em>真正得分</em>的</span><br>
-                <span class="block"><span class="pill-title">學測英文作文</span></span>
+                <span class="line-1">一對一衝刺</span>
+                <span class="line-2">學測英文作文。</span>
+                <span class="line-3">寫出真正得分的英文。</span>
             </h1>
-            <hr class="hero-rule">
-            <p class="hero-sub">
-                背了那麼多單字，寫作時卻發揮不出來？<br>
-                一對一客製化指導，讓你從<strong>「背過」變成「用得出來」</strong>，<br>
-                目標英文翻譯＋寫作 <strong>24 分以上</strong>（滿分 28）。
-            </p>
+
+            <!-- detail block matching left-border style from image -->
+            <div class="hero-detail">
+                <p>方案 A–D・6堂 / 10堂 / 16堂 / 20堂方案</p>
+                <p>適合 <strong>#追求頂標</strong> <strong>#大量寫作</strong> <strong>#一對一指導</strong></p>
+            </div>
+
+            <!-- bullets matching image layout -->
+            <ul class="hero-bullets">
+                <li>目標英文翻譯＋寫作 <strong>24 分以上</strong>（滿分 28）</li>
+                <li>每堂課 50 分鐘・線上 Zoom 授課・靈活排課</li>
+                <li>每週針對你的弱點客製化練習題與批改</li>
+            </ul>
+
             <div class="hero-btns">
                 <a href="#pricing" class="btn-primary">查看課程方案 →</a>
                 <a href="https://tonyonlineenglish.netlify.app/exper" target="_blank" class="btn-ghost">預約體驗課程</a>
             </div>
         </div>
+
+        <!-- RIGHT: score card -->
         <div class="hero-right">
             <div class="score-card">
                 <p class="score-title">英文頂標目標分析</p>
@@ -942,6 +984,7 @@
                 </p>
             </div>
         </div>
+
     </div>
     <div class="hero-scroll">
         <div class="scroll-line"></div>
@@ -1254,20 +1297,17 @@ const products = [
 ];
 let cart = {};
 
-/* ── COUNTDOWN (從 1 開始增加動畫) ── */
+/* ── COUNTDOWN ── */
 (function initCountdown() {
     const targetDate = new Date('2027-01-16T09:00:00').getTime();
     const pad = n => String(n).padStart(2,'0');
-    
     const daysEl = document.getElementById('cd-days');
     const hoursEl = document.getElementById('cd-hours');
     const minsEl = document.getElementById('cd-mins');
     const gridEl = document.getElementById('timer-grid');
     const expiredEl = document.getElementById('cd-expired');
-    
     let countdownInterval;
 
-    // 更新到實際真實時間
     function updateActualTime() {
         const diff = targetDate - Date.now();
         if (diff <= 0) {
@@ -1281,79 +1321,39 @@ let cart = {};
         minsEl.textContent  = pad(Math.floor(diff % 3600000 / 60000));
     }
 
-    // 從 1 增加到真實數字的動畫效果
     function animateCountUp() {
         const diff = targetDate - Date.now();
-        if (diff <= 0) {
-            updateActualTime();
-            return;
-        }
-
+        if (diff <= 0) { updateActualTime(); return; }
         const finalDays = Math.floor(diff / 86400000);
         const finalHours = Math.floor(diff % 86400000 / 3600000);
         const finalMins = Math.floor(diff % 3600000 / 60000);
-
-        const duration = 2000; // 動畫持續 2 秒
+        const duration = 2000;
         const startTime = performance.now();
-
-        // 緩動函數 (先快後慢)
         function easeOutQuart(t) { return 1 - Math.pow(1 - t, 4); }
-
         function step(now) {
-            let progress = (now - startTime) / duration;
-            if (progress > 1) progress = 1;
-            
-            const easeProgress = easeOutQuart(progress);
-
-            // 從 1 開始計算目前的數字 (如果實際為 0 就顯示 0)
-            let curDays = Math.max(finalDays > 0 ? 1 : 0, Math.floor(finalDays * easeProgress));
-            let curHours = Math.max(finalHours > 0 ? 1 : 0, Math.floor(finalHours * easeProgress));
-            let curMins = Math.max(finalMins > 0 ? 1 : 0, Math.floor(finalMins * easeProgress));
-
-            daysEl.textContent = pad(curDays);
-            hoursEl.textContent = pad(curHours);
-            minsEl.textContent = pad(curMins);
-
-            if (progress < 1) {
-                requestAnimationFrame(step);
-            } else {
-                // 動畫結束，停在正確數字並開始正常倒數
-                updateActualTime();
-                countdownInterval = setInterval(updateActualTime, 1000);
-            }
+            let progress = Math.min((now - startTime) / duration, 1);
+            const ep = easeOutQuart(progress);
+            daysEl.textContent = pad(Math.max(finalDays > 0 ? 1 : 0, Math.floor(finalDays * ep)));
+            hoursEl.textContent = pad(Math.max(finalHours > 0 ? 1 : 0, Math.floor(finalHours * ep)));
+            minsEl.textContent = pad(Math.max(finalMins > 0 ? 1 : 0, Math.floor(finalMins * ep)));
+            if (progress < 1) { requestAnimationFrame(step); }
+            else { updateActualTime(); countdownInterval = setInterval(updateActualTime, 1000); }
         }
         requestAnimationFrame(step);
     }
 
-    // 運用 Intersection Observer 當滾動到該區域時觸發動畫
     const observer = new IntersectionObserver((entries, obs) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                animateCountUp();
-                obs.disconnect(); // 觸發一次後解除監聽
-            }
-        });
+        entries.forEach(entry => { if (entry.isIntersecting) { animateCountUp(); obs.disconnect(); } });
     }, { threshold: 0.3 });
-
     const cdSection = document.querySelector('.countdown-section');
-    if (cdSection) {
-        observer.observe(cdSection);
-    } else {
-        updateActualTime();
-        countdownInterval = setInterval(updateActualTime, 1000);
-    }
+    if (cdSection) { observer.observe(cdSection); } else { updateActualTime(); countdownInterval = setInterval(updateActualTime, 1000); }
 })();
 
-/* ── SCORE BARS (animate on scroll) ── */
+/* ── SCORE BARS ── */
 (function initBars() {
     const bars = document.querySelectorAll('.score-bar');
     const obs = new IntersectionObserver(entries => {
-        entries.forEach(e => {
-            if (e.isIntersecting) {
-                e.target.style.width = e.target.dataset.width + '%';
-                obs.unobserve(e.target);
-            }
-        });
+        entries.forEach(e => { if (e.isIntersecting) { e.target.style.width = e.target.dataset.width + '%'; obs.unobserve(e.target); } });
     }, { threshold: 0.3 });
     bars.forEach(b => obs.observe(b));
 })();
@@ -1364,45 +1364,30 @@ let cart = {};
     const wrap  = document.getElementById('t-wrap');
     const dotsEl = document.getElementById('t-dots');
     const cards = track.querySelectorAll('.tcard');
-    let cur = 0;
-    let startX = 0;
-
-    function getVisible() {
-        if (window.innerWidth < 768) return 1;
-        if (window.innerWidth < 1024) return 2;
-        return 3;
-    }
-
+    let cur = 0, startX = 0;
+    function getVisible() { return window.innerWidth < 768 ? 1 : window.innerWidth < 1024 ? 2 : 3; }
     function maxIdx() { return cards.length - getVisible(); }
-
     function goTo(n) {
         cur = Math.max(0, Math.min(n, maxIdx()));
-        const cardW = cards[0].offsetWidth + 24;
-        track.style.transform = `translateX(${-cur * cardW}px)`;
+        track.style.transform = `translateX(${-cur * (cards[0].offsetWidth + 24)}px)`;
         dotsEl.querySelectorAll('.t-dot').forEach((d,i) => d.classList.toggle('active', i === cur));
     }
-
     function buildDots() {
         dotsEl.innerHTML = '';
-        const total = maxIdx() + 1;
-        for (let i=0; i<total; i++) {
+        for (let i=0; i<=maxIdx(); i++) {
             const d = document.createElement('div');
             d.className = 't-dot' + (i===cur?' active':'');
             d.onclick = () => goTo(i);
             dotsEl.appendChild(d);
         }
     }
-
     document.getElementById('t-prev').onclick = () => goTo(cur-1);
     document.getElementById('t-next').onclick = () => goTo(cur+1);
-
-    // touch support
     wrap.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, {passive:true});
     wrap.addEventListener('touchend', e => {
         const dx = e.changedTouches[0].clientX - startX;
         if (Math.abs(dx) > 40) goTo(cur + (dx < 0 ? 1 : -1));
     }, {passive:true});
-
     buildDots(); goTo(0);
     window.addEventListener('resize', () => { buildDots(); goTo(0); });
 })();
@@ -1453,7 +1438,6 @@ function handleCheckout() {
     const orderId = '#'+Math.random().toString(36).substr(2,5).toUpperCase();
     const ts = new Date().toLocaleString('zh-TW',{year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit'});
     closePopup(); closeCart();
-    // show thank you
     document.getElementById('ty-order-id').textContent = orderId;
     document.getElementById('ty-order-time').textContent = ts;
     document.getElementById('ty-email').textContent = email;
@@ -1462,7 +1446,6 @@ function handleCheckout() {
     document.getElementById('product-page').style.display='none';
     document.getElementById('ty-page').style.display='block';
     window.scrollTo({top:0,behavior:'smooth'});
-    // GAS
     fetch("https://script.google.com/macros/s/AKfycbyU13Wivs341DMPupk9EKrL9u908zrHNOVqZUXri-hGezkk6qj_7loQGIf0GCfmvj_f/exec",{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:new URLSearchParams({orderId,email,productName:items.map(i=>i.name).join(', '),totalPrice:total,status:"未付款",imageUrls:''})}).catch(()=>{});
     cart={}; updateCartUI();
 }
@@ -1481,7 +1464,6 @@ document.addEventListener('DOMContentLoaded',()=>{
         if(p){cart={}; cart[p.id]={...p};}
         updateCartUI(); openCart();
     });
-    
     document.getElementById('close-cart').addEventListener('click',closeCart);
     document.getElementById('cart-overlay').addEventListener('click',e=>{if(e.target===e.currentTarget)closeCart();});
     document.getElementById('cart-items').addEventListener('click',e=>{
