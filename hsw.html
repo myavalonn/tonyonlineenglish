@@ -104,7 +104,7 @@
         background-image: url('https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=1600&q=80');
         background-size: cover;
         background-position: center 55%;
-        opacity: 0.22; /* 讓背景圖片變亮 */
+        opacity: 0.22;
     }
 
     .hero-inner {
@@ -189,12 +189,12 @@
 
     /* ── detail bar ── */
     .hero-detail { border-left: 3px solid rgba(255,255,255,.3); padding-left: 18px; margin: 20px 0 18px; animation: fadeUp .6s ease forwards .38s; opacity:0; }
-    .hero-detail p { font-size: clamp(1.25rem, 2.2vw, 1.6rem); color: #ffffff; line-height: 1.75; } /* 字體進一步放大 */
+    .hero-detail p { font-size: clamp(1.25rem, 2.2vw, 1.6rem); color: #ffffff; line-height: 1.75; }
     .hero-detail p strong { color: #ffffff; font-weight: 700; }
 
     /* ── bullets ── */
     .hero-bullets { list-style: none; margin: 12px 0 32px; display: flex; flex-direction: column; gap: 8px; animation: fadeUp .6s ease forwards .48s; opacity:0; }
-    .hero-bullets li { font-size: clamp(1.25rem, 2.2vw, 1.6rem); color: #ffffff; display: flex; align-items: flex-start; gap: 10px; line-height: 1.6; } /* 字體進一步放大 */
+    .hero-bullets li { font-size: clamp(1.25rem, 2.2vw, 1.6rem); color: #ffffff; display: flex; align-items: flex-start; gap: 10px; line-height: 1.6; }
     .hero-bullets li::before { content: '•'; color: var(--orange); font-size: 1.2em; flex-shrink: 0; margin-top: 1px; }
     .hero-bullets li strong { color: var(--orange-lt); }
 
@@ -230,6 +230,13 @@
     .sec-eyebrow { font-family: var(--f-mono); font-size: .72rem; letter-spacing: .16em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
     .sec-title { font-family: var(--f-display); font-size: clamp(2rem, 3.5vw, 3rem); font-weight: 300; line-height: 1.25; margin-bottom: 12px; }
     .sec-rule { width: 40px; height: 2px; background: var(--gold); margin-bottom: 40px; }
+
+    /* ── Header Flex (Title + Button) ── */
+    .sec-header-flex { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-bottom: 12px; }
+    .sec-header-flex .sec-title { margin-bottom: 0; }
+    .btn-exper-sm { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #1a6bbd, #0ec27a); color: var(--white); text-decoration: none; padding: 12px 24px; border-radius: var(--r-pill); font-size: 1rem; font-weight: 700; box-shadow: 0 4px 15px rgba(26,107,189,.25); transition: transform .2s, box-shadow .2s; }
+    .btn-exper-sm:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(26,107,189,.35); }
+    .btn-exper-sm img { width: 18px; height: 18px; }
 
     /* ══════════════════════════════════════
        WHY / FEATURES
@@ -421,6 +428,11 @@
         .sec-eyebrow { font-size: 1.32rem; margin-bottom: 22px; }
         .sec-title { font-size: clamp(3.6rem, 6vw, 5.4rem); margin-bottom: 30px; }
         .sec-rule { width: 90px; height: 4px; margin-bottom: 90px; }
+        
+        .sec-header-flex { margin-bottom: 30px; }
+        .btn-exper-sm { font-size: 1.32rem; padding: 18px 36px; gap: 12px; }
+        .btn-exper-sm img { width: 24px; height: 24px; }
+
         #features .sec-eyebrow { font-size: 1.8rem; }
         #features .sec-title { font-size: clamp(4.2rem, 6vw, 6rem); }
         .features-grid { gap: 36px; margin-top: 90px; }
@@ -615,14 +627,14 @@
             <!-- detail bar -->
             <div class="hero-detail">
                 <p>方案 A–D・6堂 / 10堂 / 16堂 / 20堂</p>
-                <p>適合 <strong>#追求頂標</strong> <strong>#大量寫作</strong> <strong>#1-1指導</strong></p>
+                <p>適合: <strong>#追求頂標</strong> <strong>#大量寫作</strong> <strong>#1-1指導</strong> <strong>#高一高二高三生</strong></p>
             </div>
 
             <!-- bullets -->
             <ul class="hero-bullets">
                 <li>
                     <span class="desktop-text">目標英文翻譯＋寫作 <strong>24 分以上</strong>（滿分 28）</span>
-                    <span class=“mobile-text">目標英文翻譯＋寫作總分<strong>24⬆</strong><br>（滿分 28）</span>
+                    <span class="mobile-text">目標英文翻譯＋寫作總分<strong>24⬆</strong><br>（滿分 28）</span>
                 </li>
                 <li>
                     <span class="desktop-text">每堂課 50 分鐘・線上 Zoom 授課・靈活排課</span>
@@ -836,7 +848,13 @@
 <section class="section" id="pricing">
     <div class="section-inner">
         <p class="sec-eyebrow">課程方案</p>
-        <h2 class="sec-title">學費資訊</h2>
+        <div class="sec-header-flex">
+            <h2 class="sec-title">學費資訊</h2>
+            <a href="https://tonyonlineenglish.netlify.app/exper" class="btn-exper-sm" target="_blank" rel="noopener">
+                預約體驗課程
+                <img src="https://ik.imagekit.io/lql1uveoc/external-link.png?updatedAt=1754911187731" alt="外部連結">
+            </a>
+        </div>
         <div class="sec-rule"></div>
         <div class="product-wrap">
             <div class="pricing-card">
