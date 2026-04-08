@@ -234,8 +234,10 @@
     /* ── Header Flex (Title + Button) ── */
     .sec-header-flex { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-bottom: 12px; }
     .sec-header-flex .sec-title { margin-bottom: 0; }
-    .btn-exper-sm { display: inline-flex; align-items: center; gap: 8px; background: linear-gradient(135deg, #1a6bbd, #0ec27a); color: var(--white); text-decoration: none; padding: 12px 24px; border-radius: var(--r-pill); font-size: 1rem; font-weight: 700; box-shadow: 0 4px 15px rgba(26,107,189,.25); transition: transform .2s, box-shadow .2s; }
-    .btn-exper-sm:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(26,107,189,.35); }
+    
+    /* 這裡修改成與購物車按鈕一樣的顏色（深黑色底，滑鼠移過去變金色） */
+    .btn-exper-sm { display: inline-flex; align-items: center; gap: 8px; background: var(--ink); color: var(--white); text-decoration: none; padding: 12px 24px; border-radius: var(--r-pill); font-size: 1rem; font-weight: 700; box-shadow: 0 4px 15px rgba(26,23,20,.2); transition: background .25s, transform .2s, box-shadow .2s; }
+    .btn-exper-sm:hover { background: var(--gold); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(184,147,74,.3); }
     .btn-exper-sm img { width: 18px; height: 18px; }
 
     /* ══════════════════════════════════════
