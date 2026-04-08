@@ -104,7 +104,7 @@
         background-image: url('https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=1600&q=80');
         background-size: cover;
         background-position: center 55%;
-        opacity: .08;
+        opacity: 0.22; /* 讓背景圖片變亮 */
     }
 
     .hero-inner {
@@ -188,13 +188,13 @@
     .hero-h1 .line-3 { display: block; font-family: 'Cormorant Garamond', Georgia, serif; font-weight: 400; font-style: italic; font-size: clamp(1.4rem, 3vw, 2rem); color: var(--orange); margin-top: 10px; letter-spacing: .02em; }
 
     /* ── detail bar ── */
-    .hero-detail { border-left: 3px solid rgba(255,255,255,.22); padding-left: 18px; margin: 20px 0 18px; animation: fadeUp .6s ease forwards .38s; opacity:0; }
-    .hero-detail p { font-size: clamp(1.1rem, 2vw, 1.4rem); color: #ffffff; line-height: 1.75; }
+    .hero-detail { border-left: 3px solid rgba(255,255,255,.3); padding-left: 18px; margin: 20px 0 18px; animation: fadeUp .6s ease forwards .38s; opacity:0; }
+    .hero-detail p { font-size: clamp(1.25rem, 2.2vw, 1.6rem); color: #ffffff; line-height: 1.75; } /* 字體進一步放大 */
     .hero-detail p strong { color: #ffffff; font-weight: 700; }
 
     /* ── bullets ── */
     .hero-bullets { list-style: none; margin: 12px 0 32px; display: flex; flex-direction: column; gap: 8px; animation: fadeUp .6s ease forwards .48s; opacity:0; }
-    .hero-bullets li { font-size: clamp(1.1rem, 2vw, 1.4rem); color: #ffffff; display: flex; align-items: flex-start; gap: 10px; line-height: 1.6; }
+    .hero-bullets li { font-size: clamp(1.25rem, 2.2vw, 1.6rem); color: #ffffff; display: flex; align-items: flex-start; gap: 10px; line-height: 1.6; } /* 字體進一步放大 */
     .hero-bullets li::before { content: '•'; color: var(--orange); font-size: 1.2em; flex-shrink: 0; margin-top: 1px; }
     .hero-bullets li strong { color: var(--orange-lt); }
 
@@ -403,8 +403,9 @@
         .hero-h1 .line-3 { font-size: clamp(1.8rem, 2.4vw, 2.6rem); }
         .hero-mini-num { font-size: 2rem; }
         .hero-eyebrow { font-size: 1.1rem; padding: 8px 24px; }
-        .hero-detail p { font-size: 1.4rem; }
-        .hero-bullets li { font-size: 1.4rem; }
+        
+        .hero-detail p { font-size: 1.6rem; }
+        .hero-bullets li { font-size: 1.6rem; }
         
         .btn-primary { font-size: 1.15rem; padding: 18px 40px; }
         .btn-ghost { font-size: 1.1rem; padding: 18px 36px; }
@@ -427,7 +428,6 @@
         .f-title { font-size: 2.7rem; margin-bottom: 24px; }
         .f-body { font-size: 1.68rem; line-height: 1.8; }
 
-        /* Who section Grid Desktop */
         .who-list-styled { gap: 45px; margin-top: 90px; }
         .who-list-styled li { padding: 67px 82px; gap: 30px; border-radius: 36px; }
         .who-list-styled .who-tag { font-size: 1.68rem; padding: 15px 42px; }
@@ -483,9 +483,10 @@
         .hero-mini-cd-label { font-size: 1.1rem; }
         .hero-mini-num { font-size: 2.2rem; }
         .hero-detail { margin: 30px 0 24px; border-left-width: 4px; padding-left: 24px; }
-        .hero-detail p { font-size: 1.5rem; line-height: 1.8; }
+        
+        .hero-detail p { font-size: 1.6rem; line-height: 1.8; }
         .hero-bullets { margin: 16px 0 48px; gap: 12px; }
-        .hero-bullets li { font-size: 1.5rem; }
+        .hero-bullets li { font-size: 1.6rem; }
         
         .btn-primary { font-size: 1.5rem; padding: 22px 44px; }
         .btn-ghost { font-size: 1.4rem; padding: 22px 40px; }
@@ -519,23 +520,23 @@
         .hero { min-height: 100svh; }
         .hero-inner { grid-template-columns: 1fr; padding: 44px 24px 60px; gap: 32px; min-height: 100svh; }
         
-        /* Mobile H1 with increased gaps */
         .hero-h1 .line-1 { font-size: 12vw; white-space: nowrap; display: block; margin-bottom: 12px; }
         .hero-h1 .line-2 { font-size: 12.5vw; white-space: nowrap; display: block; margin-bottom: 12px; }
         .hero-h1 .line-3 { font-size: clamp(1.2rem, 4.5vw, 1.5rem); display: block; margin-top: 16px; }
         
         .hero-eyebrow { font-size: .82rem; padding: 6px 16px; }
         .hero-detail { padding-left: 14px; margin: 14px 0 16px; }
-        .hero-detail p { font-size: 1.1rem; }
+        
+        /* 手機版字體顯著放大 */
+        .hero-detail p { font-size: 1.25rem; line-height: 1.7; }
         .hero-bullets { gap: 8px; margin-bottom: 26px; }
-        .hero-bullets li { font-size: 1.1rem; line-height: 1.7; }
+        .hero-bullets li { font-size: 1.25rem; line-height: 1.7; }
         
         .hero-mini-cd { gap: 8px; }
         .hero-mini-num { font-size: 1.4rem; }
         .hero-mini-block { padding: 5px 10px; min-width: 44px; }
         .mcd-mins-sep, .mcd-mins-block { display: none !important; }
 
-        /* Mobile Buttons Layout */
         .hero-btns { flex-direction: column; align-items: stretch; gap: 12px; width: 100%; }
         .hero-btns-row2 { display: flex; width: 100%; gap: 12px; }
         .btn-primary { font-size: 1.05rem; padding: 15px 24px; text-align: center; justify-content: center; width: 100%; }
@@ -546,7 +547,6 @@
         .features-grid { grid-template-columns: 1fr; gap: 12px; }
         .feature-card { padding: 20px 16px; }
         
-        /* Who Section Mobile Layout (back to vertical) */
         .who-list-styled { grid-template-columns: 1fr; gap: 16px; }
         .who-list-styled li { padding: 20px; }
 
@@ -622,7 +622,7 @@
             <ul class="hero-bullets">
                 <li>
                     <span class="desktop-text">目標英文翻譯＋寫作 <strong>24 分以上</strong>（滿分 28）</span>
-                    <span class="mobile-text">目標英文翻譯＋寫作 目標總24 分以上<br>（滿分 28）</span>
+                    <span class="mobile-text">目標英文翻譯＋寫作 目標總<strong>24 分以上</strong><br>（滿分 28）</span>
                 </li>
                 <li>
                     <span class="desktop-text">每堂課 50 分鐘・線上 Zoom 授課・靈活排課</span>
@@ -832,7 +832,7 @@
     </div>
 </section>
 
-<!-- ════ PRICING (Moved below FAQ) ════ -->
+<!-- ════ PRICING ════ -->
 <section class="section" id="pricing">
     <div class="section-inner">
         <p class="sec-eyebrow">課程方案</p>
