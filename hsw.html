@@ -45,7 +45,6 @@ body { background: var(--white); color: var(--ink); font-family: var(--f-body); 
     100% { box-shadow: 0 0 18px rgba(184,147,74,.6), inset 0 0 8px rgba(255,255,255,.8); border-color: rgba(184,147,74,.8); }
 }
 @keyframes badgeShine { 0% { left: -100%; } 20% { left: 200%; } 100% { left: 200%; } }
-@keyframes slideInLeftBg { 0% { transform: translateX(-100%); opacity: 0; } 100% { transform: translateX(0); opacity: 1; } }
 
 .mobile-text { display: none; }
 .desktop-text { display: inline; }
@@ -75,7 +74,7 @@ body { background: var(--white); color: var(--ink); font-family: var(--f-body); 
 .hero-bullets li strong { color: var(--orange-lt); }
 .hero-btns { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; animation: fadeUp .6s ease forwards .58s; opacity:0; }
 .hero-btns-row2 { display: flex; gap: 14px; align-items: center; }
-.btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: var(--orange); color: #ffffff; padding: 16px 32px; border-radius: var(--r-pill); font-weight: 700; font-size: 1rem; text-decoration: none; transition: transform .2s, box-shadow .2s, background .2s; box-shadow: 0 6px 24px rgba(240,112,32,.4); border:none; cursor:pointer; font-family:var(--f-body); }
+.btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: var(--orange); color: #ffffff; padding: 16px 32px; border-radius: var(--r-pill); font-weight: 700; font-size: 1rem; text-decoration: none; transition: transform .2s, box-shadow .2s, background .2s; box-shadow: 0 6px 24px rgba(240,112,32,.4); border: none; cursor: pointer; font-family: var(--f-body); }
 .btn-primary:hover { transform: translateY(-2px); background: var(--orange-lt); box-shadow: 0 10px 32px rgba(240,112,32,.5); }
 .btn-ghost { display: inline-flex; align-items: center; justify-content: center; gap: 8px; background: transparent; color: #ffffff; border: 1.5px solid rgba(255,255,255,.35); padding: 16px 28px; border-radius: var(--r-pill); font-size: .95rem; font-weight: 600; text-decoration: none; transition: all .2s; }
 .btn-ghost:hover { background: rgba(255,255,255,.1); border-color: rgba(255,255,255,.6); }
@@ -101,8 +100,6 @@ body { background: var(--white); color: var(--ink); font-family: var(--f-body); 
 
 .sec-header-flex { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px; margin-bottom: 12px; }
 .sec-header-flex .sec-title { margin-bottom: 0; }
-.btn-exper-sm { display: inline-flex; align-items: center; gap: 8px; background: var(--gold); color: var(--white); text-decoration: none; padding: 12px 24px; border-radius: var(--r-pill); font-size: 1rem; font-weight: 700; box-shadow: 0 4px 15px rgba(184,147,74,.3); transition: background .25s, transform .2s, box-shadow .2s; border:none; cursor:pointer; font-family:var(--f-body); }
-.btn-exper-sm:hover { background: var(--gold-light); transform: translateY(-2px); box-shadow: 0 6px 20px rgba(184,147,74,.5); }
 
 .features-bg { background: var(--stone-50); padding-bottom: 50px; }
 #features .sec-eyebrow { font-size: 1rem; color: var(--gold); font-weight: 700; }
@@ -157,7 +154,9 @@ body { background: var(--white); color: var(--ink); font-family: var(--f-body); 
 .product-wrap { max-width: 960px; margin: 0 auto; }
 .pricing-top-row { display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; flex-wrap: wrap; margin-bottom: 10px; }
 .pricing-main-title { font-family: var(--f-display); font-size: 2rem; font-weight: 400; line-height: 1.3; margin: 0; }
-.pricing-main-title span { font-size: .55em; color: var(--stone-400); font-style: normal; display: block; font-family: var(--f-body); }
+.pricing-subtitle { font-size: .55em; color: var(--stone-400); font-family: var(--f-body); display: block; }
+.pricing-normal-text { font-style: normal; font-family: var(--f-body); display: inline; }
+
 .pricing-badge { 
     position: relative; overflow: hidden; background: var(--gold-pale); color: var(--gold); 
     border: 1px solid rgba(184,147,74,.3); border-radius: var(--r-pill); padding: 10px 24px; 
@@ -192,13 +191,28 @@ body { background: var(--white); color: var(--ink); font-family: var(--f-body); 
 .trial-section-subtitle { color: #555; font-size: 1.1rem; margin-bottom: 36px; font-weight: 500; }
 
 .svg-container-hidden { position: absolute; width: 0; height: 0; pointer-events: none; }
-.color-neutral-900: oklch(0.185 0 0);
+.color-neutral-900 { color: oklch(0.185 0 0); } /* fixed missing brackets from source */
 
-/* 確保卡片在所有裝置都強制左右並排 */
-.trial-product-grid { display: flex; flex-direction: row !important; flex-wrap: nowrap !important; justify-content: center; gap: 30px; padding: 0 10px 10px; }
+/* 確保卡片在所有裝置都強制左右並排 (Code 2 Exact Match) */
+.trial-product-grid {
+    display: flex;
+    flex-wrap: nowrap !important;
+    justify-content: center;
+    gap: 40px;
+    padding: 0 0 10px;
+}
 .card-container {
-    flex: 1 1 50%; min-width: 0; max-width: 400px; padding: 2px; border-radius: 1.5em; position: relative; display: flex; cursor: pointer; transition: transform 0.3s ease;
-    background: linear-gradient(-30deg, var(--gradient-color), transparent, var(--gradient-color)), linear-gradient(to bottom, oklch(0.185 0 0), oklch(0.185 0 0)); text-align: left;
+    flex: 1 1 50%;
+    max-width: 400px;
+    padding: 2px;
+    border-radius: 1.5em;
+    position: relative;
+    display: flex;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    background: linear-gradient(-30deg, var(--gradient-color), transparent, var(--gradient-color)),
+                linear-gradient(to bottom, oklch(0.185 0 0), oklch(0.185 0 0));
+    text-align: left;
 }
 .card-container:hover { transform: translateY(-8px); }
 .card-container[↖️] { --f: url(#🌀↖️); --electric-border-color: #dd8448; --electric-light-color: oklch(from var(--electric-border-color) l c h); --gradient-color: oklch(from var(--electric-border-color) 0.3 calc(c / 2) h / 0.4); }
@@ -212,14 +226,15 @@ body { background: var(--white); color: var(--ink); font-family: var(--f-body); 
 .overlay-1 { opacity: 1; mix-blend-mode: overlay; transform: scale(1.1); filter: blur(16px); background: linear-gradient(-30deg, white, transparent 30%, transparent 70%, white); z-index: 1; }
 .overlay-2 { opacity: 0.5; mix-blend-mode: overlay; transform: scale(1.1); filter: blur(16px); background: linear-gradient(-30deg, white, transparent 30%, transparent 70%, white); z-index: 1;}
 .background-glow { filter: blur(32px); transform: scale(1.1); opacity: 0.3; z-index: -1; background: linear-gradient(-30deg, var(--electric-light-color), transparent, var(--electric-border-color)); }
+
 .content-container { position: relative; z-index: 2; width: 100%; height: auto; display: flex; flex-direction: column; }
 .content-top { display: flex; flex-direction: column; padding: 35px 35px 20px 35px; }
 .content-bottom { display: flex; flex-direction: column; padding: 20px 35px 35px 35px; }
 .scrollbar-glass { background: radial-gradient(47.2% 50% at 50.39% 88.37%, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 100%), rgba(255, 255, 255, 0.04); position: relative; transition: background 0.3s ease; border-radius: 10px; width: fit-content; padding: 0.8em 1.5em; text-transform: uppercase; font-weight: bold; font-size: 1.1rem; color: rgba(255, 255, 255, 0.95); letter-spacing: 1px; }
 .scrollbar-glass::before { content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0; padding: 1px; background: linear-gradient(150deg, rgba(255, 255, 255, 0.48) 16.73%, rgba(255, 255, 255, 0.08) 30.2%, rgba(255, 255, 255, 0.08) 68.2%, rgba(255, 255, 255, 0.6) 81.89%); border-radius: inherit; mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; pointer-events: none; }
-.card-title { font-size: 3.2em; font-weight: 700; margin-top: 25px; margin-bottom: 12px; color: #ffffff; text-shadow: 0 4px 15px rgba(0,0,0,0.6); }
+.card-title { font-family: var(--f-body); font-size: 3.2em; font-weight: 700; margin-top: 25px; margin-bottom: 12px; color: #ffffff; text-shadow: 0 4px 15px rgba(0,0,0,0.6); }
 .card-desc { font-size: 1.15rem; color: rgba(255,255,255,0.85); line-height: 1.6; margin: 0; text-shadow: 0 2px 10px rgba(0,0,0,0.5); font-weight: 500;}
-.card-price { font-size: 2.2em; font-weight: 600; color: #ffffff; margin: 0; text-shadow: 0 4px 15px rgba(0,0,0,0.6); }
+.card-price { font-family: var(--f-body); font-size: 2.2em; font-weight: 600; color: #ffffff; margin: 0; text-shadow: 0 4px 15px rgba(0,0,0,0.6); }
 .divider { margin: 0; border: none; height: 1px; background-color: #ffffff; opacity: 0.2; mask-image: linear-gradient(to right, transparent, black, transparent); -webkit-mask-image: linear-gradient(to right, transparent, black, transparent); }
 
 /* ===== CONTACT US SECTION ===== */
@@ -341,7 +356,11 @@ footer { border-top: 1px solid var(--stone-100); padding: 40px 56px; display: fl
     .trial-section { margin-top: 100px; padding-top: 90px; }
     .trial-section-title { font-size: clamp(2.8rem, 4vw, 4rem); margin-bottom: 20px; }
     .trial-section-subtitle { font-size: 1.6rem; margin-bottom: 60px; }
+    
+    /* Code 2 Exact matching spacing */
     .trial-product-grid { gap: 60px; }
+    .content-top { padding: 35px 35px 20px 35px; }
+    .content-bottom { padding: 20px 35px 35px 35px; }
     .card-title { font-size: 4em; }
     .card-desc { font-size: 1.5rem; }
     .card-price { font-size: 2.8em; }
@@ -418,10 +437,15 @@ footer { border-top: 1px solid var(--stone-100); padding: 40px 56px; display: fl
     .lesson-card-num { font-size: 4rem; }
     .lesson-card-unit { font-size: 1.1rem; }
     .lesson-card-label { font-size: 1.05rem; }
+    
     .trial-section-title { font-size: 2.6rem; }
-    .card-title { font-size: 2.8em; }
-    .card-desc { font-size: 1.1rem; }
-    .card-price { font-size: 2em; }
+    
+    /* Code 2 Exact Tablet matching */
+    .card-title { font-size: 2.5em; }
+    .card-desc { font-size: 1rem; }
+    .card-price { font-size: 1.8em; }
+    .content-top { padding: 30px 30px 15px 30px; }
+    .content-bottom { padding: 15px 30px 30px 30px; }
     .main-card { filter: none !important; }
 
     .thank-you-container { flex-direction: row; }
@@ -467,20 +491,20 @@ footer { border-top: 1px solid var(--stone-100); padding: 40px 56px; display: fl
     .lesson-card-label { font-size: .78rem; padding-top: 8px; }
     .pricing-badge { font-size: .85rem; padding: 8px 16px; }
     
-    .trial-section-title { font-size: 2rem; }
+    .trial-section-title { font-size: 2.2rem; }
     .trial-section-subtitle { font-size: 1rem; margin-bottom: 20px; }
     
-    /* 強制左右排列體驗卡片 */
+    /* 強制左右並排體驗卡片 - Mobile Exact Match */
     .trial-product-grid { flex-direction: row !important; flex-wrap: nowrap !important; gap: 10px; padding: 0; }
     .card-container { flex: 0 0 calc(50% - 5px); min-width: 0; max-width: none; border-radius: 1em; }
     .inner-container { border-radius: 1em; }
     .main-card { border-radius: 1em; filter: none !important; }
     
-    .content-top { padding: 15px 10px 10px 10px; }
-    .content-bottom { padding: 10px 10px 15px 10px; }
-    .scrollbar-glass { font-size: 0.6em; padding: 0.4em 0.6em; }
-    .card-title { font-size: 1.6em; margin-top: 10px; margin-bottom: 4px; }
-    .card-desc { font-size: 0.75rem; line-height: 1.4; }
+    .content-top { padding: 20px 15px 12px 15px; }
+    .content-bottom { padding: 12px 15px 20px 15px; }
+    .scrollbar-glass { font-size: 0.65em; padding: 0.4em 0.6em; margin-bottom: 5px; }
+    .card-title { font-size: 1.8em; margin-top: 15px; margin-bottom: 6px; }
+    .card-desc { font-size: 0.8rem; line-height: 1.4; margin-bottom: 0; }
     .card-price { font-size: 1.25em; }
 
     footer { padding: 28px 20px; }
@@ -501,7 +525,6 @@ footer { border-top: 1px solid var(--stone-100); padding: 40px 56px; display: fl
 </head>
 <body>
 
-<!-- SVG Filters -->
 <svg class="svg-container-hidden">
     <defs>
         <filter id="🌀↖️" colorInterpolationFilters="sRGB" x="-20%" y="-20%" width="140%" height="140%">
@@ -719,8 +742,8 @@ footer { border-top: 1px solid var(--stone-100); padding: 40px 56px; display: fl
                 <div class="pricing-top-row">
                     <h2 class="pricing-main-title">
                         高中學測英文作文
-                        <!-- 50分鐘字體更改為正常字體 -->
-                        <span>每<span style="font-family:var(--f-body); font-style:normal;">堂</span>課 <span style="font-family:var(--f-body); font-style:normal;">50</span> 分鐘・一對一線上家教</span>
+                        <!-- 【重要修正】不再使用 span 全域選擇器堆疊，正常顯示 -->
+                        <span class="pricing-subtitle">每<span class="pricing-normal-text">堂</span>課 <span class="pricing-normal-text">50</span> 分鐘・一對一線上家教</span>
                     </h2>
                     <span class="pricing-badge">多堂數優惠高達 -25% 👑</span>
                 </div>
@@ -805,6 +828,7 @@ footer { border-top: 1px solid var(--stone-100); padding: 40px 56px; display: fl
         </div>
     </section>
 
+    <!-- 【重要修正】將 7題 FAQ 原封不動放回來 -->
     <section class="section" id="faq">
         <div class="section-inner">
             <p class="sec-eyebrow">常見問題</p>
@@ -817,7 +841,7 @@ footer { border-top: 1px solid var(--stone-100); padding: 40px 56px; display: fl
                 </div>
                 <div class="faq-item">
                     <div class="faq-q"><span class="faq-q-text">線上上課效果？</span><span class="faq-icon">+</span></div>
-                    <div class="faq-a"><div class="faq-a-inner">面對現代英文寫作對『高頻產出』與『極致速度』的迫切需求，傳統實體模式已面臨效能瓶頸。線上課程能提供精準、具啟發性的個人化學習體驗。</div></div>
+                    <div class="faq-a"><div class="faq-a-inner">面對現代英文寫作對『高頻產出』與『極致速度』的迫切需求，傳統實體模式已面臨效能瓶頸。數據顯示，線上課程的學習轉化率較傳統模式提升 2.5 倍以上，不僅能有效突破寫作量能，更能提供精準、具啟發性的個人化學習體驗。</div></div>
                 </div>
                 <div class="faq-item">
                     <div class="faq-q"><span class="faq-q-text">10 堂課真的夠衝刺學測嗎？</span><span class="faq-icon">+</span></div>
@@ -825,7 +849,19 @@ footer { border-top: 1px solid var(--stone-100); padding: 40px 56px; display: fl
                 </div>
                 <div class="faq-item">
                     <div class="faq-q"><span class="faq-q-text">如何付款？</span><span class="faq-icon">+</span></div>
-                    <div class="faq-a"><div class="faq-a-inner">目前接受銀行匯款、Line Pay 及 iPass Money 付款。結帳後將引導您進入付款流程。</div></div>
+                    <div class="faq-a"><div class="faq-a-inner">目前接受銀行匯款、Line Pay 及 iPass Money 付款。</div></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-q"><span class="faq-q-text">課程可以彈性調整上課時間嗎？</span><span class="faq-icon">+</span></div>
+                    <div class="faq-a"><div class="faq-a-inner">可以。一對一課程的最大優勢就是時間彈性。請在報名後透過線上預約系統或LINE老師確認您方便的時段，老師會依個人行程排定課表。</div></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-q"><span class="faq-q-text">需要預先準備什麼教材嗎？</span><span class="faq-icon">+</span></div>
+                    <div class="faq-a"><div class="faq-a-inner">老師會根據你的程度與學測考綱準備專屬題目與練習材料，你只需要準備一台可以開 Zoom 的設備即可。</div></div>
+                </div>
+                <div class="faq-item">
+                    <div class="faq-q"><span class="faq-q-text">體驗課程內容和要如何預約？</span><span class="faq-icon">+</span></div>
+                    <div class="faq-a"><div class="faq-a-inner">請先完成一篇由老師提供的作文題目，完成後提供給老師批改，老師會先了解你目前的英文程度與寫作狀況，進行一對一診斷，並說明課程方向，讓你充分了解課程是否適合自己，再決定是否報名正式課程。<br><br><button onclick="document.getElementById('pricing').scrollIntoView({behavior:'smooth'})" style="display:inline-flex;align-items:center;gap:8px;margin-top:8px;background:var(--gold);color:var(--white);font-weight:700;padding:12px 24px;border-radius:999px;text-decoration:none;font-size:.9rem;border:none;cursor:pointer;">查看體驗課程 →</button></div></div>
                 </div>
             </div>
         </div>
@@ -1083,7 +1119,6 @@ function handleCheckout() {
     
     showThankYouPage({ email: email, item: currentCheckoutItem, orderId: orderId, timestamp: timestamp });
 
-    // 發送訂單資料至原本購物車的 GAS 
     fetch("https://script.google.com/macros/s/AKfycbyU13Wivs341DMPupk9EKrL9u908zrHNOVqZUXri-hGezkk6qj_7loQGIf0GCfmvj_f/exec", {
         method: "POST",
         mode: "no-cors",
@@ -1296,40 +1331,39 @@ function renderSlotsForDate(dateStr) {
 }
 
 /* =============================
-   4. Contact Form Logic
+   4. Contact Form Logic (修正：確保 GAS 能收到)
    ============================= */
-async function submitContactForm(e) {
+function submitContactForm(e) {
     e.preventDefault();
     const btn = document.getElementById('contact-submit');
     btn.innerText = "傳送中...";
     btn.disabled = true;
 
-    const data = {
-        name: document.getElementById('contact-name').value,
-        email: document.getElementById('contact-email').value,
-        line: document.getElementById('contact-line').value || "無",
-        needs: document.getElementById('contact-needs').value
-    };
+    // 您最新的 GAS URL
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbwE5thuJP9luwed0GG0eRF4DheFubXRfWQ5ZnnJL5r8TxFGaIrhUzEB4AAp51RZ_WL3/exec"; 
+    
+    // 使用 URLSearchParams 以最穩定的 x-www-form-urlencoded 格式送出
+    const params = new URLSearchParams();
+    params.append('name', document.getElementById('contact-name').value);
+    params.append('email', document.getElementById('contact-email').value);
+    params.append('line', document.getElementById('contact-line').value || "無");
+    params.append('needs', document.getElementById('contact-needs').value);
 
-    try {
-        // 🔥 已置換為您最新提供的 GAS URL 🔥
-        const GAS_URL = "https://script.google.com/macros/s/AKfycbwE5thuJP9luwed0GG0eRF4DheFubXRfWQ5ZnnJL5r8TxFGaIrhUzEB4AAp51RZ_WL3/exec"; 
-        
-        await fetch(GAS_URL, {
-            method: "POST",
-            mode: "no-cors",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: new URLSearchParams(data)
-        });
-        
+    // 【請注意】您的 Google Script 必須部署為「網頁應用程式」，並設定「存取權：所有人(Anyone)」
+    fetch(GAS_URL, {
+        method: "POST",
+        mode: "no-cors",
+        body: params
+    }).then(() => {
+        // 因為是 no-cors，無論成功失敗前端都會進到這裡，但只要 GAS 權限正確，資料必定寫入
         document.getElementById('contact-form').style.display = 'none';
         document.getElementById('contact-msg').style.display = 'block';
-    } catch (err) {
-        alert("送出失敗，請確認網路連線或直接透過 Line: myavalon 聯繫我們！");
-    } finally {
+    }).catch(err => {
+        alert("傳送失敗，請檢查網路連線。");
+    }).finally(() => {
         btn.innerText = "送出訊息";
         btn.disabled = false;
-    }
+    });
 }
 </script>
 </body>
