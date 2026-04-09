@@ -46,6 +46,12 @@ body { background: var(--white); color: var(--ink); font-family: var(--f-body); 
 }
 @keyframes badgeShine { 0% { left: -100%; } 20% { left: 200%; } 100% { left: 200%; } }
 
+/* SVG card animations */
+@keyframes slideInLeftBg {
+    0% { transform: translateX(-100%); opacity: 0; }
+    100% { transform: translateX(0); opacity: 1; }
+}
+
 .mobile-text { display: none; }
 .desktop-text { display: inline; }
 
@@ -153,19 +159,39 @@ body { background: var(--white); color: var(--ink); font-family: var(--f-body); 
 .faq-a-inner { padding-bottom: 22px; font-size: .92rem; color: var(--stone-700); line-height: 1.9; }
 .faq-item.open .faq-a { max-height: 400px; }
 
-.product-wrap { max-width: 760px; margin: 0 auto; }
-.pricing-card { background: var(--white); border: 1px solid var(--stone-100); border-radius: var(--r-xl); padding: 52px; box-shadow: var(--sh-md); position: relative; overflow: hidden; }
-.pricing-card::before { content:''; position:absolute; top:0; left:0; right:0; height:3px; background: linear-gradient(90deg, var(--gold), var(--gold-light), var(--gold)); }
-.pricing-top { display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; flex-wrap: wrap; margin-bottom: 36px; }
-.pricing-top h2 { font-family: var(--f-display); font-size: 2rem; font-weight: 400; line-height: 1.3; }
-.pricing-top h2 span { font-size: .55em; color: var(--stone-400); font-style: italic; display:block; }
+/* ===== PRICING SECTION ===== */
+.product-wrap { max-width: 960px; margin: 0 auto; }
+
+/* Top area: title + badge side by side */
+.pricing-top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+}
+.pricing-main-title {
+    font-family: var(--f-display);
+    font-size: 2rem;
+    font-weight: 400;
+    line-height: 1.3;
+    margin: 0;
+}
+.pricing-main-title span {
+    font-size: .55em;
+    color: var(--stone-400);
+    font-style: italic;
+    display: block;
+}
 
 .pricing-badge { 
     position: relative; overflow: hidden; background: var(--gold-pale); color: var(--gold); 
-    border: 1px solid rgba(184,147,74,.3); border-radius: var(--r-pill); padding: 7px 18px; 
-    font-size: .82rem; font-weight: 700; white-space: nowrap; 
+    border: 1px solid rgba(184,147,74,.3); border-radius: var(--r-pill); padding: 10px 24px; 
+    font-size: 1.05rem; font-weight: 700; white-space: nowrap; 
     box-shadow: 0 0 10px rgba(184,147,74,.15);
     animation: badgePulse 2s infinite alternate; 
+    flex-shrink: 0;
 }
 .pricing-badge::after {
     content: ''; position: absolute; top: 0; left: -100%; width: 50%; height: 100%;
@@ -173,13 +199,231 @@ body { background: var(--white); color: var(--ink); font-family: var(--f-body); 
     transform: skewX(-20deg); animation: badgeShine 3s infinite;
 }
 
-.sel-label { font-family: var(--f-mono); font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: var(--stone-400); margin-bottom: 10px; }
-.styled-select { width: 100%; padding: 16px 20px; font-size: 1rem; font-family: var(--f-body); font-weight: 700; color: var(--blue); border: 2px solid var(--stone-100); border-radius: var(--r-md); background: var(--off); appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%239a9085' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 16px center; cursor: pointer; margin-bottom: 24px; transition: border-color .2s; }
-.styled-select:focus { outline:none; border-color:var(--gold); }
-.styled-select option[value=""] { color: var(--stone-400); font-weight: 400; }
-.add-btn { width: 100%; padding: 20px 32px; font-size: 1.1rem; font-family: var(--f-body); font-weight: 700; color: var(--white); background: var(--ink); border: none; border-radius: var(--r-md); cursor: pointer; letter-spacing: .02em; transition: background .25s, transform .15s; }
-.add-btn:hover { background: var(--gold); transform: translateY(-1px); }
-.add-btn:disabled { background: var(--stone-200); cursor: not-allowed; transform: none; }
+/* Lesson cards grid */
+.lesson-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-top: 32px;
+    margin-bottom: 40px;
+}
+.lesson-card {
+    background: var(--stone-50);
+    border: 2px solid var(--stone-100);
+    border-radius: var(--r-lg);
+    padding: 28px 20px;
+    text-align: center;
+    position: relative;
+    transition: transform .25s, box-shadow .25s, border-color .25s;
+    cursor: default;
+}
+.lesson-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--sh-md);
+    border-color: var(--gold);
+}
+.lesson-card.featured {
+    background: var(--ink);
+    border-color: var(--gold);
+    box-shadow: 0 8px 32px rgba(0,0,0,.2);
+}
+.lesson-card-crown {
+    position: absolute;
+    top: -14px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--gold);
+    color: var(--white);
+    font-size: .72rem;
+    font-weight: 700;
+    padding: 4px 14px;
+    border-radius: var(--r-pill);
+    letter-spacing: .06em;
+    white-space: nowrap;
+}
+.lesson-card-num {
+    font-family: var(--f-display);
+    font-size: 3.2rem;
+    font-weight: 300;
+    line-height: 1;
+    color: var(--ink);
+    margin-bottom: 4px;
+}
+.lesson-card.featured .lesson-card-num { color: var(--white); }
+.lesson-card-unit {
+    font-family: var(--f-body);
+    font-size: .8rem;
+    font-weight: 700;
+    letter-spacing: .12em;
+    text-transform: uppercase;
+    color: var(--stone-400);
+    margin-bottom: 16px;
+}
+.lesson-card.featured .lesson-card-unit { color: var(--gold-light); }
+.lesson-card-label {
+    font-size: .82rem;
+    color: var(--stone-700);
+    line-height: 1.6;
+    padding: 10px 0 0;
+    border-top: 1px solid var(--stone-200);
+}
+.lesson-card.featured .lesson-card-label { color: rgba(255,255,255,.7); border-color: rgba(255,255,255,.15); }
+
+/* CTA button inside pricing */
+.pricing-cta-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    background: var(--ink);
+    color: var(--white);
+    text-decoration: none;
+    padding: 20px 40px;
+    border-radius: var(--r-pill);
+    font-size: 1.1rem;
+    font-weight: 700;
+    width: 100%;
+    transition: background .25s, transform .15s, box-shadow .2s;
+    box-shadow: 0 6px 24px rgba(0,0,0,.15);
+}
+.pricing-cta-btn:hover { background: var(--gold); transform: translateY(-2px); box-shadow: 0 10px 32px rgba(184,147,74,.3); }
+
+/* ===== TRIAL CARDS (from exper page) ===== */
+.trial-section {
+    margin-top: 60px;
+    padding-top: 56px;
+    border-top: 1px solid var(--stone-100);
+}
+.trial-section-label {
+    font-family: var(--f-mono);
+    font-size: .72rem;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 10px;
+    text-align: center;
+}
+.trial-section-title {
+    font-family: var(--f-display);
+    font-size: clamp(1.6rem, 3vw, 2.4rem);
+    font-weight: 300;
+    text-align: center;
+    margin-bottom: 36px;
+    line-height: 1.3;
+}
+.trial-prompt {
+    text-align: center;
+    margin-bottom: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 6px;
+    color: #555;
+}
+.trial-prompt-text {
+    font-size: 1.15rem;
+    font-weight: 700;
+    color: var(--ink);
+}
+.trial-prompt-arrow {
+    color: var(--blue);
+    animation: bounceInline 2s infinite;
+}
+@keyframes bounceInline {
+    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+    40% { transform: translateY(-4px); }
+    60% { transform: translateY(-2px); }
+}
+
+/* ===== SVG CARD STYLES (from exper) ===== */
+.svg-container-hidden { position: absolute; width: 0; height: 0; pointer-events: none; }
+.color-neutral-900: oklch(0.185 0 0);
+
+.trial-product-grid {
+    display: flex;
+    flex-wrap: nowrap;
+    justify-content: center;
+    gap: 40px;
+    padding: 0 0 10px;
+}
+.card-container {
+    flex: 1 1 50%;
+    max-width: 400px;
+    padding: 2px;
+    border-radius: 1.5em;
+    position: relative;
+    display: flex;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    background: linear-gradient(-30deg, var(--gradient-color), transparent, var(--gradient-color)),
+                linear-gradient(to bottom, oklch(0.185 0 0), oklch(0.185 0 0));
+}
+.card-container:hover { transform: translateY(-8px); }
+.card-container[↖️] {
+    --f: url(#🌀↖️);
+    --electric-border-color: #dd8448;
+    --electric-light-color: oklch(from var(--electric-border-color) l c h);
+    --gradient-color: oklch(from var(--electric-border-color) 0.3 calc(c / 2) h / 0.4);
+}
+.card-container[🎨] {
+    --f: url(#🌀🎨);
+    --electric-border-color: DodgerBlue;
+    --electric-light-color: oklch(from var(--electric-border-color) l c h);
+    --gradient-color: oklch(from var(--electric-border-color) 0.3 calc(c / 2) h / 0.4);
+}
+.inner-container { 
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    overflow: hidden; 
+    border-radius: 1.5em;
+    z-index: 0;
+}
+.border-outer {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    border: 2px solid oklch(from var(--electric-border-color) l c h / 0.5);
+    border-radius: 1.5em;
+}
+.main-card {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    border-radius: 1.5em;
+    border: 2px solid var(--electric-border-color);
+    transform: translate(-4px, -4px);
+    filter: var(--f);
+}
+.glow-layer-1, .glow-layer-2, .overlay-1, .overlay-2, .background-glow {
+    position: absolute; width: 100%; height: 100%; top: 0; left: 0; border-radius: 24px; pointer-events: none;
+}
+.glow-layer-1 { border: 2px solid oklch(from var(--electric-border-color) l c h / 0.6); filter: blur(1px); }
+.glow-layer-2 { border: 2px solid var(--electric-light-color); filter: blur(4px); }
+.overlay-1 { opacity: 1; mix-blend-mode: overlay; transform: scale(1.1); filter: blur(16px); background: linear-gradient(-30deg, white, transparent 30%, transparent 70%, white); z-index: 1; }
+.overlay-2 { opacity: 0.5; mix-blend-mode: overlay; transform: scale(1.1); filter: blur(16px); background: linear-gradient(-30deg, white, transparent 30%, transparent 70%, white); z-index: 1;}
+.background-glow { filter: blur(32px); transform: scale(1.1); opacity: 0.3; z-index: -1; background: linear-gradient(-30deg, var(--electric-light-color), transparent, var(--electric-border-color)); }
+.content-container {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    height: auto;
+    display: flex;
+    flex-direction: column;
+}
+.content-top { display: flex; flex-direction: column; padding: 35px 35px 20px 35px; }
+.content-bottom { display: flex; flex-direction: column; padding: 20px 35px 35px 35px; }
+.scrollbar-glass {
+    background: radial-gradient(47.2% 50% at 50.39% 88.37%, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 100%), rgba(255, 255, 255, 0.04);
+    position: relative; transition: background 0.3s ease; border-radius: 10px;
+    width: fit-content; padding: 0.8em 1.5em; text-transform: uppercase; font-weight: bold; font-size: 1.1rem; color: rgba(255, 255, 255, 0.95); letter-spacing: 1px;
+}
+.scrollbar-glass::before {
+    content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0; padding: 1px;
+    background: linear-gradient(150deg, rgba(255, 255, 255, 0.48) 16.73%, rgba(255, 255, 255, 0.08) 30.2%, rgba(255, 255, 255, 0.08) 68.2%, rgba(255, 255, 255, 0.6) 81.89%);
+    border-radius: inherit; mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; pointer-events: none;
+}
+.card-title { font-size: 3.2em; font-weight: 700; margin-top: 25px; margin-bottom: 12px; color: #ffffff; text-shadow: 0 4px 15px rgba(0,0,0,0.6); }
+.card-desc { font-size: 1.15rem; color: rgba(255,255,255,0.85); line-height: 1.6; margin: 0; text-shadow: 0 2px 10px rgba(0,0,0,0.5); font-weight: 500;}
+.card-price { font-size: 2.2em; font-weight: 600; color: #ffffff; margin: 0; text-shadow: 0 4px 15px rgba(0,0,0,0.6); }
+.divider { margin: 0; border: none; height: 1px; background-color: #ffffff; opacity: 0.2; mask-image: linear-gradient(to right, transparent, black, transparent); -webkit-mask-image: linear-gradient(to right, transparent, black, transparent); }
 
 .cta-strip { background: var(--ink); padding: 80px 48px; text-align: center; }
 .cta-strip h2 { font-family: var(--f-display); font-size: clamp(1.8rem, 3.5vw, 3rem); font-weight: 300; color: var(--white); margin-bottom: 12px; }
@@ -191,64 +435,7 @@ footer { border-top: 1px solid var(--stone-100); padding: 40px 56px; display: fl
 .footer-brand { font-family: var(--f-display); font-size: 1.1rem; font-weight: 600; color: var(--gold); }
 .footer-note { font-size: .78rem; color: var(--stone-400); }
 
-.cart-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.45); backdrop-filter: blur(3px); z-index: 800; opacity: 0; visibility: hidden; transition: opacity .35s, visibility .35s; }
-.cart-overlay.open { opacity:1; visibility:visible; }
-.cart-panel { position: fixed; top: 0; right: -100%; width: 90%; max-width: 900px; height: 100%; background: var(--white); z-index: 900; transition: right .4s cubic-bezier(.25,.8,.25,1); display: flex; flex-direction: column; box-shadow: -10px 0 40px rgba(0,0,0,.12); }
-.cart-panel.open { right: 0; }
-.cart-hdr { display: flex; align-items: center; justify-content: space-between; padding: 28px 40px; border-bottom: 1px solid var(--stone-100); flex-shrink: 0; }
-.cart-hdr h3 { font-family: var(--f-display); font-size: 1.6rem; font-weight: 400; }
-.close-cart { background: none; border: 1px solid var(--stone-200); border-radius: 50%; width: 38px; height: 38px; font-size: 1.1rem; cursor: pointer; color: var(--stone-400); display: flex; align-items: center; justify-content: center; transition: all .2s; }
-.cart-body { display: flex; flex: 1; overflow: hidden; }
-.cart-left { flex: 1; padding: 32px 40px; overflow-y: auto; border-right: 1px solid var(--stone-100); }
-.cart-right { width: 360px; flex-shrink: 0; padding: 32px 36px; background: var(--stone-50); overflow-y: auto; }
-.cart-empty { color: var(--stone-400); font-style: italic; }
-.cart-item { display: flex; justify-content: space-between; align-items: flex-start; gap: 20px; padding: 20px 0; border-bottom: 1px solid var(--stone-100); }
-.ci-name { font-weight: 700; margin-bottom: 6px; }
-.ci-remove { background:none; border:none; color:var(--stone-400); font-size:.8rem; text-decoration:underline; cursor:pointer; padding:0; }
-.ci-price { font-family:var(--f-mono); font-weight:700; white-space:nowrap; }
-.cart-total-blk { margin-top: 24px; padding-top: 20px; border-top: 2px solid var(--ink); }
-.tr { display: flex; justify-content: space-between; font-size: .9rem; line-height: 2.2; color: var(--stone-700); }
-.tr.final { font-weight: 700; color: var(--ink); font-family: var(--f-mono); font-size: 1.05rem; }
-.co-title { font-family: var(--f-display); font-size: 1.4rem; font-weight: 400; margin-bottom: 6px; }
-.co-sub { font-size: .85rem; color: var(--stone-400); margin-bottom: 20px; }
-.co-email-field { width: 100%; padding: 14px 16px; font-size: .95rem; font-family: var(--f-body); border: 1.5px solid var(--stone-200); border-radius: var(--r-md); background: var(--white); cursor: pointer; color: var(--stone-400); margin-bottom: 14px; }
-.line-btn { display: flex; align-items: center; justify-content: center; gap: 8px; background: #06c755; color: var(--white); text-decoration: none; font-weight: 700; border-radius: var(--r-md); padding: 13px 18px; font-size: .92rem; margin-bottom: 20px; transition: opacity .2s; }
-.pay-box { background: var(--white); border: 1.5px solid var(--stone-100); border-radius: var(--r-md); padding: 14px 16px; display: flex; gap: 10px; align-items: center; font-size: .85rem; color: var(--stone-700); margin-bottom: 14px; }
-.pay-dot { width:16px; height:16px; border:2px solid var(--ink); border-radius:50%; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
-.pay-dot::after { content:''; width:6px; height:6px; background:var(--ink); border-radius:50%; }
-.tls-note { font-size:.7rem; color:var(--stone-400); text-align:center; margin-top:10px; }
-
-.popup-overlay { position: fixed; inset: 0; background: rgba(0,0,0,.6); z-index: 1000; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: opacity .3s; }
-.popup-overlay.open { opacity:1; visibility:visible; }
-.popup-box { background: var(--white); border-radius: var(--r-xl); padding: 48px; width: 90%; max-width: 440px; position: relative; transform: scale(.92); transition: transform .3s; box-shadow: var(--sh-lg); }
-.popup-overlay.open .popup-box { transform: scale(1); }
-.popup-x { position:absolute; top:16px; right:16px; background:none; border:none; font-size:1.3rem; cursor:pointer; color:var(--stone-400); width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; }
-.popup-hl { font-family:var(--f-display); font-size:1.6rem; font-weight:400; margin-bottom:6px; }
-.popup-sub2 { font-size:.85rem; color:var(--stone-400); margin-bottom:22px; }
-.popup-input { width:100%; padding:16px; font-size:1rem; border:2px solid var(--stone-200); border-radius:var(--r-md); font-family:var(--f-body); text-align:center; margin-bottom:14px; }
-.popup-btn { width:100%; padding:16px; font-size:1rem; font-weight:700; font-family:var(--f-body); color:var(--white); background:var(--ink); border:none; border-radius:var(--r-md); cursor:pointer; }
-
-#ty-page { display:none; min-height:100vh; background:var(--stone-50); }
-.ty-wrap { max-width:1040px; margin:0 auto; padding:80px 40px; display:grid; grid-template-columns:1fr 380px; gap:32px; align-items:start; }
-.ty-card { background:var(--white); border-radius:var(--r-xl); padding:52px; box-shadow:var(--sh-md); }
-.ty-check { font-size:3rem; margin-bottom:14px; }
-.ty-h { font-family:var(--f-display); font-size:2.2rem; font-weight:400; margin-bottom:10px; }
-.ty-msg { color:var(--stone-700); line-height:1.9; margin-bottom:28px; }
-.ty-details { border-top:1px solid var(--stone-100); padding-top:20px; }
-.ty-row { display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--stone-100); font-size:.88rem; }
-#ty-order-id { font-family:var(--f-mono); color:var(--blue); font-weight:700; font-size:1.2em; }
-.ty-pay { margin-top:28px; padding-top:20px; border-top:1px solid var(--stone-100); }
-.ty-pay h5 { font-size:.75rem; text-transform:uppercase; letter-spacing:.1em; color:var(--stone-400); font-family:var(--f-mono); margin-bottom:12px; }
-.ty-pay p { font-size:.88rem; color:var(--stone-700); line-height:1.9; }
-.ty-actions { margin-top:24px; display:flex; gap:16px; }
-.ty-btn { background:none; border:none; font-size:.85rem; cursor:pointer; text-decoration:underline; }
-.ty-btn.continue { color:var(--blue); }
-.ty-btn.close-ty { color:var(--red); }
-.ty-sidebar { background:var(--white); border-radius:var(--r-xl); padding:36px; box-shadow:var(--sh-md); }
-.ty-sidebar h4 { font-family:var(--f-display); font-size:1.3rem; font-weight:400; margin-bottom:20px; padding-bottom:12px; border-bottom:1px solid var(--stone-100); color:var(--stone-400); }
-.ty-item { display:flex; justify-content:space-between; padding:10px 0; border-bottom:1px solid var(--stone-100); font-size:.88rem; }
-.ty-grand { display:flex; justify-content:space-between; padding-top:16px; font-family:var(--f-mono); font-weight:700; font-size:1rem; }
-
+/* ===== LARGE SCREEN ===== */
 @media (min-width: 1025px) {
     .hero-inner { max-width: 100%; padding: 72px 100px 88px; min-height: 100vh; grid-template-columns: 1.35fr 0.65fr; align-items: flex-start; gap: 40px; }
     .hero-left { margin-top: 80px; }
@@ -286,13 +473,24 @@ footer { border-top: 1px solid var(--stone-100); padding: 40px 56px; display: fl
     .who-list-styled .who-tag { font-size: 1.68rem; padding: 15px 42px; }
     .who-list-styled .who-text { font-size: 1.92rem; line-height: 1.8; margin-top: 12px; }
     .product-wrap { max-width: 1710px; }
-    .pricing-card { padding: 112px; border-radius: 60px; }
-    .pricing-top { margin-bottom: 75px; }
-    .pricing-top h2 { font-size: 3.6rem; }
-    .pricing-badge { font-size: 1.5rem; padding: 15px 42px; }
-    .sel-label { font-size: 1.32rem; margin-bottom: 22px; }
-    .styled-select { font-size: 1.8rem; padding: 36px 45px; margin-bottom: 54px; border-radius: 24px; }
-    .add-btn { font-size: 1.98rem; padding: 45px 72px; border-radius: 24px; }
+    .pricing-main-title { font-size: 3.6rem; }
+    .pricing-badge { font-size: 1.6rem; padding: 16px 48px; }
+    .lesson-cards-grid { gap: 32px; margin-top: 60px; margin-bottom: 72px; }
+    .lesson-card { padding: 48px 28px; border-radius: 32px; }
+    .lesson-card-crown { font-size: 1.1rem; padding: 7px 22px; top: -18px; }
+    .lesson-card-num { font-size: 5.5rem; }
+    .lesson-card-unit { font-size: 1.2rem; margin-bottom: 24px; }
+    .lesson-card-label { font-size: 1.3rem; padding-top: 18px; }
+    .pricing-cta-btn { font-size: 1.8rem; padding: 36px 60px; }
+    .trial-section { margin-top: 100px; padding-top: 90px; }
+    .trial-section-label { font-size: 1.32rem; }
+    .trial-section-title { font-size: clamp(2.8rem, 4vw, 4rem); margin-bottom: 60px; }
+    .trial-prompt-text { font-size: 1.8rem; }
+    .trial-product-grid { gap: 60px; }
+    .card-title { font-size: 4em; }
+    .card-desc { font-size: 1.5rem; }
+    .card-price { font-size: 2.8em; }
+    .scrollbar-glass { font-size: 1.5rem; padding: 1em 2em; }
     .testimonials-track-wrap { margin-top: 105px; }
     .tcard { padding: 81px 72px; border-radius: 36px; }
     .tcard-stars { font-size: 1.98rem; margin-bottom: 36px; }
@@ -319,6 +517,7 @@ footer { border-top: 1px solid var(--stone-100); padding: 40px 56px; display: fl
     .footer-note { font-size: 1.44rem; }
 }
 
+/* ===== TABLET ===== */
 @media (min-width: 768px) and (max-width: 1024px) {
     .hero { min-height: 100svh; }
     .hero-inner { grid-template-columns: 1fr; padding: 80px 48px 100px; min-height: 100svh; gap: 60px; }
@@ -341,7 +540,6 @@ footer { border-top: 1px solid var(--stone-100); padding: 40px 56px; display: fl
     .score-card-note { font-size: 1.2rem; line-height: 1.8; margin-top: 30px; }
     .features-grid { grid-template-columns: repeat(2, 1fr); }
     .tcard { flex: 0 0 calc(50% - 12px); }
-    .ty-wrap { grid-template-columns: 1fr; }
     .sec-eyebrow { font-size: .9rem; }
     .sec-title { font-size: 2.8rem; }
     .f-title { font-size: 1.7rem; }
@@ -349,11 +547,29 @@ footer { border-top: 1px solid var(--stone-100); padding: 40px 56px; display: fl
     .section-inner { padding: 0 48px; }
     .section { padding: 88px 0; }
     .cta-strip h2 { font-size: 2.6rem; }
-    .pricing-top h2 { font-size: 2.4rem; }
-    .styled-select { font-size: 1.2rem; padding: 18px 22px; }
-    .add-btn { font-size: 1.3rem; padding: 22px; }
+    /* Tablet FAQ - larger font */
+    .faq-q { padding: 28px 36px; }
+    .faq-q-text { font-size: 1.4rem; }
+    .faq-icon { width: 40px; height: 40px; font-size: 1.3rem; }
+    .faq-a { padding: 0 36px; }
+    .faq-a-inner { padding-bottom: 32px; font-size: 1.3rem; line-height: 1.9; }
+    /* Tablet pricing */
+    .pricing-main-title { font-size: 2.4rem; }
+    .pricing-badge { font-size: 1.2rem; padding: 12px 30px; }
+    .lesson-cards-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; }
+    .lesson-card-num { font-size: 4rem; }
+    .lesson-card-unit { font-size: 1rem; }
+    .lesson-card-label { font-size: 1.05rem; }
+    .pricing-cta-btn { font-size: 1.3rem; padding: 22px 36px; }
+    /* Tablet trial cards */
+    .trial-section-title { font-size: 2.2rem; }
+    .card-title { font-size: 2.8em; }
+    .card-desc { font-size: 1.1rem; }
+    .card-price { font-size: 2em; }
+    .main-card { filter: none !important; }
 }
 
+/* ===== MOBILE ===== */
 @media (max-width: 767px) {
     .mobile-text { display: inline; }
     .desktop-text { display: none; }
@@ -382,14 +598,23 @@ footer { border-top: 1px solid var(--stone-100); padding: 40px 56px; display: fl
     .who-list-styled { grid-template-columns: 1fr; gap: 16px; }
     .who-list-styled li { padding: 20px; }
     .tcard { flex: 0 0 100%; }
-    .pricing-card { padding: 32px 24px; }
-    .cart-body { flex-direction: column; }
-    .cart-right { width: 100%; }
-    .cart-panel { width: 100%; max-width: 100%; }
-    .cart-left, .cart-right { padding: 20px; }
-    .cart-hdr { padding: 20px; }
-    .ty-card, .ty-sidebar { padding: 28px 20px; }
-    .ty-wrap { grid-template-columns: 1fr; }
+    /* Mobile pricing */
+    .lesson-cards-grid { grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 24px; margin-bottom: 28px; }
+    .lesson-card { padding: 22px 14px; border-radius: 16px; }
+    .lesson-card-crown { font-size: .65rem; padding: 3px 10px; top: -12px; }
+    .lesson-card-num { font-size: 2.6rem; }
+    .lesson-card-unit { font-size: .72rem; margin-bottom: 10px; }
+    .lesson-card-label { font-size: .78rem; padding-top: 8px; }
+    .pricing-badge { font-size: .85rem; padding: 8px 16px; }
+    .pricing-cta-btn { font-size: 1rem; padding: 16px 24px; }
+    /* Mobile trial cards */
+    .trial-product-grid { gap: 12px; padding: 0; }
+    .content-top { padding: 20px 15px 12px 15px; }
+    .content-bottom { padding: 12px 15px 20px 15px; }
+    .scrollbar-glass { font-size: 0.65em; padding: 0.4em 0.6em; }
+    .card-title { font-size: 2em; margin-top: 12px; margin-bottom: 6px; }
+    .card-desc { font-size: 0.82rem; line-height: 1.4; }
+    .card-price { font-size: 1.4em; }
     footer { padding: 28px 20px; }
     .cta-strip { padding: 60px 20px; }
 }
@@ -401,7 +626,46 @@ footer { border-top: 1px solid var(--stone-100); padding: 40px 56px; display: fl
 </head>
 <body>
 
-<div id="product-page">
+<!-- SVG Filter Definitions (Hidden) -->
+<svg class="svg-container-hidden" style="position:absolute;width:0;height:0;pointer-events:none;">
+    <defs>
+        <filter id="🌀↖️" colorInterpolationFilters="sRGB" x="-20%" y="-20%" width="140%" height="140%">
+            <feTurbulence type="turbulence" baseFrequency="0.02" numOctaves="10" result="noise1" seed="1" />
+            <feOffset in="noise1" dx="0" dy="0" result="offsetNoise1">
+                <animate attributeName="dy" values="700; 0" dur="6s" repeatCount="indefinite" calcMode="linear" />
+            </feOffset>
+            <feTurbulence type="turbulence" baseFrequency="0.02" numOctaves="10" result="noise2" seed="1" />
+            <feOffset in="noise2" dx="0" dy="0" result="offsetNoise2">
+                <animate attributeName="dy" values="0; -700" dur="6s" repeatCount="indefinite" calcMode="linear" />
+            </feOffset>
+            <feTurbulence type="turbulence" baseFrequency="0.02" numOctaves="10" result="noise1" seed="2" />
+            <feOffset in="noise1" dx="0" dy="0" result="offsetNoise3">
+                <animate attributeName="dx" values="490; 0" dur="6s" repeatCount="indefinite" calcMode="linear" />
+            </feOffset>
+            <feTurbulence type="turbulence" baseFrequency="0.02" numOctaves="10" result="noise2" seed="2" />
+            <feOffset in="noise2" dx="0" dy="0" result="offsetNoise4">
+                <animate attributeName="dx" values="0; -490" dur="6s" repeatCount="indefinite" calcMode="linear" />
+            </feOffset>
+            <feComposite in="offsetNoise1" in2="offsetNoise2" result="part1" />
+            <feComposite in="offsetNoise3" in2="offsetNoise4" result="part2" />
+            <feBlend in="part1" in2="part2" mode="color-dodge" result="combinedNoise" />
+            <feDisplacementMap in="SourceGraphic" in2="combinedNoise" scale="30" xChannelSelector="R" yChannelSelector="B" />
+        </filter>
+        <filter id="🌀🎨" colorInterpolationFilters="sRGB" x="-20%" y="-20%" width="140%" height="140%">
+            <feTurbulence type="turbulence" baseFrequency="0.02" numOctaves="7" />
+            <feColorMatrix type="hueRotate" result="pt1">
+                <animate attributeName="values" values="0;360;" dur=".6s" repeatCount="indefinite" calcMode="paced" />
+            </feColorMatrix>
+            <feComposite />
+            <feTurbulence type="turbulence" baseFrequency="0.03" numOctaves="7" seed="5" />
+            <feColorMatrix type="hueRotate" result="pt2">
+                <animate attributeName="values" values="0; 333; 199; 286; 64; 168; 256; 157; 360;" dur="5s" repeatCount="indefinite" calcMode="paced" />
+            </feColorMatrix>
+            <feBlend in="pt1" in2="pt2" mode="normal" result="combinedNoise" />
+            <feDisplacementMap in="SourceGraphic" scale="30" xChannelSelector="R" yChannelSelector="B" />
+        </filter>
+    </defs>
+</svg>
 
 <section class="hero">
     <div class="hero-bg"></div>
@@ -445,7 +709,7 @@ footer { border-top: 1px solid var(--stone-100); padding: 40px 56px; display: fl
             <div class="hero-btns">
                 <a href="#features" class="btn-primary">查看課程特色 →</a>
                 <div class="hero-btns-row2">
-                    <a href="#pricing" class="btn-ghost">方案介紹</a>
+                    <a href="https://tonyonlineenglish.netlify.app/exper" class="btn-ghost">預約體驗課程</a>
                     <a href="#faq" class="btn-ghost">常見問題</a>
                 </div>
             </div>
@@ -630,26 +894,121 @@ footer { border-top: 1px solid var(--stone-100); padding: 40px 56px; display: fl
     </div>
 </section>
 
+<!-- PRICING SECTION - no cart, no price, lesson cards + trial cards -->
 <section class="section" id="pricing">
     <div class="section-inner">
         <p class="sec-eyebrow">課程方案</p>
         <div class="sec-header-flex">
-            <h2 class="sec-title">學費資訊</h2>
+            <h2 class="sec-title">課程方案</h2>
             <a href="https://tonyonlineenglish.netlify.app/exper" class="btn-exper-sm" target="_blank" rel="noopener">
                 預約體驗課程
                 <img src="https://ik.imagekit.io/lql1uveoc/external-link.png?updatedAt=1754911187731" alt="外部連結">
             </a>
         </div>
         <div class="sec-rule"></div>
+
         <div class="product-wrap">
-            <div class="pricing-card">
-                <div class="pricing-top">
-                    <h2>高中學測英文作文<br><span>每堂課 50 分鐘・一對一線上家教</span></h2>
-                    <span class="pricing-badge">多堂數優惠高達 -25% 👑</span>
+            <!-- Title row with badge -->
+            <div class="pricing-top-row">
+                <h2 class="pricing-main-title">
+                    高中學測英文作文
+                    <span>每堂課 50 分鐘・一對一線上家教</span>
+                </h2>
+                <span class="pricing-badge">多堂數優惠高達 -25% 👑</span>
+            </div>
+
+            <!-- 4 lesson count cards -->
+            <div class="lesson-cards-grid">
+                <div class="lesson-card">
+                    <div class="lesson-card-num">6</div>
+                    <div class="lesson-card-unit">堂</div>
+                    <div class="lesson-card-label">入門啟動<br>建立寫作基礎</div>
                 </div>
-                <p class="sel-label">選擇課程方案</p>
-                <select class="styled-select" id="course-options"></select>
-                <button class="add-btn" id="add-to-cart-btn" disabled>請先選擇課堂數</button>
+                <div class="lesson-card">
+                    <div class="lesson-card-num">10</div>
+                    <div class="lesson-card-unit">堂</div>
+                    <div class="lesson-card-label">高強度衝刺<br>快速突破瓶頸</div>
+                </div>
+                <div class="lesson-card">
+                    <div class="lesson-card-num">16</div>
+                    <div class="lesson-card-unit">堂</div>
+                    <div class="lesson-card-label">系統化養成<br>全面提升實力</div>
+                </div>
+                <div class="lesson-card featured">
+                    <div class="lesson-card-crown">最優惠 👑</div>
+                    <div class="lesson-card-num">20</div>
+                    <div class="lesson-card-unit">堂</div>
+                    <div class="lesson-card-label">完整學習歷程<br>頂標最高效益</div>
+                </div>
+            </div>
+
+            <!-- CTA -->
+            <a href="https://tonyonlineenglish.netlify.app/exper" class="pricing-cta-btn" target="_blank" rel="noopener">
+                預約體驗課程，了解詳細學費 →
+            </a>
+
+            <!-- Trial cards from exper page -->
+            <div class="trial-section">
+                <p class="trial-section-label">體驗課程</p>
+                <h3 class="trial-section-title">先從體驗課程開始</h3>
+
+                <div class="trial-prompt">
+                    <span class="trial-prompt-text">點選體驗課程</span>
+                    <svg class="trial-prompt-arrow" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="12" y1="5" x2="12" y2="19"></line>
+                        <polyline points="19 12 12 19 5 12"></polyline>
+                    </svg>
+                </div>
+
+                <div class="trial-product-grid">
+                    <!-- 25 min card -->
+                    <div ↖️ class="card-container" onclick="window.open('https://tonyonlineenglish.netlify.app/exper','_blank')">
+                        <div class="inner-container">
+                            <div class="border-outer"></div>
+                            <div ↖️ class="main-card"></div>
+                            <div class="glow-layer-1"></div>
+                            <div class="glow-layer-2"></div>
+                        </div>
+                        <div class="overlay-1"></div>
+                        <div class="overlay-2"></div>
+                        <div class="background-glow"></div>
+                        <div class="content-container">
+                            <div class="content-top">
+                                <div class="scrollbar-glass">客製化體驗</div>
+                                <p class="card-title">25 分鐘</p>
+                                <p class="card-desc">短時精準練習<br>考前衝刺・自由對話</p>
+                            </div>
+                            <hr class="divider" />
+                            <div class="content-bottom">
+                                <p class="card-price">NT$ 350</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 50 min card -->
+                    <div 🎨 class="card-container" onclick="window.open('https://tonyonlineenglish.netlify.app/exper','_blank')">
+                        <div class="inner-container">
+                            <div class="border-outer"></div>
+                            <div class="main-card"></div>
+                            <div class="glow-layer-1"></div>
+                            <div class="glow-layer-2"></div>
+                        </div>
+                        <div class="overlay-1"></div>
+                        <div class="overlay-2"></div>
+                        <div class="background-glow"></div>
+                        <div class="content-container">
+                            <div class="content-top">
+                                <div class="scrollbar-glass">客製化體驗</div>
+                                <p class="card-title">50 分鐘</p>
+                                <p class="card-desc">完整深度學習<br>主題教學・全面加強</p>
+                            </div>
+                            <hr class="divider" />
+                            <div class="content-bottom">
+                                <p class="card-price">NT$ 550</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -669,85 +1028,7 @@ footer { border-top: 1px solid var(--stone-100); padding: 40px 56px; display: fl
     <span class="footer-note">© 2026 Tony Online English · tonyonlineenglish.netlify.app · Line: myavalon</span>
 </footer>
 
-</div><!-- /product-page -->
-
-<div class="cart-overlay" id="cart-overlay"></div>
-<div class="cart-panel" id="cart-panel">
-    <div class="cart-hdr">
-        <h3>購物車</h3>
-        <button class="close-cart" id="close-cart">✕</button>
-    </div>
-    <div class="cart-body">
-        <div class="cart-left">
-            <div id="cart-items"></div>
-            <div id="cart-total" class="cart-total-blk"></div>
-        </div>
-        <div class="cart-right">
-            <h4 class="co-title">結帳</h4>
-            <p class="co-sub">請輸入您的電子信箱以完成訂購。</p>
-            <input type="email" id="email-display" class="co-email-field" readonly placeholder="點擊這裡輸入信箱">
-            <a class="line-btn" href="https://line.me/ti/p/T9YdimtG8_" target="_blank" rel="noopener">
-                <img src="https://ik.imagekit.io/lql1uveoc/line.png?updatedAt=1761926064215" alt="LINE" style="width:20px;height:20px;object-fit:contain;filter:brightness(0) invert(1);"> 點選加入 LINE
-            </a>
-            <p style="font-size:.75rem;font-family:var(--f-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--stone-400);margin-bottom:10px;">付款方式</p>
-            <div class="pay-box"><div class="pay-dot"></div><span>匯款 或 Line Pay / iPass Money</span></div>
-            <p class="tls-note">🔒 所有資料透過 TLS 安全加密傳輸</p>
-        </div>
-    </div>
-</div>
-
-<div class="popup-overlay" id="popup-overlay">
-    <div class="popup-box">
-        <button class="popup-x" id="popup-close">✕</button>
-        <p class="popup-hl">輸入電子信箱</p>
-        <p class="popup-sub2">確認信將寄送至您的信箱。</p>
-        <input type="email" class="popup-input" id="popup-email" placeholder="example@email.com">
-        <button class="popup-btn" id="popup-submit">確認送出</button>
-    </div>
-</div>
-
-<div id="ty-page">
-    <div class="ty-wrap">
-        <div class="ty-card">
-            <div class="ty-check">✓</div>
-            <h2 class="ty-h">感謝您的訂購！<span id="celebration-icon">🎉</span></h2>
-            <p class="ty-msg">您的訂單已成功建立。確認信已寄送至您的電子信箱，請檢查收件匣。</p>
-            <div class="ty-details">
-                <div class="ty-row"><span>訂單編號</span><span id="ty-order-id"></span></div>
-                <div class="ty-row"><span>訂單時間</span><span id="ty-order-time"></span></div>
-                <div class="ty-row"><span>電子信箱</span><span id="ty-email"></span></div>
-            </div>
-            <div class="ty-pay">
-                <h5>如何付款</h5>
-                <p>
-                    <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" style="display:inline-flex;align-items:center;gap:8px;background:#06c755;color:#fff;font-weight:700;border-radius:999px;padding:10px 22px;text-decoration:none;font-size:.9rem;">
-                        <img src="https://ik.imagekit.io/lql1uveoc/line.png?updatedAt=1761926064215" alt="LINE" style="width:18px;height:18px;object-fit:contain;filter:brightness(0) invert(1);"> 點選加入 LINE
-                    </a><br>
-                    匯款或使用 Line Pay / iPass Money 付款<br>
-                    交易成功後煩請告知，將提供學費證明。感謝 ＾＾
-                </p>
-            </div>
-            <div class="ty-actions">
-                <button class="ty-btn continue" id="continue-btn">繼續購物</button>
-                <button class="ty-btn close-ty" id="close-ty-btn">關閉</button>
-            </div>
-        </div>
-        <div class="ty-sidebar">
-            <h4>訂單摘要</h4>
-            <div id="ty-items"></div>
-            <div id="ty-grand" class="ty-grand"></div>
-        </div>
-    </div>
-</div>
-
 <script>
-const products = [
-    { id:'p6',  name:'6堂學測英文作文',   price:4200,  label:'6堂課程' },
-    { id:'p10', name:'10堂學測英文作文',  price:6600,  label:'10堂課程' },
-    { id:'p16', name:'16堂學測英文作文',  price:10000, label:'16堂課程' },
-    { id:'p20', name:'20堂學測英文作文',  price:12000, label:'20堂課程 👑 最優惠' },
-];
-let cart = {};
 const EXAM_DATE = new Date('2027-01-16T09:00:00').getTime();
 const pad = n => String(n).padStart(2,'0');
 function getTimeLeft() {
@@ -808,57 +1089,6 @@ document.getElementById('faq-list').addEventListener('click', e => {
     const item = q.closest('.faq-item'), wasOpen = item.classList.contains('open');
     document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
     if (!wasOpen) item.classList.add('open');
-});
-function buildOptions(selEl) {
-    selEl.innerHTML = '<option value="" disabled selected>請點選選取課堂數</option>' + products.map(p => `<option value="${p.id}">${p.label}　NT$ ${p.price.toLocaleString()}</option>`).join('');
-}
-function syncBtn(selEl, btnEl) {
-    const val = selEl.value;
-    if (!val) { btnEl.disabled = true; btnEl.textContent = '請先選擇課堂數'; } 
-    else { const p = products.find(x => x.id === val); btnEl.disabled = false; btnEl.textContent = `NT$ ${p.price.toLocaleString()} ｜ 加入購物車`; }
-}
-const sel1 = document.getElementById('course-options'), btn1 = document.getElementById('add-to-cart-btn');
-buildOptions(sel1); sel1.addEventListener('change', () => syncBtn(sel1, btn1));
-function updateCartUI() {
-    const items = Object.values(cart), el = document.getElementById('cart-items'), tel = document.getElementById('cart-total');
-    el.innerHTML = items.length ? items.map(i=>`<div class="cart-item"><div><div class="ci-name">${i.name}</div><button class="ci-remove" data-id="${i.id}">移除</button></div><div class="ci-price">NT$ ${i.price.toLocaleString()}</div></div>`).join('') : '<p class="cart-empty">您的購物車是空的。</p>';
-    const total = items.reduce((s,i)=>s+i.price,0);
-    tel.innerHTML = items.length ? `<div class="tr final"><span>總計</span><span>NT$ ${total.toLocaleString()}</span></div>` : '';
-}
-function openCart()  { document.getElementById('cart-overlay').classList.add('open'); document.getElementById('cart-panel').classList.add('open'); }
-function closeCart() { document.getElementById('cart-overlay').classList.remove('open'); document.getElementById('cart-panel').classList.remove('open'); }
-function openPopup() { document.getElementById('popup-overlay').classList.add('open'); setTimeout(()=>document.getElementById('popup-email').focus(),120); }
-function closePopup(){ document.getElementById('popup-overlay').classList.remove('open'); }
-function addToCart(selEl) { const p = products.find(x => x.id === selEl.value); if (!p) return; cart = {}; cart[p.id] = {...p}; updateCartUI(); openCart(); }
-function handleCheckout() {
-    const email = document.getElementById('popup-email').value.trim();
-    if (!Object.keys(cart).length) return alert('購物車是空的！');
-    if (!email || !email.includes('@')) { alert('請輸入有效的電子信箱！'); return; }
-    const items = Object.values(cart), total = items.reduce((s,i)=>s+i.price,0);
-    const orderId = '#'+Math.random().toString(36).substr(2,5).toUpperCase();
-    const ts = new Date().toLocaleString('zh-TW',{year:'numeric',month:'long',day:'numeric',hour:'2-digit',minute:'2-digit'});
-    closePopup(); closeCart();
-    document.getElementById('ty-order-id').textContent = orderId; document.getElementById('ty-order-time').textContent = ts; document.getElementById('ty-email').textContent = email;
-    document.getElementById('ty-items').innerHTML = items.map(i=>`<div class="ty-item"><span>${i.name}</span><span>NT$ ${i.price.toLocaleString()}</span></div>`).join('');
-    document.getElementById('ty-grand').innerHTML = `<span>總計</span><span>NT$ ${total.toLocaleString()}</span>`;
-    document.getElementById('product-page').style.display='none'; document.getElementById('ty-page').style.display='block'; window.scrollTo({top:0,behavior:'smooth'});
-    fetch("https://script.google.com/macros/s/AKfycbyU13Wivs341DMPupk9EKrL9u908zrHNOVqZUXri-hGezkk6qj_7loQGIf0GCfmvj_f/exec",{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:new URLSearchParams({orderId,email,productName:items.map(i=>i.name).join(', '),totalPrice:total,status:"未付款",imageUrls:''})}).catch(()=>{});
-    cart={}; updateCartUI();
-}
-function resetPage() { document.getElementById('ty-page').style.display='none'; document.getElementById('product-page').style.display='block'; window.scrollTo({top:0,behavior:'smooth'}); }
-document.addEventListener('DOMContentLoaded', () => {
-    updateCartUI(); btn1.addEventListener('click', () => addToCart(sel1));
-    document.getElementById('close-cart').addEventListener('click', closeCart);
-    document.getElementById('cart-overlay').addEventListener('click', e => { if(e.target===e.currentTarget) closeCart(); });
-    document.getElementById('cart-items').addEventListener('click', e => { if(e.target.classList.contains('ci-remove')){ delete cart[e.target.dataset.id]; updateCartUI(); if(!Object.keys(cart).length) closeCart(); } });
-    document.getElementById('email-display').addEventListener('click', openPopup);
-    document.getElementById('popup-close').addEventListener('click', closePopup);
-    document.getElementById('popup-overlay').addEventListener('click', e => { if(e.target===e.currentTarget) closePopup(); });
-    document.getElementById('popup-submit').addEventListener('click', handleCheckout);
-    document.getElementById('popup-email').addEventListener('keydown', e => { if(e.key==='Enter') handleCheckout(); });
-    document.getElementById('popup-email').addEventListener('input', e => { document.getElementById('email-display').value = e.target.value; });
-    document.getElementById('continue-btn').addEventListener('click', e => { e.preventDefault(); resetPage(); });
-    document.getElementById('close-ty-btn').addEventListener('click', e => { e.preventDefault(); resetPage(); });
 });
 </script>
 </body>
