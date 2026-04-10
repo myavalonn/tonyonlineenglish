@@ -166,6 +166,21 @@
       60% { transform: translateY(-2px); }
     }
 
+    /* 購物車圖示基礎設定 */
+    .cart-icon {
+      position: absolute;
+      top: 30px;
+      right: 30px;
+      width: 54px;
+      height: auto;
+      z-index: 10;
+      filter: drop-shadow(0 4px 10px rgba(0,0,0,0.4));
+      transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    }
+    .card-container:hover .cart-icon {
+      transform: scale(1.15) rotate(-5deg);
+    }
+
     /* --- PRODUCT BLOCKS (SVG CARDS) --- */
     .product-grid {
       max-width: 900px;
@@ -242,6 +257,7 @@
     /* 針對平板尺寸 (Tablet) 取消 SVG 閃電濾鏡，防止破圖 */
     @media (min-width: 769px) and (max-width: 1024px) {
       .main-card { filter: none !important; }
+      .cart-icon { top: 25px; right: 25px; width: 44px; }
     }
 
     .glow-layer-1, .glow-layer-2, .overlay-1, .overlay-2, .background-glow {
@@ -442,15 +458,6 @@
 
     /* --- RESPONSIVE ADJUSTMENTS --- */
     
-    /* 平板尺寸 (Tablet View) */
-    @media (min-width: 769px) and (max-width: 1024px) {
-      .card-title { font-size: 2.5em; }
-      .card-desc { font-size: 1rem; }
-      .card-price { font-size: 1.8em; }
-      .content-top { padding: 30px 30px 15px 30px; }
-      .content-bottom { padding: 15px 30px 30px 30px; }
-    }
-
     @media (min-width: 768px) {
       .thank-you-container { flex-direction: row; }
       .ty-left-panel { flex-basis: 60%; border-right: 1px solid #eee; }
@@ -474,6 +481,7 @@
       .card-title { font-size: 1.8em; margin-top: 15px; margin-bottom: 6px;} 
       .card-desc { font-size: 0.8rem; line-height: 1.4; margin-bottom: 0; }
       .card-price { font-size: 1.25em; } 
+      .cart-icon { top: 16px; right: 16px; width: 38px; }
 
       .course-details { padding: 25px 15px; margin: 0 15px 40px; border-radius: 12px; }
       .course-details h3 { font-size: 1.5rem; margin-bottom: 15px; }
@@ -601,6 +609,7 @@
         <div class="background-glow"></div>
 
         <div class="content-container">
+          <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/shopping-cart-2.png" class="cart-icon" alt="加入購物車">
           <div class="content-top">
             <div class="scrollbar-glass">客製化體驗</div>
             <p class="card-title">25 分鐘</p>
@@ -629,6 +638,7 @@
         <div class="background-glow"></div>
 
         <div class="content-container">
+          <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/shopping-cart-2.png" class="cart-icon" alt="加入購物車">
           <div class="content-top">
             <div class="scrollbar-glass">客製化體驗</div>
             <p class="card-title">50 分鐘</p>
