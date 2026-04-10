@@ -238,20 +238,27 @@
 
     <main id="product-page" class="w-full overflow-x-hidden">
 
-        <!-- Hero Section (全面升級動畫與標籤) -->
+        <!-- Hero Section (全面升級字體與點擊跳轉) -->
         <header class="relative text-white py-24 md:py-32 px-4 text-center overflow-hidden">
             <div class="absolute inset-0 z-0 hero-bg-layer"></div>
             <div class="relative z-10 max-w-5xl mx-auto mt-4 flex flex-col items-center">
                 
-                <span class="bg-gray-900/60 backdrop-blur-sm text-white px-5 py-2 rounded-full text-sm md:text-lg font-semibold mb-6 inline-block shadow-md anim-slide-up border border-gray-600">
+                <!-- 放大的專業輔導標籤 (特別增強手機版) -->
+                <span class="bg-gray-900/60 backdrop-blur-sm text-white px-6 py-3 rounded-full text-xl sm:text-2xl md:text-3xl font-semibold mb-8 inline-block shadow-lg anim-slide-up border border-gray-500 tracking-wide">
                     全民英檢 GEPT 專業證照輔導
                 </span>
                 
-                <!-- 相對應顏色的三個標籤 -->
-                <div class="flex justify-center gap-2 md:gap-4 mb-8 anim-slide-up delay-100">
-                    <span class="bg-rose-500 text-white px-4 py-1.5 rounded-full text-base md:text-xl font-bold shadow-lg">初級</span>
-                    <span class="bg-blue-600 text-white px-4 py-1.5 rounded-full text-base md:text-xl font-bold shadow-lg">中級</span>
-                    <span class="bg-indigo-700 text-white px-4 py-1.5 rounded-full text-base md:text-xl font-bold shadow-lg">中高級</span>
+                <!-- 放大且具備跳轉展開功能的互動按鈕 -->
+                <div class="flex justify-center gap-3 md:gap-5 mb-8 anim-slide-up delay-100">
+                    <button onclick="scrollToAndExpand(0)" class="bg-rose-500 hover:bg-rose-600 text-white px-6 py-2.5 sm:px-8 sm:py-3 rounded-full text-xl sm:text-2xl font-bold shadow-xl transition transform hover:scale-105 cursor-pointer border border-rose-400">
+                        初級
+                    </button>
+                    <button onclick="scrollToAndExpand(1)" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 sm:px-8 sm:py-3 rounded-full text-xl sm:text-2xl font-bold shadow-xl transition transform hover:scale-105 cursor-pointer border border-blue-400">
+                        中級
+                    </button>
+                    <button onclick="scrollToAndExpand(2)" class="bg-indigo-700 hover:bg-indigo-800 text-white px-6 py-2.5 sm:px-8 sm:py-3 rounded-full text-xl sm:text-2xl font-bold shadow-xl transition transform hover:scale-105 cursor-pointer border border-indigo-400">
+                        中高級
+                    </button>
                 </div>
                 
                 <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 leading-tight text-white drop-shadow-lg anim-slide-up delay-200">
@@ -274,7 +281,7 @@
             </div>
         </header>
 
-        <!-- GEPT 級數課程介紹 (手機版手風琴，電腦版並排) -->
+        <!-- GEPT 級數課程介紹 (支援自動定位滑動展開) -->
         <section id="courses" class="py-16 md:py-24 bg-gray-100 scroll-mt-0">
             <div class="text-center mb-10 px-4">
                 <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-2">全民英檢各級數課程介紹</h2>
@@ -562,27 +569,59 @@
 
     <!-- JS 邏輯 -->
     <script>
-        // --- 1. 手機版 Accordion 手風琴邏輯 ---
+        // --- 1. 手機版 Accordion 手風琴與點擊跳轉捲動邏輯 ---
+        
+        // 處理手機板點擊展開，並自動捲動對齊
         function toggleAccordion(header) {
-            // 只有在視窗寬度小於 768px (手機板) 時才啟用展開/折疊功能
             if (window.innerWidth >= 768) return; 
 
             const content = header.nextElementSibling;
             const icon = header.querySelector('.fa-chevron-down');
+            const isCurrentlyOpen = content.style.maxHeight;
             
-            // 點擊當前：如果已開啟則關閉，如果關閉則開啟
-            if (content.style.maxHeight) {
-                content.style.maxHeight = null;
-                icon.style.transform = 'rotate(0deg)';
-            } else {
-                // (選項) 關閉其他的選項，保持畫面整潔
-                document.querySelectorAll('.accordion-content').forEach(c => c.style.maxHeight = null);
-                document.querySelectorAll('.fa-chevron-down').forEach(i => i.style.transform = 'rotate(0deg)');
-                
-                // 開啟目前的選項
+            // 關閉所有選項
+            document.querySelectorAll('.accordion-content').forEach(c => c.style.maxHeight = null);
+            document.querySelectorAll('.fa-chevron-down').forEach(i => i.style.transform = 'rotate(0deg)');
+            
+            // 如果點擊前是關閉的，則打開並自動滾動到該區塊
+            if (!isCurrentlyOpen) {
                 content.style.maxHeight = content.scrollHeight + "px";
                 icon.style.transform = 'rotate(180deg)';
+                
+                // 等待一下讓展開動畫開始後，再平滑滾動到該區塊頂部
+                setTimeout(() => {
+                    const y = header.parentElement.getBoundingClientRect().top + window.scrollY - 20;
+                    window.scrollTo({ top: y, behavior: 'smooth' });
+                }, 200);
             }
+        }
+
+        // 處理最上方三個按鈕的點擊跳轉並展開
+        function scrollToAndExpand(index) {
+            const items = document.querySelectorAll('.accordion-item');
+            if(!items[index]) return;
+            
+            const header = items[index].querySelector('.accordion-header');
+            
+            // 若在手機版，強制自動展開該區塊
+            if (window.innerWidth < 768) {
+                const content = header.nextElementSibling;
+                if (!content.style.maxHeight) {
+                    // 先關閉其他選項
+                    document.querySelectorAll('.accordion-content').forEach(c => c.style.maxHeight = null);
+                    document.querySelectorAll('.fa-chevron-down').forEach(i => i.style.transform = 'rotate(0deg)');
+                    
+                    // 展開當前選項
+                    content.style.maxHeight = content.scrollHeight + "px";
+                    header.querySelector('.fa-chevron-down').style.transform = 'rotate(180deg)';
+                }
+            }
+            
+            // 不管手機還是電腦，均滑動到對應區塊
+            setTimeout(() => {
+                const y = items[index].getBoundingClientRect().top + window.scrollY - 20;
+                window.scrollTo({ top: y, behavior: 'smooth' });
+            }, window.innerWidth < 768 ? 200 : 0);
         }
 
         // --- 2. Code 2 購物車與預約邏輯 ---
