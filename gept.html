@@ -49,43 +49,60 @@
             opacity: 0;
         }
 
-        /* --- 手機版手風琴卡片設計 (Accordion) --- */
-        .accordion-container {
-            display: flex;
-            flex-direction: column;
-            gap: 1.25rem;
-            padding: 0 1rem;
-        }
-        .accordion-item { border-radius: 1rem; overflow: hidden; }
-        .accordion-header { cursor: pointer; user-select: none; }
-        .accordion-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.4s ease-in-out;
+        /* --- 課程介紹 (手機版點擊跳出視窗，電腦版並排) --- */
+        .course-container { display: flex; flex-direction: column; gap: 1.25rem; padding: 0 1rem; }
+        .course-item { border-radius: 1rem; overflow: hidden; background: white; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); border: 1px solid #f3f4f6; }
+        .course-header { cursor: pointer; user-select: none; position: relative; }
+        .course-card-content { display: none; } /* 手機版預設隱藏卡片內的詳細內容，依靠 Modal 顯示 */
+
+        @media (min-width: 768px) {
+            .course-container { flex-direction: row; justify-content: center; padding: 1rem 2rem; }
+            .course-item { flex: 1; max-width: 380px; display: flex; flex-direction: column; }
+            .course-header { cursor: default; }
+            .course-header .mobile-click-icon { display: none; } /* 電腦版隱藏點擊提示圖示 */
+            .course-card-content { display: flex; flex-direction: column; flex: 1; } /* 電腦版顯示卡片內容 */
+            .swipe-hint-click { display: none; }
         }
 
-        /* --- 平板與電腦版：取消手風琴，恢復並排 --- */
+        /* --- 手機版專用：課程介紹彈跳視窗 (Modal) --- */
+        #course-modal-overlay {
+            position: fixed; inset: 0; background-color: rgba(0, 0, 0, 0.7); z-index: 3000;
+            display: flex; justify-content: center; align-items: center; padding: 1rem;
+            opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+        }
+        #course-modal-overlay.visible { opacity: 1; pointer-events: auto; }
+        .course-modal-content {
+            background: white; border-radius: 1rem; width: 100%; max-width: 500px; max-height: 90vh;
+            display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            transform: translateY(20px) scale(0.95); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        #course-modal-overlay.visible .course-modal-content { transform: translateY(0) scale(1); }
+        .course-modal-body { overflow-y: auto; -webkit-overflow-scrolling: touch; }
+        
+        .modal-close-btn {
+            position: absolute; top: 1rem; right: 1rem; width: 36px; height: 36px;
+            background: rgba(255,255,255,0.25); border-radius: 50%; display: flex; justify-content: center; align-items: center;
+            color: white; cursor: pointer; transition: background 0.2s; z-index: 10; font-size: 1.25rem;
+        }
+        .modal-close-btn:hover { background: rgba(255,255,255,0.5); }
+
+        /* --- 學生回饋 (絲滑滑動與指標) --- */
         @media (min-width: 768px) {
-            .accordion-container { flex-direction: row; justify-content: center; padding: 1rem 2rem; }
-            .accordion-item { flex: 1; max-width: 380px; display: flex; flex-direction: column; }
-            .accordion-header { cursor: default; }
-            .accordion-header i { display: none; } /* 隱藏旋轉箭頭 */
-            .accordion-content { max-height: none !important; overflow: visible; flex: 1; display: flex; flex-direction: column; }
-            .swipe-hint-click { display: none; } /* 隱藏「點選查看」提示 */
-            
-            /* 電腦版學生回饋維持滑動或並排 */
             .swipe-container-feedback { padding: 1rem 2rem; justify-content: center; flex-wrap: wrap; display: flex; gap: 2rem; overflow-x: hidden; }
             .swipe-item-feedback { flex: 0 0 350px; }
             .swipe-hint-feedback { display: none; }
+            .feedback-indicators { display: none !important; } /* 電腦版隱藏指標 */
         }
-
-        /* 手機版學生回饋維持左右滑動 */
         @media (max-width: 767px) {
             .swipe-container-feedback {
                 display: flex; overflow-x: auto; scroll-snap-type: x mandatory;
-                gap: 1.25rem; padding: 1rem 8vw; scroll-behavior: smooth;
+                gap: 1rem; padding: 1rem 5vw; scroll-behavior: smooth;
+                -webkit-overflow-scrolling: touch; /* iOS 絲滑滾動支援 */
             }
-            .swipe-item-feedback { flex: 0 0 78vw; scroll-snap-align: center; }
+            .swipe-item-feedback { flex: 0 0 85vw; scroll-snap-align: center; }
+            .feedback-indicators { display: flex; justify-content: center; gap: 8px; margin-top: 1rem; }
+            .indicator-dot { width: 8px; height: 8px; border-radius: 50%; background-color: #cbd5e1; transition: all 0.3s ease; }
+            .indicator-dot.active { background-color: #3b82f6; transform: scale(1.3); width: 12px; border-radius: 4px;}
         }
 
         /* =========================================
@@ -99,17 +116,9 @@
         }
         
         .product-grid {
-          max-width: 900px;
-          margin: 0 auto 30px;
-          display: flex;
-          flex-wrap: nowrap; 
-          justify-content: center;
-          gap: 40px;
-          padding: 0 20px;
+          max-width: 900px; margin: 0 auto 30px; display: flex; flex-wrap: nowrap; justify-content: center; gap: 40px; padding: 0 20px;
         }
-        @media (max-width: 768px) {
-          .product-grid { gap: 15px; padding: 0 15px; flex-direction: row; }
-        }
+        @media (max-width: 768px) { .product-grid { gap: 15px; padding: 0 15px; flex-direction: row; } }
 
         .svg-container { position: absolute; width: 0; height: 0; pointer-events: none; }
 
@@ -119,12 +128,8 @@
         }
         .card-container:hover { transform: translateY(-8px); }
 
-        .card-container[↖️] {
-          --f: url(#🌀↖️); --electric-border-color: #dd8448; --electric-light-color: oklch(from var(--electric-border-color) l c h); --gradient-color: oklch(from var(--electric-border-color) 0.3 calc(c / 2) h / 0.4);
-        }
-        .card-container[🎨] {
-          --f: url(#🌀🎨); --electric-border-color: DodgerBlue; --electric-light-color: oklch(from var(--electric-border-color) l c h); --gradient-color: oklch(from var(--electric-border-color) 0.3 calc(c / 2) h / 0.4);
-        }
+        .card-container[↖️] { --f: url(#🌀↖️); --electric-border-color: #dd8448; --electric-light-color: oklch(from var(--electric-border-color) l c h); --gradient-color: oklch(from var(--electric-border-color) 0.3 calc(c / 2) h / 0.4); }
+        .card-container[🎨] { --f: url(#🌀🎨); --electric-border-color: DodgerBlue; --electric-light-color: oklch(from var(--electric-border-color) l c h); --gradient-color: oklch(from var(--electric-border-color) 0.3 calc(c / 2) h / 0.4); }
 
         .inner-container { position: absolute; top: 0; left: 0; right: 0; bottom: 0; overflow: hidden; border-radius: 1.5em; z-index: 0; }
         .border-outer { position: absolute; top: 0; left: 0; right: 0; bottom: 0; border: 2px solid oklch(from var(--electric-border-color) l c h / 0.5); border-radius: 1.5em; }
@@ -146,30 +151,20 @@
         .content-container { position: relative; z-index: 2; width: 100%; height: auto; display: flex; flex-direction: column; }
         .content-top { display: flex; flex-direction: column; padding: 35px 35px 20px 35px; }
         .content-bottom { display: flex; flex-direction: column; padding: 20px 35px 35px 35px; }
-        @media (max-width: 768px) {
-          .content-top { padding: 15px 12px 10px 12px; }
-          .content-bottom { padding: 10px 12px 15px 12px; }
-        }
+        @media (max-width: 768px) { .content-top { padding: 15px 12px 10px 12px; } .content-bottom { padding: 10px 12px 15px 12px; } }
 
-        .scrollbar-glass {
-          background: radial-gradient(47.2% 50% at 50.39% 88.37%, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 100%), rgba(255, 255, 255, 0.04);
-          position: relative; border-radius: 10px; width: fit-content; padding: 0.8em 1.5em; text-transform: uppercase; font-weight: bold; font-size: 1.1rem; color: rgba(255, 255, 255, 0.95);
-        }
+        .scrollbar-glass { background: radial-gradient(47.2% 50% at 50.39% 88.37%, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 100%), rgba(255, 255, 255, 0.04); position: relative; border-radius: 10px; width: fit-content; padding: 0.8em 1.5em; text-transform: uppercase; font-weight: bold; font-size: 1.1rem; color: rgba(255, 255, 255, 0.95); }
         @media (max-width: 768px) { .scrollbar-glass { font-size: 0.65em; padding: 0.4em 0.6em; } }
 
         .card-title-shop { font-size: 3.2em; font-weight: 700; margin-top: 25px; margin-bottom: 12px; color: #ffffff; text-shadow: 0 4px 15px rgba(0,0,0,0.6); }
         .card-desc-shop { font-size: 1.15rem; color: rgba(255,255,255,0.85); line-height: 1.6; margin: 0; font-weight: 500;}
         .card-price-shop { font-size: 2.2em; font-weight: 600; color: #ffffff; margin: 0; text-shadow: 0 4px 15px rgba(0,0,0,0.6); }
-        @media (max-width: 768px) {
-          .card-title-shop { font-size: 1.6em; margin-top: 10px; margin-bottom: 5px;} 
-          .card-desc-shop { font-size: 0.75rem; line-height: 1.3; }
-          .card-price-shop { font-size: 1.25em; } 
-        }
+        @media (max-width: 768px) { .card-title-shop { font-size: 1.6em; margin-top: 10px; margin-bottom: 5px;} .card-desc-shop { font-size: 0.75rem; line-height: 1.3; } .card-price-shop { font-size: 1.25em; } }
 
         .divider { margin: 0; border: none; height: 1px; background-color: #ffffff; opacity: 0.2; mask-image: linear-gradient(to right, transparent, black, transparent); -webkit-mask-image: linear-gradient(to right, transparent, black, transparent); }
 
         /* Popup & Thank You Page CSS (From Code 2) */
-        #email-popup-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); z-index: 2000; display: none; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s; }
+        #email-popup-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); z-index: 4000; display: none; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s; }
         #email-popup-overlay.visible { display: flex; opacity: 1; }
         .email-popup-content { background-color: white; padding: 40px; border-radius: 12px; max-width: 500px; width: 90%; text-align: center; transform: scale(0.9); transition: transform 0.3s; }
         #email-popup-overlay.visible .email-popup-content { transform: scale(1); }
@@ -207,7 +202,6 @@
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans antialiased overflow-x-hidden">
 
-    <!-- Code 2 的 SVG 濾鏡 (隱藏在背景) -->
     <svg class="svg-container">
       <defs>
         <filter id="🌀↖️" colorInterpolationFilters="sRGB" x="-20%" y="-20%" width="140%" height="140%">
@@ -238,25 +232,24 @@
 
     <main id="product-page" class="w-full overflow-x-hidden">
 
-        <!-- Hero Section (全面升級字體與點擊跳轉) -->
+        <!-- Hero Section -->
         <header class="relative text-white py-24 md:py-32 px-4 text-center overflow-hidden">
             <div class="absolute inset-0 z-0 hero-bg-layer"></div>
             <div class="relative z-10 max-w-5xl mx-auto mt-4 flex flex-col items-center">
                 
-                <!-- 放大的專業輔導標籤 (特別增強手機版) -->
                 <span class="bg-gray-900/60 backdrop-blur-sm text-white px-6 py-3 rounded-full text-xl sm:text-2xl md:text-3xl font-semibold mb-8 inline-block shadow-lg anim-slide-up border border-gray-500 tracking-wide">
                     全民英檢 GEPT 專業證照輔導
                 </span>
                 
-                <!-- 放大且具備跳轉展開功能的互動按鈕 -->
+                <!-- Hero Section 按鈕：手機點擊開Modal，電腦點擊滑動 -->
                 <div class="flex justify-center gap-3 md:gap-5 mb-8 anim-slide-up delay-100">
-                    <button onclick="scrollToAndExpand(0)" class="bg-rose-500 hover:bg-rose-600 text-white px-6 py-2.5 sm:px-8 sm:py-3 rounded-full text-xl sm:text-2xl font-bold shadow-xl transition transform hover:scale-105 cursor-pointer border border-rose-400">
+                    <button onclick="handleCourseAction('elementary')" class="bg-rose-500 hover:bg-rose-600 text-white px-6 py-2.5 sm:px-8 sm:py-3 rounded-full text-xl sm:text-2xl font-bold shadow-xl transition transform hover:scale-105 border border-rose-400">
                         初級
                     </button>
-                    <button onclick="scrollToAndExpand(1)" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 sm:px-8 sm:py-3 rounded-full text-xl sm:text-2xl font-bold shadow-xl transition transform hover:scale-105 cursor-pointer border border-blue-400">
+                    <button onclick="handleCourseAction('intermediate')" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2.5 sm:px-8 sm:py-3 rounded-full text-xl sm:text-2xl font-bold shadow-xl transition transform hover:scale-105 border border-blue-400">
                         中級
                     </button>
-                    <button onclick="scrollToAndExpand(2)" class="bg-indigo-700 hover:bg-indigo-800 text-white px-6 py-2.5 sm:px-8 sm:py-3 rounded-full text-xl sm:text-2xl font-bold shadow-xl transition transform hover:scale-105 cursor-pointer border border-indigo-400">
+                    <button onclick="handleCourseAction('high-int')" class="bg-indigo-700 hover:bg-indigo-800 text-white px-6 py-2.5 sm:px-8 sm:py-3 rounded-full text-xl sm:text-2xl font-bold shadow-xl transition transform hover:scale-105 border border-indigo-400">
                         中高級
                     </button>
                 </div>
@@ -269,7 +262,6 @@
                     結合實境模擬與逐字批改，從零基礎到中高級，打造專屬您的通關策略！
                 </p>
                 
-                <!-- 呼吸閃爍按鈕 -->
                 <div class="flex flex-col sm:flex-row justify-center items-center gap-5 w-full sm:w-auto">
                     <a href="#courses" class="w-full sm:w-auto bg-white/10 backdrop-blur border border-white/30 hover:bg-white/20 text-white text-xl md:text-2xl font-bold py-4 px-10 rounded-full shadow-lg transition transform hover:-translate-y-1 anim-slide-up delay-300">
                         課程介紹
@@ -281,7 +273,7 @@
             </div>
         </header>
 
-        <!-- GEPT 級數課程介紹 (支援自動定位滑動展開) -->
+        <!-- GEPT 級數課程介紹 (手機版點擊標題開啟Modal，電腦版並排顯示) -->
         <section id="courses" class="py-16 md:py-24 bg-gray-100 scroll-mt-0">
             <div class="text-center mb-10 px-4">
                 <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-2">全民英檢各級數課程介紹</h2>
@@ -290,89 +282,96 @@
                 </p>
             </div>
 
-            <!-- Accordion 容器 -->
-            <div class="accordion-container max-w-6xl mx-auto">
+            <div class="course-container max-w-6xl mx-auto">
                 
-                <!-- 初級 Card (Rose) -->
-                <div class="accordion-item bg-white shadow-lg border border-gray-100">
-                    <div class="accordion-header bg-rose-500 text-white p-6 flex justify-between items-center" onclick="toggleAccordion(this)">
+                <!-- 初級 Card -->
+                <div id="card-elementary" class="course-item">
+                    <div class="course-header bg-rose-500 text-white p-6 flex justify-between items-center" onclick="handleCourseAction('elementary')">
                         <div class="text-left">
                             <h3 class="text-2xl md:text-3xl font-bold">初級 GEPT</h3>
                             <p class="text-rose-100 text-base md:text-lg mt-1">Elementary – 基礎溝通能力</p>
                         </div>
-                        <i class="fas fa-chevron-down text-xl transition-transform duration-300"></i>
+                        <i class="fas fa-search-plus text-xl mobile-click-icon"></i>
                     </div>
-                    <div class="accordion-content">
-                        <div class="p-6 flex-1 text-lg text-gray-700 bg-white">
-                            <p class="mb-5 bg-rose-50 p-3 rounded-lg text-rose-800 font-medium leading-relaxed">📌 目的定位：透過日常生活語境的聽說讀寫任務，建立基礎英語能力。</p>
-                            <ul class="space-y-4 mb-5">
-                                <li><strong><i class="fas fa-headphones text-rose-500 w-6"></i>聽力：</strong>圖片描述與簡短對話。<span class="text-base text-gray-500 block sm:inline sm:ml-1">重點：聽懂簡單問句與生活語境。</span></li>
-                                <li><strong><i class="fas fa-book-open text-rose-500 w-6"></i>閱讀：</strong>句子填空與短文理解。<span class="text-base text-gray-500 block sm:inline sm:ml-1">重點：簡短理解與字彙抓取。</span></li>
-                                <li><strong><i class="fas fa-comment-dots text-rose-500 w-6"></i>口說：</strong>重覆朗讀與簡單問答。<span class="text-base text-gray-500 block sm:inline sm:ml-1">重點：發音清晰與簡單回應。</span></li>
-                                <li><strong><i class="fas fa-pen text-rose-500 w-6"></i>寫作：</strong>句子寫作與短段落。<span class="text-base text-gray-500 block sm:inline sm:ml-1">重點：用簡單句正確表達意思。</span></li>
-                            </ul>
-                            <div class="border-t pt-5 mt-auto">
-                                <strong class="text-rose-600 block mb-2 text-xl">💡 準備策略：</strong>
-                                從零開始建立必備詞彙與句型，練習生活短篇故事，並模擬基本自我介紹，打穩英語基礎。
-                            </div>
+                    <!-- 以下為內容區：手機板隱藏(作為資料來源)，電腦板顯示 -->
+                    <div class="course-card-content p-6 text-lg text-gray-700 bg-white" data-color="rose">
+                        <p class="mb-5 bg-rose-50 p-3 rounded-lg text-rose-800 font-medium leading-relaxed">📌 目的定位：透過日常生活語境的聽說讀寫任務，建立基礎英語能力。</p>
+                        <ul class="space-y-4 mb-5">
+                            <li><strong><i class="fas fa-headphones text-rose-500 w-6"></i>聽力：</strong>圖片描述與簡短對話。<span class="text-base text-gray-500 block sm:inline sm:ml-1">重點：聽懂簡單問句與生活語境。</span></li>
+                            <li><strong><i class="fas fa-book-open text-rose-500 w-6"></i>閱讀：</strong>句子填空與短文理解。<span class="text-base text-gray-500 block sm:inline sm:ml-1">重點：簡短理解與字彙抓取。</span></li>
+                            <li><strong><i class="fas fa-comment-dots text-rose-500 w-6"></i>口說：</strong>重覆朗讀與簡單問答。<span class="text-base text-gray-500 block sm:inline sm:ml-1">重點：發音清晰與簡單回應。</span></li>
+                            <li><strong><i class="fas fa-pen text-rose-500 w-6"></i>寫作：</strong>句子寫作與短段落。<span class="text-base text-gray-500 block sm:inline sm:ml-1">重點：用簡單句正確表達意思。</span></li>
+                        </ul>
+                        <div class="border-t pt-5 mt-auto">
+                            <strong class="text-rose-600 block mb-2 text-xl">💡 準備策略：</strong>
+                            從零開始建立必備詞彙與句型，練習生活短篇故事，並模擬基本自我介紹，打穩英語基礎。
                         </div>
                     </div>
                 </div>
 
-                <!-- 中級 Card (Blue) -->
-                <div class="accordion-item bg-white shadow-lg border border-gray-100">
-                    <div class="accordion-header bg-blue-600 text-white p-6 flex justify-between items-center" onclick="toggleAccordion(this)">
+                <!-- 中級 Card -->
+                <div id="card-intermediate" class="course-item">
+                    <div class="course-header bg-blue-600 text-white p-6 flex justify-between items-center" onclick="handleCourseAction('intermediate')">
                         <div class="text-left">
                             <h3 class="text-2xl md:text-3xl font-bold">中級 GEPT</h3>
                             <p class="text-blue-100 text-base md:text-lg mt-1">Intermediate – 日常溝通表達</p>
                         </div>
-                        <i class="fas fa-chevron-down text-xl transition-transform duration-300"></i>
+                        <i class="fas fa-search-plus text-xl mobile-click-icon"></i>
                     </div>
-                    <div class="accordion-content">
-                        <div class="p-6 flex-1 text-lg text-gray-700 bg-white">
-                            <p class="mb-5 bg-blue-50 p-3 rounded-lg text-blue-800 font-medium leading-relaxed">📌 目的定位：提升日常情境應對能力，可用英文進行基本溝通交流。</p>
-                            <ul class="space-y-4 mb-5">
-                                <li><strong><i class="fas fa-headphones text-blue-500 w-6"></i>聽力：</strong>一般對話與廣播公告。<span class="text-base text-gray-500 block sm:inline sm:ml-1">重點：抓取主旨與重點資訊。</span></li>
-                                <li><strong><i class="fas fa-book-open text-blue-500 w-6"></i>閱讀：</strong>片語運用與多篇閱讀。<span class="text-base text-gray-500 block sm:inline sm:ml-1">重點：理解短篇文章與生活主題。</span></li>
-                                <li><strong><i class="fas fa-comment-dots text-blue-500 w-6"></i>口說：</strong>問答練習與經驗描述。<span class="text-base text-gray-500 block sm:inline sm:ml-1">重點：清楚表達觀點及經歷。</span></li>
-                                <li><strong><i class="fas fa-pen text-blue-500 w-6"></i>寫作：</strong>生活經驗與短文描述。<span class="text-base text-gray-500 block sm:inline sm:ml-1">重點：簡潔有邏輯地表達想法。</span></li>
-                            </ul>
-                            <div class="border-t pt-5 mt-auto">
-                                <strong class="text-blue-600 block mb-2 text-xl">💡 準備策略：</strong>
-                                擴大閱讀題材、建立主題性口說練習，搭配多樣片語與正確句型，穩健提升分數。
-                            </div>
+                    <div class="course-card-content p-6 text-lg text-gray-700 bg-white" data-color="blue">
+                        <p class="mb-5 bg-blue-50 p-3 rounded-lg text-blue-800 font-medium leading-relaxed">📌 目的定位：提升日常情境應對能力，可用英文進行基本溝通交流。</p>
+                        <ul class="space-y-4 mb-5">
+                            <li><strong><i class="fas fa-headphones text-blue-500 w-6"></i>聽力：</strong>一般對話與廣播公告。<span class="text-base text-gray-500 block sm:inline sm:ml-1">重點：抓取主旨與重點資訊。</span></li>
+                            <li><strong><i class="fas fa-book-open text-blue-500 w-6"></i>閱讀：</strong>片語運用與多篇閱讀。<span class="text-base text-gray-500 block sm:inline sm:ml-1">重點：理解短篇文章與生活主題。</span></li>
+                            <li><strong><i class="fas fa-comment-dots text-blue-500 w-6"></i>口說：</strong>問答練習與經驗描述。<span class="text-base text-gray-500 block sm:inline sm:ml-1">重點：清楚表達觀點及經歷。</span></li>
+                            <li><strong><i class="fas fa-pen text-blue-500 w-6"></i>寫作：</strong>生活經驗與短文描述。<span class="text-base text-gray-500 block sm:inline sm:ml-1">重點：簡潔有邏輯地表達想法。</span></li>
+                        </ul>
+                        <div class="border-t pt-5 mt-auto">
+                            <strong class="text-blue-600 block mb-2 text-xl">💡 準備策略：</strong>
+                            擴大閱讀題材、建立主題性口說練習，搭配多樣片語與正確句型，穩健提升分數。
                         </div>
                     </div>
                 </div>
 
-                <!-- 中高級 Card (Indigo) -->
-                <div class="accordion-item bg-white shadow-lg border border-gray-100">
-                    <div class="accordion-header bg-indigo-700 text-white p-6 flex justify-between items-center" onclick="toggleAccordion(this)">
+                <!-- 中高級 Card -->
+                <div id="card-high-int" class="course-item">
+                    <div class="course-header bg-indigo-700 text-white p-6 flex justify-between items-center" onclick="handleCourseAction('high-int')">
                         <div class="text-left">
                             <h3 class="text-2xl md:text-3xl font-bold">中高級 GEPT</h3>
                             <p class="text-indigo-100 text-base md:text-lg mt-1">High-Int. – 有效溝通與分析</p>
                         </div>
-                        <i class="fas fa-chevron-down text-xl transition-transform duration-300"></i>
+                        <i class="fas fa-search-plus text-xl mobile-click-icon"></i>
                     </div>
-                    <div class="accordion-content">
-                        <div class="p-6 flex-1 text-lg text-gray-700 bg-white">
-                            <p class="mb-5 bg-indigo-50 p-3 rounded-lg text-indigo-800 font-medium leading-relaxed">📌 目的定位：具備廣泛話題理解能力，可處理社交、職場及日常議題。</p>
-                            <ul class="space-y-4 mb-5">
-                                <li><strong><i class="fas fa-headphones text-indigo-500 w-6"></i>聽力：</strong>複雜情境資訊與講座。<span class="text-base text-gray-500 block sm:inline sm:ml-1">重點：聽出主旨、細節及推論。</span></li>
-                                <li><strong><i class="fas fa-book-open text-indigo-500 w-6"></i>閱讀：</strong>多篇長篇閱讀理解。<span class="text-base text-gray-500 block sm:inline sm:ml-1">重點：分析文章結構與推論內容。</span></li>
-                                <li><strong><i class="fas fa-comment-dots text-indigo-500 w-6"></i>口說：</strong>看圖描述與深度討論。<span class="text-base text-gray-500 block sm:inline sm:ml-1">重點：自信有條理地表達意見。</span></li>
-                                <li><strong><i class="fas fa-pen text-indigo-500 w-6"></i>寫作：</strong>中翻英與引導寫作。<span class="text-base text-gray-500 block sm:inline sm:ml-1">重點：寫有結構的段落並清楚達意。</span></li>
-                            </ul>
-                            <div class="border-t pt-5 mt-auto">
-                                <strong class="text-indigo-700 block mb-2 text-xl">💡 準備策略：</strong>
-                                聆聽真實語境(新聞/演講)、高階語彙句型練習，輔以口說主題討論與寫作邏輯架構。
-                            </div>
+                    <div class="course-card-content p-6 text-lg text-gray-700 bg-white" data-color="indigo">
+                        <p class="mb-5 bg-indigo-50 p-3 rounded-lg text-indigo-800 font-medium leading-relaxed">📌 目的定位：具備廣泛話題理解能力，可處理社交、職場及日常議題。</p>
+                        <ul class="space-y-4 mb-5">
+                            <li><strong><i class="fas fa-headphones text-indigo-500 w-6"></i>聽力：</strong>複雜情境資訊與講座。<span class="text-base text-gray-500 block sm:inline sm:ml-1">重點：聽出主旨、細節及推論。</span></li>
+                            <li><strong><i class="fas fa-book-open text-indigo-500 w-6"></i>閱讀：</strong>多篇長篇閱讀理解。<span class="text-base text-gray-500 block sm:inline sm:ml-1">重點：分析文章結構與推論內容。</span></li>
+                            <li><strong><i class="fas fa-comment-dots text-indigo-500 w-6"></i>口說：</strong>看圖描述與深度討論。<span class="text-base text-gray-500 block sm:inline sm:ml-1">重點：自信有條理地表達意見。</span></li>
+                            <li><strong><i class="fas fa-pen text-indigo-500 w-6"></i>寫作：</strong>中翻英與引導寫作。<span class="text-base text-gray-500 block sm:inline sm:ml-1">重點：寫有結構的段落並清楚達意。</span></li>
+                        </ul>
+                        <div class="border-t pt-5 mt-auto">
+                            <strong class="text-indigo-700 block mb-2 text-xl">💡 準備策略：</strong>
+                            聆聽真實語境(新聞/演講)、高階語彙句型練習，輔以口說主題討論與寫作邏輯架構。
                         </div>
                     </div>
                 </div>
                 
             </div>
         </section>
+
+        <!-- 手機版課程介紹 Modal 容器 -->
+        <div id="course-modal-overlay" onclick="closeCourseModal(event)">
+            <div class="course-modal-content" onclick="event.stopPropagation()">
+                <!-- 標題區由 JS 動態填入 -->
+                <div id="course-modal-header" class="p-6 relative">
+                    <button class="modal-close-btn" onclick="closeCourseModal()"><i class="fas fa-times"></i></button>
+                    <div id="course-modal-title-area" class="pr-8"></div>
+                </div>
+                <!-- 內容區由 JS 動態填入 -->
+                <div id="course-modal-body" class="course-modal-body p-6 text-gray-700 text-lg"></div>
+            </div>
+        </div>
 
         <!-- 學習趨勢與核心特色 -->
         <section class="py-16 md:py-24 bg-white px-4">
@@ -398,16 +397,16 @@
             </div>
         </section>
 
-        <!-- 學生真實回饋 -->
-        <section class="py-16 md:py-24 bg-gray-50">
-            <div class="text-center mb-12 px-4">
+        <!-- 學生真實回饋 (升級滑動與指標) -->
+        <section class="py-16 md:py-24 bg-gray-50 overflow-hidden">
+            <div class="text-center mb-10 px-4">
                 <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-2">學員真實評價與回饋</h2>
-                <p class="text-gray-500 mt-2 text-lg swipe-hint-feedback animate-pulse"><i class="fas fa-arrows-alt-h mr-1"></i> 向左右滑動查看學生心得</p>
             </div>
 
-            <div class="swipe-container-feedback max-w-7xl mx-auto">
+            <!-- 卡片滑動區 -->
+            <div id="feedback-slider" class="swipe-container-feedback max-w-7xl mx-auto" onscroll="updateFeedbackIndicators()">
                 
-                <!-- 初級 Feedback (Rose) -->
+                <!-- 初級 Feedback 1 (Rose) -->
                 <div class="swipe-item-feedback bg-white border-2 border-rose-100 p-8 rounded-2xl shadow-lg relative mt-4">
                     <span class="absolute -top-4 left-6 bg-rose-500 text-white text-base px-4 py-1.5 rounded-full font-bold shadow-md">初級通過</span>
                     <div class="flex text-amber-400 mb-4 mt-2 text-xl md:text-2xl"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
@@ -423,7 +422,7 @@
                     <div class="text-right text-lg md:text-xl font-bold text-gray-500">— Brian</div>
                 </div>
 
-                <!-- 中級 Feedback 1 (Blue) -->
+                <!-- 中級 Feedback (Blue) -->
                 <div class="swipe-item-feedback bg-white border-2 border-blue-100 p-8 rounded-2xl shadow-lg relative mt-4">
                     <span class="absolute -top-4 left-6 bg-blue-600 text-white text-base px-4 py-1.5 rounded-full font-bold shadow-md">中級高分</span>
                     <div class="flex text-amber-400 mb-4 mt-2 text-xl md:text-2xl"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
@@ -431,7 +430,15 @@
                     <div class="text-right text-lg md:text-xl font-bold text-gray-500">— Daniel</div>
                 </div>
 
-                <!-- 中高級 Feedback 1 (Indigo) -->
+                <!-- 新增：中高級 Feedback 1 (Indigo) - 強調寫作卡關 -->
+                <div class="swipe-item-feedback bg-white border-2 border-indigo-100 p-8 rounded-2xl shadow-lg relative mt-4">
+                    <span class="absolute -top-4 left-6 bg-indigo-700 text-white text-base px-4 py-1.5 rounded-full font-bold shadow-md">中高級達標</span>
+                    <div class="flex text-amber-400 mb-4 mt-2 text-xl md:text-2xl"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
+                    <p class="text-gray-700 text-xl md:text-2xl mb-6 leading-relaxed">「我之前寫作卡關很久，分數一直上不去。靠老師逐字批改與糾正邏輯盲點，終於順利拿證照了！」</p>
+                    <div class="text-right text-lg md:text-xl font-bold text-gray-500">— Kevin</div>
+                </div>
+
+                <!-- 中高級 Feedback 2 (Indigo) -->
                 <div class="swipe-item-feedback bg-white border-2 border-indigo-100 p-8 rounded-2xl shadow-lg relative mt-4">
                     <span class="absolute -top-4 left-6 bg-indigo-700 text-white text-base px-4 py-1.5 rounded-full font-bold shadow-md">中高級達標</span>
                     <div class="flex text-amber-400 mb-4 mt-2 text-xl md:text-2xl"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
@@ -439,6 +446,11 @@
                     <div class="text-right text-lg md:text-xl font-bold text-gray-500">— Henry</div>
                 </div>
 
+            </div>
+
+            <!-- 手機版專用：滑動指標 (Dots) -->
+            <div id="feedback-dots" class="feedback-indicators">
+                <!-- 由 JavaScript 動態生成 5 個點 -->
             </div>
         </section>
 
@@ -569,62 +581,102 @@
 
     <!-- JS 邏輯 -->
     <script>
-        // --- 1. 手機版 Accordion 手風琴與點擊跳轉捲動邏輯 ---
-        
-        // 處理手機板點擊展開，並自動捲動對齊
-        function toggleAccordion(header) {
-            if (window.innerWidth >= 768) return; 
+        // --- 1. 處理課程介紹邏輯 (手機開Modal，電腦捲動) ---
+        function handleCourseAction(courseId) {
+            const cardId = 'card-' + courseId;
+            const cardEl = document.getElementById(cardId);
+            if (!cardEl) return;
 
-            const content = header.nextElementSibling;
-            const icon = header.querySelector('.fa-chevron-down');
-            const isCurrentlyOpen = content.style.maxHeight;
-            
-            // 關閉所有選項
-            document.querySelectorAll('.accordion-content').forEach(c => c.style.maxHeight = null);
-            document.querySelectorAll('.fa-chevron-down').forEach(i => i.style.transform = 'rotate(0deg)');
-            
-            // 如果點擊前是關閉的，則打開並自動滾動到該區塊
-            if (!isCurrentlyOpen) {
-                content.style.maxHeight = content.scrollHeight + "px";
-                icon.style.transform = 'rotate(180deg)';
-                
-                // 等待一下讓展開動畫開始後，再平滑滾動到該區塊頂部
-                setTimeout(() => {
-                    const y = header.parentElement.getBoundingClientRect().top + window.scrollY - 20;
-                    window.scrollTo({ top: y, behavior: 'smooth' });
-                }, 200);
-            }
-        }
-
-        // 處理最上方三個按鈕的點擊跳轉並展開
-        function scrollToAndExpand(index) {
-            const items = document.querySelectorAll('.accordion-item');
-            if(!items[index]) return;
-            
-            const header = items[index].querySelector('.accordion-header');
-            
-            // 若在手機版，強制自動展開該區塊
             if (window.innerWidth < 768) {
-                const content = header.nextElementSibling;
-                if (!content.style.maxHeight) {
-                    // 先關閉其他選項
-                    document.querySelectorAll('.accordion-content').forEach(c => c.style.maxHeight = null);
-                    document.querySelectorAll('.fa-chevron-down').forEach(i => i.style.transform = 'rotate(0deg)');
-                    
-                    // 展開當前選項
-                    content.style.maxHeight = content.scrollHeight + "px";
-                    header.querySelector('.fa-chevron-down').style.transform = 'rotate(180deg)';
-                }
-            }
-            
-            // 不管手機還是電腦，均滑動到對應區塊
-            setTimeout(() => {
-                const y = items[index].getBoundingClientRect().top + window.scrollY - 20;
+                // 手機版：開啟 Modal
+                openCourseModal(cardEl);
+            } else {
+                // 電腦版：平滑滾動到該卡片
+                const y = cardEl.getBoundingClientRect().top + window.scrollY - 20;
                 window.scrollTo({ top: y, behavior: 'smooth' });
-            }, window.innerWidth < 768 ? 200 : 0);
+            }
         }
 
-        // --- 2. Code 2 購物車與預約邏輯 ---
+        // 打開課程介紹彈窗
+        function openCourseModal(cardElement) {
+            const overlay = document.getElementById('course-modal-overlay');
+            const headerTarget = document.getElementById('course-modal-header');
+            const titleArea = document.getElementById('course-modal-title-area');
+            const bodyTarget = document.getElementById('course-modal-body');
+            
+            // 抓取原本卡片的顏色設定
+            const headerSource = cardElement.querySelector('.course-header');
+            const contentSource = cardElement.querySelector('.course-card-content');
+            
+            // 複製標題與內容
+            titleArea.innerHTML = headerSource.innerHTML;
+            // 移除複製過來裡面的放大鏡 icon
+            const icon = titleArea.querySelector('.mobile-click-icon');
+            if(icon) icon.remove();
+            
+            bodyTarget.innerHTML = contentSource.innerHTML;
+            
+            // 設定 Modal Header 的背景顏色
+            const bgClass = Array.from(headerSource.classList).find(c => c.startsWith('bg-'));
+            headerTarget.className = `p-6 relative rounded-t-2xl ${bgClass} text-white`;
+            
+            // 顯示視窗
+            overlay.classList.add('visible');
+            document.body.style.overflow = 'hidden'; // 防止背景滾動
+        }
+
+        function closeCourseModal(event) {
+            // 如果有傳 event，確保是點擊 overlay 背景才關閉
+            if (event && event.target !== document.getElementById('course-modal-overlay')) return;
+            
+            document.getElementById('course-modal-overlay').classList.remove('visible');
+            document.body.style.overflow = ''; // 恢復背景滾動
+        }
+
+        // --- 2. 學生回饋滑動指標 (Dots) 初始化與更新邏輯 ---
+        function initFeedbackIndicators() {
+            if (window.innerWidth >= 768) return; // 電腦版不需要
+            
+            const slider = document.getElementById('feedback-slider');
+            const dotsContainer = document.getElementById('feedback-dots');
+            const itemsCount = slider.querySelectorAll('.swipe-item-feedback').length;
+            
+            dotsContainer.innerHTML = ''; // 清空
+            for (let i = 0; i < itemsCount; i++) {
+                const dot = document.createElement('div');
+                dot.className = 'indicator-dot' + (i === 0 ? ' active' : '');
+                dotsContainer.appendChild(dot);
+            }
+        }
+
+        function updateFeedbackIndicators() {
+            if (window.innerWidth >= 768) return;
+            
+            const slider = document.getElementById('feedback-slider');
+            const dots = document.querySelectorAll('#feedback-dots .indicator-dot');
+            if (dots.length === 0) return;
+
+            // 計算目前滑動到第幾個元素
+            const scrollLeft = slider.scrollLeft;
+            const itemWidth = slider.querySelector('.swipe-item-feedback').offsetWidth;
+            const gap = 16; // 約 1rem gap
+            const currentIndex = Math.round(scrollLeft / (itemWidth + gap));
+
+            dots.forEach((dot, index) => {
+                if (index === currentIndex) {
+                    dot.classList.add('active');
+                } else {
+                    dot.classList.remove('active');
+                }
+            });
+        }
+
+        // 頁面載入與縮放時初始化指標
+        window.addEventListener('DOMContentLoaded', initFeedbackIndicators);
+        window.addEventListener('resize', initFeedbackIndicators);
+
+
+        // --- 3. Code 2 購物車與預約邏輯 ---
         const products =[
           { id: 'trial-25', name: '體驗課程 25 分鐘', price: 350, gasUrl: 'https://script.google.com/macros/s/AKfycbyZMqL135r1VvRL7pdW6EB6nmeLja-MhQt95ri5xa9j9Z810WfMb7_Vm156MPFn8t5Q/exec' },
           { id: 'trial-50', name: '體驗課程 50 分鐘', price: 550, gasUrl: 'https://script.google.com/macros/s/AKfycbyWvhW6fp_ohPEvPK226KtNiQLCyAVMl77zV0Hq0k_TcEk3F1ni9qVcJystGUovVjTMGQ/exec' }
