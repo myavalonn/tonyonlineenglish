@@ -4,96 +4,133 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- SEO & Meta -->
     <title>全民英檢各級數-Tony線上美語家教｜專業線上GEPT證照輔導</title>
     <meta name="description" content="Tony線上美語家教提供全民英檢(GEPT)初級、中級、中高級專業輔導。100%實境模擬口說、寫作逐字批改，從零基礎到高分突破，幫您輕鬆掌握各級數重點並考取證照！">
     <meta property="og:title" content="全民英檢各級數-Tony線上美語家教｜突破GEPT拿高分">
     <meta property="og:description" content="專屬線上GEPT證照輔導課程，涵蓋聽說讀寫全方位訓練。結合實境模擬與逐字批改，立即預約體驗！">
     <meta property="og:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-13%20%E4%B8%8B%E5%8D%884.15.10.png">
-    
+    <meta property="og:url" content="https://tonyonlineenglish.netlify.app/gept">
+    <meta name="twitter:card" content="summary_large_image">
+
     <!-- Styles & Scripts -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="layout-manager.js"></script>
 
     <style>
-        /* =========================================
-           Hero Section 動畫與特效
-           ========================================= */
-        .hero-bg {
+        /* 隱藏預設滾動條 */
+        .hide-scroll::-webkit-scrollbar { display: none; }
+        .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+
+        /* --- Hero 動畫 --- */
+        @keyframes bgZoom { 0% { transform: scale(1); } 100% { transform: scale(1.15); } }
+        @keyframes slideUpFade { 0% { opacity: 0; transform: translateY(40px); } 100% { opacity: 1; transform: translateY(0); } }
+        @keyframes glowPulse { 
+            0%, 100% { box-shadow: 0 0 15px rgba(245, 158, 11, 0.5); transform: scale(1); } 
+            50% { box-shadow: 0 0 35px rgba(245, 158, 11, 1); transform: scale(1.05); } 
+        }
+
+        .hero-bg-layer {
             background-image: linear-gradient(rgba(15, 23, 42, 0.7), rgba(15, 23, 42, 0.8)), url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-13%20%E4%B8%8B%E5%8D%884.15.10.png');
             background-size: cover;
             background-position: center;
+            animation: bgZoom 20s ease-in-out infinite alternate;
         }
 
-        @keyframes slideInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes glowOrange {
-            0%, 100% { box-shadow: 0 0 15px rgba(249, 115, 22, 0.6); transform: scale(1); }
-            50% { box-shadow: 0 0 35px rgba(249, 115, 22, 1), 0 0 15px rgba(255, 255, 255, 0.6); transform: scale(1.02); }
-        }
-        
-        .animate-slide-up { animation: slideInUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards; opacity: 0; }
+        .anim-slide-up { animation: slideUpFade 1s ease-out forwards; opacity: 0; }
         .delay-100 { animation-delay: 0.1s; }
-        .delay-200 { animation-delay: 0.3s; }
-        .delay-300 { animation-delay: 0.5s; }
-        .btn-glow { animation: glowOrange 2.5s infinite ease-in-out; }
-
-        /* =========================================
-           課程介紹 (手機版手風琴特效)
-           ========================================= */
-        .card-body { transition: all 0.4s ease-in-out; overflow: hidden; }
+        .delay-200 { animation-delay: 0.2s; }
+        .delay-300 { animation-delay: 0.3s; }
         
-        @media (max-width: 767px) {
-            .mobile-hidden { display: none; }
-            .card-toggle-icon { display: block; }
-        }
-        @media (min-width: 768px) {
-            .card-body { display: block !important; }
-            .card-toggle-icon { display: none; }
+        .btn-glow-orange {
+            background-color: #f59e0b;
+            color: #000;
+            animation: slideUpFade 1s ease-out 0.4s forwards, glowPulse 2.5s infinite;
+            opacity: 0;
         }
 
-        /* 隱藏預設滾動條 (回饋區塊使用) */
-        .hide-scroll::-webkit-scrollbar { display: none; }
-        .hide-scroll { -ms-overflow-style: none; scrollbar-width: none; }
-        
-        .swipe-container { display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 1.25rem; padding: 1rem 8vw; scroll-behavior: smooth; }
-        .swipe-item-feedback { flex: 0 0 78vw; scroll-snap-align: center; }
+        /* --- 手機版手風琴卡片設計 (Accordion) --- */
+        .accordion-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1.25rem;
+            padding: 0 1rem;
+        }
+        .accordion-item { border-radius: 1rem; overflow: hidden; }
+        .accordion-header { cursor: pointer; user-select: none; }
+        .accordion-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease-in-out;
+        }
+
+        /* --- 平板與電腦版：取消手風琴，恢復並排 --- */
         @media (min-width: 768px) {
-            .swipe-container { padding: 1rem 2rem; justify-content: center; flex-wrap: wrap; overflow-x: hidden; gap: 2rem; }
+            .accordion-container { flex-direction: row; justify-content: center; padding: 1rem 2rem; }
+            .accordion-item { flex: 1; max-width: 380px; display: flex; flex-direction: column; }
+            .accordion-header { cursor: default; }
+            .accordion-header i { display: none; } /* 隱藏旋轉箭頭 */
+            .accordion-content { max-height: none !important; overflow: visible; flex: 1; display: flex; flex-direction: column; }
+            .swipe-hint-click { display: none; } /* 隱藏「點選查看」提示 */
+            
+            /* 電腦版學生回饋維持滑動或並排 */
+            .swipe-container-feedback { padding: 1rem 2rem; justify-content: center; flex-wrap: wrap; display: flex; gap: 2rem; overflow-x: hidden; }
             .swipe-item-feedback { flex: 0 0 350px; }
-            .swipe-hint { display: none; }
+            .swipe-hint-feedback { display: none; }
+        }
+
+        /* 手機版學生回饋維持左右滑動 */
+        @media (max-width: 767px) {
+            .swipe-container-feedback {
+                display: flex; overflow-x: auto; scroll-snap-type: x mandatory;
+                gap: 1.25rem; padding: 1rem 8vw; scroll-behavior: smooth;
+            }
+            .swipe-item-feedback { flex: 0 0 78vw; scroll-snap-align: center; }
         }
 
         /* =========================================
-           Code 2: 購物車卡片專屬 CSS (原封不動保留)
+           以下為 Code 2 購物車與卡片特效 CSS 
            ========================================= */
         :root {
-            --primary-color: #3b414a;
-            --accent-blue: #007bff;
-            --line-green: #00B900;
-            --color-neutral-900: oklch(0.185 0 0);
+          --primary-color: #3b414a;
+          --accent-blue: #007bff;
+          --line-green: #00B900;
+          --color-neutral-900: oklch(0.185 0 0);
+        }
+        
+        .product-grid {
+          max-width: 900px;
+          margin: 0 auto 30px;
+          display: flex;
+          flex-wrap: nowrap; 
+          justify-content: center;
+          gap: 40px;
+          padding: 0 20px;
+        }
+        @media (max-width: 768px) {
+          .product-grid { gap: 15px; padding: 0 15px; flex-direction: row; }
         }
 
-        .cart-icon { position: absolute; top: 30px; right: 30px; width: 54px; height: auto; z-index: 10; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.4)); transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
-        .card-container:hover .cart-icon { transform: scale(1.15) rotate(-5deg); }
-
-        .product-grid { max-width: 900px; margin: 0 auto 30px; display: flex; flex-wrap: nowrap; justify-content: center; gap: 40px; padding: 0 20px; }
         .svg-container { position: absolute; width: 0; height: 0; pointer-events: none; }
 
-        .card-container { flex: 1 1 50%; max-width: 400px; padding: 2px; border-radius: 1.5em; position: relative; display: flex; cursor: pointer; transition: transform 0.3s ease; background: linear-gradient(-30deg, var(--gradient-color), transparent, var(--gradient-color)), linear-gradient(to bottom, var(--color-neutral-900), var(--color-neutral-900)); text-align: left; }
+        .card-container {
+          flex: 1 1 50%; max-width: 400px; padding: 2px; border-radius: 1.5em; position: relative; display: flex; cursor: pointer; transition: transform 0.3s ease;
+          background: linear-gradient(-30deg, var(--gradient-color), transparent, var(--gradient-color)), linear-gradient(to bottom, var(--color-neutral-900), var(--color-neutral-900));
+        }
         .card-container:hover { transform: translateY(-8px); }
 
-        .card-container[↖️] { --f: url(#🌀↖️); --electric-border-color: #dd8448; --electric-light-color: oklch(from var(--electric-border-color) l c h); --gradient-color: oklch(from var(--electric-border-color) 0.3 calc(c / 2) h / 0.4); }
-        .card-container[🎨] { --f: url(#🌀🎨); --electric-border-color: DodgerBlue; --electric-light-color: oklch(from var(--electric-border-color) l c h); --gradient-color: oklch(from var(--electric-border-color) 0.3 calc(c / 2) h / 0.4); }
+        .card-container[↖️] {
+          --f: url(#🌀↖️); --electric-border-color: #dd8448; --electric-light-color: oklch(from var(--electric-border-color) l c h); --gradient-color: oklch(from var(--electric-border-color) 0.3 calc(c / 2) h / 0.4);
+        }
+        .card-container[🎨] {
+          --f: url(#🌀🎨); --electric-border-color: DodgerBlue; --electric-light-color: oklch(from var(--electric-border-color) l c h); --gradient-color: oklch(from var(--electric-border-color) 0.3 calc(c / 2) h / 0.4);
+        }
 
         .inner-container { position: absolute; top: 0; left: 0; right: 0; bottom: 0; overflow: hidden; border-radius: 1.5em; z-index: 0; }
         .border-outer { position: absolute; top: 0; left: 0; right: 0; bottom: 0; border: 2px solid oklch(from var(--electric-border-color) l c h / 0.5); border-radius: 1.5em; }
         .main-card { position: absolute; top: 0; left: 0; right: 0; bottom: 0; border-radius: 1.5em; border: 2px solid var(--electric-border-color); transform: translate(-4px, -4px); filter: var(--f); }
 
-        @media (min-width: 769px) and (max-width: 1024px) { .main-card { filter: none !important; } .cart-icon { top: 25px; right: 25px; width: 44px; } }
+        @media (min-width: 769px) and (max-width: 1024px) { .main-card { filter: none !important; } }
 
         .glow-layer-1, .glow-layer-2, .overlay-1, .overlay-2, .background-glow { position: absolute; width: 100%; height: 100%; top: 0; left: 0; border-radius: 24px; pointer-events: none; }
         .glow-layer-1 { border: 2px solid oklch(from var(--electric-border-color) l c h / 0.6); filter: blur(1px); }
@@ -102,238 +139,227 @@
         .overlay-2 { opacity: 0.5; mix-blend-mode: overlay; transform: scale(1.1); filter: blur(16px); background: linear-gradient(-30deg, white, transparent 30%, transparent 70%, white); z-index: 1;}
         .background-glow { filter: blur(32px); transform: scale(1.1); opacity: 0.3; z-index: -1; background: linear-gradient(-30deg, var(--electric-light-color), transparent, var(--electric-border-color)); }
 
+        .cart-icon { position: absolute; top: 25px; right: 25px; width: 50px; height: auto; z-index: 10; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.4)); transition: transform 0.3s; }
+        .card-container:hover .cart-icon { transform: scale(1.15) rotate(-5deg); }
+        @media (max-width: 768px) { .cart-icon { top: 12px; right: 12px; width: 34px; } }
+
         .content-container { position: relative; z-index: 2; width: 100%; height: auto; display: flex; flex-direction: column; }
         .content-top { display: flex; flex-direction: column; padding: 35px 35px 20px 35px; }
         .content-bottom { display: flex; flex-direction: column; padding: 20px 35px 35px 35px; }
+        @media (max-width: 768px) {
+          .content-top { padding: 15px 12px 10px 12px; }
+          .content-bottom { padding: 10px 12px 15px 12px; }
+        }
 
-        .scrollbar-glass { background: radial-gradient(47.2% 50% at 50.39% 88.37%, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 100%), rgba(255, 255, 255, 0.04); position: relative; transition: background 0.3s ease; border-radius: 10px; width: fit-content; padding: 0.8em 1.5em; text-transform: uppercase; font-weight: bold; font-size: 1.1rem; color: rgba(255, 255, 255, 0.95); letter-spacing: 1px; }
-        .scrollbar-glass::before { content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0; padding: 1px; background: linear-gradient(150deg, rgba(255, 255, 255, 0.48) 16.73%, rgba(255, 255, 255, 0.08) 30.2%, rgba(255, 255, 255, 0.08) 68.2%, rgba(255, 255, 255, 0.6) 81.89%); border-radius: inherit; mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; pointer-events: none; }
+        .scrollbar-glass {
+          background: radial-gradient(47.2% 50% at 50.39% 88.37%, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 100%), rgba(255, 255, 255, 0.04);
+          position: relative; border-radius: 10px; width: fit-content; padding: 0.8em 1.5em; text-transform: uppercase; font-weight: bold; font-size: 1.1rem; color: rgba(255, 255, 255, 0.95);
+        }
+        @media (max-width: 768px) { .scrollbar-glass { font-size: 0.65em; padding: 0.4em 0.6em; } }
 
-        .card-title-svg { font-family: sans-serif; font-size: 3.2em; font-weight: 700; margin-top: 25px; margin-bottom: 12px; color: #ffffff; text-shadow: 0 4px 15px rgba(0,0,0,0.6); }
-        .card-desc-svg { font-family: sans-serif; font-size: 1.15rem; color: rgba(255,255,255,0.85); line-height: 1.6; margin: 0; text-shadow: 0 2px 10px rgba(0,0,0,0.5); font-weight: 500;}
-        .card-price-svg { font-family: sans-serif; font-size: 2.2em; font-weight: 600; color: #ffffff; margin: 0; text-shadow: 0 4px 15px rgba(0,0,0,0.6); }
+        .card-title-shop { font-size: 3.2em; font-weight: 700; margin-top: 25px; margin-bottom: 12px; color: #ffffff; text-shadow: 0 4px 15px rgba(0,0,0,0.6); }
+        .card-desc-shop { font-size: 1.15rem; color: rgba(255,255,255,0.85); line-height: 1.6; margin: 0; font-weight: 500;}
+        .card-price-shop { font-size: 2.2em; font-weight: 600; color: #ffffff; margin: 0; text-shadow: 0 4px 15px rgba(0,0,0,0.6); }
+        @media (max-width: 768px) {
+          .card-title-shop { font-size: 1.6em; margin-top: 10px; margin-bottom: 5px;} 
+          .card-desc-shop { font-size: 0.75rem; line-height: 1.3; }
+          .card-price-shop { font-size: 1.25em; } 
+        }
 
         .divider { margin: 0; border: none; height: 1px; background-color: #ffffff; opacity: 0.2; mask-image: linear-gradient(to right, transparent, black, transparent); -webkit-mask-image: linear-gradient(to right, transparent, black, transparent); }
 
-        @media (max-width: 768px) {
-            .product-grid { gap: 10px; padding: 0 10px; flex-direction: row; }
-            .content-top { padding: 20px 15px 12px 15px; }
-            .content-bottom { padding: 12px 15px 20px 15px; }
-            .scrollbar-glass { font-size: 0.65em; padding: 0.4em 0.6em; margin-bottom: 5px; }
-            .card-title-svg { font-size: 1.8em; margin-top: 15px; margin-bottom: 6px;} 
-            .card-desc-svg { font-size: 0.8rem; line-height: 1.4; margin-bottom: 0; }
-            .card-price-svg { font-size: 1.25em; } 
-            .cart-icon { top: 16px; right: 16px; width: 38px; }
-        }
-
-        /* 結帳 Popup 與 Thank You 頁面樣式 */
-        #email-popup-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); z-index: 2000; display: none; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s ease-in-out; }
+        /* Popup & Thank You Page CSS (From Code 2) */
+        #email-popup-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); z-index: 2000; display: none; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s; }
         #email-popup-overlay.visible { display: flex; opacity: 1; }
-        .email-popup-content { background-color: white; padding: 40px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.2); position: relative; width: 90%; max-width: 500px; text-align: center; transform: scale(0.9); transition: transform 0.3s ease-in-out; font-family: sans-serif;}
+        .email-popup-content { background-color: white; padding: 40px; border-radius: 12px; max-width: 500px; width: 90%; text-align: center; transform: scale(0.9); transition: transform 0.3s; }
         #email-popup-overlay.visible .email-popup-content { transform: scale(1); }
-        .email-popup-content h3 { font-size: 22px; color: #333; margin-top: 0; margin-bottom: 15px; }
-        .email-popup-content input[type="email"] { width: 100%; padding: 15px; font-size: 18px; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; text-align: center; margin-bottom: 20px; outline:none; }
-        #popup-checkout-btn { width: 100%; background-color: #3b414a; color: white; border: none; padding: 15px; font-size: 20px; font-weight: bold; border-radius: 8px; cursor: pointer; transition: background-color 0.3s ease; }
-        #popup-checkout-btn:hover { background-color: #525964; }
-        .large-cancel-btn { font-size: 24px; font-weight: bold; color: #888; background: none; border: none; margin-top: 25px; cursor: pointer; text-decoration: underline; }
+        .email-popup-content input[type="email"] { width: 100%; padding: 15px; font-size: 18px; border: 1px solid #ccc; border-radius: 8px; margin-bottom: 20px; text-align: center;}
+        #popup-checkout-btn { width: 100%; background-color: #3b414a; color: white; padding: 15px; font-size: 20px; font-weight: bold; border-radius: 8px; cursor: pointer; }
+        .large-cancel-btn { font-size: 20px; color: #888; background: none; border: none; margin-top: 20px; text-decoration: underline; cursor: pointer; }
         .payment-info-section { margin-top: 25px; padding-top: 20px; border-top: 1px solid #eee; text-align: left; }
-        .payment-info-section h4 { margin: 0 0 10px 0; font-size: 18px; color: #333; }
-        .payment-method { background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 6px; padding: 15px; display: flex; align-items: center; gap: 15px; font-size: 16px; color: #333; }
-        .icon-circle { border: 2px solid black; border-radius: 50%; width: 18px; height: 18px; display: flex; justify-content: center; align-items: center; flex-shrink: 0; }
-        .icon-circle div { width: 8px; height: 8px; background-color: black; border-radius: 50%; }
-        .tls-info { text-align: center; color: #888; font-size: 12px; margin-top: 15px; }
-        .error-container { color: #d9534f; font-size: 18px; padding: 20px; line-height: 1.6; }
-
-        #thank-you-page { display: none; padding: 40px 20px; box-sizing: border-box; font-family: sans-serif;}
-        .thank-you-container { max-width: 900px; width: 100%; margin: 0 auto; background-color: #f9f9f9; border: 1px solid #e0e0e0; display: flex; flex-direction: column; border-radius: 12px; overflow: hidden; text-align:left;}
-        .ty-left-panel { background-color: white; padding: 40px; }
-        .ty-right-panel { background-color: #f9f9f9; padding: 40px; border-top: 1px solid #eee; }
+        .payment-method { background-color: #f9f9f9; border: 1px solid #ddd; border-radius: 6px; padding: 15px; display: flex; align-items: center; gap: 10px; }
+        .icon-circle { border: 2px solid black; border-radius: 50%; width: 16px; height: 16px; display: flex; justify-content: center; align-items: center; }
+        .icon-circle div { width: 6px; height: 6px; background-color: black; border-radius: 50%; }
+        
+        #thank-you-page { display: none; padding: 40px 20px; background: #f8f9fa; min-height: 100vh;}
+        .thank-you-container { max-width: 900px; margin: 0 auto; background: white; display: flex; flex-direction: column; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05);}
+        @media (min-width: 768px) { .thank-you-container { flex-direction: row; } }
+        .ty-left-panel { padding: 40px; flex: 3; }
+        .ty-right-panel { padding: 40px; background: #f9f9f9; flex: 2; border-left: 1px solid #eee; }
         .ty-checkmark { font-size: 48px; color: #27ae60; }
-        .ty-header { display: flex; align-items: center; gap: 15px; font-size: 28px; color: #333; margin: 15px 0; font-weight:bold;}
-        .ty-message { color: #555; line-height: 1.6; font-size: 1.1rem; }
-        .ty-order-details { margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; }
-        .ty-detail-item { display: flex; justify-content: space-between; padding: 8px 0; font-size: 16px; align-items: flex-start; }
-        .ty-summary-header { font-size: 22px; color: #555; margin: 0 0 20px 0; border-bottom: 1px solid #ddd; padding-bottom: 10px; font-weight:bold;}
-        .ty-order-item { padding-bottom: 15px; border-bottom: 1px solid #eee; }
-        .ty-item-details { display: flex; justify-content: space-between; align-items: flex-start; gap: 15px; font-size: 18px;}
-        .ty-item-info { font-weight: bold; color: #333; }
-        .ty-item-price { font-weight: bold; white-space: nowrap; color: #333;}
-        .cart-total { margin-top: 20px; padding-top: 20px; border-top: 2px solid #333; }
-        .cart-total .total-row { display: flex; justify-content: space-between; font-size: 22px; font-weight: bold; color: #000; }
-
-        .mini-cal-wrapper { border: 1px solid #e0e0e0; border-radius: 12px; background: #fff; overflow: hidden; margin-top: 15px; box-shadow: 0 2px 10px rgba(0,0,0,0.03); }
-        .mini-cal-header { display: flex; justify-content: space-between; align-items: center; padding: 15px; background: #f8f9fa; border-bottom: 1px solid #eee; font-weight: bold; font-size: 1.1rem; color: #333; }
-        .mini-cal-header button { background: none; border: none; font-size: 1.2rem; cursor: pointer; color: #007bff; padding: 0 10px; transition: transform 0.2s; }
-        .mini-cal-header button.disabled { opacity: 0.2; pointer-events: none; }
+        .ty-detail-item { display: flex; justify-content: space-between; padding: 8px 0; font-size: 16px; }
+        .cart-total { margin-top: 20px; padding-top: 20px; border-top: 2px solid #333; font-size: 22px; font-weight: bold; display: flex; justify-content: space-between;}
+        
+        /* Mini Calendar */
+        .mini-cal-wrapper { border: 1px solid #e0e0e0; border-radius: 12px; background: #fff; margin-top: 15px; }
+        .mini-cal-header { display: flex; justify-content: space-between; padding: 15px; background: #f8f9fa; font-weight: bold; border-bottom: 1px solid #eee;}
+        .mini-cal-header button { color: #007bff; font-size: 1.2rem; background: none; border: none; cursor: pointer; }
         .mini-cal-weekdays { display: grid; grid-template-columns: repeat(6, 1fr); text-align: center; padding: 10px 0; font-size: 0.85rem; color: #888; font-weight: bold; }
-        .mini-cal-weekday { display: inline-flex; justify-content: center; align-items: center; width: 28px; height: 28px; border-radius: 6px; border: 1px solid transparent; }
-        .today-weekday { color: #007bff; border-color: #007bff; }
-        .selected-weekday { background: #007bff !important; color: #fff !important; }
         .mini-cal-days { display: grid; grid-template-columns: repeat(6, 1fr); gap: 6px; padding: 10px; text-align: center; }
-        .mini-cal-day { aspect-ratio: 1; display: flex; justify-content: center; align-items: center; border-radius: 8px; font-weight: bold; cursor: pointer; color: #333; border: 1px solid transparent; }
-        .mini-cal-day:not(.disabled):not(.empty):hover { background: #eefaff; border-color: #b8daff; }
-        .mini-cal-day.disabled { color: #ccc; pointer-events: none; background: #fcfcfc; }
-        .mini-cal-day.today { color: #007bff; border: 1px solid #007bff; }
-        .mini-cal-day.selected { background: #007bff !important; color: #fff !important; box-shadow: 0 2px 6px rgba(0,123,255,0.4); }
-        .mini-cal-day.empty { pointer-events: none; }
+        .mini-cal-day { aspect-ratio: 1; display: flex; align-items: center; justify-content: center; border-radius: 8px; cursor: pointer; }
+        .mini-cal-day:hover:not(.disabled):not(.empty) { background: #eefaff; }
+        .mini-cal-day.selected { background: #007bff; color: white; }
+        .mini-cal-day.disabled { color: #ccc; pointer-events: none; }
         .mini-cal-slots-box { padding: 20px; border-top: 1px solid #eee; background: #fafbfc; min-height: 80px; }
         .time-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(105px, 1fr)); gap: 12px; }
-        .time-slot-badge { display: flex; align-items: center; justify-content: center; background: #fff; color: #007bff; padding: 12px 10px; border-radius: 8px; font-size: 0.95rem; font-weight: bold; border: 1px solid #b8daff; }
-        .slot-clock-icon { width: 16px; height: 16px; margin-right: 6px; }
-
-        @media (min-width: 768px) {
-            .thank-you-container { flex-direction: row; }
-            .ty-left-panel { flex-basis: 60%; border-right: 1px solid #eee; }
-            .ty-right-panel { flex-basis: 40%; border-top: none; }
-            .ty-detail-item { font-size: 20px; padding: 12px 0; }
-        }
-        @media (max-width: 768px) {
-            .email-popup-content { width: 100%; height: 100%; max-width: 100%; border-radius: 0; display: flex; flex-direction: column; justify-content: center; padding: 30px 20px; }
-            .thank-you-container { border-radius: 0; border-left: none; border-right: none; }
-            .ty-left-panel, .ty-right-panel { padding: 30px 20px; }
-            .ty-detail-item span:first-child { white-space: nowrap; margin-right: 15px; }
-            .ty-detail-item span:last-child { text-align: right; word-break: break-all; }
-        }
+        .time-slot-badge { display: flex; align-items: center; justify-content: center; background: #fff; color: #007bff; padding: 10px; border-radius: 8px; font-weight: bold; border: 1px solid #b8daff; }
     </style>
 </head>
 <body class="bg-gray-50 text-gray-800 font-sans antialiased overflow-x-hidden">
 
-    <!-- Code 2 SVG Filters (Hidden) -->
+    <!-- Code 2 的 SVG 濾鏡 (隱藏在背景) -->
     <svg class="svg-container">
-        <defs>
-            <filter id="🌀↖️" colorInterpolationFilters="sRGB" x="-20%" y="-20%" width="140%" height="140%">
-                <feTurbulence type="turbulence" baseFrequency="0.02" numOctaves="10" result="noise1" seed="1" />
-                <feOffset in="noise1" dx="0" dy="0" result="offsetNoise1"><animate attributeName="dy" values="700; 0" dur="6s" repeatCount="indefinite" calcMode="linear" /></feOffset>
-                <feTurbulence type="turbulence" baseFrequency="0.02" numOctaves="10" result="noise2" seed="1" />
-                <feOffset in="noise2" dx="0" dy="0" result="offsetNoise2"><animate attributeName="dy" values="0; -700" dur="6s" repeatCount="indefinite" calcMode="linear" /></feOffset>
-                <feTurbulence type="turbulence" baseFrequency="0.02" numOctaves="10" result="noise1" seed="2" />
-                <feOffset in="noise1" dx="0" dy="0" result="offsetNoise3"><animate attributeName="dx" values="490; 0" dur="6s" repeatCount="indefinite" calcMode="linear" /></feOffset>
-                <feTurbulence type="turbulence" baseFrequency="0.02" numOctaves="10" result="noise2" seed="2" />
-                <feOffset in="noise2" dx="0" dy="0" result="offsetNoise4"><animate attributeName="dx" values="0; -490" dur="6s" repeatCount="indefinite" calcMode="linear" /></feOffset>
-                <feComposite in="offsetNoise1" in2="offsetNoise2" result="part1" />
-                <feComposite in="offsetNoise3" in2="offsetNoise4" result="part2" />
-                <feBlend in="part1" in2="part2" mode="color-dodge" result="combinedNoise" />
-                <feDisplacementMap in="SourceGraphic" in2="combinedNoise" scale="30" xChannelSelector="R" yChannelSelector="B" />
-            </filter>
-            <filter id="🌀🎨" colorInterpolationFilters="sRGB" x="-20%" y="-20%" width="140%" height="140%">
-                <feTurbulence type="turbulence" baseFrequency="0.02" numOctaves="7" />
-                <feColorMatrix type="hueRotate" result="pt1" ><animate attributeName="values" values="0;360;" dur=".6s" repeatCount="indefinite" calcMode="paced" /></feColorMatrix>
-                <feComposite />
-                <feTurbulence type="turbulence" baseFrequency="0.03" numOctaves="7" seed="5" />
-                <feColorMatrix type="hueRotate" result="pt2"><animate attributeName="values" values="0; 333; 199; 286; 64; 168; 256; 157; 360;" dur="5s" repeatCount="indefinite" calcMode="paced" /></feColorMatrix>
-                <feBlend in="pt1" in2="pt2" mode="normal" result="combinedNoise" />
-                <feDisplacementMap in="SourceGraphic" scale="30" xChannelSelector="R" yChannelSelector="B" />
-            </filter>
-        </defs>
+      <defs>
+        <filter id="🌀↖️" colorInterpolationFilters="sRGB" x="-20%" y="-20%" width="140%" height="140%">
+          <feTurbulence type="turbulence" baseFrequency="0.02" numOctaves="10" result="noise1" seed="1" />
+          <feOffset in="noise1" dx="0" dy="0" result="offsetNoise1"><animate attributeName="dy" values="700; 0" dur="6s" repeatCount="indefinite" calcMode="linear" /></feOffset>
+          <feTurbulence type="turbulence" baseFrequency="0.02" numOctaves="10" result="noise2" seed="1" />
+          <feOffset in="noise2" dx="0" dy="0" result="offsetNoise2"><animate attributeName="dy" values="0; -700" dur="6s" repeatCount="indefinite" calcMode="linear" /></feOffset>
+          <feTurbulence type="turbulence" baseFrequency="0.02" numOctaves="10" result="noise1" seed="2" />
+          <feOffset in="noise1" dx="0" dy="0" result="offsetNoise3"><animate attributeName="dx" values="490; 0" dur="6s" repeatCount="indefinite" calcMode="linear" /></feOffset>
+          <feTurbulence type="turbulence" baseFrequency="0.02" numOctaves="10" result="noise2" seed="2" />
+          <feOffset in="noise2" dx="0" dy="0" result="offsetNoise4"><animate attributeName="dx" values="0; -490" dur="6s" repeatCount="indefinite" calcMode="linear" /></feOffset>
+          <feComposite in="offsetNoise1" in2="offsetNoise2" result="part1" />
+          <feComposite in="offsetNoise3" in2="offsetNoise4" result="part2" />
+          <feBlend in="part1" in2="part2" mode="color-dodge" result="combinedNoise" />
+          <feDisplacementMap in="SourceGraphic" in2="combinedNoise" scale="30" xChannelSelector="R" yChannelSelector="B" />
+        </filter>
+        <filter id="🌀🎨" colorInterpolationFilters="sRGB" x="-20%" y="-20%" width="140%" height="140%">
+          <feTurbulence type="turbulence" baseFrequency="0.02" numOctaves="7" />
+          <feColorMatrix type="hueRotate" result="pt1"><animate attributeName="values" values="0;360;" dur=".6s" repeatCount="indefinite" calcMode="paced" /></feColorMatrix>
+          <feComposite />
+          <feTurbulence type="turbulence" baseFrequency="0.03" numOctaves="7" seed="5" />
+          <feColorMatrix type="hueRotate" result="pt2"><animate attributeName="values" values="0; 333; 199; 286; 64; 168; 256; 157; 360;" dur="5s" repeatCount="indefinite" calcMode="paced" /></feColorMatrix>
+          <feBlend in="pt1" in2="pt2" mode="normal" result="combinedNoise" />
+          <feDisplacementMap in="SourceGraphic" scale="30" xChannelSelector="R" yChannelSelector="B" />
+        </filter>
+      </defs>
     </svg>
 
-    <div id="product-page" class="w-full overflow-x-hidden">
+    <main id="product-page" class="w-full overflow-x-hidden">
 
-        <!-- Hero Section -->
-        <header class="hero-bg text-white py-24 md:py-32 px-4 text-center">
-            <div class="max-w-5xl mx-auto mt-4">
+        <!-- Hero Section (全面升級動畫與標籤) -->
+        <header class="relative text-white py-24 md:py-32 px-4 text-center overflow-hidden">
+            <div class="absolute inset-0 z-0 hero-bg-layer"></div>
+            <div class="relative z-10 max-w-5xl mx-auto mt-4 flex flex-col items-center">
                 
-                <!-- 對應顏色的標籤區塊 -->
-                <div class="flex justify-center flex-wrap gap-3 mb-8 animate-slide-up">
-                    <span class="bg-teal-600 text-white px-5 py-2 rounded-full text-lg md:text-xl font-bold shadow-lg tracking-wider">初級</span>
-                    <span class="bg-blue-600 text-white px-5 py-2 rounded-full text-lg md:text-xl font-bold shadow-lg tracking-wider">中級</span>
-                    <span class="bg-indigo-700 text-white px-5 py-2 rounded-full text-lg md:text-xl font-bold shadow-lg tracking-wider">中高級</span>
+                <span class="bg-gray-900/60 backdrop-blur-sm text-white px-5 py-2 rounded-full text-sm md:text-lg font-semibold mb-6 inline-block shadow-md anim-slide-up border border-gray-600">
+                    全民英檢 GEPT 專業證照輔導
+                </span>
+                
+                <!-- 相對應顏色的三個標籤 -->
+                <div class="flex justify-center gap-2 md:gap-4 mb-8 anim-slide-up delay-100">
+                    <span class="bg-rose-500 text-white px-4 py-1.5 rounded-full text-base md:text-xl font-bold shadow-lg">初級</span>
+                    <span class="bg-blue-600 text-white px-4 py-1.5 rounded-full text-base md:text-xl font-bold shadow-lg">中級</span>
+                    <span class="bg-indigo-700 text-white px-4 py-1.5 rounded-full text-base md:text-xl font-bold shadow-lg">中高級</span>
                 </div>
                 
-                <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 leading-tight animate-slide-up delay-100">
+                <h1 class="text-4xl md:text-5xl lg:text-6xl font-extrabold mb-6 leading-tight text-white drop-shadow-lg anim-slide-up delay-200">
                     掌握關鍵技巧，<br>輕鬆突破 GEPT 門檻
                 </h1>
                 
-                <p class="text-lg md:text-2xl text-gray-200 mb-12 whitespace-normal md:whitespace-nowrap animate-slide-up delay-200">
+                <p class="text-lg md:text-2xl text-gray-200 mb-12 whitespace-normal md:whitespace-nowrap drop-shadow anim-slide-up delay-300">
                     結合實境模擬與逐字批改，從零基礎到中高級，打造專屬您的通關策略！
                 </p>
                 
-                <!-- 修改後的按鈕：黑字、橘色底、發光效果 -->
-                <div class="animate-slide-up delay-300">
-                    <a href="#booking-section" class="inline-block w-full sm:w-auto bg-orange-500 text-black text-xl md:text-2xl font-extrabold py-5 px-12 rounded-full btn-glow transition transform hover:-translate-y-1">
+                <!-- 呼吸閃爍按鈕 -->
+                <div class="flex flex-col sm:flex-row justify-center items-center gap-5 w-full sm:w-auto">
+                    <a href="#courses" class="w-full sm:w-auto bg-white/10 backdrop-blur border border-white/30 hover:bg-white/20 text-white text-xl md:text-2xl font-bold py-4 px-10 rounded-full shadow-lg transition transform hover:-translate-y-1 anim-slide-up delay-300">
+                        課程介紹
+                    </a>
+                    <a href="#checkout-section" class="w-full sm:w-auto btn-glow-orange text-xl md:text-2xl font-bold py-4 px-10 rounded-full transition transform">
                         預約體驗課程
                     </a>
                 </div>
             </div>
         </header>
 
-        <!-- GEPT 級數課程介紹 (手機版由上而下+手風琴 / 電腦版並排) -->
+        <!-- GEPT 級數課程介紹 (手機版手風琴，電腦版並排) -->
         <section id="courses" class="py-16 md:py-24 bg-gray-100 scroll-mt-0">
             <div class="text-center mb-10 px-4">
-                <h2 class="text-3xl md:text-4xl font-bold text-blue-900 mb-2">全民英檢各級數課程介紹</h2>
-                <!-- 修改後的提示文字 -->
-                <p class="text-gray-500 mt-2 text-lg animate-pulse">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-2">全民英檢各級數課程介紹</h2>
+                <p class="text-gray-500 mt-2 text-lg swipe-hint-click animate-pulse">
                     <i class="fas fa-hand-pointer mr-1"></i> 請點選查看詳細介紹
                 </p>
             </div>
 
-            <!-- 卡片容器 -->
-            <div class="flex flex-col md:flex-row gap-6 max-w-7xl mx-auto px-4 md:px-6">
+            <!-- Accordion 容器 -->
+            <div class="accordion-container max-w-6xl mx-auto">
                 
-                <!-- 初級 Card (改為 Teal 藍綠色) -->
-                <div class="bg-white rounded-2xl shadow-xl border border-gray-100 flex flex-col flex-1">
-                    <!-- Header (手機點擊展開) -->
-                    <div class="bg-teal-600 text-white p-6 text-center cursor-pointer md:cursor-default relative flex flex-col justify-center items-center h-full" onclick="toggleAccordion(this)">
-                        <h3 class="text-3xl font-bold">初級 GEPT</h3>
-                        <p class="text-teal-100 text-lg mt-1">Elementary – 基礎溝通能力</p>
-                        <i class="fas fa-chevron-down absolute bottom-3 card-toggle-icon text-teal-200 text-xl transition-transform duration-300"></i>
+                <!-- 初級 Card (Rose) -->
+                <div class="accordion-item bg-white shadow-lg border border-gray-100">
+                    <div class="accordion-header bg-rose-500 text-white p-6 flex justify-between items-center" onclick="toggleAccordion(this)">
+                        <div class="text-left">
+                            <h3 class="text-2xl md:text-3xl font-bold">初級 GEPT</h3>
+                            <p class="text-rose-100 text-base md:text-lg mt-1">Elementary – 基礎溝通能力</p>
+                        </div>
+                        <i class="fas fa-chevron-down text-xl transition-transform duration-300"></i>
                     </div>
-                    <!-- Body -->
-                    <div class="p-6 flex-1 text-lg md:text-xl text-gray-700 card-body mobile-hidden">
-                        <p class="mb-5 bg-teal-50 p-3 rounded-lg text-teal-800 font-medium leading-relaxed text-lg">📌 目的定位：透過日常生活語境的聽說讀寫任務，建立基礎英語能力。</p>
-                        <ul class="space-y-4 mb-5">
-                            <li class="leading-relaxed"><strong><i class="fas fa-headphones text-teal-500 w-6"></i>聽力：</strong>圖片描述與簡短對話。<span class="text-base text-gray-500 ml-1">重點：聽懂簡單問句與生活語境。</span></li>
-                            <li class="leading-relaxed"><strong><i class="fas fa-book-open text-teal-500 w-6"></i>閱讀：</strong>句子填空與短文理解。<span class="text-base text-gray-500 ml-1">重點：簡短理解與字彙抓取。</span></li>
-                            <li class="leading-relaxed"><strong><i class="fas fa-comment-dots text-teal-500 w-6"></i>口說：</strong>重覆朗讀與簡單問答。<span class="text-base text-gray-500 ml-1">重點：發音清晰與簡單回應。</span></li>
-                            <li class="leading-relaxed"><strong><i class="fas fa-pen text-teal-500 w-6"></i>寫作：</strong>句子寫作與短段落。<span class="text-base text-gray-500 ml-1">重點：用簡單句正確表達意思。</span></li>
-                        </ul>
-                        <div class="border-t pt-5 mt-auto">
-                            <strong class="text-teal-600 block mb-2 text-xl">💡 準備策略：</strong>
-                            從零開始建立必備詞彙與句型，練習生活短篇故事，並模擬基本自我介紹，打穩英語基礎。
+                    <div class="accordion-content">
+                        <div class="p-6 flex-1 text-lg text-gray-700 bg-white">
+                            <p class="mb-5 bg-rose-50 p-3 rounded-lg text-rose-800 font-medium leading-relaxed">📌 目的定位：透過日常生活語境的聽說讀寫任務，建立基礎英語能力。</p>
+                            <ul class="space-y-4 mb-5">
+                                <li><strong><i class="fas fa-headphones text-rose-500 w-6"></i>聽力：</strong>圖片描述與簡短對話。<span class="text-base text-gray-500 block sm:inline sm:ml-1">重點：聽懂簡單問句與生活語境。</span></li>
+                                <li><strong><i class="fas fa-book-open text-rose-500 w-6"></i>閱讀：</strong>句子填空與短文理解。<span class="text-base text-gray-500 block sm:inline sm:ml-1">重點：簡短理解與字彙抓取。</span></li>
+                                <li><strong><i class="fas fa-comment-dots text-rose-500 w-6"></i>口說：</strong>重覆朗讀與簡單問答。<span class="text-base text-gray-500 block sm:inline sm:ml-1">重點：發音清晰與簡單回應。</span></li>
+                                <li><strong><i class="fas fa-pen text-rose-500 w-6"></i>寫作：</strong>句子寫作與短段落。<span class="text-base text-gray-500 block sm:inline sm:ml-1">重點：用簡單句正確表達意思。</span></li>
+                            </ul>
+                            <div class="border-t pt-5 mt-auto">
+                                <strong class="text-rose-600 block mb-2 text-xl">💡 準備策略：</strong>
+                                從零開始建立必備詞彙與句型，練習生活短篇故事，並模擬基本自我介紹，打穩英語基礎。
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 中級 Card -->
-                <div class="bg-white rounded-2xl shadow-xl border border-gray-100 flex flex-col flex-1">
-                    <div class="bg-blue-600 text-white p-6 text-center cursor-pointer md:cursor-default relative flex flex-col justify-center items-center h-full" onclick="toggleAccordion(this)">
-                        <h3 class="text-3xl font-bold">中級 GEPT</h3>
-                        <p class="text-blue-100 text-lg mt-1">Intermediate</p> <!-- 刪除原有的副標題文字 -->
-                        <i class="fas fa-chevron-down absolute bottom-3 card-toggle-icon text-blue-200 text-xl transition-transform duration-300"></i>
+                <!-- 中級 Card (Blue) -->
+                <div class="accordion-item bg-white shadow-lg border border-gray-100">
+                    <div class="accordion-header bg-blue-600 text-white p-6 flex justify-between items-center" onclick="toggleAccordion(this)">
+                        <div class="text-left">
+                            <h3 class="text-2xl md:text-3xl font-bold">中級 GEPT</h3>
+                            <p class="text-blue-100 text-base md:text-lg mt-1">Intermediate – 日常溝通表達</p>
+                        </div>
+                        <i class="fas fa-chevron-down text-xl transition-transform duration-300"></i>
                     </div>
-                    <div class="p-6 flex-1 text-lg md:text-xl text-gray-700 card-body mobile-hidden">
-                        <p class="mb-5 bg-blue-50 p-3 rounded-lg text-blue-800 font-medium leading-relaxed text-lg">📌 目的定位：提升日常情境應對能力，可用英文進行基本溝通交流。</p>
-                        <ul class="space-y-4 mb-5">
-                            <li class="leading-relaxed"><strong><i class="fas fa-headphones text-blue-500 w-6"></i>聽力：</strong>一般對話與廣播公告。<span class="text-base text-gray-500 ml-1">重點：抓取主旨與重點資訊。</span></li>
-                            <li class="leading-relaxed"><strong><i class="fas fa-book-open text-blue-500 w-6"></i>閱讀：</strong>片語運用與多篇閱讀。<span class="text-base text-gray-500 ml-1">重點：理解短篇文章與生活主題。</span></li>
-                            <li class="leading-relaxed"><strong><i class="fas fa-comment-dots text-blue-500 w-6"></i>口說：</strong>問答練習與經驗描述。<span class="text-base text-gray-500 ml-1">重點：清楚表達觀點及經歷。</span></li>
-                            <li class="leading-relaxed"><strong><i class="fas fa-pen text-blue-500 w-6"></i>寫作：</strong>生活經驗與短文描述。<span class="text-base text-gray-500 ml-1">重點：簡潔有邏輯地表達想法。</span></li>
-                        </ul>
-                        <div class="border-t pt-5 mt-auto">
-                            <strong class="text-blue-600 block mb-2 text-xl">💡 準備策略：</strong>
-                            擴大閱讀題材、建立主題性口說練習（如旅遊、興趣），搭配多樣片語與正確句型，穩健提升分數。
+                    <div class="accordion-content">
+                        <div class="p-6 flex-1 text-lg text-gray-700 bg-white">
+                            <p class="mb-5 bg-blue-50 p-3 rounded-lg text-blue-800 font-medium leading-relaxed">📌 目的定位：提升日常情境應對能力，可用英文進行基本溝通交流。</p>
+                            <ul class="space-y-4 mb-5">
+                                <li><strong><i class="fas fa-headphones text-blue-500 w-6"></i>聽力：</strong>一般對話與廣播公告。<span class="text-base text-gray-500 block sm:inline sm:ml-1">重點：抓取主旨與重點資訊。</span></li>
+                                <li><strong><i class="fas fa-book-open text-blue-500 w-6"></i>閱讀：</strong>片語運用與多篇閱讀。<span class="text-base text-gray-500 block sm:inline sm:ml-1">重點：理解短篇文章與生活主題。</span></li>
+                                <li><strong><i class="fas fa-comment-dots text-blue-500 w-6"></i>口說：</strong>問答練習與經驗描述。<span class="text-base text-gray-500 block sm:inline sm:ml-1">重點：清楚表達觀點及經歷。</span></li>
+                                <li><strong><i class="fas fa-pen text-blue-500 w-6"></i>寫作：</strong>生活經驗與短文描述。<span class="text-base text-gray-500 block sm:inline sm:ml-1">重點：簡潔有邏輯地表達想法。</span></li>
+                            </ul>
+                            <div class="border-t pt-5 mt-auto">
+                                <strong class="text-blue-600 block mb-2 text-xl">💡 準備策略：</strong>
+                                擴大閱讀題材、建立主題性口說練習，搭配多樣片語與正確句型，穩健提升分數。
+                            </div>
                         </div>
                     </div>
                 </div>
 
-                <!-- 中高級 Card -->
-                <div class="bg-white rounded-2xl shadow-xl border border-gray-100 flex flex-col flex-1">
-                    <div class="bg-indigo-700 text-white p-6 text-center cursor-pointer md:cursor-default relative flex flex-col justify-center items-center h-full" onclick="toggleAccordion(this)">
-                        <h3 class="text-3xl font-bold">中高級 GEPT</h3>
-                        <p class="text-indigo-100 text-lg mt-1">High-Int. – 有效溝通與分析</p>
-                        <i class="fas fa-chevron-down absolute bottom-3 card-toggle-icon text-indigo-200 text-xl transition-transform duration-300"></i>
+                <!-- 中高級 Card (Indigo) -->
+                <div class="accordion-item bg-white shadow-lg border border-gray-100">
+                    <div class="accordion-header bg-indigo-700 text-white p-6 flex justify-between items-center" onclick="toggleAccordion(this)">
+                        <div class="text-left">
+                            <h3 class="text-2xl md:text-3xl font-bold">中高級 GEPT</h3>
+                            <p class="text-indigo-100 text-base md:text-lg mt-1">High-Int. – 有效溝通與分析</p>
+                        </div>
+                        <i class="fas fa-chevron-down text-xl transition-transform duration-300"></i>
                     </div>
-                    <div class="p-6 flex-1 text-lg md:text-xl text-gray-700 card-body mobile-hidden">
-                        <p class="mb-5 bg-indigo-50 p-3 rounded-lg text-indigo-800 font-medium leading-relaxed text-lg">📌 目的定位：具備廣泛話題理解能力，可處理社交、職場及日常議題。</p>
-                        <ul class="space-y-4 mb-5">
-                            <li class="leading-relaxed"><strong><i class="fas fa-headphones text-indigo-500 w-6"></i>聽力：</strong>複雜情境資訊與講座。<span class="text-base text-gray-500 ml-1">重點：聽出主旨、細節及推論。</span></li>
-                            <li class="leading-relaxed"><strong><i class="fas fa-book-open text-indigo-500 w-6"></i>閱讀：</strong>多篇長篇閱讀理解。<span class="text-base text-gray-500 ml-1">重點：分析文章結構與推論內容。</span></li>
-                            <li class="leading-relaxed"><strong><i class="fas fa-comment-dots text-indigo-500 w-6"></i>口說：</strong>看圖描述與深度討論。<span class="text-base text-gray-500 ml-1">重點：自信有條理地表達意見。</span></li>
-                            <li class="leading-relaxed"><strong><i class="fas fa-pen text-indigo-500 w-6"></i>寫作：</strong>中翻英與引導寫作。<span class="text-base text-gray-500 ml-1">重點：寫有結構的段落並清楚達意。</span></li>
-                        </ul>
-                        <div class="border-t pt-5 mt-auto">
-                            <strong class="text-indigo-700 block mb-2 text-xl">💡 準備策略：</strong>
-                            聆聽真實語境(新聞/演講)、高階語彙句型練習，輔以口說主題討論與寫作邏輯架構，突破高分門檻。
+                    <div class="accordion-content">
+                        <div class="p-6 flex-1 text-lg text-gray-700 bg-white">
+                            <p class="mb-5 bg-indigo-50 p-3 rounded-lg text-indigo-800 font-medium leading-relaxed">📌 目的定位：具備廣泛話題理解能力，可處理社交、職場及日常議題。</p>
+                            <ul class="space-y-4 mb-5">
+                                <li><strong><i class="fas fa-headphones text-indigo-500 w-6"></i>聽力：</strong>複雜情境資訊與講座。<span class="text-base text-gray-500 block sm:inline sm:ml-1">重點：聽出主旨、細節及推論。</span></li>
+                                <li><strong><i class="fas fa-book-open text-indigo-500 w-6"></i>閱讀：</strong>多篇長篇閱讀理解。<span class="text-base text-gray-500 block sm:inline sm:ml-1">重點：分析文章結構與推論內容。</span></li>
+                                <li><strong><i class="fas fa-comment-dots text-indigo-500 w-6"></i>口說：</strong>看圖描述與深度討論。<span class="text-base text-gray-500 block sm:inline sm:ml-1">重點：自信有條理地表達意見。</span></li>
+                                <li><strong><i class="fas fa-pen text-indigo-500 w-6"></i>寫作：</strong>中翻英與引導寫作。<span class="text-base text-gray-500 block sm:inline sm:ml-1">重點：寫有結構的段落並清楚達意。</span></li>
+                            </ul>
+                            <div class="border-t pt-5 mt-auto">
+                                <strong class="text-indigo-700 block mb-2 text-xl">💡 準備策略：</strong>
+                                聆聽真實語境(新聞/演講)、高階語彙句型練習，輔以口說主題討論與寫作邏輯架構。
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -341,10 +367,10 @@
             </div>
         </section>
 
-        <!-- 學習趨勢與核心特色 (不變) -->
+        <!-- 學習趨勢與核心特色 -->
         <section class="py-16 md:py-24 bg-white px-4">
             <div class="max-w-6xl mx-auto">
-                <h2 class="text-3xl md:text-4xl font-bold text-center mb-10 text-blue-900">整體學習趨勢與核心特色</h2>
+                <h2 class="text-3xl md:text-4xl font-bold text-center mb-10 text-gray-800">整體學習趨勢與核心特色</h2>
                 <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 md:gap-10">
                     <div class="bg-blue-50/50 rounded-2xl p-8 shadow-sm border border-blue-100">
                         <h3 class="text-2xl md:text-3xl font-bold mb-6 text-blue-800 flex items-center"><i class="fas fa-chart-line mr-3 text-blue-600"></i>最新考試趨勢</h3>
@@ -368,29 +394,29 @@
         <!-- 學生真實回饋 -->
         <section class="py-16 md:py-24 bg-gray-50">
             <div class="text-center mb-12 px-4">
-                <h2 class="text-3xl md:text-4xl font-bold text-blue-900 mb-2">學員真實評價與回饋</h2>
-                <p class="text-gray-500 mt-2 text-lg swipe-hint animate-pulse"><i class="fas fa-hand-pointer mr-1"></i> 向左右滑動查看學生心得</p>
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-2">學員真實評價與回饋</h2>
+                <p class="text-gray-500 mt-2 text-lg swipe-hint-feedback animate-pulse"><i class="fas fa-arrows-alt-h mr-1"></i> 向左右滑動查看學生心得</p>
             </div>
 
-            <div class="swipe-container hide-scroll">
+            <div class="swipe-container-feedback max-w-7xl mx-auto">
                 
-                <!-- 初級 Feedback 1 (改為 Teal) -->
-                <div class="swipe-item-feedback bg-white border-2 border-teal-100 p-8 rounded-2xl shadow-lg relative mt-4">
-                    <span class="absolute -top-4 left-6 bg-teal-600 text-white text-base px-4 py-1.5 rounded-full font-bold shadow-md">初級通過</span>
+                <!-- 初級 Feedback (Rose) -->
+                <div class="swipe-item-feedback bg-white border-2 border-rose-100 p-8 rounded-2xl shadow-lg relative mt-4">
+                    <span class="absolute -top-4 left-6 bg-rose-500 text-white text-base px-4 py-1.5 rounded-full font-bold shadow-md">初級通過</span>
                     <div class="flex text-amber-400 mb-4 mt-2 text-xl md:text-2xl"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
                     <p class="text-gray-700 text-xl md:text-2xl mb-6 leading-relaxed">「一開始對英文很沒自信，Tony老師的發音指導跟生活化情境讓我敢開口了！初級口說一次就過！」</p>
                     <div class="text-right text-lg md:text-xl font-bold text-gray-500">— Alice</div>
                 </div>
                 
-                <!-- 初級 Feedback 2 (改為 Teal) -->
-                <div class="swipe-item-feedback bg-white border-2 border-teal-100 p-8 rounded-2xl shadow-lg relative mt-4">
-                    <span class="absolute -top-4 left-6 bg-teal-600 text-white text-base px-4 py-1.5 rounded-full font-bold shadow-md">初級通過</span>
+                <!-- 初級 Feedback 2 (Rose) -->
+                <div class="swipe-item-feedback bg-white border-2 border-rose-100 p-8 rounded-2xl shadow-lg relative mt-4">
+                    <span class="absolute -top-4 left-6 bg-rose-500 text-white text-base px-4 py-1.5 rounded-full font-bold shadow-md">初級通過</span>
                     <div class="flex text-amber-400 mb-4 mt-2 text-xl md:text-2xl"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
                     <p class="text-gray-700 text-xl md:text-2xl mb-6 leading-relaxed">「寫作句子從零開始練起，老師逐字批改讓我不再寫出中式英文，基礎打得很穩，非常推薦！」</p>
                     <div class="text-right text-lg md:text-xl font-bold text-gray-500">— Brian</div>
                 </div>
 
-                <!-- 中級 Feedback 1 -->
+                <!-- 中級 Feedback 1 (Blue) -->
                 <div class="swipe-item-feedback bg-white border-2 border-blue-100 p-8 rounded-2xl shadow-lg relative mt-4">
                     <span class="absolute -top-4 left-6 bg-blue-600 text-white text-base px-4 py-1.5 rounded-full font-bold shadow-md">中級高分</span>
                     <div class="flex text-amber-400 mb-4 mt-2 text-xl md:text-2xl"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
@@ -398,23 +424,7 @@
                     <div class="text-right text-lg md:text-xl font-bold text-gray-500">— Daniel</div>
                 </div>
 
-                <!-- 中級 Feedback 2 -->
-                <div class="swipe-item-feedback bg-white border-2 border-blue-100 p-8 rounded-2xl shadow-lg relative mt-4">
-                    <span class="absolute -top-4 left-6 bg-blue-600 text-white text-base px-4 py-1.5 rounded-full font-bold shadow-md">中級高分</span>
-                    <div class="flex text-amber-400 mb-4 mt-2 text-xl md:text-2xl"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-                    <p class="text-gray-700 text-xl md:text-2xl mb-6 leading-relaxed">「100%實境模擬口說超棒！考試時遇到類似情境完全不緊張，能夠很流暢地表達自己的觀點。」</p>
-                    <div class="text-right text-lg md:text-xl font-bold text-gray-500">— Emily</div>
-                </div>
-
-                <!-- 中高級 Feedback 1 -->
-                <div class="swipe-item-feedback bg-white border-2 border-indigo-100 p-8 rounded-2xl shadow-lg relative mt-4">
-                    <span class="absolute -top-4 left-6 bg-indigo-700 text-white text-base px-4 py-1.5 rounded-full font-bold shadow-md">中高級達標</span>
-                    <div class="flex text-amber-400 mb-4 mt-2 text-xl md:text-2xl"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
-                    <p class="text-gray-700 text-xl md:text-2xl mb-6 leading-relaxed">「中高級的閱讀文章很難，感謝Tony老師教導分析文章結構，推理題不再卡關，順利達標！」</p>
-                    <div class="text-right text-lg md:text-xl font-bold text-gray-500">— George</div>
-                </div>
-
-                <!-- 中高級 Feedback 2 -->
+                <!-- 中高級 Feedback 1 (Indigo) -->
                 <div class="swipe-item-feedback bg-white border-2 border-indigo-100 p-8 rounded-2xl shadow-lg relative mt-4">
                     <span class="absolute -top-4 left-6 bg-indigo-700 text-white text-base px-4 py-1.5 rounded-full font-bold shadow-md">中高級達標</span>
                     <div class="flex text-amber-400 mb-4 mt-2 text-xl md:text-2xl"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
@@ -425,38 +435,30 @@
             </div>
         </section>
 
-        <!-- Footer / Action bar (整合購物車卡片) -->
-        <footer id="booking-section" class="bg-gray-900 text-center py-16 px-4">
+        <!-- Footer / Code 2 購物車區塊 -->
+        <footer id="checkout-section" class="bg-gray-900 text-center py-16 px-4">
             <h2 class="text-3xl md:text-4xl font-bold text-white mb-10">準備好迎戰全民英檢了嗎？</h2>
             
-            <!-- Code 2: 原汁原味的購物車卡片區塊 -->
+            <!-- Code 2 閃電購物車元件 -->
             <section class="product-grid">
-              
               <!-- 卡片 1: 25 分鐘 -->
               <div ↖️ class="card-container" onclick="directCheckout('trial-25')">
                 <div class="inner-container">
-                  <div class="border-outer"></div>
-                  <div ↖️ class="main-card"></div>
-                  <div class="glow-layer-1"></div>
-                  <div class="glow-layer-2"></div>
+                  <div class="border-outer"></div><div ↖️ class="main-card"></div>
+                  <div class="glow-layer-1"></div><div class="glow-layer-2"></div>
                 </div>
-        
-                <div class="overlay-1"></div>
-                <div class="overlay-2"></div>
-                <div class="background-glow"></div>
-        
-                <div class="content-container">
+                <div class="overlay-1"></div><div class="overlay-2"></div><div class="background-glow"></div>
+                
+                <div class="content-container text-left">
                   <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/shopping-cart-2.png" class="cart-icon" alt="加入購物車">
                   <div class="content-top">
                     <div class="scrollbar-glass">客製化體驗</div>
-                    <p class="card-title-svg">25 分鐘</p>
-                    <p class="card-desc-svg">短時精準練習<br>考前衝刺・自由對話</p>
+                    <p class="card-title-shop">25 分鐘</p>
+                    <p class="card-desc-shop">短時精準練習<br>考前衝刺・自由對話</p>
                   </div>
-        
                   <hr class="divider" />
-        
                   <div class="content-bottom">
-                    <p class="card-price-svg">NT$ 350</p>
+                    <p class="card-price-shop">NT$ 350</p>
                   </div>
                 </div>
               </div>
@@ -464,126 +466,126 @@
               <!-- 卡片 2: 50 分鐘 -->
               <div 🎨 class="card-container" onclick="directCheckout('trial-50')">
                 <div class="inner-container">
-                  <div class="border-outer"></div>
-                  <div class="main-card"></div>
-                  <div class="glow-layer-1"></div>
-                  <div class="glow-layer-2"></div>
+                  <div class="border-outer"></div><div class="main-card"></div>
+                  <div class="glow-layer-1"></div><div class="glow-layer-2"></div>
                 </div>
-        
-                <div class="overlay-1"></div>
-                <div class="overlay-2"></div>
-                <div class="background-glow"></div>
-        
-                <div class="content-container">
+                <div class="overlay-1"></div><div class="overlay-2"></div><div class="background-glow"></div>
+                
+                <div class="content-container text-left">
                   <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/shopping-cart-2.png" class="cart-icon" alt="加入購物車">
                   <div class="content-top">
                     <div class="scrollbar-glass">客製化體驗</div>
-                    <p class="card-title-svg">50 分鐘</p>
-                    <p class="card-desc-svg">完整深度學習<br>主題教學・全面加強</p>
+                    <p class="card-title-shop">50 分鐘</p>
+                    <p class="card-desc-shop">完整深度學習<br>主題教學・全面加強</p>
                   </div>
-        
                   <hr class="divider" />
-        
                   <div class="content-bottom">
-                    <p class="card-price-svg">NT$ 550</p>
+                    <p class="card-price-shop">NT$ 550</p>
                   </div>
                 </div>
               </div>
             </section>
 
-            <div class="flex justify-center mt-10">
-                <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="w-full sm:w-auto bg-[#06C755] hover:bg-[#05b34c] text-white text-xl md:text-2xl font-bold py-4 px-10 rounded-full shadow-lg transition flex items-center justify-center gap-2">
-                    <i class="fab fa-line text-3xl"></i> 加入 LINE (ID: myavalon) 詢問
+            <div class="mt-8 flex justify-center">
+                <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="w-full sm:w-auto bg-[#06C755] hover:bg-[#05b34c] text-white text-xl md:text-2xl font-bold py-4 px-10 rounded-full shadow-lg transition flex items-center justify-center gap-2 max-w-xs mx-auto sm:max-w-none">
+                    <i class="fab fa-line text-3xl"></i> 加入 LINE (ID: myavalon)
                 </a>
             </div>
             
             <p class="text-gray-500 text-sm mt-12">&copy; 2026 Tony線上美語家教 All Rights Reserved.</p>
         </footer>
 
-    </div> <!-- End of #product-page -->
+    </main>
 
-    <!-- Code 2: Email 結帳 Popup -->
+    <!-- Code 2: 結帳輸入 Email 彈窗 -->
     <div id="email-popup-overlay">
-        <div class="email-popup-content">
-          <div id="popup-inner-content">
-            <h3 id="popup-product-title" style="color: var(--accent-blue);"></h3>
-            <h3>請輸入您的電子信箱</h3>
-            <input type="email" id="popup-email-input" placeholder="example@gmail.com" required>
-            
-            <button id="popup-checkout-btn" onclick="handleCheckout()">確認結帳</button>
-            <button class="large-cancel-btn" onclick="closeEmailPopup()">取消</button>
-            
-            <div class="payment-info-section">
-              <h4>付款資訊</h4>
-              <div class="payment-method">
-                <div class="icon-circle"><div></div></div>
-                <span>銀行轉帳或是Line Pay 付款 (iPass Money)</span>
-              </div>
+      <div class="email-popup-content">
+        <div id="popup-inner-content">
+          <h3 id="popup-product-title" style="color: var(--accent-blue); font-size: 22px; margin-bottom:15px; font-weight:bold;"></h3>
+          <h3 style="font-size: 20px; color: #333; margin-bottom: 15px;">請輸入您的電子信箱</h3>
+          <input type="email" id="popup-email-input" placeholder="example@gmail.com" required>
+          
+          <button id="popup-checkout-btn" onclick="handleCheckout()">確認結帳</button>
+          <button class="large-cancel-btn" onclick="closeEmailPopup()">取消</button>
+          
+          <div class="payment-info-section">
+            <h4 style="margin: 0 0 10px 0; font-size: 18px; color: #333;">付款資訊</h4>
+            <div class="payment-method">
+              <div class="icon-circle"><div></div></div>
+              <span style="font-size: 16px;">銀行轉帳或是Line Pay 付款 (iPass Money)</span>
             </div>
-            <p class="tls-info">所有數據都透過安全 TLS 連線進行加密傳輸</p>
           </div>
+          <p style="text-align: center; color: #888; font-size: 12px; margin-top: 15px;">所有數據都透過安全 TLS 連線進行加密傳輸</p>
         </div>
-    </div>
-    
-    <!-- Code 2: 感謝與月曆預覽頁面 -->
-    <div id="thank-you-page">
-        <div class="thank-you-container">
-            <!-- 左側：成功訊息與訂單資訊 -->
-            <div class="ty-left-panel">
-                <div class="ty-checkmark">✓</div>
-                <h2 class="ty-header">感謝您的訂購！<span id="celebration-icon" class="celebration-icon">🎉</span></h2>
-                <p class="ty-message">您的訂單已成功建立。確認信已寄送至您的電子信箱，請檢查您的收件匣。</p>
-                
-                <div class="ty-order-details">
-                    <div class="ty-detail-item"><span>訂單編號</span><span id="ty-order-id"></span></div>
-                    <div class="ty-detail-item"><span>訂單時間</span><span id="ty-order-timestamp"></span></div>
-                    <div class="ty-detail-item"><span>電子信箱</span><span id="ty-customer-email"></span></div>
-                </div>
-    
-                <!-- 動態載入日曆預覽區 -->
-                <div id="ty-booking-container" style="margin-top: 30px;">
-                    <h3 style="color: #333; margin-bottom: 5px;">可預約時段預覽</h3>
-                    <p style="color: #666; font-size: 0.95rem; margin-top: 0;">點擊日期即可查詢當日時段 (僅供參考，請聯繫老師預約)：</p>
-                    <div id="calendar-preview-container">
-                        <!-- 新版互動式日曆將在此處渲染 -->
-                    </div>
-                </div>
-                
-                <div class="payment-instructions" style="margin-top: 30px;">
-                    <h3 style="color: #333; margin-bottom: 10px;">如何付款與劃位:</h3>
-                    <p><a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" style="color:#00B900; font-weight:bold;">請點選加入Line: myavalon</a> 確認付款資訊與正式預約</p>
-                </div>
-                
-                <div style="margin-top: 30px; text-align: center;">
-                  <a href="javascript:void(0)" onclick="returnToOriginalPage()" style="color: blue; text-decoration: underline; font-weight: bold; font-size: 18px;">回到頁面</a>
-                </div>
-            </div>
-            
-            <!-- 右側：訂單摘要 -->
-            <div class="ty-right-panel">
-                <h3 class="ty-summary-header">訂單摘要</h3>
-                <div id="ty-cart-items-container"></div>
-                <div class="cart-total">
-                    <div class="total-row"><span>總計</span><span id="ty-total-price">NT$0</span></div>
-                </div>
-            </div>
-        </div>
+      </div>
     </div>
 
-    <!-- Javascript 邏輯整合 -->
+    <!-- Code 2: 感謝頁面與月曆 -->
+    <div id="thank-you-page">
+      <div class="thank-you-container">
+          <div class="ty-left-panel">
+              <div class="ty-checkmark">✓</div>
+              <h2 style="display: flex; align-items: center; gap: 15px; font-size: 28px; color: #333; margin: 15px 0;">感謝您的訂購！🎉</h2>
+              <p style="color: #555; line-height: 1.6; font-size: 1.1rem;">您的訂單已成功建立。確認信已寄送至您的電子信箱，請檢查您的收件匣。</p>
+              
+              <div style="margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee;">
+                  <div class="ty-detail-item"><span>訂單編號</span><span id="ty-order-id"></span></div>
+                  <div class="ty-detail-item"><span>訂單時間</span><span id="ty-order-timestamp"></span></div>
+                  <div class="ty-detail-item"><span>電子信箱</span><span id="ty-customer-email"></span></div>
+              </div>
+
+              <div id="ty-booking-container" style="margin-top: 30px;">
+                  <h3 style="color: #333; margin-bottom: 5px; font-size:1.25rem; font-weight:bold;">可預約時段預覽</h3>
+                  <p style="color: #666; font-size: 0.95rem; margin-top: 0;">點擊日期即可查詢當日時段 (僅供參考，請聯繫老師預約)：</p>
+                  <div id="calendar-preview-container"></div>
+              </div>
+              
+              <div style="margin-top: 30px;">
+                  <h3 style="color: #333; margin-bottom: 10px; font-size:1.25rem; font-weight:bold;">如何付款與劃位:</h3>
+                  <p style="color:#555;"><a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" style="color:#00B900; font-weight:bold; text-decoration:underline;">請點選加入Line: myavalon</a> 確認付款資訊與正式預約</p>
+              </div>
+              
+              <div style="margin-top: 30px; text-align: center;">
+                <a href="javascript:void(0)" onclick="returnToOriginalPage()" style="color: blue; text-decoration: underline; font-weight: bold; font-size: 18px;">回到頁面</a>
+              </div>
+          </div>
+          
+          <div class="ty-right-panel">
+              <h3 style="font-size: 22px; color: #555; margin: 0 0 20px 0; border-bottom: 1px solid #ddd; padding-bottom: 10px;">訂單摘要</h3>
+              <div id="ty-cart-items-container"></div>
+              <div class="cart-total">
+                  <span>總計</span><span id="ty-total-price">NT$0</span>
+              </div>
+          </div>
+      </div>
+    </div>
+
+    <!-- JS 邏輯 -->
     <script>
-        /* --- 手機版手風琴卡片特效 --- */
-        function toggleAccordion(headerElement) {
-            // 只在手機版生效 (小於 768px)
-            if (window.innerWidth < 768) {
-                const body = headerElement.nextElementSibling;
-                const icon = headerElement.querySelector('.card-toggle-icon');
-                body.classList.toggle('mobile-hidden');
-                icon.classList.toggle('rotate-180');
+        // --- 1. 手機版 Accordion 手風琴邏輯 ---
+        function toggleAccordion(header) {
+            // 只有在視窗寬度小於 768px (手機板) 時才啟用展開/折疊功能
+            if (window.innerWidth >= 768) return; 
+
+            const content = header.nextElementSibling;
+            const icon = header.querySelector('.fa-chevron-down');
+            
+            // 點擊當前：如果已開啟則關閉，如果關閉則開啟
+            if (content.style.maxHeight) {
+                content.style.maxHeight = null;
+                icon.style.transform = 'rotate(0deg)';
+            } else {
+                // (選項) 關閉其他的選項，保持畫面整潔
+                document.querySelectorAll('.accordion-content').forEach(c => c.style.maxHeight = null);
+                document.querySelectorAll('.fa-chevron-down').forEach(i => i.style.transform = 'rotate(0deg)');
+                
+                // 開啟目前的選項
+                content.style.maxHeight = content.scrollHeight + "px";
+                icon.style.transform = 'rotate(180deg)';
             }
         }
 
-        /* --- Code 2 原版購物車與結帳邏輯 --- */
+        // --- 2. Code 2 購物車與預約邏輯 ---
         const products =[
           { id: 'trial-25', name: '體驗課程 25 分鐘', price: 350, gasUrl: 'https://script.google.com/macros/s/AKfycbyZMqL135r1VvRL7pdW6EB6nmeLja-MhQt95ri5xa9j9Z810WfMb7_Vm156MPFn8t5Q/exec' },
           { id: 'trial-50', name: '體驗課程 50 分鐘', price: 550, gasUrl: 'https://script.google.com/macros/s/AKfycbyWvhW6fp_ohPEvPK226KtNiQLCyAVMl77zV0Hq0k_TcEk3F1ni9qVcJystGUovVjTMGQ/exec' }
@@ -594,10 +596,8 @@
         let previewGasUrl = "";
         let miniCalDate = new Date();
         let selectedMiniDate = "";
-        
         let cachedSlots = {};
         let userHasManuallyClicked = false;
-        
         const MAX_DAYS_LIMIT = 20;
 
         function directCheckout(id) {
@@ -606,19 +606,19 @@
             const popupContent = document.getElementById('popup-inner-content');
             if(popupContent.querySelector('.error-container')) {
               popupContent.innerHTML = `
-                <h3 id="popup-product-title" style="color: var(--accent-blue);"></h3>
-                <h3>請輸入您的電子信箱</h3>
+                <h3 id="popup-product-title" style="color: var(--accent-blue); font-size: 22px; margin-bottom:15px; font-weight:bold;"></h3>
+                <h3 style="font-size: 20px; color: #333; margin-bottom: 15px;">請輸入您的電子信箱</h3>
                 <input type="email" id="popup-email-input" placeholder="example@gmail.com" required>
                 <button id="popup-checkout-btn" onclick="handleCheckout()">確認結帳</button>
                 <button class="large-cancel-btn" onclick="closeEmailPopup()">取消</button>
                 <div class="payment-info-section">
-                  <h4>付款資訊</h4>
+                  <h4 style="margin: 0 0 10px 0; font-size: 18px; color: #333;">付款資訊</h4>
                   <div class="payment-method">
                     <div class="icon-circle"><div></div></div>
-                    <span>銀行轉帳或是Line Pay 付款 (iPass Money)</span>
+                    <span style="font-size: 16px;">銀行轉帳或是Line Pay 付款 (iPass Money)</span>
                   </div>
                 </div>
-                <p class="tls-info">所有數據都透過安全 TLS 連線進行加密傳輸</p>
+                <p style="text-align: center; color: #888; font-size: 12px; margin-top: 15px;">所有數據都透過安全 TLS 連線進行加密傳輸</p>
               `;
             }
             document.getElementById("popup-product-title").innerText = `預約 ${currentCheckoutItem.name}`;
@@ -648,9 +648,9 @@
           const cleanEmail = email.toLowerCase().trim();
 
           if (blacklist.includes(cleanEmail)) {
-              const errorHtml = `你已經上過一堂體驗課程或其他原因無法下訂單 ，請聯繫 <span class="tony-highlight">Tony線上美語家教</span> Thanks. (<a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" style="color: #00B900; font-weight: bold; text-decoration: underline;">Line</a>)`;
+              const errorHtml = `你已經上過一堂體驗課程或其他原因無法下訂單 ，請聯繫 <span style="color:#007bff">Tony線上美語家教</span> Thanks. (<a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" style="color: #00B900; font-weight: bold; text-decoration: underline;">Line</a>)`;
               const popupContent = document.getElementById('popup-inner-content');
-              popupContent.innerHTML = `<div class="error-container">${errorHtml}</div>`;
+              popupContent.innerHTML = `<div class="error-container" style="color:#d9534f; font-size:18px; padding:20px;">${errorHtml}</div>`;
               return;
           }
 
@@ -662,28 +662,16 @@
           const total = currentCheckoutItem.price;
 
           closeEmailPopup();
-          
-          showThankYouPage({ 
-              email: email, 
-              item: currentCheckoutItem, 
-              orderId: orderId, 
-              timestamp: timestamp 
-          });
+          showThankYouPage({ email: email, item: currentCheckoutItem, orderId: orderId, timestamp: timestamp });
 
           fetch("https://script.google.com/macros/s/AKfycbyU13Wivs341DMPupk9EKrL9u908zrHNOVqZUXri-hGezkk6qj_7loQGIf0GCfmvj_f/exec", {
-            method: "POST",
-            mode: "no-cors",
+            method: "POST", mode: "no-cors",
             headers: { "Content-Type": "application/x-www-form-urlencoded" },
             body: new URLSearchParams({ 
-              orderId: orderId, 
-              email: email, 
-              productName: productName, 
-              totalPrice: total, 
-              status: "未付款",
-              imageUrls: logoUrl
+              orderId: orderId, email: email, productName: productName, 
+              totalPrice: total, status: "未付款", imageUrls: logoUrl
             })
           });
-
           currentCheckoutItem = null;
         }
 
@@ -697,19 +685,14 @@
             
             const tyCustomerEmail = document.getElementById('ty-customer-email');
             const emailParts = orderData.email.split('@');
-            if (emailParts.length === 2) {
-                tyCustomerEmail.innerHTML = `${emailParts[0]}<wbr>@${emailParts[1]}`;
-            } else {
-                tyCustomerEmail.innerText = orderData.email;
-            }
+            if (emailParts.length === 2) { tyCustomerEmail.innerHTML = `${emailParts[0]}<wbr>@${emailParts[1]}`; } 
+            else { tyCustomerEmail.innerText = orderData.email; }
 
             const tyCartContainer = document.getElementById('ty-cart-items-container');
             tyCartContainer.innerHTML = `
-              <div class="ty-order-item">
-                <div class="ty-item-details">
-                  <div class="ty-item-info">${orderData.item.name}</div>
-                  <div class="ty-item-price">NT$ ${orderData.item.price.toLocaleString()}</div>
-                </div>
+              <div style="padding-bottom: 15px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; font-size: 18px;">
+                <div style="font-weight: bold; color: #333;">${orderData.item.name}</div>
+                <div style="font-weight: bold; color: #333;">NT$ ${orderData.item.price.toLocaleString()}</div>
               </div>
             `;
             document.getElementById('ty-total-price').innerText = `NT$ ${orderData.item.price.toLocaleString()}`;
@@ -733,9 +716,7 @@
         function initMiniCalendar(gasUrl) {
             previewGasUrl = gasUrl;
             miniCalDate = new Date();
-            selectedMiniDate = ""; 
-            cachedSlots = {};
-            userHasManuallyClicked = false;
+            selectedMiniDate = ""; cachedSlots = {}; userHasManuallyClicked = false;
 
             const container = document.getElementById('calendar-preview-container');
             container.innerHTML = `
@@ -745,78 +726,57 @@
                         <span id="mini-cal-title"></span>
                         <button id="cal-next-btn" onclick="changeMiniMonth(1)">❯</button>
                     </div>
-                    <div class="mini-cal-weekdays" id="mini-cal-weekdays">
-                    </div>
+                    <div class="mini-cal-weekdays" id="mini-cal-weekdays"></div>
                     <div class="mini-cal-days" id="mini-cal-days"></div>
                     <div class="mini-cal-slots-box" id="mini-cal-slots-content">
                         <div style="text-align:center; color:#666; margin-top:10px;">⏳ 正在自動為您尋找最近的可用時段...</div>
                     </div>
                 </div>
             `;
-            
-            renderMiniCalendar();
-            fetchBatchSlots(0, 3, true);
+            renderMiniCalendar(); fetchBatchSlots(0, 3, true);
         }
 
         function renderMiniCalendar() {
-            const year = miniCalDate.getFullYear();
-            const month = miniCalDate.getMonth();
+            const year = miniCalDate.getFullYear(); const month = miniCalDate.getMonth();
             document.getElementById('mini-cal-title').innerText = `${year}年 ${month + 1}月`;
 
-            const today = new Date();
-            today.setHours(0,0,0,0);
+            const today = new Date(); today.setHours(0,0,0,0);
+            const maxDate = new Date(today); maxDate.setDate(maxDate.getDate() + MAX_DAYS_LIMIT);
+
+            document.getElementById('cal-prev-btn').style.opacity = (year === today.getFullYear() && month === today.getMonth()) ? '0.2' : '1';
+            document.getElementById('cal-prev-btn').style.pointerEvents = (year === today.getFullYear() && month === today.getMonth()) ? 'none' : 'auto';
             
-            const maxDate = new Date(today);
-            maxDate.setDate(maxDate.getDate() + MAX_DAYS_LIMIT);
-
-            const prevBtn = document.getElementById('cal-prev-btn');
-            const nextBtn = document.getElementById('cal-next-btn');
-
-            if (year === today.getFullYear() && month === today.getMonth()) {
-                prevBtn.classList.add('disabled');
-            } else {
-                prevBtn.classList.remove('disabled');
-            }
-
-            if (year === maxDate.getFullYear() && month === maxDate.getMonth()) {
-                nextBtn.classList.add('disabled');
-            } else {
-                nextBtn.classList.remove('disabled');
-            }
+            document.getElementById('cal-next-btn').style.opacity = (year === maxDate.getFullYear() && month === maxDate.getMonth()) ? '0.2' : '1';
+            document.getElementById('cal-next-btn').style.pointerEvents = (year === maxDate.getFullYear() && month === maxDate.getMonth()) ? 'none' : 'auto';
 
             let selectedDayOfWeek = -1;
             if (selectedMiniDate) {
                 const [y, m, d] = selectedMiniDate.split('-');
                 if (parseInt(y) === year && parseInt(m) - 1 === month) {
-                    const sd = new Date(y, m - 1, d);
-                    selectedDayOfWeek = sd.getDay();
+                    const sd = new Date(y, m - 1, d); selectedDayOfWeek = sd.getDay();
                 }
             }
 
             let todayDayOfWeek = -1;
-            if (today.getFullYear() === year && today.getMonth() === month) {
-                todayDayOfWeek = today.getDay();
-            }
+            if (today.getFullYear() === year && today.getMonth() === month) { todayDayOfWeek = today.getDay(); }
 
             const weekdaysArr =['一', '二', '三', '四', '五', '六'];
             let weekdaysHtml = '';
             for (let i = 0; i < 6; i++) {
                 let dayIndex = i + 1; 
-                let classes = 'mini-cal-weekday';
-                if (dayIndex === todayDayOfWeek) classes += ' today-weekday';
-                if (dayIndex === selectedDayOfWeek) classes += ' selected-weekday';
-                weekdaysHtml += `<div><span class="${classes}">${weekdaysArr[i]}</span></div>`;
+                let style = 'display:inline-flex; justify-content:center; align-items:center; width:28px; height:28px; border-radius:6px;';
+                if (dayIndex === selectedDayOfWeek) style += ' background:#007bff; color:#fff;';
+                else if (dayIndex === todayDayOfWeek) style += ' color:#007bff;';
+                weekdaysHtml += `<div><span style="${style}">${weekdaysArr[i]}</span></div>`;
             }
             document.getElementById('mini-cal-weekdays').innerHTML = weekdaysHtml;
 
-            const firstDay = new Date(year, month, 1).getDay();
             const daysInMonth = new Date(year, month + 1, 0).getDate();
-
+            const firstDay = new Date(year, month, 1).getDay();
             let html = '';
             let emptyCells = firstDay === 0 ? 0 : firstDay - 1;
-            for(let i = 0; i < emptyCells; i++) {
-                html += `<div class="mini-cal-day empty"></div>`;
-            }
+            
+            for(let i = 0; i < emptyCells; i++) { html += `<div class="mini-cal-day empty" style="pointer-events:none;"></div>`; }
 
             for(let d = 1; d <= daysInMonth; d++) {
                 const cellDate = new Date(year, month, d);
@@ -826,67 +786,48 @@
                 let classes = "mini-cal-day";
                 
                 if (cellDate < today || cellDate > maxDate) {
-                    classes += " disabled";
-                    html += `<div class="${classes}">${d}</div>`;
+                    html += `<div class="${classes} disabled">${d}</div>`;
                 } else {
                     if (cellDateStr === selectedMiniDate) classes += " selected";
-                    if (cellDate.getTime() === today.getTime()) classes += " today";
-                    html += `<div class="${classes}" onclick="handleMiniDateClick('${cellDateStr}')">${d}</div>`;
+                    if (cellDate.getTime() === today.getTime() && cellDateStr !== selectedMiniDate) classes += " today";
+                    let extraStyle = (cellDate.getTime() === today.getTime() && cellDateStr !== selectedMiniDate) ? "color:#007bff; border:1px solid #007bff;" : "";
+                    html += `<div class="${classes}" style="${extraStyle}" onclick="handleMiniDateClick('${cellDateStr}')">${d}</div>`;
                 }
             }
             document.getElementById('mini-cal-days').innerHTML = html;
         }
 
-        function changeMiniMonth(offset) {
-            miniCalDate.setMonth(miniCalDate.getMonth() + offset);
-            renderMiniCalendar();
-        }
+        function changeMiniMonth(offset) { miniCalDate.setMonth(miniCalDate.getMonth() + offset); renderMiniCalendar(); }
 
         async function fetchBatchSlots(offset, days, isInitial) {
-            const baseDate = new Date();
-            baseDate.setDate(baseDate.getDate() + offset);
+            const baseDate = new Date(); baseDate.setDate(baseDate.getDate() + offset);
             const startStr = fmtDate(baseDate);
-
             try {
                 const fetchUrl = `${previewGasUrl}?action=getBatchSlots&startDate=${startStr}&days=${days}`;
-                const res = await fetch(fetchUrl);
-                const data = await res.json();
+                const res = await fetch(fetchUrl); const data = await res.json();
 
                 for(let i = 0; i < days; i++) {
-                    let d = new Date(baseDate);
-                    d.setDate(d.getDate() + i);
+                    let d = new Date(baseDate); d.setDate(d.getDate() + i);
                     let dStr = fmtDate(d);
                     if (!cachedSlots[dStr]) cachedSlots[dStr] = { slots:[] };
                 }
 
                 if (data && typeof data === 'object') {
-                    Object.keys(data).forEach(key => {
-                        cachedSlots[key] = data[key];
-                    });
+                    Object.keys(data).forEach(key => { cachedSlots[key] = data[key]; });
                 }
-
                 checkAndAutoSelect();
 
-                if (isInitial) {
-                    fetchBatchSlots(3, 4, false);
-                } else if (offset === 3) {
-                    fetchBatchSlots(7, 7, false);
-                } else if (offset === 7) {
-                    fetchBatchSlots(14, 7, false);
-                }
+                if (isInitial) fetchBatchSlots(3, 4, false);
+                else if (offset === 3) fetchBatchSlots(7, 7, false);
+                else if (offset === 7) fetchBatchSlots(14, 7, false);
             } catch (e) {
-                console.error("Batch fetch failed:", e);
-                if (isInitial) {
-                    document.getElementById('mini-cal-slots-content').innerHTML = '<div style="text-align:center; padding: 20px; color: #d9534f;">⚠️ 載入失敗，請手動點選日期重試</div>';
-                }
+                if (isInitial) document.getElementById('mini-cal-slots-content').innerHTML = '<div style="text-align:center; padding: 20px; color: #d9534f;">⚠️ 載入失敗，請手動點選日期重試</div>';
             }
         }
 
         function checkAndAutoSelect() {
             if (userHasManuallyClicked) return; 
-            if (selectedMiniDate && cachedSlots[selectedMiniDate] && cachedSlots[selectedMiniDate].slots && cachedSlots[selectedMiniDate].slots.length > 0) {
-                return;
-            }
+            if (selectedMiniDate && cachedSlots[selectedMiniDate] && cachedSlots[selectedMiniDate].slots.length > 0) return;
 
             const todayStr = fmtDate(new Date());
             const sortedDates = Object.keys(cachedSlots).sort();
@@ -894,78 +835,55 @@
             for (let dStr of sortedDates) {
                 if (dStr < todayStr) continue;
                 const[y, m, d] = dStr.split('-');
-                const dObj = new Date(y, m - 1, d);
-                if (dObj.getDay() === 0) continue;
+                if (new Date(y, m - 1, d).getDay() === 0) continue;
 
-                if (cachedSlots[dStr] && cachedSlots[dStr].slots && cachedSlots[dStr].slots.length > 0) {
-                    selectedMiniDate = dStr;
-                    renderMiniCalendar(); 
-                    renderSlotsForDate(dStr);
-                    return; 
+                if (cachedSlots[dStr] && cachedSlots[dStr].slots.length > 0) {
+                    selectedMiniDate = dStr; renderMiniCalendar(); renderSlotsForDate(dStr); return; 
                 }
             }
 
             if (!selectedMiniDate) {
                 let fallbackDate = new Date();
-                if (fallbackDate.getDay() === 0) {
-                    fallbackDate.setDate(fallbackDate.getDate() + 1);
-                }
-                selectedMiniDate = fmtDate(fallbackDate);
-                renderMiniCalendar(); 
-                renderSlotsForDate(selectedMiniDate);
+                if (fallbackDate.getDay() === 0) fallbackDate.setDate(fallbackDate.getDate() + 1);
+                selectedMiniDate = fmtDate(fallbackDate); renderMiniCalendar(); renderSlotsForDate(selectedMiniDate);
             }
         }
 
         async function handleMiniDateClick(dateStr) {
-            userHasManuallyClicked = true;
-            selectedMiniDate = dateStr;
-            renderMiniCalendar(); 
+            userHasManuallyClicked = true; selectedMiniDate = dateStr; renderMiniCalendar(); 
 
-            if (cachedSlots[dateStr]) {
-                renderSlotsForDate(dateStr);
-            } else {
+            if (cachedSlots[dateStr]) { renderSlotsForDate(dateStr); } 
+            else {
                 const slotsBox = document.getElementById('mini-cal-slots-content');
                 slotsBox.innerHTML = '<div style="text-align:center; padding: 20px; color: #666;">⏳ 正在為您查詢該日時段...</div>';
-
                 try {
                     const fetchUrl = `${previewGasUrl}?action=getBatchSlots&startDate=${dateStr}&days=1`;
-                    const res = await fetch(fetchUrl);
-                    const data = await res.json();
-                    
+                    const res = await fetch(fetchUrl); const data = await res.json();
                     cachedSlots[dateStr] = data[dateStr] || { slots:[] };
                     renderSlotsForDate(dateStr);
-                } catch (e) {
-                    slotsBox.innerHTML = '<div style="text-align:center; padding: 20px; color: #d9534f;">⚠️ 查詢失敗，請稍後重試</div>';
-                }
+                } catch (e) { slotsBox.innerHTML = '<div style="text-align:center; padding: 20px; color: #d9534f;">⚠️ 查詢失敗，請稍後重試</div>'; }
             }
         }
 
         function renderSlotsForDate(dateStr) {
             if (selectedMiniDate !== dateStr) return; 
-
             const slotsBox = document.getElementById('mini-cal-slots-content');
             const dayData = cachedSlots[dateStr];
 
-            if (dayData && dayData.slots && dayData.slots.length > 0) {
+            if (dayData && dayData.slots.length > 0) {
                 const times = dayData.slots.map(s => s.time).sort();
-                const clockIcon = '<img src="https://ik.imagekit.io/lql1uveoc/Booking%20Website%20%E9%A0%90%E7%B4%84/clock-2.png" class="slot-clock-icon" alt="clock">';
-                
+                const clockIcon = '<img src="https://ik.imagekit.io/lql1uveoc/Booking%20Website%20%E9%A0%90%E7%B4%84/clock-2.png" style="width:16px;height:16px;margin-right:6px;" alt="clock">';
                 slotsBox.innerHTML = `<div class="time-grid">` +
-                    times.map(t => `<div class="time-slot-badge">${clockIcon}${formatTime12H(t)}</div>`).join('') +
-                    `</div>`;
-            } else {
-                slotsBox.innerHTML = '<div style="text-align:center; padding: 20px; color: #999;">本日無可用時段</div>';
-            }
+                    times.map(t => `<div class="time-slot-badge">${clockIcon}${formatTime12H(t)}</div>`).join('') + `</div>`;
+            } else { slotsBox.innerHTML = '<div style="text-align:center; padding: 20px; color: #999;">本日無可用時段</div>'; }
         }
 
         function returnToOriginalPage() {
           document.getElementById("thank-you-page").style.display = "none";
-          const emailInput = document.getElementById("popup-email-input");
-          if(emailInput) emailInput.value = "";
+          document.getElementById("popup-email-input").value = "";
           document.getElementById("product-page").style.display = "block";
           window.scrollTo(0, 0);
         }
     </script>
-
 </body>
 </html>
