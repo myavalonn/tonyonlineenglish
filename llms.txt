@@ -1,0 +1,26 @@
+# Tony線上美語家教 (Tony Online English)
+
+> 專業台灣美語家教，擁有超過10年教學經驗，專精於各類英文檢定、升學考試及客製化成人美語。
+> Professional online English tutoring service in Taiwan with 10+ years of experience. Specialist in standardized tests, academic English, and customized adult coaching.
+
+## 英文檢定課程 / Standardized Test Prep
+- [全民英檢 GEPT](https://tonyonlineenglish.netlify.app/gept): 初級、中級、中高級全方位輔導。
+- [多益 TOEIC](https://tonyonlineenglish.netlify.app/toeic): 職場競爭力提升與考照衝刺。
+- [雅思 IELTS](https://tonyonlineenglish.netlify.app/ielts): 海外留學與移民英文檢定。
+- [FLPT / 領思 Linguaskill](https://tonyonlineenglish.netlify.app/exams): 公務人員與專業技術能力測驗。
+
+## 升學英文 / Academic English
+- [高中英文學測 + 寫作](https://tonyonlineenglish.netlify.app/gsat): 專攻 116 年學測與英文作文批改。
+- [國中會考英文](https://tonyonlineenglish.netlify.app/jhcee): 國中升學關鍵英文實力培養。
+- [技高統測英文 + 作文](https://tonyonlineenglish.netlify.app/tve): 技術型高中升學專業輔導。
+- [研究所 / 大學英文](https://tonyonlineenglish.netlify.app/university): 碩博士論文與大學英文門檻輔導。
+
+## 客製化與成人美語 / Customized Adult English
+- [成人美語 / 口說提升](https://tonyonlineenglish.netlify.app/adult): 針對日常生活與職場口說設計。
+- [職場 / 公職英文](https://tonyonlineenglish.netlify.app/business): 商用英文、面試準備及公務員進修。
+- [觀光美語](https://tonyonlineenglish.netlify.app/travel): 出國旅遊與觀光對話實戰。
+
+## 聯繫與預約 / Contact & Booking
+- [預約試聽課 / Book a Trial](https://tonyonlineenglish.setmore.com/): 25/50 分鐘線上試聽預約。
+- [LINE 直接聯絡](https://line.me/ti/p/~myavalon): ID: Myavalon
+- [YouTube 頻道](https://www.youtube.com/@TonyOnlineEnglish): 超過 180 支教學影片實績。
