@@ -62,10 +62,12 @@
         .hero-btn { background:var(--theme-blue);color:#fff;padding:16px 40px;border-radius:50px;font-size:1.25rem;font-weight:800;text-decoration:none;transition:all .3s;box-shadow:0 6px 20px rgba(0,101,255,.4);display:inline-flex;align-items:center;gap:10px; }
         .hero-btn:hover { background:#0056cc;transform:translateY(-3px);color:#fff; }
         .hero-links { display:flex;gap:15px;flex-wrap:wrap;justify-content:center; }
-        .secondary-btn { background:rgba(255,255,255,.15);backdrop-filter:blur(5px);color:#fff;padding:12px 24px;border-radius:50px;font-size:1.05rem;font-weight:700;text-decoration:none;transition:all .3s;border:1px solid rgba(255,255,255,.3);display:inline-flex;align-items:center;gap:8px; }
-        .secondary-btn:hover { background:rgba(255,255,255,.3);transform:translateY(-2px); }
-        .line-btn { background:rgba(0,185,0,.85);border-color:#00B900; }
-        .line-btn:hover { background:rgba(0,185,0,1); }
+        
+        /* 修正按鈕殘影：明確設定 initial state，避免繼承閃爍 */
+        .secondary-btn { background:rgba(255,255,255,.15) !important; backdrop-filter:blur(5px);color:#fff;padding:12px 24px;border-radius:50px;font-size:1.05rem;font-weight:700;text-decoration:none;transition:all .3s;border:1px solid rgba(255,255,255,.3);display:inline-flex;align-items:center;gap:8px; }
+        .secondary-btn:hover { background:rgba(255,255,255,.3) !important; transform:translateY(-2px); }
+        .line-btn { background:rgba(0,185,0,.85) !important; border-color:#00B900; }
+        .line-btn:hover { background:rgba(0,185,0,1) !important; }
         .m-break { display:none; }
         .desktop-x-space { display:inline; }
 
@@ -112,22 +114,21 @@
         }
         .slider-track::-webkit-scrollbar { display:none; }
         
-        /* 動態計算前後邊距，確保最後一張卡片能完美置中！ */
+        /* 確保手機版置中緩衝 */
         .slider-track::before,
         .slider-track::after { 
             content: ''; 
-            /* 假設手機版卡片最寬320px，一半為160px，利用50vw推算完美置中距離 */
             min-width: calc(50vw - 160px); 
             flex-shrink: 0; 
         }
 
         /* =========================================
-           CARD (手機板縮短高度，消滅上方多餘空白)
+           CARD (調整高度、版面、背景能見度)
            ========================================= */
         .m-card {
             min-width: 80vw; 
             max-width: 320px;
-            height: 410px; /* ★ 高度再次調降，減少上方圖片空白 */
+            height: 330px; /* ★ 高度極致縮減，消滅空白 */
             border-radius: 22px;
             position: relative;
             scroll-snap-align: center;
@@ -138,24 +139,19 @@
             will-change: transform,opacity;
             cursor: pointer;
             
-            /* ★ 改用 CSS 背景圖，杜絕破圖(?)問題 */
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             overflow: hidden;
         }
-        .m-card.active { 
-            transform: scale(1); 
-            opacity: 1; 
-        }
-
-        .m-card-overlay { position:absolute;inset:0; }
+        .m-card.active { transform: scale(1); opacity: 1; }
+        .m-card-overlay { position:absolute;inset:0; z-index:1; }
 
         .m-card-body {
             position: absolute; inset: 0;
-            padding: 15px 22px 18px; /* 緊湊的內距 */
+            padding: 18px 22px 18px; 
             display: flex; flex-direction: column;
-            justify-content: flex-end; 
+            justify-content: flex-start; /* ★ 讓內容靠最上方 */
             z-index: 2;
         }
 
@@ -166,86 +162,93 @@
             opacity: 0.95;
             z-index: 2;
         }
+        
+        .card-top-text { display: flex; flex-direction: column; }
 
         .m-title-big {
             font-family: 'Playfair Display', serif;
             font-weight: 900;
-            font-size: clamp(4.5rem, 16vw, 6rem); 
+            font-size: clamp(4rem, 14vw, 5.5rem); 
             line-height: 1;
             color: #fff;
             display: block;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
         .m-title-small {
             font-family: 'Playfair Display', serif;
             font-weight: 700;
-            font-size: clamp(1.4rem, 4.5vw, 1.8rem);
+            font-size: clamp(1.3rem, 4.2vw, 1.6rem);
             line-height: 1.2;
             color: #fff;
             display: block;
             margin-top: 4px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
         }
 
-        .m-divider { width:44px;height:3px;margin:10px 0 10px;border-radius:2px; }
+        /* ★ margin-top: auto 讓這條線以下的東西全部被推到底部 */
+        .m-divider { width:44px;height:3px;margin:auto 0 10px;border-radius:2px; }
 
         .m-points { display:flex;flex-direction:column;gap:8px; }
         .m-point {
             display: flex; align-items: flex-start; gap: 8px;
-            font-size: clamp(15px, 4vw, 17px); /* ★ 手機版課程內容字體放大 */
+            font-size: clamp(14px, 3.8vw, 16px); 
             font-weight: 700; color: #fff; line-height: 1.4;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.5px; text-shadow: 0 1px 4px rgba(0,0,0,0.5);
         }
-        .m-point-dot { width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:6px; }
+        .m-point-dot { width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:6px; box-shadow: 0 0 5px rgba(0,0,0,0.5);}
 
         .m-section-label {
             font-size: 11px; letter-spacing: 2.5px; text-transform:uppercase;
-            font-weight:800; color:rgba(255,255,255,.7); margin:8px 0 6px;
+            font-weight:800; color:rgba(255,255,255,.9); margin:0 0 6px; text-shadow: 0 1px 4px rgba(0,0,0,0.5);
         }
 
         .m-price-row { display:flex;align-items:center;justify-content:space-between;margin-top:12px; }
-        .m-price { font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(1.4rem,4.5vw,1.8rem);color:#fff; }
-        .m-buy-btn { font-size:clamp(13px,3.5vw,15px);font-weight:800;letter-spacing:1px;padding:10px 18px;border-radius:50px;border:none;cursor:pointer;text-transform:uppercase;white-space:nowrap; transition: transform 0.2s; z-index: 10; position:relative;}
+        .m-price { font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(1.4rem,4.5vw,1.8rem);color:#fff; text-shadow: 0 2px 8px rgba(0,0,0,0.4);}
+        .m-buy-btn { font-size:clamp(13px,3.5vw,15px);font-weight:800;letter-spacing:1px;padding:10px 18px;border-radius:50px;border:none;cursor:pointer;text-transform:uppercase;white-space:nowrap; transition: transform 0.2s; z-index: 10; position:relative; box-shadow: 0 4px 10px rgba(0,0,0,0.3);}
         .m-buy-btn:hover { transform: scale(1.05); }
 
-        /* ---- card colour themes ---- */
-        .card-b .m-card-overlay { background:linear-gradient(160deg,rgba(40,20,5,.08) 0%,rgba(28,12,2,.95) 55%); }
+        /* ---- ★ 修正背景遮罩：上面極淡透出圖片，下面漸暗保留文字清晰 ---- */
+        .card-b .m-card-overlay { background:linear-gradient(180deg, rgba(28,12,2,0.15) 0%, rgba(28,12,2,0.6) 40%, rgba(28,12,2,0.95) 100%); }
         .card-b .m-title-small  { color:#fef9ec; }
         .card-b .m-divider      { background:#f59e0b; }
         .card-b .m-point-dot    { background:#fbbf24; }
         .card-b .m-buy-btn      { background:#f59e0b;color:#1c1106; }
 
-        .card-a .m-card-overlay { background:linear-gradient(160deg,rgba(5,15,40,.08) 0%,rgba(4,10,32,.95) 55%); }
+        .card-a .m-card-overlay { background:linear-gradient(180deg, rgba(4,10,32,0.15) 0%, rgba(4,10,32,0.6) 40%, rgba(4,10,32,0.95) 100%); }
         .card-a .m-title-small  { color:#e0eaff; }
         .card-a .m-divider      { background:#3b82f6; }
         .card-a .m-point-dot    { background:#60a5fa; }
         .card-a .m-buy-btn      { background:#3b82f6;color:#fff; }
 
-        .card-c .m-card-overlay { background:linear-gradient(160deg,rgba(2,20,15,.08) 0%,rgba(2,16,12,.95) 55%); }
-        /* ★ 修正第三個方案字體，強制一行 */
-        .card-c .m-title-big    { 
-            font-size: clamp(2.4rem, 9.5vw, 3.2rem); 
-            white-space: nowrap; /* 強制不換行 */
-        }
+        .card-c .m-card-overlay { background:linear-gradient(180deg, rgba(2,16,12,0.15) 0%, rgba(2,16,12,0.6) 40%, rgba(2,16,12,0.95) 100%); }
+        .card-c .m-title-big    { font-size: clamp(2.4rem, 9.5vw, 3.2rem); white-space: nowrap; }
         .card-c .m-title-small  { color:#d1fae5; }
         .card-c .m-divider      { background:#10b981; }
         .card-c .m-point-dot    { background:#34d399; }
         .card-c .m-buy-btn      { background:#10b981;color:#022c22; }
 
 
-        /* ★ 新增：平板專屬設定 (字體全面放大) */
+        /* ★ 平板專屬設定：修復第三張卡片滑動問題，並微調大小 */
         @media (min-width: 768px) and (max-width: 1180px) {
+            /* 修正公式：給予 ::after 充足空間，讓最後一張卡片能滾動到中間 */
             .slider-track::before,
-            .slider-track::after { min-width: calc(50vw - 190px); } /* 平板卡片較寬，調整置中參數 */
-            .m-card { min-width: 380px; max-width: 400px; height: 520px; }
+            .slider-track::after { min-width: calc(50vw - 180px); } 
+            
+            .m-card { min-width: 360px; max-width: 380px; height: 480px; }
             .m-title-big { font-size: 5rem; }
-            .card-c .m-title-big { font-size: 3rem; } /* 平板第三方案字體 */
-            .m-title-small { font-size: 2rem; }
-            .m-point { font-size: 18px; line-height: 1.6; } /* 課程內容放大 */
-            .m-buy-btn { font-size: 16px; padding: 12px 22px; }
-            .m-price { font-size: 2rem; }
-            .m-gept-logo { height: 48px; }
+            .card-c .m-title-big { font-size: 3rem; } 
+            .m-title-small { font-size: 1.8rem; }
+            .m-point { font-size: 17px; line-height: 1.6; } 
+            .m-buy-btn { font-size: 15px; padding: 12px 22px; }
+            .m-price { font-size: 1.8rem; }
+            .m-gept-logo { height: 46px; }
+            
+            /* 平板卡片較高，文字間距可以放鬆 */
+            .m-card-body { padding: 25px; }
+            .m-divider { margin: auto 0 15px; }
         }
 
-        /* ★ 電腦版 (放寬間距、放大卡片) */
+        /* ★ 電腦版 */
         @media (min-width:1181px) {
             .cards-section { max-width:1600px;margin:0 auto; padding-top: 50px; }
             .slider-track { justify-content: center; gap: 30px; } 
@@ -253,7 +256,7 @@
             .m-card { 
                 min-width: 380px;  
                 max-width: 420px; 
-                height: 650px;     
+                height: 550px;     
                 transform: scale(0.95); 
                 opacity: 0.9; 
             }
@@ -268,10 +271,11 @@
             .m-gept-logo { height:56px; }
             .m-buy-btn { padding:14px 24px; font-size: 16px;}
             .m-point { font-size: 18px; line-height: 1.6; }
+            .m-card-body { padding: 30px; }
+            .m-divider { margin: auto 0 20px; }
             
-            .card-c .m-title-big { font-size: 3.2rem; } /* 電腦版第三方案維持一行 */
+            .card-c .m-title-big { font-size: 3.2rem; }
 
-            /* 電腦版下方適合對象放大 */
             .audience-panel { 
                 max-width: 1200px; margin: 40px auto 20px; border-radius: 16px; 
                 box-shadow: 0 10px 30px rgba(0,0,0,0.05); padding: 40px 50px;
@@ -322,13 +326,10 @@
         .audience-icon { font-size:1.3em;flex-shrink:0;margin-top:1px; }
         .audience-row strong { color:#111827;font-weight:800; }
 
-        /* pagination dots */
         .m-pagination-dots { display:flex;justify-content:center;align-items:center;gap:8px;padding:12px 0 20px; }
         .m-dot { width:8px;height:8px;border-radius:50%;background:#cbd5e1;cursor:pointer;transition:all .3s; }
         .m-dot.active { width:28px;border-radius:10px;background:#1e293b; }
-        @media (min-width:1181px) {
-            .m-pagination-dots { display: none; } 
-        }
+        @media (min-width:1181px) { .m-pagination-dots { display: none; } }
 
         /* =========================================
            ★ 桌機版點擊放大的專屬 Modal
@@ -351,11 +352,15 @@
         }
         
         .dm-card-wrap { flex: 0 0 450px; display:flex; justify-content:center; }
+        
+        /* ★ 確保 Modal 內的卡片背景圖能正常顯示！ */
         .dm-card-wrap .m-card { 
             min-width: 100%; height: 750px; 
             transform: none !important; opacity: 1 !important; 
             cursor: default; margin: 0; border-radius: 28px;
             box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
+            background-size: cover !important; 
+            background-position: center !important;
         }
         .dm-card-wrap .m-buy-btn { font-size:18px; padding: 16px 28px; }
 
@@ -375,7 +380,7 @@
         .dm-info-wrap .audience-row strong { font-size: 1.6rem; display:block; margin-bottom: 5px; color:#1e293b;}
         .dm-info-wrap .audience-desc-text { font-size: 1.25rem; color:#64748b;}
 
-        /* FEATURES & OTHERS (維持不變) */
+        /* FEATURES & OTHERS */
         .features-wrapper { width:100%;max-width:1400px;margin:30px auto 40px;padding:20px 30px;box-sizing:border-box; }
         .feature-item { box-sizing:border-box;position:relative; }
         .feature-icon-wrapper { background:#eff6ff;border-radius:50%;display:flex;justify-content:center;align-items:center;color:#0066ff;position:relative;flex-shrink:0; }
@@ -415,29 +420,82 @@
             .terms-box { font-size:12px;padding:15px;margin-top:20px; }
         }
 
-        .testimonials-wrapper { width:100%;max-width:1400px;margin:20px auto 60px;padding:0 30px;box-sizing:border-box; }
-        .testi-section-title { text-align:center;font-size:2rem;font-weight:900;color:var(--text-main);margin-bottom:30px; }
-        .testi-container-relative { position:relative;width:100%;display:flex;align-items:center; }
-        .testi-arrow { position:absolute;top:50%;transform:translateY(-50%);width:48px;height:48px;background:#fff;border:1px solid #e2e8f0;border-radius:50%;box-shadow:0 4px 12px rgba(0,0,0,.1);display:flex;align-items:center;justify-content:center;cursor:pointer;z-index:10;color:#64748b;font-size:1.2rem;transition:all .3s; }
-        .testi-arrow:hover { background:var(--theme-blue);color:#fff;border-color:var(--theme-blue); }
-        .testi-arrow.left-arrow { left:-20px; }
-        .testi-arrow.right-arrow { right:-20px; }
-        .testi-slider { display:flex;overflow-x:auto;scroll-snap-type:x mandatory;gap:20px;padding:15px 5px 30px;-webkit-overflow-scrolling:touch;scrollbar-width:none;width:100%; }
-        .testi-slider::-webkit-scrollbar { display:none; }
-        .testi-card { min-width:300px;max-width:320px;background:#fff;border:1px solid #e5e7eb;border-radius:16px;padding:25px;scroll-snap-align:center;box-shadow:0 4px 15px rgba(0,0,0,.03);flex-shrink:0;display:flex;flex-direction:column; }
-        .testi-header { display:flex;justify-content:space-between;align-items:center;margin-bottom:12px; }
-        .testi-name { font-weight:800;font-size:1.2rem;color:var(--text-main); }
-        .testi-role { font-size:.85rem;background:#f1f5f9;padding:4px 10px;border-radius:20px;color:#475569;font-weight:700; }
-        .testi-stars { color:#fbbf24;font-size:1.1rem;margin-bottom:15px;letter-spacing:2px; }
-        .testi-text { font-size:1rem;color:#4b5563;line-height:1.6;font-style:italic;flex-grow:1; }
-        .testi-text::before { content:"\201C";color:#cbd5e1;font-size:1.5em;font-family:serif;font-weight:bold; }
-        .testi-text::after  { content:"\201D";color:#cbd5e1;font-size:1.5em;font-family:serif;font-weight:bold; }
-        @media (max-width:768px) {
-            .testimonials-wrapper { padding:0 15px; }
-            .testi-arrow { display:none; }
-            .testi-card { min-width:85vw;max-width:85vw;padding:20px; }
+        /* =========================================
+           ★ TONY 專家建議區塊 (替換原本的學員見證)
+           ========================================= */
+        .advice-wrapper {
+            background: #fff;
+            border-left: 6px solid var(--theme-blue);
+            padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+            border-radius: 12px;
+            margin: 20px auto 60px;
+            max-width: 900px;
+            width: 90%;
+            position: relative;
+        }
+        .advice-icon {
+            position: absolute;
+            top: -20px; left: -20px;
+            background: var(--theme-blue); color: #fff;
+            width: 50px; height: 50px; border-radius: 50%;
+            display: flex; justify-content: center; align-items: center;
+            font-size: 24px; box-shadow: 0 4px 10px rgba(0,101,255,0.4);
+        }
+        .advice-title {
+            font-size: 1.8rem; font-weight: 900; color: var(--text-main);
+            margin-bottom: 25px; line-height: 1.3;
+        }
+        .advice-content {
+            font-size: 1.1rem; color: #4b5563; line-height: 1.8;
+            display: flex; flex-direction: column; gap: 15px;
+        }
+        .advice-content strong { color: var(--text-main); font-weight: 800; }
+        .advice-content span.highlight { color: var(--theme-blue); font-weight: 700; }
+        
+        @media (max-width: 768px) {
+            .advice-wrapper { padding: 30px 20px; margin-top: 40px; border-left-width: 4px; }
+            .advice-icon { width: 40px; height: 40px; font-size: 20px; top: -15px; left: -10px; }
+            .advice-title { font-size: 1.4rem; }
+            .advice-content { font-size: 1rem; }
         }
 
+        /* =========================================
+           ★ CONTACT US SECTION 
+           ========================================= */
+        .contact-section { background: var(--bg-color); padding: 50px 20px 80px; width: 100%; }
+        .contact-wrap { 
+            max-width: 700px; margin: 0 auto; background: #fff; 
+            padding: 50px; border-radius: 16px; border: 1px solid #e5e7eb; 
+            box-shadow: 0 10px 30px rgba(0,0,0,0.05); 
+        }
+        .contact-header { text-align: center; margin-bottom: 30px; }
+        .contact-header h2 { font-size: 2rem; font-weight: 900; color: var(--text-main); margin: 0 0 10px; }
+        .contact-header p { color: #64748b; font-size: 1.1rem; margin: 0; }
+        
+        .form-group { margin-bottom: 24px; text-align: left; }
+        .form-group label { display: block; font-weight: 700; margin-bottom: 8px; font-size: 1rem; color: var(--text-main); }
+        .form-group input, .form-group textarea { 
+            width: 100%; padding: 14px 18px; border: 1.5px solid #cbd5e1; 
+            border-radius: 8px; font-family: inherit; font-size: 1rem; transition: border-color .2s; 
+            background: #f8fafc;
+        }
+        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--theme-blue); background: #fff; }
+        #contact-submit { 
+            width: 100%; font-size: 1.15rem; padding: 16px; margin-top: 10px; 
+            cursor: pointer; border: none; font-family: inherit; font-weight: 800;
+            background: var(--theme-blue); color: #fff; border-radius: 50px;
+            transition: all 0.3s; box-shadow: 0 4px 15px rgba(0,101,255,0.3);
+        }
+        #contact-submit:hover { transform: translateY(-2px); background: #0056cc; box-shadow: 0 6px 20px rgba(0,101,255,0.4); }
+        #contact-submit:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+        
+        @media (max-width: 768px) {
+            .contact-wrap { padding: 30px 20px; }
+            .contact-header h2 { font-size: 1.6rem; }
+        }
+
+        /* Cart Styles */
         .cart-overlay { position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);z-index:20000;opacity:0;visibility:hidden;transition:opacity .5s,visibility .5s; }
         .cart-overlay.open { opacity:1;visibility:visible; }
         .cart-panel { position:fixed;top:0;right:-100%;width:90%;max-width:800px;height:100dvh;background:#f9f9f9;box-shadow:-5px 0 15px rgba(0,0,0,.1);z-index:20001;transition:right .5s ease-in-out;display:flex;flex-direction:column; }
@@ -548,13 +606,15 @@
 
         <div class="slider-track" id="main-slider">
 
-            <!-- ===== Card B: 6回 (使用背景圖片取代 img 標籤) ===== -->
+            <!-- ===== Card B: 6回 ===== -->
             <div class="m-card card-b active" id="m-card-0" onclick="handleCardClick(0)" style="background-image: url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/ahmed-pUY0TMADyTM-unsplash.jpg');">
                 <div class="m-card-overlay"></div>
                 <img class="m-gept-logo" src="https://ik.imagekit.io/lql1uveoc/Front%20Page/GEPT_logo.svg.png?updatedAt=1756611596300" alt="GEPT">
                 <div class="m-card-body">
-                    <span class="m-title-big">6回</span>
-                    <span class="m-title-small">完整影片課程</span>
+                    <div class="card-top-text">
+                        <span class="m-title-big">6回</span>
+                        <span class="m-title-small">完整影片課程</span>
+                    </div>
                     <div class="m-divider"></div>
                     <div class="m-section-label">課程內容</div>
                     <div class="m-points">
@@ -574,8 +634,10 @@
                 <div class="m-card-overlay"></div>
                 <img class="m-gept-logo" src="https://ik.imagekit.io/lql1uveoc/Front%20Page/GEPT_logo.svg.png?updatedAt=1756611596300" alt="GEPT">
                 <div class="m-card-body">
-                    <span class="m-title-big">3回</span>
-                    <span class="m-title-small">完整影片課程</span>
+                    <div class="card-top-text">
+                        <span class="m-title-big">3回</span>
+                        <span class="m-title-small">完整影片課程</span>
+                    </div>
                     <div class="m-divider"></div>
                     <div class="m-section-label">課程內容</div>
                     <div class="m-points">
@@ -595,8 +657,10 @@
                 <div class="m-card-overlay"></div>
                 <img class="m-gept-logo" src="https://ik.imagekit.io/lql1uveoc/Front%20Page/GEPT_logo.svg.png?updatedAt=1756611596300" alt="GEPT">
                 <div class="m-card-body">
-                    <span class="m-title-big">中級寫作</span>
-                    <span class="m-title-small">加強課程</span>
+                    <div class="card-top-text">
+                        <span class="m-title-big">中級寫作</span>
+                        <span class="m-title-small">加強課程</span>
+                    </div>
                     <div class="m-divider"></div>
                     <div class="m-section-label">客製化選項</div>
                     <div class="m-points">
@@ -673,21 +737,54 @@
         <div class="terms-box"><strong>💡 組合優惠說明：</strong><br>本專案包含之真人服務（批改評分與家教）。贈送項目為限時福利，恕不折現或抵扣主課程費用。</div>
     </div>
 
-    <!-- TESTIMONIALS -->
-    <div class="testimonials-wrapper">
-        <h2 class="testi-section-title">學員見證</h2>
-        <div class="testi-container-relative">
-            <button class="testi-arrow left-arrow" onclick="scrollTesti(-1)"><i class="fa-solid fa-chevron-left"></i></button>
-            <div class="testi-slider" id="testi-slider">
-                <div class="testi-card"><div class="testi-header"><span class="testi-name">Jason</span><span class="testi-role">高中生</span></div><div class="testi-stars">★★★★★</div><p class="testi-text">本來寫作常常抓不到重點，上了6回完整影片課程後，邏輯變得超清晰！順利取得全民英檢中級證書，進步非常明顯！</p></div>
-                <div class="testi-card"><div class="testi-header"><span class="testi-name">Emily</span><span class="testi-role">國中生</span></div><div class="testi-stars">★★★★★</div><p class="testi-text">老師的雙師專業批改一針見血地點出我的盲點，也給了很多實用的範本替換，讓我第一次挑戰就高分通過！</p></div>
-                <div class="testi-card"><div class="testi-header"><span class="testi-name">Kevin</span><span class="testi-role">高中生</span></div><div class="testi-stars">★★★★★</div><p class="testi-text">1對1的線上真人寫作診斷課程太棒了！直接解決我長久以來的文法錯誤。加強方案完全拯救了我的備考期。</p></div>
-                <div class="testi-card"><div class="testi-header"><span class="testi-name">Rachel</span><span class="testi-role">高中生</span></div><div class="testi-stars">★★★★★</div><p class="testi-text">考前衝刺選了方案A，影片時數不會太長但都是精華！搭配翻譯與批改指導，讓我在寫作大題拿到了從未想過的高分。</p></div>
-                <div class="testi-card"><div class="testi-header"><span class="testi-name">Leo</span><span class="testi-role">國中生</span></div><div class="testi-stars">★★★★★</div><p class="testi-text">原本對英文寫作超沒自信，靠著家教課程慢慢建立語感跟句型，最後奇蹟似地過關了！非常推薦需要針對性指導的人。</p></div>
-            </div>
-            <button class="testi-arrow right-arrow" onclick="scrollTesti(1)"><i class="fa-solid fa-chevron-right"></i></button>
+    <!-- =====================================
+         ★ TONY 專家建議區塊
+         ===================================== -->
+    <div class="advice-wrapper">
+        <div class="advice-icon"><i class="fa-solid fa-lightbulb"></i></div>
+        <div class="advice-title">Tony 線上美語家教<br>給予全民英檢學員的建議</div>
+        <div class="advice-content">
+            <p>準備全民英檢中級寫作，最大的盲點往往在於「死背高深單字與生硬的模板」，卻忽略了最基本的「句型邏輯」與「中英轉換思維」。綜合眾多高分通關學員的回饋，我們總結出三大致勝關鍵：</p>
+            <p><strong>1. 丟掉死記硬背的模板：</strong><br>用你真正懂的單字，寫出文法正確的句子，遠比硬塞一個用錯的「高級單字」拿分更高。<span>靈活替換</span>才是語言的本質。</p>
+            <p><strong>2. 強化中翻英的底子：</strong><br>翻譯題其實就是寫作的縮影。打好翻譯基礎，你的作文自然言之有物，不會落入中式英文的陷阱。</p>
+            <p><strong>3. 突破「自己看不出錯」的盲點：</strong><br>自己練寫作，很容易一直犯相同的錯誤。透過專業的<span>雙師批改</span>與<span>1對1真人診斷</span>，能在一針見血的指導下，省去你大量摸索與挫折的時間。</p>
+            <p style="text-align: center; margin-top: 10px; font-weight: 800; color: var(--theme-blue);">寫作不靠運氣，靠的是清晰的邏輯與刻意練習！</p>
         </div>
     </div>
+
+    <!-- =====================================
+         ★ 聯繫我們 (Contact Us)
+         ===================================== -->
+    <section class="contact-section" id="contact">
+        <div class="contact-wrap">
+            <div class="contact-header">
+                <h2>聯繫我們</h2>
+                <p>有任何課程問題？歡迎填寫表單與我們聯繫</p>
+            </div>
+            <form id="contact-form" onsubmit="submitContactForm(event)">
+                <div class="form-group">
+                    <label>姓名 Name *</label>
+                    <input type="text" id="contact-name" placeholder="請填寫您的姓名" required>
+                </div>
+                <div class="form-group">
+                    <label>Email *</label>
+                    <input type="email" id="contact-email" placeholder="example@gmail.com" required>
+                </div>
+                <div class="form-group">
+                    <label>Line ID (選填)</label>
+                    <input type="text" id="contact-line" placeholder="方便老師與您快速聯繫">
+                </div>
+                <div class="form-group">
+                    <label>學習需求 *</label>
+                    <textarea id="contact-needs" rows="5" placeholder="請簡述您的程度與目前遇到的寫作瓶頸..." required></textarea>
+                </div>
+                <button type="submit" id="contact-submit">送出訊息 <i class="fa-solid fa-paper-plane"></i></button>
+            </form>
+            <div id="contact-msg" style="display:none; text-align:center; padding: 30px; font-size: 1.2rem; color: #00B900; font-weight: 700;">
+                ✓ 訊息已成功送出！Tony 老師將會盡快與您聯繫。
+            </div>
+        </div>
+    </section>
 
 </div><!-- /pricing-wrapper -->
 
@@ -829,7 +926,6 @@ window.scrollToMCard = function(index) {
     const card   = document.getElementById('m-card-' + index);
     if (!slider || !card) return;
     
-    // 精準置中公式
     const centerPos = card.offsetLeft - (slider.clientWidth / 2) + (card.offsetWidth / 2);
     slider.scrollTo({ left: centerPos, behavior: 'smooth' });
 };
@@ -993,10 +1089,36 @@ function updateCartDisplay() {
     t.innerHTML = `<div class="total-row final-total"><span>總計</span><span>NT$ ${total.toLocaleString()}</span></div>`;
 }
 
-window.scrollTesti = function(dir) {
-    const s = document.getElementById('testi-slider');
-    if (s) s.scrollBy({left: dir * 340, behavior:'smooth'});
-};
+/* ─── CONTACT FORM LOGIC ─────────────────────────────────────────── */
+function submitContactForm(e) {
+    e.preventDefault();
+    const btn = document.getElementById('contact-submit');
+    btn.innerHTML = '傳送中... <i class="fa-solid fa-spinner fa-spin"></i>';
+    btn.disabled = true;
+
+    // 接上你提供的 GAS URL
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbwE5thuJP9luwed0GG0eRF4DheFubXRfWQ5ZnnJL5r8TxFGaIrhUzEB4AAp51RZ_WL3/exec"; 
+    
+    const params = new URLSearchParams();
+    params.append('name', document.getElementById('contact-name').value);
+    params.append('email', document.getElementById('contact-email').value);
+    params.append('line', document.getElementById('contact-line').value || "無");
+    params.append('needs', document.getElementById('contact-needs').value);
+
+    fetch(GAS_URL, {
+        method: "POST",
+        mode: "no-cors",
+        body: params
+    }).then(() => {
+        document.getElementById('contact-form').style.display = 'none';
+        document.getElementById('contact-msg').style.display = 'block';
+    }).catch(err => {
+        alert("傳送失敗，請檢查網路連線。");
+    }).finally(() => {
+        btn.innerHTML = '送出訊息 <i class="fa-solid fa-paper-plane"></i>';
+        btn.disabled = false;
+    });
+}
 </script>
 
 </body>
