@@ -102,62 +102,75 @@
            ========================================= */
         .slider-track {
             display: flex;
-            gap: 14px;
+            gap: 15px;
             padding: 20px 0 24px;
             overflow-x: auto;
             scroll-snap-type: x mandatory;
             -webkit-overflow-scrolling: touch;
             scrollbar-width: none;
-            align-items: center; /* Ensure cards align center vertically */
+            align-items: center; 
         }
         .slider-track::-webkit-scrollbar { display:none; }
+        
+        /* 動態計算前後邊距，確保最後一張卡片能完美置中！ */
         .slider-track::before,
-        .slider-track::after { content:'';min-width:22px;flex-shrink:0; }
+        .slider-track::after { 
+            content: ''; 
+            /* 假設手機版卡片最寬320px，一半為160px，利用50vw推算完美置中距離 */
+            min-width: calc(50vw - 160px); 
+            flex-shrink: 0; 
+        }
 
         /* =========================================
-           CARD (手機板縮短高度，恢復滑動特效)
+           CARD (手機板縮短高度，消滅上方多餘空白)
            ========================================= */
         .m-card {
-            min-width: 76vw; /* 露出左右卡片更多，找回偷看感 */
-            max-width: 340px;
-            height: 480px; /* ★ 手機版高度降低，減少上方空白 */
+            min-width: 80vw; 
+            max-width: 320px;
+            height: 410px; /* ★ 高度再次調降，減少上方圖片空白 */
             border-radius: 22px;
-            overflow: hidden;
             position: relative;
             scroll-snap-align: center;
             flex-shrink: 0;
             transition: transform .4s cubic-bezier(.25,.46,.45,.94), opacity .4s ease;
-            transform: scale(0.85); /* 左右卡片預設變小 */
-            opacity: 0.55;          /* 左右卡片變淡 */
+            transform: scale(0.85); 
+            opacity: 0.55;          
             will-change: transform,opacity;
             cursor: pointer;
+            
+            /* ★ 改用 CSS 背景圖，杜絕破圖(?)問題 */
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            overflow: hidden;
         }
         .m-card.active { 
-            transform: scale(1); /* 中間卡片放大 */
+            transform: scale(1); 
             opacity: 1; 
         }
 
-        .m-card-img { position:absolute;inset:0;width:100%;height:100%;object-fit:cover; }
         .m-card-overlay { position:absolute;inset:0; }
 
         .m-card-body {
             position: absolute; inset: 0;
-            padding: 18px 22px 20px; /* 稍微縮小內距適應低高度 */
+            padding: 15px 22px 18px; /* 緊湊的內距 */
             display: flex; flex-direction: column;
             justify-content: flex-end; 
+            z-index: 2;
         }
 
         .m-gept-logo {
             position: absolute;
-            top: 18px; right: 18px;
-            height: 42px; width: auto;
-            opacity: 0.92;
+            top: 15px; right: 15px;
+            height: 40px; width: auto;
+            opacity: 0.95;
+            z-index: 2;
         }
 
         .m-title-big {
             font-family: 'Playfair Display', serif;
             font-weight: 900;
-            font-size: clamp(4.5rem, 16vw, 6rem); /* 稍微調小一點點配合高度 */
+            font-size: clamp(4.5rem, 16vw, 6rem); 
             line-height: 1;
             color: #fff;
             display: block;
@@ -169,27 +182,28 @@
             line-height: 1.2;
             color: #fff;
             display: block;
-            margin-top: 6px;
+            margin-top: 4px;
         }
 
-        .m-divider { width:44px;height:2.5px;margin:12px 0 10px;border-radius:2px; }
+        .m-divider { width:44px;height:3px;margin:10px 0 10px;border-radius:2px; }
 
-        .m-points { display:flex;flex-direction:column;gap:7px; }
+        .m-points { display:flex;flex-direction:column;gap:8px; }
         .m-point {
-            display: flex; align-items: flex-start; gap: 9px;
-            font-size: clamp(13px, 3.5vw, 16px);
-            font-weight: 600; color: #fff; line-height: 1.4;
+            display: flex; align-items: flex-start; gap: 8px;
+            font-size: clamp(15px, 4vw, 17px); /* ★ 手機版課程內容字體放大 */
+            font-weight: 700; color: #fff; line-height: 1.4;
+            letter-spacing: 0.5px;
         }
-        .m-point-dot { width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:5px; }
+        .m-point-dot { width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:6px; }
 
         .m-section-label {
             font-size: 11px; letter-spacing: 2.5px; text-transform:uppercase;
-            font-weight:700; color:rgba(255,255,255,.6); margin:10px 0 6px;
+            font-weight:800; color:rgba(255,255,255,.7); margin:8px 0 6px;
         }
 
-        .m-price-row { display:flex;align-items:center;justify-content:space-between;margin-top:14px; }
+        .m-price-row { display:flex;align-items:center;justify-content:space-between;margin-top:12px; }
         .m-price { font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(1.4rem,4.5vw,1.8rem);color:#fff; }
-        .m-buy-btn { font-size:clamp(12px,3vw,14px);font-weight:700;letter-spacing:.8px;padding:10px 16px;border-radius:50px;border:none;cursor:pointer;text-transform:uppercase;white-space:nowrap; transition: transform 0.2s; z-index: 10; position:relative;}
+        .m-buy-btn { font-size:clamp(13px,3.5vw,15px);font-weight:800;letter-spacing:1px;padding:10px 18px;border-radius:50px;border:none;cursor:pointer;text-transform:uppercase;white-space:nowrap; transition: transform 0.2s; z-index: 10; position:relative;}
         .m-buy-btn:hover { transform: scale(1.05); }
 
         /* ---- card colour themes ---- */
@@ -206,25 +220,44 @@
         .card-a .m-buy-btn      { background:#3b82f6;color:#fff; }
 
         .card-c .m-card-overlay { background:linear-gradient(160deg,rgba(2,20,15,.08) 0%,rgba(2,16,12,.95) 55%); }
-        .card-c .m-title-big    { font-size:clamp(3.2rem,12vw,5.5rem); }
+        /* ★ 修正第三個方案字體，強制一行 */
+        .card-c .m-title-big    { 
+            font-size: clamp(2.4rem, 9.5vw, 3.2rem); 
+            white-space: nowrap; /* 強制不換行 */
+        }
         .card-c .m-title-small  { color:#d1fae5; }
         .card-c .m-divider      { background:#10b981; }
         .card-c .m-point-dot    { background:#34d399; }
         .card-c .m-buy-btn      { background:#10b981;color:#022c22; }
 
-        /* ★ 電腦版 (放寬間距、放大卡片、解除原本的小尺寸限制) */
+
+        /* ★ 新增：平板專屬設定 (字體全面放大) */
+        @media (min-width: 768px) and (max-width: 1180px) {
+            .slider-track::before,
+            .slider-track::after { min-width: calc(50vw - 190px); } /* 平板卡片較寬，調整置中參數 */
+            .m-card { min-width: 380px; max-width: 400px; height: 520px; }
+            .m-title-big { font-size: 5rem; }
+            .card-c .m-title-big { font-size: 3rem; } /* 平板第三方案字體 */
+            .m-title-small { font-size: 2rem; }
+            .m-point { font-size: 18px; line-height: 1.6; } /* 課程內容放大 */
+            .m-buy-btn { font-size: 16px; padding: 12px 22px; }
+            .m-price { font-size: 2rem; }
+            .m-gept-logo { height: 48px; }
+        }
+
+        /* ★ 電腦版 (放寬間距、放大卡片) */
         @media (min-width:1181px) {
             .cards-section { max-width:1600px;margin:0 auto; padding-top: 50px; }
-            .slider-track { justify-content: center; gap: 30px; } /* 置中且拉開距離 */
+            .slider-track { justify-content: center; gap: 30px; } 
             .slider-track::before, .slider-track::after { display: none; }
             .m-card { 
-                min-width: 380px;  /* 卡片明顯放大 */
+                min-width: 380px;  
                 max-width: 420px; 
-                height: 650px;     /* 高度加長 */
-                transform: scale(0.95); /* 稍微縮小預設值，讓hover有感 */
+                height: 650px;     
+                transform: scale(0.95); 
                 opacity: 0.9; 
             }
-            .m-card.active { transform:scale(0.95); opacity:0.9; } /* 取消一般滑動影響 */
+            .m-card.active { transform:scale(0.95); opacity:0.9; } 
             
             .m-card:hover { 
                 transform: scale(1) translateY(-10px) !important; 
@@ -234,9 +267,11 @@
             }
             .m-gept-logo { height:56px; }
             .m-buy-btn { padding:14px 24px; font-size: 16px;}
-            .m-point { font-size: 17px; }
+            .m-point { font-size: 18px; line-height: 1.6; }
             
-            /* 將電腦版下方的適合對象模塊放大 */
+            .card-c .m-title-big { font-size: 3.2rem; } /* 電腦版第三方案維持一行 */
+
+            /* 電腦版下方適合對象放大 */
             .audience-panel { 
                 max-width: 1200px; margin: 40px auto 20px; border-radius: 16px; 
                 box-shadow: 0 10px 30px rgba(0,0,0,0.05); padding: 40px 50px;
@@ -261,7 +296,7 @@
             margin: 0 auto;
         }
         .audience-title {
-            font-size: clamp(1.1rem, 3.5vw, 1.4rem); /* 字體放大 */
+            font-size: clamp(1.2rem, 4vw, 1.5rem); 
             font-weight: 800;
             color: #111827;
             letter-spacing: 1px;
@@ -277,7 +312,7 @@
         .audience-rows { display:flex;flex-direction:column;gap:12px; }
         .audience-row {
             display: flex; align-items: flex-start; gap: 12px;
-            font-size: clamp(16px, 3.8vw, 18px); /* 字體放大 */
+            font-size: clamp(16px, 4vw, 18px); 
             color: #1e293b; line-height: 1.5; font-weight: 500;
             opacity: 0;
             transform: translateY(8px);
@@ -292,11 +327,11 @@
         .m-dot { width:8px;height:8px;border-radius:50%;background:#cbd5e1;cursor:pointer;transition:all .3s; }
         .m-dot.active { width:28px;border-radius:10px;background:#1e293b; }
         @media (min-width:1181px) {
-            .m-pagination-dots { display: none; } /* 電腦版隱藏滾動點點，因卡片全露出了 */
+            .m-pagination-dots { display: none; } 
         }
 
         /* =========================================
-           ★ NEW: 桌機版點擊放大的專屬 Modal
+           ★ 桌機版點擊放大的專屬 Modal
            ========================================= */
         .desktop-modal-overlay {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
@@ -315,17 +350,15 @@
             transform: scale(1) translateY(0);
         }
         
-        /* 彈出視窗左側：巨大卡片 */
         .dm-card-wrap { flex: 0 0 450px; display:flex; justify-content:center; }
         .dm-card-wrap .m-card { 
-            min-width: 100%; height: 750px; /* 超大尺寸 */
+            min-width: 100%; height: 750px; 
             transform: none !important; opacity: 1 !important; 
             cursor: default; margin: 0; border-radius: 28px;
             box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
         }
         .dm-card-wrap .m-buy-btn { font-size:18px; padding: 16px 28px; }
 
-        /* 彈出視窗右側：巨大說明 */
         .dm-info-wrap {
             flex: 1; background: #fff; border-radius: 28px; padding: 50px;
             box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); position: relative;
@@ -342,11 +375,7 @@
         .dm-info-wrap .audience-row strong { font-size: 1.6rem; display:block; margin-bottom: 5px; color:#1e293b;}
         .dm-info-wrap .audience-desc-text { font-size: 1.25rem; color:#64748b;}
 
-
-        /* =========================================
-           FEATURES & OTHERS
-           ========================================= */
-        /* 以下保留你原本的 CSS 樣式，沒有變動 */
+        /* FEATURES & OTHERS (維持不變) */
         .features-wrapper { width:100%;max-width:1400px;margin:30px auto 40px;padding:20px 30px;box-sizing:border-box; }
         .feature-item { box-sizing:border-box;position:relative; }
         .feature-icon-wrapper { background:#eff6ff;border-radius:50%;display:flex;justify-content:center;align-items:center;color:#0066ff;position:relative;flex-shrink:0; }
@@ -409,7 +438,6 @@
             .testi-card { min-width:85vw;max-width:85vw;padding:20px; }
         }
 
-        /* Cart Styles omitted for brevity but remain identical to your original */
         .cart-overlay { position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);z-index:20000;opacity:0;visibility:hidden;transition:opacity .5s,visibility .5s; }
         .cart-overlay.open { opacity:1;visibility:visible; }
         .cart-panel { position:fixed;top:0;right:-100%;width:90%;max-width:800px;height:100dvh;background:#f9f9f9;box-shadow:-5px 0 15px rgba(0,0,0,.1);z-index:20001;transition:right .5s ease-in-out;display:flex;flex-direction:column; }
@@ -512,7 +540,7 @@
                 <img src="https://ik.imagekit.io/lql1uveoc/Front%20Page/GEPT_logo.svg.png?updatedAt=1756611596300" class="header-logo" alt="GEPT">
                 <span>
                     <span style="color:#1242a3;">GEPT 全民英檢</span>「<span style="color:#dc2626;">中級寫作</span>」
-                    <br class="m-break-header"> <!-- ★ 手機版斷行 -->
+                    <br class="m-break-header"> <!-- 手機版斷行 -->
                     影片課程+加強
                 </span>
             </h2>
@@ -520,9 +548,8 @@
 
         <div class="slider-track" id="main-slider">
 
-            <!-- ===== Card B: 6回 ===== -->
-            <div class="m-card card-b active" id="m-card-0" onclick="handleCardClick(0)">
-                <img class="m-card-img" src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/ahmed-pUY0TMADyTM-unsplash.jpg" alt="">
+            <!-- ===== Card B: 6回 (使用背景圖片取代 img 標籤) ===== -->
+            <div class="m-card card-b active" id="m-card-0" onclick="handleCardClick(0)" style="background-image: url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/ahmed-pUY0TMADyTM-unsplash.jpg');">
                 <div class="m-card-overlay"></div>
                 <img class="m-gept-logo" src="https://ik.imagekit.io/lql1uveoc/Front%20Page/GEPT_logo.svg.png?updatedAt=1756611596300" alt="GEPT">
                 <div class="m-card-body">
@@ -543,8 +570,7 @@
             </div>
 
             <!-- ===== Card A: 3回 ===== -->
-            <div class="m-card card-a" id="m-card-1" onclick="handleCardClick(1)">
-                <img class="m-card-img" src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/mtsjrdl-PcDipceqA6E-unsplash.jpg" alt="">
+            <div class="m-card card-a" id="m-card-1" onclick="handleCardClick(1)" style="background-image: url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/mtsjrdl-PcDipceqA6E-unsplash.jpg');">
                 <div class="m-card-overlay"></div>
                 <img class="m-gept-logo" src="https://ik.imagekit.io/lql1uveoc/Front%20Page/GEPT_logo.svg.png?updatedAt=1756611596300" alt="GEPT">
                 <div class="m-card-body">
@@ -565,8 +591,7 @@
             </div>
 
             <!-- ===== Card C: 中級寫作 ===== -->
-            <div class="m-card card-c" id="m-card-2" onclick="handleCardClick(2)">
-                <img class="m-card-img" src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/pascal-bullan-1sm3Ml-WI5k-unsplash.jpg" alt="">
+            <div class="m-card card-c" id="m-card-2" onclick="handleCardClick(2)" style="background-image: url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/pascal-bullan-1sm3Ml-WI5k-unsplash.jpg');">
                 <div class="m-card-overlay"></div>
                 <img class="m-gept-logo" src="https://ik.imagekit.io/lql1uveoc/Front%20Page/GEPT_logo.svg.png?updatedAt=1756611596300" alt="GEPT">
                 <div class="m-card-body">
@@ -606,7 +631,7 @@
     </div><!-- /cards-section -->
 
     <!-- =====================================
-         ★ NEW: 電腦版點擊放大用的 MODAL 
+         ★ 桌機版點擊放大用的 MODAL 
          ===================================== -->
     <div id="desktop-modal" class="desktop-modal-overlay" onclick="closeDesktopModal()">
         <div class="desktop-modal-content" onclick="event.stopPropagation()">
@@ -795,10 +820,8 @@ function updateMActive(index) {
     renderAudience(index);
 }
 
-// 點擊圓點或卡片處理
 window.scrollToMCard = function(index) {
     if (window.innerWidth >= 1181) {
-        // 桌機版點圓點直接開 Modal
         openDesktopModal(index);
         return;
     }
@@ -806,7 +829,7 @@ window.scrollToMCard = function(index) {
     const card   = document.getElementById('m-card-' + index);
     if (!slider || !card) return;
     
-    // 計算精準置中位置
+    // 精準置中公式
     const centerPos = card.offsetLeft - (slider.clientWidth / 2) + (card.offsetWidth / 2);
     slider.scrollTo({ left: centerPos, behavior: 'smooth' });
 };
@@ -819,20 +842,18 @@ window.handleCardClick = function(index) {
     }
 };
 
-/* ─── ★ NEW: 桌機版放大 MODAL ───────────────────────────────────────── */
+/* ─── 桌機版放大 MODAL ───────────────────────────────────────── */
 window.openDesktopModal = function(index) {
     const modal = document.getElementById('desktop-modal');
     const cloneContainer = document.getElementById('dm-card-container');
     const infoContainer = document.getElementById('dm-info-container');
 
-    // 複製卡片HTML並重置狀態
     const originalCard = document.getElementById('m-card-' + index);
     cloneContainer.innerHTML = originalCard.outerHTML;
     const cloneCard = cloneContainer.querySelector('.m-card');
-    cloneCard.className = 'm-card'; // 移除 hover/active，防止干擾
-    cloneCard.onclick = null; // 移除彈窗內的點擊放大
+    cloneCard.className = 'm-card'; 
+    cloneCard.onclick = null; 
 
-    // 生成右側超大字體「適合對象」
     const data = audienceData[index];
     let rowsHtml = data.rows.map(r => `
         <div class="audience-row visible" style="transform:none; opacity:1;">
@@ -854,17 +875,14 @@ window.closeDesktopModal = function() {
     document.getElementById('desktop-modal').classList.remove('show');
 };
 
-
 /* INIT Listeners */
 document.addEventListener('DOMContentLoaded', () => {
     renderAudience(0);
     const slider = document.getElementById('main-slider');
     if (!slider) return;
 
-    // 手機版滑動偵測
     let ticking = false;
     slider.addEventListener('scroll', () => {
-        // 電腦版不需要滑動特效
         if (window.innerWidth >= 1181) return; 
 
         if (!ticking) {
@@ -891,7 +909,7 @@ window.addToCart = function(productId) {
     const p = products.find(x => x.id === productId);
     if (p) { cart = {}; cart[p.id] = {...p, imageUrl: images[p.imageId] || images[0]}; }
     updateCartDisplay();
-    closeDesktopModal(); // 加入購物車時自動關閉放大視窗
+    closeDesktopModal(); 
     document.getElementById("cart-overlay").classList.add("open");
     document.getElementById("cart-panel").classList.add("open");
     setTimeout(() => { const el = document.getElementById("email"); if (el) el.scrollIntoView({behavior:'smooth',block:'center'}); }, 500);
