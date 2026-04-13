@@ -104,7 +104,6 @@
         .slider-track {
             display: flex;
             gap: 15px;
-            /* ★ 手機版：設定 padding 保證 75vw 的卡片能完美置中，並露出隔壁卡片 */
             padding: 20px 12.5vw 24px; 
             overflow-x: auto;
             scroll-snap-type: x mandatory;
@@ -115,17 +114,12 @@
         .slider-track::-webkit-scrollbar { display:none; }
 
         /* =========================================
-           CARD (手機版文字置頂、圖片寫入CSS以防失效)
+           CARD (背景圖已改為行內 style)
            ========================================= */
-        /* ★ 將你提供的背景圖片寫進 CSS，保證任何裝置跟彈窗都能讀取 */
-        .card-b { background-image: url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/rezaul-karim-102abqkKhbY-unsplash.jpg?updatedAt=1773813236096'); }
-        .card-a { background-image: url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/jensen-ragoonath-dPg3TlWPZ9E-unsplash.jpg?updatedAt=1775996377812'); }
-        .card-c { background-image: url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/pascal-bullan-1sm3Ml-WI5k-unsplash.jpg'); }
-
         .m-card {
-            width: 75vw; /* ★ 手機版嚴格控制寬度，留下 25vw 空間給左右兩側偷看 */
+            width: 75vw; 
             max-width: 320px;
-            height: 330px; /* ★ 高度縮減，不留白 */
+            height: 330px; 
             border-radius: 22px;
             position: relative;
             scroll-snap-align: center;
@@ -136,7 +130,6 @@
             will-change: transform,opacity;
             cursor: pointer;
             
-            /* 背景屬性設定 */
             background-size: cover !important;
             background-position: center !important;
             background-repeat: no-repeat !important;
@@ -148,9 +141,9 @@
 
         .m-card-body {
             position: absolute; inset: 0;
-            padding: 18px 22px; 
+            padding: 18px 22px 18px; 
             display: flex; flex-direction: column;
-            justify-content: flex-start; /* ★ 手機版文字強制靠上 */
+            justify-content: flex-start; /* 手機版靠上 */
             z-index: 2;
         }
 
@@ -184,13 +177,13 @@
             text-shadow: 0 2px 10px rgba(0,0,0,0.4);
         }
 
-        /* margin-top: auto 把下方內容推到底部 */
-        .m-divider { width:44px;height:3px;margin:auto 0 10px;border-radius:2px; }
+        /* 移除 margin: auto，改用固定間距確保文字與內容連在一起 */
+        .m-divider { width:44px;height:3px;margin: 15px 0; border-radius:2px; }
 
         .m-points { display:flex;flex-direction:column;gap:8px; }
         .m-point {
             display: flex; align-items: flex-start; gap: 8px;
-            font-size: clamp(13px, 3.5vw, 15px); 
+            font-size: 15px; 
             font-weight: 700; color: #fff; line-height: 1.4;
             letter-spacing: 0.5px; text-shadow: 0 1px 4px rgba(0,0,0,0.6);
         }
@@ -206,7 +199,7 @@
         .m-buy-btn { font-size:clamp(13px,3.5vw,15px);font-weight:800;letter-spacing:1px;padding:10px 18px;border-radius:50px;border:none;cursor:pointer;text-transform:uppercase;white-space:nowrap; transition: transform 0.2s; z-index: 10; position:relative; box-shadow: 0 4px 10px rgba(0,0,0,0.3);}
         .m-buy-btn:hover { transform: scale(1.05); }
 
-        /* ---- ★ 重大修正：遮罩上半部完全透明 (0%)，保證背景圖清晰可見 ---- */
+        /* ---- 背景漸層：上方完全透明，下方漸暗保留文字清晰 ---- */
         .card-b .m-card-overlay { background:linear-gradient(180deg, rgba(28,12,2,0) 0%, rgba(28,12,2,0.4) 40%, rgba(28,12,2,0.95) 100%); }
         .card-b .m-title-small  { color:#fef9ec; }
         .card-b .m-divider      { background:#f59e0b; }
@@ -226,15 +219,21 @@
         .card-c .m-point-dot    { background:#34d399; }
         .card-c .m-buy-btn      { background:#10b981;color:#022c22; }
 
+        /* ★ 手機版字體放大 1.3 倍專屬設定 */
+        @media (max-width: 767px) {
+            .m-section-label { font-size: 14.5px !important; margin-bottom: 8px !important; }
+            .m-point { font-size: 18px !important; line-height: 1.5 !important; }
+            .m-card-body { padding: 22px 20px; }
+        }
+
         /* =========================================
            ★ 平板專屬設定 (修復第三張置中問題)
            ========================================= */
         @media (min-width: 768px) and (max-width: 1180px) {
-            /* ★ 精準置中公式：50vw 減去卡片一半寬度(180px) */
             .slider-track { padding: 20px calc(50vw - 180px) 24px; }
             
             .m-card { width: 360px; height: 480px; }
-            .m-card-body { justify-content: flex-end; padding: 25px; } /* 平板文字改回底部 */
+            .m-card-body { justify-content: flex-end; padding: 25px; } /* 平板文字靠下 */
             
             .m-title-big { font-size: 5rem; }
             .card-c .m-title-big { font-size: 3rem; } 
@@ -243,7 +242,6 @@
             .m-buy-btn { font-size: 15px; padding: 12px 22px; }
             .m-price { font-size: 1.8rem; }
             .m-gept-logo { height: 46px; }
-            .m-divider { margin: auto 0 15px; }
         }
 
         /* =========================================
@@ -270,7 +268,6 @@
             .m-gept-logo { height:56px; }
             .m-buy-btn { padding:14px 24px; font-size: 16px;}
             .m-point { font-size: 18px; line-height: 1.6; }
-            .m-divider { margin: auto 0 20px; }
             .card-c .m-title-big { font-size: 3.2rem; }
 
             .audience-panel { 
@@ -327,12 +324,12 @@
             background-size: cover !important; 
             background-position: center !important;
         }
-        /* 彈窗內文字強制靠下方 */
+        /* ★ 彈窗內文字強制靠下方，不亂跳 */
         .dm-card-wrap .m-card-body { justify-content: flex-end !important; padding: 40px !important; }
         .dm-card-wrap .m-buy-btn { font-size:18px; padding: 16px 28px; }
 
         /* ★ 方案 C 在彈出視窗中的專屬「黑色字體」設定 */
-        .dm-card-wrap .card-c .m-card-overlay { background: linear-gradient(180deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.7) 40%, rgba(255,255,255,0.98) 100%) !important; }
+        .dm-card-wrap .card-c .m-card-overlay { background: linear-gradient(180deg, rgba(255,255,255,0) 0%, rgba(255,255,255,0.7) 40%, rgba(255,255,255,0.98) 100%) !important; }
         .dm-card-wrap .card-c .m-title-big,
         .dm-card-wrap .card-c .m-title-small,
         .dm-card-wrap .card-c .m-section-label,
@@ -555,8 +552,8 @@
 
         <div class="slider-track" id="main-slider">
 
-            <!-- ===== Card B: 6回 ===== -->
-            <div class="m-card card-b active" id="m-card-0" onclick="handleCardClick(0)">
+            <!-- ===== Card B: 6回 (背景圖片寫入 HTML Inline Style 保證絕對顯示) ===== -->
+            <div class="m-card card-b active" id="m-card-0" onclick="handleCardClick(0)" style="background-image: url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/rezaul-karim-102abqkKhbY-unsplash.jpg?updatedAt=1773813236096');">
                 <div class="m-card-overlay"></div>
                 <img class="m-gept-logo" src="https://ik.imagekit.io/lql1uveoc/Front%20Page/GEPT_logo.svg.png?updatedAt=1756611596300" alt="GEPT">
                 <div class="m-card-body">
@@ -579,7 +576,7 @@
             </div>
 
             <!-- ===== Card A: 3回 ===== -->
-            <div class="m-card card-a" id="m-card-1" onclick="handleCardClick(1)">
+            <div class="m-card card-a" id="m-card-1" onclick="handleCardClick(1)" style="background-image: url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/jensen-ragoonath-dPg3TlWPZ9E-unsplash.jpg?updatedAt=1775996377812');">
                 <div class="m-card-overlay"></div>
                 <img class="m-gept-logo" src="https://ik.imagekit.io/lql1uveoc/Front%20Page/GEPT_logo.svg.png?updatedAt=1756611596300" alt="GEPT">
                 <div class="m-card-body">
@@ -602,7 +599,7 @@
             </div>
 
             <!-- ===== Card C: 中級寫作 ===== -->
-            <div class="m-card card-c" id="m-card-2" onclick="handleCardClick(2)">
+            <div class="m-card card-c" id="m-card-2" onclick="handleCardClick(2)" style="background-image: url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/marcos-paulo-prado-tcyW6Im5Uug-unsplash.jpg');">
                 <div class="m-card-overlay"></div>
                 <img class="m-gept-logo" src="https://ik.imagekit.io/lql1uveoc/Front%20Page/GEPT_logo.svg.png?updatedAt=1756611596300" alt="GEPT">
                 <div class="m-card-body">
@@ -1045,29 +1042,4 @@ function submitContactForm(e) {
     btn.innerHTML = '傳送中... <i class="fa-solid fa-spinner fa-spin"></i>';
     btn.disabled = true;
 
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbwE5thuJP9luwed0GG0eRF4DheFubXRfWQ5ZnnJL5r8TxFGaIrhUzEB4AAp51RZ_WL3/exec"; 
-    
-    const params = new URLSearchParams();
-    params.append('name', document.getElementById('contact-name').value);
-    params.append('email', document.getElementById('contact-email').value);
-    params.append('line', document.getElementById('contact-line').value || "無");
-    params.append('needs', document.getElementById('contact-needs').value);
-
-    fetch(GAS_URL, {
-        method: "POST",
-        mode: "no-cors",
-        body: params
-    }).then(() => {
-        document.getElementById('contact-form').style.display = 'none';
-        document.getElementById('contact-msg').style.display = 'block';
-    }).catch(err => {
-        alert("傳送失敗，請檢查網路連線。");
-    }).finally(() => {
-        btn.innerHTML = '送出訊息 <i class="fa-solid fa-paper-plane"></i>';
-        btn.disabled = false;
-    });
-}
-</script>
-
-</body>
-</html>
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbwE5thuJP9luwed0GG0eRF4DheFubXRfWQ5ZnnJL5r8TxFGaIrhUzEB4AAp51RZ_WL
