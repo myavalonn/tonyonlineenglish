@@ -63,7 +63,6 @@
         .hero-btn:hover { background:#0056cc;transform:translateY(-3px);color:#fff; }
         .hero-links { display:flex;gap:15px;flex-wrap:wrap;justify-content:center; }
         
-        /* 修正按鈕殘影：明確設定 initial state，避免繼承閃爍 */
         .secondary-btn { background:rgba(255,255,255,.15) !important; backdrop-filter:blur(5px);color:#fff;padding:12px 24px;border-radius:50px;font-size:1.05rem;font-weight:700;text-decoration:none;transition:all .3s;border:1px solid rgba(255,255,255,.3);display:inline-flex;align-items:center;gap:8px; }
         .secondary-btn:hover { background:rgba(255,255,255,.3) !important; transform:translateY(-2px); }
         .line-btn { background:rgba(0,185,0,.85) !important; border-color:#00B900; }
@@ -105,7 +104,8 @@
         .slider-track {
             display: flex;
             gap: 15px;
-            padding: 20px 0 24px;
+            /* ★ 手機版：設定 padding 保證 75vw 的卡片能完美置中，並露出隔壁卡片 */
+            padding: 20px 12.5vw 24px; 
             overflow-x: auto;
             scroll-snap-type: x mandatory;
             -webkit-overflow-scrolling: touch;
@@ -113,22 +113,19 @@
             align-items: center; 
         }
         .slider-track::-webkit-scrollbar { display:none; }
-        
-        /* 確保手機版置中緩衝 */
-        .slider-track::before,
-        .slider-track::after { 
-            content: ''; 
-            min-width: calc(50vw - 160px); 
-            flex-shrink: 0; 
-        }
 
         /* =========================================
-           CARD (調整高度、版面、背景能見度)
+           CARD (手機版文字置頂、圖片寫入CSS以防失效)
            ========================================= */
+        /* ★ 將你提供的背景圖片寫進 CSS，保證任何裝置跟彈窗都能讀取 */
+        .card-b { background-image: url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/rezaul-karim-102abqkKhbY-unsplash.jpg?updatedAt=1773813236096'); }
+        .card-a { background-image: url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/jensen-ragoonath-dPg3TlWPZ9E-unsplash.jpg?updatedAt=1775996377812'); }
+        .card-c { background-image: url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/pascal-bullan-1sm3Ml-WI5k-unsplash.jpg'); }
+
         .m-card {
-            min-width: 80vw; 
+            width: 75vw; /* ★ 手機版嚴格控制寬度，留下 25vw 空間給左右兩側偷看 */
             max-width: 320px;
-            height: 330px; /* ★ 高度極致縮減，消滅空白 */
+            height: 330px; /* ★ 高度縮減，不留白 */
             border-radius: 22px;
             position: relative;
             scroll-snap-align: center;
@@ -139,19 +136,21 @@
             will-change: transform,opacity;
             cursor: pointer;
             
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
+            /* 背景屬性設定 */
+            background-size: cover !important;
+            background-position: center !important;
+            background-repeat: no-repeat !important;
             overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
         }
         .m-card.active { transform: scale(1); opacity: 1; }
-        .m-card-overlay { position:absolute;inset:0; z-index:1; }
+        .m-card-overlay { position:absolute;inset:0; z-index:1; pointer-events: none;}
 
         .m-card-body {
             position: absolute; inset: 0;
-            padding: 18px 22px 18px; 
+            padding: 18px 22px; 
             display: flex; flex-direction: column;
-            justify-content: flex-start; /* ★ 讓內容靠最上方 */
+            justify-content: flex-start; /* ★ 手機版文字強制靠上 */
             z-index: 2;
         }
 
@@ -168,73 +167,75 @@
         .m-title-big {
             font-family: 'Playfair Display', serif;
             font-weight: 900;
-            font-size: clamp(4rem, 14vw, 5.5rem); 
+            font-size: clamp(3.5rem, 13vw, 5rem); 
             line-height: 1;
             color: #fff;
             display: block;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            text-shadow: 0 2px 10px rgba(0,0,0,0.4);
         }
         .m-title-small {
             font-family: 'Playfair Display', serif;
             font-weight: 700;
-            font-size: clamp(1.3rem, 4.2vw, 1.6rem);
+            font-size: clamp(1.2rem, 4vw, 1.5rem);
             line-height: 1.2;
             color: #fff;
             display: block;
             margin-top: 4px;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            text-shadow: 0 2px 10px rgba(0,0,0,0.4);
         }
 
-        /* ★ margin-top: auto 讓這條線以下的東西全部被推到底部 */
+        /* margin-top: auto 把下方內容推到底部 */
         .m-divider { width:44px;height:3px;margin:auto 0 10px;border-radius:2px; }
 
         .m-points { display:flex;flex-direction:column;gap:8px; }
         .m-point {
             display: flex; align-items: flex-start; gap: 8px;
-            font-size: clamp(14px, 3.8vw, 16px); 
+            font-size: clamp(13px, 3.5vw, 15px); 
             font-weight: 700; color: #fff; line-height: 1.4;
-            letter-spacing: 0.5px; text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+            letter-spacing: 0.5px; text-shadow: 0 1px 4px rgba(0,0,0,0.6);
         }
         .m-point-dot { width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:6px; box-shadow: 0 0 5px rgba(0,0,0,0.5);}
 
         .m-section-label {
             font-size: 11px; letter-spacing: 2.5px; text-transform:uppercase;
-            font-weight:800; color:rgba(255,255,255,.9); margin:0 0 6px; text-shadow: 0 1px 4px rgba(0,0,0,0.5);
+            font-weight:800; color:rgba(255,255,255,.9); margin:0 0 6px; text-shadow: 0 1px 4px rgba(0,0,0,0.6);
         }
 
         .m-price-row { display:flex;align-items:center;justify-content:space-between;margin-top:12px; }
-        .m-price { font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(1.4rem,4.5vw,1.8rem);color:#fff; text-shadow: 0 2px 8px rgba(0,0,0,0.4);}
+        .m-price { font-family:'Playfair Display',serif;font-weight:700;font-size:clamp(1.4rem,4.5vw,1.8rem);color:#fff; text-shadow: 0 2px 8px rgba(0,0,0,0.5);}
         .m-buy-btn { font-size:clamp(13px,3.5vw,15px);font-weight:800;letter-spacing:1px;padding:10px 18px;border-radius:50px;border:none;cursor:pointer;text-transform:uppercase;white-space:nowrap; transition: transform 0.2s; z-index: 10; position:relative; box-shadow: 0 4px 10px rgba(0,0,0,0.3);}
         .m-buy-btn:hover { transform: scale(1.05); }
 
-        /* ---- ★ 修正背景遮罩：上面極淡透出圖片，下面漸暗保留文字清晰 ---- */
-        .card-b .m-card-overlay { background:linear-gradient(180deg, rgba(28,12,2,0.15) 0%, rgba(28,12,2,0.6) 40%, rgba(28,12,2,0.95) 100%); }
+        /* ---- ★ 重大修正：遮罩上半部完全透明 (0%)，保證背景圖清晰可見 ---- */
+        .card-b .m-card-overlay { background:linear-gradient(180deg, rgba(28,12,2,0) 0%, rgba(28,12,2,0.4) 40%, rgba(28,12,2,0.95) 100%); }
         .card-b .m-title-small  { color:#fef9ec; }
         .card-b .m-divider      { background:#f59e0b; }
         .card-b .m-point-dot    { background:#fbbf24; }
         .card-b .m-buy-btn      { background:#f59e0b;color:#1c1106; }
 
-        .card-a .m-card-overlay { background:linear-gradient(180deg, rgba(4,10,32,0.15) 0%, rgba(4,10,32,0.6) 40%, rgba(4,10,32,0.95) 100%); }
+        .card-a .m-card-overlay { background:linear-gradient(180deg, rgba(4,10,32,0) 0%, rgba(4,10,32,0.4) 40%, rgba(4,10,32,0.95) 100%); }
         .card-a .m-title-small  { color:#e0eaff; }
         .card-a .m-divider      { background:#3b82f6; }
         .card-a .m-point-dot    { background:#60a5fa; }
         .card-a .m-buy-btn      { background:#3b82f6;color:#fff; }
 
-        .card-c .m-card-overlay { background:linear-gradient(180deg, rgba(2,16,12,0.15) 0%, rgba(2,16,12,0.6) 40%, rgba(2,16,12,0.95) 100%); }
-        .card-c .m-title-big    { font-size: clamp(2.4rem, 9.5vw, 3.2rem); white-space: nowrap; }
+        .card-c .m-card-overlay { background:linear-gradient(180deg, rgba(2,16,12,0) 0%, rgba(2,16,12,0.4) 40%, rgba(2,16,12,0.95) 100%); }
+        .card-c .m-title-big    { font-size: clamp(2.4rem, 8.5vw, 3rem); white-space: nowrap; }
         .card-c .m-title-small  { color:#d1fae5; }
         .card-c .m-divider      { background:#10b981; }
         .card-c .m-point-dot    { background:#34d399; }
         .card-c .m-buy-btn      { background:#10b981;color:#022c22; }
 
-
-        /* ★ 平板專屬設定：修復第三張卡片滑動問題，並微調大小 */
+        /* =========================================
+           ★ 平板專屬設定 (修復第三張置中問題)
+           ========================================= */
         @media (min-width: 768px) and (max-width: 1180px) {
-            /* 修正公式：給予 ::after 充足空間，讓最後一張卡片能滾動到中間 */
-            .slider-track::before,
-            .slider-track::after { min-width: calc(50vw - 180px); } 
+            /* ★ 精準置中公式：50vw 減去卡片一半寬度(180px) */
+            .slider-track { padding: 20px calc(50vw - 180px) 24px; }
             
-            .m-card { min-width: 360px; max-width: 380px; height: 480px; }
+            .m-card { width: 360px; height: 480px; }
+            .m-card-body { justify-content: flex-end; padding: 25px; } /* 平板文字改回底部 */
+            
             .m-title-big { font-size: 5rem; }
             .card-c .m-title-big { font-size: 3rem; } 
             .m-title-small { font-size: 1.8rem; }
@@ -242,38 +243,34 @@
             .m-buy-btn { font-size: 15px; padding: 12px 22px; }
             .m-price { font-size: 1.8rem; }
             .m-gept-logo { height: 46px; }
-            
-            /* 平板卡片較高，文字間距可以放鬆 */
-            .m-card-body { padding: 25px; }
             .m-divider { margin: auto 0 15px; }
         }
 
-        /* ★ 電腦版 */
+        /* =========================================
+           ★ 電腦版
+           ========================================= */
         @media (min-width:1181px) {
             .cards-section { max-width:1600px;margin:0 auto; padding-top: 50px; }
-            .slider-track { justify-content: center; gap: 30px; } 
-            .slider-track::before, .slider-track::after { display: none; }
+            .slider-track { justify-content: center; padding: 30px 0; gap: 30px; } 
             .m-card { 
-                min-width: 380px;  
-                max-width: 420px; 
+                width: 380px;  
                 height: 550px;     
                 transform: scale(0.95); 
                 opacity: 0.9; 
             }
             .m-card.active { transform:scale(0.95); opacity:0.9; } 
-            
             .m-card:hover { 
                 transform: scale(1) translateY(-10px) !important; 
                 opacity: 1 !important; 
                 box-shadow: 0 20px 40px rgba(0,0,0,0.2); 
                 z-index: 5;
             }
+            .m-card-body { justify-content: flex-end; padding: 30px; } /* 電腦版文字強制待在底部 */
+            
             .m-gept-logo { height:56px; }
             .m-buy-btn { padding:14px 24px; font-size: 16px;}
             .m-point { font-size: 18px; line-height: 1.6; }
-            .m-card-body { padding: 30px; }
             .m-divider { margin: auto 0 20px; }
-            
             .card-c .m-title-big { font-size: 3.2rem; }
 
             .audience-panel { 
@@ -286,46 +283,16 @@
             .audience-icon { font-size: 1.6rem; }
         }
 
-        /* =========================================
-           AUDIENCE PANEL (below cards)
-           ========================================= */
-        .audience-panel {
-            background: #fff;
-            border-top: 1px solid #e5e7eb;
-            padding: 28px 30px 32px;
-            width: 100%;
-        }
-        .audience-panel-inner {
-            max-width: 900px;
-            margin: 0 auto;
-        }
-        .audience-title {
-            font-size: clamp(1.2rem, 4vw, 1.5rem); 
-            font-weight: 800;
-            color: #111827;
-            letter-spacing: 1px;
-            text-transform: uppercase;
-            margin-bottom: 18px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .audience-title::after {
-            content: ''; flex: 1; height: 1px; background: #e5e7eb;
-        }
+        /* AUDIENCE PANEL */
+        .audience-panel { background: #fff; border-top: 1px solid #e5e7eb; padding: 28px 30px 32px; width: 100%; }
+        .audience-panel-inner { max-width: 900px; margin: 0 auto; }
+        .audience-title { font-size: clamp(1.2rem, 4vw, 1.5rem); font-weight: 800; color: #111827; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 18px; display: flex; align-items: center; gap: 10px; }
+        .audience-title::after { content: ''; flex: 1; height: 1px; background: #e5e7eb; }
         .audience-rows { display:flex;flex-direction:column;gap:12px; }
-        .audience-row {
-            display: flex; align-items: flex-start; gap: 12px;
-            font-size: clamp(16px, 4vw, 18px); 
-            color: #1e293b; line-height: 1.5; font-weight: 500;
-            opacity: 0;
-            transform: translateY(8px);
-            transition: opacity .35s ease, transform .35s ease;
-        }
+        .audience-row { display: flex; align-items: flex-start; gap: 12px; font-size: clamp(16px, 4vw, 18px); color: #1e293b; line-height: 1.5; font-weight: 500; opacity: 0; transform: translateY(8px); transition: opacity .35s ease, transform .35s ease; }
         .audience-row.visible { opacity:1;transform:translateY(0); }
         .audience-icon { font-size:1.3em;flex-shrink:0;margin-top:1px; }
         .audience-row strong { color:#111827;font-weight:800; }
-
         .m-pagination-dots { display:flex;justify-content:center;align-items:center;gap:8px;padding:12px 0 20px; }
         .m-dot { width:8px;height:8px;border-radius:50%;background:#cbd5e1;cursor:pointer;transition:all .3s; }
         .m-dot.active { width:28px;border-radius:10px;background:#1e293b; }
@@ -347,22 +314,32 @@
             background: transparent; max-width: 1300px; width: 90%;
             transform: scale(0.8) translateY(30px); transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        .desktop-modal-overlay.show .desktop-modal-content {
-            transform: scale(1) translateY(0);
-        }
+        .desktop-modal-overlay.show .desktop-modal-content { transform: scale(1) translateY(0); }
         
         .dm-card-wrap { flex: 0 0 450px; display:flex; justify-content:center; }
         
-        /* ★ 確保 Modal 內的卡片背景圖能正常顯示！ */
+        /* 彈窗內的卡片強制佈局與背景設定 */
         .dm-card-wrap .m-card { 
-            min-width: 100%; height: 750px; 
+            width: 100%; height: 750px; 
             transform: none !important; opacity: 1 !important; 
             cursor: default; margin: 0; border-radius: 28px;
             box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5);
             background-size: cover !important; 
             background-position: center !important;
         }
+        /* 彈窗內文字強制靠下方 */
+        .dm-card-wrap .m-card-body { justify-content: flex-end !important; padding: 40px !important; }
         .dm-card-wrap .m-buy-btn { font-size:18px; padding: 16px 28px; }
+
+        /* ★ 方案 C 在彈出視窗中的專屬「黑色字體」設定 */
+        .dm-card-wrap .card-c .m-card-overlay { background: linear-gradient(180deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.7) 40%, rgba(255,255,255,0.98) 100%) !important; }
+        .dm-card-wrap .card-c .m-title-big,
+        .dm-card-wrap .card-c .m-title-small,
+        .dm-card-wrap .card-c .m-section-label,
+        .dm-card-wrap .card-c .m-point,
+        .dm-card-wrap .card-c .m-price { color: #111827 !important; text-shadow: none !important; }
+        .dm-card-wrap .card-c .m-divider { background: #111827 !important; }
+        .dm-card-wrap .card-c .m-point-dot { background: #111827 !important; box-shadow: none !important; }
 
         .dm-info-wrap {
             flex: 1; background: #fff; border-radius: 28px; padding: 50px;
@@ -421,35 +398,20 @@
         }
 
         /* =========================================
-           ★ TONY 專家建議區塊 (替換原本的學員見證)
+           ★ TONY 專家建議區塊
            ========================================= */
         .advice-wrapper {
-            background: #fff;
-            border-left: 6px solid var(--theme-blue);
-            padding: 40px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.06);
-            border-radius: 12px;
-            margin: 20px auto 60px;
-            max-width: 900px;
-            width: 90%;
-            position: relative;
+            background: #fff; border-left: 6px solid var(--theme-blue); padding: 40px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.06); border-radius: 12px;
+            margin: 20px auto 60px; max-width: 900px; width: 90%; position: relative;
         }
         .advice-icon {
-            position: absolute;
-            top: -20px; left: -20px;
-            background: var(--theme-blue); color: #fff;
-            width: 50px; height: 50px; border-radius: 50%;
-            display: flex; justify-content: center; align-items: center;
+            position: absolute; top: -20px; left: -20px; background: var(--theme-blue); color: #fff;
+            width: 50px; height: 50px; border-radius: 50%; display: flex; justify-content: center; align-items: center;
             font-size: 24px; box-shadow: 0 4px 10px rgba(0,101,255,0.4);
         }
-        .advice-title {
-            font-size: 1.8rem; font-weight: 900; color: var(--text-main);
-            margin-bottom: 25px; line-height: 1.3;
-        }
-        .advice-content {
-            font-size: 1.1rem; color: #4b5563; line-height: 1.8;
-            display: flex; flex-direction: column; gap: 15px;
-        }
+        .advice-title { font-size: 1.8rem; font-weight: 900; color: var(--text-main); margin-bottom: 25px; line-height: 1.3; }
+        .advice-content { font-size: 1.1rem; color: #4b5563; line-height: 1.8; display: flex; flex-direction: column; gap: 15px; }
         .advice-content strong { color: var(--text-main); font-weight: 800; }
         .advice-content span.highlight { color: var(--theme-blue); font-weight: 700; }
         
@@ -464,29 +426,16 @@
            ★ CONTACT US SECTION 
            ========================================= */
         .contact-section { background: var(--bg-color); padding: 50px 20px 80px; width: 100%; }
-        .contact-wrap { 
-            max-width: 700px; margin: 0 auto; background: #fff; 
-            padding: 50px; border-radius: 16px; border: 1px solid #e5e7eb; 
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05); 
-        }
+        .contact-wrap { max-width: 700px; margin: 0 auto; background: #fff; padding: 50px; border-radius: 16px; border: 1px solid #e5e7eb; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
         .contact-header { text-align: center; margin-bottom: 30px; }
         .contact-header h2 { font-size: 2rem; font-weight: 900; color: var(--text-main); margin: 0 0 10px; }
         .contact-header p { color: #64748b; font-size: 1.1rem; margin: 0; }
         
         .form-group { margin-bottom: 24px; text-align: left; }
         .form-group label { display: block; font-weight: 700; margin-bottom: 8px; font-size: 1rem; color: var(--text-main); }
-        .form-group input, .form-group textarea { 
-            width: 100%; padding: 14px 18px; border: 1.5px solid #cbd5e1; 
-            border-radius: 8px; font-family: inherit; font-size: 1rem; transition: border-color .2s; 
-            background: #f8fafc;
-        }
+        .form-group input, .form-group textarea { width: 100%; padding: 14px 18px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-family: inherit; font-size: 1rem; transition: border-color .2s; background: #f8fafc; }
         .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--theme-blue); background: #fff; }
-        #contact-submit { 
-            width: 100%; font-size: 1.15rem; padding: 16px; margin-top: 10px; 
-            cursor: pointer; border: none; font-family: inherit; font-weight: 800;
-            background: var(--theme-blue); color: #fff; border-radius: 50px;
-            transition: all 0.3s; box-shadow: 0 4px 15px rgba(0,101,255,0.3);
-        }
+        #contact-submit { width: 100%; font-size: 1.15rem; padding: 16px; margin-top: 10px; cursor: pointer; border: none; font-family: inherit; font-weight: 800; background: var(--theme-blue); color: #fff; border-radius: 50px; transition: all 0.3s; box-shadow: 0 4px 15px rgba(0,101,255,0.3); }
         #contact-submit:hover { transform: translateY(-2px); background: #0056cc; box-shadow: 0 6px 20px rgba(0,101,255,0.4); }
         #contact-submit:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
         
@@ -598,7 +547,7 @@
                 <img src="https://ik.imagekit.io/lql1uveoc/Front%20Page/GEPT_logo.svg.png?updatedAt=1756611596300" class="header-logo" alt="GEPT">
                 <span>
                     <span style="color:#1242a3;">GEPT 全民英檢</span>「<span style="color:#dc2626;">中級寫作</span>」
-                    <br class="m-break-header"> <!-- 手機版斷行 -->
+                    <br class="m-break-header">
                     影片課程+加強
                 </span>
             </h2>
@@ -607,7 +556,7 @@
         <div class="slider-track" id="main-slider">
 
             <!-- ===== Card B: 6回 ===== -->
-            <div class="m-card card-b active" id="m-card-0" onclick="handleCardClick(0)" style="background-image: url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/ahmed-pUY0TMADyTM-unsplash.jpg');">
+            <div class="m-card card-b active" id="m-card-0" onclick="handleCardClick(0)">
                 <div class="m-card-overlay"></div>
                 <img class="m-gept-logo" src="https://ik.imagekit.io/lql1uveoc/Front%20Page/GEPT_logo.svg.png?updatedAt=1756611596300" alt="GEPT">
                 <div class="m-card-body">
@@ -630,7 +579,7 @@
             </div>
 
             <!-- ===== Card A: 3回 ===== -->
-            <div class="m-card card-a" id="m-card-1" onclick="handleCardClick(1)" style="background-image: url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/mtsjrdl-PcDipceqA6E-unsplash.jpg');">
+            <div class="m-card card-a" id="m-card-1" onclick="handleCardClick(1)">
                 <div class="m-card-overlay"></div>
                 <img class="m-gept-logo" src="https://ik.imagekit.io/lql1uveoc/Front%20Page/GEPT_logo.svg.png?updatedAt=1756611596300" alt="GEPT">
                 <div class="m-card-body">
@@ -653,7 +602,7 @@
             </div>
 
             <!-- ===== Card C: 中級寫作 ===== -->
-            <div class="m-card card-c" id="m-card-2" onclick="handleCardClick(2)" style="background-image: url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/pascal-bullan-1sm3Ml-WI5k-unsplash.jpg');">
+            <div class="m-card card-c" id="m-card-2" onclick="handleCardClick(2)">
                 <div class="m-card-overlay"></div>
                 <img class="m-gept-logo" src="https://ik.imagekit.io/lql1uveoc/Front%20Page/GEPT_logo.svg.png?updatedAt=1756611596300" alt="GEPT">
                 <div class="m-card-body">
@@ -745,9 +694,9 @@
         <div class="advice-title">Tony 線上美語家教<br>給予全民英檢學員的建議</div>
         <div class="advice-content">
             <p>準備全民英檢中級寫作，最大的盲點往往在於「死背高深單字與生硬的模板」，卻忽略了最基本的「句型邏輯」與「中英轉換思維」。綜合眾多高分通關學員的回饋，我們總結出三大致勝關鍵：</p>
-            <p><strong>1. 丟掉死記硬背的模板：</strong><br>用你真正懂的單字，寫出文法正確的句子，遠比硬塞一個用錯的「高級單字」拿分更高。<span>靈活替換</span>才是語言的本質。</p>
+            <p><strong>1. 丟掉死記硬背的模板：</strong><br>用你真正懂的單字，寫出文法正確的句子，遠比硬塞一個用錯的「高級單字」拿分更高。<span class="highlight">靈活替換</span>才是語言的本質。</p>
             <p><strong>2. 強化中翻英的底子：</strong><br>翻譯題其實就是寫作的縮影。打好翻譯基礎，你的作文自然言之有物，不會落入中式英文的陷阱。</p>
-            <p><strong>3. 突破「自己看不出錯」的盲點：</strong><br>自己練寫作，很容易一直犯相同的錯誤。透過專業的<span>雙師批改</span>與<span>1對1真人診斷</span>，能在一針見血的指導下，省去你大量摸索與挫折的時間。</p>
+            <p><strong>3. 突破「自己看不出錯」的盲點：</strong><br>自己練寫作，很容易一直犯相同的錯誤。透過專業的<span class="highlight">雙師批改</span>與<span class="highlight">1對1真人診斷</span>，能在一針見血的指導下，省去你大量摸索與挫折的時間。</p>
             <p style="text-align: center; margin-top: 10px; font-weight: 800; color: var(--theme-blue);">寫作不靠運氣，靠的是清晰的邏輯與刻意練習！</p>
         </div>
     </div>
@@ -1096,7 +1045,6 @@ function submitContactForm(e) {
     btn.innerHTML = '傳送中... <i class="fa-solid fa-spinner fa-spin"></i>';
     btn.disabled = true;
 
-    // 接上你提供的 GAS URL
     const GAS_URL = "https://script.google.com/macros/s/AKfycbwE5thuJP9luwed0GG0eRF4DheFubXRfWQ5ZnnJL5r8TxFGaIrhUzEB4AAp51RZ_WL3/exec"; 
     
     const params = new URLSearchParams();
