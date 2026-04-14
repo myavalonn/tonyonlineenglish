@@ -34,15 +34,13 @@
     margin-bottom: 32px;
   }
   .lang-btn {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.85rem;
+    font-family: 'Noto Sans TC', sans-serif;
+    font-size: 1rem;
     font-weight: 700;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
     background: #000;
     color: #fff;
     border: none;
-    padding: 8px 20px;
+    padding: 8px 22px;
     cursor: pointer;
     border-radius: 4px;
     transition: background 0.2s;
@@ -64,10 +62,8 @@
   }
   .header-sub {
     margin-top: 12px;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.72rem;
-    letter-spacing: 0.18em;
-    text-transform: uppercase;
+    font-size: 1rem;
+    font-weight: 700;
     color: #000;
   }
 
@@ -80,47 +76,47 @@
     border-bottom: 3px solid #000;
   }
 
+  /* section tag — same size as body text */
   .section-tag {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.65rem;
-    letter-spacing: 0.2em;
-    text-transform: uppercase;
-    margin-bottom: 18px;
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 10px;
     color: #000;
   }
 
+  /* block title — on mobile stays on one line, no <br> */
   .block-title {
     font-size: 1.45rem;
     font-weight: 900;
     line-height: 1.3;
     margin-bottom: 22px;
     color: #000;
+    white-space: nowrap;
   }
 
   .body-text {
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: 700;
     margin-bottom: 6px;
     color: #000;
   }
 
+  /* list — no dividers between items */
   ul.list {
     padding-left: 0;
     list-style: none;
   }
   ul.list li {
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: 700;
-    padding: 10px 0;
-    border-bottom: 1.5px solid #ccc;
+    padding: 6px 0;
     color: #000;
   }
-  ul.list li:last-child { border-bottom: none; }
 
   .rate-row {
     display: flex;
     flex-direction: column;
-    gap: 28px;
+    gap: 24px;
   }
   .rate-item {
     display: flex;
@@ -128,7 +124,7 @@
     gap: 6px;
   }
   .rate-label {
-    font-size: 1.1rem;
+    font-size: 1rem;
     font-weight: 700;
     color: #000;
   }
@@ -140,7 +136,7 @@
   .rate-badge {
     display: inline-block;
     font-family: 'Space Mono', monospace;
-    font-size: 1.2rem;
+    font-size: 1rem;
     font-weight: 700;
     background: #000;
     color: #fff;
@@ -155,12 +151,9 @@
     padding: 20px;
   }
   .note-title {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.72rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    font-weight: 700;
-    margin-bottom: 10px;
+    font-size: 1rem;
+    font-weight: 900;
+    margin-bottom: 8px;
     color: #000;
   }
   .note-box p {
@@ -172,10 +165,8 @@
   footer {
     margin-top: 56px;
     text-align: center;
-    font-family: 'Space Mono', monospace;
-    font-size: 0.7rem;
-    letter-spacing: 0.15em;
-    text-transform: uppercase;
+    font-size: 0.9rem;
+    font-weight: 700;
     color: #000;
   }
 
@@ -195,26 +186,28 @@
       padding-bottom: 32px;
     }
     .header-primary { font-size: 3.6rem; }
-    .header-sub { font-size: 0.8rem; text-align: right; align-self: end; }
+    .header-sub { font-size: 1.1rem; text-align: right; align-self: end; }
 
     .block {
       display: grid;
-      grid-template-columns: 280px 1fr;
+      grid-template-columns: 300px 1fr;
       gap: 56px;
       padding: 52px 0;
     }
 
-    .section-tag { font-size: 0.72rem; }
-    .block-title { font-size: 2rem; margin-bottom: 0; }
-    .body-text { font-size: 1.3rem; }
-    ul.list li { font-size: 1.3rem; }
-    .rate-row { gap: 36px; }
-    .rate-label { font-size: 1.3rem; }
-    .rate-formula { font-size: 1.1rem; }
-    .rate-badge { font-size: 1.4rem; padding: 6px 18px; }
+    .section-tag { font-size: 1.1rem; }
+    .block-title { font-size: 2rem; margin-bottom: 0; white-space: normal; }
+    .body-text { font-size: 1.2rem; }
+    ul.list li { font-size: 1.2rem; }
+    .rate-row { gap: 32px; }
+    .rate-label { font-size: 1.2rem; }
+    .rate-formula { font-size: 1.2rem; }
+    .rate-badge { font-size: 1.2rem; padding: 5px 18px; }
     .note-box { padding: 28px 32px; }
-    .note-box p { font-size: 1.1rem; }
-    .lang-btn { font-size: 0.9rem; padding: 10px 26px; }
+    .note-title { font-size: 1.1rem; }
+    .note-box p { font-size: 1.2rem; }
+    .lang-btn { font-size: 1.1rem; padding: 10px 28px; }
+    footer { font-size: 1rem; }
   }
 </style>
 </head>
@@ -238,7 +231,7 @@
   <div class="block">
     <div class="block-meta">
       <div class="section-tag" id="tag01">01 · 特殊時段</div>
-      <div class="block-title" id="title01">哪些時段算<br>特殊時段？</div>
+      <div class="block-title" id="title01">哪些時段算特殊時段？</div>
     </div>
     <div class="block-content">
       <ul class="list">
@@ -256,7 +249,7 @@
   <div class="block">
     <div class="block-meta">
       <div class="section-tag" id="tag02">02 · 費用倍率</div>
-      <div class="block-title" id="title02">學生主動指定<br>特殊時段</div>
+      <div class="block-title" id="title02">學生主動指定特殊時段</div>
     </div>
     <div class="block-content">
       <div class="rate-row">
@@ -276,7 +269,7 @@
   <div class="block">
     <div class="block-meta">
       <div class="section-tag" id="tag03">03 · 請假・調課</div>
-      <div class="block-title" id="title03">特殊時段需提前<br>48 小時告知</div>
+      <div class="block-title" id="title03">特殊時段需提前 48 小時告知</div>
     </div>
     <div class="block-content">
       <div class="body-text" id="cancel1">逾時告知，仍需扣除該堂特殊時段課程點數。</div>
@@ -296,19 +289,19 @@
       headerTitle: 'Tony 線上美語家教',
       headerSub: '課程規範 · COURSE POLICY',
       tag01: '01 · 特殊時段',
-      title01: '哪些時段算<br>特殊時段？',
+      title01: '哪些時段算特殊時段？',
       slot1: '週六晚間 &nbsp;<strong>6pm – 9pm</strong>',
       slot2: '週日全天 &nbsp;<strong>10am – 3pm</strong>',
       noteTag01: '彈性預約時段',
       noteText01: '以上為彈性預約時段，需個別詢問。老師保有拒絕預約之權利。',
       tag02: '02 · 費用倍率',
-      title02: '學生主動指定<br>特殊時段',
+      title02: '學生主動指定特殊時段',
       rate1label: '週六晚間（6pm 後）指定上課',
       rate1formula: '正常課程點數 <span class="rate-badge">× 1.2</span>',
       rate2label: '週日指定上課',
       rate2formula: '正常課程點數 <span class="rate-badge">× 1.33</span>',
       tag03: '03 · 請假・調課',
-      title03: '特殊時段需提前<br>48 小時告知',
+      title03: '特殊時段需提前 48 小時告知',
       cancel1: '逾時告知，仍需扣除該堂特殊時段課程點數。',
       cancel2: '感謝您的合作與諒解。',
       footer: 'Tony 線上美語家教 · 感謝您的配合',
@@ -318,19 +311,19 @@
       headerTitle: 'Tony Online English',
       headerSub: 'COURSE POLICY',
       tag01: '01 · Special Sessions',
-      title01: 'What counts as<br>a special session?',
+      title01: 'What counts as a special session?',
       slot1: 'Saturday Evening &nbsp;<strong>6pm – 9pm</strong>',
       slot2: 'Sunday Daytime &nbsp;<strong>10am – 3pm</strong>',
       noteTag01: 'Flexible Booking',
       noteText01: 'These slots require individual inquiry. The instructor reserves the right to decline any booking.',
       tag02: '02 · Rate Multiplier',
-      title02: 'Student-requested<br>special sessions',
+      title02: 'Student-requested special sessions',
       rate1label: 'Saturday Evening (after 6 pm) — student-requested',
       rate1formula: 'Normal session points <span class="rate-badge">× 1.2</span>',
       rate2label: 'Sunday — student-requested',
       rate2formula: 'Normal session points <span class="rate-badge">× 1.33</span>',
       tag03: '03 · Cancellation',
-      title03: '48-hour advance notice<br>required',
+      title03: '48-hour advance notice required',
       cancel1: 'Late notice: the special-session points for that lesson will still be deducted.',
       cancel2: 'Thank you for your cooperation and understanding.',
       footer: 'Tony Online English · Thank you for your cooperation',
@@ -345,19 +338,19 @@
     document.getElementById('headerTitle').innerHTML = d.headerTitle;
     document.getElementById('headerSub').textContent = d.headerSub;
     document.getElementById('tag01').textContent = d.tag01;
-    document.getElementById('title01').innerHTML = d.title01;
+    document.getElementById('title01').textContent = d.title01;
     document.getElementById('slot1').innerHTML = d.slot1;
     document.getElementById('slot2').innerHTML = d.slot2;
     document.getElementById('noteTag01').textContent = d.noteTag01;
     document.getElementById('noteText01').textContent = d.noteText01;
     document.getElementById('tag02').textContent = d.tag02;
-    document.getElementById('title02').innerHTML = d.title02;
+    document.getElementById('title02').textContent = d.title02;
     document.getElementById('rate1label').textContent = d.rate1label;
     document.getElementById('rate1formula').innerHTML = d.rate1formula;
     document.getElementById('rate2label').textContent = d.rate2label;
     document.getElementById('rate2formula').innerHTML = d.rate2formula;
     document.getElementById('tag03').textContent = d.tag03;
-    document.getElementById('title03').innerHTML = d.title03;
+    document.getElementById('title03').textContent = d.title03;
     document.getElementById('cancel1').textContent = d.cancel1;
     document.getElementById('cancel2').textContent = d.cancel2;
     document.getElementById('footer').textContent = d.footer;
