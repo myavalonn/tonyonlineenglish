@@ -22,29 +22,44 @@
     line-height: 1.75;
   }
 
-  /* ── MOBILE FIRST ── */
   .page {
     padding: 36px 20px 80px;
     max-width: 100%;
   }
 
-  /* Header */
+  /* ── LANG TOGGLE ── */
+  .lang-toggle {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 32px;
+  }
+  .lang-btn {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    background: #000;
+    color: #fff;
+    border: none;
+    padding: 8px 20px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: background 0.2s;
+  }
+  .lang-btn:hover { background: #333; }
+
+  /* ── HEADER ── */
   .header {
     border-bottom: 3px solid #000;
     padding-bottom: 24px;
     margin-bottom: 48px;
   }
-  .header-en {
+  .header-primary {
     font-family: 'DM Serif Display', serif;
     font-size: 2.2rem;
     line-height: 1.1;
     letter-spacing: -0.01em;
-    color: #000;
-  }
-  .header-zh {
-    font-size: 1.5rem;
-    font-weight: 900;
-    margin-top: 4px;
     color: #000;
   }
   .header-sub {
@@ -56,7 +71,7 @@
     color: #000;
   }
 
-  /* Block */
+  /* ── BLOCK ── */
   .block {
     border-top: 3px solid #000;
     padding: 32px 0;
@@ -74,16 +89,10 @@
     color: #000;
   }
 
-  .block-title-zh {
+  .block-title {
     font-size: 1.45rem;
     font-weight: 900;
     line-height: 1.3;
-    margin-bottom: 4px;
-    color: #000;
-  }
-  .block-title-en {
-    font-family: 'DM Serif Display', serif;
-    font-size: 1.1rem;
     margin-bottom: 22px;
     color: #000;
   }
@@ -92,12 +101,6 @@
     font-size: 1.1rem;
     font-weight: 700;
     margin-bottom: 6px;
-    color: #000;
-  }
-  .body-text-en {
-    font-size: 0.95rem;
-    font-family: 'Space Mono', monospace;
-    margin-bottom: 16px;
     color: #000;
   }
 
@@ -110,20 +113,9 @@
     font-weight: 700;
     padding: 10px 0;
     border-bottom: 1.5px solid #ccc;
-    display: flex;
-    justify-content: space-between;
-    align-items: baseline;
-    gap: 12px;
     color: #000;
   }
   ul.list li:last-child { border-bottom: none; }
-  ul.list li .en-small {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.78rem;
-    font-weight: 400;
-    color: #000;
-    white-space: nowrap;
-  }
 
   .rate-row {
     display: flex;
@@ -133,18 +125,12 @@
   .rate-item {
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 6px;
   }
-  .rate-zh {
+  .rate-label {
     font-size: 1.1rem;
     font-weight: 700;
     color: #000;
-  }
-  .rate-en {
-    font-family: 'Space Mono', monospace;
-    font-size: 0.82rem;
-    color: #000;
-    margin-bottom: 6px;
   }
   .rate-formula {
     font-size: 1rem;
@@ -168,31 +154,18 @@
     border: 2px solid #000;
     padding: 20px;
   }
-  .note-title-zh {
-    font-size: 1rem;
-    font-weight: 900;
-    margin-bottom: 2px;
-    color: #000;
-  }
-  .note-title-en {
+  .note-title {
     font-family: 'Space Mono', monospace;
-    font-size: 0.68rem;
+    font-size: 0.72rem;
     letter-spacing: 0.12em;
     text-transform: uppercase;
-    margin-bottom: 12px;
+    font-weight: 700;
+    margin-bottom: 10px;
     color: #000;
   }
   .note-box p {
     font-size: 1rem;
     font-weight: 700;
-    margin-bottom: 4px;
-    color: #000;
-  }
-  .note-box p.en {
-    font-family: 'Space Mono', monospace;
-    font-weight: 400;
-    font-size: 0.85rem;
-    margin-bottom: 10px;
     color: #000;
   }
 
@@ -213,7 +186,6 @@
       margin: 0 auto;
       padding: 72px 64px 120px;
     }
-
     .header {
       display: grid;
       grid-template-columns: 1fr auto;
@@ -222,13 +194,8 @@
       margin-bottom: 64px;
       padding-bottom: 32px;
     }
-    .header-en { font-size: 3.6rem; }
-    .header-zh { font-size: 2.2rem; }
-    .header-sub {
-      font-size: 0.8rem;
-      text-align: right;
-      align-self: end;
-    }
+    .header-primary { font-size: 3.6rem; }
+    .header-sub { font-size: 0.8rem; text-align: right; align-self: end; }
 
     .block {
       display: grid;
@@ -238,109 +205,165 @@
     }
 
     .section-tag { font-size: 0.72rem; }
-    .block-title-zh { font-size: 2rem; }
-    .block-title-en { font-size: 1.25rem; margin-bottom: 0; }
-
+    .block-title { font-size: 2rem; margin-bottom: 0; }
     .body-text { font-size: 1.3rem; }
-    .body-text-en { font-size: 1rem; margin-bottom: 20px; }
-
     ul.list li { font-size: 1.3rem; }
-    ul.list li .en-small { font-size: 0.9rem; }
-
     .rate-row { gap: 36px; }
-    .rate-zh { font-size: 1.3rem; }
-    .rate-en { font-size: 0.92rem; }
+    .rate-label { font-size: 1.3rem; }
     .rate-formula { font-size: 1.1rem; }
     .rate-badge { font-size: 1.4rem; padding: 6px 18px; }
-
     .note-box { padding: 28px 32px; }
-    .note-title-zh { font-size: 1.1rem; }
-    .note-title-en { font-size: 0.74rem; }
     .note-box p { font-size: 1.1rem; }
-    .note-box p.en { font-size: 0.95rem; }
+    .lang-btn { font-size: 0.9rem; padding: 10px 26px; }
   }
 </style>
 </head>
 <body>
 <div class="page">
 
+  <!-- LANG TOGGLE -->
+  <div class="lang-toggle">
+    <button class="lang-btn" id="langBtn" onclick="toggleLang()">EN</button>
+  </div>
+
   <!-- HEADER -->
   <header class="header">
     <div>
-      <div class="header-en">Tony Online English</div>
-      <div class="header-zh">Tony 線上美語家教</div>
+      <div class="header-primary" id="headerTitle">Tony 線上美語家教</div>
     </div>
-    <div class="header-sub">課程規範 · Course Policy</div>
+    <div class="header-sub" id="headerSub">課程規範 · COURSE POLICY</div>
   </header>
 
-  <!-- BLOCK 01 · 特殊時段 -->
+  <!-- BLOCK 01 -->
   <div class="block">
     <div class="block-meta">
-      <div class="section-tag">01 · Special Sessions / 特殊時段</div>
-      <div class="block-title-zh">哪些時段算<br>特殊時段？</div>
-      <div class="block-title-en">What counts as a special session?</div>
+      <div class="section-tag" id="tag01">01 · 特殊時段</div>
+      <div class="block-title" id="title01">哪些時段算<br>特殊時段？</div>
     </div>
     <div class="block-content">
       <ul class="list">
-        <li>
-          <span>週六晚間 &nbsp;<strong>6pm – 9pm</strong></span>
-          <span class="en-small">Sat Evening 6–9 pm</span>
-        </li>
-        <li>
-          <span>週日全天 &nbsp;<strong>10am – 3pm</strong></span>
-          <span class="en-small">Sun Daytime 10 am–3 pm</span>
-        </li>
+        <li id="slot1">週六晚間 &nbsp;<strong>6pm – 9pm</strong></li>
+        <li id="slot2">週日全天 &nbsp;<strong>10am – 3pm</strong></li>
       </ul>
       <div class="note-box">
-        <div class="note-title-zh">彈性預約時段</div>
-        <div class="note-title-en">Flexible Booking · Subject to Availability</div>
-        <p>以上為彈性預約時段，需個別詢問。老師保有拒絕預約之權利。</p>
-        <p class="en">These slots require individual inquiry. The instructor reserves the right to decline any booking.</p>
+        <div class="note-title" id="noteTag01">彈性預約時段</div>
+        <p id="noteText01">以上為彈性預約時段，需個別詢問。老師保有拒絕預約之權利。</p>
       </div>
     </div>
   </div>
 
-  <!-- BLOCK 02 · 費用倍率 -->
+  <!-- BLOCK 02 -->
   <div class="block">
     <div class="block-meta">
-      <div class="section-tag">02 · Rate Multiplier / 費用倍率</div>
-      <div class="block-title-zh">學生主動指定<br>特殊時段</div>
-      <div class="block-title-en">Student-requested special sessions</div>
+      <div class="section-tag" id="tag02">02 · 費用倍率</div>
+      <div class="block-title" id="title02">學生主動指定<br>特殊時段</div>
     </div>
     <div class="block-content">
       <div class="rate-row">
         <div class="rate-item">
-          <div class="rate-zh">週六晚間（6pm 後）指定上課</div>
-          <div class="rate-en">Saturday Evening (after 6 pm) — student-requested</div>
-          <div class="rate-formula">正常課程點數 <span class="rate-badge">× 1.2</span></div>
-          <div class="rate-en" style="margin-top:6px;">Normal session points × 1.2</div>
+          <div class="rate-label" id="rate1label">週六晚間（6pm 後）指定上課</div>
+          <div class="rate-formula" id="rate1formula">正常課程點數 <span class="rate-badge">× 1.2</span></div>
         </div>
         <div class="rate-item">
-          <div class="rate-zh">週日指定上課</div>
-          <div class="rate-en">Sunday — student-requested</div>
-          <div class="rate-formula">正常課程點數 <span class="rate-badge">× 1.33</span></div>
-          <div class="rate-en" style="margin-top:6px;">Normal session points × 1.33</div>
+          <div class="rate-label" id="rate2label">週日指定上課</div>
+          <div class="rate-formula" id="rate2formula">正常課程點數 <span class="rate-badge">× 1.33</span></div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- BLOCK 03 · 請假／調課 -->
+  <!-- BLOCK 03 -->
   <div class="block">
     <div class="block-meta">
-      <div class="section-tag">03 · Cancellation / 請假・調課</div>
-      <div class="block-title-zh">特殊時段需提前<br>48 小時告知</div>
-      <div class="block-title-en">48-hour advance notice required for special sessions</div>
+      <div class="section-tag" id="tag03">03 · 請假・調課</div>
+      <div class="block-title" id="title03">特殊時段需提前<br>48 小時告知</div>
     </div>
     <div class="block-content">
-      <div class="body-text">逾時告知，仍需扣除該堂特殊時段課程點數。</div>
-      <div class="body-text-en">Late notice: the special-session points for that lesson will still be deducted.</div>
-      <div class="body-text" style="margin-top: 14px;">感謝您的合作與諒解。</div>
-      <div class="body-text-en">Thank you for your cooperation and understanding.</div>
+      <div class="body-text" id="cancel1">逾時告知，仍需扣除該堂特殊時段課程點數。</div>
+      <div class="body-text" style="margin-top: 14px;" id="cancel2">感謝您的合作與諒解。</div>
     </div>
   </div>
 
-  <footer>Tony 線上美語家教 · Thank you for your cooperation</footer>
+  <footer id="footer">Tony 線上美語家教 · 感謝您的配合</footer>
 </div>
+
+<script>
+  let isEN = false;
+
+  const content = {
+    zh: {
+      btnLabel: 'EN',
+      headerTitle: 'Tony 線上美語家教',
+      headerSub: '課程規範 · COURSE POLICY',
+      tag01: '01 · 特殊時段',
+      title01: '哪些時段算<br>特殊時段？',
+      slot1: '週六晚間 &nbsp;<strong>6pm – 9pm</strong>',
+      slot2: '週日全天 &nbsp;<strong>10am – 3pm</strong>',
+      noteTag01: '彈性預約時段',
+      noteText01: '以上為彈性預約時段，需個別詢問。老師保有拒絕預約之權利。',
+      tag02: '02 · 費用倍率',
+      title02: '學生主動指定<br>特殊時段',
+      rate1label: '週六晚間（6pm 後）指定上課',
+      rate1formula: '正常課程點數 <span class="rate-badge">× 1.2</span>',
+      rate2label: '週日指定上課',
+      rate2formula: '正常課程點數 <span class="rate-badge">× 1.33</span>',
+      tag03: '03 · 請假・調課',
+      title03: '特殊時段需提前<br>48 小時告知',
+      cancel1: '逾時告知，仍需扣除該堂特殊時段課程點數。',
+      cancel2: '感謝您的合作與諒解。',
+      footer: 'Tony 線上美語家教 · 感謝您的配合',
+    },
+    en: {
+      btnLabel: '中文',
+      headerTitle: 'Tony Online English',
+      headerSub: 'COURSE POLICY',
+      tag01: '01 · Special Sessions',
+      title01: 'What counts as<br>a special session?',
+      slot1: 'Saturday Evening &nbsp;<strong>6pm – 9pm</strong>',
+      slot2: 'Sunday Daytime &nbsp;<strong>10am – 3pm</strong>',
+      noteTag01: 'Flexible Booking',
+      noteText01: 'These slots require individual inquiry. The instructor reserves the right to decline any booking.',
+      tag02: '02 · Rate Multiplier',
+      title02: 'Student-requested<br>special sessions',
+      rate1label: 'Saturday Evening (after 6 pm) — student-requested',
+      rate1formula: 'Normal session points <span class="rate-badge">× 1.2</span>',
+      rate2label: 'Sunday — student-requested',
+      rate2formula: 'Normal session points <span class="rate-badge">× 1.33</span>',
+      tag03: '03 · Cancellation',
+      title03: '48-hour advance notice<br>required',
+      cancel1: 'Late notice: the special-session points for that lesson will still be deducted.',
+      cancel2: 'Thank you for your cooperation and understanding.',
+      footer: 'Tony Online English · Thank you for your cooperation',
+    }
+  };
+
+  function toggleLang() {
+    isEN = !isEN;
+    const d = content[isEN ? 'en' : 'zh'];
+
+    document.getElementById('langBtn').textContent = d.btnLabel;
+    document.getElementById('headerTitle').innerHTML = d.headerTitle;
+    document.getElementById('headerSub').textContent = d.headerSub;
+    document.getElementById('tag01').textContent = d.tag01;
+    document.getElementById('title01').innerHTML = d.title01;
+    document.getElementById('slot1').innerHTML = d.slot1;
+    document.getElementById('slot2').innerHTML = d.slot2;
+    document.getElementById('noteTag01').textContent = d.noteTag01;
+    document.getElementById('noteText01').textContent = d.noteText01;
+    document.getElementById('tag02').textContent = d.tag02;
+    document.getElementById('title02').innerHTML = d.title02;
+    document.getElementById('rate1label').textContent = d.rate1label;
+    document.getElementById('rate1formula').innerHTML = d.rate1formula;
+    document.getElementById('rate2label').textContent = d.rate2label;
+    document.getElementById('rate2formula').innerHTML = d.rate2formula;
+    document.getElementById('tag03').textContent = d.tag03;
+    document.getElementById('title03').innerHTML = d.title03;
+    document.getElementById('cancel1').textContent = d.cancel1;
+    document.getElementById('cancel2').textContent = d.cancel2;
+    document.getElementById('footer').textContent = d.footer;
+
+    document.documentElement.lang = isEN ? 'en' : 'zh-TW';
+  }
+</script>
 </body>
 </html>
