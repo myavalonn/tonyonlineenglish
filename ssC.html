@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
@@ -10,241 +11,177 @@
     <meta property="og:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/self-regulation.png?updatedAt=1773381043506">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/self-regulation.png?updatedAt=1773381043506">
-
     <script src="layout-manager.js"></script>
     <style>
-        /* 啟用平滑滾動，讓按鈕跳轉時更滑順 */
-        html {
-            scroll-behavior: smooth;
-        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
 
-        body {
-            font-family: "PingFang TC", "Microsoft JhengHei", sans-serif;
-            background-color: #ffffff;
-            margin: 0;
-            padding: 0;
-            font-size: 20px;
-            line-height: 1.6;
-            color: #000000;
-        }
+```
+    body {
+        font-family: "PingFang TC", "Microsoft JhengHei", sans-serif;
+        background: #fff;
+        color: #111;
+        line-height: 1.7;
+        padding: 48px 24px 80px;
+        font-size: 22px;
+    }
 
-        .time-group {
-            display: inline-block;
-            white-space: nowrap;
-            vertical-align: middle;
-            font-weight: bold;
-        }
+    .wrap {
+        max-width: 680px;
+        margin: 0 auto;
+    }
 
-        .container {
-            max-width: 600px;
-            margin: 0 auto;
-            padding: 0 20px;
-        }
+    h1 {
+        font-size: 2em;
+        font-weight: 900;
+        letter-spacing: -0.02em;
+        margin-bottom: 6px;
+    }
 
-        .header {
-            padding: 40px 0 20px 0;
-            text-align: center;
-        }
+    .sub {
+        font-size: 0.75em;
+        color: #888;
+        margin-bottom: 48px;
+        letter-spacing: 0.05em;
+    }
 
-        .header h1 { font-size: 30px; margin: 0; color: #222;}
-        .header p { font-size: 18px; margin-top: 10px; color: #555; }
+    .block {
+        border-top: 2px solid #111;
+        padding: 28px 0;
+    }
 
-        /* --- 頂部導覽按鈕 --- */
-        .nav-buttons {
-            display: flex;
-            gap: 12px;
-            justify-content: center;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-        }
+    .block:last-of-type {
+        border-bottom: 2px solid #111;
+    }
 
-        .nav-btn {
-            display: inline-block;
-            text-decoration: none;
-            background-color: #f1f5f9;
-            color: #334155;
-            padding: 10px 18px;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: bold;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.06);
-            transition: all 0.2s ease;
-            border: 1px solid #e2e8f0;
-        }
+    .label {
+        font-size: 0.6em;
+        font-weight: 700;
+        letter-spacing: 0.12em;
+        color: #aaa;
+        margin-bottom: 10px;
+    }
 
-        .nav-btn:hover {
-            background-color: #e2e8f0;
-            transform: translateY(-2px);
-        }
+    .block h2 {
+        font-size: 1.3em;
+        font-weight: 800;
+        margin-bottom: 14px;
+        letter-spacing: -0.01em;
+    }
 
-        /* --- 卡片式設計升級 --- */
-        .section {
-            padding: 25px;
-            margin-bottom: 25px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-            /* 預留上方錨點間距，防止跳轉時被貼死 */
-            scroll-margin-top: 20px; 
-        }
+    .block p, .block li {
+        font-size: 1em;
+        color: #333;
+        margin-bottom: 8px;
+    }
 
-        .card-intro {
-            background-color: #f8f9fa;
-            border-left: 6px solid #8792a1;
-        }
-        
-        .card-info {
-            background-color: #f2f7fa;
-            border-left: 6px solid #4a90e2;
-        }
+    .block ul {
+        padding-left: 1.2em;
+    }
 
-        .card-special {
-            background-color: #f8f4fb;
-            border-left: 6px solid #9b59b6; 
-        }
+    .rate {
+        display: inline-block;
+        font-size: 1.5em;
+        font-weight: 900;
+        letter-spacing: -0.02em;
+        color: #111;
+        background: #f0f0f0;
+        padding: 2px 12px;
+        border-radius: 6px;
+        margin: 0 4px;
+    }
 
-        .card-hours {
-            background-color: #fffbf0;
-            border-left: 6px solid #f5a623;
-        }
+    .note {
+        margin-top: 16px;
+        padding: 16px 20px;
+        background: #f5f5f5;
+        border-left: 4px solid #bbb;
+        font-size: 0.88em;
+        color: #444;
+        line-height: 1.8;
+    }
 
-        .card-points {
-            background-color: #f4faf5;
-            border-left: 6px solid #50af41;
-        }
+    .note strong {
+        display: block;
+        margin-bottom: 4px;
+        font-size: 1em;
+        color: #111;
+    }
 
-        .card-alert {
-            background-color: #fff6f6;
-            border-left: 6px solid #d32f2f;
-        }
+    footer {
+        margin-top: 48px;
+        font-size: 0.65em;
+        color: #ccc;
+        text-align: center;
+        letter-spacing: 0.05em;
+    }
 
-        .section-title {
-            font-size: 24px;
-            font-weight: bold;
-            margin-bottom: 15px;
-            display: block;
-        }
+    @media (min-width: 600px) {
+        body { font-size: 24px; }
+    }
 
-        .red-theme { color: #d32f2f; }
+    @media (min-width: 960px) {
+        body { font-size: 26px; padding: 64px 40px 100px; }
+    }
+</style>
+```
 
-        .red-border-box {
-            border: 2px solid #d32f2f;
-            background-color: #ffffff;
-            padding: 15px;
-            margin-top: 15px;
-            border-radius: 6px;
-        }
-
-        .example-box {
-            background-color: #ffffff; 
-            padding: 15px;
-            font-size: 18px;
-            border-left: 5px solid #ccc;
-            margin: 15px 0;
-            border-radius: 6px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-        }
-
-        /* 手機版響應式設定 */
-        @media (max-width: 480px) {
-            body { font-size: 22px; }
-            .header h1 { font-size: 26px; }
-            .section { padding: 20px; }
-            /* 讓 (正常堂數x1.2) 在手機版強制換行 */
-            .mobile-break { 
-                display: block; 
-                margin-top: 5px; 
-            }
-        }
-    </style>
 </head>
 <body>
+<div class="wrap">
 
-<div class="container">
-    <div class="header">
-        <h1>Tony線上美語家教</h1>
-        <p>課程預約與請假規範</p>
+```
+<h1>Tony 線上美語家教</h1>
+<p class="sub">課程規範 · COURSE POLICY</p>
+
+<!-- 01 特殊時段 -->
+<div class="block">
+    <div class="label">01 · 特殊時段</div>
+    <h2>哪些時段算特殊時段？</h2>
+    <ul>
+        <li>週六晚間 &nbsp;<strong>6pm – 9pm</strong></li>
+        <li>週日全天 &nbsp;<strong>10am – 3pm</strong></li>
+    </ul>
+    <div class="note">
+        以上為彈性預約時段，需個別詢問。老師保有拒絕預約之權利。
     </div>
-
-    <!-- 頂部按鈕區塊 -->
-    <div class="nav-buttons">
-        <a href="#special-hours" class="nav-btn">特殊時段上課</a>
-        <a href="#points-conversion" class="nav-btn">點數轉換</a>
-        <a href="#leave-policy" class="nav-btn">請假和調課</a>
-    </div>
-
-    <!-- 第 1 個：特殊指定時段 -->
-    <div id="special-hours" class="section card-special red-theme">
-        <span class="section-title">❖ 特殊指定時段 <span class="mobile-break">(正常堂數x1.2)</span></span>
-        • 週六晚間：<span class="time-group">6pm - 9pm</span><br>
-        • 週日時段：<span class="time-group">10am - 3pm</span><br>
-        <div style="font-size: 16px; margin-top: 10px;">
-            (以上教師彈性預約時段，需個別詢問，老師保有拒絕預約之權利)
-        </div>
-    </div>
-
-    <!-- 第 2 個：點數轉換機制 -->
-    <div id="points-conversion" class="section card-points">
-        <span class="section-title">🔄 點數轉換機制</span>
-        若指定於特殊時段上課，剩餘堂數將自動轉換為點數計算：<strong>正常堂數x1.2</strong><br><br>
-        <strong>範例（<span class="time-group">1堂 = 100點</span>）：</strong><br>
-        • 標準時段：<span class="time-group">100 點 / 堂</span><br>
-        <span class="red-theme">• 特殊時段：<span class="time-group">120 點 / 堂</span></span>
-        
-        <div class="example-box">
-            <strong>計算示範：</strong><br>
-            假設您目前剩餘 15 堂課：<br>
-            1. 轉換點數：<span class="time-group">15 堂 × 100 = 1,500 點</span><br>
-            2. 特殊課扣除：<span class="red-theme time-group">120 點</span><br>
-            3. 剩餘點數：<span class="time-group">1,380 點</span> (約 13.8 堂)
-        </div>
-    </div>
-
-    <!-- 第 3 個：請假調課規範 -->
-    <div id="leave-policy" class="section card-alert red-theme">
-        <span class="section-title">📅 請假調課規範</span>
-        針對<strong>「非營業時段」</strong>之預約：<br>
-        請於課程開始前 <span class="time-group">48 小時</span> 告知。
-        
-        <div class="red-border-box">
-            <strong>❌ 逾時告知：</strong><br>
-            若於上課前 <span class="time-group">48 小時內</span> 告知請假和調課，將<strong>照常扣除</strong>該時段點數 。
-        </div>
-
-        <div class="example-box" style="color: #000;">
-            <strong>範例：</strong><br>
-            預約週日上午 <span class="time-group">10am</span> 課程，<br>
-            需於 <span class="red-theme time-group">週五 10am 前</span> 完成請假。
-        </div>
-    </div>
-
-    <!-- 其他排下來：前言 -->
-    <div class="section card-intro">
-        <strong>【前言】</strong><br>
-        Tony線上美語家教致力於提供專業且高品質的學習體驗。為了平衡教學能量與休息時間，針對學生主動指定的特殊時段，特訂定此規範以確保教學品質與公平性。
-    </div>
-
-    <!-- 其他排下來：預約說明 -->
-    <div class="section card-info">
-        <strong>💡 預約說明：</strong><br>
-        通常特殊時段為老師公告開放預約，學生可預約該特殊時段課程，課堂數為正常規範。但若是學生「主動指定」該特殊時段上課，可參考底下規範。
-    </div>
-
-    <!-- 其他排下來：營業時間說明 -->
-    <div class="section card-hours">
-        <span class="section-title">⏰ 營業時間說明</span>
-        <div>
-            <strong>● 標準營業時段 (1.0x)</strong><br>
-            • 週一至週五：<span class="time-group">10am - 10pm</span><br>
-            • 週六：<span class="time-group">10am - 5pm</span><br>
-            <small style="color: #666;">(週六最後一堂課於 <span class="time-group">4:50 PM</span> 結束)</small><br>
-            <strong style="display: block; margin-top: 10px;">※ 週六 <span class="time-group">10am - 5pm</span> 為正常上課時段，無需額外點數</strong>
-        </div>
-    </div>
-
-    <div style="text-align: center; padding: 20px 0 40px 0; font-size: 14px; color: #999;">
-        Tony 線上美語家教 - 感謝您的配合
+    <div class="note" style="margin-top: 10px;">
+        <strong>非授課時間（不開放預約）</strong>
+        週一至週五：10pm 以後<br>
+        週六：5pm – 6pm、9pm 以後<br>
+        週日：3pm 以後
     </div>
 </div>
 
+<!-- 02 費用倍率 -->
+<div class="block">
+    <div class="label">02 · 費用倍率</div>
+    <h2>學生主動指定特殊時段</h2>
+
+    <p>週六晚間（6pm 後）指定上課：<span class="rate">× 1.2</span></p>
+    <p>週日指定上課：<span class="rate">× 1.33</span></p>
+
+    <div class="note">
+        <strong>計算範例（假設 1 堂 = 100 點）</strong>
+        週六晚間每堂扣 <strong>120 點</strong>（正常 100 點 × 1.2）<br>
+        週日每堂扣 <strong>133 點</strong>（正常 100 點 × 1.33）<br><br>
+        例：剩餘 15 堂 → 轉為 1,500 點<br>
+        週日上 1 堂 → 扣 133 點，剩 1,367 點（約 13.67 堂）
+    </div>
+</div>
+
+<!-- 03 請假規範 -->
+<div class="block">
+    <div class="label">03 · 請假 / 調課</div>
+    <h2>特殊時段需提前 48 小時告知</h2>
+    <p>逾時告知，照常扣除該堂點數。</p>
+    <div class="note">
+        <strong>範例</strong>
+        週日 10am 課程 → 最晚<strong>週五 10am 前</strong>完成請假
+    </div>
+</div>
+
+<footer>Tony 線上美語家教 · 感謝您的配合</footer>
+
+</div>
 </body>
 </html>
