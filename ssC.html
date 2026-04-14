@@ -1,187 +1,346 @@
 <!DOCTYPE html>
-
 <html lang="zh-TW">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tony線上美語家教 - 課程規範</title>
-    <meta property="og:title" content="特殊時段課程週六午晚間/週日白天-Tony線上美語家教">
-    <meta property="og:description" content="升學 檢定 職場 公職 高考 面試 外商 觀光美語 展場英文 翻譯">
-    <meta property="og:url" content="https://tonyonlineenglish.netlify.app/ssc">
-    <meta property="og:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/self-regulation.png?updatedAt=1773381043506">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/self-regulation.png?updatedAt=1773381043506">
-    <script src="layout-manager.js"></script>
-    <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tony線上美語家教 - 課程規範</title>
+<meta property="og:title" content="特殊時段課程週六午晚間/週日白天-Tony線上美語家教">
+<meta property="og:description" content="升學 檢定 職場 公職 高考 面試 外商 觀光美語 展場英文 翻譯">
+<meta property="og:url" content="https://tonyonlineenglish.netlify.app/ssc">
+<meta property="og:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/self-regulation.png?updatedAt=1773381043506">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/self-regulation.png?updatedAt=1773381043506">
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Noto+Sans+TC:wght@400;700;900&family=Space+Mono:wght@400;700&display=swap');
 
-```
-    body {
-        font-family: "PingFang TC", "Microsoft JhengHei", sans-serif;
-        background: #fff;
-        color: #111;
-        line-height: 1.7;
-        padding: 48px 24px 80px;
-        font-size: 22px;
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #fff;
+    color: #000;
+    font-family: 'Noto Sans TC', "PingFang TC", "Microsoft JhengHei", sans-serif;
+    line-height: 1.75;
+  }
+
+  /* ── MOBILE FIRST ── */
+  .page {
+    padding: 36px 20px 80px;
+    max-width: 100%;
+  }
+
+  /* Header */
+  .header {
+    border-bottom: 3px solid #000;
+    padding-bottom: 24px;
+    margin-bottom: 48px;
+  }
+  .header-en {
+    font-family: 'DM Serif Display', serif;
+    font-size: 2.2rem;
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    color: #000;
+  }
+  .header-zh {
+    font-size: 1.5rem;
+    font-weight: 900;
+    margin-top: 4px;
+    color: #000;
+  }
+  .header-sub {
+    margin-top: 12px;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #000;
+  }
+
+  /* Block */
+  .block {
+    border-top: 3px solid #000;
+    padding: 32px 0;
+  }
+  .block:last-of-type {
+    border-bottom: 3px solid #000;
+  }
+
+  .section-tag {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 18px;
+    color: #000;
+  }
+
+  .block-title-zh {
+    font-size: 1.45rem;
+    font-weight: 900;
+    line-height: 1.3;
+    margin-bottom: 4px;
+    color: #000;
+  }
+  .block-title-en {
+    font-family: 'DM Serif Display', serif;
+    font-size: 1.1rem;
+    margin-bottom: 22px;
+    color: #000;
+  }
+
+  .body-text {
+    font-size: 1.1rem;
+    font-weight: 700;
+    margin-bottom: 6px;
+    color: #000;
+  }
+  .body-text-en {
+    font-size: 0.95rem;
+    font-family: 'Space Mono', monospace;
+    margin-bottom: 16px;
+    color: #000;
+  }
+
+  ul.list {
+    padding-left: 0;
+    list-style: none;
+  }
+  ul.list li {
+    font-size: 1.1rem;
+    font-weight: 700;
+    padding: 10px 0;
+    border-bottom: 1.5px solid #ccc;
+    display: flex;
+    justify-content: space-between;
+    align-items: baseline;
+    gap: 12px;
+    color: #000;
+  }
+  ul.list li:last-child { border-bottom: none; }
+  ul.list li .en-small {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.78rem;
+    font-weight: 400;
+    color: #000;
+    white-space: nowrap;
+  }
+
+  .rate-row {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+  .rate-item {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .rate-zh {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #000;
+  }
+  .rate-en {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.82rem;
+    color: #000;
+    margin-bottom: 6px;
+  }
+  .rate-formula {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #000;
+  }
+  .rate-badge {
+    display: inline-block;
+    font-family: 'Space Mono', monospace;
+    font-size: 1.2rem;
+    font-weight: 700;
+    background: #000;
+    color: #fff;
+    padding: 4px 14px;
+    border-radius: 4px;
+    margin-left: 6px;
+  }
+
+  .note-box {
+    margin-top: 22px;
+    border: 2px solid #000;
+    padding: 20px;
+  }
+  .note-title-zh {
+    font-size: 1rem;
+    font-weight: 900;
+    margin-bottom: 2px;
+    color: #000;
+  }
+  .note-title-en {
+    font-family: 'Space Mono', monospace;
+    font-size: 0.68rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+    color: #000;
+  }
+  .note-box p {
+    font-size: 1rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+    color: #000;
+  }
+  .note-box p.en {
+    font-family: 'Space Mono', monospace;
+    font-weight: 400;
+    font-size: 0.85rem;
+    margin-bottom: 10px;
+    color: #000;
+  }
+
+  footer {
+    margin-top: 56px;
+    text-align: center;
+    font-family: 'Space Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #000;
+  }
+
+  /* ── DESKTOP ── */
+  @media (min-width: 860px) {
+    .page {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 72px 64px 120px;
     }
 
-    .wrap {
-        max-width: 680px;
-        margin: 0 auto;
+    .header {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: end;
+      gap: 24px;
+      margin-bottom: 64px;
+      padding-bottom: 32px;
     }
-
-    h1 {
-        font-size: 2em;
-        font-weight: 900;
-        letter-spacing: -0.02em;
-        margin-bottom: 6px;
-    }
-
-    .sub {
-        font-size: 0.75em;
-        color: #888;
-        margin-bottom: 48px;
-        letter-spacing: 0.05em;
+    .header-en { font-size: 3.6rem; }
+    .header-zh { font-size: 2.2rem; }
+    .header-sub {
+      font-size: 0.8rem;
+      text-align: right;
+      align-self: end;
     }
 
     .block {
-        border-top: 2px solid #111;
-        padding: 28px 0;
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 56px;
+      padding: 52px 0;
     }
 
-    .block:last-of-type {
-        border-bottom: 2px solid #111;
-    }
+    .section-tag { font-size: 0.72rem; }
+    .block-title-zh { font-size: 2rem; }
+    .block-title-en { font-size: 1.25rem; margin-bottom: 0; }
 
-    .label {
-        font-size: 0.6em;
-        font-weight: 700;
-        letter-spacing: 0.12em;
-        color: #aaa;
-        margin-bottom: 10px;
-    }
+    .body-text { font-size: 1.3rem; }
+    .body-text-en { font-size: 1rem; margin-bottom: 20px; }
 
-    .block h2 {
-        font-size: 1.3em;
-        font-weight: 800;
-        margin-bottom: 14px;
-        letter-spacing: -0.01em;
-    }
+    ul.list li { font-size: 1.3rem; }
+    ul.list li .en-small { font-size: 0.9rem; }
 
-    .block p, .block li {
-        font-size: 1em;
-        color: #333;
-        margin-bottom: 8px;
-    }
+    .rate-row { gap: 36px; }
+    .rate-zh { font-size: 1.3rem; }
+    .rate-en { font-size: 0.92rem; }
+    .rate-formula { font-size: 1.1rem; }
+    .rate-badge { font-size: 1.4rem; padding: 6px 18px; }
 
-    .block ul {
-        padding-left: 1.2em;
-    }
-
-    .rate {
-        display: inline-block;
-        font-size: 1.5em;
-        font-weight: 900;
-        letter-spacing: -0.02em;
-        color: #111;
-        background: #f0f0f0;
-        padding: 2px 12px;
-        border-radius: 6px;
-        margin: 0 4px;
-    }
-
-    .note {
-        margin-top: 16px;
-        padding: 16px 20px;
-        background: #f5f5f5;
-        border-left: 4px solid #bbb;
-        font-size: 0.88em;
-        color: #444;
-        line-height: 1.8;
-    }
-
-    .note strong {
-        display: block;
-        margin-bottom: 4px;
-        font-size: 1em;
-        color: #111;
-    }
-
-    footer {
-        margin-top: 48px;
-        font-size: 0.65em;
-        color: #ccc;
-        text-align: center;
-        letter-spacing: 0.05em;
-    }
-
-    @media (min-width: 600px) {
-        body { font-size: 24px; }
-    }
-
-    @media (min-width: 960px) {
-        body { font-size: 26px; padding: 64px 40px 100px; }
-    }
+    .note-box { padding: 28px 32px; }
+    .note-title-zh { font-size: 1.1rem; }
+    .note-title-en { font-size: 0.74rem; }
+    .note-box p { font-size: 1.1rem; }
+    .note-box p.en { font-size: 0.95rem; }
+  }
 </style>
-```
-
 </head>
 <body>
-<div class="wrap">
+<div class="page">
 
-```
-<h1>Tony 線上美語家教</h1>
-<p class="sub">課程規範 · COURSE POLICY</p>
-
-<!-- 01 特殊時段 -->
-<div class="block">
-    <div class="label">01 · 特殊時段</div>
-    <h2>哪些時段算特殊時段？</h2>
-    <ul>
-        <li>週六晚間 &nbsp;<strong>6pm – 9pm</strong></li>
-        <li>週日全天 &nbsp;<strong>10am – 3pm</strong></li>
-    </ul>
-    <div class="note">
-        以上為彈性預約時段，需個別詢問。老師保有拒絕預約之權利。
+  <!-- HEADER -->
+  <header class="header">
+    <div>
+      <div class="header-en">Tony Online English</div>
+      <div class="header-zh">Tony 線上美語家教</div>
     </div>
-    <div class="note" style="margin-top: 10px;">
-        <strong>非授課時間（不開放預約）</strong>
-        週一至週五：10pm 以後<br>
-        週六：5pm – 6pm、9pm 以後<br>
-        週日：3pm 以後
+    <div class="header-sub">課程規範 · Course Policy</div>
+  </header>
+
+  <!-- BLOCK 01 · 特殊時段 -->
+  <div class="block">
+    <div class="block-meta">
+      <div class="section-tag">01 · Special Sessions / 特殊時段</div>
+      <div class="block-title-zh">哪些時段算<br>特殊時段？</div>
+      <div class="block-title-en">What counts as a special session?</div>
     </div>
-</div>
-
-<!-- 02 費用倍率 -->
-<div class="block">
-    <div class="label">02 · 費用倍率</div>
-    <h2>學生主動指定特殊時段</h2>
-
-    <p>週六晚間（6pm 後）指定上課：<span class="rate">× 1.2</span></p>
-    <p>週日指定上課：<span class="rate">× 1.33</span></p>
-
-    <div class="note">
-        <strong>計算範例（假設 1 堂 = 100 點）</strong>
-        週六晚間每堂扣 <strong>120 點</strong>（正常 100 點 × 1.2）<br>
-        週日每堂扣 <strong>133 點</strong>（正常 100 點 × 1.33）<br><br>
-        例：剩餘 15 堂 → 轉為 1,500 點<br>
-        週日上 1 堂 → 扣 133 點，剩 1,367 點（約 13.67 堂）
+    <div class="block-content">
+      <ul class="list">
+        <li>
+          <span>週六晚間 &nbsp;<strong>6pm – 9pm</strong></span>
+          <span class="en-small">Sat Evening 6–9 pm</span>
+        </li>
+        <li>
+          <span>週日全天 &nbsp;<strong>10am – 3pm</strong></span>
+          <span class="en-small">Sun Daytime 10 am–3 pm</span>
+        </li>
+      </ul>
+      <div class="note-box">
+        <div class="note-title-zh">彈性預約時段</div>
+        <div class="note-title-en">Flexible Booking · Subject to Availability</div>
+        <p>以上為彈性預約時段，需個別詢問。老師保有拒絕預約之權利。</p>
+        <p class="en">These slots require individual inquiry. The instructor reserves the right to decline any booking.</p>
+      </div>
     </div>
-</div>
+  </div>
 
-<!-- 03 請假規範 -->
-<div class="block">
-    <div class="label">03 · 請假 / 調課</div>
-    <h2>特殊時段需提前 48 小時告知</h2>
-    <p>逾時告知，照常扣除該堂點數。</p>
-    <div class="note">
-        <strong>範例</strong>
-        週日 10am 課程 → 最晚<strong>週五 10am 前</strong>完成請假
+  <!-- BLOCK 02 · 費用倍率 -->
+  <div class="block">
+    <div class="block-meta">
+      <div class="section-tag">02 · Rate Multiplier / 費用倍率</div>
+      <div class="block-title-zh">學生主動指定<br>特殊時段</div>
+      <div class="block-title-en">Student-requested special sessions</div>
     </div>
-</div>
+    <div class="block-content">
+      <div class="rate-row">
+        <div class="rate-item">
+          <div class="rate-zh">週六晚間（6pm 後）指定上課</div>
+          <div class="rate-en">Saturday Evening (after 6 pm) — student-requested</div>
+          <div class="rate-formula">正常課程點數 <span class="rate-badge">× 1.2</span></div>
+          <div class="rate-en" style="margin-top:6px;">Normal session points × 1.2</div>
+        </div>
+        <div class="rate-item">
+          <div class="rate-zh">週日指定上課</div>
+          <div class="rate-en">Sunday — student-requested</div>
+          <div class="rate-formula">正常課程點數 <span class="rate-badge">× 1.33</span></div>
+          <div class="rate-en" style="margin-top:6px;">Normal session points × 1.33</div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-<footer>Tony 線上美語家教 · 感謝您的配合</footer>
+  <!-- BLOCK 03 · 請假／調課 -->
+  <div class="block">
+    <div class="block-meta">
+      <div class="section-tag">03 · Cancellation / 請假・調課</div>
+      <div class="block-title-zh">特殊時段需提前<br>48 小時告知</div>
+      <div class="block-title-en">48-hour advance notice required for special sessions</div>
+    </div>
+    <div class="block-content">
+      <div class="body-text">逾時告知，仍需扣除該堂特殊時段課程點數。</div>
+      <div class="body-text-en">Late notice: the special-session points for that lesson will still be deducted.</div>
+      <div class="body-text" style="margin-top: 14px;">感謝您的合作與諒解。</div>
+      <div class="body-text-en">Thank you for your cooperation and understanding.</div>
+    </div>
+  </div>
 
+  <footer>Tony 線上美語家教 · Thank you for your cooperation</footer>
 </div>
 </body>
 </html>
