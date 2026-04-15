@@ -351,7 +351,7 @@
            ========================================= */
         .features-wrapper { width: 100%; max-width: 1400px; margin: 30px auto 40px; padding: 20px 30px; box-sizing: border-box; }
         .feature-item { box-sizing: border-box; position: relative; }
-        /* 【修正點】：移除 overflow: hidden 讓徽章可以顯示在圓形外面 */
+        /* 移除 overflow: hidden 讓徽章可以顯示在圓形外面 */
         .feature-icon-wrapper { background: #eff6ff; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: #0066ff; position: relative; flex-shrink: 0; }
         /* Photo icon: replaces the FA icon with a real photo */
         .feature-icon-wrapper.photo-icon { background: #000; }
@@ -375,7 +375,6 @@
             .feature-text h3 { font-size: 24px; margin-bottom: 10px; }
             .feature-text p { font-size: 16px; }
             .time-highlight { font-size: 18px; }
-            /* 【修正點】：微調 Desktop 版的 top 與 right，達到完美一半在內一半在外的視覺平衡 */
             .feature-badge { top: 0px; right: -15px; font-size: 14px; padding: 5px 12px; }
             .feature-badge::after { bottom: -5px; left: 15px; border-width: 5px 5px 0; }
             .terms-box { text-align: center; max-width: 800px; margin-left: auto; margin-right: auto; }
@@ -390,9 +389,11 @@
             .feature-text { flex: 1; }
             .feature-text h3 { font-size: 18px; margin-bottom: 4px; }
             .feature-text p { font-size: 14px; line-height: 1.4; color: #6a7a8c; }
-            /* 【修正點】：微調 Mobile 版位置，同樣呈現一半在外的視覺 */
-            .feature-badge { top: -4px; right: -8px; font-size: 12px; padding: 3px 8px; }
-            .feature-badge::after { bottom: -3px; left: 8px; border-width: 3px 3px 0; }
+            
+            /* 【修正點】：將手機版標籤進一步往外(往上、往右)推，完全避開圖片中心主體 */
+            .feature-badge { top: -12px; right: -14px; font-size: 11px; padding: 4px 8px; }
+            .feature-badge::after { bottom: -4px; left: 8px; border-width: 4px 4px 0; }
+            
             .terms-box { font-size: 12px; padding: 15px; margin-top: 20px; }
         }
 
@@ -548,7 +549,7 @@
 
     <div class="hero-content">
         <!-- Desktop / Tablet: brand flows inline, same font-size as title -->
-        <div class="hero-brand-inline">GEPT 全民英檢<br>「<span class="highlight-red">中級寫作</span>」</div>
+        <div class="hero-brand-inline">GEPT 全民英檢「<span class="highlight-red">中級寫作</span>」</div>
 
         <div class="hero-intro">這一次</div>
         <h1 class="hero-title-large">
