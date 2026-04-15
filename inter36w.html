@@ -58,7 +58,7 @@
         .hero-content { opacity:0;animation:fadeInUp 1s ease 0.3s forwards;display:flex;flex-direction:column;align-items:center;max-width:1000px;z-index:10; }
         .hero-intro { font-size:2rem;font-weight:700;color:#fbbf24;margin-bottom:5px; }
         .hero-title-large { font-size:4.5rem;font-weight:900;margin-bottom:15px;line-height:1.2;animation:glowTitle 2.5s ease 1.2s forwards; }
-        .hero-sub-text { display:block;font-size:1.2rem;font-weight:600;margin-bottom:30px;color:#e2e8f0;letter-spacing:2px; }
+        .hero-sub-text { display:block;font-size:1.2rem;font-weight:600;margin-bottom:22px;color:#e2e8f0;letter-spacing:2px; }
         .hero-action-group { display:flex;flex-direction:column;align-items:center;gap:20px;width:100%; }
         .hero-btn { background:var(--theme-blue);color:#fff;padding:16px 40px;border-radius:50px;font-size:1.25rem;font-weight:800;text-decoration:none;transition:all .3s;box-shadow:0 6px 20px rgba(0,101,255,.4);display:inline-flex;align-items:center;gap:10px; }
         .hero-btn:hover { background:#0056cc;transform:translateY(-3px);color:#fff; }
@@ -71,17 +71,66 @@
         .m-break { display:none; }
         .desktop-x-space { display:inline; }
 
+        /* =========================================
+           HERO FEATURE PILLS
+           ========================================= */
+        .hero-pills {
+            display: flex;
+            flex-direction: row;
+            flex-wrap: nowrap;
+            gap: 8px;
+            margin-bottom: 24px;
+            justify-content: center;
+            align-items: center;
+            width: 100%;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+            padding: 2px 0;
+        }
+        .hero-pills::-webkit-scrollbar { display: none; }
+        .hero-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.3);
+            backdrop-filter: blur(8px);
+            border-radius: 50px;
+            padding: 6px 13px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: #fff;
+            white-space: nowrap;
+            flex-shrink: 0;
+            letter-spacing: 0.3px;
+            transition: background 0.2s;
+        }
+        .hero-pill i { font-size: 0.75rem; opacity: 0.85; }
+        .hero-pill:hover { background: rgba(255,255,255,0.22); }
+
         @media (max-width:768px) {
             .hero-section { min-height:85vh;padding:30vw 15px 40px;background-image:linear-gradient(to bottom,rgba(15,23,42,.4) 0%,rgba(15,23,42,.85) 100%),url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-13%20%E4%B8%8B%E5%8D%884.15.10.png?updatedAt=1773389907343');background-size:cover;justify-content:flex-start; }
             .hero-brand { top:20px;left:20px;font-size:2.2rem; }
             .hero-intro { font-size:1.4rem; }
             .hero-title-large { font-size:2.2rem;margin-bottom:10px;line-height:1.3; }
-            .hero-sub-text { font-size:.85rem;white-space:nowrap;margin-bottom:25px;color:#cbd5e1; }
+            .hero-sub-text { font-size:.85rem;white-space:nowrap;margin-bottom:14px;color:#cbd5e1; }
             .hero-btn { width:100%;font-size:1.15rem;padding:14px;margin-bottom:5px; }
             .hero-links { flex-direction:row;flex-wrap:nowrap;width:100%;gap:8px; }
             .secondary-btn { flex:1;justify-content:center;padding:12px 5px;font-size:.9rem;white-space:nowrap; }
             .m-break { display:block; }
             .desktop-x-space { display:none; }
+            /* Pills on mobile: scroll horizontally, just one row */
+            .hero-pills {
+                justify-content: flex-start;
+                padding: 2px 0;
+                gap: 6px;
+            }
+            .hero-pill {
+                font-size: 0.72rem;
+                padding: 5px 10px;
+                gap: 4px;
+            }
         }
 
         .pricing-wrapper { width:100%; }
@@ -194,6 +243,24 @@
             margin-top: 4px;
             text-shadow: 0 2px 10px rgba(0,0,0,0.4);
         }
+        /* Duration badge on cards */
+        .m-duration-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: rgba(0,0,0,0.35);
+            border: 1px solid rgba(255,255,255,0.25);
+            backdrop-filter: blur(6px);
+            border-radius: 30px;
+            padding: 3px 10px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            color: rgba(255,255,255,0.92);
+            margin-top: 5px;
+            letter-spacing: 0.5px;
+            width: fit-content;
+        }
+        .m-duration-badge i { font-size: 0.65rem; }
 
         .m-divider { width:44px; height:3px; margin: 12px 0; border-radius:2px; }
 
@@ -265,6 +332,7 @@
             .m-price { font-size: 2.8rem; }
             .m-gept-logo { height: 60px; }
             .m-divider { width: 66px; height: 4px; margin: auto 0 20px; }
+            .m-duration-badge { font-size: 0.95rem; padding: 5px 14px; margin-top: 8px; }
 
             /* 適合對象 置中並放大 1.5倍 */
             .audience-panel-inner { display: flex; flex-direction: column; align-items: center; text-align: center; }
@@ -307,6 +375,7 @@
             .card-c .m-title-big { font-size: 3.8rem; }
             .m-title-small { font-size: 2rem; }
             .m-price { font-size: 2.2rem; }
+            .m-duration-badge { font-size: 0.82rem; padding: 4px 12px; margin-top: 6px; }
 
             /* 適合對象放大 */
             .audience-panel { 
@@ -475,54 +544,214 @@
             .contact-header h2 { font-size: 1.6rem; }
         }
 
-        /* Cart Styles */
-        .cart-overlay { position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.5);z-index:20000;opacity:0;visibility:hidden;transition:opacity .5s,visibility .5s; }
-        .cart-overlay.open { opacity:1;visibility:visible; }
-        .cart-panel { position:fixed;top:0;right:-100%;width:90%;max-width:800px;height:100dvh;background:#f9f9f9;box-shadow:-5px 0 15px rgba(0,0,0,.1);z-index:20001;transition:right .5s ease-in-out;display:flex;flex-direction:column; }
-        .cart-panel.open { right:0; }
-        .cart-body { display:flex;flex-grow:1;padding:0 20px 20px;gap:40px;overflow-y:auto; }
-        .cart-left,.cart-right { flex-basis:50%;background:#fff;padding:20px;border-radius:8px;border:1px solid #e0e0e0; }
-        .cart-left { position:relative; }
-        .cart-left h3 { margin-top:0; }
-        #close-cart-btn-main { position:absolute;top:15px;right:15px;background:none;border:none;font-size:40px;line-height:1;cursor:pointer;color:#555;padding:10px;z-index:10002; }
-        .cart-item { display:flex;justify-content:space-between;align-items:flex-start;gap:15px;padding-bottom:20px;border-bottom:1px solid #eee; }
-        .cart-item-info { display:flex;flex-direction:column;gap:8px;align-items:flex-start; }
-        .cart-item-name { font-weight:bold;font-size:16px; }
-        .remove-item-btn { background:none;border:none;color:#999;cursor:pointer;font-size:14px;text-decoration:underline;padding:0; }
-        .cart-item-price { font-weight:bold;white-space:nowrap;color:red; }
-        .cart-total { margin-top:20px;padding-top:20px;border-top:2px solid #333; }
-        .cart-total .total-row { display:flex;justify-content:space-between;font-size:18px;line-height:1.6; }
-        .cart-total .final-total { font-size:22px;font-weight:bold; }
-        .cart-total .final-total span:last-child { color:red; }
-        #checkout-form p { color:#555; }
-        .line-link { font-weight:bold;color:#00B900;text-align:center;margin-bottom:15px;display:block;text-decoration:none; }
-        #checkout-form input[type="email"] { width:100%;padding:12px;font-size:16px;border:1px solid #ccc;border-radius:4px;margin-bottom:15px;box-sizing:border-box; }
-        #sidebar-checkout-btn { width:100%;background:#3b414a;color:#fff;border:none;padding:15px;font-size:18px;font-weight:bold;border-radius:6px;cursor:pointer;margin-top:5px;margin-bottom:20px;transition:background .3s; }
-        #sidebar-checkout-btn:hover { background:#525964; }
-        .tls-info { text-align:center;color:#888;font-size:12px;margin-top:15px; }
-        .payment-info-section { margin-top:15px;padding-top:20px;border-top:1px solid #eee; }
-        .payment-method { background:#f9f9f9;border:1px solid #ddd;border-radius:6px;padding:15px;display:flex;align-items:center;gap:15px;font-size:15px; }
-        .icon-circle { border:2px solid black;border-radius:50%;width:18px;height:18px;display:flex;justify-content:center;align-items:center;flex-shrink:0; }
-        .icon-circle div { width:8px;height:8px;background:black;border-radius:50%; }
-        .payment-method.custom-style { background:black; }
-        .payment-method.custom-style span { color:#fff; }
-        .payment-method.custom-style .icon-circle { border-color:#fff; }
-        .payment-method.custom-style .icon-circle div { background:#fff; }
-        .plan-c-selection-header { font-size:1.4rem;font-weight:800;color:var(--theme-orange);margin-bottom:20px;text-align:center; }
-        .plan-c-option-card { border:2px solid #eee;border-radius:8px;padding:15px;margin-bottom:15px;cursor:pointer;transition:all .2s; }
-        .plan-c-option-card:hover { border-color:var(--theme-orange);background:#fff7ed;transform:translateY(-2px); }
-        .plan-c-opt-title { font-weight:700;font-size:1.1rem;color:#333;margin-bottom:5px; }
-        .plan-c-opt-price { font-weight:800;color:#000;font-size:1.2rem;display:block;text-align:right; }
-        .plan-c-opt-select-btn { margin-top:10px;width:100%;color:#fff;border:none;padding:8px;border-radius:4px;font-weight:bold;cursor:pointer;display:flex;align-items:center;justify-content:center; }
-        .btn-plan-c-a { background:#d41165!important; }
-        .btn-plan-c-b { background:#8f0988!important; }
-        .btn-plan-c-combo { background:#e65100!important; }
-        @media (max-width:767px) {
-            .cart-panel { width:100%;max-width:100%; }
-            .cart-body { flex-direction:column;gap:20px;padding:0 15px 15px; }
-            .cart-left,.cart-right { flex-basis:auto; }
+        /* =========================================
+           CART — fully redesigned
+           ========================================= */
+        .cart-overlay {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,.55); z-index: 20000;
+            opacity: 0; visibility: hidden; transition: opacity .4s, visibility .4s;
+        }
+        .cart-overlay.open { opacity: 1; visibility: visible; }
+
+        .cart-panel {
+            position: fixed; top: 0; right: -100%;
+            width: min(520px, 100%);
+            height: 100dvh;
+            background: #fff;
+            box-shadow: -8px 0 40px rgba(0,0,0,0.15);
+            z-index: 20001;
+            transition: right .45s cubic-bezier(.25,.46,.45,.94);
+            display: flex; flex-direction: column;
+            overflow: hidden;
+        }
+        .cart-panel.open { right: 0; }
+
+        /* Cart header bar */
+        .cart-header-bar {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 22px 24px 18px;
+            border-bottom: 1px solid #f1f5f9;
+            flex-shrink: 0;
+            background: #fff;
+        }
+        .cart-header-bar h3 {
+            margin: 0; font-size: 1.35rem; font-weight: 900; color: #0f172a;
+            display: flex; align-items: center; gap: 10px;
+        }
+        .cart-header-bar h3 i { color: var(--theme-blue); font-size: 1.1rem; }
+        .cart-close-x {
+            background: #f1f5f9; border: none; border-radius: 50%;
+            width: 40px; height: 40px; display: flex; align-items: center; justify-content: center;
+            cursor: pointer; font-size: 1.1rem; color: #64748b;
+            transition: background .2s, color .2s; flex-shrink: 0;
+        }
+        .cart-close-x:hover { background: #fee2e2; color: #ef4444; }
+
+        /* Scrollable body */
+        .cart-scroll-body {
+            flex: 1; overflow-y: auto; padding: 0;
+            scrollbar-width: thin; scrollbar-color: #e2e8f0 transparent;
+        }
+        .cart-scroll-body::-webkit-scrollbar { width: 4px; }
+        .cart-scroll-body::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 4px; }
+
+        /* Items section */
+        .cart-items-section { padding: 20px 24px; border-bottom: 1px solid #f1f5f9; }
+        .cart-items-section-label {
+            font-size: 0.72rem; letter-spacing: 2px; text-transform: uppercase;
+            font-weight: 800; color: #94a3b8; margin-bottom: 14px;
+        }
+        .cart-item {
+            display: flex; align-items: flex-start; gap: 14px;
+            padding: 14px 0;
+            border-bottom: 1px solid #f8fafc;
+        }
+        .cart-item:last-child { border-bottom: none; }
+        .cart-item-icon {
+            width: 46px; height: 46px; border-radius: 12px;
+            background: linear-gradient(135deg, #eff6ff, #dbeafe);
+            display: flex; align-items: center; justify-content: center;
+            font-size: 1.3rem; flex-shrink: 0;
+        }
+        .cart-item-info { flex: 1; }
+        .cart-item-name {
+            font-size: 0.95rem; font-weight: 700; color: #0f172a;
+            line-height: 1.4; margin-bottom: 3px;
+        }
+        .cart-item-desc { font-size: 0.8rem; color: #94a3b8; font-weight: 500; }
+        .remove-item-btn {
+            background: none; border: none; color: #cbd5e1;
+            cursor: pointer; font-size: 1rem; padding: 4px;
+            transition: color .2s; flex-shrink: 0; margin-top: 2px;
+        }
+        .remove-item-btn:hover { color: #ef4444; }
+        .cart-item-price {
+            font-size: 1rem; font-weight: 800; color: #0f172a;
+            white-space: nowrap; flex-shrink: 0; padding-top: 2px;
         }
 
+        .cart-empty-state {
+            text-align: center; padding: 40px 20px; color: #94a3b8;
+        }
+        .cart-empty-state i { font-size: 2.5rem; margin-bottom: 12px; display: block; }
+        .cart-empty-state p { font-size: 1rem; font-weight: 600; margin: 0; }
+
+        /* Total bar */
+        .cart-total-bar {
+            padding: 16px 24px; background: #f8fafc;
+            border-top: 1px solid #f1f5f9; border-bottom: 1px solid #f1f5f9;
+        }
+        .cart-total-row {
+            display: flex; justify-content: space-between; align-items: center;
+        }
+        .cart-total-label { font-size: 1rem; font-weight: 700; color: #64748b; }
+        .cart-total-amount { font-size: 1.4rem; font-weight: 900; color: #0f172a; }
+
+        /* Checkout section */
+        .cart-checkout-section { padding: 20px 24px 28px; }
+        .checkout-section-label {
+            font-size: 0.72rem; letter-spacing: 2px; text-transform: uppercase;
+            font-weight: 800; color: #94a3b8; margin-bottom: 16px;
+        }
+        .checkout-email-group { margin-bottom: 16px; }
+        .checkout-email-label {
+            display: block; font-size: 0.9rem; font-weight: 700;
+            color: #374151; margin-bottom: 8px;
+        }
+        .checkout-email-input {
+            width: 100%; padding: 14px 16px;
+            border: 2px solid #e2e8f0; border-radius: 12px;
+            font-family: inherit; font-size: 1rem; font-weight: 500;
+            color: #0f172a; background: #f8fafc;
+            transition: border-color .2s, background .2s;
+            outline: none;
+        }
+        .checkout-email-input:focus {
+            border-color: var(--theme-blue); background: #fff;
+            box-shadow: 0 0 0 3px rgba(0,101,255,0.08);
+        }
+        .checkout-email-input::placeholder { color: #94a3b8; }
+
+        #sidebar-checkout-btn {
+            width: 100%; border: none; border-radius: 50px;
+            padding: 16px 24px; font-family: inherit;
+            font-size: 1.05rem; font-weight: 800;
+            background: linear-gradient(135deg, #0065ff, #0046cc);
+            color: #fff; cursor: pointer;
+            box-shadow: 0 6px 20px rgba(0,101,255,0.3);
+            transition: all .3s; display: flex; align-items: center; justify-content: center; gap: 10px;
+            margin-bottom: 16px;
+        }
+        #sidebar-checkout-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(0,101,255,0.4); }
+        #sidebar-checkout-btn:disabled { opacity: 0.65; cursor: not-allowed; transform: none; }
+
+        /* LINE CTA */
+        .checkout-line-cta {
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            text-decoration: none; color: #00B900;
+            font-size: 0.95rem; font-weight: 800;
+            background: #f0fff0; border: 1.5px solid #bbf7d0;
+            border-radius: 12px; padding: 13px 16px;
+            transition: background .2s; margin-bottom: 18px;
+        }
+        .checkout-line-cta:hover { background: #dcfce7; }
+        .checkout-line-cta img { width: 20px; height: 20px; object-fit: contain; }
+
+        /* Payment info */
+        .checkout-payment-info {
+            background: #f8fafc; border-radius: 12px;
+            padding: 14px 16px; border: 1px solid #e2e8f0;
+        }
+        .checkout-payment-title {
+            font-size: 0.8rem; font-weight: 800; color: #64748b;
+            letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px;
+        }
+        .checkout-payment-row {
+            display: flex; align-items: center; gap: 10px;
+            font-size: 0.9rem; font-weight: 600; color: #374151;
+        }
+        .checkout-payment-row i { color: var(--theme-blue); width: 16px; }
+
+        .tls-info {
+            text-align: center; color: #94a3b8; font-size: 0.75rem;
+            margin-top: 12px; display: flex; align-items: center; justify-content: center; gap: 5px;
+        }
+        .tls-info i { font-size: 0.7rem; color: #10b981; }
+
+        /* Plan C selection inside cart */
+        .plan-c-selection-header {
+            font-size: 1.1rem; font-weight: 800; color: var(--theme-orange);
+            margin-bottom: 16px; text-align: center;
+        }
+        .plan-c-option-card {
+            border: 2px solid #f1f5f9; border-radius: 14px; padding: 16px;
+            margin-bottom: 12px; cursor: pointer; transition: all .2s;
+            background: #fff;
+        }
+        .plan-c-option-card:hover { border-color: var(--theme-orange); background: #fff7ed; transform: translateY(-2px); box-shadow: 0 4px 15px rgba(249,115,22,0.1); }
+        .plan-c-opt-title { font-weight: 700; font-size: 1rem; color: #0f172a; margin-bottom: 4px; }
+        .plan-c-opt-price { font-weight: 900; color: #0f172a; font-size: 1.15rem; display: block; text-align: right; margin-top: 4px; }
+        .plan-c-opt-select-btn { margin-top: 10px; width: 100%; color: #fff; border: none; padding: 10px; border-radius: 8px; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 0.9rem; }
+        .btn-plan-c-a { background: #d41165 !important; }
+        .btn-plan-c-b { background: #8f0988 !important; }
+        .btn-plan-c-combo { background: #e65100 !important; }
+
+        /* Responsive cart */
+        @media (max-width: 520px) {
+            .cart-panel { width: 100%; }
+            .cart-header-bar { padding: 18px 16px 14px; }
+            .cart-header-bar h3 { font-size: 1.2rem; }
+            .cart-items-section { padding: 16px; }
+            .cart-checkout-section { padding: 16px 16px 24px; }
+            .cart-total-bar { padding: 14px 16px; }
+            .checkout-email-input { font-size: 16px; /* prevents iOS zoom */ }
+            #sidebar-checkout-btn { font-size: 1rem; padding: 15px 20px; }
+        }
+
+        /* =========================================
+           THANK YOU PAGE
+           ========================================= */
         #thank-you-page { display:none;padding:20px;box-sizing:border-box; }
         .thank-you-container { max-width:900px;width:100%;margin:0 auto;background:#f9f9f9;border:1px solid #e0e0e0; }
         .ty-left-panel { background:#fff;padding:40px; }
@@ -559,6 +788,16 @@
             <span class="scale-up">全新方法</span><span class="desktop-x-space"> </span><br class="m-break">×<span class="desktop-x-space"> </span><br class="m-break"><span class="scale-up">全新思維</span><br>順利通過英檢寫作
         </h1>
         <span class="hero-sub-text">影片課程X寫作加強❖1-1家教</span>
+
+        <!-- Feature pills — single row, scrollable on mobile -->
+        <div class="hero-pills">
+            <div class="hero-pill"><i class="fa-solid fa-circle-play"></i> 六回影片課程</div>
+            <div class="hero-pill"><i class="fa-solid fa-circle-play"></i> 三回影片課程</div>
+            <div class="hero-pill"><i class="fa-solid fa-chalkboard-user"></i> 加強課程</div>
+            <div class="hero-pill"><i class="fa-solid fa-user-pen"></i> 寫作批改</div>
+            <div class="hero-pill"><i class="fa-solid fa-star"></i> 高分範本</div>
+        </div>
+
         <div class="hero-action-group">
             <a href="#content-start" class="hero-btn">了解詳細方案 <i class="fa-solid fa-arrow-down"></i></a>
             <div class="hero-links">
@@ -595,6 +834,7 @@
                     <div class="card-top-text">
                         <span class="m-title-big">6回</span>
                         <span class="m-title-small">完整影片課程</span>
+                        <span class="m-duration-badge"><i class="fa-solid fa-clock"></i> 7h 38m</span>
                     </div>
                     <div class="m-divider"></div>
                     <div class="m-section-label">課程內容</div>
@@ -619,6 +859,7 @@
                     <div class="card-top-text">
                         <span class="m-title-big">3回</span>
                         <span class="m-title-small">完整影片課程</span>
+                        <span class="m-duration-badge"><i class="fa-solid fa-clock"></i> 3h 36m</span>
                     </div>
                     <div class="m-divider"></div>
                     <div class="m-section-label">課程內容</div>
@@ -682,10 +923,7 @@
          ===================================== -->
     <div id="desktop-modal" class="desktop-modal-overlay" onclick="closeDesktopModal()">
         <div class="desktop-modal-content" onclick="event.stopPropagation()">
-            <!-- 左側大卡片容器 -->
             <div class="dm-card-wrap" id="dm-card-container"></div>
-            
-            <!-- 右側大字體適合對象 -->
             <div class="dm-info-wrap" id="dm-info-container"></div>
         </div>
     </div>
@@ -720,9 +958,7 @@
         <div class="terms-box"><strong>💡 組合優惠說明：</strong><br>本專案包含之真人服務（批改評分與家教）。贈送項目為限時福利，恕不折現或抵扣主課程費用。</div>
     </div>
 
-    <!-- =====================================
-         ★ TONY 專家建議區塊
-         ===================================== -->
+    <!-- TONY 專家建議區塊 -->
     <div class="advice-wrapper">
         <div class="advice-icon"><i class="fa-solid fa-lightbulb"></i></div>
         <div class="advice-title">Tony 線上美語家教<br>給予全民英檢學員的建議</div>
@@ -735,9 +971,7 @@
         </div>
     </div>
 
-    <!-- =====================================
-         ★ 聯繫我們 (Contact Us)
-         ===================================== -->
+    <!-- 聯繫我們 -->
     <section class="contact-section" id="contact">
         <div class="contact-wrap">
             <div class="contact-header">
@@ -771,30 +1005,81 @@
 
 </div><!-- /pricing-wrapper -->
 
-<!-- CART -->
+<!-- =========================================
+     CART — redesigned single-panel layout
+     ========================================= -->
 <div id="cart-overlay" class="cart-overlay" onclick="toggleCartPanel()"></div>
 <div id="cart-panel" class="cart-panel">
-    <div class="cart-body">
-        <div class="cart-left">
-            <h3>購物車 <button id="close-cart-btn-main" onclick="toggleCartPanel()">×</button></h3>
-            <div id="cart-items-container"></div>
-            <div id="cart-total-container" class="cart-total"></div>
-        </div>
-        <div class="cart-right">
-            <h3>結帳</h3>
-            <form id="checkout-form" onsubmit="return false;">
-                <p>請輸入您的電子信箱</p>
-                <input type="email" id="email" required placeholder="請輸入您的電子信箱">
-                <button type="button" id="sidebar-checkout-btn" onclick="handleCheckout()">確認送出訂單</button>
-                <a class="line-link" href="https://line.me/ti/p/T9YdimtG8_" target="_blank">請加入Line: Myavalon</a>
-                <div class="payment-info-section">
-                    <h3>付款資訊</h3>
-                    <div class="payment-method custom-style"><div class="icon-circle"><div></div></div><span>匯款或可以使用Line Pay/iPassMoney 付款</span></div>
-                </div>
-                <p class="tls-info">所有數據都透過安全 TLS 連線進行加密傳輸</p>
-            </form>
-        </div>
+
+    <!-- Fixed header -->
+    <div class="cart-header-bar">
+        <h3><i class="fa-solid fa-bag-shopping"></i> 購物車</h3>
+        <button class="cart-close-x" onclick="toggleCartPanel()" aria-label="關閉">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
     </div>
+
+    <!-- Scrollable body -->
+    <div class="cart-scroll-body" id="cart-scroll-body">
+
+        <!-- Items -->
+        <div class="cart-items-section">
+            <div class="cart-items-section-label">已選課程</div>
+            <div id="cart-items-container">
+                <div class="cart-empty-state">
+                    <i class="fa-regular fa-face-smile-beam"></i>
+                    <p>購物車是空的</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Total -->
+        <div class="cart-total-bar" id="cart-total-container" style="display:none;">
+            <div class="cart-total-row">
+                <span class="cart-total-label">總計</span>
+                <span class="cart-total-amount" id="cart-total-amount">NT$0</span>
+            </div>
+        </div>
+
+        <!-- Checkout -->
+        <div class="cart-checkout-section">
+            <div class="checkout-section-label">結帳資訊</div>
+
+            <div class="checkout-email-group">
+                <label class="checkout-email-label" for="email">
+                    <i class="fa-solid fa-envelope" style="color:var(--theme-blue);margin-right:6px;"></i>電子信箱 *
+                </label>
+                <input
+                    type="email"
+                    id="email"
+                    class="checkout-email-input"
+                    placeholder="請輸入您的 Email"
+                    autocomplete="email"
+                    inputmode="email"
+                >
+            </div>
+
+            <button type="button" id="sidebar-checkout-btn" onclick="handleCheckout()">
+                <i class="fa-solid fa-check-circle"></i> 確認送出訂單
+            </button>
+
+            <a class="checkout-line-cta" href="https://line.me/ti/p/T9YdimtG8_" target="_blank">
+                <img src="https://ik.imagekit.io/lql1uveoc/line.png?updatedAt=1761926064215" alt="LINE">
+                加入 LINE 洽詢：Myavalon
+            </a>
+
+            <div class="checkout-payment-info">
+                <div class="checkout-payment-title">付款方式</div>
+                <div class="checkout-payment-row">
+                    <i class="fa-solid fa-building-columns"></i>
+                    匯款 ／ LINE Pay ／ iPass Money
+                </div>
+            </div>
+
+            <p class="tls-info"><i class="fa-solid fa-lock"></i> 所有資料透過 TLS 加密傳輸</p>
+        </div>
+
+    </div><!-- /cart-scroll-body -->
 </div>
 
 <!-- THANK YOU -->
@@ -828,11 +1113,11 @@
 <script>
 /* ─── DATA ─────────────────────────────────────────── */
 const products = [
-    {id:'course-3A', name:'全民英檢中級影片課程3回(A)', price:3650, description:'方案A (輕量實戰派)', imageId:0},
-    {id:'course-6A', name:'全民英檢中級影片課程6回(B)', price:6600, description:'方案B (完整實戰型)', imageId:1},
-    {id:'course-CA', name:'方案C: 四回批改+兩堂課程',   price:3000, description:'選項A (加強衝刺)',   imageId:2},
-    {id:'course-CB', name:'方案C: 六堂線上家教寫作課程', price:4200, description:'選項B (家教+練習)',  imageId:2},
-    {id:'course-COMBO',name:'方案C: 八堂1-1家教+四回批改',price:6800,description:'A+B 組合優惠',     imageId:2}
+    {id:'course-3A', name:'全民英檢中級影片課程3回(A)', price:3650, description:'方案A (輕量實戰派)', emoji:'🎬', imageId:0},
+    {id:'course-6A', name:'全民英檢中級影片課程6回(B)', price:6600, description:'方案B (完整實戰型)', emoji:'🎬', imageId:1},
+    {id:'course-CA', name:'方案C: 四回批改+兩堂課程',   price:3000, description:'選項A (加強衝刺)',   emoji:'✍️', imageId:2},
+    {id:'course-CB', name:'方案C: 六堂線上家教寫作課程', price:4200, description:'選項B (家教+練習)',  emoji:'👨‍🏫', imageId:2},
+    {id:'course-COMBO',name:'方案C: 八堂1-1家教+四回批改',price:6800,description:'A+B 組合優惠',     emoji:'🏆', imageId:2}
 ];
 const images = [
     "https://ik.imagekit.io/lql1uveoc/Beginning-intermediate%20level/Dark%20Blue%20and%20Beige%20Modern%20Simple%20Schedule%20A4%20Document-7.png",
@@ -870,7 +1155,7 @@ const audienceData = [
 let cart = {};
 let currentCard = 0;
 
-/* ─── AUDIENCE PANEL (一般頁面底部) ───────────────────────────────── */
+/* ─── AUDIENCE PANEL ───────────────────────────────── */
 function renderAudience(index) {
     const data = audienceData[index];
     document.getElementById('audience-plan-name').textContent = data.plan + ' — 適合對象';
@@ -881,7 +1166,6 @@ function renderAudience(index) {
             <span><strong>${r.title}</strong>：${r.desc}</span>
         </div>`
     ).join('');
-    
     requestAnimationFrame(() => {
         container.querySelectorAll('.audience-row').forEach((el, i) => {
             setTimeout(() => el.classList.add('visible'), i * 80);
@@ -901,24 +1185,16 @@ function updateMActive(index) {
 }
 
 window.scrollToMCard = function(index) {
-    if (window.innerWidth >= 1181) {
-        openDesktopModal(index);
-        return;
-    }
+    if (window.innerWidth >= 1181) { openDesktopModal(index); return; }
     const slider = document.getElementById('main-slider');
     const card   = document.getElementById('m-card-' + index);
     if (!slider || !card) return;
-    
     const centerPos = card.offsetLeft - (slider.clientWidth / 2) + (card.offsetWidth / 2);
     slider.scrollTo({ left: centerPos, behavior: 'smooth' });
 };
 
 window.handleCardClick = function(index) {
-    if (window.innerWidth >= 1181) {
-        openDesktopModal(index);
-    } else {
-        scrollToMCard(index);
-    }
+    if (window.innerWidth >= 1181) { openDesktopModal(index); } else { scrollToMCard(index); }
 };
 
 /* ─── 桌機版放大 MODAL ───────────────────────────────────────── */
@@ -926,16 +1202,11 @@ window.openDesktopModal = function(index) {
     const modal = document.getElementById('desktop-modal');
     const cloneContainer = document.getElementById('dm-card-container');
     const infoContainer = document.getElementById('dm-info-container');
-
     const originalCard = document.getElementById('m-card-' + index);
     cloneContainer.innerHTML = originalCard.outerHTML;
-    
     const cloneCard = cloneContainer.querySelector('.m-card');
-    
-    cloneCard.classList.remove('active'); 
-    cloneCard.onclick = null; 
-    cloneCard.onmouseenter = null; 
-
+    cloneCard.classList.remove('active');
+    cloneCard.onclick = null; cloneCard.onmouseenter = null;
     const data = audienceData[index];
     let rowsHtml = data.rows.map(r => `
         <div class="audience-row visible" style="transform:none; opacity:1;">
@@ -943,13 +1214,11 @@ window.openDesktopModal = function(index) {
             <span><strong>${r.title}</strong><span class="audience-desc-text">${r.desc}</span></span>
         </div>
     `).join('');
-
     infoContainer.innerHTML = `
         <button class="dm-close-btn" onclick="closeDesktopModal()"><i class="fa-solid fa-xmark"></i></button>
         <div class="audience-title">${data.plan} — 適合對象</div>
         <div class="audience-rows">${rowsHtml}</div>
     `;
-
     modal.classList.add('show');
 };
 
@@ -957,26 +1226,20 @@ window.closeDesktopModal = function() {
     document.getElementById('desktop-modal').classList.remove('show');
 };
 
-/* INIT Listeners */
 document.addEventListener('DOMContentLoaded', () => {
     renderAudience(0);
     const slider = document.getElementById('main-slider');
     if (!slider) return;
-
     let ticking = false;
     slider.addEventListener('scroll', () => {
-        if (window.innerWidth >= 1181) return; 
-
+        if (window.innerWidth >= 1181) return;
         if (!ticking) {
             requestAnimationFrame(() => {
                 const mid = slider.scrollLeft + slider.clientWidth / 2;
                 let best = 0, minD = Infinity;
                 [0,1,2].forEach(i => {
                     const c = document.getElementById('m-card-' + i);
-                    if (c) { 
-                        const d = Math.abs(c.offsetLeft + c.offsetWidth / 2 - mid); 
-                        if (d < minD) { minD = d; best = i; } 
-                    }
+                    if (c) { const d = Math.abs(c.offsetLeft + c.offsetWidth / 2 - mid); if (d < minD) { minD = d; best = i; } }
                 });
                 updateMActive(best);
                 ticking = false;
@@ -991,10 +1254,18 @@ window.addToCart = function(productId) {
     const p = products.find(x => x.id === productId);
     if (p) { cart = {}; cart[p.id] = {...p, imageUrl: images[p.imageId] || images[0]}; }
     updateCartDisplay();
-    closeDesktopModal(); 
+    closeDesktopModal();
     document.getElementById("cart-overlay").classList.add("open");
     document.getElementById("cart-panel").classList.add("open");
-    setTimeout(() => { const el = document.getElementById("email"); if (el) el.scrollIntoView({behavior:'smooth',block:'center'}); }, 500);
+    // Smooth scroll to email input
+    setTimeout(() => {
+        const emailEl = document.getElementById("email");
+        const scrollBody = document.getElementById("cart-scroll-body");
+        if (emailEl && scrollBody) {
+            const offset = emailEl.getBoundingClientRect().top + scrollBody.scrollTop - scrollBody.getBoundingClientRect().top - 20;
+            scrollBody.scrollTo({ top: offset, behavior: 'smooth' });
+        }
+    }, 500);
 };
 
 window.toggleCartPanel = function() {
@@ -1009,7 +1280,7 @@ window.openPlanC_InCart = function() {
     document.getElementById("cart-items-container").innerHTML = `
         <div class="plan-c-selection-header">請選擇加強課程方案</div>
         <div class="plan-c-option-card" onclick="addToCart('course-CA')">
-            <div class="plan-c-opt-title">選項 A（四回批改+兩堂課程）</div>
+            <div class="plan-c-opt-title">選項 A（四回批改＋兩堂課程）</div>
             <span class="plan-c-opt-price">NT$ 3,000</span>
             <button class="plan-c-opt-select-btn btn-plan-c-a">選項 A 加入購物車</button>
         </div>
@@ -1019,12 +1290,13 @@ window.openPlanC_InCart = function() {
             <button class="plan-c-opt-select-btn btn-plan-c-b">選項 B 加入購物車</button>
         </div>
         <div class="plan-c-option-card" style="border-color:#f97316;background:#fff7ed;" onclick="addToCart('course-COMBO')">
-            <div class="plan-c-opt-title">A+B 組合優惠（八堂家教+四回批改）</div>
+            <div class="plan-c-opt-title">A+B 組合優惠（八堂家教＋四回批改）</div>
             <span class="plan-c-opt-price">NT$ 6,800</span>
             <button class="plan-c-opt-select-btn btn-plan-c-combo">A+B 加入購物車</button>
         </div>`;
-    document.getElementById("cart-total-container").innerHTML = '';
-    setTimeout(() => { const b = document.querySelector('.cart-body'); if (b) b.scrollTop = 0; }, 50);
+    document.getElementById("cart-total-container").style.display = 'none';
+    const scrollBody = document.getElementById("cart-scroll-body");
+    if (scrollBody) scrollBody.scrollTop = 0;
 };
 
 window.removeFromCart = function(id) {
@@ -1042,7 +1314,7 @@ window.handleCheckout = function() {
     const finalTotal = Object.values(cart).reduce((s,i) => s + i.price, 0);
     const orderId = '#' + Math.random().toString(36).substr(2,5).toUpperCase();
     const timestamp = new Date().toLocaleString("zh-TW",{year:"numeric",month:"long",day:"numeric",hour:"2-digit",minute:"2-digit"});
-    btn.disabled = true; btn.innerText = "處理中...";
+    btn.disabled = true; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> 處理中...';
     let itemsHtml = '';
     Object.values(cart).forEach(item => { itemsHtml += `<div class="ty-order-item"><div class="ty-item-details"><div class="ty-item-info">${item.name}</div><div class="ty-item-price">NT$ ${item.price.toLocaleString()}</div></div></div>`; });
     document.getElementById('ty-cart-items-container').innerHTML = itemsHtml;
@@ -1061,43 +1333,56 @@ window.handleCheckout = function() {
     fetch("https://script.google.com/macros/s/AKfycbyU13Wivs341DMPupk9EKrL9u908zrHNOVqZUXri-hGezkk6qj_7loQGIf0GCfmvj_f/exec",{
         method:"POST", headers:{"Content-Type":"application/x-www-form-urlencoded"},
         body: new URLSearchParams({orderId, email, productName: Object.values(cart).map(i=>i.name).join(', '), totalPrice: finalTotal, status:"未付款", imageUrls: img})
-    }).catch(e=>console.error(e)).finally(()=>{ btn.disabled=false; btn.innerText="確認送出訂單"; cart={}; });
+    }).catch(e=>console.error(e)).finally(()=>{ btn.disabled=false; btn.innerHTML='<i class="fa-solid fa-check-circle"></i> 確認送出訂單'; cart={}; });
 };
 
 function updateCartDisplay() {
     const c = document.getElementById("cart-items-container");
-    const t = document.getElementById("cart-total-container");
-    c.innerHTML = Object.keys(cart).length > 0 ? '' : '<p>您的購物車是空的。</p>';
-    Object.entries(cart).forEach(([id,item]) => {
-        c.innerHTML += `<div class="cart-item"><div class="cart-item-info"><div class="cart-item-name">${item.name}<br><small>${item.description}</small></div><button class="remove-item-btn" onclick="removeFromCart('${id}')">移除</button></div><div class="cart-item-price">NT$ ${item.price.toLocaleString()}</div></div>`;
-    });
-    const total = Object.values(cart).reduce((s,i) => s+i.price, 0);
-    t.innerHTML = `<div class="total-row final-total"><span>總計</span><span>NT$ ${total.toLocaleString()}</span></div>`;
+    const totalBar = document.getElementById("cart-total-container");
+    const totalAmt = document.getElementById("cart-total-amount");
+    
+    if (Object.keys(cart).length === 0) {
+        c.innerHTML = `<div class="cart-empty-state"><i class="fa-regular fa-face-smile-beam"></i><p>購物車是空的</p></div>`;
+        totalBar.style.display = 'none';
+        return;
+    }
+
+    c.innerHTML = Object.entries(cart).map(([id, item]) => `
+        <div class="cart-item">
+            <div class="cart-item-icon">${item.emoji || '📚'}</div>
+            <div class="cart-item-info">
+                <div class="cart-item-name">${item.name}</div>
+                <div class="cart-item-desc">${item.description}</div>
+            </div>
+            <div class="cart-item-price">NT$${item.price.toLocaleString()}</div>
+            <button class="remove-item-btn" onclick="removeFromCart('${id}')" title="移除">
+                <i class="fa-solid fa-trash-can"></i>
+            </button>
+        </div>
+    `).join('');
+
+    const total = Object.values(cart).reduce((s,i) => s + i.price, 0);
+    totalAmt.textContent = 'NT$' + total.toLocaleString();
+    totalBar.style.display = 'block';
 }
 
-/* ─── CONTACT FORM LOGIC ─────────────────────────────────────────── */
+/* ─── CONTACT FORM ─────────────────────────────────────────── */
 function submitContactForm(e) {
     e.preventDefault();
     const btn = document.getElementById('contact-submit');
     btn.innerHTML = '傳送中... <i class="fa-solid fa-spinner fa-spin"></i>';
     btn.disabled = true;
-
-    const GAS_URL = "https://script.google.com/macros/s/AKfycbwE5thuJP9luwed0GG0eRF4DheFubXRfWQ5ZnnJL5r8TxFGaIrhUzEB4AAp51RZ_WL3/exec"; 
-    
+    const GAS_URL = "https://script.google.com/macros/s/AKfycbwE5thuJP9luwed0GG0eRF4DheFubXRfWQ5ZnnJL5r8TxFGaIrhUzEB4AAp51RZ_WL3/exec";
     const params = new URLSearchParams();
     params.append('name', document.getElementById('contact-name').value);
     params.append('email', document.getElementById('contact-email').value);
     params.append('line', document.getElementById('contact-line').value || "無");
     params.append('needs', document.getElementById('contact-needs').value);
-
-    fetch(GAS_URL, {
-        method: "POST",
-        mode: "no-cors",
-        body: params
-    }).then(() => {
+    fetch(GAS_URL, { method: "POST", mode: "no-cors", body: params })
+    .then(() => {
         document.getElementById('contact-form').style.display = 'none';
         document.getElementById('contact-msg').style.display = 'block';
-    }).catch(err => {
+    }).catch(() => {
         alert("傳送失敗，請檢查網路連線。");
     }).finally(() => {
         btn.innerHTML = '送出訊息 <i class="fa-solid fa-paper-plane"></i>';
