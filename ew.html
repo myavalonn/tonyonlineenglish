@@ -278,7 +278,30 @@
     will-change: transform;
   }
 
-  /* ─── MOBILE & TABLET MODS (Up to 979px) ────────────── */
+  /* ─── TOAST (NOTIFICATIONS) ─────────────────────────── */
+  /* Base (All Devices) - 1.5x bigger (0.85 * 1.5 = 1.275rem) */
+  #toast {
+    position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(60px);
+    background: var(--text); color: var(--bg); font-family: var(--sans); 
+    font-size: 1.275rem; font-weight: 700;
+    padding: 12px 24px; border-radius: 12px; z-index: 200;
+    transition: transform 0.28s cubic-bezier(.4,0,.2,1), opacity 0.28s;
+    opacity: 0; white-space: normal; text-align: center; max-width: 90vw; line-height: 1.4;
+    pointer-events: none; box-shadow: 0 6px 20px rgba(0,0,0,0.25);
+  }
+  #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+  #toast.ok   { background: var(--text); }
+  #toast.warn { background: #664400; }
+  #toast.fail { background: var(--red); }
+
+  /* ─── TABLET MODS ───────────────────────────────────── */
+  @media (min-width: 600px) { 
+    .grid { padding: 20px; } 
+    /* Tablet Notification - 2x bigger (0.85 * 2 = 1.7rem) */
+    #toast { font-size: 1.7rem; padding: 16px 32px; border-radius: 16px; }
+  }
+
+  /* ─── MOBILE & TABLET (Up to 979px) ─────────────────── */
   @media (max-width: 979px) {
     .input-panel { padding: 20px 16px; }
     .input-row { flex-direction: column; align-items: stretch; gap: 12px; }
@@ -307,12 +330,20 @@
       order: -1;                     
       grid-column: 1 / -1 !important;
     }
+
+    .loc-text { font-size: 1.4rem; display: block; margin-bottom: 6px; }
+    .record-num-ex { font-size: 2.2rem; }
+    .record-num-wt { font-size: 2.4rem; }
+    
+    /* Unit text 50% smaller on cellphone mode */
+    .unit-text { font-size: 0.5em; font-weight: 500; }
   }
 
   /* ─── DESKTOP MODS (980px and up) ───────────────────── */
-  @media (min-width: 600px) { .grid { padding: 20px; } }
   @media (min-width: 980px) { 
     .grid { grid-template-columns: repeat(4, 1fr); max-width: 1400px; margin: 0 auto; } 
+    /* Desktop Notification - 2.5x bigger (0.85 * 2.5 = 2.125rem) */
+    #toast { font-size: 2.125rem; padding: 20px 40px; border-radius: 20px; }
   }
 
   /* ─── DAY CARD ──────────────────────────────────────── */
@@ -409,13 +440,7 @@
     font-family: var(--mono);
     font-size: 1.6rem;
     font-weight: 700;
-    color: var(--red);
-  }
-
-  @media (max-width: 979px) {
-    .loc-text { font-size: 1.4rem; display: block; margin-bottom: 6px; }
-    .record-num-ex { font-size: 2.2rem; }
-    .record-num-wt { font-size: 2.4rem; }
+    color: var(--text); /* Changed from red to black */
   }
 
   .r-time { font-family: var(--mono); font-size: 0.85rem; color: var(--muted); margin-top: 6px; }
@@ -460,20 +485,6 @@
   .stat-unit { font-size: 0.9rem; font-weight: normal; color: var(--muted); }
 
   .chart-container { position: relative; height: 250px; width: 100%; }
-
-  /* ─── TOAST ─────────────────────────────────────────── */
-  #toast {
-    position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(60px);
-    background: var(--text); color: var(--bg); font-family: var(--sans); font-size: 0.85rem; font-weight: 700;
-    padding: 12px 24px; border-radius: 12px; z-index: 200;
-    transition: transform 0.28s cubic-bezier(.4,0,.2,1), opacity 0.28s;
-    opacity: 0; white-space: normal; text-align: center; max-width: 90vw; line-height: 1.4;
-    pointer-events: none; box-shadow: 0 6px 20px rgba(0,0,0,0.25);
-  }
-  #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-  #toast.ok   { background: var(--text); }
-  #toast.warn { background: #664400; }
-  #toast.fail { background: var(--red); }
 
 </style>
 </head>
@@ -716,7 +727,7 @@ function buildRecordRow(dateStr, r) {
     return `
       <div class="r-row">
         <div class="r-info">
-          <div class="r-title"><span class="loc-text">${r.location}</span> <span class="record-num-ex">• ${r.duration} mins</span></div>
+          <div class="r-title"><span class="loc-text">${r.location}</span> <span class="record-num-ex">• ${r.duration} <span class="unit-text">mins</span></span></div>
           <div class="r-time">${r.time}</div>
         </div>
         <button class="btn-del" onclick="deleteRecord('${dateStr}', '${r.id}')">&times;</button>
@@ -725,7 +736,7 @@ function buildRecordRow(dateStr, r) {
     return `
       <div class="r-row">
         <div class="r-info">
-          <div class="r-title"><span class="record-num-wt">${r.weight} kg</span></div>
+          <div class="r-title"><span class="record-num-wt">${r.weight} <span class="unit-text">kg</span></span></div>
           <div class="r-time">${r.time}</div>
         </div>
         <button class="btn-del" onclick="deleteRecord('${dateStr}', '${r.id}')">&times;</button>
@@ -807,7 +818,7 @@ function renderDashboard() {
       type: 'line',
       data: {
         labels: labels,
-        datasets:[{ label: 'Weight (kg)', data: dataPts, borderColor: '#cc0000', backgroundColor: 'rgba(204,0,0,0.1)', borderWidth: 2, pointBackgroundColor: '#cc0000', pointRadius: 4, fill: true, spanGaps: true }]
+        datasets:[{ label: 'Weight (kg)', data: dataPts, borderColor: '#111111', backgroundColor: 'rgba(17,17,17,0.1)', borderWidth: 2, pointBackgroundColor: '#111111', pointRadius: 4, fill: true, spanGaps: true }]
       },
       options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { suggestedMin: Math.min(...dataPts.filter(v => v !== null)) - 2, suggestedMax: Math.max(...dataPts.filter(v => v !== null)) + 2 } } }
     });
@@ -893,7 +904,7 @@ function renderMonthlyDashboard() {
       type: 'line',
       data: {
         labels: labels,
-        datasets: [{ label: 'Weight (kg)', data: dataPts, borderColor: '#cc0000', backgroundColor: 'rgba(204,0,0,0.1)', borderWidth: 2, pointBackgroundColor: '#cc0000', pointRadius: 2, fill: true, spanGaps: true }]
+        datasets: [{ label: 'Weight (kg)', data: dataPts, borderColor: '#111111', backgroundColor: 'rgba(17,17,17,0.1)', borderWidth: 2, pointBackgroundColor: '#111111', pointRadius: 2, fill: true, spanGaps: true }]
       },
       options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { suggestedMin: Math.min(...dataPts.filter(v => v !== null)) - 2, suggestedMax: Math.max(...dataPts.filter(v => v !== null)) + 2 } } }
     });
