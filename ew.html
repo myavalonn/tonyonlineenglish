@@ -238,16 +238,18 @@
     align-items: center;
   }
 
+  /* BIGGER INPUTS BASE (Desktop) */
   .input-row input, .input-row select {
     font-family: var(--sans);
-    font-size: 0.9rem;
-    padding: 8px 10px;
+    font-size: 1.2rem;
+    padding: 10px 14px;
     border: 1.5px solid var(--border2);
     border-radius: 6px;
     background: var(--bg);
     color: var(--text);
     outline: none;
     transition: border-color 0.2s;
+    line-height: normal;
   }
   .input-row input:focus, .input-row select:focus { border-color: var(--text); }
   
@@ -256,8 +258,9 @@
     color: #fff;
     border: none;
     border-radius: 6px;
-    padding: 8px 16px;
+    padding: 10px 18px;
     font-family: var(--mono);
+    font-size: 1.1rem;
     font-weight: 700;
     cursor: pointer;
     transition: opacity 0.2s, transform 0.1s;
@@ -269,7 +272,6 @@
   /* ─── GRID (BASE) ───────────────────────────────────── */
   .grid {
     display: grid;
-    /* Default to 2 columns */
     grid-template-columns: repeat(2, 1fr);
     gap: 14px;
     padding: 16px;
@@ -278,61 +280,39 @@
 
   /* ─── MOBILE & TABLET MODS (Up to 979px) ────────────── */
   @media (max-width: 979px) {
-    /* 1) Twice bigger Input columns stacked on top of each other */
-    .input-panel {
-      padding: 20px 16px;
-    }
-    .input-row {
-      flex-direction: column;
-      align-items: stretch;
-      gap: 12px;
-    }
+    .input-panel { padding: 20px 16px; }
+    .input-row { flex-direction: column; align-items: stretch; gap: 12px; }
+    
+    /* MASSIVE INPUTS FOR MOBILE */
     .input-row input, .input-row select {
-      font-size: 1.4rem;        /* TWICE BIGGER FONT */
-      padding: 16px;            /* LARGER PADDING */
-      height: 56px;             /* TALLER ELEMENT */
-      width: 100% !important;   /* OVERRIDE INLINE WIDTHS */
+      font-size: 1.8rem;        
+      padding: 16px 14px;            
+      height: auto;             /* height auto ensures placeholder is never cut off */
+      min-height: 64px;
+      width: 100% !important;   
       border-radius: 8px;
     }
     .btn-add {
-      font-size: 1.4rem;
+      font-size: 1.6rem;
       padding: 16px;
-      height: 56px;
+      min-height: 64px;
       margin-top: 4px;
       border-radius: 8px;
       width: 100%;
     }
 
-    /* 2) Specific Left / Right Column Assigning */
-    /* Day IDs: 0=Mon, 1=Tue, 2=Wed, 3=Thu, 4=Fri, 5=Sat, 6=Sun */
-    
-    /* Mon, Wed, Fri, Sun on the left */
-    .card.day-0, .card.day-2, .card.day-4, .card.day-6 {
-      grid-column: 1;
-    }
-    /* Tue, Thu, Sat on the right */
-    .card.day-1, .card.day-3, .card.day-5 {
-      grid-column: 2;
-    }
-
-    /* 3) Today's card on top */
+    .card.day-0, .card.day-2, .card.day-4, .card.day-6 { grid-column: 1; }
+    .card.day-1, .card.day-3, .card.day-5 { grid-column: 2; }
     .card.today {
-      order: -1;                     /* Bring to top */
-      grid-column: 1 / -1 !important;/* Span both columns fully like a hero banner */
+      order: -1;                     
+      grid-column: 1 / -1 !important;
     }
   }
 
   /* ─── DESKTOP MODS (980px and up) ───────────────────── */
-  @media (min-width: 600px) { 
-    .grid { padding: 20px; } 
-  }
-  
+  @media (min-width: 600px) { .grid { padding: 20px; } }
   @media (min-width: 980px) { 
-    .grid { 
-      grid-template-columns: repeat(4, 1fr); /* Back to 4 Columns for Desktop */
-      max-width: 1400px; 
-      margin: 0 auto; 
-    } 
+    .grid { grid-template-columns: repeat(4, 1fr); max-width: 1400px; margin: 0 auto; } 
   }
 
   /* ─── DAY CARD ──────────────────────────────────────── */
@@ -354,14 +334,6 @@
     to   { opacity: 1; transform: translateY(0); }
   }
   
-  .card:nth-child(1) { animation-delay: 0.02s; }
-  .card:nth-child(2) { animation-delay: 0.04s; }
-  .card:nth-child(3) { animation-delay: 0.06s; }
-  .card:nth-child(4) { animation-delay: 0.08s; }
-  .card:nth-child(5) { animation-delay: 0.10s; }
-  .card:nth-child(6) { animation-delay: 0.12s; }
-  .card:nth-child(7) { animation-delay: 0.14s; }
-
   .card.today {
     border-color: var(--text);
     border-width: 2px;
@@ -407,113 +379,96 @@
   }
 
   /* ─── RECORDS ROW ───────────────────────────────────── */
-  .record-list {
-    padding: 8px;
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-    flex: 1;
-  }
+  .record-list { padding: 8px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
 
   .r-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 10px;
-    padding: 10px 12px;
-    background: var(--bg);
-    border: 1.5px solid var(--border);
-    border-radius: 6px;
-    transition: background 0.12s;
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+    padding: 10px 12px; background: var(--bg); border: 1.5px solid var(--border);
+    border-radius: 6px; transition: background 0.12s;
   }
   .r-row:hover { background: var(--surf); }
 
   .r-info { flex: 1; min-width: 0; }
-  .r-title { font-family: var(--sans); font-size: 0.95rem; font-weight: 700; color: var(--text); }
-  .r-time { font-family: var(--mono); font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
+  
+  /* Magnified Text Styles for Records */
+  .loc-text {
+    font-family: var(--sans);
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--text);
+  }
+  .record-num-ex {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: var(--blue);
+  }
+  .record-num-wt {
+    display: inline-block;
+    font-family: var(--mono);
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--red);
+  }
+
+  @media (max-width: 979px) {
+    .loc-text { font-size: 1.4rem; display: block; margin-bottom: 6px; }
+    .record-num-ex { font-size: 2.2rem; }
+    .record-num-wt { font-size: 2.4rem; }
+  }
+
+  .r-time { font-family: var(--mono); font-size: 0.85rem; color: var(--muted); margin-top: 6px; }
 
   .btn-del {
-    background: transparent; border: none; font-size: 1.1rem; color: var(--border2);
-    cursor: pointer; padding: 4px; line-height: 1; transition: color 0.15s;
+    background: transparent; border: none; font-size: 1.4rem; color: var(--border2);
+    cursor: pointer; padding: 6px; line-height: 1; transition: color 0.15s;
   }
   .btn-del:hover { color: var(--red); }
 
   .no-data {
     flex: 1; display: flex; align-items: center; justify-content: center;
-    font-family: var(--mono); font-size: 0.75rem; font-weight: 700; color: var(--border2);
+    font-family: var(--mono); font-size: 0.85rem; font-weight: 700; color: var(--border2);
     letter-spacing: 0.1em; padding: 20px 8px;
   }
 
   /* ─── DASHBOARD BOTTOM ──────────────────────────────── */
-  .dashboard {
-    max-width: 1400px;
-    margin: 0 auto 30px;
-    padding: 0 16px;
-  }
+  .dashboard { max-width: 1400px; margin: 0 auto 30px; padding: 0 16px; }
+  
+  .mt-20 { margin-top: 20px; }
 
   .dash-card {
-    background: var(--card);
-    border: 1.5px solid var(--border);
-    border-radius: var(--r);
-    padding: 20px;
-    box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+    background: var(--card); border: 1.5px solid var(--border);
+    border-radius: var(--r); padding: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.06);
   }
 
   .dash-header {
-    font-family: var(--sans);
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: var(--text);
-    margin-bottom: 16px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-bottom: 1.5px solid var(--border);
-    padding-bottom: 10px;
+    font-family: var(--sans); font-size: 1.2rem; font-weight: 700; color: var(--text);
+    margin-bottom: 16px; display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 1.5px solid var(--border); padding-bottom: 10px;
   }
 
-  .dash-stats {
-    display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 20px;
-  }
+  .dash-stats { display: flex; gap: 20px; flex-wrap: wrap; margin-bottom: 20px; }
 
   .stat-box {
-    flex: 1; min-width: 120px;
-    background: var(--surf);
-    border: 1.5px solid var(--border);
-    border-radius: 6px;
-    padding: 12px;
-    text-align: center;
+    flex: 1; min-width: 120px; background: var(--surf); border: 1.5px solid var(--border);
+    border-radius: 6px; padding: 12px; text-align: center;
   }
 
-  .stat-label { font-size: 0.8rem; color: var(--sub); font-weight: 500; margin-bottom: 4px; }
-  .stat-val { font-family: var(--mono); font-size: 1.6rem; font-weight: 700; color: var(--text); }
-  .stat-unit { font-size: 0.8rem; font-weight: normal; color: var(--muted); }
+  .stat-label { font-size: 0.85rem; color: var(--sub); font-weight: 500; margin-bottom: 4px; }
+  .stat-val { font-family: var(--mono); font-size: 1.8rem; font-weight: 700; color: var(--text); }
+  .stat-unit { font-size: 0.9rem; font-weight: normal; color: var(--muted); }
 
-  .chart-container {
-    position: relative;
-    height: 250px;
-    width: 100%;
-  }
+  .chart-container { position: relative; height: 250px; width: 100%; }
 
   /* ─── TOAST ─────────────────────────────────────────── */
   #toast {
-    position: fixed;
-    bottom: 28px;
-    left: 50%;
-    transform: translateX(-50%) translateY(60px);
-    background: var(--text);
-    color: var(--bg);
-    font-family: var(--mono);
-    font-size: 0.72rem;
-    font-weight: 700;
-    padding: 10px 22px;
-    border-radius: 50px;
-    z-index: 200;
+    position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(60px);
+    background: var(--text); color: var(--bg); font-family: var(--sans); font-size: 0.85rem; font-weight: 700;
+    padding: 12px 24px; border-radius: 12px; z-index: 200;
     transition: transform 0.28s cubic-bezier(.4,0,.2,1), opacity 0.28s;
-    opacity: 0;
-    white-space: nowrap;
-    pointer-events: none;
-    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+    opacity: 0; white-space: normal; text-align: center; max-width: 90vw; line-height: 1.4;
+    pointer-events: none; box-shadow: 0 6px 20px rgba(0,0,0,0.25);
   }
   #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
   #toast.ok   { background: var(--text); }
@@ -566,7 +521,7 @@
       <option value="台中">台中</option>
       <option value="其他">其他：請填寫</option>
     </select>
-    <input type="text" id="ex-loc-other" placeholder="輸入地點" style="display:none; width:120px;" />
+    <input type="text" id="ex-loc-other" placeholder="輸入地點" style="display:none; width:160px;" />
     
     <select id="ex-dur" onchange="toggleOther('ex-dur', 'ex-dur-other')">
       <option value="10">10 mins</option>
@@ -576,7 +531,8 @@
       <option value="30">30 mins</option>
       <option value="其他">其他：請填寫</option>
     </select>
-    <input type="number" id="ex-dur-other" placeholder="mins" style="display:none; width:80px;" />
+    <!-- type number, inputmode decimal triggers phone numpad -->
+    <input type="number" inputmode="decimal" id="ex-dur-other" placeholder="mins" style="display:none; width:100px;" />
     
     <button class="btn-add" onclick="saveRecord()">＋ ADD</button>
   </div>
@@ -584,7 +540,8 @@
   <!-- Weight Inputs -->
   <div id="panel-weight" class="input-row" style="display:none;">
     <input type="date" id="wt-date" />
-    <input type="number" step="0.1" id="wt-val" placeholder="Weight (kg)" style="width:120px;" />
+    <!-- key point: type="number" & inputmode="decimal" 呼叫電話按鍵鍵盤 -->
+    <input type="number" step="0.1" inputmode="decimal" id="wt-val" placeholder="Weight (kg)" style="width:160px;" />
     <button class="btn-add" onclick="saveRecord()">＋ ADD</button>
   </div>
 </div>
@@ -593,15 +550,25 @@
 
 <!-- DASHBOARD (CHART & STATS) -->
 <div class="dashboard">
+  <!-- Weekly -->
   <div class="dash-card">
     <div class="dash-header">
       <span id="dash-title">Weekly Summary</span>
     </div>
-    <div class="dash-stats" id="dash-stats">
-      <!-- Injected via JS -->
-    </div>
+    <div class="dash-stats" id="dash-stats"></div>
     <div class="chart-container">
       <canvas id="weeklyChart"></canvas>
+    </div>
+  </div>
+
+  <!-- Monthly -->
+  <div class="dash-card mt-20">
+    <div class="dash-header">
+      <span id="monthly-dash-title">Monthly Comparison</span>
+    </div>
+    <div class="dash-stats" id="monthly-dash-stats"></div>
+    <div class="chart-container">
+      <canvas id="monthlyChart"></canvas>
     </div>
   </div>
 </div>
@@ -622,12 +589,12 @@ let currentMode   = 'exercise'; // 'exercise' | 'weight'
 let currentMonday = null;
 let appData       = { exercise: {}, weight: {} };
 let chartInstance = null;
+let monthlyChartInstance = null;
 
 // --- INITIALIZATION ---
 window.addEventListener('DOMContentLoaded', () => {
   currentMonday = getMondayOf(new Date());
   
-  // Set default dates in inputs to today
   const todayStr = fmt(new Date());
   document.getElementById('ex-date').value = todayStr;
   document.getElementById('wt-date').value = todayStr;
@@ -682,6 +649,8 @@ function loadData() {
       appData = data;
       refreshUI();
       showLoader(false);
+      // Data Loaded -> show the weekly average toast popup
+      toast(`資料載入完成！<br/>${getWeeklyAvgMsg()}`, 'ok', 3500);
     })
     .catch(err => {
       console.error(err);
@@ -710,10 +679,8 @@ function renderGrid() {
     const records = appData[currentMode][dateStr] ||[];
 
     const card = document.createElement('div');
-    // We add `day-${i}` so the CSS can uniquely target Monday (0), Tuesday (1), etc. for positioning
     card.className = `card day-${i}${isToday ? ' today' : ''}`;
     
-    // Calculate daily summary for the badge
     let badgeText = '—';
     if (records.length > 0) {
       if (currentMode === 'exercise') {
@@ -749,7 +716,7 @@ function buildRecordRow(dateStr, r) {
     return `
       <div class="r-row">
         <div class="r-info">
-          <div class="r-title">${r.location} <span style="color:var(--blue)">• ${r.duration} mins</span></div>
+          <div class="r-title"><span class="loc-text">${r.location}</span> <span class="record-num-ex">• ${r.duration} mins</span></div>
           <div class="r-time">${r.time}</div>
         </div>
         <button class="btn-del" onclick="deleteRecord('${dateStr}', '${r.id}')">&times;</button>
@@ -758,7 +725,7 @@ function buildRecordRow(dateStr, r) {
     return `
       <div class="r-row">
         <div class="r-info">
-          <div class="r-title">${r.weight} kg</div>
+          <div class="r-title"><span class="record-num-wt">${r.weight} kg</span></div>
           <div class="r-time">${r.time}</div>
         </div>
         <button class="btn-del" onclick="deleteRecord('${dateStr}', '${r.id}')">&times;</button>
@@ -766,8 +733,9 @@ function buildRecordRow(dateStr, r) {
   }
 }
 
-// --- DASHBOARD & CHARTS ---
+// --- DASHBOARDS (WEEKLY & MONTHLY) ---
 function renderDashboard() {
+  // Weekly Dashboard 
   const titleEl = document.getElementById('dash-title');
   const statsEl = document.getElementById('dash-stats');
   const ctx = document.getElementById('weeklyChart').getContext('2d');
@@ -821,18 +789,9 @@ function renderDashboard() {
       type: 'bar',
       data: {
         labels: labels,
-        datasets:[{
-          label: 'Duration (mins)',
-          data: dataPts,
-          backgroundColor: '#0066cc',
-          borderRadius: 4
-        }]
+        datasets:[{ label: 'Duration (mins)', data: dataPts, backgroundColor: '#0066cc', borderRadius: 4 }]
       },
-      options: {
-        responsive: true, maintainAspectRatio: false,
-        plugins: { legend: { display: false } },
-        scales: { y: { beginAtZero: true } }
-      }
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
     });
 
   } else {
@@ -848,28 +807,95 @@ function renderDashboard() {
       type: 'line',
       data: {
         labels: labels,
-        datasets:[{
-          label: 'Weight (kg)',
-          data: dataPts,
-          borderColor: '#cc0000',
-          backgroundColor: 'rgba(204,0,0,0.1)',
-          borderWidth: 2,
-          pointBackgroundColor: '#cc0000',
-          pointRadius: 4,
-          fill: true,
-          spanGaps: true
-        }]
+        datasets:[{ label: 'Weight (kg)', data: dataPts, borderColor: '#cc0000', backgroundColor: 'rgba(204,0,0,0.1)', borderWidth: 2, pointBackgroundColor: '#cc0000', pointRadius: 4, fill: true, spanGaps: true }]
       },
-      options: {
-        responsive: true, maintainAspectRatio: false,
-        plugins: { legend: { display: false } },
-        scales: { 
-          y: { 
-            suggestedMin: Math.min(...dataPts.filter(v => v !== null)) - 2,
-            suggestedMax: Math.max(...dataPts.filter(v => v !== null)) + 2 
-          }
-        }
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { suggestedMin: Math.min(...dataPts.filter(v => v !== null)) - 2, suggestedMax: Math.max(...dataPts.filter(v => v !== null)) + 2 } } }
+    });
+  }
+
+  // Monthly Dashboard
+  renderMonthlyDashboard();
+}
+
+function renderMonthlyDashboard() {
+  const mTitleEl = document.getElementById('monthly-dash-title');
+  const mStatsEl = document.getElementById('monthly-dash-stats');
+  const ctx = document.getElementById('monthlyChart').getContext('2d');
+  
+  if (monthlyChartInstance) monthlyChartInstance.destroy();
+
+  const d = new Date(currentMonday + 'T00:00:00');
+  const year = d.getFullYear();
+  const month = d.getMonth(); 
+  
+  const daysInMonth = new Date(year, month + 1, 0).getDate();
+  
+  const labels = [];
+  const dataPts = [];
+  let totalVal = 0;
+  let entryCount = 0;
+
+  for (let i = 1; i <= daysInMonth; i++) {
+    const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(i).padStart(2, '0')}`;
+    labels.push(i);
+    
+    const records = appData[currentMode][dateStr] || [];
+    
+    if (currentMode === 'exercise') {
+      const dailySum = records.reduce((sum, r) => sum + Number(r.duration), 0);
+      dataPts.push(dailySum);
+      totalVal += dailySum;
+      if (dailySum > 0) entryCount++;
+    } else {
+      if (records.length > 0) {
+        const dailyAvg = records.reduce((sum, r) => sum + Number(r.weight), 0) / records.length;
+        dataPts.push(dailyAvg);
+        totalVal += dailyAvg;
+        entryCount++;
+      } else {
+        dataPts.push(null);
       }
+    }
+  }
+
+  if (currentMode === 'exercise') {
+    mTitleEl.textContent = `${year}年${month+1}月 Exercise (本月運動)`;
+    const avg = entryCount > 0 ? Math.round(totalVal / daysInMonth) : 0;
+    mStatsEl.innerHTML = `
+      <div class="stat-box">
+        <div class="stat-label">Monthly Total</div>
+        <div class="stat-val">${totalVal}<span class="stat-unit"> min</span></div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-label">Monthly Daily Avg</div>
+        <div class="stat-val">${avg}<span class="stat-unit"> min/day</span></div>
+      </div>`;
+      
+    monthlyChartInstance = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: labels,
+        datasets: [{ label: 'Duration (mins)', data: dataPts, backgroundColor: '#0066cc', borderRadius: 2 }]
+      },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true } } }
+    });
+
+  } else {
+    mTitleEl.textContent = `${year}年${month+1}月 Weight (本月體重)`;
+    const avg = entryCount > 0 ? (totalVal / entryCount).toFixed(1) : '—';
+    mStatsEl.innerHTML = `
+      <div class="stat-box">
+        <div class="stat-label">Monthly Average</div>
+        <div class="stat-val">${avg}<span class="stat-unit"> kg</span></div>
+      </div>`;
+      
+    monthlyChartInstance = new Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: labels,
+        datasets: [{ label: 'Weight (kg)', data: dataPts, borderColor: '#cc0000', backgroundColor: 'rgba(204,0,0,0.1)', borderWidth: 2, pointBackgroundColor: '#cc0000', pointRadius: 2, fill: true, spanGaps: true }]
+      },
+      options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { suggestedMin: Math.min(...dataPts.filter(v => v !== null)) - 2, suggestedMax: Math.max(...dataPts.filter(v => v !== null)) + 2 } } }
     });
   }
 }
@@ -902,7 +928,7 @@ function saveRecord() {
         appData.exercise[dateStr].push({ id, time: time12, location: loc, duration: Number(dur) });
         refreshUI();
         setSaving(false);
-        toast('&#10003; Record saved', 'ok');
+        toast(`&#10003; 儲存成功！<br/>${getWeeklyAvgMsg()}`, 'ok', 4000);
       })
       .catch(() => {
         setSaving(false);
@@ -924,7 +950,7 @@ function saveRecord() {
         document.getElementById('wt-val').value = ''; 
         refreshUI();
         setSaving(false);
-        toast('&#10003; Record saved', 'ok');
+        toast(`&#10003; 儲存成功！<br/>${getWeeklyAvgMsg()}`, 'ok', 4000);
       })
       .catch(() => {
         setSaving(false);
@@ -960,6 +986,48 @@ function switchMode(mode) {
   document.getElementById('panel-weight').style.display = (mode === 'weight') ? 'flex' : 'none';
   
   refreshUI();
+  // Switching modes triggers pop-up of the average for this mode so far
+  toast(getWeeklyAvgMsg(), 'ok', 3500);
+}
+
+// 計算本週「目前為止」的平均通知訊息
+function getWeeklyAvgMsg() {
+  const todayStr = fmt(new Date());
+  let total = 0;
+  let count = 0;
+  let daysPassed = 0;
+  
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(currentMonday + 'T00:00:00');
+    d.setDate(d.getDate() + i);
+    const dateStr = fmt(d);
+    
+    // 超過今天的日期不列入"目前為止"的計算（如果是看當週的話）
+    if (new Date(dateStr) > new Date(todayStr)) break; 
+    
+    daysPassed++;
+    const records = appData[currentMode][dateStr] || [];
+    
+    if (currentMode === 'exercise') {
+      const sum = records.reduce((s, r) => s + Number(r.duration), 0);
+      total += sum;
+      if (sum > 0) count++;
+    } else {
+      if (records.length > 0) {
+        const sum = records.reduce((s, r) => s + Number(r.weight), 0) / records.length;
+        total += sum;
+        count++;
+      }
+    }
+  }
+
+  if (currentMode === 'exercise') {
+    const avg = daysPassed > 0 ? Math.round(total / daysPassed) : 0;
+    return `本週目前平均: ${avg} min/day`;
+  } else {
+    const avg = count > 0 ? (total / count).toFixed(1) : '—';
+    return `本週目前平均: ${avg} kg`;
+  }
 }
 
 function toggleOther(selectId, otherId) {
@@ -1037,12 +1105,12 @@ function get12HourTime() {
 }
 
 let _toastTimer;
-function toast(msg, type = '') {
+function toast(msg, type = '', duration = 2600) {
   const el = document.getElementById('toast');
   el.innerHTML = msg;
   el.className = ['show', type].filter(Boolean).join(' ');
   clearTimeout(_toastTimer);
-  _toastTimer = setTimeout(() => { el.className = ''; }, 2600);
+  _toastTimer = setTimeout(() => { el.className = ''; }, duration);
 }
 
 function showLoader(show) { document.getElementById('loader').classList.toggle('out', !show); }
