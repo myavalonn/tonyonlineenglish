@@ -6,7 +6,6 @@
 <title>Project Tracker</title>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet" />
 <style>
-  /* ─── CLEAN WHITE THEME ─────────────────────────────── */
   :root {
     --bg: #ffffff; --surf: #f5f5f5; --card: #ffffff;
     --border: #e0e0e0; --border2: #c0c0c0;
@@ -18,14 +17,12 @@
   html { scroll-behavior: smooth; }
   body { background: var(--bg); color: var(--text); font-family: var(--sans); min-height: 100dvh; }
 
-  /* ─── LOADER ────────────────────────────────────────── */
   #loader { position: fixed; inset: 0; background: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 20px; z-index: 999; transition: opacity 0.5s ease; }
   #loader.out { opacity: 0; pointer-events: none; }
   .loader-ring { width: 56px; height: 56px; border: 4px solid var(--border); border-top-color: var(--text); border-radius: 50%; animation: spin 0.9s linear infinite; }
   .loader-text { font-family: var(--mono); font-size: 0.9rem; font-weight: 700; letter-spacing: 0.08em; }
   @keyframes spin { to { transform: rotate(360deg); } }
 
-  /* ─── HEADER ────────────────────────────────────────── */
   header { position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,0.95); backdrop-filter: blur(18px); border-bottom: 1px solid var(--border); padding: 14px 18px 12px; }
   .hrow1 { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; gap: 12px; flex-wrap: wrap; }
   .logo { font-family: var(--mono); font-size: 1.1rem; font-weight: 700; letter-spacing: 0.1em; display: flex; align-items: center; gap: 8px; }
@@ -53,7 +50,6 @@
   .prog-track { height: 4px; background: var(--border); margin-top: 18px; }
   .prog-fill { height: 100%; background: var(--text); transition: width 0.5s ease; width: 0%; }
 
-  /* ─── GRID & CARDS ──────────────────────────────────── */
   .grid { display: grid; grid-template-columns: 1fr; gap: 16px; padding: 20px 16px 80px; }
   @media (min-width: 700px) { .grid { grid-template-columns: repeat(2, 1fr); padding: 28px; gap: 20px; } }
   @media (min-width: 1024px) { .grid { grid-template-columns: repeat(3, 1fr); gap: 24px; max-width: 1400px; margin: 0 auto; } }
@@ -68,7 +64,6 @@
   .badge { font-family: var(--mono); font-size: 0.95rem; font-weight: 700; padding: 4px 10px; border: 1.5px solid var(--border2); border-radius: 4px; color: var(--sub); }
   .card.done .badge { background: var(--text); color: var(--bg); border-color: var(--text); }
 
-  /* ─── GIANT CHECK MARK ──────────────────────────────── */
   .giant-check {
     position: absolute; top: 50%; left: 50%;
     width: 65%; height: 65%;
@@ -79,12 +74,10 @@
   }
   .card.done .giant-check { opacity: 0.12; transform: translate(-50%, -50%) scale(1); }
 
-  /* ─── TASKS ─────────────────────────────────────────── */
   .student-list { position: relative; padding: 10px; display: flex; flex-direction: column; gap: 8px; flex: 1; z-index: 2; }
   .s-row { display: flex; align-items: center; gap: 12px; padding: 14px 16px; border: 1.5px solid var(--border); border-radius: 8px; cursor: pointer; position: relative; background: var(--bg); transition: all 0.15s; }
   .s-row:hover { border-color: var(--border2); background: var(--surf); }
   .s-row:active { transform: scale(0.98); }
-  .s-row.saving { opacity: 0.5; pointer-events: none; }
   .s-row.sent { background: transparent; border-color: var(--border2); opacity: 0.55; }
   
   .checkbox { width: 28px; height: 28px; border: 2px solid var(--border2); border-radius: 6px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; background: var(--bg); color: var(--bg); transition: all 0.15s; }
@@ -104,7 +97,6 @@
   
   .no-class { flex: 1; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 1rem; font-weight: 700; color: var(--muted); letter-spacing: 0.05em; }
 
-  /* ─── MODALS & TOAST ────────────────────────────────── */
   .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 100; opacity: 0; pointer-events: none; transition: opacity 0.2s; padding: 20px; }
   .modal-overlay.active { opacity: 1; pointer-events: auto; }
   .modal { background: var(--bg); border-radius: var(--r); width: 100%; max-width: 440px; padding: 28px; transform: translateY(20px); transition: transform 0.2s; box-shadow: 0 10px 40px rgba(0,0,0,0.2); }
@@ -141,8 +133,8 @@
   <div class="hrow1">
     <div class="logo"><div class="logo-dot"></div>PROJECT TRACKER</div>
     <div class="tabs">
-      <button class="tab active" onclick="switchCategory('trivia')">Trivia</button>
-      <button class="tab" onclick="switchCategory('website')">Website Idea</button>
+      <button class="tab active" onclick="switchCategory('trivia', this)">Trivia</button>
+      <button class="tab" onclick="switchCategory('website', this)">Website Idea</button>
     </div>
     <div style="display:flex; align-items:center; gap:12px;">
       <div class="saving-pill" id="savingPill" style="display:none"><span class="saving-spin"></span>SAVING</div>
@@ -200,7 +192,7 @@
 <script>
 // =======================================================================
 // PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL HERE:
-const API = 'https://script.google.com/macros/s/AKfycbytaAAN3vXLMK2pxkmZRzGjqHnVHbmoC00J4HsPWEN90qTx29Y69jYTQAe0VJHCzujb4Q/exec'; 
+const API = 'https://script.google.com/macros/s/AKfycbytaAAN3vXLMK2pxkmZRzGjqHnVHbmoC00J4HsPWEN90qTx29Y69jYTQAe0VJHCzujb4Q/exec';
 // =======================================================================
 
 const DAY_NAMES = ['MON','TUE','WED','THU','FRI','SAT','SUN'];
@@ -212,7 +204,7 @@ const GIANT_CHECK_SVG = `
 
 let currentCategory = 'trivia';
 let currentMonday = null;
-let allTasks = []; 
+let allTasks = [];
 let savesInFlight = 0;
 
 window.addEventListener('DOMContentLoaded', () => {
@@ -240,10 +232,10 @@ function renderUI() {
   updateProgress();
 }
 
-function switchCategory(cat) {
+function switchCategory(cat, el) {
   currentCategory = cat;
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  event.target.classList.add('active');
+  el.classList.add('active');
   renderUI();
 }
 
@@ -257,7 +249,6 @@ function renderGrid() {
     d.setDate(d.getDate() + i);
     const dateStr = fmt(d);
     
-    // .substring(0, 10) removes timestamp garbage from Google Apps Script
     const dayTasks = allTasks.filter(t => t.category === currentCategory && String(t.date).substring(0, 10) === dateStr);
     const sentCount = dayTasks.filter(t => t.done).length;
     const allDone = dayTasks.length > 0 && sentCount === dayTasks.length;
@@ -309,7 +300,7 @@ function saveNewTask() {
   apiFetch('addTask', newTask).then(() => {
     decSave(); toast("Saved");
   }).catch((err) => {
-    decSave(); 
+    decSave();
     alert("Backend Error: " + err.message);
     toast("Save failed", "fail");
     allTasks = allTasks.filter(t => t.id !== newTask.id);
@@ -317,21 +308,21 @@ function saveNewTask() {
   });
 }
 
+// ── FIXED: removed the post-renderUI DOM lookup that caused the null error ──
 function toggleTask(id) {
   const task = allTasks.find(t => String(t.id) === String(id));
   if (!task) return;
   task.done = !task.done;
-  document.getElementById('task-'+id).classList.add('saving');
   incSave();
   renderUI();
 
   apiFetch('toggleTask', { id: task.id, done: task.done }).then(() => {
-    decSave(); document.getElementById('task-'+id).classList.remove('saving');
+    decSave();
   }).catch((err) => {
-    decSave(); 
+    decSave();
     alert("Backend Error: " + err.message);
-    task.done = !task.done; 
-    renderUI(); 
+    task.done = !task.done;
+    renderUI();
     toast("Sync failed", "fail");
   });
 }
@@ -349,10 +340,10 @@ function deleteTask(event, id) {
   apiFetch('deleteTask', { id: id }).then(() => {
     decSave(); toast("Deleted");
   }).catch((err) => {
-    decSave(); 
+    decSave();
     alert("Backend Error: " + err.message);
-    allTasks.push(backupTask); 
-    renderUI(); 
+    allTasks.push(backupTask);
+    renderUI();
     toast("Delete failed", "fail");
   });
 }
@@ -368,27 +359,27 @@ function apiFetch(action, params = {}) {
     const script = document.createElement('script');
     script.src = url.toString();
     
-    const cleanup = () => { 
-      delete window[cbName]; 
-      if (script.parentNode) script.parentNode.removeChild(script); 
+    const cleanup = () => {
+      delete window[cbName];
+      if (script.parentNode) script.parentNode.removeChild(script);
     };
     
-    const timer = setTimeout(() => { 
-      cleanup(); 
-      reject(new Error('Connection Timed Out. Check your internet or Google Script URL.')); 
+    const timer = setTimeout(() => {
+      cleanup();
+      reject(new Error('Connection Timed Out. Check your internet or Google Script URL.'));
     }, 12000);
     
-    window[cbName] = (json) => { 
-      clearTimeout(timer); 
-      cleanup(); 
-      if (json.error) reject(new Error(json.error)); 
-      else resolve(json.data); 
+    window[cbName] = (json) => {
+      clearTimeout(timer);
+      cleanup();
+      if (json.error) reject(new Error(json.error));
+      else resolve(json.data);
     };
     
-    script.onerror = () => { 
-      clearTimeout(timer); 
-      cleanup(); 
-      reject(new Error('Network error. Is the Google App Script URL correct?')); 
+    script.onerror = () => {
+      clearTimeout(timer);
+      cleanup();
+      reject(new Error('Network error. Is the Google App Script URL correct?'));
     };
     
     document.head.appendChild(script);
@@ -399,7 +390,7 @@ function checkOverdue() {
   const todayStr = fmt(new Date());
   const overdue = allTasks.filter(t => t.category === currentCategory && !t.done && String(t.date).substring(0, 10) < todayStr);
   const btn = document.getElementById('overdueBtn');
-  if (overdue.length > 0) { btn.style.display = 'flex'; document.getElementById('overdueCount').textContent = overdue.length; } 
+  if (overdue.length > 0) { btn.style.display = 'flex'; document.getElementById('overdueCount').textContent = overdue.length; }
   else { btn.style.display = 'none'; }
 }
 
@@ -424,7 +415,8 @@ function openAddModal() {
     if (dateStr === todayStr) opt.selected = true;
     daySelect.appendChild(opt);
   }
-  document.getElementById('taskText').value = ''; document.getElementById('addModal').classList.add('active');
+  document.getElementById('taskText').value = '';
+  document.getElementById('addModal').classList.add('active');
 }
 
 function openOverdueModal() {
@@ -450,18 +442,20 @@ function changeWeek(delta) {
 }
 
 function updateHeader() {
-  const mon = new Date(currentMonday + 'T00:00:00'); const sun = new Date(currentMonday + 'T00:00:00'); sun.setDate(mon.getDate() + 6);
+  const mon = new Date(currentMonday + 'T00:00:00');
+  const sun = new Date(currentMonday + 'T00:00:00'); sun.setDate(mon.getDate() + 6);
   document.getElementById('weekLabel').textContent = `${mon.getMonth()+1}/${mon.getDate()} – ${sun.getMonth()+1}/${sun.getDate()}`;
 }
 
 function incSave() { savesInFlight++; document.getElementById('savingPill').style.display = 'inline-flex'; }
-function decSave() { savesInFlight = Math.max(0, savesInFlight - 1); if(savesInFlight===0) document.getElementById('savingPill').style.display = 'none'; }
+function decSave() { savesInFlight = Math.max(0, savesInFlight - 1); if (savesInFlight === 0) document.getElementById('savingPill').style.display = 'none'; }
 function showLoader(show) { document.getElementById('loader').classList.toggle('out', !show); }
 function getMondayOf(date) { const d = new Date(date); const day = d.getDay(); d.setDate(d.getDate() + (day === 0 ? -6 : 1 - day)); return fmt(d); }
 function fmt(d) { return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
 function escapeHtml(str) { return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;"); }
 
-let _toast; function toast(msg, type = '') { const e = document.getElementById('toast'); e.textContent = msg; e.className = ['show', type].filter(Boolean).join(' '); clearTimeout(_toast); _toast = setTimeout(() => { e.className = ''; }, 2600); }
+let _toast;
+function toast(msg, type = '') { const e = document.getElementById('toast'); e.textContent = msg; e.className = ['show', type].filter(Boolean).join(' '); clearTimeout(_toast); _toast = setTimeout(() => { e.className = ''; }, 2600); }
 </script>
 </body>
 </html>
