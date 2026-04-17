@@ -368,19 +368,27 @@ function switchApp(target) {
     document.getElementById('view-project').classList.add('active');
     projCategory = target; // 'trivia' or 'website'
     
-    if (!projDataLoaded) {
-      loadProjectData();
-    } else {
+    // Check if background pre-fetch finished
+    if (projDataLoaded) {
       renderProjUI();
+      showLoader(false);
+    } else {
+      // Data still fetching in background, wait for it
+      showLoader(true);
+      if (!isFetchingProjects) {
+         prefetchProjects(); // Restart fetch if it failed previously
+      }
     }
   }
 }
 
-// Initialization
+// Initialization - LOAD TUTOR AND PREFETCH PROJECTS IN BACKGROUND
 window.addEventListener('DOMContentLoaded', () => {
   updateCurrentDateBar();
   tutorCurrentMonday = getMondayOf(new Date());
-  loadTutorWeek(); // Start by loading Tutor Tracker
+  
+  loadTutorWeek(); // Initiates main screen load
+  prefetchProjects(); // Initiates background load for other tabs
 });
 
 
@@ -401,7 +409,12 @@ function loadTutorWeek() {
     weekEvents = evts; tutorStatuses = sts; renderTutorGrid();
   }).catch(err => {
     toast("Calendar Error: " + err.message, "fail");
-  }).finally(() => showLoader(false));
+  }).finally(() => {
+    // Only turn off loader if we are still on the Tutor view
+    if (document.getElementById('view-tutor').classList.contains('active')) {
+      showLoader(false);
+    }
+  });
 }
 
 function getMondayOf(date) {
@@ -556,21 +569,37 @@ function slideGrid(direction, callback) {
 }
 
 
-/* ─── APP 2: PROJECT TRACKER ENGINE ─────────────────── */
+/* ─── APP 2: PROJECT TRACKER ENGINE & PRE-FETCH ─────── */
 let projDataLoaded = false;
+let isFetchingProjects = false;
 let projCategory = 'trivia';
 let projFilter = 'all';
 let projTasks = [];
 
-function loadProjectData() {
-  showLoader(true);
+// This runs silently in the background immediately on page load
+function prefetchProjects() {
+  if (isFetchingProjects || projDataLoaded) return;
+  isFetchingProjects = true;
+  
   apiFetch(API_PROJ, 'getTasks').then(data => {
     projTasks = data || [];
     projDataLoaded = true;
-    renderProjUI();
+    isFetchingProjects = false;
+    
+    // If the user already clicked the tab while it was loading in the background, 
+    // render it immediately and hide loader.
+    if (document.getElementById('view-project').classList.contains('active')) {
+      renderProjUI();
+      showLoader(false);
+    }
   }).catch(err => {
-    toast("Project Data Error", "fail");
-  }).finally(() => showLoader(false));
+    isFetchingProjects = false;
+    // Only show error if the user is actively staring at the project tab
+    if (document.getElementById('view-project').classList.contains('active')) {
+      toast("Project Data Error", "fail");
+      showLoader(false);
+    }
+  });
 }
 
 function renderProjUI() {
