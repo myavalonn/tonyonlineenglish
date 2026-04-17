@@ -1,0 +1,648 @@
+<!-- START OF V72 (FIXED CLIPPING, LAYOUT SPACING & QR CODE) -->
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&family=Oswald:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<div class="app-shell">
+
+  <!-- CONTROL PANEL -->
+  <div class="control-deck">
+    <div class="deck-header">
+      <h3>/// DATA TERMINAL V72 (PRO)</h3>
+    </div>
+    
+    <div class="row-2">
+      <div class="input-group"><label>中文姓名</label><input type="text" id="inNameCN" placeholder="林育志" oninput="refreshData()"></div>
+      <div class="input-group"><label>英文姓名</label><input type="text" id="inNameEN" placeholder="Tony Lin" oninput="refreshData()"></div>
+    </div>
+    
+    <div class="row-2">
+      <div class="input-group"><label>日期</label><input type="date" id="inDate" oninput="refreshData()"></div>
+      <div class="input-group"><label>金額 ($)</label><input type="number" id="inAmount" placeholder="12000" oninput="refreshData()"></div>
+    </div>
+    
+    <div class="row-2">
+      <div class="input-group"><label>預估堂數</label><input type="number" id="inClasses" placeholder="20" oninput="refreshData()"></div>
+      <div class="input-group"><label>每堂分鐘</label><input type="number" id="inMins" placeholder="50" oninput="refreshData()"></div>
+    </div>
+
+    <div class="input-group" style="margin-bottom: 10px;">
+        <label>課堂點數 (Points)</label><input type="text" id="inPoints" placeholder="900" oninput="refreshData()">
+    </div>
+    
+    <div class="row-2">
+      <div class="input-group"><label>中文期限</label><input type="text" id="inExpiry" placeholder="2年" oninput="refreshData()"></div>
+      <div class="input-group"><label>英文期限</label><input type="text" id="inExpiryEN" placeholder="2 Years" oninput="refreshData()"></div>
+    </div>
+
+    <div class="input-group" style="margin-bottom: 10px;">
+        <label>單號</label><input type="text" id="inOrder" placeholder="15TEY" oninput="refreshData()">
+    </div>
+    
+    <div class="input-group"><label>中文時間 (空白鍵自動換行)</label><input type="text" id="inTimeCN" placeholder="週二6pm 週五6pm" oninput="refreshData()"></div>
+    <div class="input-group"><label>英文時間 (Space for new line)</label><input type="text" id="inTimeEN" placeholder="6pm,Mon 6pm,Fri" oninput="refreshData()"></div>
+
+    <button onclick="downloadPDF()" class="execute-btn">下載 PDF (商業版)</button>
+  </div>
+
+  <!-- PREVIEW AREA -->
+  <div class="preview-viewport">
+    <div id="pdf-container">
+      
+      <!-- === PAGE 1: CHINESE === -->
+      <div class="story-card">
+        
+        <!-- HEADER -->
+        <div class="header-section">
+          <div class="brand-text">
+            <h1 class="cn-title-regular">學費證明</h1>
+            <div class="logo-row">
+              <span class="tony-brand">TONY</span>
+              <span class="brand-suffix">| 線上美語家教</span>
+            </div>
+          </div>
+          
+          <div class="header-right-group">
+            <div class="qr-code">
+                <img src="https://ik.imagekit.io/lql1uveoc/%E6%88%AA%E5%9C%96%202025-11-20%20%E4%B8%8A%E5%8D%8812.23.24.png" crossorigin="anonymous">
+            </div>
+            <div class="qr-sub-text">OFFICIAL WEBSITE</div>
+          </div>
+        </div>
+
+        <!-- MAIN GRID -->
+        <div class="layout-grid">
+            <div class="col-left-stack">
+                <!-- PRICE BOX -->
+                <div class="pro-panel dark-panel">
+                    <div class="top-line-group">
+                        <span class="label-sm text-gold">總金額 TOTAL</span>
+                    </div>
+                    <div class="amount-group">
+                        <span class="currency-inline">NT$</span>
+                        <span class="amount-large" id="outAmountNumCN">12,000</span>
+                    </div>
+                </div>
+
+                <!-- NAME BOX -->
+                <div class="pro-panel light-panel name-box-h">
+                    <div class="label-sub">學生姓名 Student Name</div>
+                    <div class="val-name" id="outNameCN">林育志</div>
+                </div>
+                
+                <!-- STATS ROW -->
+                <div class="ref-stats-row">
+                    <div class="pro-panel light-panel stat-item">
+                        <div class="label-sub">預估堂數</div>
+                        <div class="stat-val" id="outClassesCN">20</div>
+                    </div>
+                    <div class="pro-panel light-panel stat-item">
+                        <div class="label-sub">每堂分鐘</div>
+                        <div class="stat-val" id="outMinsCN">50</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- INFO COLUMN -->
+            <div class="col-right-info">
+                <div class="info-group-right">
+                     <div class="info-line">
+                         <span class="info-l">日期 Date</span>
+                         <span class="info-v font-mono" id="outDateCN">--</span>
+                     </div>
+                     <div class="info-line">
+                         <span class="info-l">期限 Expiry</span>
+                         <span class="info-v" id="outExpiryCN">--</span>
+                     </div>
+                     <div class="info-line">
+                         <span class="info-l">上課時間 Time</span>
+                         <span class="info-v time-text" id="outTimeCN">--</span>
+                     </div>
+                     <!-- POINTS IN RIGHT COLUMN -->
+                     <div class="info-line points-line">
+                         <span class="info-l text-gold">課堂點數 Points</span>
+                         <span class="info-v font-mono text-navy pts-val" id="outPointsCN">900</span>
+                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BOTTOM POLICY -->
+        <div class="policy-wrapper">
+            <div class="policy-header-row">
+                <div class="policy-title-badge">一般請假/調課規範</div>
+                <div class="policy-arrows">⬇ ⬇ ⬇</div>
+                <div class="policy-ref" style="margin-left: auto;">REF: A-01</div>
+            </div>
+            
+            <div class="policy-section-title">★ 週六或國定假日 (整天)</div>
+            <div class="policy-box-dark" style="margin-bottom: 6px;">
+                <span>24小時內請假/調課</span>
+                <span>➤ <span class="text-gold">扣除 1 堂</span></span>
+            </div>
+
+            <div class="policy-section-title">★ 一般平日 (週一～週五)請假/調課</div>
+            <div class="policy-row-flex">
+                <div class="policy-box-light flex-1">
+                    <span style="color:#1e293b;">24小時內</span> <span style="font-size:15px; color:#1e293b;">➤</span> <span style="color:#1e293b;">扣 0.5堂</span>
+                </div>
+                <div class="policy-box-dark-col flex-1">
+                    <span>12小時內</span> <span style="font-size:15px;">➤</span> <span class="text-gold">扣 1堂</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-section">
+          <div class="sig-title" style="font-size:14px; font-weight:700; margin-bottom:4px;">Tony線上美語家教</div>
+          <div class="footer-line"></div>
+          <div class="footer-meta-row" style="justify-content: flex-start; gap: 10px;">
+             <span class="order-text number-font" style="font-weight:700; color:#94a3b8;">NO. <b id="outOrderCN">15TEY</b></span>
+             <span class="url-text" style="color:#1e293b; font-size:10px;">詳情請上 https://tonyonlineenglish.netlify.app/regulations</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="html2pdf__page-break"></div>
+
+      <!-- === PAGE 2: ENGLISH === -->
+      <div class="story-card">
+        
+        <div class="header-section">
+          <div class="brand-text">
+            <h1 class="en-title">Tuition Certificate</h1>
+            <div class="logo-row">
+              <span class="tony-brand">TONY</span>
+              <span class="brand-suffix">| Online English Tutoring</span>
+            </div>
+          </div>
+          <div class="header-right-group">
+            <div class="qr-code">
+              <img src="https://ik.imagekit.io/lql1uveoc/%E6%88%AA%E5%9C%96%202025-11-20%20%E4%B8%8A%E5%8D%8812.23.24.png" crossorigin="anonymous">
+            </div>
+             <div class="qr-sub-text">OFFICIAL WEBSITE</div>
+          </div>
+        </div>
+
+        <div class="layout-grid">
+            <div class="col-left-stack">
+                <div class="pro-panel dark-panel">
+                    <div class="top-line-group">
+                        <span class="label-sm text-gold">Total Amount</span>
+                    </div>
+                    <div class="amount-group">
+                        <span class="currency-inline">NT$</span>
+                        <span class="amount-large" id="outAmountNumEN">12,000</span>
+                    </div>
+                </div>
+                
+                <div class="pro-panel light-panel name-box-h">
+                    <div class="label-sub">Student Name</div>
+                    <div class="val-name" id="outNameEN">Tony Lin</div>
+                </div>
+                
+                <div class="ref-stats-row">
+                    <div class="pro-panel light-panel stat-item">
+                        <div class="label-sub">Est. Sessions</div>
+                        <div class="stat-val" id="outClassesEN">20</div>
+                    </div>
+                    <div class="pro-panel light-panel stat-item">
+                        <div class="label-sub">Mins / Class</div>
+                        <div class="stat-val" id="outMinsEN">50</div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="col-right-info">
+                <div class="info-group-right">
+                     <div class="info-line">
+                         <span class="info-l">Date</span>
+                         <span class="info-v font-mono" id="outDateEN">--</span>
+                     </div>
+                     <div class="info-line">
+                         <span class="info-l">Validity</span>
+                         <span class="info-v" id="outExpiryEN">--</span>
+                     </div>
+                     <div class="info-line">
+                         <span class="info-l">Class Time</span>
+                         <span class="info-v time-text" id="outTimeEN">--</span>
+                     </div>
+                     <!-- POINTS IN RIGHT COLUMN -->
+                     <div class="info-line points-line">
+                         <span class="info-l text-gold">Class Points</span>
+                         <span class="info-v font-mono text-navy pts-val" id="outPointsEN">900</span>
+                     </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- BOTTOM POLICY -->
+        <div class="policy-wrapper">
+            <div class="policy-header-row">
+                <div class="policy-title-badge" style="font-size: 13px;">General Leave / Rescheduling Policy</div>
+                <div class="policy-arrows">⬇ ⬇ ⬇</div>
+                <div class="policy-ref" style="margin-left: auto;">REF: A-01</div>
+            </div>
+            
+            <div class="policy-section-title">★ Sat or National Holidays (All Day)</div>
+            <div class="policy-box-dark" style="margin-bottom: 6px;">
+                <span>Notice within 24 hrs</span>
+                <span>➤ <span class="text-gold">Deduct 1 Session</span></span>
+            </div>
+
+            <div class="policy-section-title">★ Weekdays (Mon-Fri)</div>
+            <div class="policy-row-flex">
+                <div class="policy-box-light flex-1">
+                    <span style="font-size: 12px; font-weight: 600; margin-bottom: 2px; color: #1e293b;">Within 24 hrs</span>
+                    <span style="color: #1e293b;">➤ Deduct 0.5</span>
+                </div>
+                <div class="policy-box-dark-col flex-1">
+                    <span style="font-size: 12px; font-weight: 600; margin-bottom: 2px; color: #fff;">Within 12 hrs</span>
+                    <span>➤ <span class="text-gold">Deduct 1</span></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="footer-section">
+          <div class="sig-title" style="font-size:14px; font-weight:700; margin-bottom:4px;">Tony Online English Tutoring</div>
+          <div class="footer-line"></div>
+          <div class="footer-meta-row" style="justify-content: space-between;">
+             <span class="order-text number-font" style="font-weight:700; color:#94a3b8;">NO. <b id="outOrderEN">15TEY</b></span>
+             <span class="url-text" style="color:#1e293b; font-size:10px;">Tonyonlineenglish.netlify.app/index.html</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="html2pdf__page-break"></div>
+
+      <!-- === PAGE 3: SICK LEAVE (Corporate Style) === -->
+      <div class="story-card corporate-theme">
+        
+        <div class="header-section" style="margin-bottom: 15px;">
+          <div class="brand-text">
+            <h1 class="cn-title-regular">病假規範細節</h1>
+            <div class="logo-row">
+               <span class="brand-suffix">SICK LEAVE POLICY</span>
+            </div>
+          </div>
+          <div class="header-right-group">
+               <span class="rule-ref" style="background: #f1f5f9; color: #64748b; font-size: 9px; padding: 2px 6px; border-radius: 2px; font-weight: 600;">REF: B-02</span>
+          </div>
+        </div>
+
+        <div class="info-grid-p3" style="margin-top: 10px;">
+          
+          <div class="status-badge-row">
+            <span class="status-badge">須經審查核准 Subject to Approval</span>
+          </div>
+
+          <div class="pro-panel light-panel ticket-block" style="margin-bottom: 12px; border-left: 5px solid #27ae60;">
+            <div class="label-sub" style="font-size: 14px;">上課前，6小時內提出申請</div>
+            <div class="val text-green" style="font-size: 26px; font-weight:700;">不扣除堂數</div>
+          </div>
+
+          <div class="pro-panel dark-panel ticket-block" style="margin-bottom: 20px; border-left: 5px solid #c5a065;">
+            <div class="label-sub text-gold" style="font-size: 14px;">上課前，3小時內提出申請</div>
+            <div class="val text-white" style="font-size: 26px; font-weight:700;">扣除 0.5 堂</div>
+          </div>
+
+          <div class="detail-box-p3" style="background:#f8f9fa; padding: 15px; border-radius: 4px; border: 1px solid #eee;">
+             <div class="cn-text" style="font-size:13px; line-height:1.7; color:#555;">
+               <p style="margin-bottom: 6px;"><strong>規範說明：</strong></p>
+               <ul style="padding-left: 20px; margin-bottom: 10px;">
+                   <li>以上為因病假而扣堂取消申請規範。</li>
+                   <li>申請核准後將以上述規範進行結算。</li>
+                   <li>請於病假當日後 14 天內點擊下方連結填寫線上申請表。</li>
+               </ul>
+               <p style="margin-bottom: 0; color: #7f8c8d; font-size: 12px;">若不便操作，也可傳訊息通知，將提供申請網址。</p>
+             </div>
+          </div>
+
+        </div>
+
+        <div class="footer-section">
+           <div class="footer-line"></div>
+           <div style="display:flex; justify-content:space-between; align-items:center;">
+             <span class="url-text" style="color:#7f8c8d; font-size: 11px;">Tony Online English</span>
+             <span class="url-text number-font" style="font-size: 10px;">tonyonlineenglish.mydurable.com/sickleave</span>
+           </div>
+        </div>
+      </div>
+      
+      <div class="html2pdf__page-break"></div>
+      
+      <!-- === PAGE 4: CLASS POINTS === -->
+      <div class="story-card">
+        
+        <!-- HEADER -->
+        <div class="header-section" style="margin-bottom: 15px;">
+          <div class="brand-text">
+            <h1 class="cn-title-regular">上課點數</h1>
+            <div class="logo-row">
+              <span class="brand-suffix">CLASS POINTS POLICY</span>
+            </div>
+          </div>
+          <div class="header-right-group">
+            <div class="qr-code">
+                <!-- UPDATED QR CODE URL HERE -->
+                <img src="https://ik.imagekit.io/lql1uveoc/%E5%AD%B8%E8%B2%BB%E8%AD%89%E6%98%8EQrcode/Harry%20Package" crossorigin="anonymous">
+            </div>
+            <div class="qr-sub-text">SCAN FOR DETAILS</div>
+          </div>
+        </div>
+
+        <!-- POINTS CONTENT -->
+        <div class="sub-container" style="margin-top: 10px;">
+            
+            <div class="plan-header-line">
+                <span class="plan-line"></span>
+                <span class="plan-title-text">方案一：標準課程</span>
+                <span class="plan-line"></span>
+            </div>
+
+            <div class="points-main-card">
+                <div class="points-card-header">
+                    <div class="points-card-title">自由上課</div>
+                    <div class="points-card-price-info">
+                        <div class="price-val">NTD <span id="outAmountNumPage4">9,000</span> <span class="price-pts">/ <span id="outPointsPage4">9,000</span>點</span></div>
+                        <div class="price-desc">約 <span id="outClassesPage4">18</span> 堂課 • 每堂 <span id="outMinsPage4">50</span> 分鐘</div>
+                    </div>
+                </div>
+
+                <div class="points-list">
+                    <div class="points-item">
+                        <div class="pts-info">
+                            <div class="pts-name" style="color: #2b7a6b;">平日白天</div>
+                            <div class="pts-time">10am – 5pm</div>
+                        </div>
+                        <div class="pts-badge" style="background: #e6f4f1; color: #2b7a6b;">500 點</div>
+                    </div>
+
+                    <div class="points-item">
+                        <div class="pts-info">
+                            <div class="pts-name" style="color: #b75e2b;">平日晚間</div>
+                            <div class="pts-time">6pm – 10pm</div>
+                        </div>
+                        <div class="pts-badge" style="background: #faede4; color: #b75e2b;">550 點</div>
+                    </div>
+
+                    <div class="points-item" style="border-bottom: none;">
+                        <div class="pts-info">
+                            <div class="pts-name" style="color: #3b7a3a;">週六／國定假日</div>
+                        </div>
+                        <div class="pts-badge" style="background: #e8f4e8; color: #3b7a3a;">600 點</div>
+                    </div>
+                </div>
+            </div>
+
+             <div class="special-offer-box">
+                <div class="offer-stars">SPECIAL OFFER</div>
+                <div class="offer-text cn-text">一次購買兩期 <span class="highlight-text">贈送 500 點</span></div>
+             </div>
+
+        </div>
+
+        <div class="footer-section">
+          <div class="footer-line"></div>
+          <div class="footer-meta-row" style="justify-content: space-between; align-items: flex-end;">
+             <div class="sig-block">
+                <div class="sig-title" style="font-size: 12px; font-weight: 700; color: #1e293b;">Tony Online English</div>
+             </div>
+             <span class="order-text number-font" style="font-size: 11px; color: #64748b;">NO. <b id="outOrderSub">15TEY</b></span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<style>
+  /* GLOBAL RESET & FONTS */
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #eef2f5; font-family: 'Noto Sans TC', sans-serif; color: #2c3e50; }
+
+  /* COLORS */
+  :root {
+      --primary-navy: #1e293b;
+      --secondary-gray: #64748b;
+      --accent-gold: #c5a065;
+      --light-bg: #f8fafc;
+      --border-color: #e2e8f0;
+  }
+
+  /* CONTROLS */
+  .app-shell { display: flex; flex-direction: column; align-items: center; padding: 20px; }
+  .control-deck { width: 100%; max-width: 450px; background: #fff; padding: 25px; border-radius: 8px; color: #333; margin-bottom: 20px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1); border: 1px solid #ddd; }
+  .deck-header h3 { color: #1e293b; margin-bottom: 20px; font-family: 'Oswald', sans-serif; letter-spacing: 1px; font-size: 16px; border-bottom: 2px solid #1e293b; padding-bottom: 10px; }
+  .row-2 { display: flex; gap: 15px; margin-bottom: 15px; }
+  .input-group { flex: 1; }
+  label { display: block; font-size: 12px; color: #64748b; margin-bottom: 5px; font-weight: 600; }
+  input { width: 100%; padding: 10px; background: #f8fafc !important; color: #333 !important; border: 1px solid #cbd5e1; font-family: 'Noto Sans TC'; border-radius: 4px; font-size: 14px; transition: 0.2s; }
+  input:focus { border-color: #1e293b; outline: none; }
+  .execute-btn { width: 100%; padding: 12px; background: #1e293b; color: #fff; border: none; font-weight: 600; cursor: pointer; margin-top: 15px; border-radius: 4px; letter-spacing: 0.5px; transition: 0.2s; }
+  .execute-btn:hover { background: #334155; }
+  
+  /* PREVIEW VIEWPORT */
+  .preview-viewport { width: 380px; background: #dfe6e9; padding: 0; display:flex; justify-content:center; }
+  #pdf-container { width: 100%; }
+
+  /* CARD DESIGN */
+  .story-card {
+    width: 100%; height: 670px; background: #fff; position: relative; padding: 20px 25px; /* Reduced vertical padding to save space */
+    display: flex; flex-direction: column; overflow: hidden; margin-bottom: 20px;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+  }
+
+  /* TYPOGRAPHY */
+  .cn-text { font-family: 'Noto Sans TC', sans-serif; font-weight: 700; } 
+  .cn-title-regular { font-size: 22px; font-weight: 700; margin-bottom: 4px; color: #1e293b; letter-spacing: -0.5px; }
+  .en-title { font-family: 'Oswald', sans-serif; font-weight: 600; font-size: 22px; color: #1e293b; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.5px; }
+  
+  .tony-brand { font-family: 'Oswald', sans-serif; font-weight: 700; color: #1e293b; font-size: 18px; letter-spacing: 1px; }
+  .brand-suffix { font-weight: 400; font-size: 12px; color: #64748b; letter-spacing: 0.5px; margin-left: 5px; }
+  
+  .font-mono { font-family: 'Oswald', sans-serif; font-weight: 500; letter-spacing: 0.5px; }
+  .text-white { color: #fff; }
+  .text-gold { color: #c5a065; }
+  .text-navy { color: #1e293b; }
+  .text-gray { color: #64748b; }
+  .text-green { color: #27ae60; }
+  
+  /* HEADER */
+  .header-section { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 15px; }
+  .header-right-group { display: flex; flex-direction: column; align-items: flex-end; }
+  .qr-code { width: 40px; height: 40px; border: 1px solid #e2e8f0; padding: 2px; }
+  .qr-code img { width: 100%; height: 100%; display:block; }
+  .qr-sub-text { font-size: 7px; font-family: 'Oswald', sans-serif; margin-top: 4px; color: #94a3b8; letter-spacing: 1px; }
+
+  /* LAYOUT GRID */
+  .layout-grid { display: flex; gap: 15px; align-items: flex-start; margin-bottom: 15px; }
+  .col-left-stack { flex: 1.25; display: flex; flex-direction: column; gap: 8px; }
+  
+  /* PRO PANELS */
+  .pro-panel { border-radius: 4px; padding: 10px 12px; display: flex; flex-direction: column; justify-content: center; position: relative; }
+  .dark-panel { background: #1e293b; color: #fff; height: 85px; }
+  .light-panel { background: #f8fafc; border: 1px solid #e2e8f0; }
+
+  .top-line-group { display: flex; align-items: center; gap: 6px; margin-bottom: 0px; }
+  .label-sm { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; opacity: 0.9; }
+  
+  .amount-group { display: flex; align-items: baseline; gap: 4px; }
+  .currency-inline { font-family: 'Oswald'; font-weight: 400; font-size: 16px; color: #94a3b8; }
+  .amount-large { font-family: 'Oswald'; font-weight: 500; font-size: 32px; color: #fff; letter-spacing: 0.5px; }
+  
+  /* FIXED NAME BOX CLIPPING */
+  .name-box-h { min-height: 70px; height: auto; }
+  .label-sub { font-size: 10px; color: #94a3b8; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
+  .val-name { font-size: 22px; font-weight: 500; color: #1e293b; white-space: normal; overflow: visible; line-height: 1.3; padding-bottom: 2px; }
+
+  .ref-stats-row { display: flex; gap: 8px; }
+  .stat-item { flex: 1; height: 55px; justify-content: space-between; }
+  .stat-val { font-family: 'Oswald'; font-weight: 500; font-size: 24px; color: #1e293b; line-height: 1.1; }
+
+  /* RIGHT COLUMN */
+  .col-right-info { flex: 1; display: flex; flex-direction: column; padding-top: 2px; }
+  .info-group-right { display: flex; flex-direction: column; gap: 8px; }
+  .info-line { display: flex; flex-direction: column; border-bottom: 1px solid #e2e8f0; padding-bottom: 5px; }
+  .info-l { font-size: 9px; font-weight: 600; color: #94a3b8; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 2px; }
+  .info-v { font-size: 15px; text-align: left; font-weight: 500; color: #334155; }
+  .time-text { font-size: 13px; line-height: 1.3; }
+  .points-line { border-bottom: none; padding-bottom: 0; background: #f8fafc; padding: 6px; border-radius: 4px; margin-top: 2px; }
+  .pts-val { font-size: 22px; font-weight: 700; }
+
+  /* BOTTOM POLICY */
+  .policy-wrapper { margin-top: auto; margin-bottom: 10px; background: #fff; display: flex; flex-direction: column; gap: 2px; }
+  .policy-header-row { display: flex; align-items: center; gap: 10px; margin-bottom: 2px; }
+  .policy-title-badge { background: #334155; color: #fff; padding: 4px 10px; border-radius: 4px; font-size: 13px; font-weight: 700; letter-spacing: 0.5px; display: inline-block; }
+  .policy-arrows { color: #334155; font-size: 14px; font-weight: 900; letter-spacing: 2px; }
+  .policy-ref { background: #94a3b8; color: #fff; font-size: 9px; padding: 2px 6px; border-radius: 2px; font-weight: 600; display: inline-block; }
+  .policy-section-title { font-size: 12px; font-weight: 700; color: #1e293b; margin-top: 2px; margin-bottom: 2px; }
+  
+  .policy-box-dark { background: #334155; color: #fff; border-radius: 4px; padding: 8px 12px; display: flex; justify-content: space-between; align-items: center; font-size: 12px; font-weight: 700; }
+  .policy-box-light { background: #fff; border: 1px solid #cbd5e1; color: #1e293b; border-radius: 4px; padding: 6px 10px; display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 4px; font-size: 12px; font-weight: 700; text-align: center; }
+  .policy-box-dark-col { background: #334155; color: #fff; border-radius: 4px; padding: 6px 10px; display: flex; flex-direction: row; align-items: center; justify-content: center; gap: 4px; font-size: 12px; font-weight: 700; text-align: center; }
+  
+  .policy-row-flex { display: flex; gap: 8px; }
+  .flex-1 { flex: 1; }
+
+  /* FOOTER */
+  .footer-section { width: 100%; margin-top: auto; }
+  .footer-line { width: 100%; height: 1px; background: #e2e8f0; margin-bottom: 6px; }
+  .footer-meta-row { display: flex; align-items: flex-end; }
+  .number-font { font-family: 'Oswald', sans-serif; font-weight: 500; letter-spacing: 0.5px; }
+
+  /* PAGE 3: SICK LEAVE */
+  .corporate-theme { background-color: #fff; }
+  .status-badge-row { text-align: center; margin-bottom: 12px; }
+  .status-badge { background: #e2e8f0; color: #475569; font-size: 11px; padding: 6px 15px; border-radius: 20px; font-weight: 600; letter-spacing: 0.5px; }
+  
+  /* PAGE 4: CLASS POINTS */
+  .sub-container { display: flex; flex-direction: column; gap: 8px; flex: 1; }
+  
+  .plan-header-line { display: flex; align-items: center; justify-content: center; gap: 15px; margin-bottom: 8px; }
+  .plan-line { flex: 1; height: 1px; background: #e2e8f0; }
+  .plan-title-text { font-size: 15px; font-weight: 700; color: #1e293b; letter-spacing: 1px; }
+
+  .points-main-card { background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05); margin-bottom: 12px; }
+  .points-card-header { display: flex; justify-content: space-between; align-items: center; padding: 12px 15px; border-bottom: 1px solid #e2e8f0; }
+  .points-card-title { font-size: 18px; font-weight: 700; color: #1e293b; letter-spacing: 1px; }
+  .points-card-price-info { text-align: right; }
+  .price-val { font-size: 22px; font-family: 'Oswald'; font-weight: 600; color: #8c6b3e; }
+  .price-pts { font-size: 12px; font-weight: 700; color: #a89f91; font-family: 'Noto Sans TC'; }
+  .price-desc { font-size: 10px; color: #64748b; font-weight: 500; margin-top: 2px; }
+
+  .points-list { display: flex; flex-direction: column; }
+  .points-item { display: flex; justify-content: space-between; align-items: center; padding: 10px 15px; border-bottom: 1px solid #e2e8f0; }
+  .pts-info { display: flex; flex-direction: column; gap: 2px; }
+  .pts-name { font-size: 15px; font-weight: 700; letter-spacing: 0.5px; }
+  .pts-time { font-size: 11px; color: #64748b; }
+  .pts-badge { font-size: 14px; font-weight: 700; padding: 5px 12px; border-radius: 20px; letter-spacing: 1px; }
+
+  .special-offer-box { 
+      border: 1px solid #c5a065; 
+      background: #fffbf2;
+      padding: 10px; 
+      text-align: center; 
+      margin-top: auto; 
+      border-radius: 4px;
+  }
+  .offer-stars { color: #c5a065; font-weight: 700; font-family: 'Oswald'; font-size: 11px; letter-spacing: 2px; margin-bottom: 3px; }
+  .offer-text { font-size: 13px; color: #1e293b; }
+  .highlight-text { color: #b45309; font-weight: 700; }
+
+  .html2pdf__page-break { height: 0; }
+</style>
+
+<script>
+  window.onload = function() {
+    const d = new Date();
+    document.getElementById('inDate').value = d.toISOString().split('T')[0];
+    refreshData();
+  }
+
+  function refreshData() {
+    const v = (id, def) => document.getElementById(id).value || def;
+    
+    const rawAmount = v('inAmount', '12000');
+    const fmtAmount = new Intl.NumberFormat('en-US').format(rawAmount);
+    
+    const date = v('inDate', '2025-11-20');
+    const classes = v('inClasses', '20');
+    const mins = v('inMins', '50');
+    const expiry = v('inExpiry', '2年');
+    const order = v('inOrder', '15TEY');
+    const points = v('inPoints', '900');
+
+    // P1 (CN)
+    document.getElementById('outNameCN').innerText = v('inNameCN', '林育志');
+    
+    let timeCN = v('inTimeCN', '每週一 8pm');
+    document.getElementById('outTimeCN').innerHTML = timeCN.replace(/\s+/g, '<br>');
+
+    document.getElementById('outAmountNumCN').innerText = fmtAmount; 
+    document.getElementById('outOrderCN').innerText = order;
+    document.getElementById('outClassesCN').innerText = classes;
+    document.getElementById('outMinsCN').innerText = mins;
+    document.getElementById('outDateCN').innerText = date;
+    document.getElementById('outExpiryCN').innerText = expiry;
+    document.getElementById('outPointsCN').innerText = points;
+
+    // P2 (EN)
+    document.getElementById('outNameEN').innerText = v('inNameEN', 'Tony Lin');
+    
+    let timeEN = v('inTimeEN', '8pm, Mondays');
+    document.getElementById('outTimeEN').innerHTML = timeEN.replace(/\s+/g, '<br>');
+
+    document.getElementById('outAmountNumEN').innerText = fmtAmount; 
+    document.getElementById('outOrderEN').innerText = order;
+    document.getElementById('outClassesEN').innerText = classes;
+    document.getElementById('outMinsEN').innerText = mins;
+    document.getElementById('outDateEN').innerText = date;
+    document.getElementById('outPointsEN').innerText = points;
+    
+    let exEn = v('inExpiryEN', '2 Years');
+    document.getElementById('outExpiryEN').innerText = exEn;
+
+    // P4 (POINTS POLICY)
+    document.getElementById('outOrderSub').innerText = order;
+    document.getElementById('outAmountNumPage4').innerText = fmtAmount;
+    document.getElementById('outPointsPage4').innerText = points;
+    document.getElementById('outClassesPage4').innerText = classes;
+    document.getElementById('outMinsPage4').innerText = mins;
+  }
+
+  function downloadPDF() {
+    const element = document.getElementById('pdf-container');
+    const nameEN = document.getElementById('inNameEN').value || "Student";
+    
+    const opt = {
+      margin:       0,
+      filename:     `${nameEN}_Tuition_Certificate_Pro.pdf`,
+      image:        { type: 'jpeg', quality: 1.0 },
+      html2canvas:  { scale: 4, useCORS: true, scrollY: 0 },
+      jsPDF:        { unit: 'mm', format: [108, 192], orientation: 'portrait' }
+    };
+    html2pdf().set(opt).from(element).save();
+  }
+</script>
+<!-- END OF V72 PRO -->
