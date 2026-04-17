@@ -1,4 +1,4 @@
-<!-- VERSION 11.41 (UX Refinement: Unified cart interaction, toggle badge static after intro, side-by-side rules button) -->
+<!-- VERSION 11.42 (UX Refinement: Multi-booking badge, Dark Blue Theme, Success Modal Info) -->
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -30,7 +30,7 @@
       --card-morning: #eaffea;
       --card-afternoon: #eefaff;
       --card-evening: #faf0ff;
-      --selected-bg: #ff5400;
+      --selected-bg: #1d2b8a; /* Updated to Dark Blue */
       --selected-color: #ffffff;
     }
    
@@ -59,7 +59,7 @@
     }
     .result-icon { font-size: 60px; margin-bottom: 20px; }
     .result-title { font-size: 24px; font-weight: 800; margin-bottom: 12px; color: #111; }
-    .result-msg { font-size: 17px; color: #444; line-height: 1.6; margin-bottom: 30px; white-space: pre-wrap; word-wrap: break-word; }
+    .result-msg { font-size: 17px; color: #444; line-height: 1.6; margin-bottom: 30px; word-wrap: break-word; }
     .result-close-btn {
         background: var(--pill-active); color: #fff; border: none;
         padding: 16px 0; border-radius: 15px; font-size: 18px; font-weight: bold;
@@ -87,83 +87,31 @@
     }
     .duration-hint {
         position: absolute; right: 15px; top: 50%; transform: translateY(-50%);
-        font-size: 11px; font-weight: 800; letter-spacing: 0.5px; color: #ffffff;
-        background: linear-gradient(135deg, #8E2DE2, #4A00E0);
-        box-shadow: 0 2px 8px rgba(74, 0, 224, 0.4);
-        padding: 5px 12px; border-radius: 20px; border: none; white-space: nowrap;
+        font-size: 11px; font-weight: 800; letter-spacing: 0.5px; 
+        color: #333; background: #ffffff;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        padding: 5px 12px; border-radius: 20px; border: 1px solid #ddd; white-space: nowrap;
     }
    
     .controls-container {
         display: flex; justify-content: center; align-items: center; padding-bottom: 5px;
-        flex-direction: row; gap: 8px; /* Reduced gap for mobile */
+        flex-direction: row; gap: 8px;
     }
-
-    @keyframes spin-border { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
 
     /* =============================================
-       TOGGLE: Unclickable badge after intro animation
+       BADGE: 一次多堂預約
        ============================================= */
-    .toggle-wrapper {
-        position: relative; display: flex; align-items: center;
-        width: 175px; height: 38px; background: transparent; border-radius: 20px;
-        overflow: hidden; z-index: 1;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease;
-        pointer-events: none; /* User can no longer click this */
+    .multi-booking-badge {
+        display: inline-flex; align-items: center; justify-content: center;
+        height: 38px; padding: 0 14px; border-radius: 19px;
+        background: #fff; border: 2px solid #ccc; color: #333;
+        font-weight: 900; font-size: 14px; letter-spacing: 0.5px;
+        box-sizing: border-box; white-space: nowrap; pointer-events: none;
     }
-    .toggle-wrapper.pulse-emphasis {
-        transform: scale(1.15); box-shadow: 0 0 25px rgba(255, 84, 0, 0.7); z-index: 100;
-    }
-    .toggle-wrapper::before {
-        content: ''; position: absolute; top: -100%; left: -100%;
-        width: 300%; height: 300%;
-        background: conic-gradient(from 0deg, #007aff, #00c6ff, #ff5400, #ff2d55, #007aff);
-        animation: spin-border 3s linear infinite; z-index: -2;
-    }
-    .toggle-wrapper::after {
-        content: ''; position: absolute; inset: 3px;
-        background: #f0f0f0; border-radius: 20px; z-index: -1;
-    }
-    /* The sliding pill — hidden in neutral mode */
-    .toggle-bg {
-        position: absolute; top: 4px; left: 4px; height: 30px;
-        width: calc(50% - 4px); background: var(--active-gradient);
-        border-radius: 18px;
-        transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), background 0.3s, opacity 0.3s, box-shadow 0.3s;
-        box-shadow: 0 2px 5px var(--blue-glow); z-index: 1; opacity: 1;
-    }
-    .toggle-labels {
-        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-        display: flex; z-index: 2;
-    }
-    .toggle-label {
-        flex: 1; display: flex; justify-content: center; align-items: center;
-        font-size: 13px; font-weight: 800; color: #555;
-        transition: color 0.3s; user-select: none;
-    }
-    /* X separator between labels (made bigger) */
-    .toggle-separator {
-        display: flex; align-items: center; justify-content: center;
-        font-size: 16px; font-weight: 900; color: #777;
-        z-index: 3; flex-shrink: 0; padding: 0 4px;
-        pointer-events: none;
-    }
-
-    /* Neutral: no side highlighted */
-    .toggle-wrapper.neutral .toggle-bg { opacity: 0; }
-    .toggle-wrapper.neutral .toggle-label { color: #555; }
-
-    /* Single active */
-    .toggle-wrapper.single .toggle-bg { transform: translateX(0); background: var(--active-gradient); box-shadow: 0 2px 5px var(--blue-glow); opacity: 1; }
-    .toggle-wrapper.single .label-single { color: #fff; }
-
-    /* Multi active */
-    .toggle-wrapper.multi .toggle-bg { transform: translateX(102%); background: var(--multi-gradient); box-shadow: 0 2px 5px var(--multi-glow); opacity: 1; }
-    .toggle-wrapper.multi .label-multi { color: #fff; }
-
-    .toggle-half {
-        flex: 1; display: flex; align-items: center; justify-content: center;
-        height: 100%; z-index: 4; position: relative;
+    .multi-booking-badge.pulse-emphasis {
+        transform: scale(1.15); box-shadow: 0 0 15px rgba(0, 122, 255, 0.5);
+        border-color: #007aff; color: #007aff; z-index: 100;
+        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
     .cal-btn-trigger {
@@ -218,7 +166,6 @@
     .rule-logo {
         width: 50px; height: auto; display: block; margin: 0 auto 10px auto; pointer-events: none;
     }
-    /* Close button inside popover */
     .rule-popover-close {
         position: absolute; top: 8px; right: 8px;
         width: 24px; height: 24px; border-radius: 50%;
@@ -227,7 +174,6 @@
         display: flex; align-items: center; justify-content: center;
         line-height: 1;
     }
-    /* Details link */
     .rule-details-link {
         display: inline-block; margin-top: 10px;
         font-size: 13px; font-weight: bold; color: var(--blue-main);
@@ -258,7 +204,6 @@
     .week-eng { font-size: 14px; text-transform: uppercase; font-weight: 700; }
     .week-chi { font-size: 13px; font-weight: 500; opacity: 0.9; }
     .date-pill.active .week-eng, .date-pill.active .week-chi, .date-pill.active .date-text { color: white; }
-    /* SAT red on mobile */
     @media (max-width: 767px) {
         .date-pill.sat-pill .week-eng,
         .date-pill.sat-pill .week-chi,
@@ -312,23 +257,23 @@
         display: flex; align-items: center; justify-content: center; gap: 4px;
     }
     .slot-btn .slot-clock-icon {
-        width: 14px; height: 14px; flex-shrink: 0; opacity: 0.75;
-        object-fit: contain;
+        width: 14px; height: 14px; flex-shrink: 0; opacity: 0.75; object-fit: contain;
     }
     .slot-btn:active { transform: scale(0.95); }
+    
+    /* Dark Blue Selected State */
     .slot-btn.selected {
         background: var(--selected-bg) !important; color: var(--selected-color) !important;
-        transform: scale(1.05); box-shadow: 0 4px 10px rgba(0,0,0,0.2); border-color: var(--selected-bg);
+        transform: scale(1.05); box-shadow: 0 4px 10px rgba(29, 43, 138, 0.3); border-color: var(--selected-bg);
     }
-    .slot-btn.selected .slot-clock-icon { opacity: 1; filter: brightness(0) invert(1); }
+    .slot-btn.selected .slot-clock-icon, .simple-slot-btn.selected .slot-clock-icon { opacity: 1; filter: brightness(0) invert(1); }
     .slot-btn.selected::after, .simple-slot-btn.selected::after {
-        content: '✓'; position: absolute; top: -6px; right: -6px; width: 20px; height: 20px;
-        background: white; color: var(--pill-active); border-radius: 50%;
+        content: '✓'; position: absolute; top: -6px; right: -6px; width: 22px; height: 22px;
+        background: white; color: var(--selected-bg); border-radius: 50%;
         display: flex; align-items: center; justify-content: center;
-        font-size: 14px; font-weight: bold; box-shadow: 0 1px 3px rgba(0,0,0,0.2); border: 1px solid #eee;
+        font-size: 14px; font-weight: 900; box-shadow: 0 1px 4px rgba(0,0,0,0.3); border: none;
     }
 
-    /* few-slots: bigger buttons, bigger icon */
     .slot-grid.few-slots .slot-btn { padding: 16px 0; font-size: 18px; }
     .slot-grid.few-slots .slot-btn .slot-clock-icon { width: 18px; height: 18px; }
     
@@ -440,8 +385,6 @@
         .clear-all-btn { padding: 10px; margin-bottom: 10px; font-size: 14px; }
         .simple-slot-grid.few-slots { grid-template-columns: repeat(2, 1fr) !important; }
         .simple-slot-grid.few-slots .simple-slot-btn { padding: 20px 0; font-size: 20px; }
-
-        /* Mobile popover: larger font + close button */
         .rule-popover {
             font-size: 17px !important;
             line-height: 1.6 !important;
@@ -472,6 +415,8 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
         .back-btn:hover { background: #e0e0e0; transform: translateY(-2px); transition: 0.2s; }
+        
+        .multi-booking-badge { height: 48px; padding: 0 20px; border-radius: 24px; font-size: 18px; border-width: 3px; }
     }
     @media (min-width: 1024px) {
         .form-box { max-width: 800px; padding: 80px 50px 50px; }
@@ -515,6 +460,8 @@
         from { box-shadow: 0 4px 12px rgba(0,0,0,0.1), 0 0 10px rgba(0, 122, 255, 0.4); }
         to { box-shadow: 0 6px 16px rgba(0,0,0,0.2), 0 0 20px rgba(0, 122, 255, 0.8); }
     }
+    
+    /* Cart Button */
     #floating-cart-btn {
         position: fixed; bottom: 30px; right: 20px; z-index: 999;
         width: 60px; height: 60px; background: #ffffff; box-shadow: 0 4px 12px rgba(0,0,0,0.2);
@@ -528,16 +475,18 @@
         background: #ffffff; box-shadow: 0 4px 12px rgba(0, 122, 255, 0.4);
         animation: none; transform: none !important; z-index: 400;
     }
-    #floating-cart-btn .cal-icon-svg { width: 100%; height: 100%; color: var(--blue-main); }
+    #floating-cart-btn .cal-icon-svg { width: 100%; height: 100%; color: #007aff; }
     #floating-cart-btn.show { display: block; }
+    
+    /* Dark Blue Cart Badge */
     .cart-badge {
-        position: absolute; top: -5px; right: -5px; background: var(--active-gradient); color: white;
-        width: 24px; height: 24px; border-radius: 50%; font-size: 13px; font-weight: bold;
-        display: flex; justify-content: center; align-items: center; border: 2px solid white; box-shadow: 0 0 8px var(--blue-glow);
+        position: absolute; top: -5px; right: -5px; background: #1d2b8a; color: white;
+        width: 26px; height: 26px; border-radius: 50%; font-size: 14px; font-weight: bold;
+        display: flex; justify-content: center; align-items: center; border: 2px solid white; box-shadow: 0 2px 6px rgba(0,0,0,0.2);
     }
     @media (min-width: 768px) {
         #floating-cart-btn { width: 120px; height: 120px; padding: 25px; bottom: 50px; right: 40px; }
-        .cart-badge { width: 40px; height: 40px; font-size: 20px; top: 0; right: 0; border-width: 3px; }
+        .cart-badge { width: 40px; height: 40px; font-size: 20px; top: -5px; right: -5px; border-width: 3px; }
     }
 
     .cal-header-wrap {
@@ -562,7 +511,6 @@
     .cal-head small { font-size: 10px; opacity: 0.7; }
     .cal-head.active-day { background-color: var(--pill-active); color: #ffffff; border-radius: 8px; padding-top: 5px; }
     .cal-head.active-day small { color: #ffffff; opacity: 1; }
-    /* SAT header red on mobile */
     @media (max-width: 767px) {
         .cal-head.sat-head { color: #d32f2f !important; }
         .cal-head.sat-head small { color: #d32f2f !important; opacity: 0.85; }
@@ -593,24 +541,24 @@
         display: flex; align-items: center; justify-content: center; gap: 5px;
     }
     .simple-slot-btn .slot-clock-icon { width: 16px; height: 16px; flex-shrink: 0; opacity: 0.7; object-fit: contain; }
-    .simple-slot-btn.selected { background: var(--active-gradient); color: white; border-color: transparent; box-shadow: 0 4px 10px var(--blue-glow); }
+    
+    /* Dark Blue Selected State */
+    .simple-slot-btn.selected { 
+        background: var(--selected-bg) !important; color: white !important; 
+        border-color: transparent !important; box-shadow: 0 4px 10px rgba(29, 43, 138, 0.3) !important; 
+    }
     .simple-slot-btn.selected .slot-clock-icon { opacity: 1; filter: brightness(0) invert(1); }
     
-    /* few-slots: bigger buttons → bigger icon */
     .simple-slot-grid.few-slots .simple-slot-btn .slot-clock-icon { width: 20px; height: 20px; }
 
     .cal-duration-hint {
         font-size: 13px; font-weight: 800; padding: 6px 12px; border-radius: 20px;
-        background: #fff; color: #111; border: 1px solid #eee; white-space: nowrap; margin-right: 5px;
+        background: #fff; color: #333; border: 1px solid #ddd; white-space: nowrap; margin-right: 5px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
     }
 
     @media (min-width: 768px) {
         .cal-header-wrap { max-width: 100% !important; margin: 0 !important; border-radius: 0 !important; min-height: 100vh; padding: 40px; box-sizing: border-box; }
-        .toggle-wrapper { width: 300px; height: 60px; border-radius: 40px; }
-        .toggle-wrapper::after { inset: 3px; border-radius: 40px; }
-        .toggle-bg { height: 48px; top: 6px; left: 6px; width: calc(50% - 6px); border-radius: 36px; }
-        .toggle-label { font-size: 20px; }
-        .toggle-separator { font-size: 24px; padding: 0 8px; }
         .cal-grid { gap: 10px; }
         .cal-cell { height: 90px; font-size: 32px; border-radius: 20px; }
         .cal-head { font-size: 20px; margin-bottom: 10px; }
@@ -644,8 +592,8 @@
         .rule-popover-close { width: 36px; height: 36px; font-size: 20px; top: 12px; right: 12px; }
         .simple-slot-grid.few-slots { grid-template-columns: repeat(2, 1fr) !important; }
         .simple-slot-grid.few-slots .simple-slot-btn { padding: 35px 0 !important; font-size: 28px !important; }
-        .cal-duration-hint { background: linear-gradient(135deg, #8E2DE2, #4A00E0); color: #fff; border: none; box-shadow: 0 2px 8px rgba(74, 0, 224, 0.4); font-size: 16px; padding: 10px 20px; order: 3; margin-right: 0; margin-left: 10px; }
-        .cal-top-right-group .toggle-wrapper { order: 1; }
+        .cal-duration-hint { background: #fff; color: #333; border: 2px solid #ddd; box-shadow: 0 2px 5px rgba(0,0,0,0.05); font-size: 16px; padding: 10px 20px; order: 3; margin-right: 0; margin-left: 10px; }
+        .cal-top-right-group .multi-booking-badge { order: 1; }
         .cal-top-right-group .rule-info-wrapper { order: 2; }
     }
     @media (min-width: 1024px) {
@@ -692,19 +640,8 @@
         <div class="duration-hint">50分/堂</div>
     </div>
     <div class="controls-container">
-        <!-- Toggle badge: completely static/unclickable after intro animation -->
-        <div class="toggle-wrapper neutral" id="main-mode-toggle">
-            <div class="toggle-bg"></div>
-            <div class="toggle-labels">
-                <div class="toggle-half">
-                    <span class="toggle-label label-single">單堂預約</span>
-                </div>
-                <span class="toggle-separator">✕</span>
-                <div class="toggle-half">
-                    <span class="toggle-label label-multi">多堂預約</span>
-                </div>
-            </div>
-        </div>
+        <!-- New Badge -->
+        <div class="multi-booking-badge" id="main-mode-toggle">一次多堂預約</div>
         <button class="cal-btn-trigger" onclick="openCalendar()">📅 月曆</button>
         <div class="rule-info-wrapper">
              <div class="rule-info-btn" onclick="toggleRules('mob-rules')"><span class="btn-exclaim">!</span><span class="btn-label">規範</span></div>
@@ -783,19 +720,8 @@
                     <button class="back-btn" onclick="closeCalendar()" style="margin-bottom:0;">✕</button>
                     <div style="display:flex; align-items:center; gap: 10px;" class="cal-top-right-group">
                         <div class="cal-duration-hint">50分/堂</div>
-                        <!-- Calendar toggle badge: static after intro -->
-                        <div class="toggle-wrapper neutral" id="cal-mode-toggle">
-                            <div class="toggle-bg"></div>
-                            <div class="toggle-labels">
-                                <div class="toggle-half">
-                                    <span class="toggle-label label-single">單堂預約</span>
-                                </div>
-                                <span class="toggle-separator">✕</span>
-                                <div class="toggle-half">
-                                    <span class="toggle-label label-multi">多堂預約</span>
-                                </div>
-                            </div>
-                        </div>
+                        <!-- New Badge -->
+                        <div class="multi-booking-badge" id="cal-mode-toggle">一次多堂預約</div>
                         <div class="rule-info-wrapper">
                              <div class="rule-info-btn" onclick="toggleRules('cal-rules')"><span class="btn-exclaim">!</span><span class="btn-label">規範</span></div>
                              <div class="rule-popover" id="cal-rules">
@@ -842,7 +768,7 @@
   function showNotice(title, message, isError = false, callback = null) {
       document.getElementById('res-icon').innerText = isError ? "⚠️" : "🎉";
       document.getElementById('res-title').innerText = title;
-      document.getElementById('res-msg').innerText = message;
+      document.getElementById('res-msg').innerHTML = message; // Updated to render HTML
       document.getElementById('result-modal').style.display = 'flex';
       modalCloseCallback = callback;
   }
@@ -910,33 +836,26 @@
     setTimeout(() => { const cal=document.getElementById("cal-modal"); if(cal) cal.scrollIntoView({behavior:"smooth",block:"start"}); }, 600);
   };
 
-  // === INTRO ANIMATION: flicker toggle, end neutral ===
+  // === INTRO ANIMATION: pulse the badge ===
   function playIntroAnimation() {
-      const toggleWrappers = document.querySelectorAll('.toggle-wrapper');
+      const badges = document.querySelectorAll('.multi-booking-badge');
       const infoBtns = document.querySelectorAll('.rule-info-btn');
-      if (toggleWrappers.length === 0) return;
-      let count = 0; const maxFlickers = 12; const speed = 100;
+      if (badges.length === 0) return;
+      
+      let count = 0; const maxFlickers = 6; const speed = 200;
       const interval = setInterval(() => {
-          const mode = (count % 2 === 0) ? 'multi' : 'single';
-          applyModeToUI(mode, true); count++;
+          badges.forEach(b => b.classList.toggle('pulse-emphasis'));
+          count++;
           if (count >= maxFlickers) {
               clearInterval(interval);
-              toggleWrappers.forEach(el => el.classList.add('pulse-emphasis'));
+              badges.forEach(b => b.classList.add('pulse-emphasis'));
               infoBtns.forEach(btn => btn.classList.add('pulse-emphasis-icon'));
               setTimeout(() => {
-                  toggleWrappers.forEach(el => el.classList.remove('pulse-emphasis'));
+                  badges.forEach(b => b.classList.remove('pulse-emphasis'));
                   infoBtns.forEach(btn => btn.classList.remove('pulse-emphasis-icon'));
-                  // End neutral — background goes away permanently and user cannot click it.
-                  setTimeout(() => { applyModeToUI('neutral', true); }, 300);
               }, 1200);
           }
       }, speed);
-  }
-
-  function applyModeToUI(mode, silent=false) {
-      document.querySelectorAll('.toggle-wrapper').forEach(wrapper => {
-          wrapper.className = `toggle-wrapper ${mode}`;
-      });
   }
 
   function toggleRules(id) {
@@ -1218,16 +1137,72 @@
     .then(res=>{
        if(res.bookingSummary){
            const summary=res.bookingSummary;
-           if(summary.failCount===0){showNotice("預約成功",`🎉 預約成功！\n共 ${summary.successCount} 堂課。\n確認信已寄至您的信箱。`);finishSuccessBooking();}
-           else{
-               let msg=`⚠️ 注意：有 ${summary.failCount} 堂課預約失敗 (已被搶先預約)。\n`;
-               msg+=`✅ 成功預約：${summary.successCount} 堂\n`;
-               if(summary.failedSlots&&summary.failedSlots.length>0){msg+="\n❌ 失敗時段：\n";summary.failedSlots.forEach(slot=>{const d=new Date(parseInt(slot.timestamp));const min=d.getMinutes();const timeStr=d.getHours()+":"+(min<10?'0':'')+min;const dateStr=(d.getMonth()+1)+"/"+d.getDate();msg+=`- ${dateStr} ${timeStr}\n`;});}
-               msg+="\n系統已保留成功的時段。\n頁面將重新整理以顯示最新剩餘名額。";
-               showNotice("部分預約成功",msg,true,()=>{location.reload();});
+           if(summary.failCount===0){
+               let bookedTimesHtml = '<div style="text-align: left; background: #f3f4f6; padding: 12px 15px; border-radius: 12px; margin: 15px 0;">';
+               bookedTimesHtml += '<div style="font-weight:bold; margin-bottom:8px; color:#111;">已保留以下時段：</div>';
+               selectedSlots.forEach(slot => { bookedTimesHtml += `<div style="margin-bottom:4px; font-size:15px; color:#333;">• ${slot.displayStr}</div>`; });
+               bookedTimesHtml += '</div>';
+
+               let successMsg = `確認信已寄至您的信箱。<br>` + bookedTimesHtml;
+               successMsg += `<div style="margin-top: 15px; font-size: 15px; color: #d32f2f; font-weight:bold;">`;
+               successMsg += `請假/調整請於24小時前提出。<br>`;
+               successMsg += `<a href="https://tonyonlineenglish.netlify.app/regulations" target="_blank" style="color: #007aff; text-decoration: underline; font-weight: bold; font-size: 14px; display:inline-block; margin-top:5px;">詳細規範請點這裡</a>`;
+               successMsg += `</div>`;
+               
+               showNotice("預約成功", successMsg);
+               finishSuccessBooking();
+           } else {
+               let msg=`⚠️ 注意：有 <b>${summary.failCount}</b> 堂課預約失敗 (已被搶先預約)。<br><br>`;
+               msg+=`✅ 成功預約：<b>${summary.successCount}</b> 堂<br>`;
+               
+               if (summary.successCount > 0) {
+                   let bookedTimesHtml = '<div style="text-align: left; background: #f3f4f6; padding: 10px; border-radius: 8px; margin: 10px 0;">';
+                   const failedTimestamps = summary.failedSlots ? summary.failedSlots.map(s => parseInt(s.timestamp)) : [];
+                   const successfulSlots = selectedSlots.filter(s => !failedTimestamps.includes(s.timestamp));
+                   successfulSlots.forEach(slot => { bookedTimesHtml += `<div style="margin-bottom:4px; font-size:14px; color:#333;">• ${slot.displayStr}</div>`; });
+                   bookedTimesHtml += '</div>';
+                   msg += bookedTimesHtml;
+               }
+
+               if(summary.failedSlots && summary.failedSlots.length > 0){
+                   msg += `<div style="text-align: left; color: #d32f2f; margin-top:10px; font-size: 14px;">❌ 失敗時段：<br>`;
+                   summary.failedSlots.forEach(slot=>{
+                       const d=new Date(parseInt(slot.timestamp));
+                       const min=d.getMinutes();
+                       const timeStr=d.getHours()+":"+(min<10?'0':'')+min;
+                       const dateStr=(d.getMonth()+1)+"/"+d.getDate();
+                       msg+=`• ${dateStr} ${timeStr}<br>`;
+                   });
+                   msg += `</div>`;
+               }
+               msg += `<div style="margin-top: 15px; font-size: 14px; color: #555;">系統已保留成功的時段。<br>頁面將重新整理以顯示最新名額。</div>`;
+               
+               if (summary.successCount > 0) {
+                    msg += `<div style="margin-top: 15px; font-size: 15px; color: #d32f2f; font-weight:bold;">`;
+                    msg += `請假/調整請於24小時前提出。<br>`;
+                    msg += `<a href="https://tonyonlineenglish.netlify.app/regulations" target="_blank" style="color: #007aff; text-decoration: underline; font-weight: bold; font-size: 14px; display:inline-block; margin-top:5px;">詳細規範請點這裡</a>`;
+                    msg += `</div>`;
+               }
+
+               showNotice("部分預約成功", msg, true, ()=>{location.reload();});
            }
-       }else if(res.success){showNotice("預約成功","預約完成！");finishSuccessBooking();}
-       else{showNotice("預約失敗","預約發生錯誤："+res.message,true);}
+       } else if(res.success){
+           let bookedTimesHtml = '<div style="text-align: left; background: #f3f4f6; padding: 12px 15px; border-radius: 12px; margin: 15px 0;">';
+           bookedTimesHtml += '<div style="font-weight:bold; margin-bottom:8px; color:#111;">已保留以下時段：</div>';
+           selectedSlots.forEach(slot => { bookedTimesHtml += `<div style="margin-bottom:4px; font-size:15px; color:#333;">• ${slot.displayStr}</div>`; });
+           bookedTimesHtml += '</div>';
+
+           let successMsg = `確認信已寄至您的信箱。<br>` + bookedTimesHtml;
+           successMsg += `<div style="margin-top: 15px; font-size: 15px; color: #d32f2f; font-weight:bold;">`;
+           successMsg += `請假/調整請於24小時前提出。<br>`;
+           successMsg += `<a href="https://tonyonlineenglish.netlify.app/regulations" target="_blank" style="color: #007aff; text-decoration: underline; font-weight: bold; font-size: 14px; display:inline-block; margin-top:5px;">詳細規範請點這裡</a>`;
+           successMsg += `</div>`;
+
+           showNotice("預約成功", successMsg);
+           finishSuccessBooking();
+       } else{
+           showNotice("預約失敗","預約發生錯誤："+res.message,true);
+       }
        btn.innerText=orgText; btn.disabled=false;
     })
     .catch(()=>{showNotice("網路錯誤","網路錯誤，請檢查連線",true);btn.innerText=orgText;btn.disabled=false;});
