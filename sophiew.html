@@ -206,7 +206,8 @@
 <div class="input-panel">
   <div class="input-row">
     <input type="date" id="wt-date" />
-    <input type="number" step="0.1" id="wt-val" placeholder="Weight (kg)" style="width:120px;" />
+    <!-- 加上 inputmode="decimal" 就能在手機喚起純數字加小數點鍵盤 -->
+    <input type="number" step="0.1" inputmode="decimal" id="wt-val" placeholder="Weight (kg)" style="width:120px;" />
     
     <!-- Wrapper to handle Mobile Row (Button + Name) vs Desktop Row (Just Button) -->
     <div class="mobile-action-row">
