@@ -103,6 +103,20 @@
     .checkbox { width: 55px; height: 55px; font-size: 32.5px; }
     .del-btn { width: 70px; height: 70px; font-size: 50px; }
     .modal { max-width: 1050px; }
+    
+    /* 2-Column Grid Layout for Desktop Mode */
+    .list-wrap { 
+      max-width: 1600px; /* Widened to comfortably fit 2 columns of 2.5x text */
+      display: grid; 
+      grid-template-columns: 1fr 1fr; 
+      column-gap: 60px; 
+    }
+    .empty-state { 
+      grid-column: 1 / -1; /* Ensures "NO TASKS" spans full width */
+    }
+    .task-row {
+      border-bottom: 1px solid var(--border); /* Ensure uniform row lines across both columns */
+    }
   }
 </style>
 </head>
