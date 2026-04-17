@@ -618,7 +618,7 @@
     <div class="result-content">
         <div id="res-icon" class="result-icon">🎉</div>
         <div id="res-title" class="result-title">預約成功</div>
-        <div id="res-msg" class="result-msg">時段已保留，請檢查您的電子郵件確認信。</div>
+        <div id="res-msg" class="result-msg">時段已預約，請檢查您的電子郵件確認信。</div>
         <button class="result-close-btn" onclick="closeResultModal()">確定 OK</button>
     </div>
 </div>
@@ -1139,7 +1139,7 @@
            const summary=res.bookingSummary;
            if(summary.failCount===0){
                let bookedTimesHtml = '<div style="text-align: left; background: #f3f4f6; padding: 12px 15px; border-radius: 12px; margin: 15px 0;">';
-               bookedTimesHtml += '<div style="font-weight:bold; margin-bottom:8px; color:#111;">已保留以下時段：</div>';
+               bookedTimesHtml += '<div style="font-weight:bold; margin-bottom:8px; color:#111;">已預約以下時段：</div>';
                selectedSlots.forEach(slot => { bookedTimesHtml += `<div style="margin-bottom:4px; font-size:15px; color:#333;">• ${slot.displayStr}</div>`; });
                bookedTimesHtml += '</div>';
 
@@ -1175,7 +1175,7 @@
                    });
                    msg += `</div>`;
                }
-               msg += `<div style="margin-top: 15px; font-size: 14px; color: #555;">系統已保留成功的時段。<br>頁面將重新整理以顯示最新名額。</div>`;
+               msg += `<div style="margin-top: 15px; font-size: 14px; color: #555;">系統已成功預約的時段。<br>頁面將重新整理以顯示最新名額。</div>`;
                
                if (summary.successCount > 0) {
                     msg += `<div style="margin-top: 15px; font-size: 15px; color: #d32f2f; font-weight:bold;">`;
@@ -1188,7 +1188,7 @@
            }
        } else if(res.success){
            let bookedTimesHtml = '<div style="text-align: left; background: #f3f4f6; padding: 12px 15px; border-radius: 12px; margin: 15px 0;">';
-           bookedTimesHtml += '<div style="font-weight:bold; margin-bottom:8px; color:#111;">已保留以下時段：</div>';
+           bookedTimesHtml += '<div style="font-weight:bold; margin-bottom:8px; color:#111;">已預約以下時段：</div>';
            selectedSlots.forEach(slot => { bookedTimesHtml += `<div style="margin-bottom:4px; font-size:15px; color:#333;">• ${slot.displayStr}</div>`; });
            bookedTimesHtml += '</div>';
 
