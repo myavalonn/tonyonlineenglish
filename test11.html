@@ -13,8 +13,6 @@
     --card:     #ffffff;
     --border:   #e0e0e0;
     --border2:  #c0c0c0;
-    --accent:   #111111;
-    --accent2:  #444444;
     --text:     #111111;
     --sub:      #444444;
     --muted:    #888888;
@@ -140,59 +138,72 @@
   .s-time { font-family: var(--mono); font-size: 0.75rem; color: var(--muted); }
   .no-class { flex: 1; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 0.75rem; font-weight: 700; color: var(--muted); letter-spacing: 0.1em; padding: 20px 8px; }
 
-  /* ─── APP 2: PROJECT TRACKER STYLES ─────────────────── */
-  .filter-bar { display: flex; gap: 8px; padding: 12px 16px; border-bottom: 1px solid var(--border); flex-wrap: wrap; align-items: center; }
-  .filter-btn { font-family: var(--mono); font-size: 0.75rem; font-weight: 700; padding: 5px 12px; border-radius: 20px; border: 1.5px solid var(--border2); background: transparent; color: var(--sub); cursor: pointer; transition: 0.15s; }
-  .filter-btn.active { background: var(--text); color: var(--bg); border-color: var(--text); }
-  .filter-sep { width: 1px; height: 20px; background: var(--border2); margin: 0 4px; }
-  .task-count { font-family: var(--mono); font-size: 0.75rem; color: var(--muted); margin-left: auto; }
+  /* ─── APP 2: PROJECT TRACKER (SCALED STYLES) ────────── */
+  #view-project {
+    --scale: 1; /* Mobile Baseline */
+  }
+  @media (min-width: 768px) {
+    #view-project { --scale: 2; } /* Tablet 2x Scale */
+  }
+  @media (min-width: 1024px) {
+    #view-project { --scale: 2.5; } /* Desktop 2.5x Scale */
+  }
 
-  .proj-actions { display: flex; align-items: center; gap: 10px; margin-left: auto; }
-  .overdue-btn { font-family: var(--mono); font-size: 0.75rem; font-weight: 700; color: var(--bg); background: var(--red); padding: 6px 12px; border-radius: 20px; border: none; cursor: pointer; display: none; align-items: center; gap: 5px; animation: pulseRed 2s infinite; }
-  @keyframes pulseRed { 0%{box-shadow:0 0 0 0 rgba(204,0,0,0.4)}70%{box-shadow:0 0 0 6px rgba(0,0,0,0)}100%{box-shadow:0 0 0 0 rgba(0,0,0,0)} }
-  .add-btn { font-family: var(--mono); font-size: 0.85rem; font-weight: 700; padding: 6px 14px; border-radius: var(--r); border: 2px solid var(--text); background: transparent; cursor: pointer; white-space: nowrap; transition: 0.15s; }
+  .filter-bar { display: flex; gap: calc(8px * var(--scale)); padding: calc(12px * var(--scale)) calc(20px * var(--scale)); border-bottom: 1px solid var(--border); flex-wrap: wrap; align-items: center; }
+  .filter-btn { font-family: var(--mono); font-size: calc(12px * var(--scale)); font-weight: 700; padding: calc(5px * var(--scale)) calc(12px * var(--scale)); border-radius: calc(20px * var(--scale)); border: 1.5px solid var(--border2); background: transparent; color: var(--sub); cursor: pointer; transition: 0.15s; }
+  .filter-btn.active { background: var(--text); color: var(--bg); border-color: var(--text); }
+  .filter-sep { width: 1px; height: calc(20px * var(--scale)); background: var(--border2); margin: 0 calc(2px * var(--scale)); }
+  .task-count { font-family: var(--mono); font-size: calc(12px * var(--scale)); color: var(--muted); margin-left: auto; }
+
+  .proj-actions { display: flex; align-items: center; gap: calc(10px * var(--scale)); margin-left: auto; }
+  .overdue-btn { font-family: var(--mono); font-size: calc(12.8px * var(--scale)); font-weight: 700; color: var(--bg); background: var(--red); padding: calc(7px * var(--scale)) calc(14px * var(--scale)); border-radius: calc(20px * var(--scale)); border: none; cursor: pointer; display: none; align-items: center; gap: calc(5px * var(--scale)); animation: pulseRed 2s infinite; }
+  @keyframes pulseRed { 0%{box-shadow:0 0 0 0 rgba(204,0,0,0.4)} 70%{box-shadow:0 0 0 calc(8px * var(--scale)) rgba(0,0,0,0)} 100%{box-shadow:0 0 0 0 rgba(0,0,0,0)} }
+  .add-btn { font-family: var(--mono); font-size: calc(15.2px * var(--scale)); font-weight: 700; padding: calc(8px * var(--scale)) calc(16px * var(--scale)); border-radius: calc(8px * var(--scale)); border: 2px solid var(--text); background: transparent; cursor: pointer; white-space: nowrap; transition: 0.15s; }
   .add-btn:hover { background: var(--text); color: var(--bg); }
 
-  .list-wrap { max-width: 1000px; margin: 0 auto; padding: 8px 16px 80px; }
-  @media (min-width: 980px) { .list-wrap { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 60px; max-width: 1400px; } }
+  .list-wrap { max-width: calc(860px * var(--scale)); margin: 0 auto; padding: calc(8px * var(--scale)) calc(20px * var(--scale)) calc(80px * var(--scale)); }
+  @media (min-width: 1024px) { 
+    .list-wrap { display: grid; grid-template-columns: 1fr 1fr; column-gap: calc(60px * var(--scale)); max-width: calc(1600px * var(--scale)); } 
+  }
 
-  .task-row { display: flex; align-items: flex-start; gap: 14px; padding: 14px 0; border-bottom: 1px solid var(--border); }
-  .p-checkbox { width: 24px; height: 24px; border: 2px solid var(--border2); border-radius: 5px; flex-shrink: 0; margin-top: 2px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 14px; background: var(--bg); font-weight: 700; transition: 0.15s; }
+  .task-row { display: flex; align-items: flex-start; gap: calc(14px * var(--scale)); padding: calc(14px * var(--scale)) 0; border-bottom: 1px solid var(--border); }
+  
+  .p-checkbox { width: calc(22px * var(--scale)); height: calc(22px * var(--scale)); border: 2px solid var(--border2); border-radius: calc(5px * var(--scale)); flex-shrink: 0; margin-top: calc(2px * var(--scale)); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: calc(13px * var(--scale)); background: var(--bg); font-weight: 700; transition: 0.15s; }
   .task-row.done .p-checkbox { background: var(--text); border-color: var(--text); color: var(--bg); }
-  @media (min-width: 768px) { .p-checkbox { width: 28px; height: 28px; font-size: 16px; } }
 
   .task-body { flex: 1; min-width: 0; cursor: pointer; }
-  .task-text { font-size: 1rem; font-weight: 500; line-height: 1.5; word-break: break-word; }
-  @media (min-width: 768px) { .task-text { font-size: 1.15rem; } }
+  .task-text { font-size: calc(16px * var(--scale)); font-weight: 500; line-height: 1.5; word-break: break-word; }
   .task-row.done .task-text { text-decoration: line-through; color: var(--muted); }
 
-  .task-meta { display: flex; align-items: center; gap: 8px; margin-top: 5px; flex-wrap: wrap; }
-  .p-tag { font-family: var(--mono); font-size: 0.65rem; font-weight: 700; padding: 2px 7px; border-radius: 4px; text-transform: uppercase; }
+  .task-meta { display: flex; align-items: center; gap: calc(8px * var(--scale)); margin-top: calc(5px * var(--scale)); flex-wrap: wrap; }
+  .p-tag { font-family: var(--mono); font-size: calc(10.88px * var(--scale)); font-weight: 700; padding: calc(2px * var(--scale)) calc(7px * var(--scale)); border-radius: calc(4px * var(--scale)); text-transform: uppercase; }
   .p-normal   { background: #e0e0e0; color: var(--sub); }
   .p-necessary{ background: #fef3c7; color: var(--orange); border: 1px solid #fde68a; }
   .p-urgent   { background: #fee2e2; color: var(--red); border: 1px solid #fca5a5; }
-  .task-date { font-family: var(--mono); font-size: 0.65rem; color: var(--muted); }
+  .task-date { font-family: var(--mono); font-size: calc(10.88px * var(--scale)); color: var(--muted); }
 
-  .del-btn { flex-shrink: 0; width: 32px; height: 32px; background: transparent; border: none; color: var(--muted); font-size: 24px; cursor: pointer; display: flex; align-items: center; justify-content: center; border-radius: 4px; transition: 0.15s; }
+  .del-btn { flex-shrink: 0; width: calc(28px * var(--scale)); height: calc(28px * var(--scale)); background: transparent; border: none; color: var(--muted); font-size: calc(20px * var(--scale)); cursor: pointer; display: flex; align-items: center; justify-content: center; border-radius: calc(4px * var(--scale)); transition: 0.15s; }
   .del-btn:hover { color: #fff; background: var(--red); }
 
-  .empty-state { grid-column: 1 / -1; text-align: center; padding: 60px 20px; font-family: var(--mono); color: var(--muted); font-size: 0.9rem; letter-spacing: 0.05em; }
+  .empty-state { grid-column: 1 / -1; text-align: center; padding: calc(60px * var(--scale)) calc(20px * var(--scale)); font-family: var(--mono); color: var(--muted); font-size: calc(14.4px * var(--scale)); letter-spacing: 0.05em; }
 
-  /* ─── MODALS ────────────────────────────────────────── */
-  .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.45); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 100; opacity: 0; pointer-events: none; transition: 0.2s; padding: 20px; }
-  .modal-overlay.active { opacity: 1; pointer-events: auto; }
-  .modal { background: var(--bg); border-radius: var(--r); width: 100%; max-width: 420px; padding: 28px; transform: translateY(16px); transition: 0.2s; box-shadow: 0 10px 40px rgba(0,0,0,0.15); }
-  .modal-overlay.active .modal { transform: translateY(0); }
-  .modal h2 { font-family: var(--mono); font-size: 1.2rem; margin-bottom: 20px; }
-  .form-group { margin-bottom: 16px; }
-  .form-group label { display: block; font-family: var(--mono); font-size: 0.8rem; font-weight: 700; margin-bottom: 7px; color: var(--sub); }
-  .form-group input, .form-group select { width: 100%; padding: 11px 13px; border: 2px solid var(--border); border-radius: 6px; font-size: 1rem; font-family: var(--sans); outline: none; }
+  /* Project Tracker Modals (nested inside #view-project to inherit var(--scale)) */
+  .p-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.45); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 100; opacity: 0; pointer-events: none; transition: 0.2s; padding: calc(20px * var(--scale)); }
+  .p-modal-overlay.active { opacity: 1; pointer-events: auto; }
+  .p-modal { background: var(--bg); border-radius: calc(8px * var(--scale)); width: 100%; max-width: calc(420px * var(--scale)); padding: calc(28px * var(--scale)); transform: translateY(16px); transition: 0.2s; box-shadow: 0 10px 40px rgba(0,0,0,0.15); }
+  .p-modal-overlay.active .p-modal { transform: translateY(0); }
+  
+  .p-modal h2 { font-family: var(--mono); font-size: calc(19.2px * var(--scale)); margin-bottom: calc(20px * var(--scale)); }
+  .form-group { margin-bottom: calc(16px * var(--scale)); }
+  .form-group label { display: block; font-family: var(--mono); font-size: calc(12.8px * var(--scale)); font-weight: 700; margin-bottom: calc(7px * var(--scale)); color: var(--sub); }
+  .form-group input, .form-group select { width: 100%; padding: calc(11px * var(--scale)) calc(13px * var(--scale)); border: 2px solid var(--border); border-radius: calc(6px * var(--scale)); font-size: calc(16px * var(--scale)); font-family: var(--sans); outline: none; }
   .form-group input:focus, .form-group select:focus { border-color: var(--text); }
-  .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 24px; }
-  .btn { font-family: var(--mono); font-weight: 700; font-size: 0.9rem; padding: 10px 18px; border-radius: 6px; border: none; cursor: pointer; }
-  .btn-cancel { background: var(--surf); border: 2px solid var(--border); }
-  .btn-submit { background: var(--text); color: var(--bg); }
-  .overdue-list { max-height: 340px; overflow-y: auto; padding-right: 5px; }
+  
+  .modal-actions { display: flex; gap: calc(10px * var(--scale)); justify-content: flex-end; margin-top: calc(24px * var(--scale)); }
+  .p-btn { font-family: var(--mono); font-weight: 700; font-size: calc(15.2px * var(--scale)); padding: calc(10px * var(--scale)) calc(18px * var(--scale)); border-radius: calc(6px * var(--scale)); border: none; cursor: pointer; }
+  .p-btn-cancel { background: var(--surf); border: 2px solid var(--border); }
+  .p-btn-submit { background: var(--text); color: var(--bg); }
+  .overdue-list { max-height: calc(340px * var(--scale)); overflow-y: auto; padding-right: calc(5px * var(--scale)); }
 </style>
 </head>
 <body>
@@ -249,7 +260,6 @@
     <button class="filter-btn" onclick="setProjFilter('urgent',this)">Urgent</button>
     <button class="filter-btn" onclick="setProjFilter('necessary',this)">Necessary</button>
     <button class="filter-btn" onclick="setProjFilter('normal',this)">Normal</button>
-    <div class="filter-sep" style="margin-right:auto"></div>
     
     <div class="proj-actions">
       <span class="task-count" id="taskCount">0 項</span>
@@ -257,38 +267,38 @@
       <button class="add-btn" onclick="openAddModal()">+ ADD</button>
     </div>
   </div>
+  
   <div class="list-wrap" id="listWrap"></div>
-</div>
 
-<!-- Add Task Modal -->
-<div class="modal-overlay" id="addModal">
-  <div class="modal">
-    <h2>NEW TASK</h2>
-    <div class="form-group">
-      <label>TASK DESCRIPTION</label>
-      <input type="text" id="taskText" placeholder="What needs to be done?" autocomplete="off" />
-    </div>
-    <div class="form-group">
-      <label>PRIORITY</label>
-      <select id="taskPriority">
-        <option value="normal">Normal</option>
-        <option value="necessary">Necessary</option>
-        <option value="urgent">Urgent</option>
-      </select>
-    </div>
-    <div class="modal-actions">
-      <button class="btn btn-cancel" onclick="closeModals()">CANCEL</button>
-      <button class="btn btn-submit" onclick="saveNewTask()">SAVE</button>
+  <!-- Project Tracker Modals (Nested to inherit var(--scale)) -->
+  <div class="p-modal-overlay" id="addModal">
+    <div class="p-modal">
+      <h2>NEW TASK</h2>
+      <div class="form-group">
+        <label>TASK DESCRIPTION</label>
+        <input type="text" id="taskText" placeholder="What needs to be done?" autocomplete="off" />
+      </div>
+      <div class="form-group">
+        <label>PRIORITY</label>
+        <select id="taskPriority">
+          <option value="normal">Normal</option>
+          <option value="necessary">Necessary</option>
+          <option value="urgent">Urgent</option>
+        </select>
+      </div>
+      <div class="modal-actions">
+        <button class="p-btn p-btn-cancel" onclick="closeModals()">CANCEL</button>
+        <button class="p-btn p-btn-submit" onclick="saveNewTask()">SAVE</button>
+      </div>
     </div>
   </div>
-</div>
 
-<!-- Overdue Modal -->
-<div class="modal-overlay" id="overdueModal">
-  <div class="modal">
-    <h2 style="color:var(--red)">&#9888; UNFINISHED TASKS</h2>
-    <div class="overdue-list" id="overdueList"></div>
-    <div class="modal-actions"><button class="btn btn-cancel" onclick="closeModals()">CLOSE</button></div>
+  <div class="p-modal-overlay" id="overdueModal">
+    <div class="p-modal">
+      <h2 style="color:var(--red)">&#9888; UNFINISHED TASKS</h2>
+      <div class="overdue-list" id="overdueList"></div>
+      <div class="modal-actions"><button class="p-btn p-btn-cancel" onclick="closeModals()">CLOSE</button></div>
+    </div>
   </div>
 </div>
 
@@ -692,7 +702,7 @@ function openAddModal() {
   setTimeout(() => document.getElementById('taskText').focus(), 200);
 }
 
-function closeModals() { document.querySelectorAll('.modal-overlay').forEach(m => m.classList.remove('active')); }
+function closeModals() { document.querySelectorAll('.p-modal-overlay').forEach(m => m.classList.remove('active')); }
 </script>
 </body>
 </html>
