@@ -88,6 +88,22 @@
   #toast { position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(60px); background: var(--text); color: var(--bg); font-family: var(--mono); font-size: 0.9rem; font-weight: 700; padding: 12px 24px; border-radius: 50px; z-index: 200; opacity: 0; pointer-events: none; transition: all 0.3s; }
   #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
   #toast.fail { background: var(--red); }
+
+  /* ---------------------------------------------------- */
+  /* RESPONSIVE SCALING FOR TABLET (2x) AND DESKTOP (2.5x)*/
+  /* ---------------------------------------------------- */
+  @media (min-width: 768px) {
+    html { font-size: 200%; }
+    .checkbox { width: 44px; height: 44px; font-size: 26px; }
+    .del-btn { width: 56px; height: 56px; font-size: 40px; }
+    .modal { max-width: 840px; }
+  }
+  @media (min-width: 1024px) {
+    html { font-size: 250%; }
+    .checkbox { width: 55px; height: 55px; font-size: 32.5px; }
+    .del-btn { width: 70px; height: 70px; font-size: 50px; }
+    .modal { max-width: 1050px; }
+  }
 </style>
 </head>
 <body>
