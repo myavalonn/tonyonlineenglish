@@ -1,4 +1,6 @@
- <!DOCTYPE html>
+--- START OF FILE Paste April 19, 2026 - 1:14AM ---
+
+<!DOCTYPE html>
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
@@ -180,6 +182,7 @@
             flex-direction: column;
             width: 100%;
             max-width: 860px;
+            min-height: 500px;
             border-radius: 22px;
             position: relative;
             overflow: hidden;
@@ -200,7 +203,7 @@
                 flex: 1;
                 min-width: 0;
                 max-width: 480px;
-                /* 移除了原本過長的 720px，讓彈性佈局自動貼齊 */
+                min-height: 820px; /* 拉長卡片以確保不重疊 */
             }
             /* Fan-out animation classes */
             .m-card.card-anim-hidden { opacity: 0; transform: translateX(0) scale(0.88); }
@@ -274,7 +277,7 @@
             padding: 28px 28px 24px;
             display: flex;
             flex-direction: column;
-            flex: 1; /* 取代固定的高度，讓卡片內容可伸展 */
+            flex: 1; 
         }
         
         /* 讓底部內容固定在卡片最下方 */
@@ -293,7 +296,7 @@
         .m-duration-badge { display: inline-flex; align-items: center; gap: 5px; background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.25); backdrop-filter: blur(6px); border-radius: 30px; padding: 4px 12px; font-size: 0.78rem; font-weight: 700; color: rgba(255,255,255,0.92); margin-top: 6px; letter-spacing: 0.5px; width: fit-content; }
         .m-duration-badge i { font-size: 0.7rem; }
 
-        .m-section-label { letter-spacing: 2.5px; text-transform: uppercase; font-weight: 800; color: rgba(255,255,255,.85); margin: 0 0 8px; text-shadow: 0 1px 4px rgba(0,0,0,0.6); }
+        .m-section-label { font-size: 21px; letter-spacing: 2.5px; text-transform: uppercase; font-weight: 800; color: rgba(255,255,255,.85); margin: 0 0 12px; text-shadow: 0 1px 4px rgba(0,0,0,0.6); }
         .m-points { display: flex; flex-direction: column; gap: 9px; }
         .m-point { display: flex; align-items: flex-start; gap: 9px; font-weight: 700; color: #fff; line-height: 1.45; letter-spacing: 0.3px; text-shadow: 0 1px 4px rgba(0,0,0,0.6); }
         .m-point-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; margin-top: 6px; box-shadow: 0 0 5px rgba(0,0,0,0.5); }
@@ -321,11 +324,12 @@
 
         /* ---- MOBILE text sizes (base, 1.5x) ---- */
         @media (max-width: 767px) {
-            .m-section-label { font-size: 13px; }
+            .card-c { min-height: 570px; } /* 針對加強課程手機版特調更長避免重疊 */
+            .m-section-label { font-size: 21px; margin-bottom: 12px; } /* 與小點字體一樣大 */
             .m-point { font-size: 21px; }
             .m-point-dot { width: 8px; height: 8px; margin-top: 8px; }
-            .m-buy-btn { font-size: 16px; padding: 12px 18px; } /* 微調確保能與價格並排 */
-            .m-price { font-size: 1.8rem; } /* 微調確保能與按鈕並排 */
+            .m-buy-btn { font-size: 16px; padding: 12px 18px; } 
+            .m-price { font-size: 1.8rem; } 
             .m-duration-badge { font-size: 0.88rem; }
             .m-title-big { font-size: clamp(3rem, 11vw, 4.5rem); }
             .m-title-small { font-size: clamp(1.2rem, 4vw, 1.6rem); }
@@ -347,20 +351,21 @@
             .cards-section-header h2 { font-size: 2.25rem; }
             .header-logo { height: 50px; }
             .cards-vertical-stack { gap: 36px; padding: 36px 32px 40px; }
-            .m-card { max-width: 98%; }
+            .m-card { max-width: 98%; min-height: 700px; }
+            .card-c { min-height: 760px; }
             .m-card-body { padding: 36px 40px 32px; }
             .m-gept-logo { height: 60px; }
-            .card-brand-block { top: 24px; right: 24px; max-width: 300px; } /* 稍微放寬以容納放大兩倍的字體 */
+            .card-brand-block { top: 24px; right: 24px; max-width: 300px; } 
             .card-gept-label { font-size: 15px; }
             
             /* 適合對象放大兩倍 */
-            .card-audience-title { font-size: 18px; } /* 9px * 2 */
-            .card-audience-item { font-size: 22px; } /* 11px * 2 */
+            .card-audience-title { font-size: 18px; } 
+            .card-audience-item { font-size: 22px; } 
             
             .m-title-big { font-size: 5.5rem; }
             .card-c .m-title-big { font-size: 4rem; }
             .m-title-small { font-size: 2rem; }
-            .m-section-label { font-size: 15px; }
+            .m-section-label { font-size: 26px; margin-bottom: 16px; } /* 與小點字體一樣大 */
             .m-point { font-size: 26px; line-height: 1.5; }
             .m-point-dot { width: 10px; height: 10px; margin-top: 10px; }
             .m-buy-btn { font-size: 22px; padding: 16px 32px; }
@@ -374,17 +379,17 @@
             .cards-section { max-width: 1600px; margin: 0 auto; padding-top: 50px; }
             .m-card-body { padding: 42px 38px 36px; }
             .m-gept-logo { height: 64px; }
-            .card-brand-block { top: 24px; right: 22px; max-width: 380px; } /* 稍微放寬以容納放大2.5倍的字體 */
+            .card-brand-block { top: 24px; right: 22px; max-width: 380px; } 
             .card-gept-label { font-size: 13px; }
             
             /* 適合對象放大2.5倍 */
-            .card-audience-title { font-size: 22.5px; } /* 9px * 2.5 */
-            .card-audience-item { font-size: 27.5px; } /* 11px * 2.5 */
+            .card-audience-title { font-size: 22.5px; } 
+            .card-audience-item { font-size: 27.5px; } 
             
             .m-title-big { font-size: 4.8rem; }
             .card-c .m-title-big { font-size: 3.2rem; }
             .m-title-small { font-size: 1.8rem; }
-            .m-section-label { font-size: 14px; }
+            .m-section-label { font-size: 22px; margin-bottom: 14px; } /* 與小點字體一樣大 */
             .m-point { font-size: 22px; line-height: 1.6; }
             .m-point-dot { width: 9px; height: 9px; margin-top: 9px; }
             .m-buy-btn { font-size: 18px; padding: 15px 30px; }
