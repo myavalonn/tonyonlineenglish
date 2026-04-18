@@ -1,737 +1,1062 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-TW">
 <head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-<title>Workspace</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet" />
-<style>
-  /* ─── GLOBAL VARIABLES & RESETS ─────────────────────── */
-  :root {
-    --bg:       #ffffff;
-    --surf:     #f5f5f5;
-    --card:     #ffffff;
-    --border:   #e0e0e0;
-    --border2:  #c0c0c0;
-    --text:     #111111;
-    --sub:      #444444;
-    --muted:    #888888;
-    --red:      #cc0000;
-    --orange:   #d97706;
-    --r:        8px;
-    --mono:     'Inter', sans-serif;
-    --sans:     'Noto Sans TC', sans-serif;
-  }
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GEPT 全民英檢「中級寫作」影片課程+加強 | Tony Online English</title>
+    <meta name="description" content="GEPT 全民英檢中級寫作專屬課程。提供3回與6回完整影片詳解、雙師專業批改、1對1真人線上家教寫作診斷。快速提升寫作實力，靈活客製化加強方案，適合衝刺高分與突破弱點！">
+    <meta property="og:url" content="https://tonyonlineenglish.netlify.app/inter36w">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="GEPT 全民英檢「中級寫作」影片課程+加強 | Tony Online English">
+    <meta property="og:description" content="GEPT 全民英檢中級寫作專屬課程。提供3回與6回完整影片詳解、雙師專業批改、1對1真人線上家教寫作診斷。快速提升寫作實力，突破寫作盲點！">
+    <meta property="og:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-13%20%E4%B8%8B%E5%8D%884.15.10.png?updatedAt=1773389907343">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="GEPT 全民英檢「中級寫作」影片課程+加強 | Tony Online English">
+    <meta name="twitter:description" content="GEPT 全民英檢中級寫作專屬課程。">
+    <meta name="twitter:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-13%20%E4%B8%8B%E5%8D%884.15.10.png?updatedAt=1773389907343">
+    
+    <!-- 引入 Font Awesome & GSAP -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+    <script src="layout-manager.js"></script>
 
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  html { scroll-behavior: smooth; }
-  body {
-    background: var(--bg); color: var(--text); font-family: var(--sans);
-    min-height: 100dvh; overflow-x: hidden; overflow-y: auto;
-  }
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Noto+Sans+TC:wght@400;700;900&family=Playfair+Display:wght@700;900&display=swap');
 
-  /* ─── SHARED UI (LOADER, TOAST, SAVING) ─────────────── */
-  #loader {
-    position: fixed; inset: 0; background: var(--bg); display: flex; flex-direction: column;
-    align-items: center; justify-content: center; gap: 20px; z-index: 999; transition: opacity 0.3s ease;
-  }
-  #loader.out { opacity: 0; pointer-events: none; }
-  .loader-ring {
-    width: 48px; height: 48px; border: 3px solid var(--border);
-    border-top-color: var(--text); border-radius: 50%; animation: spin 0.9s linear infinite;
-  }
-  .loader-text { font-family: var(--mono); font-size: 0.75rem; font-weight: 700; letter-spacing: 0.08em; }
-  @keyframes spin { to { transform: rotate(360deg); } }
+        :root {
+            --bg-color: #f9fafb;
+            --text-main: #111827;
+            --theme-blue: #0065ff;
+            --theme-orange: #f97316;
+        }
 
-  #toast {
-    position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(60px);
-    background: var(--text); color: var(--bg); font-family: var(--mono); font-size: 0.75rem;
-    font-weight: 700; padding: 10px 22px; border-radius: 50px; z-index: 200;
-    transition: all 0.3s cubic-bezier(.4,0,.2,1); opacity: 0; white-space: nowrap; pointer-events: none;
-  }
-  #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-  #toast.ok   { background: var(--text); }
-  #toast.warn { background: #664400; }
-  #toast.fail { background: var(--red); }
+        *, *::before, *::after { box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            font-family: 'Inter', 'Noto Sans TC', system-ui, sans-serif;
+            background-color: var(--bg-color);
+            padding: 0 0 60px 0; line-height: 1.5;
+            width: 100%; min-height: 100vh; margin: 0;
+            display: flex; flex-direction: column; align-items: center;
+            overflow-x: hidden;
+        }
+        
+        /* 鎖定頁面滑動 (開場動畫用) */
+        body.no-scroll { overflow: hidden; height: 100vh; }
 
-  .saving-pill {
-    display: inline-flex; align-items: center; gap: 5px; font-family: var(--mono);
-    font-size: 0.65rem; font-weight: 700; color: var(--text); letter-spacing: 0.1em;
-    background: var(--surf); border: 1.5px solid var(--border2); border-radius: 4px; padding: 4px 8px;
-  }
-  .saving-spin {
-    width: 9px; height: 9px; border: 2px solid var(--border); border-top-color: var(--text);
-    border-radius: 50%; animation: spin 0.7s linear infinite; flex-shrink: 0;
-  }
+        /* =========================================
+           開場動畫專屬樣式 (Loader)
+           ========================================= */
+        .gept-loader-section {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 999999; background-color: #ffffff;
+            display: flex; align-items: center; justify-content: center;
+            overflow: hidden;
+        }
+        .gept-loader-content {
+            position: relative; width: 100%; height: 100%;
+            display: flex; align-items: center; justify-content: center; text-align: center;
+        }
+        .anim-group {
+            position: absolute; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            width: 100%; padding: 0 20px; opacity: 0;
+        }
+        .giant-text {
+            font-weight: 900; line-height: 1.3; font-size: clamp(2rem, 6vw, 4.5rem); letter-spacing: 2px;
+        }
+        .text-blue { color: #0065ff; }
+        .text-gray { color: #94a3b8; font-size: clamp(1.5rem, 4vw, 3rem); margin: 15px 0;}
+        .text-orange { color: #f97316; }
+        .text-gold { color: #fbbf24; font-size: clamp(3rem, 10vw, 6rem); text-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .text-dark { color: #111827; font-size: clamp(2rem, 7vw, 5rem); }
+        .text-green { color: #10b981; font-size: clamp(2.2rem, 8vw, 5.5rem); }
 
-  /* ─── GLOBAL HEADER & TABS ──────────────────────────── */
-  .global-header {
-    position: sticky; top: 0; z-index: 50; background: rgba(255,255,255,0.95);
-    backdrop-filter: blur(18px); -webkit-backdrop-filter: blur(18px);
-    border-bottom: 1px solid var(--border); padding: 12px 16px;
-  }
-  .hrow1 { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin-bottom: 12px; }
-  .logo { font-family: var(--mono); font-size: 0.85rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; display: flex; align-items: center; gap: 8px; }
-  @media (min-width: 600px) { .logo { font-size: 1rem; } }
-  .logo-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--text); animation: pulse 2.4s infinite; }
-  @keyframes pulse { 0%, 100% { opacity: 1; transform: scale(1); } 50% { opacity: 0.3; transform: scale(0.6); } }
-  
-  .current-date-bar { font-family: var(--mono); font-size: 0.75rem; font-weight: 700; color: #fff; background: #0066cc; border-radius: var(--r); padding: 4px 12px; white-space: nowrap; }
-  @media (min-width: 600px) { .current-date-bar { font-size: 0.9rem; padding: 5px 16px; } }
+        .gept__ticker { position: relative; width: 95vw; height: 3.5em; display: flex; justify-content: center; align-items: center; overflow: hidden; }
+        .gept__ticker-line { position: absolute; color: #0065ff; font-weight: 900; font-size: clamp(1.8rem, 7vw, 4rem); text-align: center; width: 100%; letter-spacing: 2px; opacity: 0; }
+        
+        .skip-btn {
+            position: absolute; bottom: 30px; right: 30px; z-index: 1000000;
+            background: rgba(0, 0, 0, 0.05); color: #666; border: 1px solid rgba(0,0,0,0.1);
+            border-radius: 30px; padding: 10px 24px; font-size: 1rem; cursor: pointer;
+            transition: 0.3s; font-weight: bold; display: none;
+        }
+        .skip-btn.visible { display: block; }
+        .skip-btn:hover { background: rgba(0, 0, 0, 0.15); color: #000; }
 
-  .tabs-container { display: flex; gap: 10px; overflow-x: auto; padding-bottom: 4px; -webkit-overflow-scrolling: touch; }
-  .tabs-container::-webkit-scrollbar { display: none; }
-  .tabs { display: flex; background: var(--surf); padding: 4px; border-radius: 8px; border: 1px solid var(--border); flex-shrink: 0; }
-  .tab { font-family: var(--mono); font-size: 0.8rem; font-weight: 700; padding: 6px 14px; border-radius: 5px; border: none; background: transparent; color: var(--muted); cursor: pointer; transition: all 0.2s; white-space: nowrap; }
-  @media (min-width: 600px) { .tab { font-size: 0.9rem; padding: 7px 18px; } }
-  .tab.active { background: var(--text); color: var(--bg); }
+        /* =========================================
+           HERO
+           ========================================= */
+        .hero-section {
+            width: 100%; min-height: 80vh;
+            background: linear-gradient(rgba(0,0,0,0.5),rgba(0,0,0,0.7)),
+                url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-13%20%E4%B8%8B%E5%8D%884.15.10.png?updatedAt=1773389907343') center/cover no-repeat;
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            text-align: center; padding: 140px 20px 60px; color: #fff;
+            position: relative; overflow: hidden;
+        }
+        @keyframes slideInLeft { from{opacity:0;transform:translateX(-60px)} to{opacity:1;transform:translateX(0)} }
+        @keyframes fadeInUp   { from{opacity:0;transform:translateY(30px)}  to{opacity:1;transform:translateY(0)} }
+        @keyframes glowBrand  { 0%{text-shadow:0 4px 15px rgba(0,0,0,.8)} 30%{text-shadow:0 0 15px rgba(255,255,255,.8),0 0 25px rgba(220,38,38,.9),0 0 40px rgba(220,38,38,.8)} 100%{text-shadow:0 4px 15px rgba(0,0,0,.8)} }
+        @keyframes glowTitle  { 0%{text-shadow:0 4px 15px rgba(0,0,0,.6)} 30%{text-shadow:0 0 15px rgba(255,255,255,.8),0 0 25px rgba(251,191,36,.9),0 0 40px rgba(251,191,36,.8)} 100%{text-shadow:0 4px 15px rgba(0,0,0,.6)} }
 
-  .view-section { display: none; }
-  .view-section.active { display: block; animation: fadeIn 0.3s ease; }
-  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+        /* 動畫修改：必須加上 .start-main-anim 才會觸發 (等待開場跑完) */
+        .hero-brand-mobile {
+            position: absolute; top: 20px; left: 20px;
+            text-align: left; font-size: 2.2rem; font-weight: 900; line-height: 1.25;
+            text-shadow: 0 4px 15px rgba(0,0,0,.8); z-index: 10;
+            display: none; opacity: 0;
+        }
+        body.start-main-anim .hero-brand-mobile { animation: slideInLeft 1s ease forwards, glowBrand 2.5s ease 0.5s forwards; }
+        
+        .hero-brand-mobile .highlight-red { color: #dc2626; }
 
-  /* ─── APP 1: TUTOR TRACKER STYLES ───────────────────── */
-  .tutor-subhead { display: flex; align-items: center; justify-content: space-between; padding: 12px 16px 0; gap: 12px; flex-wrap: wrap; }
-  .tutor-actions { display: flex; align-items: center; gap: 10px; flex-wrap: nowrap; white-space: nowrap; }
-  .today-pill { font-family: var(--mono); font-size: clamp(0.75rem, 3.8vw, 1rem); font-weight: 700; padding: 6px 14px; border-radius: var(--r); border: 2px solid var(--text); background: transparent; cursor: pointer; transition: 0.15s; }
-  .today-pill:hover { background: var(--text); color: var(--bg); }
-  .summary-pill { font-family: var(--mono); font-size: clamp(0.8rem, 4vw, 1.1rem); font-weight: 700; color: #0066cc; }
-  
-  .week-nav { display: flex; align-items: center; gap: 8px; }
-  .nav-btn { background: var(--text); color: var(--bg); border: none; cursor: pointer; font-size: 1.5rem; font-weight: 700; width: 38px; height: 38px; border-radius: 8px; display: flex; align-items: center; justify-content: center; transition: 0.15s; }
-  .nav-btn:hover:not(:disabled) { transform: scale(1.05); }
-  .nav-btn:active:not(:disabled) { transform: scale(0.95); }
-  .nav-btn:disabled { opacity: 0.2; }
-  #weekLabel { font-family: var(--mono); font-size: 0.9rem; font-weight: 700; min-width: 120px; text-align: center; }
+        .hero-brand-inline {
+            font-weight: 900; line-height: 1.2; color: #fff;
+            text-shadow: 0 4px 15px rgba(0,0,0,.8); opacity: 0;
+        }
+        body.start-main-anim .hero-brand-inline { animation: glowBrand 2.5s ease forwards; opacity: 1; }
+        
+        .hero-brand-inline .highlight-red { color: #dc2626; }
 
-  .prog-track { height: 3px; background: var(--border); overflow: hidden; margin-top: 10px; }
-  .prog-fill { height: 100%; background: var(--text); transition: width 0.5s; width: 0%; }
+        .hero-content {
+            opacity: 0; display: flex; flex-direction: column; align-items: center;
+            max-width: 1100px; z-index: 10;
+        }
+        body.start-main-anim .hero-content { animation: fadeInUp 1s ease 0.3s forwards; }
 
-  .grid { display: grid; grid-template-columns: 57vw 57vw; gap: 10px; padding: 14px 12px 36px; will-change: transform; }
-  @media (min-width: 600px) and (max-width: 979px) { .grid { grid-template-columns: repeat(2, 1fr); gap: 14px; padding: 18px; } }
-  @media (min-width: 980px) { .grid { grid-template-columns: repeat(3, 1fr); gap: 20px; padding: 24px; max-width: 1400px; margin: 0 auto; } }
+        .hero-intro { font-size: 4rem; font-weight: 700; color: #fbbf24; margin-bottom: 8px; }
 
-  .card { background: var(--card); border: 1.5px solid var(--border); border-radius: var(--r); display: flex; flex-direction: column; min-height: 220px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
-  .card.today { border-color: var(--text); border-width: 2px; box-shadow: 0 2px 12px rgba(0,0,0,0.14); }
-  .card.done { background: var(--surf); border-color: var(--border2); }
-  
-  .card-head { padding: 11px 13px 9px; border-bottom: 1.5px solid var(--border); background: var(--surf); display: flex; flex-direction: column; gap: 2px; }
-  .day-label { display: flex; align-items: center; gap: 5px; }
-  .day-en { font-family: var(--mono); font-size: 1.1rem; font-weight: 700; }
-  .day-zh { font-size: 0.88rem; font-weight: 700; color: var(--sub); }
-  .badge { font-family: var(--mono); font-size: 0.7rem; font-weight: 700; padding: 1px 7px; border: 1.5px solid var(--border2); border-radius: 4px; color: var(--sub); margin-left: auto; background: var(--bg); }
-  .card.done .badge { background: var(--text); color: var(--bg); border-color: var(--text); }
-  .day-num { font-family: var(--mono); font-size: 2.2rem; font-weight: 700; line-height: 1; margin-top: 4px; }
+        .hero-title-large {
+            font-weight: 900; margin-bottom: 15px; line-height: 1.2; opacity: 0;
+        }
+        body.start-main-anim .hero-title-large { animation: glowTitle 2.5s ease 0.8s forwards; opacity: 1;}
+        
+        .hero-sub-text {
+            display: block; font-weight: 600; margin-bottom: 22px;
+            color: #e2e8f0; letter-spacing: 2px;
+            font-size: 1.2rem;
+        }
+        .hero-action-group { display: flex; flex-direction: column; align-items: center; gap: 20px; width: 100%; }
+        .hero-btn {
+            background: var(--theme-blue); color: #fff; padding: 16px 40px;
+            border-radius: 50px; font-size: 1.25rem; font-weight: 800;
+            text-decoration: none; transition: all .3s;
+            box-shadow: 0 6px 20px rgba(0,101,255,.4);
+            display: inline-flex; align-items: center; gap: 10px;
+        }
+        .hero-btn:hover { background: #0056cc; transform: translateY(-3px); color: #fff; }
+        .hero-links { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; }
+        .secondary-btn {
+            background: rgba(255,255,255,.15) !important; backdrop-filter: blur(5px);
+            color: #fff; padding: 12px 24px; border-radius: 50px;
+            font-size: 1.05rem; font-weight: 700; text-decoration: none;
+            transition: all .3s; border: 1px solid rgba(255,255,255,.3);
+            display: inline-flex; align-items: center; gap: 8px;
+        }
+        .secondary-btn:hover { background: rgba(255,255,255,.3) !important; transform: translateY(-2px); }
+        .line-btn { background: rgba(0,185,0,.85) !important; border-color: #00B900; }
+        .line-btn:hover { background: rgba(0,185,0,1) !important; }
+        .m-break { display: none; }
+        .desktop-x-space { display: inline; }
 
-  .student-list { position: relative; padding: 8px; display: flex; flex-direction: column; gap: 6px; flex: 1; }
-  .giant-check { position: absolute; top: 50%; left: 50%; width: 75%; height: 75%; pointer-events: none; opacity: 0; transform: translate(-50%, -50%) scale(0.3); transition: 0.4s; z-index: 10; }
-  .card.done .giant-check { opacity: 0.22; transform: translate(-50%, -50%) scale(1); }
+        @media (min-width: 1181px) {
+            .hero-brand-inline { font-size: 4.5rem; }
+            .hero-title-large  { font-size: 4.5rem; }
+            .hero-intro        { font-size: 4rem; }
+        }
+        @media (min-width: 769px) and (max-width: 1180px) {
+            .hero-brand-inline { font-size: 3.8rem; }
+            .hero-title-large  { font-size: 3.8rem; }
+            .hero-intro        { font-size: 3rem; }
+        }
 
-  .s-row { display: flex; align-items: center; gap: 10px; padding: 11px 12px; background: var(--bg); border: 1.5px solid var(--border); border-radius: 6px; cursor: pointer; transition: 0.12s; user-select: none; touch-action: manipulation; }
-  .s-row:active { transform: scale(0.98); }
-  .s-row.sent { background: var(--surf); border-color: var(--border2); }
-  .t-checkbox { width: 24px; height: 24px; border: 2px solid var(--border2); border-radius: 4px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; background: var(--bg); color: var(--bg); transition: 0.12s; }
-  .s-row.sent .t-checkbox { background: var(--text); border-color: var(--text); color: var(--bg); }
-  .s-info { flex: 1; min-width: 0; }
-  .s-name { font-size: 1rem; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-  .s-row.sent .s-name { text-decoration: line-through; opacity: 0.45; }
-  .s-time { font-family: var(--mono); font-size: 0.75rem; color: var(--muted); }
-  .no-class { flex: 1; display: flex; align-items: center; justify-content: center; font-family: var(--mono); font-size: 0.75rem; font-weight: 700; color: var(--muted); letter-spacing: 0.1em; padding: 20px 8px; }
+        .hero-pills {
+            display: flex; flex-direction: row; flex-wrap: nowrap;
+            gap: 8px; margin-bottom: 24px;
+            justify-content: center; align-items: center;
+            width: 100%; overflow-x: auto;
+            scrollbar-width: none; -webkit-overflow-scrolling: touch; padding: 2px 0;
+        }
+        .hero-pills::-webkit-scrollbar { display: none; }
+        .hero-pill {
+            display: inline-flex; align-items: center; gap: 5px;
+            background: rgba(255,255,255,0.12);
+            border: 1px solid rgba(255,255,255,0.3);
+            backdrop-filter: blur(8px); border-radius: 50px;
+            padding: 6px 13px; font-size: 0.8rem; font-weight: 700;
+            color: #fff; white-space: nowrap; flex-shrink: 0;
+            letter-spacing: 0.3px; transition: background 0.2s;
+        }
+        .hero-pill i { font-size: 0.75rem; opacity: 0.85; }
+        .hero-pill:hover { background: rgba(255,255,255,0.22); }
 
-  /* ─── APP 2: PROJECT TRACKER (SCALED STYLES) ────────── */
-  #view-project {
-    --scale: 1; /* Mobile Baseline */
-  }
-  @media (min-width: 768px) {
-    #view-project { --scale: 2; } /* Tablet 2x Scale */
-  }
-  @media (min-width: 1024px) {
-    #view-project { --scale: 2.5; } /* Desktop 2.5x Scale */
-  }
+        @media (max-width: 768px) {
+            .hero-section {
+                min-height: 85vh; padding: 30vw 15px 40px;
+                background-image: linear-gradient(to bottom,rgba(15,23,42,.4) 0%,rgba(15,23,42,.85) 100%),
+                    url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-13%20%E4%B8%8B%E5%8D%884.15.10.png?updatedAt=1773389907343');
+                background-size: cover; justify-content: flex-start;
+            }
+            .hero-brand-mobile { display: block; }
+            .hero-brand-inline { display: none; }
 
-  .filter-bar { display: flex; gap: calc(8px * var(--scale)); padding: calc(12px * var(--scale)) calc(20px * var(--scale)); border-bottom: 1px solid var(--border); flex-wrap: wrap; align-items: center; }
-  .filter-btn { font-family: var(--mono); font-size: calc(12px * var(--scale)); font-weight: 700; padding: calc(5px * var(--scale)) calc(12px * var(--scale)); border-radius: calc(20px * var(--scale)); border: 1.5px solid var(--border2); background: transparent; color: var(--sub); cursor: pointer; transition: 0.15s; }
-  .filter-btn.active { background: var(--text); color: var(--bg); border-color: var(--text); }
-  .filter-sep { width: 1px; height: calc(20px * var(--scale)); background: var(--border2); margin: 0 calc(2px * var(--scale)); }
-  .task-count { font-family: var(--mono); font-size: calc(12px * var(--scale)); color: var(--muted); margin-left: auto; }
+            .hero-intro        { font-size: 1.4rem; }
+            .hero-title-large  { font-size: 2.2rem; margin-bottom: 10px; line-height: 1.3; }
+            .hero-sub-text     { font-size: .78rem; white-space: nowrap; margin-bottom: 14px; color: #cbd5e1; letter-spacing: 1px; }
+            .hero-pills        { display: none; }
 
-  .proj-actions { display: flex; align-items: center; gap: calc(10px * var(--scale)); margin-left: auto; }
-  .overdue-btn { font-family: var(--mono); font-size: calc(12.8px * var(--scale)); font-weight: 700; color: var(--bg); background: var(--red); padding: calc(7px * var(--scale)) calc(14px * var(--scale)); border-radius: calc(20px * var(--scale)); border: none; cursor: pointer; display: none; align-items: center; gap: calc(5px * var(--scale)); animation: pulseRed 2s infinite; }
-  @keyframes pulseRed { 0%{box-shadow:0 0 0 0 rgba(204,0,0,0.4)} 70%{box-shadow:0 0 0 calc(8px * var(--scale)) rgba(0,0,0,0)} 100%{box-shadow:0 0 0 0 rgba(0,0,0,0)} }
-  .add-btn { font-family: var(--mono); font-size: calc(15.2px * var(--scale)); font-weight: 700; padding: calc(8px * var(--scale)) calc(16px * var(--scale)); border-radius: calc(8px * var(--scale)); border: 2px solid var(--text); background: transparent; cursor: pointer; white-space: nowrap; transition: 0.15s; }
-  .add-btn:hover { background: var(--text); color: var(--bg); }
+            .hero-btn { width: 100%; font-size: 1.15rem; padding: 14px; margin-bottom: 5px; }
+            .hero-links { flex-direction: row; flex-wrap: nowrap; width: 100%; gap: 8px; }
+            .secondary-btn { flex: 1; justify-content: center; padding: 12px 5px; font-size: .9rem; white-space: nowrap; }
+            .m-break { display: block; }
+            .desktop-x-space { display: none; }
+        }
 
-  .list-wrap { max-width: calc(860px * var(--scale)); margin: 0 auto; padding: calc(8px * var(--scale)) calc(20px * var(--scale)) calc(80px * var(--scale)); }
-  @media (min-width: 1024px) { 
-    .list-wrap { display: grid; grid-template-columns: 1fr 1fr; column-gap: calc(60px * var(--scale)); max-width: calc(1600px * var(--scale)); } 
-  }
+        /* 以下為原有的其它 CSS 樣式 (Cards, Features, Cart 等)，保留不變 */
+        .pricing-wrapper { width: 100%; }
+        .cards-section { width: 100%; padding: 30px 0 0; }
+        .cards-section-header { text-align: center; padding: 10px 20px 0; }
+        .cards-section-header h2 { font-size: 1.5rem; font-weight: 900; color: var(--text-main); display: flex; align-items: center; justify-content: center; gap: 12px; flex-wrap: wrap; line-height: 1.4; }
+        .header-logo { height: 38px; width: auto; }
+        .m-break-header { display: none; }
+        @media (max-width: 1180px) { .m-break-header { display: block; width: 100%; } }
 
-  .task-row { display: flex; align-items: flex-start; gap: calc(14px * var(--scale)); padding: calc(14px * var(--scale)) 0; border-bottom: 1px solid var(--border); }
-  
-  .p-checkbox { width: calc(22px * var(--scale)); height: calc(22px * var(--scale)); border: 2px solid var(--border2); border-radius: calc(5px * var(--scale)); flex-shrink: 0; margin-top: calc(2px * var(--scale)); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: calc(13px * var(--scale)); background: var(--bg); font-weight: 700; transition: 0.15s; }
-  .task-row.done .p-checkbox { background: var(--text); border-color: var(--text); color: var(--bg); }
+        .slider-track { display: flex; gap: 15px; padding: 20px 12.5vw 24px; overflow-x: auto; scroll-snap-type: x mandatory; -webkit-overflow-scrolling: touch; scrollbar-width: none; align-items: center; }
+        .slider-track::-webkit-scrollbar { display: none; }
 
-  .task-body { flex: 1; min-width: 0; cursor: pointer; }
-  .task-text { font-size: calc(16px * var(--scale)); font-weight: 500; line-height: 1.5; word-break: break-word; }
-  .task-row.done .task-text { text-decoration: line-through; color: var(--muted); }
+        .card-b { background-image: url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/rezaul-karim-102abqkKhbY-unsplash.jpg?updatedAt=1773813236096'); }
+        .card-a { background-image: url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/jensen-ragoonath-dPg3TlWPZ9E-unsplash.jpg?updatedAt=1775996377812'); }
+        .card-c { background-image: url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/marcos-paulo-prado-tcyW6Im5Uug-unsplash.jpg'); }
 
-  .task-meta { display: flex; align-items: center; gap: calc(8px * var(--scale)); margin-top: calc(5px * var(--scale)); flex-wrap: wrap; }
-  .p-tag { font-family: var(--mono); font-size: calc(10.88px * var(--scale)); font-weight: 700; padding: calc(2px * var(--scale)) calc(7px * var(--scale)); border-radius: calc(4px * var(--scale)); text-transform: uppercase; }
-  .p-normal   { background: #e0e0e0; color: var(--sub); }
-  .p-necessary{ background: #fef3c7; color: var(--orange); border: 1px solid #fde68a; }
-  .p-urgent   { background: #fee2e2; color: var(--red); border: 1px solid #fca5a5; }
-  .task-date { font-family: var(--mono); font-size: calc(10.88px * var(--scale)); color: var(--muted); }
+        .m-card { width: 75vw; max-width: 320px; height: 350px; border-radius: 22px; position: relative; scroll-snap-align: center; flex-shrink: 0; transition: transform .4s cubic-bezier(.25,.46,.45,.94), opacity .4s ease; transform: scale(0.85); opacity: 0.55; will-change: transform,opacity; cursor: pointer; background-size: cover !important; background-position: center !important; background-repeat: no-repeat !important; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.1); }
+        .m-card.active { transform: scale(1); opacity: 1; }
+        .m-card-overlay { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
+        .m-card-body { position: absolute; inset: 0; padding: 18px 22px; display: flex; flex-direction: column; justify-content: flex-start; z-index: 2; }
+        .m-gept-logo { position: absolute; top: 15px; right: 15px; height: 40px; width: auto; opacity: 0.95; z-index: 2; }
+        .desktop-click-hint { display: none; position: absolute; top: 20px; left: 20px; color: #fff; font-size: 16px; font-weight: 900; letter-spacing: 2px; z-index: 10; text-shadow: 0 2px 8px rgba(0,0,0,0.8); pointer-events: none; }
+        @media (min-width: 1181px) { .desktop-click-hint { display: block; } }
 
-  .del-btn { flex-shrink: 0; width: calc(28px * var(--scale)); height: calc(28px * var(--scale)); background: transparent; border: none; color: var(--muted); font-size: calc(20px * var(--scale)); cursor: pointer; display: flex; align-items: center; justify-content: center; border-radius: calc(4px * var(--scale)); transition: 0.15s; }
-  .del-btn:hover { color: #fff; background: var(--red); }
+        .card-top-text { display: flex; flex-direction: column; }
+        .m-title-big { font-family: 'Playfair Display', serif; font-weight: 900; font-size: clamp(3.5rem, 13vw, 5rem); line-height: 1; color: #fff; display: block; text-shadow: 0 2px 10px rgba(0,0,0,0.4); }
+        .m-title-small { font-family: 'Playfair Display', serif; font-weight: 700; font-size: clamp(1.2rem, 4vw, 1.5rem); line-height: 1.2; color: #fff; display: block; margin-top: 4px; text-shadow: 0 2px 10px rgba(0,0,0,0.4); }
+        .m-duration-badge { display: inline-flex; align-items: center; gap: 5px; background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.25); backdrop-filter: blur(6px); border-radius: 30px; padding: 3px 10px; font-size: 0.72rem; font-weight: 700; color: rgba(255,255,255,0.92); margin-top: 5px; letter-spacing: 0.5px; width: fit-content; }
+        .m-duration-badge i { font-size: 0.65rem; }
+        .m-divider { width: 44px; height: 3px; margin: 12px 0; border-radius: 2px; }
+        .m-points { display: flex; flex-direction: column; gap: 8px; }
+        .m-point { display: flex; align-items: flex-start; gap: 8px; font-size: clamp(13px, 3.5vw, 15px); font-weight: 700; color: #fff; line-height: 1.4; letter-spacing: 0.5px; text-shadow: 0 1px 4px rgba(0,0,0,0.6); }
+        .m-point-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; margin-top: 6px; box-shadow: 0 0 5px rgba(0,0,0,0.5); }
+        .m-section-label { font-size: 11px; letter-spacing: 2.5px; text-transform: uppercase; font-weight: 800; color: rgba(255,255,255,.9); margin: 0 0 6px; text-shadow: 0 1px 4px rgba(0,0,0,0.6); }
+        .m-price-row { display: flex; align-items: center; justify-content: space-between; margin-top: 12px; flex-wrap: wrap; gap: 10px; }
+        .m-price { font-family: 'Playfair Display',serif; font-weight: 700; font-size: clamp(1.4rem,4.5vw,1.8rem); color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,0.5); }
+        .m-buy-btn { font-size: clamp(13px,3.5vw,15px); font-weight: 800; letter-spacing: 1px; padding: 10px 18px; border-radius: 50px; border: none; cursor: pointer; text-transform: uppercase; white-space: nowrap; transition: transform 0.2s; z-index: 10; position: relative; box-shadow: 0 4px 10px rgba(0,0,0,0.3); }
+        .m-buy-btn:hover { transform: scale(1.05); }
 
-  .empty-state { grid-column: 1 / -1; text-align: center; padding: calc(60px * var(--scale)) calc(20px * var(--scale)); font-family: var(--mono); color: var(--muted); font-size: calc(14.4px * var(--scale)); letter-spacing: 0.05em; }
+        .card-b .m-card-overlay { background: linear-gradient(180deg, rgba(28,12,2,0) 0%, rgba(28,12,2,0.4) 40%, rgba(28,12,2,0.95) 100%); }
+        .card-b .m-title-small { color: #fef9ec; }
+        .card-b .m-divider     { background: #f59e0b; }
+        .card-b .m-point-dot   { background: #fbbf24; }
+        .card-b .m-buy-btn     { background: #f59e0b; color: #1c1106; }
 
-  /* Project Tracker Modals (nested inside #view-project to inherit var(--scale)) */
-  .p-modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.45); backdrop-filter: blur(4px); display: flex; align-items: center; justify-content: center; z-index: 100; opacity: 0; pointer-events: none; transition: 0.2s; padding: calc(20px * var(--scale)); }
-  .p-modal-overlay.active { opacity: 1; pointer-events: auto; }
-  .p-modal { background: var(--bg); border-radius: calc(8px * var(--scale)); width: 100%; max-width: calc(420px * var(--scale)); padding: calc(28px * var(--scale)); transform: translateY(16px); transition: 0.2s; box-shadow: 0 10px 40px rgba(0,0,0,0.15); }
-  .p-modal-overlay.active .p-modal { transform: translateY(0); }
-  
-  .p-modal h2 { font-family: var(--mono); font-size: calc(19.2px * var(--scale)); margin-bottom: calc(20px * var(--scale)); }
-  .form-group { margin-bottom: calc(16px * var(--scale)); }
-  .form-group label { display: block; font-family: var(--mono); font-size: calc(12.8px * var(--scale)); font-weight: 700; margin-bottom: calc(7px * var(--scale)); color: var(--sub); }
-  .form-group input, .form-group select { width: 100%; padding: calc(11px * var(--scale)) calc(13px * var(--scale)); border: 2px solid var(--border); border-radius: calc(6px * var(--scale)); font-size: calc(16px * var(--scale)); font-family: var(--sans); outline: none; }
-  .form-group input:focus, .form-group select:focus { border-color: var(--text); }
-  
-  .modal-actions { display: flex; gap: calc(10px * var(--scale)); justify-content: flex-end; margin-top: calc(24px * var(--scale)); }
-  .p-btn { font-family: var(--mono); font-weight: 700; font-size: calc(15.2px * var(--scale)); padding: calc(10px * var(--scale)) calc(18px * var(--scale)); border-radius: calc(6px * var(--scale)); border: none; cursor: pointer; }
-  .p-btn-cancel { background: var(--surf); border: 2px solid var(--border); }
-  .p-btn-submit { background: var(--text); color: var(--bg); }
-  .overdue-list { max-height: calc(340px * var(--scale)); overflow-y: auto; padding-right: calc(5px * var(--scale)); }
-</style>
+        .card-a .m-card-overlay { background: linear-gradient(180deg, rgba(4,10,32,0) 0%, rgba(4,10,32,0.4) 40%, rgba(4,10,32,0.95) 100%); }
+        .card-a .m-title-small { color: #e0eaff; }
+        .card-a .m-divider     { background: #3b82f6; }
+        .card-a .m-point-dot   { background: #60a5fa; }
+        .card-a .m-buy-btn     { background: #3b82f6; color: #fff; }
+
+        .card-c .m-card-overlay { background: linear-gradient(180deg, rgba(2,16,12,0) 0%, rgba(2,16,12,0.4) 40%, rgba(2,16,12,0.95) 100%); }
+        .card-c .m-title-big   { font-size: clamp(2.4rem, 8.5vw, 3rem); white-space: nowrap; }
+        .card-c .m-title-small { color: #d1fae5; }
+        .card-c .m-divider     { background: #10b981; }
+        .card-c .m-point-dot   { background: #34d399; }
+        .card-c .m-buy-btn     { background: #10b981; color: #022c22; }
+
+        @media (max-width: 768px) {
+            .m-section-label { font-size: 14.5px !important; }
+            .m-point { font-size: 17px !important; }
+            .m-point-dot { margin-top: 8px; }
+        }
+
+        @media (min-width: 768px) and (max-width: 1180px) {
+            .cards-section-header h2 { font-size: 2.25rem; }
+            .header-logo { height: 50px; }
+            .slider-track { padding: 30px calc(50vw - 250px) 40px; }
+            .m-card { width: 500px; max-width: 85vw; height: 620px; }
+            .m-card-body { justify-content: flex-end; padding: 40px; }
+            .m-title-big { font-size: 7.5rem; }
+            .card-c .m-title-big { font-size: 4.5rem; }
+            .m-title-small { font-size: 2.2rem; }
+            .m-point { font-size: 22px; line-height: 1.6; }
+            .m-buy-btn { font-size: 18px; padding: 15px 25px; }
+            .m-section-label { font-size: 16px; }
+            .m-price { font-size: 2.8rem; }
+            .m-gept-logo { height: 60px; }
+            .m-divider { width: 66px; height: 4px; margin: auto 0 20px; }
+            .m-duration-badge { font-size: 0.95rem; padding: 5px 14px; margin-top: 8px; }
+            .audience-panel-inner { display: flex; flex-direction: column; align-items: center; text-align: center; }
+            .audience-title { justify-content: center; width: 100%; font-size: 2.7rem; }
+            .audience-title::after { display: none; }
+            .audience-rows { align-items: center; width: 100%; gap: 18px; }
+            .audience-row { text-align: center; align-items: center; justify-content: center; font-size: 26px; line-height: 1.6; }
+            .audience-icon { font-size: 32px; }
+        }
+
+        @media (min-width: 1181px) {
+            .cards-section { max-width: 1600px; margin: 0 auto; padding-top: 50px; }
+            .slider-track { justify-content: center; padding: 30px 0 50px; gap: 40px; }
+            .m-card { width: 440px; height: 640px; transform: scale(0.95); opacity: 0.9; }
+            .m-card.active { transform: scale(0.95); opacity: 0.9; }
+            .m-card:hover { transform: scale(1) translateY(-10px) !important; opacity: 1 !important; box-shadow: 0 20px 40px rgba(0,0,0,0.2); z-index: 5; }
+            .m-card-body { justify-content: flex-end; padding: 35px; }
+            .m-gept-logo { height: 60px; }
+            .m-buy-btn { padding: 16px 28px; font-size: 18px; }
+            .m-point { font-size: 20px; line-height: 1.7; }
+            .m-divider { margin: 20px 0 25px; height: 4px; width: 50px; }
+            .m-title-big { font-size: 5rem; }
+            .card-c .m-title-big { font-size: 3.8rem; }
+            .m-title-small { font-size: 2rem; }
+            .m-price { font-size: 2.2rem; }
+            .m-duration-badge { font-size: 0.82rem; padding: 4px 12px; margin-top: 6px; }
+            .audience-panel { max-width: 1200px; margin: 40px auto 20px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); padding: 50px 60px; border: 1px solid #e5e7eb; }
+            .audience-title { font-size: 2.2rem; margin-bottom: 35px; }
+            .audience-row { font-size: 1.6rem; gap: 20px; margin-bottom: 16px; }
+            .audience-icon { font-size: 2.2rem; }
+        }
+
+        .audience-panel { background: #fff; border-top: 1px solid #e5e7eb; padding: 28px 30px 32px; width: 100%; }
+        .audience-panel-inner { max-width: 900px; margin: 0 auto; }
+        .audience-title { font-size: clamp(1.2rem, 4vw, 1.5rem); font-weight: 800; color: #111827; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 18px; display: flex; align-items: center; gap: 10px; }
+        .audience-title::after { content: ''; flex: 1; height: 1px; background: #e5e7eb; }
+        .audience-rows { display: flex; flex-direction: column; gap: 12px; }
+        .audience-row { display: flex; align-items: flex-start; gap: 12px; font-size: clamp(16px, 4vw, 18px); color: #1e293b; line-height: 1.5; font-weight: 500; opacity: 0; transform: translateY(8px); transition: opacity .35s ease, transform .35s ease; }
+        .audience-row.visible { opacity: 1; transform: translateY(0); }
+        .audience-icon { font-size: 1.3em; flex-shrink: 0; margin-top: 1px; }
+        .audience-row strong { color: #111827; font-weight: 800; }
+        .m-pagination-dots { display: flex; justify-content: center; align-items: center; gap: 8px; padding: 12px 0 20px; }
+        .m-dot { width: 8px; height: 8px; border-radius: 50%; background: #cbd5e1; cursor: pointer; transition: all .3s; }
+        .m-dot.active { width: 28px; border-radius: 10px; background: #1e293b; }
+        @media (min-width: 1181px) { .m-pagination-dots { display: none; } }
+
+        .desktop-modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(15,23,42,0.85); backdrop-filter: blur(10px); z-index: 99999; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: all 0.4s ease; }
+        .desktop-modal-overlay.show { opacity: 1; visibility: visible; }
+        .desktop-modal-content { display: flex; flex-direction: row; align-items: stretch; gap: 50px; background: transparent; max-width: 1300px; width: 90%; transform: scale(0.8) translateY(30px); transition: all 0.5s cubic-bezier(0.175,0.885,0.32,1.275); }
+        .desktop-modal-overlay.show .desktop-modal-content { transform: scale(1) translateY(0); }
+        .dm-card-wrap { flex: 0 0 450px; display: flex; justify-content: center; }
+        .dm-card-wrap .m-card { width: 100%; height: 750px; transform: none !important; opacity: 1 !important; cursor: default; margin: 0; border-radius: 28px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.5); background-size: cover !important; background-position: center !important; }
+        .dm-card-wrap .m-card-body { justify-content: flex-end !important; padding: 40px !important; }
+        .dm-card-wrap .m-buy-btn { font-size: 18px; padding: 16px 28px; }
+        .dm-card-wrap .desktop-click-hint { display: none !important; }
+        .dm-card-wrap .card-c .m-card-overlay { background: linear-gradient(180deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0.7) 40%, rgba(255,255,255,0.98) 100%) !important; }
+        .dm-card-wrap .card-c .m-title-big, .dm-card-wrap .card-c .m-title-small, .dm-card-wrap .card-c .m-section-label, .dm-card-wrap .card-c .m-point, .dm-card-wrap .card-c .m-price { color: #111827 !important; text-shadow: none !important; }
+        .dm-card-wrap .card-c .m-divider { background: #111827 !important; }
+        .dm-card-wrap .card-c .m-point-dot { background: #111827 !important; box-shadow: none !important; }
+        .dm-info-wrap { flex: 1; background: #fff; border-radius: 28px; padding: 50px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); position: relative; display: flex; flex-direction: column; justify-content: center; }
+        .dm-close-btn { position: absolute; top: 25px; right: 30px; font-size: 32px; cursor: pointer; color: #94a3b8; background: none; border: none; transition: 0.2s; }
+        .dm-close-btn:hover { color: #ef4444; transform: rotate(90deg); }
+        .dm-info-wrap .audience-title { font-size: 2.2rem; margin-bottom: 40px; color: #0f172a; }
+        .dm-info-wrap .audience-row { font-size: 1.4rem; margin-bottom: 30px; gap: 20px; align-items: center; }
+        .dm-info-wrap .audience-icon { font-size: 2.5rem; background: #f8fafc; padding: 15px; border-radius: 16px; }
+        .dm-info-wrap .audience-row strong { font-size: 1.6rem; display: block; margin-bottom: 5px; color: #1e293b; }
+        .dm-info-wrap .audience-desc-text { font-size: 1.25rem; color: #64748b; }
+
+        .features-wrapper { width: 100%; max-width: 1400px; margin: 30px auto 40px; padding: 20px 30px; box-sizing: border-box; }
+        .feature-item { box-sizing: border-box; position: relative; }
+        .feature-icon-wrapper { background: #eff6ff; border-radius: 50%; display: flex; justify-content: center; align-items: center; color: #0066ff; position: relative; flex-shrink: 0; }
+        .feature-icon-wrapper.photo-icon { background: #000; }
+        .feature-icon-wrapper.photo-icon img.icon-photo { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; display: block; }
+        .feature-badge { position: absolute; background: #ff4757; color: #fff; font-weight: 700; border-radius: 20px; box-shadow: 0 4px 6px rgba(0,0,0,.1); white-space: nowrap; z-index: 10; }
+        .feature-badge::after { content: ''; position: absolute; border-style: solid; border-color: #ff4757 transparent transparent transparent; }
+        .feature-text h3 { color: #1a2b4b; font-weight: 700; margin: 0; line-height: 1.4; }
+        .feature-text p { color: #7b859a; margin: 4px 0 0; }
+        .time-highlight { color: #0066ff; font-weight: 800; }
+        .terms-box { background: #f8f9fa; border-radius: 8px; padding: 15px; margin-top: 30px; color: #8fa0b3; font-size: 13px; line-height: 1.6; border: 1px solid #eef2f6; }
+        .terms-box strong { color: #5e6e82; font-weight: 600; }
+
+        @media (min-width: 768px) {
+            .feature-group-row { display: flex; justify-content: center; width: 100%; }
+            .feature-service-group { gap: 60px; margin-bottom: 50px; }
+            .feature-video-group { gap: 30px; flex-wrap: nowrap; }
+            .feature-item { display: flex; flex-direction: column; align-items: center; text-align: center; flex: 1; max-width: 300px; }
+            .feature-icon-wrapper { width: 120px; height: 120px; margin-bottom: 20px; }
+            .feature-icon-wrapper i { font-size: 50px; }
+            .feature-text h3 { font-size: 24px; margin-bottom: 10px; }
+            .feature-text p { font-size: 16px; }
+            .time-highlight { font-size: 18px; }
+            .feature-badge { top: 0px; right: -15px; font-size: 14px; padding: 5px 12px; }
+            .feature-badge::after { bottom: -5px; left: 15px; border-width: 5px 5px 0; }
+            .terms-box { text-align: center; max-width: 800px; margin-left: auto; margin-right: auto; }
+        }
+        @media (max-width: 767px) {
+            .features-wrapper { padding: 15px; margin-top: 10px; margin-bottom: 20px; }
+            .feature-group-row { display: flex; flex-direction: column; gap: 12px; }
+            .feature-service-group { margin-bottom: 12px; }
+            .feature-item { display: flex; flex-direction: row; align-items: center; text-align: left; width: 100%; background: #fff; border: 1px solid #eef2f6; border-radius: 12px; padding: 15px; box-shadow: 0 2px 4px rgba(0,0,0,.02); }
+            .feature-icon-wrapper { width: 55px; height: 55px; margin-right: 15px; }
+            .feature-icon-wrapper i { font-size: 24px; }
+            .feature-text { flex: 1; }
+            .feature-text h3 { font-size: 18px; margin-bottom: 4px; }
+            .feature-text p { font-size: 14px; line-height: 1.4; color: #6a7a8c; }
+            .feature-badge { top: -12px; right: -14px; font-size: 11px; padding: 4px 8px; }
+            .feature-badge::after { bottom: -4px; left: 8px; border-width: 4px 4px 0; }
+            .terms-box { font-size: 12px; padding: 15px; margin-top: 20px; }
+        }
+
+        .advice-wrapper { background: #fff; border-left: 6px solid var(--theme-blue); padding: 40px; box-shadow: 0 10px 30px rgba(0,0,0,0.06); border-radius: 12px; margin: 20px auto 60px; max-width: 900px; width: 90%; position: relative; }
+        .advice-icon { position: absolute; top: -20px; left: -20px; background: var(--theme-blue); color: #fff; width: 50px; height: 50px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 24px; box-shadow: 0 4px 10px rgba(0,101,255,0.4); }
+        .advice-title { font-size: 1.8rem; font-weight: 900; color: var(--text-main); margin-bottom: 25px; line-height: 1.3; }
+        .advice-content { font-size: 1.1rem; color: #4b5563; line-height: 1.8; display: flex; flex-direction: column; gap: 15px; }
+        .advice-content strong { color: var(--text-main); font-weight: 800; }
+        .advice-content span.highlight { color: var(--theme-blue); font-weight: 700; }
+
+        @media (min-width: 1181px) {
+            .advice-wrapper { max-width: 1100px; padding: 60px 70px; }
+            .advice-icon    { width: 65px; height: 65px; font-size: 32px; top: -28px; left: -28px; }
+            .advice-title   { font-size: 2.7rem; margin-bottom: 35px; }
+            .advice-content { font-size: 1.65rem; gap: 22px; }
+        }
+        @media (min-width: 769px) and (max-width: 1180px) {
+            .advice-wrapper { max-width: 95%; padding: 50px; }
+            .advice-icon    { width: 55px; height: 55px; font-size: 28px; top: -22px; left: -22px; }
+            .advice-title   { font-size: 2.2rem; }
+            .advice-content { font-size: 1.35rem; }
+        }
+        @media (max-width: 768px) {
+            .advice-wrapper { padding: 30px 20px; margin-top: 40px; border-left-width: 4px; }
+            .advice-icon    { width: 40px; height: 40px; font-size: 20px; top: -15px; left: -10px; }
+            .advice-title   { font-size: 1.4rem; }
+            .advice-content { font-size: 1rem; }
+        }
+
+        .contact-section { background: var(--bg-color); padding: 50px 20px 80px; width: 100%; }
+        .contact-wrap { max-width: 700px; margin: 0 auto; background: #fff; padding: 50px; border-radius: 16px; border: 1px solid #e5e7eb; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
+        .contact-header { text-align: center; margin-bottom: 30px; }
+        .contact-header h2 { font-size: 2rem; font-weight: 900; color: var(--text-main); margin: 0 0 10px; }
+        .contact-header p { color: #64748b; font-size: 1.1rem; margin: 0; }
+        .form-group { margin-bottom: 24px; text-align: left; }
+        .form-group label { display: block; font-weight: 700; margin-bottom: 8px; font-size: 1rem; color: var(--text-main); }
+        .form-group input, .form-group textarea { width: 100%; padding: 14px 18px; border: 1.5px solid #cbd5e1; border-radius: 8px; font-family: inherit; font-size: 1rem; transition: border-color .2s; background: #f8fafc; }
+        .form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--theme-blue); background: #fff; }
+        #contact-submit { width: 100%; font-size: 1.15rem; padding: 16px; margin-top: 10px; cursor: pointer; border: none; font-family: inherit; font-weight: 800; background: var(--theme-blue); color: #fff; border-radius: 50px; transition: all 0.3s; box-shadow: 0 4px 15px rgba(0,101,255,0.3); }
+        #contact-submit:hover { transform: translateY(-2px); background: #0056cc; box-shadow: 0 6px 20px rgba(0,101,255,0.4); }
+        #contact-submit:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+        @media (max-width: 768px) { .contact-wrap { padding: 30px 20px; } .contact-header h2 { font-size: 1.6rem; } }
+
+        .cart-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,.55); z-index: 20000; opacity: 0; visibility: hidden; transition: opacity .4s, visibility .4s; }
+        .cart-overlay.open { opacity: 1; visibility: visible; }
+        .cart-panel { position: fixed; top: 0; right: -100%; width: min(520px, 100%); height: 100dvh; background: #fff; box-shadow: -8px 0 40px rgba(0,0,0,0.15); z-index: 20001; transition: right .45s cubic-bezier(.25,.46,.45,.94); display: flex; flex-direction: column; overflow: hidden; }
+        .cart-panel.open { right: 0; }
+        .cart-header-bar { display: flex; align-items: center; justify-content: space-between; padding: 22px 24px 18px; border-bottom: 1px solid #f1f5f9; flex-shrink: 0; background: #fff; }
+        .cart-header-bar h3 { margin: 0; font-size: 1.35rem; font-weight: 900; color: #0f172a; display: flex; align-items: center; gap: 10px; }
+        .cart-header-bar h3 i { color: var(--theme-blue); font-size: 1.1rem; }
+        .cart-close-x { background: #f1f5f9; border: none; border-radius: 50%; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 1.1rem; color: #64748b; transition: background .2s, color .2s; flex-shrink: 0; }
+        .cart-close-x:hover { background: #fee2e2; color: #ef4444; }
+        .cart-scroll-body { flex: 1; overflow-y: auto; padding: 0; scrollbar-width: thin; scrollbar-color: #e2e8f0 transparent; }
+        .cart-scroll-body::-webkit-scrollbar { width: 4px; }
+        .cart-scroll-body::-webkit-scrollbar-thumb { background: #e2e8f0; border-radius: 4px; }
+        .cart-items-section { padding: 20px 24px; border-bottom: 1px solid #f1f5f9; }
+        .cart-items-section-label { font-size: 0.72rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 800; color: #94a3b8; margin-bottom: 14px; }
+        .cart-item { display: flex; align-items: flex-start; gap: 14px; padding: 14px 0; border-bottom: 1px solid #f8fafc; }
+        .cart-item:last-child { border-bottom: none; }
+        .cart-item-icon { width: 46px; height: 46px; border-radius: 12px; background: linear-gradient(135deg, #eff6ff, #dbeafe); display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; }
+        .cart-item-info { flex: 1; }
+        .cart-item-name { font-size: 0.95rem; font-weight: 700; color: #0f172a; line-height: 1.4; margin-bottom: 3px; }
+        .cart-item-desc { font-size: 0.8rem; color: #94a3b8; font-weight: 500; }
+        .remove-item-btn { background: none; border: none; color: #cbd5e1; cursor: pointer; font-size: 1rem; padding: 4px; transition: color .2s; flex-shrink: 0; margin-top: 2px; }
+        .remove-item-btn:hover { color: #ef4444; }
+        .cart-item-price { font-size: 1rem; font-weight: 800; color: #0f172a; white-space: nowrap; flex-shrink: 0; padding-top: 2px; }
+        .cart-empty-state { text-align: center; padding: 40px 20px; color: #94a3b8; }
+        .cart-empty-state i { font-size: 2.5rem; margin-bottom: 12px; display: block; }
+        .cart-empty-state p { font-size: 1rem; font-weight: 600; margin: 0; }
+        .cart-total-bar { padding: 16px 24px; background: #f8fafc; border-top: 1px solid #f1f5f9; border-bottom: 1px solid #f1f5f9; }
+        .cart-total-row { display: flex; justify-content: space-between; align-items: center; }
+        .cart-total-label { font-size: 1rem; font-weight: 700; color: #64748b; }
+        .cart-total-amount { font-size: 1.4rem; font-weight: 900; color: #0f172a; }
+        .cart-checkout-section { padding: 20px 24px 28px; }
+        .checkout-section-label { font-size: 0.72rem; letter-spacing: 2px; text-transform: uppercase; font-weight: 800; color: #94a3b8; margin-bottom: 16px; }
+        .checkout-email-group { margin-bottom: 16px; }
+        .checkout-email-label { display: block; font-size: 0.9rem; font-weight: 700; color: #374151; margin-bottom: 8px; }
+        .checkout-email-input { width: 100%; padding: 14px 16px; border: 2px solid #e2e8f0; border-radius: 12px; font-family: inherit; font-size: 1rem; font-weight: 500; color: #0f172a; background: #f8fafc; transition: border-color .2s, background .2s; outline: none; }
+        .checkout-email-input:focus { border-color: var(--theme-blue); background: #fff; box-shadow: 0 0 0 3px rgba(0,101,255,0.08); }
+        .checkout-email-input::placeholder { color: #94a3b8; }
+        #sidebar-checkout-btn { width: 100%; border: none; border-radius: 50px; padding: 16px 24px; font-family: inherit; font-size: 1.05rem; font-weight: 800; background: linear-gradient(135deg, #0065ff, #0046cc); color: #fff; cursor: pointer; box-shadow: 0 6px 20px rgba(0,101,255,0.3); transition: all .3s; display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 16px; }
+        #sidebar-checkout-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(0,101,255,0.4); }
+        #sidebar-checkout-btn:disabled { opacity: 0.65; cursor: not-allowed; transform: none; }
+        .checkout-line-cta { display: flex; align-items: center; justify-content: center; gap: 8px; text-decoration: none; color: #00B900; font-size: 0.95rem; font-weight: 800; background: #f0fff0; border: 1.5px solid #bbf7d0; border-radius: 12px; padding: 13px 16px; transition: background .2s; margin-bottom: 18px; }
+        .checkout-line-cta:hover { background: #dcfce7; }
+        .checkout-line-cta img { width: 20px; height: 20px; object-fit: contain; }
+        .checkout-payment-info { background: #f8fafc; border-radius: 12px; padding: 14px 16px; border: 1px solid #e2e8f0; }
+        .checkout-payment-title { font-size: 0.8rem; font-weight: 800; color: #64748b; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 8px; }
+        .checkout-payment-row { display: flex; align-items: center; gap: 10px; font-size: 0.9rem; font-weight: 600; color: #374151; }
+        .checkout-payment-row i { color: var(--theme-blue); width: 16px; }
+        .tls-info { text-align: center; color: #94a3b8; font-size: 0.75rem; margin-top: 12px; display: flex; align-items: center; justify-content: center; gap: 5px; }
+        .tls-info i { font-size: 0.7rem; color: #10b981; }
+        .plan-c-selection-header { font-size: 1.1rem; font-weight: 800; color: var(--theme-orange); margin-bottom: 16px; text-align: center; }
+        .plan-c-option-card { border: 2px solid #f1f5f9; border-radius: 14px; padding: 16px; margin-bottom: 12px; cursor: pointer; transition: all .2s; background: #fff; }
+        .plan-c-option-card:hover { border-color: var(--theme-orange); background: #fff7ed; transform: translateY(-2px); box-shadow: 0 4px 15px rgba(249,115,22,0.1); }
+        .plan-c-opt-title { font-weight: 700; font-size: 1rem; color: #0f172a; margin-bottom: 4px; }
+        .plan-c-opt-price { font-weight: 900; color: #0f172a; font-size: 1.15rem; display: block; text-align: right; margin-top: 4px; }
+        .plan-c-opt-select-btn { margin-top: 10px; width: 100%; color: #fff; border: none; padding: 10px; border-radius: 8px; font-weight: 800; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 6px; font-size: 0.9rem; }
+        .btn-plan-c-a { background: #d41165 !important; }
+        .btn-plan-c-b { background: #8f0988 !important; }
+        .btn-plan-c-combo { background: #e65100 !important; }
+        @media (max-width: 520px) {
+            .cart-panel { width: 100%; }
+            .cart-header-bar { padding: 18px 16px 14px; }
+            .cart-header-bar h3 { font-size: 1.2rem; }
+            .cart-items-section { padding: 16px; }
+            .cart-checkout-section { padding: 16px 16px 24px; }
+            .cart-total-bar { padding: 14px 16px; }
+            .checkout-email-input { font-size: 16px; }
+            #sidebar-checkout-btn { font-size: 1rem; padding: 15px 20px; }
+        }
+
+        #thank-you-page { display: none; padding: 20px; box-sizing: border-box; }
+        .thank-you-container { max-width: 900px; width: 100%; margin: 0 auto; background: #f9f9f9; border: 1px solid #e0e0e0; }
+        .ty-left-panel { background: #fff; padding: 40px; }
+        .ty-right-panel { background: #f9f9f9; padding: 40px; }
+        .ty-checkmark { font-size: 48px; color: #27ae60; }
+        .ty-header { display: flex; align-items: center; gap: 15px; font-size: 28px; color: #333; margin: 15px 0; }
+        .ty-message { color: #555; line-height: 1.6; }
+        .ty-order-details { margin-top: 30px; padding-top: 20px; border-top: 1px solid #eee; }
+        .ty-detail-item { display: flex; justify-content: space-between; padding: 8px 0; font-size: 14px; align-items: center; }
+        .ty-summary-header { font-size: 18px; color: #555; margin: 0 0 20px; border-bottom: 1px solid #ddd; padding-bottom: 10px; }
+        .ty-order-item { padding-bottom: 15px; border-bottom: 1px solid #eee; }
+        .ty-item-details { display: flex; justify-content: space-between; align-items: flex-start; gap: 15px; }
+        .ty-item-info { font-weight: bold; }
+        .ty-item-price { font-weight: bold; white-space: nowrap; }
+        #ty-order-id { font-size: 2em; color: #007bff; font-weight: bold; }
+        .ty-line-link { color: green; font-weight: bold; text-decoration: none; }
+        #continue-shopping-btn { color: blue; cursor: pointer; text-decoration: underline; margin-right: 20px; }
+        #close-btn { color: red; cursor: pointer; text-decoration: underline; }
+        @media (min-width: 1025px) { .thank-you-container { display: flex; gap: 30px; } .ty-left-panel { flex-basis: 55%; } .ty-right-panel { flex-basis: 45%; } }
+    </style>
 </head>
-<body>
+<body class="no-scroll">
 
-<div id="loader">
-  <div class="loader-ring"></div>
-  <div class="loader-text">Loading workspace…</div>
+<!-- ====== 開場動畫遮罩區塊 (白底) ====== -->
+<section class="gept-loader-section">
+    <button class="skip-btn" id="skipBtn">跳過 ›</button>
+
+    <div class="gept-loader-content">
+        <!-- 序列 1: GEPT... X ... Tony... -->
+        <div class="anim-group" id="group1">
+            <div class="giant-text text-blue">GEPT 全民英檢<br>「中級寫作」</div>
+            <div class="giant-text text-gray">Ｘ</div>
+            <div class="giant-text text-orange">Tony線上美語家教</div>
+        </div>
+
+        <!-- 序列 2: 1. 這一次 -->
+        <div class="anim-group" id="group2" style="display:none;">
+            <div class="giant-text text-gold">1. 這一次</div>
+        </div>
+
+        <!-- 序列 3: 全新方法 × 全新思維 -->
+        <div class="anim-group" id="group3" style="display:none;">
+            <div class="giant-text text-dark">全新方法 × 全新思維</div>
+        </div>
+
+        <!-- 序列 4: 順利通過英檢寫作 -->
+        <div class="anim-group" id="group4" style="display:none;">
+            <div class="giant-text text-green">順利通過英檢寫作</div>
+        </div>
+
+        <!-- 序列 5: Ticker (跑馬燈) -->
+        <div class="anim-group" id="group5" style="display:none;">
+            <div class="gept__ticker">
+                <div class="gept__ticker-line">六回影片課程</div>
+                <div class="gept__ticker-line">三回影片課程</div>
+                <div class="gept__ticker-line">加強課程</div>
+                <div class="gept__ticker-line">寫作批改</div>
+                <div class="gept__ticker-line">高分範本</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- HERO -->
+<div class="hero-section">
+    <div class="hero-brand-mobile">GEPT 全民英檢<br>「<span class="highlight-red">中級寫作</span>」</div>
+
+    <div class="hero-content">
+        <div class="hero-brand-inline">GEPT 全民英檢<br>「<span class="highlight-red">中級寫作</span>」</div>
+
+        <div class="hero-intro">這一次</div>
+        <h1 class="hero-title-large">
+            <span class="scale-up">全新方法</span><span class="desktop-x-space"> </span><br class="m-break">×<span class="desktop-x-space"> </span><br class="m-break"><span class="scale-up">全新思維</span><br>順利通過英檢寫作
+        </h1>
+
+        <span class="hero-sub-text">影片課程X寫作加強❖1-1家教❖批改❖範本</span>
+
+        <div class="hero-pills">
+            <div class="hero-pill"><i class="fa-solid fa-circle-play"></i> 六回影片課程</div>
+            <div class="hero-pill"><i class="fa-solid fa-circle-play"></i> 三回影片課程</div>
+            <div class="hero-pill"><i class="fa-solid fa-chalkboard-user"></i> 加強課程</div>
+            <div class="hero-pill"><i class="fa-solid fa-user-pen"></i> 寫作批改</div>
+            <div class="hero-pill"><i class="fa-solid fa-star"></i> 高分範本</div>
+        </div>
+
+        <div class="hero-action-group">
+            <a href="#content-start" class="hero-btn">了解詳細方案 <i class="fa-solid fa-arrow-down"></i></a>
+            <div class="hero-links">
+                <a href="https://tonyonlineenglish.netlify.app/exper" target="_blank" class="secondary-btn"><i class="fa-solid fa-calendar-check"></i> 預約體驗課程</a>
+                <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="secondary-btn line-btn"><img src="https://ik.imagekit.io/lql1uveoc/line.png?updatedAt=1761926064215" alt="LINE" style="width:18px;height:18px;object-fit:contain;"> 加入 LINE</a>
+            </div>
+        </div>
+    </div>
 </div>
 
-<div id="toast"></div>
+<div class="pricing-wrapper" id="content-start">
 
-<!-- ─── GLOBAL HEADER ───────────────────────────────── -->
-<header class="global-header">
-  <div class="hrow1">
-    <div class="logo"><div class="logo-dot"></div>WORKSPACE</div>
-    <div class="current-date-bar" id="currentDateBar">—</div>
-    <div class="saving-pill" id="globalSavingPill" style="display:none">
-      <span class="saving-spin"></span>SAVING
-    </div>
-  </div>
-  <div class="tabs-container">
-    <div class="tabs">
-      <button class="tab active" data-target="tutor" onclick="switchApp('tutor')">Tutor Tracker</button>
-      <button class="tab" data-target="trivia" onclick="switchApp('trivia')">Trivia</button>
-      <button class="tab" data-target="website" onclick="switchApp('website')">Website Idea</button>
-    </div>
-  </div>
-</header>
+    <!-- CARDS SECTION -->
+    <div class="cards-section">
+        <div class="cards-section-header">
+            <h2>
+                <img src="https://ik.imagekit.io/lql1uveoc/Front%20Page/GEPT_logo.svg.png?updatedAt=1756611596300" class="header-logo" alt="GEPT">
+                <span>
+                    <span style="color:#1242a3;">GEPT 全民英檢</span>「<span style="color:#dc2626;">中級寫作</span>」
+                    <br class="m-break-header">
+                    影片課程+加強
+                </span>
+            </h2>
+        </div>
 
-<!-- ─── APP 1: TUTOR TRACKER VIEW ───────────────────── -->
-<div id="view-tutor" class="view-section active">
-  <div class="tutor-subhead">
-    <div class="tutor-actions">
-      <button class="today-pill" onclick="goToday()">THIS WEEK</button>
-      <div class="summary-pill" id="summaryPill">—</div>
+        <div class="slider-track" id="main-slider">
+            <!-- Card B: 6回 -->
+            <div class="m-card card-b active" id="m-card-0" onclick="handleCardClick(0)" onmouseenter="if(window.innerWidth>=1181) updateMActive(0)">
+                <div class="m-card-overlay"></div>
+                <img class="m-gept-logo" src="https://ik.imagekit.io/lql1uveoc/Front%20Page/GEPT_logo.svg.png?updatedAt=1756611596300" alt="GEPT">
+                <div class="desktop-click-hint">請點選</div>
+                <div class="m-card-body">
+                    <div class="card-top-text">
+                        <span class="m-title-big">6回</span>
+                        <span class="m-title-small">完整影片課程</span>
+                        <span class="m-duration-badge"><i class="fa-solid fa-clock"></i> 7h 38m</span>
+                    </div>
+                    <div class="m-divider"></div>
+                    <div class="m-section-label">課程內容</div>
+                    <div class="m-points">
+                        <div class="m-point"><div class="m-point-dot"></div><span>6 回翻譯+寫作影片詳解</span></div>
+                        <div class="m-point"><div class="m-point-dot"></div><span><span style="border-bottom:2px solid #f59e0b;padding-bottom:1px;">贈</span> 4 回雙師專業批改</span></div>
+                        <div class="m-point"><div class="m-point-dot"></div><span><span style="border-bottom:2px solid #f59e0b;padding-bottom:1px;">贈</span> 2 堂 1-1 線上家教（50分/堂）</span></div>
+                    </div>
+                    <div class="m-price-row">
+                        <div class="m-price">NT$6,600</div>
+                        <button class="m-buy-btn" onclick="event.stopPropagation(); addToCart('course-6A')">加入購物車</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card A: 3回 -->
+            <div class="m-card card-a" id="m-card-1" onclick="handleCardClick(1)" onmouseenter="if(window.innerWidth>=1181) updateMActive(1)">
+                <div class="m-card-overlay"></div>
+                <img class="m-gept-logo" src="https://ik.imagekit.io/lql1uveoc/Front%20Page/GEPT_logo.svg.png?updatedAt=1756611596300" alt="GEPT">
+                <div class="desktop-click-hint">請點選</div>
+                <div class="m-card-body">
+                    <div class="card-top-text">
+                        <span class="m-title-big">3回</span>
+                        <span class="m-title-small">完整影片課程</span>
+                        <span class="m-duration-badge"><i class="fa-solid fa-clock"></i> 3h 36m</span>
+                    </div>
+                    <div class="m-divider"></div>
+                    <div class="m-section-label">課程內容</div>
+                    <div class="m-points">
+                        <div class="m-point"><div class="m-point-dot"></div><span>3 回翻譯+寫作影片詳解</span></div>
+                        <div class="m-point"><div class="m-point-dot"></div><span><span style="border-bottom:2px solid #3b82f6;padding-bottom:1px;">贈</span> 2 回雙師專業批改</span></div>
+                        <div class="m-point"><div class="m-point-dot"></div><span><span style="border-bottom:2px solid #3b82f6;padding-bottom:1px;">贈</span> 1 堂 1-1 線上家教（50分/堂）</span></div>
+                    </div>
+                    <div class="m-price-row">
+                        <div class="m-price">NT$3,650</div>
+                        <button class="m-buy-btn" onclick="event.stopPropagation(); addToCart('course-3A')">加入購物車</button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Card C: 中級寫作加強 -->
+            <div class="m-card card-c" id="m-card-2" onclick="handleCardClick(2)" onmouseenter="if(window.innerWidth>=1181) updateMActive(2)">
+                <div class="m-card-overlay"></div>
+                <img class="m-gept-logo" src="https://ik.imagekit.io/lql1uveoc/Front%20Page/GEPT_logo.svg.png?updatedAt=1756611596300" alt="GEPT">
+                <div class="desktop-click-hint">請點選</div>
+                <div class="m-card-body">
+                    <div class="card-top-text">
+                        <span class="m-title-big">中級寫作</span>
+                        <span class="m-title-small">加強課程</span>
+                    </div>
+                    <div class="m-divider"></div>
+                    <div class="m-section-label">客製化選項</div>
+                    <div class="m-points">
+                        <div class="m-point"><div class="m-point-dot"></div>選 A：4 回批改 + 2 堂家教</div>
+                        <div class="m-point"><div class="m-point-dot"></div>選 B：6 堂 1-1 家教課程</div>
+                        <div class="m-point"><div class="m-point-dot"></div>優惠 A+B：8 堂 + 4 回批改</div>
+                    </div>
+                    <div class="m-price-row">
+                        <div class="m-price">NT$3,000起</div>
+                        <button class="m-buy-btn" onclick="event.stopPropagation(); openPlanC_InCart()">選擇方案</button>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="m-pagination-dots">
+            <div class="m-dot active" id="m-dot-0" onclick="scrollToMCard(0)"></div>
+            <div class="m-dot" id="m-dot-1" onclick="scrollToMCard(1)"></div>
+            <div class="m-dot" id="m-dot-2" onclick="scrollToMCard(2)"></div>
+        </div>
+
+        <div class="audience-panel">
+            <div class="audience-panel-inner">
+                <div class="audience-title" id="audience-plan-name">適合對象</div>
+                <div class="audience-rows" id="audience-rows"></div>
+            </div>
+        </div>
     </div>
-    <div class="week-nav">
-      <button class="nav-btn" id="prevBtn" onclick="changeWeek(-1)">&#8249;</button>
-      <div id="weekLabel">—</div>
-      <button class="nav-btn" id="nextBtn" onclick="changeWeek(1)">&#8250;</button>
+
+    <!-- DESKTOP MODAL -->
+    <div id="desktop-modal" class="desktop-modal-overlay" onclick="closeDesktopModal()">
+        <div class="desktop-modal-content" onclick="event.stopPropagation()">
+            <div class="dm-card-wrap" id="dm-card-container"></div>
+            <div class="dm-info-wrap" id="dm-info-container"></div>
+        </div>
     </div>
-  </div>
-  <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
-  <div class="grid" id="grid"></div>
+
+    <!-- FEATURES -->
+    <div class="features-wrapper">
+        <div class="feature-group-row feature-service-group">
+            <div class="feature-item">
+                <div class="feature-icon-wrapper">
+                    <span class="feature-badge">獨家</span>
+                    <i class="fa-solid fa-user-pen"></i>
+                </div>
+                <div class="feature-text"><h3>雙師專業批改+評分</h3><p>修飾語感 ＋ 點評邏輯 ＋ 範本提供</p></div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon-wrapper photo-icon">
+                    <span class="feature-badge">贈送</span>
+                    <img class="icon-photo" src="https://ik.imagekit.io/lql1uveoc/IMG_09A0004238E3-1.jpeg?updatedAt=1751447767489" alt="1-1 真人家教">
+                </div>
+                <div class="feature-text"><h3>1-1 真人寫作診斷課程</h3><p>50分鐘/堂，彈性線上預約(或Line)</p></div>
+            </div>
+        </div>
+        <div class="feature-group-row feature-video-group">
+            <div class="feature-item">
+                <div class="feature-icon-wrapper"><i class="fa-solid fa-circle-play"></i></div>
+                <div class="feature-text"><h3>精選 3 回影片組</h3><p>總時長 <span class="time-highlight">3小時 36分</span></p></div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon-wrapper"><i class="fa-solid fa-layer-group"></i></div>
+                <div class="feature-text"><h3>完整 6 回影片組</h3><p>總時長 <span class="time-highlight">7小時 38分</span></p></div>
+            </div>
+            <div class="feature-item">
+                <div class="feature-icon-wrapper"><i class="fa-solid fa-infinity"></i></div>
+                <div class="feature-text"><h3>無期限觀看</h3><p>課程影片可重複播放複習</p></div>
+            </div>
+        </div>
+        <div class="terms-box"><strong>💡 組合優惠說明：</strong><br>本專案包含之真人服務（批改評分與家教）。贈送項目為限時福利，恕不折現或抵扣主課程費用。</div>
+    </div>
+
+    <!-- TONY ADVICE -->
+    <div class="advice-wrapper">
+        <div class="advice-icon"><i class="fa-solid fa-lightbulb"></i></div>
+        <div class="advice-title">Tony 線上美語家教<br>給予全民英檢學員的建議</div>
+        <div class="advice-content">
+            <p>準備全民英檢中級寫作，最大的盲點往往在於「死背高深單字與生硬的模板」，卻忽略了最基本的「句型邏輯」與「中英轉換思維」。綜合眾多高分通關學員的回饋，我們總結出三大致勝關鍵：</p>
+            <p><strong>1. 丟掉死記硬背的模板：</strong><br>用你真正懂的單字，寫出文法正確的句子，遠比硬塞一個用錯的「高級單字」拿分更高。<span class="highlight">靈活替換</span>才是語言的本質。</p>
+            <p><strong>2. 強化中翻英的底子：</strong><br>翻譯題其實就是寫作的縮影。打好翻譯基礎，你的作文自然言之有物，不會落入中式英文的陷阱。</p>
+            <p><strong>3. 突破「自己看不出錯」的盲點：</strong><br>自己練寫作，很容易一直犯相同的錯誤。透過專業的<span class="highlight">雙師批改</span>與<span class="highlight">1對1真人診斷</span>，能在一針見血的指導下，省去你大量摸索與挫折的時間。</p>
+            <p style="text-align:center;margin-top:10px;font-weight:800;color:var(--theme-blue);">寫作不靠運氣，靠的是清晰的邏輯與刻意練習！</p>
+        </div>
+    </div>
+
+    <!-- CONTACT -->
+    <section class="contact-section" id="contact">
+        <div class="contact-wrap">
+            <div class="contact-header">
+                <h2>聯繫我們</h2>
+                <p>有任何課程問題？歡迎填寫表單與我們聯繫</p>
+            </div>
+            <form id="contact-form" onsubmit="submitContactForm(event)">
+                <div class="form-group"><label>姓名 Name *</label><input type="text" id="contact-name" placeholder="請填寫您的姓名" required></div>
+                <div class="form-group"><label>Email *</label><input type="email" id="contact-email" placeholder="example@gmail.com" required></div>
+                <div class="form-group"><label>Line ID (選填)</label><input type="text" id="contact-line" placeholder="方便老師與您快速聯繫"></div>
+                <div class="form-group"><label>學習需求 *</label><textarea id="contact-needs" rows="5" placeholder="請簡述您的程度與目前遇到的寫作瓶頸..." required></textarea></div>
+                <button type="submit" id="contact-submit">送出訊息 <i class="fa-solid fa-paper-plane"></i></button>
+            </form>
+            <div id="contact-msg" style="display:none;text-align:center;padding:30px;font-size:1.2rem;color:#00B900;font-weight:700;">✓ 訊息已成功送出！Tony 老師將會盡快與您聯繫。</div>
+        </div>
+    </section>
+
 </div>
 
-<!-- ─── APP 2: PROJECT TRACKER VIEW ─────────────────── -->
-<div id="view-project" class="view-section">
-  <div class="filter-bar">
-    <button class="filter-btn active" onclick="setProjFilter('all',this)">All</button>
-    <button class="filter-btn" onclick="setProjFilter('todo',this)">To Do</button>
-    <button class="filter-btn" onclick="setProjFilter('done',this)">Done</button>
-    <div class="filter-sep"></div>
-    <button class="filter-btn" onclick="setProjFilter('urgent',this)">Urgent</button>
-    <button class="filter-btn" onclick="setProjFilter('necessary',this)">Necessary</button>
-    <button class="filter-btn" onclick="setProjFilter('normal',this)">Normal</button>
-    
-    <div class="proj-actions">
-      <span class="task-count" id="taskCount">0 項</span>
-      <button id="overdueBtn" class="overdue-btn" onclick="openOverdueModal()">&#9888; <span id="overdueCount">0</span> OVERDUE</button>
-      <button class="add-btn" onclick="openAddModal()">+ ADD</button>
+<!-- CART -->
+<div id="cart-overlay" class="cart-overlay" onclick="toggleCartPanel()"></div>
+<div id="cart-panel" class="cart-panel">
+    <div class="cart-header-bar">
+        <h3><i class="fa-solid fa-bag-shopping"></i> 購物車</h3>
+        <button class="cart-close-x" onclick="toggleCartPanel()" aria-label="關閉"><i class="fa-solid fa-xmark"></i></button>
     </div>
-  </div>
-  
-  <div class="list-wrap" id="listWrap"></div>
-
-  <!-- Project Tracker Modals (Nested to inherit var(--scale)) -->
-  <div class="p-modal-overlay" id="addModal">
-    <div class="p-modal">
-      <h2>NEW TASK</h2>
-      <div class="form-group">
-        <label>TASK DESCRIPTION</label>
-        <input type="text" id="taskText" placeholder="What needs to be done?" autocomplete="off" />
-      </div>
-      <div class="form-group">
-        <label>PRIORITY</label>
-        <select id="taskPriority">
-          <option value="normal">Normal</option>
-          <option value="necessary">Necessary</option>
-          <option value="urgent">Urgent</option>
-        </select>
-      </div>
-      <div class="modal-actions">
-        <button class="p-btn p-btn-cancel" onclick="closeModals()">CANCEL</button>
-        <button class="p-btn p-btn-submit" onclick="saveNewTask()">SAVE</button>
-      </div>
+    <div class="cart-scroll-body" id="cart-scroll-body">
+        <div class="cart-items-section">
+            <div class="cart-items-section-label">已選課程</div>
+            <div id="cart-items-container"><div class="cart-empty-state"><i class="fa-regular fa-face-smile-beam"></i><p>購物車是空的</p></div></div>
+        </div>
+        <div class="cart-total-bar" id="cart-total-container" style="display:none;">
+            <div class="cart-total-row"><span class="cart-total-label">總計</span><span class="cart-total-amount" id="cart-total-amount">NT$0</span></div>
+        </div>
+        <div class="cart-checkout-section">
+            <div class="checkout-section-label">結帳資訊</div>
+            <div class="checkout-email-group">
+                <label class="checkout-email-label" for="email"><i class="fa-solid fa-envelope" style="color:var(--theme-blue);margin-right:6px;"></i>電子信箱 *</label>
+                <input type="email" id="email" class="checkout-email-input" placeholder="請輸入您的 Email" autocomplete="email" inputmode="email">
+            </div>
+            <button type="button" id="sidebar-checkout-btn" onclick="handleCheckout()"><i class="fa-solid fa-check-circle"></i> 確認送出訂單</button>
+            <a class="checkout-line-cta" href="https://line.me/ti/p/T9YdimtG8_" target="_blank">
+                <img src="https://ik.imagekit.io/lql1uveoc/line.png?updatedAt=1761926064215" alt="LINE"> 加入 LINE 洽詢：Myavalon
+            </a>
+            <div class="checkout-payment-info">
+                <div class="checkout-payment-title">付款方式</div>
+                <div class="checkout-payment-row"><i class="fa-solid fa-building-columns"></i> 匯款 ／ LINE Pay ／ iPass Money</div>
+            </div>
+            <p class="tls-info"><i class="fa-solid fa-lock"></i> 所有資料透過 TLS 加密傳輸</p>
+        </div>
     </div>
-  </div>
-
-  <div class="p-modal-overlay" id="overdueModal">
-    <div class="p-modal">
-      <h2 style="color:var(--red)">&#9888; UNFINISHED TASKS</h2>
-      <div class="overdue-list" id="overdueList"></div>
-      <div class="modal-actions"><button class="p-btn p-btn-cancel" onclick="closeModals()">CLOSE</button></div>
-    </div>
-  </div>
 </div>
 
+<!-- THANK YOU -->
+<div id="thank-you-page" style="display:none;">
+    <div class="thank-you-container">
+        <div class="ty-left-panel">
+            <div class="ty-checkmark">✓</div>
+            <h2 class="ty-header">感謝您的訂購！🎉</h2>
+            <p class="ty-message">您的訂單已成功建立。確認信已寄送至您的電子信箱，請檢查您的收件匣。</p>
+            <div class="ty-order-details">
+                <div class="ty-detail-item"><span>訂單編號</span><span id="ty-order-id"></span></div>
+                <div class="ty-detail-item"><span>訂單時間</span><span id="ty-order-timestamp"></span></div>
+                <div class="ty-detail-item"><span>電子信箱</span><span id="ty-customer-email"></span></div>
+            </div>
+            <div style="margin-top:20px;">
+                <h3>如何付款:</h3>
+                <p><a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="ty-line-link">請點選加入Line: myavalon</a></p>
+                <p>匯款或可以使用Line Pay/iPassMoney 付款</p>
+                <p>交易成功後煩請告知，將提供學費證明。感謝 ＾＾</p>
+            </div>
+            <div style="margin-top:20px;"><a id="continue-shopping-btn" onclick="location.reload()">繼續購物</a>&nbsp;&nbsp;<a id="close-btn" onclick="location.reload()">關閉</a></div>
+        </div>
+        <div class="ty-right-panel">
+            <h3 class="ty-summary-header">訂單摘要</h3>
+            <div id="ty-cart-items-container"></div>
+            <div id="ty-total-container" class="cart-total"></div>
+        </div>
+    </div>
+</div>
+
+<!-- ====== 開場動畫專屬腳本 (GSAP) ====== -->
 <script>
-/* ─── GLOBAL CONFIG & STATE ─────────────────────────── */
-const API_TUTOR = 'https://script.google.com/macros/s/AKfycbwkNK3C7TZpKosUJlmDvniNrR7AweBvscDymOBnCWv84XYm-KSQpjPHdXq5b45v_wYNcQ/exec';
-const API_PROJ  = 'https://script.google.com/macros/s/AKfycbytaAAN3vXLMK2pxkmZRzGjqHnVHbmoC00J4HsPWEN90qTx29Y69jYTQAe0VJHCzujb4Q/exec';
+    function initIntroAnimation() {
+        const loader = document.querySelector('.gept-loader-section');
+        const skipBtn = document.getElementById('skipBtn');
+        const body = document.body;
 
-let globalSaves = 0;
-const CN_DAYS = ['日','一','二','三','四','五','六'];
-const EN_DAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+        // 如果 Session Storage 記錄過，則直接跳過不播動畫
+        if (sessionStorage.getItem("geptIntroSeen")) {
+            loader.style.display = 'none';
+            body.classList.remove('no-scroll');
+            body.classList.add('start-main-anim'); // 開始播放首頁本體動畫
+            return;
+        }
 
-// Utility functions
-function incSave() { globalSaves++; updateSavePill(); }
-function decSave() { globalSaves = Math.max(0, globalSaves - 1); updateSavePill(); }
-function updateSavePill() { document.getElementById('globalSavingPill').style.display = globalSaves > 0 ? 'inline-flex' : 'none'; }
-function showLoader(show) { document.getElementById('loader').classList.toggle('out', !show); }
-function fmtDate(d) { return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
-function escapeHtml(str) { return str.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+        // 0.5 秒後顯示跳過按鈕
+        setTimeout(() => skipBtn.classList.add('visible'), 500);
 
-let _toastTimer;
-function toast(msg, type = '') {
-  const el = document.getElementById('toast');
-  el.innerHTML = msg; el.className = ['show', type].filter(Boolean).join(' ');
-  clearTimeout(_toastTimer); _toastTimer = setTimeout(() => { el.className = ''; }, 2600);
-}
+        function endAnimation() {
+            sessionStorage.setItem("geptIntroSeen", "1");
+            skipBtn.style.display = 'none';
+            gsap.to(loader, {
+                opacity: 0, 
+                duration: 0.5, 
+                ease: "power2.inOut",
+                onComplete: () => {
+                    loader.style.display = 'none';
+                    body.classList.remove('no-scroll');
+                    body.classList.add('start-main-anim'); // 動畫結束，首頁本體文字飛入
+                }
+            });
+        }
 
-function updateCurrentDateBar() {
-  const now = new Date();
-  const y = now.getFullYear();
-  const m = String(now.getMonth() + 1).padStart(2, '0');
-  const d = String(now.getDate()).padStart(2, '0');
-  const dow = now.getDay();
-  document.getElementById('currentDateBar').textContent = `${y}.${m}.${d}  ${EN_DAYS[dow]}  ${CN_DAYS[dow]}`;
-}
-setInterval(updateCurrentDateBar, 60000);
+        skipBtn.addEventListener("click", () => {
+            gsap.killTweensOf("*");
+            endAnimation();
+        });
 
-function apiFetch(url, action, params = {}) {
-  return new Promise((resolve, reject) => {
-    const cbName = '_cb_' + Date.now() + '_' + Math.floor(Math.random() * 1e6);
-    const fullUrl = new URL(url);
-    fullUrl.searchParams.set('action', action);
-    fullUrl.searchParams.set('callback', cbName);
-    Object.entries(params).forEach(([k, v]) => fullUrl.searchParams.set(k, String(v)));
-    const script = document.createElement('script');
-    script.src = fullUrl.toString();
-    const cleanup = () => { delete window[cbName]; if (script.parentNode) script.parentNode.removeChild(script); };
-    const timer = setTimeout(() => { cleanup(); reject(new Error('Timeout')); }, 15000);
-    window[cbName] = (json) => { clearTimeout(timer); cleanup(); if (json.error) reject(new Error(json.error)); else resolve(json.data); };
-    script.onerror = () => { clearTimeout(timer); cleanup(); reject(new Error('Network error')); };
-    document.head.appendChild(script);
-  });
-}
+        // 建立 GSAP 時間軸
+        const tl = gsap.timeline({ onComplete: endAnimation });
 
-/* ─── APP SWITCHING LOGIC ───────────────────────────── */
-function switchApp(target) {
-  // Update Tabs UI
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-  document.querySelector(`.tab[data-target="${target}"]`).classList.add('active');
+        // 第一幕: GEPT x Tony
+        tl.set("#group1", { display: "flex" })
+          .fromTo("#group1", { opacity: 0, scale: 0.95 }, { opacity: 1, scale: 1, duration: 0.8, ease: "back.out(1.5)" })
+          .to("#group1", { opacity: 0, scale: 1.05, duration: 0.4, delay: 1.2, ease: "power2.in" })
+          .set("#group1", { display: "none" });
 
-  // Toggle Views
-  if (target === 'tutor') {
-    document.getElementById('view-tutor').classList.add('active');
-    document.getElementById('view-project').classList.remove('active');
-  } else {
-    document.getElementById('view-tutor').classList.remove('active');
-    document.getElementById('view-project').classList.add('active');
-    projCategory = target; // 'trivia' or 'website'
-    
-    // Check if background pre-fetch finished
-    if (projDataLoaded) {
-      renderProjUI();
-      showLoader(false);
-    } else {
-      // Data still fetching in background, wait for it
-      showLoader(true);
-      if (!isFetchingProjects) {
-         prefetchProjects(); // Restart fetch if it failed previously
-      }
+        // 第二幕: 1. 這一次
+        tl.set("#group2", { display: "flex" })
+          .fromTo("#group2", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" })
+          .to("#group2", { opacity: 0, y: -30, duration: 0.3, delay: 0.7, ease: "power2.in" })
+          .set("#group2", { display: "none" });
+
+        // 第三幕: 全新方法 × 全新思維
+        tl.set("#group3", { display: "flex" })
+          .fromTo("#group3", { opacity: 0, scale: 1.1 }, { opacity: 1, scale: 1, duration: 0.5, ease: "power2.out" })
+          .to("#group3", { opacity: 0, scale: 0.9, duration: 0.3, delay: 0.8, ease: "power2.in" })
+          .set("#group3", { display: "none" });
+
+        // 第四幕: 順利通過英檢寫作
+        tl.set("#group4", { display: "flex" })
+          .fromTo("#group4", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" })
+          .to("#group4", { opacity: 0, y: -30, duration: 0.3, delay: 0.8, ease: "power2.in" })
+          .set("#group4", { display: "none" });
+
+        // 第五幕: 跑馬燈特效 (Ticker)
+        tl.set("#group5", { display: "flex", opacity: 1 });
+        const lines = document.querySelectorAll('.gept__ticker-line');
+        lines.forEach((line, i) => {
+            const isLast = i === lines.length - 1;
+            
+            // 飛入
+            tl.fromTo(line, 
+                { yPercent: 100, opacity: 0 }, 
+                { yPercent: 0, opacity: 1, duration: 0.25, ease: "power2.out" }
+            );
+            
+            // 飛出 (除了最後一組用不同的飛出效果)
+            if (!isLast) {
+                tl.to(line, { yPercent: -100, opacity: 0, duration: 0.2, ease: "power2.in", delay: 0.35 });
+            } else {
+                tl.to(line, { yPercent: -50, opacity: 0, duration: 0.25, ease: "power2.inOut", delay: 0.5 });
+            }
+        });
+        tl.set("#group5", { display: "none" });
     }
-  }
-}
 
-// Initialization - LOAD TUTOR AND PREFETCH PROJECTS IN BACKGROUND
-window.addEventListener('DOMContentLoaded', () => {
-  updateCurrentDateBar();
-  tutorCurrentMonday = getMondayOf(new Date());
-  
-  loadTutorWeek(); // Initiates main screen load
-  prefetchProjects(); // Initiates background load for other tabs
+    // 網頁加載完畢後觸發動畫
+    document.addEventListener("DOMContentLoaded", initIntroAnimation);
+</script>
+
+<!-- ====== 原本的頁面功能腳本 ====== -->
+<script>
+const products = [
+    {id:'course-3A', name:'全民英檢中級影片課程3回(A)', price:3650, description:'方案A (輕量實戰派)', emoji:'🎬', imageId:0},
+    {id:'course-6A', name:'全民英檢中級影片課程6回(B)', price:6600, description:'方案B (完整實戰型)', emoji:'🎬', imageId:1},
+    {id:'course-CA', name:'方案C: 四回批改+兩堂課程',   price:3000, description:'選項A (加強衝刺)',   emoji:'✍️', imageId:2},
+    {id:'course-CB', name:'方案C: 六堂線上家教寫作課程', price:4200, description:'選項B (家教+練習)',  emoji:'👨‍🏫', imageId:2},
+    {id:'course-COMBO',name:'方案C: 八堂1-1家教+四回批改',price:6800,description:'A+B 組合優惠',     emoji:'🏆', imageId:2}
+];
+const images = [
+    "https://ik.imagekit.io/lql1uveoc/Beginning-intermediate%20level/Dark%20Blue%20and%20Beige%20Modern%20Simple%20Schedule%20A4%20Document-7.png",
+    "https://ik.imagekit.io/lql1uveoc/Beginning-intermediate%20level/Dark%20Blue%20and%20Beige%20Modern%20Simple%20Schedule%20A4%20Document-2.png",
+    "https://ik.imagekit.io/lql1uveoc/Beginning-intermediate%20level/Dark%20Blue%20and%20Beige%20Modern%20Simple%20Schedule%20A4%20Document-6.png"
+];
+const audienceData = [
+    {plan:'方案 B — 完整實戰型',rows:[{icon:'🏆',title:'追求高分',desc:'完整練習所有題型，不留死角'},{icon:'✍️',title:'大量實作',desc:'看多、寫多、改多，深度累積'},{icon:'📈',title:'長期練習',desc:'加強寫作邏輯，系統性提升'}]},
+    {plan:'方案 A — 輕量實戰派',rows:[{icon:'⚡',title:'備考時間緊湊',desc:'需快速吸收精華重點'},{icon:'🔍',title:'重點補強',desc:'針對弱點確認盲點'},{icon:'🌱',title:'初次嘗試',desc:'體驗教學風格與批改服務'}]},
+    {plan:'方案 C — 加強衝刺型',rows:[{icon:'🥊',title:'重實戰輕理論',desc:'直接寫、直接改，快速進步'},{icon:'📌',title:'特定弱點突破',desc:'高密度一對一指導'},{icon:'🔧',title:'靈活安排',desc:'針對性修正，彈性客製'}]}
+];
+let cart={}, currentCard=0;
+
+function renderAudience(i){
+    const d=audienceData[i];
+    document.getElementById('audience-plan-name').textContent=d.plan+' — 適合對象';
+    const c=document.getElementById('audience-rows');
+    c.innerHTML=d.rows.map(r=>`<div class="audience-row"><span class="audience-icon">${r.icon}</span><span><strong>${r.title}</strong>：${r.desc}</span></div>`).join('');
+    requestAnimationFrame(()=>{ c.querySelectorAll('.audience-row').forEach((el,i)=>{ setTimeout(()=>el.classList.add('visible'),i*80); }); });
+}
+function updateMActive(index){
+    if(index===currentCard) return; currentCard=index;
+    [0,1,2].forEach(i=>{ document.getElementById('m-card-'+i).classList.toggle('active',i===index); document.getElementById('m-dot-'+i).classList.toggle('active',i===index); });
+    renderAudience(index);
+}
+window.scrollToMCard=function(index){
+    if(window.innerWidth>=1181){openDesktopModal(index);return;}
+    const s=document.getElementById('main-slider'),c=document.getElementById('m-card-'+index);
+    if(s&&c) s.scrollTo({left:c.offsetLeft-(s.clientWidth/2)+(c.offsetWidth/2),behavior:'smooth'});
+};
+window.handleCardClick=function(i){ if(window.innerWidth>=1181){openDesktopModal(i);}else{scrollToMCard(i);} };
+window.openDesktopModal=function(index){
+    const modal=document.getElementById('desktop-modal'),cc=document.getElementById('dm-card-container'),ic=document.getElementById('dm-info-container');
+    cc.innerHTML=document.getElementById('m-card-'+index).outerHTML;
+    const cl=cc.querySelector('.m-card'); cl.classList.remove('active'); cl.onclick=null; cl.onmouseenter=null;
+    const d=audienceData[index];
+    ic.innerHTML=`<button class="dm-close-btn" onclick="closeDesktopModal()"><i class="fa-solid fa-xmark"></i></button><div class="audience-title">${d.plan} — 適合對象</div><div class="audience-rows">${d.rows.map(r=>`<div class="audience-row visible" style="transform:none;opacity:1;"><span class="audience-icon">${r.icon}</span><span><strong>${r.title}</strong><span class="audience-desc-text">${r.desc}</span></span></div>`).join('')}</div>`;
+    modal.classList.add('show');
+};
+window.closeDesktopModal=function(){ document.getElementById('desktop-modal').classList.remove('show'); };
+
+document.addEventListener('DOMContentLoaded',()=>{
+    renderAudience(0);
+    const sl=document.getElementById('main-slider'); if(!sl) return;
+    let tk=false;
+    sl.addEventListener('scroll',()=>{
+        if(window.innerWidth>=1181) return;
+        if(!tk){ requestAnimationFrame(()=>{ const mid=sl.scrollLeft+sl.clientWidth/2; let b=0,m=Infinity; [0,1,2].forEach(i=>{ const c=document.getElementById('m-card-'+i); if(c){const d=Math.abs(c.offsetLeft+c.offsetWidth/2-mid);if(d<m){m=d;b=i;}} }); updateMActive(b); tk=false; }); tk=true; }
+    },{passive:true});
 });
 
-
-/* ─── APP 1: TUTOR TRACKER ENGINE ───────────────────── */
-const DAY_NAMES = ['MON','TUE','WED','THU','FRI','SAT'];
-const DAY_NAMES_ZH = ['週一','週二','週三','週四','週五','週六'];
-let tutorCurrentMonday = null;
-let weekEvents = {};
-let tutorStatuses = {};
-
-function loadTutorWeek() {
-  showLoader(true);
-  updateTutorHeader();
-  return Promise.all([
-    apiFetch(API_TUTOR, 'getWeekEvents', { date: tutorCurrentMonday }),
-    apiFetch(API_TUTOR, 'getStatuses',   { weekStart: tutorCurrentMonday })
-  ]).then(([evts, sts]) => {
-    weekEvents = evts; tutorStatuses = sts; renderTutorGrid();
-  }).catch(err => {
-    toast("Calendar Error: " + err.message, "fail");
-  }).finally(() => {
-    // Only turn off loader if we are still on the Tutor view
-    if (document.getElementById('view-tutor').classList.contains('active')) {
-      showLoader(false);
-    }
-  });
+window.addToCart=function(pid){
+    const p=products.find(x=>x.id===pid); if(p){cart={};cart[p.id]={...p,imageUrl:images[p.imageId]||images[0]};}
+    updateCartDisplay(); closeDesktopModal();
+    document.getElementById("cart-overlay").classList.add("open"); document.getElementById("cart-panel").classList.add("open");
+    setTimeout(()=>{ const e=document.getElementById("email"),sb=document.getElementById("cart-scroll-body"); if(e&&sb){const o=e.getBoundingClientRect().top+sb.scrollTop-sb.getBoundingClientRect().top-20;sb.scrollTo({top:o,behavior:'smooth'});} },500);
+};
+window.toggleCartPanel=function(){ document.getElementById("cart-overlay").classList.toggle("open"); document.getElementById("cart-panel").classList.toggle("open"); };
+window.openPlanC_InCart=function(){
+    closeDesktopModal();
+    document.getElementById("cart-overlay").classList.add("open"); document.getElementById("cart-panel").classList.add("open");
+    document.getElementById("cart-items-container").innerHTML=`<div class="plan-c-selection-header">請選擇加強課程方案</div><div class="plan-c-option-card" onclick="addToCart('course-CA')"><div class="plan-c-opt-title">選項 A（四回批改＋兩堂課程）</div><span class="plan-c-opt-price">NT$ 3,000</span><button class="plan-c-opt-select-btn btn-plan-c-a">選項 A 加入購物車</button></div><div class="plan-c-option-card" onclick="addToCart('course-CB')"><div class="plan-c-opt-title">選項 B（六堂線上家教寫作課程）</div><span class="plan-c-opt-price">NT$ 4,200</span><button class="plan-c-opt-select-btn btn-plan-c-b">選項 B 加入購物車</button></div><div class="plan-c-option-card" style="border-color:#f97316;background:#fff7ed;" onclick="addToCart('course-COMBO')"><div class="plan-c-opt-title">A+B 組合優惠（八堂家教＋四回批改）</div><span class="plan-c-opt-price">NT$ 6,800</span><button class="plan-c-opt-select-btn btn-plan-c-combo">A+B 加入購物車</button></div>`;
+    document.getElementById("cart-total-container").style.display='none';
+    const sb=document.getElementById("cart-scroll-body"); if(sb) sb.scrollTop=0;
+};
+window.removeFromCart=function(id){ delete cart[id]; updateCartDisplay(); if(Object.keys(cart).length===0) toggleCartPanel(); };
+window.handleCheckout=function(){
+    const ei=document.getElementById("email"),btn=document.getElementById("sidebar-checkout-btn"),email=ei.value;
+    if(Object.keys(cart).length===0) return alert("您的購物車是空的！");
+    if(!email||!email.includes('@')){ alert("請輸入有效的電子信箱！"); return ei.focus(); }
+    const total=Object.values(cart).reduce((s,i)=>s+i.price,0);
+    const oid='#'+Math.random().toString(36).substr(2,5).toUpperCase();
+    const ts=new Date().toLocaleString("zh-TW",{year:"numeric",month:"long",day:"numeric",hour:"2-digit",minute:"2-digit"});
+    btn.disabled=true; btn.innerHTML='<i class="fa-solid fa-spinner fa-spin"></i> 處理中...';
+    let ih=''; Object.values(cart).forEach(it=>{ ih+=`<div class="ty-order-item"><div class="ty-item-details"><div class="ty-item-info">${it.name}</div><div class="ty-item-price">NT$ ${it.price.toLocaleString()}</div></div></div>`; });
+    document.getElementById('ty-cart-items-container').innerHTML=ih;
+    document.getElementById('ty-total-container').innerHTML=`<div class="total-row final-total"><span>總計</span><span>NT$ ${total.toLocaleString()}</span></div>`;
+    document.getElementById('ty-customer-email').innerText=email;
+    document.getElementById('ty-order-id').innerText=oid;
+    document.getElementById('ty-order-timestamp').innerText=ts;
+    document.querySelector('.pricing-wrapper').style.display='none';
+    document.querySelector('.hero-section').style.display='none';
+    document.getElementById("cart-overlay").classList.remove('open');
+    document.getElementById("cart-panel").classList.remove('open');
+    document.getElementById("thank-you-page").style.display='block';
+    window.scrollTo(0,0);
+    const k=Object.keys(cart)[0],img=(k&&cart[k].imageUrl)?cart[k].imageUrl:'';
+    fetch("https://script.google.com/macros/s/AKfycbyU13Wivs341DMPupk9EKrL9u908zrHNOVqZUXri-hGezkk6qj_7loQGIf0GCfmvj_f/exec",{method:"POST",headers:{"Content-Type":"application/x-www-form-urlencoded"},body:new URLSearchParams({orderId:oid,email,productName:Object.values(cart).map(i=>i.name).join(', '),totalPrice:total,status:"未付款",imageUrls:img})}).catch(e=>console.error(e)).finally(()=>{ btn.disabled=false; btn.innerHTML='<i class="fa-solid fa-check-circle"></i> 確認送出訂單'; cart={}; });
+};
+function updateCartDisplay(){
+    const c=document.getElementById("cart-items-container"),tb=document.getElementById("cart-total-container"),ta=document.getElementById("cart-total-amount");
+    if(Object.keys(cart).length===0){ c.innerHTML=`<div class="cart-empty-state"><i class="fa-regular fa-face-smile-beam"></i><p>購物車是空的</p></div>`; tb.style.display='none'; return; }
+    c.innerHTML=Object.entries(cart).map(([id,it])=>`<div class="cart-item"><div class="cart-item-icon">${it.emoji||'📚'}</div><div class="cart-item-info"><div class="cart-item-name">${it.name}</div><div class="cart-item-desc">${it.description}</div></div><div class="cart-item-price">NT$${it.price.toLocaleString()}</div><button class="remove-item-btn" onclick="removeFromCart('${id}')" title="移除"><i class="fa-solid fa-trash-can"></i></button></div>`).join('');
+    ta.textContent='NT$'+Object.values(cart).reduce((s,i)=>s+i.price,0).toLocaleString();
+    tb.style.display='block';
 }
-
-function getMondayOf(date) {
-  const d = new Date(date);
-  const day = d.getDay();
-  d.setDate(d.getDate() + (day === 0 ? -6 : 1 - day));
-  return fmtDate(d);
+function submitContactForm(e){
+    e.preventDefault(); const btn=document.getElementById('contact-submit');
+    btn.innerHTML='傳送中... <i class="fa-solid fa-spinner fa-spin"></i>'; btn.disabled=true;
+    const GAS="https://script.google.com/macros/s/AKfycbwE5thuJP9luwed0GG0eRF4DheFubXRfWQ5ZnnJL5r8TxFGaIrhUzEB4AAp51RZ_WL3/exec";
+    const p=new URLSearchParams();
+    p.append('name',document.getElementById('contact-name').value);
+    p.append('email',document.getElementById('contact-email').value);
+    p.append('line',document.getElementById('contact-line').value||"無");
+    p.append('needs',document.getElementById('contact-needs').value);
+    fetch(GAS,{method:"POST",mode:"no-cors",body:p})
+    .then(()=>{ document.getElementById('contact-form').style.display='none'; document.getElementById('contact-msg').style.display='block'; })
+    .catch(()=>{ alert("傳送失敗，請檢查網路連線。"); })
+    .finally(()=>{ btn.innerHTML='送出訊息 <i class="fa-solid fa-paper-plane"></i>'; btn.disabled=false; });
 }
-
-function goToday() {
-  if (globalSaves > 0) return toast('Saving… please wait', 'warn');
-  const todayMon = getMondayOf(new Date());
-  if (tutorCurrentMonday === todayMon) return;
-  const delta = todayMon > tutorCurrentMonday ? 1 : -1;
-  slideGrid(delta, () => { tutorCurrentMonday = todayMon; loadTutorWeek(); });
-}
-
-function changeWeek(delta) {
-  if (globalSaves > 0) return toast('Saving… please wait', 'warn');
-  const todayMon = getMondayOf(new Date());
-  if (delta > 0 && tutorCurrentMonday >= todayMon) return;
-  slideGrid(delta, () => {
-    const d = new Date(tutorCurrentMonday + 'T00:00:00');
-    d.setDate(d.getDate() + delta * 7);
-    tutorCurrentMonday = fmtDate(d);
-    loadTutorWeek();
-  });
-}
-
-function renderTutorGrid() {
-  const grid = document.getElementById('grid');
-  const todayStr = fmtDate(new Date());
-  grid.innerHTML = '';
-  let total = 0, done = 0;
-
-  const giantCheckSVG = `<svg class="giant-check" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet"><path d="M18 52 L40 76 L82 24" stroke="var(--text)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" fill="none" /></svg>`;
-
-  for (let i = 0; i < 6; i++) {
-    const d = new Date(tutorCurrentMonday + 'T00:00:00'); d.setDate(d.getDate() + i);
-    const dateStr = fmtDate(d);
-    const events = weekEvents[dateStr] || [];
-    const isToday = dateStr === todayStr;
-    const sentCount = events.filter(ev => tutorStatuses[`${dateStr}|${ev.title}`] === true).length;
-    const allDone = events.length > 0 && sentCount === events.length;
-
-    total += events.length; done += sentCount;
-
-    const card = document.createElement('div');
-    card.className = `card${isToday ? ' today' : ''}${allDone ? ' done' : ''}`;
-    card.id = `card-${dateStr}`;
-
-    card.innerHTML = `
-      <div class="card-head">
-        <div class="day-label">
-          <span class="day-en">${DAY_NAMES[i]}</span><span class="day-zh">${DAY_NAMES_ZH[i]}</span>
-          <span class="badge">${events.length === 0 ? '—' : `${sentCount}/${events.length}`}</span>
-        </div>
-        <div class="day-num">${d.getMonth()+1}/${d.getDate()}</div>
-      </div>
-      <div class="student-list" id="list-${dateStr}">
-        ${events.length > 0 ? giantCheckSVG : ''}
-        ${events.length === 0 ? '<div class="no-class">NO CLASS</div>' : events.map(ev => studentRow(dateStr, ev)).join('')}
-      </div>`;
-    grid.appendChild(card);
-  }
-  updateProgress(done, total);
-}
-
-function cleanName(title) { return title.replace(/\s*(English\s*(Class|Lesson|Course)?|英文課?|英語課?|的?英文|的?英語)\s*/gi, '').trim() || title; }
-
-function studentRow(dateStr, ev) {
-  const key = `${dateStr}|${ev.title}`;
-  const sent = tutorStatuses[key] === true;
-  const rid = 'r_' + key.replace(/[^a-zA-Z0-9]/g, '_');
-  return `
-    <div class="s-row${sent ? ' sent' : ''}" id="${rid}" onclick="toggleTutor('${dateStr}','${ev.title.replace(/'/g,"\\'")}','${rid}')">
-      <div class="t-checkbox">${sent ? '&#10003;' : ''}</div>
-      <div class="s-info"><div class="s-name">${cleanName(ev.title)}</div><div class="s-time">${ev.time}</div></div>
-    </div>`;
-}
-
-function toggleTutor(dateStr, studentName, rid) {
-  const key = `${dateStr}|${studentName}`;
-  const newVal = !(tutorStatuses[key] === true);
-  tutorStatuses[key] = newVal;
-
-  const row = document.getElementById(rid);
-  if (row) {
-    row.className = 's-row' + (newVal ? ' sent' : '');
-    row.querySelector('.t-checkbox').innerHTML = newVal ? '&#10003;' : '';
-    row.style.pointerEvents = 'none'; row.style.opacity = '0.5';
-  }
-  refreshTutorCard(dateStr); refreshProgress(); incSave();
-
-  apiFetch(API_TUTOR, 'setStatus', { key, value: newVal }).then(() => {
-    decSave(); if (row) { row.style.pointerEvents = ''; row.style.opacity = '1'; }
-    toast(newVal ? '&#10003; Marked' : '&#8629; Unmarked', 'ok');
-  }).catch(() => {
-    decSave(); tutorStatuses[key] = !newVal;
-    if (row) {
-      row.className = 's-row' + (!newVal ? ' sent' : '');
-      row.querySelector('.t-checkbox').innerHTML = !newVal ? '&#10003;' : '';
-      row.style.pointerEvents = ''; row.style.opacity = '1';
-    }
-    refreshTutorCard(dateStr); refreshProgress(); toast('Save failed', 'fail');
-  });
-}
-
-function refreshTutorCard(dateStr) {
-  const card = document.getElementById(`card-${dateStr}`);
-  const events = weekEvents[dateStr] || [];
-  if (!card || !events.length) return;
-  const sent = events.filter(ev => tutorStatuses[`${dateStr}|${ev.title}`] === true).length;
-  card.querySelector('.badge').textContent = `${sent}/${events.length}`;
-  card.classList.toggle('done', sent === events.length);
-}
-
-function refreshProgress() {
-  let total = 0, done = 0;
-  Object.keys(weekEvents).forEach(ds => {
-    (weekEvents[ds] || []).forEach(ev => { total++; if (tutorStatuses[`${ds}|${ev.title}`] === true) done++; });
-  });
-  updateProgress(done, total);
-}
-
-function updateProgress(done, total) {
-  const pct = total > 0 ? Math.round(done / total * 100) : 0;
-  document.getElementById('progFill').style.width = pct + '%';
-  document.getElementById('summaryPill').textContent = total === 0 ? 'No classes' : `${done}/${total} sent · ${pct}%`;
-}
-
-function updateTutorHeader() {
-  const mon = new Date(tutorCurrentMonday + 'T00:00:00');
-  const sat = new Date(tutorCurrentMonday + 'T00:00:00'); sat.setDate(mon.getDate() + 5);
-  document.getElementById('weekLabel').textContent = `${mon.getMonth()+1}/${mon.getDate()} – ${sat.getMonth()+1}/${sat.getDate()}`;
-  document.getElementById('nextBtn').disabled = tutorCurrentMonday >= getMondayOf(new Date());
-}
-
-function slideGrid(direction, callback) {
-  const grid = document.getElementById('grid');
-  const outX = direction > 0 ? '-110%' : '110%';
-  const inX  = direction > 0 ?  '110%' : '-110%';
-  grid.style.transition = 'transform 0.25s cubic-bezier(.4,0,.2,1), opacity 0.25s';
-  grid.style.transform = `translateX(${outX})`; grid.style.opacity = '0.2';
-  setTimeout(() => {
-    callback();
-    grid.style.transition = 'none'; grid.style.transform = `translateX(${inX})`; grid.style.opacity = '0';
-    void grid.offsetWidth; // reflow
-    grid.style.transition = 'transform 0.28s cubic-bezier(.2,.8,.3,1), opacity 0.28s';
-    grid.style.transform = 'translateX(0)'; grid.style.opacity = '1';
-  }, 220);
-}
-
-
-/* ─── APP 2: PROJECT TRACKER ENGINE & PRE-FETCH ─────── */
-let projDataLoaded = false;
-let isFetchingProjects = false;
-let projCategory = 'trivia';
-let projFilter = 'all';
-let projTasks = [];
-
-// This runs silently in the background immediately on page load
-function prefetchProjects() {
-  if (isFetchingProjects || projDataLoaded) return;
-  isFetchingProjects = true;
-  
-  apiFetch(API_PROJ, 'getTasks').then(data => {
-    projTasks = data || [];
-    projDataLoaded = true;
-    isFetchingProjects = false;
-    
-    // If the user already clicked the tab while it was loading in the background, 
-    // render it immediately and hide loader.
-    if (document.getElementById('view-project').classList.contains('active')) {
-      renderProjUI();
-      showLoader(false);
-    }
-  }).catch(err => {
-    isFetchingProjects = false;
-    // Only show error if the user is actively staring at the project tab
-    if (document.getElementById('view-project').classList.contains('active')) {
-      toast("Project Data Error", "fail");
-      showLoader(false);
-    }
-  });
-}
-
-function renderProjUI() {
-  renderProjList();
-  checkProjOverdue();
-}
-
-function setProjFilter(f, el) {
-  projFilter = f;
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
-  el.classList.add('active');
-  renderProjList();
-}
-
-function getFilteredTasks() {
-  let tasks = projTasks.filter(t => t.category === projCategory);
-  if (projFilter === 'todo')      tasks = tasks.filter(t => !t.done);
-  else if (projFilter === 'done') tasks = tasks.filter(t => t.done);
-  else if (['urgent','necessary','normal'].includes(projFilter)) tasks = tasks.filter(t => t.priority === projFilter);
-  
-  // Sort: Undone first, then newest first
-  tasks.sort((a, b) => {
-    if (a.done !== b.done) return a.done ? 1 : -1;
-    return Number(b.id) - Number(a.id);
-  });
-  return tasks;
-}
-
-function formatCreatedTime(id) {
-  const ts = parseInt(id); if (isNaN(ts) || ts < 1_000_000_000_000) return '';
-  const d = new Date(ts);
-  return `${d.getMonth()+1}月${d.getDate()}日 ${String(d.getHours()).padStart(2,'0')}:${String(d.getMinutes()).padStart(2,'0')} 新增`;
-}
-
-function renderProjList() {
-  const wrap = document.getElementById('listWrap');
-  const tasks = getFilteredTasks();
-  document.getElementById('taskCount').textContent = tasks.length + ' 項';
-
-  if (tasks.length === 0) {
-    wrap.innerHTML = '<div class="empty-state">NO TASKS FOUND</div>';
-    return;
-  }
-
-  wrap.innerHTML = tasks.map(t => `
-    <div class="task-row${t.done ? ' done' : ''}" id="task-${t.id}">
-      <div class="p-checkbox" onclick="toggleTask('${t.id}')">${t.done ? '✓' : ''}</div>
-      <div class="task-body" onclick="toggleTask('${t.id}')">
-        <div class="task-text">${escapeHtml(t.text)}</div>
-        <div class="task-meta">
-          <span class="p-tag p-${t.priority}">${t.priority}</span>
-          <span class="task-date">${formatCreatedTime(t.id)}</span>
-        </div>
-      </div>
-      <button class="del-btn" onclick="deleteTask(event,'${t.id}')">&times;</button>
-    </div>`).join('');
-}
-
-function saveNewTask() {
-  const text = document.getElementById('taskText').value.trim();
-  const priority = document.getElementById('taskPriority').value;
-  if (!text) return toast("Enter task text", "fail");
-  
-  const newTask = { id: Date.now().toString(), category: projCategory, date: fmtDate(new Date()), text, priority, done: false };
-  projTasks.push(newTask); renderProjUI(); closeModals(); incSave();
-
-  apiFetch(API_PROJ, 'addTask', newTask).then(() => {
-    decSave(); toast("Saved ✓", "ok");
-  }).catch(err => {
-    decSave(); toast("Save failed", "fail");
-    projTasks = projTasks.filter(t => t.id !== newTask.id); renderProjUI();
-  });
-}
-
-function toggleTask(id) {
-  const task = projTasks.find(t => String(t.id) === String(id));
-  if (!task) return;
-  task.done = !task.done;
-  incSave(); renderProjUI();
-
-  apiFetch(API_PROJ, 'toggleTask', { id: task.id, done: task.done }).then(() => {
-    decSave();
-  }).catch(err => {
-    decSave(); task.done = !task.done; renderProjUI(); toast("Sync failed", "fail");
-  });
-}
-
-function deleteTask(event, id) {
-  event.stopPropagation();
-  if (!confirm("Delete this task?")) return;
-  const idx = projTasks.findIndex(t => String(t.id) === String(id));
-  const backup = projTasks[idx];
-  projTasks.splice(idx, 1); renderProjUI(); incSave();
-
-  apiFetch(API_PROJ, 'deleteTask', { id }).then(() => {
-    decSave(); toast("Deleted", "ok");
-  }).catch(err => {
-    decSave(); projTasks.push(backup); renderProjUI(); toast("Delete failed", "fail");
-  });
-}
-
-function checkProjOverdue() {
-  const todayStr = fmtDate(new Date());
-  const overdue = projTasks.filter(t => t.category === projCategory && !t.done && String(t.date).substring(0,10) < todayStr);
-  const btn = document.getElementById('overdueBtn');
-  if (overdue.length > 0) { btn.style.display = 'flex'; document.getElementById('overdueCount').textContent = overdue.length; }
-  else { btn.style.display = 'none'; }
-}
-
-function openOverdueModal() {
-  const todayStr = fmtDate(new Date());
-  const overdue = projTasks.filter(t => t.category === projCategory && !t.done && String(t.date).substring(0,10) < todayStr);
-  document.getElementById('overdueList').innerHTML = overdue.map(t => `
-    <div class="task-row" style="padding:12px 0;">
-      <div class="p-checkbox" onclick="toggleTask('${t.id}')"></div>
-      <div class="task-body" onclick="toggleTask('${t.id}')">
-        <div class="task-text">${escapeHtml(t.text)}</div>
-        <div class="task-meta"><span class="p-tag p-${t.priority}">${t.priority}</span></div>
-      </div>
-      <button class="del-btn" onclick="deleteTask(event,'${t.id}')">&times;</button>
-    </div>`).join('');
-  document.getElementById('overdueModal').classList.add('active');
-}
-
-function openAddModal() {
-  document.getElementById('taskText').value = '';
-  document.getElementById('taskPriority').value = 'normal';
-  document.getElementById('addModal').classList.add('active');
-  setTimeout(() => document.getElementById('taskText').focus(), 200);
-}
-
-function closeModals() { document.querySelectorAll('.p-modal-overlay').forEach(m => m.classList.remove('active')); }
 </script>
 </body>
 </html>
