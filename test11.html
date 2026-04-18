@@ -10,10 +10,6 @@
     <meta property="og:title" content="GEPT 全民英檢「中級寫作」影片課程+加強 | Tony Online English">
     <meta property="og:description" content="GEPT 全民英檢中級寫作專屬課程。提供3回與6回完整影片詳解、雙師專業批改、1對1真人線上家教寫作診斷。快速提升寫作實力，突破寫作盲點！">
     <meta property="og:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-13%20%E4%B8%8B%E5%8D%884.15.10.png?updatedAt=1773389907343">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="GEPT 全民英檢「中級寫作」影片課程+加強 | Tony Online English">
-    <meta name="twitter:description" content="GEPT 全民英檢中級寫作專屬課程。">
-    <meta name="twitter:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-13%20%E4%B8%8B%E5%8D%884.15.10.png?updatedAt=1773389907343">
     
     <!-- 引入 Font Awesome & GSAP -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -21,7 +17,8 @@
     <script src="layout-manager.js"></script>
 
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Noto+Sans+TC:wght@400;700;900&family=Playfair+Display:wght@700;900&display=swap');
+        /* 新增 Pacifico 字體 */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Noto+Sans+TC:wght@400;700;900&family=Playfair+Display:wght@700;900&family=Pacifico&display=swap');
 
         :root {
             --bg-color: #f9fafb;
@@ -56,23 +53,39 @@
         .gept-loader-content {
             position: relative; width: 100%; height: 100%;
             display: flex; align-items: center; justify-content: center; text-align: center;
+            /* 將整體視覺往上推一點 */
+            transform: translateY(-8vh);
         }
         .anim-group {
             position: absolute; display: flex; flex-direction: column; align-items: center; justify-content: center;
             width: 100%; padding: 0 20px; opacity: 0;
         }
-        .giant-text {
-            font-weight: 900; line-height: 1.3; font-size: clamp(2rem, 6vw, 4.5rem); letter-spacing: 2px;
+
+        /* 第一幕 Logo 與 Tony 文字專屬樣式 */
+        .intro-logo-gept { width: clamp(200px, 45vw, 400px); object-fit: contain; }
+        .intro-x { font-size: clamp(2rem, 5vw, 3rem); color: #cbd5e1; margin: 2vh 0; font-weight: 900; }
+        .intro-tony-group { display: flex; flex-direction: column; align-items: center; gap: 15px; }
+        .intro-logo-tony { width: clamp(90px, 20vw, 160px); object-fit: contain; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+        .intro-tony-text { font-size: clamp(1.8rem, 6vw, 4rem); font-weight: 900; line-height: 1.2; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; }
+        .tony-en { font-family: 'Pacifico', cursive; color: #6B73FF; text-shadow: 0 4px 15px rgba(107, 115, 255, 0.4); margin-right: 2vw; font-weight: normal; }
+        .tony-zh { color: #060b1c; letter-spacing: 2px; }
+
+        @media (min-width: 768px) {
+            .intro-tony-group { flex-direction: row; gap: 25px; }
+            .intro-x { margin: 3vh 0; }
         }
-        .text-blue { color: #0065ff; }
-        .text-gray { color: #94a3b8; font-size: clamp(1.5rem, 4vw, 3rem); margin: 15px 0;}
-        .text-orange { color: #f97316; }
+
+        /* 單純文字幕樣式 */
+        .giant-text { font-weight: 900; line-height: 1.3; font-size: clamp(2rem, 6vw, 4.5rem); letter-spacing: 2px; }
         .text-gold { color: #fbbf24; font-size: clamp(3rem, 10vw, 6rem); text-shadow: 0 4px 15px rgba(0,0,0,0.1); }
         .text-dark { color: #111827; font-size: clamp(2rem, 7vw, 5rem); }
         .text-green { color: #10b981; font-size: clamp(2.2rem, 8vw, 5.5rem); }
 
-        .gept__ticker { position: relative; width: 95vw; height: 3.5em; display: flex; justify-content: center; align-items: center; overflow: hidden; }
-        .gept__ticker-line { position: absolute; color: #0065ff; font-weight: 900; font-size: clamp(1.8rem, 7vw, 4rem); text-align: center; width: 100%; letter-spacing: 2px; opacity: 0; }
+        /* 卡片展示幕樣式 */
+        .intro-card-title { font-size: clamp(1.8rem, 6vw, 3rem); font-weight: 900; color: #111827; margin-bottom: 25px; letter-spacing: 2px; }
+        .intro-card-style { cursor: default; transform: scale(1) !important; opacity: 1 !important; box-shadow: 0 20px 40px rgba(0,0,0,0.2) !important; margin: 0 auto; }
+        .intro-card-style:hover { transform: scale(1) !important; }
+        .intro-card-style .m-price-row { display: none !important; /* 隱藏價格區塊 */ }
         
         .skip-btn {
             position: absolute; bottom: 30px; right: 30px; z-index: 1000000;
@@ -84,7 +97,7 @@
         .skip-btn:hover { background: rgba(0, 0, 0, 0.15); color: #000; }
 
         /* =========================================
-           HERO
+           HERO 區塊 (主網頁)
            ========================================= */
         .hero-section {
             width: 100%; min-height: 80vh;
@@ -99,7 +112,7 @@
         @keyframes glowBrand  { 0%{text-shadow:0 4px 15px rgba(0,0,0,.8)} 30%{text-shadow:0 0 15px rgba(255,255,255,.8),0 0 25px rgba(220,38,38,.9),0 0 40px rgba(220,38,38,.8)} 100%{text-shadow:0 4px 15px rgba(0,0,0,.8)} }
         @keyframes glowTitle  { 0%{text-shadow:0 4px 15px rgba(0,0,0,.6)} 30%{text-shadow:0 0 15px rgba(255,255,255,.8),0 0 25px rgba(251,191,36,.9),0 0 40px rgba(251,191,36,.8)} 100%{text-shadow:0 4px 15px rgba(0,0,0,.6)} }
 
-        /* 動畫修改：必須加上 .start-main-anim 才會觸發 (等待開場跑完) */
+        /* 動畫修改：必須加上 .start-main-anim 才會觸發 */
         .hero-brand-mobile {
             position: absolute; top: 20px; left: 20px;
             text-align: left; font-size: 2.2rem; font-weight: 900; line-height: 1.25;
@@ -107,7 +120,6 @@
             display: none; opacity: 0;
         }
         body.start-main-anim .hero-brand-mobile { animation: slideInLeft 1s ease forwards, glowBrand 2.5s ease 0.5s forwards; }
-        
         .hero-brand-mobile .highlight-red { color: #dc2626; }
 
         .hero-brand-inline {
@@ -115,7 +127,6 @@
             text-shadow: 0 4px 15px rgba(0,0,0,.8); opacity: 0;
         }
         body.start-main-anim .hero-brand-inline { animation: glowBrand 2.5s ease forwards; opacity: 1; }
-        
         .hero-brand-inline .highlight-red { color: #dc2626; }
 
         .hero-content {
@@ -131,28 +142,12 @@
         }
         body.start-main-anim .hero-title-large { animation: glowTitle 2.5s ease 0.8s forwards; opacity: 1;}
         
-        .hero-sub-text {
-            display: block; font-weight: 600; margin-bottom: 22px;
-            color: #e2e8f0; letter-spacing: 2px;
-            font-size: 1.2rem;
-        }
+        .hero-sub-text { display: block; font-weight: 600; margin-bottom: 22px; color: #e2e8f0; letter-spacing: 2px; font-size: 1.2rem; }
         .hero-action-group { display: flex; flex-direction: column; align-items: center; gap: 20px; width: 100%; }
-        .hero-btn {
-            background: var(--theme-blue); color: #fff; padding: 16px 40px;
-            border-radius: 50px; font-size: 1.25rem; font-weight: 800;
-            text-decoration: none; transition: all .3s;
-            box-shadow: 0 6px 20px rgba(0,101,255,.4);
-            display: inline-flex; align-items: center; gap: 10px;
-        }
+        .hero-btn { background: var(--theme-blue); color: #fff; padding: 16px 40px; border-radius: 50px; font-size: 1.25rem; font-weight: 800; text-decoration: none; transition: all .3s; box-shadow: 0 6px 20px rgba(0,101,255,.4); display: inline-flex; align-items: center; gap: 10px; }
         .hero-btn:hover { background: #0056cc; transform: translateY(-3px); color: #fff; }
         .hero-links { display: flex; gap: 15px; flex-wrap: wrap; justify-content: center; }
-        .secondary-btn {
-            background: rgba(255,255,255,.15) !important; backdrop-filter: blur(5px);
-            color: #fff; padding: 12px 24px; border-radius: 50px;
-            font-size: 1.05rem; font-weight: 700; text-decoration: none;
-            transition: all .3s; border: 1px solid rgba(255,255,255,.3);
-            display: inline-flex; align-items: center; gap: 8px;
-        }
+        .secondary-btn { background: rgba(255,255,255,.15) !important; backdrop-filter: blur(5px); color: #fff; padding: 12px 24px; border-radius: 50px; font-size: 1.05rem; font-weight: 700; text-decoration: none; transition: all .3s; border: 1px solid rgba(255,255,255,.3); display: inline-flex; align-items: center; gap: 8px; }
         .secondary-btn:hover { background: rgba(255,255,255,.3) !important; transform: translateY(-2px); }
         .line-btn { background: rgba(0,185,0,.85) !important; border-color: #00B900; }
         .line-btn:hover { background: rgba(0,185,0,1) !important; }
@@ -170,41 +165,20 @@
             .hero-intro        { font-size: 3rem; }
         }
 
-        .hero-pills {
-            display: flex; flex-direction: row; flex-wrap: nowrap;
-            gap: 8px; margin-bottom: 24px;
-            justify-content: center; align-items: center;
-            width: 100%; overflow-x: auto;
-            scrollbar-width: none; -webkit-overflow-scrolling: touch; padding: 2px 0;
-        }
+        .hero-pills { display: flex; flex-direction: row; flex-wrap: nowrap; gap: 8px; margin-bottom: 24px; justify-content: center; align-items: center; width: 100%; overflow-x: auto; scrollbar-width: none; -webkit-overflow-scrolling: touch; padding: 2px 0; }
         .hero-pills::-webkit-scrollbar { display: none; }
-        .hero-pill {
-            display: inline-flex; align-items: center; gap: 5px;
-            background: rgba(255,255,255,0.12);
-            border: 1px solid rgba(255,255,255,0.3);
-            backdrop-filter: blur(8px); border-radius: 50px;
-            padding: 6px 13px; font-size: 0.8rem; font-weight: 700;
-            color: #fff; white-space: nowrap; flex-shrink: 0;
-            letter-spacing: 0.3px; transition: background 0.2s;
-        }
+        .hero-pill { display: inline-flex; align-items: center; gap: 5px; background: rgba(255,255,255,0.12); border: 1px solid rgba(255,255,255,0.3); backdrop-filter: blur(8px); border-radius: 50px; padding: 6px 13px; font-size: 0.8rem; font-weight: 700; color: #fff; white-space: nowrap; flex-shrink: 0; letter-spacing: 0.3px; transition: background 0.2s; }
         .hero-pill i { font-size: 0.75rem; opacity: 0.85; }
         .hero-pill:hover { background: rgba(255,255,255,0.22); }
 
         @media (max-width: 768px) {
-            .hero-section {
-                min-height: 85vh; padding: 30vw 15px 40px;
-                background-image: linear-gradient(to bottom,rgba(15,23,42,.4) 0%,rgba(15,23,42,.85) 100%),
-                    url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-13%20%E4%B8%8B%E5%8D%884.15.10.png?updatedAt=1773389907343');
-                background-size: cover; justify-content: flex-start;
-            }
+            .hero-section { min-height: 85vh; padding: 30vw 15px 40px; background-image: linear-gradient(to bottom,rgba(15,23,42,.4) 0%,rgba(15,23,42,.85) 100%), url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-13%20%E4%B8%8B%E5%8D%884.15.10.png?updatedAt=1773389907343'); background-size: cover; justify-content: flex-start; }
             .hero-brand-mobile { display: block; }
             .hero-brand-inline { display: none; }
-
             .hero-intro        { font-size: 1.4rem; }
             .hero-title-large  { font-size: 2.2rem; margin-bottom: 10px; line-height: 1.3; }
             .hero-sub-text     { font-size: .78rem; white-space: nowrap; margin-bottom: 14px; color: #cbd5e1; letter-spacing: 1px; }
             .hero-pills        { display: none; }
-
             .hero-btn { width: 100%; font-size: 1.15rem; padding: 14px; margin-bottom: 5px; }
             .hero-links { flex-direction: row; flex-wrap: nowrap; width: 100%; gap: 8px; }
             .secondary-btn { flex: 1; justify-content: center; padding: 12px 5px; font-size: .9rem; white-space: nowrap; }
@@ -212,7 +186,9 @@
             .desktop-x-space { display: none; }
         }
 
-        /* 以下為原有的其它 CSS 樣式 (Cards, Features, Cart 等)，保留不變 */
+        /* =========================================
+           共用卡片樣式 (提供主畫面及動畫展示使用)
+           ========================================= */
         .pricing-wrapper { width: 100%; }
         .cards-section { width: 100%; padding: 30px 0 0; }
         .cards-section-header { text-align: center; padding: 10px 20px 0; }
@@ -292,12 +268,6 @@
             .m-gept-logo { height: 60px; }
             .m-divider { width: 66px; height: 4px; margin: auto 0 20px; }
             .m-duration-badge { font-size: 0.95rem; padding: 5px 14px; margin-top: 8px; }
-            .audience-panel-inner { display: flex; flex-direction: column; align-items: center; text-align: center; }
-            .audience-title { justify-content: center; width: 100%; font-size: 2.7rem; }
-            .audience-title::after { display: none; }
-            .audience-rows { align-items: center; width: 100%; gap: 18px; }
-            .audience-row { text-align: center; align-items: center; justify-content: center; font-size: 26px; line-height: 1.6; }
-            .audience-icon { font-size: 32px; }
         }
 
         @media (min-width: 1181px) {
@@ -316,12 +286,9 @@
             .m-title-small { font-size: 2rem; }
             .m-price { font-size: 2.2rem; }
             .m-duration-badge { font-size: 0.82rem; padding: 4px 12px; margin-top: 6px; }
-            .audience-panel { max-width: 1200px; margin: 40px auto 20px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); padding: 50px 60px; border: 1px solid #e5e7eb; }
-            .audience-title { font-size: 2.2rem; margin-bottom: 35px; }
-            .audience-row { font-size: 1.6rem; gap: 20px; margin-bottom: 16px; }
-            .audience-icon { font-size: 2.2rem; }
         }
-
+        
+        /* 其他區塊樣式隱藏於此，保持原汁原味 */
         .audience-panel { background: #fff; border-top: 1px solid #e5e7eb; padding: 28px 30px 32px; width: 100%; }
         .audience-panel-inner { max-width: 900px; margin: 0 auto; }
         .audience-title { font-size: clamp(1.2rem, 4vw, 1.5rem); font-weight: 800; color: #111827; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 18px; display: flex; align-items: center; gap: 10px; }
@@ -335,6 +302,20 @@
         .m-dot { width: 8px; height: 8px; border-radius: 50%; background: #cbd5e1; cursor: pointer; transition: all .3s; }
         .m-dot.active { width: 28px; border-radius: 10px; background: #1e293b; }
         @media (min-width: 1181px) { .m-pagination-dots { display: none; } }
+        @media (min-width: 768px) and (max-width: 1180px) {
+            .audience-panel-inner { display: flex; flex-direction: column; align-items: center; text-align: center; }
+            .audience-title { justify-content: center; width: 100%; font-size: 2.7rem; }
+            .audience-title::after { display: none; }
+            .audience-rows { align-items: center; width: 100%; gap: 18px; }
+            .audience-row { text-align: center; align-items: center; justify-content: center; font-size: 26px; line-height: 1.6; }
+            .audience-icon { font-size: 32px; }
+        }
+        @media (min-width: 1181px) {
+            .audience-panel { max-width: 1200px; margin: 40px auto 20px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); padding: 50px 60px; border: 1px solid #e5e7eb; }
+            .audience-title { font-size: 2.2rem; margin-bottom: 35px; }
+            .audience-row { font-size: 1.6rem; gap: 20px; margin-bottom: 16px; }
+            .audience-icon { font-size: 2.2rem; }
+        }
 
         .desktop-modal-overlay { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(15,23,42,0.85); backdrop-filter: blur(10px); z-index: 99999; display: flex; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: all 0.4s ease; }
         .desktop-modal-overlay.show { opacity: 1; visibility: visible; }
@@ -370,7 +351,6 @@
         .time-highlight { color: #0066ff; font-weight: 800; }
         .terms-box { background: #f8f9fa; border-radius: 8px; padding: 15px; margin-top: 30px; color: #8fa0b3; font-size: 13px; line-height: 1.6; border: 1px solid #eef2f6; }
         .terms-box strong { color: #5e6e82; font-weight: 600; }
-
         @media (min-width: 768px) {
             .feature-group-row { display: flex; justify-content: center; width: 100%; }
             .feature-service-group { gap: 60px; margin-bottom: 50px; }
@@ -406,7 +386,6 @@
         .advice-content { font-size: 1.1rem; color: #4b5563; line-height: 1.8; display: flex; flex-direction: column; gap: 15px; }
         .advice-content strong { color: var(--text-main); font-weight: 800; }
         .advice-content span.highlight { color: var(--theme-blue); font-weight: 700; }
-
         @media (min-width: 1181px) {
             .advice-wrapper { max-width: 1100px; padding: 60px 70px; }
             .advice-icon    { width: 65px; height: 65px; font-size: 32px; top: -28px; left: -28px; }
@@ -537,11 +516,17 @@
     <button class="skip-btn" id="skipBtn">跳過 ›</button>
 
     <div class="gept-loader-content">
-        <!-- 序列 1: GEPT... X ... Tony... -->
+        <!-- 序列 1: GEPT Logo X Tony Logo -->
         <div class="anim-group" id="group1">
-            <div class="giant-text text-blue">GEPT 全民英檢<br>「中級寫作」</div>
-            <div class="giant-text text-gray">Ｘ</div>
-            <div class="giant-text text-orange">Tony線上美語家教</div>
+            <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/GEPT_logo.svg.png.webp?updatedAt=1774590183732" class="intro-logo-gept" alt="GEPT">
+            <div class="intro-x">Ｘ</div>
+            <div class="intro-tony-group">
+                <img src="https://ik.imagekit.io/lql1uveoc/IMG_9614.PNG?updatedAt=1750437382543" class="intro-logo-tony" alt="Tony">
+                <div class="intro-tony-text">
+                    <span class="tony-en">Tony</span>
+                    <span class="tony-zh">線上美語家教</span>
+                </div>
+            </div>
         </div>
 
         <!-- 序列 2: 1. 這一次 -->
@@ -559,20 +544,85 @@
             <div class="giant-text text-green">順利通過英檢寫作</div>
         </div>
 
-        <!-- 序列 5: Ticker (跑馬燈) -->
-        <div class="anim-group" id="group5" style="display:none;">
-            <div class="gept__ticker">
-                <div class="gept__ticker-line">六回影片課程</div>
-                <div class="gept__ticker-line">三回影片課程</div>
-                <div class="gept__ticker-line">加強課程</div>
-                <div class="gept__ticker-line">寫作批改</div>
-                <div class="gept__ticker-line">高分範本</div>
+        <!-- 序列 5: 展示三張卡片代替純文字跑馬燈 -->
+        <!-- 6回影片課程卡片 -->
+        <div class="anim-group" id="card-show-6" style="display:none;">
+            <h2 class="intro-card-title">六回影片課程</h2>
+            <div class="m-card card-b intro-card-style">
+                <div class="m-card-overlay"></div>
+                <img class="m-gept-logo" src="https://ik.imagekit.io/lql1uveoc/Front%20Page/GEPT_logo.svg.png?updatedAt=1756611596300" alt="GEPT">
+                <div class="m-card-body">
+                    <div class="card-top-text">
+                        <span class="m-title-big">6回</span>
+                        <span class="m-title-small">完整影片課程</span>
+                        <span class="m-duration-badge"><i class="fa-solid fa-clock"></i> 7h 38m</span>
+                    </div>
+                    <div class="m-divider"></div>
+                    <div class="m-section-label">課程內容</div>
+                    <div class="m-points">
+                        <div class="m-point"><div class="m-point-dot"></div><span>6 回翻譯+寫作影片詳解</span></div>
+                        <div class="m-point"><div class="m-point-dot"></div><span><span style="border-bottom:2px solid #f59e0b;padding-bottom:1px;">贈</span> 4 回雙師專業批改</span></div>
+                        <div class="m-point"><div class="m-point-dot"></div><span><span style="border-bottom:2px solid #f59e0b;padding-bottom:1px;">贈</span> 2 堂 1-1 線上家教</span></div>
+                    </div>
+                    <!-- 隱藏了價格列 -->
+                    <div class="m-price-row"></div>
+                </div>
             </div>
         </div>
+
+        <!-- 3回影片課程卡片 -->
+        <div class="anim-group" id="card-show-3" style="display:none;">
+            <h2 class="intro-card-title">三回影片課程</h2>
+            <div class="m-card card-a intro-card-style">
+                <div class="m-card-overlay"></div>
+                <img class="m-gept-logo" src="https://ik.imagekit.io/lql1uveoc/Front%20Page/GEPT_logo.svg.png?updatedAt=1756611596300" alt="GEPT">
+                <div class="m-card-body">
+                    <div class="card-top-text">
+                        <span class="m-title-big">3回</span>
+                        <span class="m-title-small">完整影片課程</span>
+                        <span class="m-duration-badge"><i class="fa-solid fa-clock"></i> 3h 36m</span>
+                    </div>
+                    <div class="m-divider"></div>
+                    <div class="m-section-label">課程內容</div>
+                    <div class="m-points">
+                        <div class="m-point"><div class="m-point-dot"></div><span>3 回翻譯+寫作影片詳解</span></div>
+                        <div class="m-point"><div class="m-point-dot"></div><span><span style="border-bottom:2px solid #3b82f6;padding-bottom:1px;">贈</span> 2 回雙師專業批改</span></div>
+                        <div class="m-point"><div class="m-point-dot"></div><span><span style="border-bottom:2px solid #3b82f6;padding-bottom:1px;">贈</span> 1 堂 1-1 線上家教</span></div>
+                    </div>
+                    <!-- 隱藏了價格列 -->
+                    <div class="m-price-row"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 加強課程卡片 -->
+        <div class="anim-group" id="card-show-c" style="display:none;">
+            <h2 class="intro-card-title">加強課程</h2>
+            <div class="m-card card-c intro-card-style">
+                <div class="m-card-overlay"></div>
+                <img class="m-gept-logo" src="https://ik.imagekit.io/lql1uveoc/Front%20Page/GEPT_logo.svg.png?updatedAt=1756611596300" alt="GEPT">
+                <div class="m-card-body">
+                    <div class="card-top-text">
+                        <span class="m-title-big">中級寫作</span>
+                        <span class="m-title-small">加強課程</span>
+                    </div>
+                    <div class="m-divider"></div>
+                    <div class="m-section-label">客製化選項</div>
+                    <div class="m-points">
+                        <div class="m-point"><div class="m-point-dot"></div>選 A：4 回批改 + 2 堂家教</div>
+                        <div class="m-point"><div class="m-point-dot"></div>選 B：6 堂 1-1 家教課程</div>
+                        <div class="m-point"><div class="m-point-dot"></div>優惠 A+B：8 堂 + 4 回批改</div>
+                    </div>
+                    <!-- 隱藏了價格列 -->
+                    <div class="m-price-row"></div>
+                </div>
+            </div>
+        </div>
+
     </div>
 </section>
 
-<!-- HERO -->
+<!-- HERO 主畫面 -->
 <div class="hero-section">
     <div class="hero-brand-mobile">GEPT 全民英檢<br>「<span class="highlight-red">中級寫作</span>」</div>
 
@@ -889,50 +939,50 @@
         // 建立 GSAP 時間軸
         const tl = gsap.timeline({ onComplete: endAnimation });
 
-        // 第一幕: GEPT x Tony
+        // 第一幕: GEPT Logo -> X -> Tony Logo 與文字 (完美結合格局)
         tl.set("#group1", { display: "flex" })
-          .fromTo("#group1", { opacity: 0, scale: 0.95 }, { opacity: 1, scale: 1, duration: 0.8, ease: "back.out(1.5)" })
-          .to("#group1", { opacity: 0, scale: 1.05, duration: 0.4, delay: 1.2, ease: "power2.in" })
+          .fromTo(".intro-logo-gept", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.7, ease: "power2.out" })
+          .fromTo(".intro-x", { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(1.5)" }, "-=0.2")
+          .fromTo(".intro-tony-group", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.7, ease: "power2.out" }, "-=0.1")
+          .to("#group1", { opacity: 0, y: -40, duration: 0.4, delay: 1.2, ease: "power2.in" })
           .set("#group1", { display: "none" });
 
         // 第二幕: 1. 這一次
         tl.set("#group2", { display: "flex" })
-          .fromTo("#group2", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" })
-          .to("#group2", { opacity: 0, y: -30, duration: 0.3, delay: 0.7, ease: "power2.in" })
+          .fromTo("#group2", { opacity: 0, scale: 1.1 }, { opacity: 1, scale: 1, duration: 0.5, ease: "power2.out" })
+          .to("#group2", { opacity: 0, scale: 0.9, duration: 0.3, delay: 0.6, ease: "power2.in" })
           .set("#group2", { display: "none" });
 
         // 第三幕: 全新方法 × 全新思維
         tl.set("#group3", { display: "flex" })
           .fromTo("#group3", { opacity: 0, scale: 1.1 }, { opacity: 1, scale: 1, duration: 0.5, ease: "power2.out" })
-          .to("#group3", { opacity: 0, scale: 0.9, duration: 0.3, delay: 0.8, ease: "power2.in" })
+          .to("#group3", { opacity: 0, scale: 0.9, duration: 0.3, delay: 0.7, ease: "power2.in" })
           .set("#group3", { display: "none" });
 
         // 第四幕: 順利通過英檢寫作
         tl.set("#group4", { display: "flex" })
           .fromTo("#group4", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" })
-          .to("#group4", { opacity: 0, y: -30, duration: 0.3, delay: 0.8, ease: "power2.in" })
+          .to("#group4", { opacity: 0, y: -30, duration: 0.3, delay: 0.7, ease: "power2.in" })
           .set("#group4", { display: "none" });
 
-        // 第五幕: 跑馬燈特效 (Ticker)
-        tl.set("#group5", { display: "flex", opacity: 1 });
-        const lines = document.querySelectorAll('.gept__ticker-line');
-        lines.forEach((line, i) => {
-            const isLast = i === lines.length - 1;
-            
-            // 飛入
-            tl.fromTo(line, 
-                { yPercent: 100, opacity: 0 }, 
-                { yPercent: 0, opacity: 1, duration: 0.25, ease: "power2.out" }
-            );
-            
-            // 飛出 (除了最後一組用不同的飛出效果)
-            if (!isLast) {
-                tl.to(line, { yPercent: -100, opacity: 0, duration: 0.2, ease: "power2.in", delay: 0.35 });
-            } else {
-                tl.to(line, { yPercent: -50, opacity: 0, duration: 0.25, ease: "power2.inOut", delay: 0.5 });
-            }
+        // 第五幕: 三張課程卡片依序「展示」 (代替原跑馬燈)
+        const cards = [
+            { id: "#card-show-6", delay: 1.0 },
+            { id: "#card-show-3", delay: 1.0 },
+            { id: "#card-show-c", delay: 1.0 }
+        ];
+
+        cards.forEach((card) => {
+            tl.set(card.id, { display: "flex" })
+              .fromTo(card.id, 
+                  { opacity: 0, y: 50, scale: 0.95 }, 
+                  { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "back.out(1.2)" }
+              )
+              .to(card.id, 
+                  { opacity: 0, y: -40, scale: 0.95, duration: 0.4, delay: card.delay, ease: "power2.in" }
+              )
+              .set(card.id, { display: "none" });
         });
-        tl.set("#group5", { display: "none" });
     }
 
     // 網頁加載完畢後觸發動畫
