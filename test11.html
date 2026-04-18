@@ -139,7 +139,7 @@
         }
 
         /* =========================================
-           CARDS — NEW VERTICAL LAYOUT (all devices)
+           CARDS LAYOUT
            ========================================= */
         .pricing-wrapper { width: 100%; }
         .cards-section { width: 100%; padding: 30px 0 0; }
@@ -149,7 +149,7 @@
         .m-break-header { display: none; }
         @media (max-width: 1180px) { .m-break-header { display: block; width: 100%; } }
 
-        /* Vertical stack of cards */
+        /* ---- Mobile + Tablet: vertical stack ---- */
         .cards-vertical-stack {
             display: flex;
             flex-direction: column;
@@ -157,8 +157,21 @@
             gap: 28px;
             padding: 28px 16px 32px;
             width: 100%;
-            max-width: 960px;
+            max-width: 860px;
             margin: 0 auto;
+        }
+
+        /* ---- Desktop: horizontal 3-card row ---- */
+        @media (min-width: 1181px) {
+            .cards-vertical-stack {
+                flex-direction: row;
+                align-items: stretch;
+                justify-content: center;
+                max-width: 1560px;
+                gap: 28px;
+                padding: 48px 40px 60px;
+                overflow: visible;
+            }
         }
 
         /* Each card */
@@ -172,11 +185,26 @@
             background-size: cover !important;
             background-position: center !important;
             background-repeat: no-repeat !important;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            transition: transform 0.35s ease, box-shadow 0.35s ease, opacity 0.6s ease;
         }
         .m-card:hover {
-            transform: translateY(-4px);
-            box-shadow: 0 16px 40px rgba(0,0,0,0.18);
+            transform: translateY(-6px) scale(1.01);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.22);
+        }
+
+        /* Desktop card sizing */
+        @media (min-width: 1181px) {
+            .m-card {
+                flex: 1;
+                min-width: 0;
+                max-width: 480px;
+                min-height: 720px;
+            }
+            /* Fan-out animation classes (added by JS on scroll) */
+            .m-card.card-anim-hidden { opacity: 0; transform: translateX(0) scale(0.88); }
+            .m-card.card-anim-left   { opacity: 0; transform: translateX(80px) scale(0.88); }
+            .m-card.card-anim-right  { opacity: 0; transform: translateX(-80px) scale(0.88); }
+            .m-card.card-anim-in     { opacity: 1; transform: translateX(0) scale(1); }
         }
 
         .card-b { background-image: url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/rezaul-karim-102abqkKhbY-unsplash.jpg?updatedAt=1773813236096'); }
@@ -185,16 +213,17 @@
 
         .m-card-overlay { position: absolute; inset: 0; z-index: 1; pointer-events: none; }
 
-        /* GEPT logo top-right + label below */
+        /* ---- Brand block: GEPT logo + label + audience (top-right) ---- */
         .card-brand-block {
             position: absolute;
             top: 18px;
             right: 18px;
             display: flex;
             flex-direction: column;
-            align-items: center;
+            align-items: flex-end;
             gap: 5px;
             z-index: 10;
+            max-width: 160px;
         }
         .m-gept-logo { height: 44px; width: auto; opacity: 0.95; display: block; }
         .card-gept-label {
@@ -202,13 +231,41 @@
             font-weight: 800;
             color: rgba(255,255,255,0.92);
             letter-spacing: 0.5px;
-            text-align: center;
+            text-align: right;
             text-shadow: 0 1px 4px rgba(0,0,0,0.7);
             line-height: 1.3;
             white-space: nowrap;
         }
 
-        /* Card body: vertical layout */
+        /* Audience list in brand block */
+        .card-audience-list {
+            margin-top: 6px;
+            display: flex;
+            flex-direction: column;
+            gap: 3px;
+            align-items: flex-end;
+        }
+        .card-audience-item {
+            font-size: 11px;
+            font-weight: 700;
+            color: rgba(255,255,255,0.88);
+            text-shadow: 0 1px 4px rgba(0,0,0,0.7);
+            text-align: right;
+            line-height: 1.4;
+            white-space: nowrap;
+        }
+        .card-audience-title {
+            font-size: 9px;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-weight: 800;
+            color: rgba(255,255,255,0.6);
+            text-align: right;
+            margin-top: 4px;
+            text-shadow: 0 1px 4px rgba(0,0,0,0.6);
+        }
+
+        /* Card body */
         .m-card-body {
             position: relative;
             z-index: 2;
@@ -217,41 +274,6 @@
             flex-direction: column;
             gap: 0;
         }
-
-        /* Audience section at top */
-        .card-audience-block {
-            margin-bottom: 18px;
-        }
-        .card-audience-label {
-            font-size: 10px;
-            letter-spacing: 2.5px;
-            text-transform: uppercase;
-            font-weight: 800;
-            color: rgba(255,255,255,0.75);
-            margin-bottom: 8px;
-            text-shadow: 0 1px 4px rgba(0,0,0,0.6);
-        }
-        .card-audience-pills {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 7px;
-        }
-        .card-audience-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 5px;
-            background: rgba(255,255,255,0.15);
-            border: 1px solid rgba(255,255,255,0.3);
-            backdrop-filter: blur(6px);
-            border-radius: 30px;
-            padding: 5px 12px;
-            font-size: 0.78rem;
-            font-weight: 700;
-            color: rgba(255,255,255,0.95);
-            text-shadow: 0 1px 3px rgba(0,0,0,0.5);
-            white-space: nowrap;
-        }
-        .card-audience-pill span { font-size: 1em; }
 
         .m-divider { width: 44px; height: 3px; margin: 16px 0; border-radius: 2px; }
 
@@ -262,13 +284,13 @@
         .m-duration-badge { display: inline-flex; align-items: center; gap: 5px; background: rgba(0,0,0,0.35); border: 1px solid rgba(255,255,255,0.25); backdrop-filter: blur(6px); border-radius: 30px; padding: 4px 12px; font-size: 0.78rem; font-weight: 700; color: rgba(255,255,255,0.92); margin-top: 6px; letter-spacing: 0.5px; width: fit-content; }
         .m-duration-badge i { font-size: 0.7rem; }
 
-        .m-section-label { font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase; font-weight: 800; color: rgba(255,255,255,.85); margin: 0 0 8px; text-shadow: 0 1px 4px rgba(0,0,0,0.6); }
+        .m-section-label { letter-spacing: 2.5px; text-transform: uppercase; font-weight: 800; color: rgba(255,255,255,.85); margin: 0 0 8px; text-shadow: 0 1px 4px rgba(0,0,0,0.6); }
         .m-points { display: flex; flex-direction: column; gap: 9px; }
-        .m-point { display: flex; align-items: flex-start; gap: 9px; font-size: clamp(14px, 3.8vw, 16px); font-weight: 700; color: #fff; line-height: 1.4; letter-spacing: 0.3px; text-shadow: 0 1px 4px rgba(0,0,0,0.6); }
+        .m-point { display: flex; align-items: flex-start; gap: 9px; font-weight: 700; color: #fff; line-height: 1.45; letter-spacing: 0.3px; text-shadow: 0 1px 4px rgba(0,0,0,0.6); }
         .m-point-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; margin-top: 6px; box-shadow: 0 0 5px rgba(0,0,0,0.5); }
         .m-price-row { display: flex; align-items: center; justify-content: space-between; margin-top: 18px; flex-wrap: wrap; gap: 12px; }
-        .m-price { font-family: 'Playfair Display',serif; font-weight: 700; font-size: clamp(1.5rem,5vw,2rem); color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,0.5); }
-        .m-buy-btn { font-size: clamp(14px,4vw,16px); font-weight: 800; letter-spacing: 1px; padding: 12px 22px; border-radius: 50px; border: none; cursor: pointer; text-transform: uppercase; white-space: nowrap; transition: transform 0.2s; z-index: 10; position: relative; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
+        .m-price { font-family: 'Playfair Display',serif; font-weight: 700; color: #fff; text-shadow: 0 2px 8px rgba(0,0,0,0.5); }
+        .m-buy-btn { font-weight: 800; letter-spacing: 1px; padding: 12px 22px; border-radius: 50px; border: none; cursor: pointer; text-transform: uppercase; white-space: nowrap; transition: transform 0.2s; z-index: 10; position: relative; box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
         .m-buy-btn:hover { transform: scale(1.05); }
 
         .card-b .m-card-overlay { background: linear-gradient(180deg, rgba(28,12,2,0.55) 0%, rgba(28,12,2,0.85) 100%); }
@@ -288,47 +310,65 @@
         .card-c .m-point-dot   { background: #34d399; }
         .card-c .m-buy-btn     { background: #10b981; color: #022c22; }
 
-        /* Tablet */
+        /* ---- MOBILE text sizes (base, 1.5x) ---- */
+        @media (max-width: 767px) {
+            .m-section-label { font-size: 13px; }
+            .m-point { font-size: 21px; }
+            .m-point-dot { width: 8px; height: 8px; margin-top: 8px; }
+            .m-buy-btn { font-size: 18px; padding: 14px 26px; }
+            .m-price { font-size: 2rem; }
+            .m-duration-badge { font-size: 0.88rem; }
+            .m-title-big { font-size: clamp(3rem, 11vw, 4.5rem); }
+            .m-title-small { font-size: clamp(1.2rem, 4vw, 1.6rem); }
+            .card-audience-item { font-size: 12px; }
+            .card-gept-label { font-size: 11px; }
+            .m-gept-logo { height: 40px; }
+            .m-card-body { padding: 24px 22px 22px; }
+        }
+
+        /* ---- TABLET text sizes (2x) ---- */
         @media (min-width: 768px) and (max-width: 1180px) {
             .cards-section-header h2 { font-size: 2.25rem; }
             .header-logo { height: 50px; }
             .cards-vertical-stack { gap: 36px; padding: 36px 32px 40px; }
             .m-card { max-width: 98%; }
             .m-card-body { padding: 36px 40px 32px; }
-            .m-gept-logo { height: 54px; }
-            .card-brand-block { top: 22px; right: 22px; }
-            .card-gept-label { font-size: 12px; }
-            .m-title-big { font-size: 4.5rem; }
-            .card-c .m-title-big { font-size: 3.2rem; }
-            .m-title-small { font-size: 1.6rem; }
-            .m-point { font-size: 18px; line-height: 1.6; }
-            .m-buy-btn { font-size: 17px; padding: 14px 26px; }
-            .m-section-label { font-size: 12px; }
-            .m-price { font-size: 2.2rem; }
-            .m-divider { width: 60px; height: 4px; margin: 20px 0; }
-            .m-duration-badge { font-size: 0.88rem; padding: 5px 14px; margin-top: 8px; }
-            .card-audience-pill { font-size: 0.88rem; padding: 6px 14px; }
-            .card-audience-label { font-size: 11px; }
+            .m-gept-logo { height: 60px; }
+            .card-brand-block { top: 24px; right: 24px; max-width: 200px; }
+            .card-gept-label { font-size: 15px; }
+            .card-audience-item { font-size: 15px; }
+            .card-audience-title { font-size: 11px; }
+            .m-title-big { font-size: 5.5rem; }
+            .card-c .m-title-big { font-size: 4rem; }
+            .m-title-small { font-size: 2rem; }
+            .m-section-label { font-size: 15px; }
+            .m-point { font-size: 26px; line-height: 1.5; }
+            .m-point-dot { width: 10px; height: 10px; margin-top: 10px; }
+            .m-buy-btn { font-size: 22px; padding: 16px 32px; }
+            .m-price { font-size: 2.8rem; }
+            .m-divider { width: 70px; height: 5px; margin: 22px 0; }
+            .m-duration-badge { font-size: 1.05rem; padding: 6px 16px; margin-top: 10px; }
         }
 
-        /* Desktop */
+        /* ---- DESKTOP text sizes (2.5x) ---- */
         @media (min-width: 1181px) {
-            .cards-section { max-width: 1200px; margin: 0 auto; padding-top: 50px; }
-            .cards-vertical-stack { gap: 40px; padding: 32px 0 50px; max-width: 1000px; }
-            .m-card { max-width: 100%; }
-            .m-card-body { padding: 40px 48px 36px; }
-            .m-gept-logo { height: 58px; }
-            .card-brand-block { top: 24px; right: 24px; }
-            .card-gept-label { font-size: 12px; }
-            .m-buy-btn { padding: 14px 28px; font-size: 16px; }
-            .m-point { font-size: 18px; line-height: 1.7; }
-            .m-divider { margin: 20px 0 24px; height: 4px; width: 55px; }
-            .m-title-big { font-size: 4.5rem; }
-            .card-c .m-title-big { font-size: 3.5rem; }
-            .m-title-small { font-size: 1.6rem; }
-            .m-price { font-size: 2rem; }
-            .m-duration-badge { font-size: 0.82rem; padding: 4px 12px; margin-top: 6px; }
-            .card-audience-pill { font-size: 0.82rem; padding: 5px 13px; }
+            .cards-section { max-width: 1600px; margin: 0 auto; padding-top: 50px; }
+            .m-card-body { padding: 42px 38px 36px; }
+            .m-gept-logo { height: 64px; }
+            .card-brand-block { top: 24px; right: 22px; max-width: 220px; }
+            .card-gept-label { font-size: 13px; }
+            .card-audience-item { font-size: 13px; }
+            .card-audience-title { font-size: 10px; }
+            .m-title-big { font-size: 4.8rem; }
+            .card-c .m-title-big { font-size: 3.2rem; }
+            .m-title-small { font-size: 1.8rem; }
+            .m-section-label { font-size: 14px; }
+            .m-point { font-size: 22px; line-height: 1.6; }
+            .m-point-dot { width: 9px; height: 9px; margin-top: 9px; }
+            .m-buy-btn { font-size: 18px; padding: 15px 30px; }
+            .m-price { font-size: 2.4rem; }
+            .m-divider { margin: 18px 0 22px; height: 4px; width: 60px; }
+            .m-duration-badge { font-size: 0.9rem; padding: 5px 14px; margin-top: 8px; }
         }
 
         /* =========================================
@@ -423,30 +463,7 @@
         /* =========================================
            REST OF SECTIONS (unchanged)
            ========================================= */
-        .audience-panel { background: #fff; border-top: 1px solid #e5e7eb; padding: 28px 30px 32px; width: 100%; }
-        .audience-panel-inner { max-width: 900px; margin: 0 auto; }
-        .audience-title { font-size: clamp(1.2rem, 4vw, 1.5rem); font-weight: 800; color: #111827; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 18px; display: flex; align-items: center; gap: 10px; }
-        .audience-title::after { content: ''; flex: 1; height: 1px; background: #e5e7eb; }
-        .audience-rows { display: flex; flex-direction: column; gap: 12px; }
-        .audience-row { display: flex; align-items: flex-start; gap: 12px; font-size: clamp(16px, 4vw, 18px); color: #1e293b; line-height: 1.5; font-weight: 500; opacity: 0; transform: translateY(8px); transition: opacity .35s ease, transform .35s ease; }
-        .audience-row.visible { opacity: 1; transform: translateY(0); }
-        .audience-icon { font-size: 1.3em; flex-shrink: 0; margin-top: 1px; }
-        .audience-row strong { color: #111827; font-weight: 800; }
 
-        @media (min-width: 768px) and (max-width: 1180px) {
-            .audience-panel-inner { display: flex; flex-direction: column; align-items: center; text-align: center; }
-            .audience-title { justify-content: center; width: 100%; font-size: 2.7rem; }
-            .audience-title::after { display: none; }
-            .audience-rows { align-items: center; width: 100%; gap: 18px; }
-            .audience-row { text-align: center; align-items: center; justify-content: center; font-size: 26px; line-height: 1.6; }
-            .audience-icon { font-size: 32px; }
-        }
-        @media (min-width: 1181px) {
-            .audience-panel { max-width: 1200px; margin: 40px auto 20px; border-radius: 16px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); padding: 50px 60px; border: 1px solid #e5e7eb; }
-            .audience-title { font-size: 2.2rem; margin-bottom: 35px; }
-            .audience-row { font-size: 1.6rem; gap: 20px; margin-bottom: 16px; }
-            .audience-icon { font-size: 2.2rem; }
-        }
 
         .features-wrapper { width: 100%; max-width: 1400px; margin: 30px auto 40px; padding: 20px 30px; box-sizing: border-box; }
         .feature-item { box-sizing: border-box; position: relative; }
@@ -672,32 +689,25 @@
         <div class="cards-vertical-stack">
 
             <!-- Card B: 6回 -->
-            <div class="m-card card-b">
+            <div class="m-card card-b" id="m-card-0">
                 <div class="m-card-overlay"></div>
-                <!-- GEPT brand top-right -->
                 <div class="card-brand-block">
                     <img class="m-gept-logo" src="https://ik.imagekit.io/lql1uveoc/Front%20Page/GEPT_logo.svg.png?updatedAt=1756611596300" alt="GEPT">
                     <div class="card-gept-label">全民英檢<br>中級寫作</div>
+                    <div class="card-audience-list">
+                        <div class="card-audience-title">適合對象</div>
+                        <div class="card-audience-item">追求高分不留死角</div>
+                        <div class="card-audience-item">大量實作深度累積</div>
+                        <div class="card-audience-item">系統性長期提升</div>
+                    </div>
                 </div>
                 <div class="m-card-body">
-                    <!-- Audience at top -->
-                    <div class="card-audience-block">
-                        <div class="card-audience-label">✦ 適合對象</div>
-                        <div class="card-audience-pills">
-                            <span class="card-audience-pill">🏆 追求高分、不留死角</span>
-                            <span class="card-audience-pill">✍️ 大量實作練習</span>
-                            <span class="card-audience-pill">📈 系統性長期提升</span>
-                        </div>
-                    </div>
-                    <!-- Divider -->
-                    <div class="m-divider"></div>
-                    <!-- Title -->
                     <div class="card-top-text">
                         <span class="m-title-big">6回</span>
                         <span class="m-title-small">完整影片課程</span>
                         <span class="m-duration-badge"><i class="fa-solid fa-clock"></i> 7h 38m</span>
                     </div>
-                    <div style="height:14px;"></div>
+                    <div class="m-divider"></div>
                     <div class="m-section-label">課程內容</div>
                     <div class="m-points">
                         <div class="m-point"><div class="m-point-dot"></div><span>6 回翻譯+寫作影片詳解</span></div>
@@ -712,28 +722,25 @@
             </div>
 
             <!-- Card A: 3回 -->
-            <div class="m-card card-a">
+            <div class="m-card card-a" id="m-card-1">
                 <div class="m-card-overlay"></div>
                 <div class="card-brand-block">
                     <img class="m-gept-logo" src="https://ik.imagekit.io/lql1uveoc/Front%20Page/GEPT_logo.svg.png?updatedAt=1756611596300" alt="GEPT">
                     <div class="card-gept-label">全民英檢<br>中級寫作</div>
+                    <div class="card-audience-list">
+                        <div class="card-audience-title">適合對象</div>
+                        <div class="card-audience-item">備考時間緊湊</div>
+                        <div class="card-audience-item">重點弱點補強</div>
+                        <div class="card-audience-item">初次體驗教學</div>
+                    </div>
                 </div>
                 <div class="m-card-body">
-                    <div class="card-audience-block">
-                        <div class="card-audience-label">✦ 適合對象</div>
-                        <div class="card-audience-pills">
-                            <span class="card-audience-pill">⚡ 備考時間緊湊</span>
-                            <span class="card-audience-pill">🔍 重點弱點補強</span>
-                            <span class="card-audience-pill">🌱 初次體驗教學</span>
-                        </div>
-                    </div>
-                    <div class="m-divider"></div>
                     <div class="card-top-text">
                         <span class="m-title-big">3回</span>
                         <span class="m-title-small">完整影片課程</span>
                         <span class="m-duration-badge"><i class="fa-solid fa-clock"></i> 3h 36m</span>
                     </div>
-                    <div style="height:14px;"></div>
+                    <div class="m-divider"></div>
                     <div class="m-section-label">課程內容</div>
                     <div class="m-points">
                         <div class="m-point"><div class="m-point-dot"></div><span>3 回翻譯+寫作影片詳解</span></div>
@@ -748,27 +755,24 @@
             </div>
 
             <!-- Card C: 加強 -->
-            <div class="m-card card-c">
+            <div class="m-card card-c" id="m-card-2">
                 <div class="m-card-overlay"></div>
                 <div class="card-brand-block">
                     <img class="m-gept-logo" src="https://ik.imagekit.io/lql1uveoc/Front%20Page/GEPT_logo.svg.png?updatedAt=1756611596300" alt="GEPT">
                     <div class="card-gept-label">全民英檢<br>中級寫作</div>
+                    <div class="card-audience-list">
+                        <div class="card-audience-title">適合對象</div>
+                        <div class="card-audience-item">重實戰輕理論</div>
+                        <div class="card-audience-item">特定弱點突破</div>
+                        <div class="card-audience-item">靈活客製安排</div>
+                    </div>
                 </div>
                 <div class="m-card-body">
-                    <div class="card-audience-block">
-                        <div class="card-audience-label">✦ 適合對象</div>
-                        <div class="card-audience-pills">
-                            <span class="card-audience-pill">🥊 重實戰輕理論</span>
-                            <span class="card-audience-pill">📌 特定弱點突破</span>
-                            <span class="card-audience-pill">🔧 靈活客製安排</span>
-                        </div>
-                    </div>
-                    <div class="m-divider"></div>
                     <div class="card-top-text">
                         <span class="m-title-big">中級寫作</span>
                         <span class="m-title-small">加強課程</span>
                     </div>
-                    <div style="height:14px;"></div>
+                    <div class="m-divider"></div>
                     <div class="m-section-label">客製化選項</div>
                     <div class="m-points">
                         <div class="m-point"><div class="m-point-dot"></div>選 A：4 回批改 + 2 堂家教</div>
@@ -783,14 +787,6 @@
             </div>
 
         </div><!-- end cards-vertical-stack -->
-
-        <!-- Audience panel (kept below as secondary reference) -->
-        <div class="audience-panel">
-            <div class="audience-panel-inner">
-                <div class="audience-title" id="audience-plan-name">適合對象</div>
-                <div class="audience-rows" id="audience-rows"></div>
-            </div>
-        </div>
     </div>
 
     <!-- FEATURES -->
@@ -989,22 +985,55 @@ const images = [
     "https://ik.imagekit.io/lql1uveoc/Beginning-intermediate%20level/Dark%20Blue%20and%20Beige%20Modern%20Simple%20Schedule%20A4%20Document-2.png",
     "https://ik.imagekit.io/lql1uveoc/Beginning-intermediate%20level/Dark%20Blue%20and%20Beige%20Modern%20Simple%20Schedule%20A4%20Document-6.png"
 ];
-const audienceData = [
-    {plan:'方案 B — 完整實戰型', rows:[{icon:'🏆',title:'追求高分',desc:'完整練習所有題型，不留死角'},{icon:'✍️',title:'大量實作',desc:'看多、寫多、改多，深度累積'},{icon:'📈',title:'長期練習',desc:'加強寫作邏輯，系統性提升'}]},
-    {plan:'方案 A — 輕量實戰派', rows:[{icon:'⚡',title:'備考時間緊湊',desc:'需快速吸收精華重點'},{icon:'🔍',title:'重點補強',desc:'針對弱點確認盲點'},{icon:'🌱',title:'初次嘗試',desc:'體驗教學風格與批改服務'}]},
-    {plan:'方案 C — 加強衝刺型', rows:[{icon:'🥊',title:'重實戰輕理論',desc:'直接寫、直接改，快速進步'},{icon:'📌',title:'特定弱點突破',desc:'高密度一對一指導'},{icon:'🔧',title:'靈活安排',desc:'針對性修正，彈性客製'}]}
-];
 let cart = {};
 
-function renderAudience(i) {
-    const d = audienceData[i];
-    document.getElementById('audience-plan-name').textContent = d.plan + ' — 適合對象';
-    const c = document.getElementById('audience-rows');
-    c.innerHTML = d.rows.map(r => `<div class="audience-row"><span class="audience-icon">${r.icon}</span><span><strong>${r.title}</strong>：${r.desc}</span></div>`).join('');
-    requestAnimationFrame(() => { c.querySelectorAll('.audience-row').forEach((el, i) => { setTimeout(() => el.classList.add('visible'), i * 80); }); });
+/* ---- Desktop fan-out scroll animation ---- */
+function initCardFanOut() {
+    if (window.innerWidth < 1181) return;
+    const c0 = document.getElementById('m-card-0'); // left (6回)
+    const c1 = document.getElementById('m-card-1'); // center (3回)
+    const c2 = document.getElementById('m-card-2'); // right (加強)
+    if (!c0 || !c1 || !c2) return;
+
+    const dur = '0.75s';
+    const ease = 'cubic-bezier(0.22,1,0.36,1)';
+    c0.style.transition = `opacity ${dur} ${ease}, transform ${dur} ${ease}`;
+    c1.style.transition = `opacity 0.55s ${ease}, transform 0.55s ${ease}`;
+    c2.style.transition = `opacity ${dur} 0.1s ${ease}, transform ${dur} 0.1s ${ease}`;
+
+    c0.style.opacity = '0'; c0.style.transform = 'translateX(70px) scale(0.88)';
+    c1.style.opacity = '0'; c1.style.transform = 'scale(0.88)';
+    c2.style.opacity = '0'; c2.style.transform = 'translateX(-70px) scale(0.88)';
+
+    let fired = false;
+    const observer = new IntersectionObserver((entries) => {
+        if (fired || !entries[0].isIntersecting) return;
+        fired = true;
+        // Center card first
+        requestAnimationFrame(() => {
+            c1.style.opacity = '1'; c1.style.transform = 'scale(1)';
+        });
+        // Side cards fan out with slight delay
+        setTimeout(() => {
+            c0.style.opacity = '1'; c0.style.transform = 'translateX(0) scale(1)';
+            c2.style.opacity = '1'; c2.style.transform = 'translateX(0) scale(1)';
+        }, 160);
+        observer.disconnect();
+    }, { threshold: 0.12 });
+    observer.observe(c1);
 }
 
-document.addEventListener('DOMContentLoaded', () => { renderAudience(0); });
+document.addEventListener('DOMContentLoaded', () => {
+    initCardFanOut();
+    window.addEventListener('resize', () => {
+        if (window.innerWidth < 1181) {
+            ['m-card-0','m-card-1','m-card-2'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) { el.style.opacity = ''; el.style.transform = ''; el.style.transition = ''; }
+            });
+        }
+    });
+});
 
 window.addToCart = function(pid) {
     const p = products.find(x => x.id === pid);
