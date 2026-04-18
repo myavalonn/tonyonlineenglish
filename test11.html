@@ -17,7 +17,7 @@
     <script src="layout-manager.js"></script>
 
     <style>
-        /* 新增 Pacifico 字體 */
+        /* 引入 Pacifico 字體 */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&family=Noto+Sans+TC:wght@400;700;900&family=Playfair+Display:wght@700;900&family=Pacifico&display=swap');
 
         :root {
@@ -38,7 +38,6 @@
             overflow-x: hidden;
         }
         
-        /* 鎖定頁面滑動 (開場動畫用) */
         body.no-scroll { overflow: hidden; height: 100vh; }
 
         /* =========================================
@@ -53,40 +52,72 @@
         .gept-loader-content {
             position: relative; width: 100%; height: 100%;
             display: flex; align-items: center; justify-content: center; text-align: center;
-            /* 將整體視覺往上推一點 */
-            transform: translateY(-8vh);
+            transform: translateY(-4vh); /* 微調置中 */
         }
         .anim-group {
             position: absolute; display: flex; flex-direction: column; align-items: center; justify-content: center;
             width: 100%; padding: 0 20px; opacity: 0;
         }
 
-        /* 第一幕 Logo 與 Tony 文字專屬樣式 */
-        .intro-logo-gept { width: clamp(200px, 45vw, 400px); object-fit: contain; }
-        .intro-x { font-size: clamp(2rem, 5vw, 3rem); color: #cbd5e1; margin: 2vh 0; font-weight: 900; }
-        .intro-tony-group { display: flex; flex-direction: column; align-items: center; gap: 15px; }
-        .intro-logo-tony { width: clamp(90px, 20vw, 160px); object-fit: contain; border-radius: 20px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
-        .intro-tony-text { font-size: clamp(1.8rem, 6vw, 4rem); font-weight: 900; line-height: 1.2; display: flex; flex-wrap: wrap; justify-content: center; align-items: center; }
-        .tony-en { font-family: 'Pacifico', cursive; color: #6B73FF; text-shadow: 0 4px 15px rgba(107, 115, 255, 0.4); margin-right: 2vw; font-weight: normal; }
-        .tony-zh { color: #060b1c; letter-spacing: 2px; }
-
-        @media (min-width: 768px) {
-            .intro-tony-group { flex-direction: row; gap: 25px; }
-            .intro-x { margin: 3vh 0; }
+        /* 魔法摳圖效果：讓有白底的 Logo 瞬間與白背景融為一體 */
+        .blend-multiply {
+            mix-blend-mode: multiply;
+            background: transparent;
+            filter: contrast(1.05) brightness(1.02); /* 稍微增強對比，讓圖案更俐落 */
         }
 
-        /* 單純文字幕樣式 */
+        /* 第一幕：GEPT x Tony 排版設計 */
+        .intro-layout { 
+            display: flex; flex-direction: column; align-items: center; gap: 20px; 
+            width: 100%; max-width: 1000px;
+        }
+        .intro-brand-box {
+            display: flex; flex-direction: column; align-items: center; gap: 10px;
+        }
+        .intro-logo-gept { width: clamp(160px, 35vw, 260px); object-fit: contain; }
+        .intro-logo-tony { width: clamp(120px, 25vw, 180px); object-fit: contain; }
+        
+        .intro-x { font-size: clamp(2rem, 5vw, 3rem); color: #cbd5e1; font-weight: 900; margin: 10px 0; }
+        
+        .intro-brand-text {
+            font-size: clamp(1.2rem, 3.5vw, 1.8rem); font-weight: 900; color: #111827; 
+            line-height: 1.3; text-align: center;
+        }
+        .intro-brand-text .highlight-red { color: #dc2626; }
+        
+        /* Tony 專屬字體與排版 */
+        .tony-en { font-family: 'Pacifico', cursive; color: #6B73FF; font-size: clamp(2rem, 6vw, 3rem); text-shadow: 0 4px 15px rgba(107, 115, 255, 0.3); font-weight: normal; margin-right: 8px; }
+        .tony-zh { color: #060b1c; font-weight: 900; font-size: clamp(1.4rem, 4vw, 2rem); letter-spacing: 2px; }
+
+        @media (min-width: 768px) {
+            .intro-layout { flex-direction: row; justify-content: center; gap: 50px; }
+            .intro-x { margin: 0; }
+        }
+
+        /* 後續純文字幕樣式 */
         .giant-text { font-weight: 900; line-height: 1.3; font-size: clamp(2rem, 6vw, 4.5rem); letter-spacing: 2px; }
         .text-gold { color: #fbbf24; font-size: clamp(3rem, 10vw, 6rem); text-shadow: 0 4px 15px rgba(0,0,0,0.1); }
         .text-dark { color: #111827; font-size: clamp(2rem, 7vw, 5rem); }
         .text-green { color: #10b981; font-size: clamp(2.2rem, 8vw, 5.5rem); }
+        .text-blue-c { color: #0065ff; }
+        .text-orange-c { color: #f97316; }
 
-        /* 卡片展示幕樣式 */
-        .intro-card-title { font-size: clamp(1.8rem, 6vw, 3rem); font-weight: 900; color: #111827; margin-bottom: 25px; letter-spacing: 2px; }
-        .intro-card-style { cursor: default; transform: scale(1) !important; opacity: 1 !important; box-shadow: 0 20px 40px rgba(0,0,0,0.2) !important; margin: 0 auto; }
-        .intro-card-style:hover { transform: scale(1) !important; }
-        .intro-card-style .m-price-row { display: none !important; /* 隱藏價格區塊 */ }
-        
+        /* 往上堆疊的跑馬燈 */
+        .stack-ticker-window {
+            position: absolute; top: 0; left: 0; width: 100vw; height: 100vh;
+            display: flex; justify-content: center; overflow: hidden; pointer-events: none;
+        }
+        .stack-ticker-track {
+            display: flex; flex-direction: column; align-items: center;
+            margin-top: 45vh; /* 從畫面中間下方開始堆疊生長 */
+            font-size: clamp(1.8rem, 6vw, 4rem);
+        }
+        .stack-item {
+            font-weight: 900; margin-bottom: 0.6em; line-height: 1;
+            opacity: 0; transform: translateY(0.5em); text-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        /* 跳過按鈕 */
         .skip-btn {
             position: absolute; bottom: 30px; right: 30px; z-index: 1000000;
             background: rgba(0, 0, 0, 0.05); color: #666; border: 1px solid rgba(0,0,0,0.1);
@@ -97,7 +128,7 @@
         .skip-btn:hover { background: rgba(0, 0, 0, 0.15); color: #000; }
 
         /* =========================================
-           HERO 區塊 (主網頁)
+           HERO 主網頁區塊
            ========================================= */
         .hero-section {
             width: 100%; min-height: 80vh;
@@ -112,36 +143,23 @@
         @keyframes glowBrand  { 0%{text-shadow:0 4px 15px rgba(0,0,0,.8)} 30%{text-shadow:0 0 15px rgba(255,255,255,.8),0 0 25px rgba(220,38,38,.9),0 0 40px rgba(220,38,38,.8)} 100%{text-shadow:0 4px 15px rgba(0,0,0,.8)} }
         @keyframes glowTitle  { 0%{text-shadow:0 4px 15px rgba(0,0,0,.6)} 30%{text-shadow:0 0 15px rgba(255,255,255,.8),0 0 25px rgba(251,191,36,.9),0 0 40px rgba(251,191,36,.8)} 100%{text-shadow:0 4px 15px rgba(0,0,0,.6)} }
 
-        /* 動畫修改：必須加上 .start-main-anim 才會觸發 */
         .hero-brand-mobile {
-            position: absolute; top: 20px; left: 20px;
-            text-align: left; font-size: 2.2rem; font-weight: 900; line-height: 1.25;
-            text-shadow: 0 4px 15px rgba(0,0,0,.8); z-index: 10;
-            display: none; opacity: 0;
+            position: absolute; top: 20px; left: 20px; text-align: left; font-size: 2.2rem; font-weight: 900; line-height: 1.25;
+            text-shadow: 0 4px 15px rgba(0,0,0,.8); z-index: 10; display: none; opacity: 0;
         }
         body.start-main-anim .hero-brand-mobile { animation: slideInLeft 1s ease forwards, glowBrand 2.5s ease 0.5s forwards; }
         .hero-brand-mobile .highlight-red { color: #dc2626; }
 
-        .hero-brand-inline {
-            font-weight: 900; line-height: 1.2; color: #fff;
-            text-shadow: 0 4px 15px rgba(0,0,0,.8); opacity: 0;
-        }
+        .hero-brand-inline { font-weight: 900; line-height: 1.2; color: #fff; text-shadow: 0 4px 15px rgba(0,0,0,.8); opacity: 0; }
         body.start-main-anim .hero-brand-inline { animation: glowBrand 2.5s ease forwards; opacity: 1; }
         .hero-brand-inline .highlight-red { color: #dc2626; }
 
-        .hero-content {
-            opacity: 0; display: flex; flex-direction: column; align-items: center;
-            max-width: 1100px; z-index: 10;
-        }
+        .hero-content { opacity: 0; display: flex; flex-direction: column; align-items: center; max-width: 1100px; z-index: 10; }
         body.start-main-anim .hero-content { animation: fadeInUp 1s ease 0.3s forwards; }
 
         .hero-intro { font-size: 4rem; font-weight: 700; color: #fbbf24; margin-bottom: 8px; }
-
-        .hero-title-large {
-            font-weight: 900; margin-bottom: 15px; line-height: 1.2; opacity: 0;
-        }
+        .hero-title-large { font-weight: 900; margin-bottom: 15px; line-height: 1.2; opacity: 0; }
         body.start-main-anim .hero-title-large { animation: glowTitle 2.5s ease 0.8s forwards; opacity: 1;}
-        
         .hero-sub-text { display: block; font-weight: 600; margin-bottom: 22px; color: #e2e8f0; letter-spacing: 2px; font-size: 1.2rem; }
         .hero-action-group { display: flex; flex-direction: column; align-items: center; gap: 20px; width: 100%; }
         .hero-btn { background: var(--theme-blue); color: #fff; padding: 16px 40px; border-radius: 50px; font-size: 1.25rem; font-weight: 800; text-decoration: none; transition: all .3s; box-shadow: 0 6px 20px rgba(0,101,255,.4); display: inline-flex; align-items: center; gap: 10px; }
@@ -186,9 +204,7 @@
             .desktop-x-space { display: none; }
         }
 
-        /* =========================================
-           共用卡片樣式 (提供主畫面及動畫展示使用)
-           ========================================= */
+        /* 其它區塊保留原樣 */
         .pricing-wrapper { width: 100%; }
         .cards-section { width: 100%; padding: 30px 0 0; }
         .cards-section-header { text-align: center; padding: 10px 20px 0; }
@@ -232,13 +248,11 @@
         .card-b .m-divider     { background: #f59e0b; }
         .card-b .m-point-dot   { background: #fbbf24; }
         .card-b .m-buy-btn     { background: #f59e0b; color: #1c1106; }
-
         .card-a .m-card-overlay { background: linear-gradient(180deg, rgba(4,10,32,0) 0%, rgba(4,10,32,0.4) 40%, rgba(4,10,32,0.95) 100%); }
         .card-a .m-title-small { color: #e0eaff; }
         .card-a .m-divider     { background: #3b82f6; }
         .card-a .m-point-dot   { background: #60a5fa; }
         .card-a .m-buy-btn     { background: #3b82f6; color: #fff; }
-
         .card-c .m-card-overlay { background: linear-gradient(180deg, rgba(2,16,12,0) 0%, rgba(2,16,12,0.4) 40%, rgba(2,16,12,0.95) 100%); }
         .card-c .m-title-big   { font-size: clamp(2.4rem, 8.5vw, 3rem); white-space: nowrap; }
         .card-c .m-title-small { color: #d1fae5; }
@@ -251,7 +265,6 @@
             .m-point { font-size: 17px !important; }
             .m-point-dot { margin-top: 8px; }
         }
-
         @media (min-width: 768px) and (max-width: 1180px) {
             .cards-section-header h2 { font-size: 2.25rem; }
             .header-logo { height: 50px; }
@@ -269,7 +282,6 @@
             .m-divider { width: 66px; height: 4px; margin: auto 0 20px; }
             .m-duration-badge { font-size: 0.95rem; padding: 5px 14px; margin-top: 8px; }
         }
-
         @media (min-width: 1181px) {
             .cards-section { max-width: 1600px; margin: 0 auto; padding-top: 50px; }
             .slider-track { justify-content: center; padding: 30px 0 50px; gap: 40px; }
@@ -288,7 +300,6 @@
             .m-duration-badge { font-size: 0.82rem; padding: 4px 12px; margin-top: 6px; }
         }
         
-        /* 其他區塊樣式隱藏於此，保持原汁原味 */
         .audience-panel { background: #fff; border-top: 1px solid #e5e7eb; padding: 28px 30px 32px; width: 100%; }
         .audience-panel-inner { max-width: 900px; margin: 0 auto; }
         .audience-title { font-size: clamp(1.2rem, 4vw, 1.5rem); font-weight: 800; color: #111827; letter-spacing: 1px; text-transform: uppercase; margin-bottom: 18px; display: flex; align-items: center; gap: 10px; }
@@ -516,15 +527,25 @@
     <button class="skip-btn" id="skipBtn">跳過 ›</button>
 
     <div class="gept-loader-content">
-        <!-- 序列 1: GEPT Logo X Tony Logo -->
+        <!-- 序列 1: GEPT Logo X Tony Logo (完美結合、去背摳圖、補回文字) -->
         <div class="anim-group" id="group1">
-            <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/GEPT_logo.svg.png.webp?updatedAt=1774590183732" class="intro-logo-gept" alt="GEPT">
-            <div class="intro-x">Ｘ</div>
-            <div class="intro-tony-group">
-                <img src="https://ik.imagekit.io/lql1uveoc/IMG_9614.PNG?updatedAt=1750437382543" class="intro-logo-tony" alt="Tony">
-                <div class="intro-tony-text">
-                    <span class="tony-en">Tony</span>
-                    <span class="tony-zh">線上美語家教</span>
+            <div class="intro-layout">
+                <!-- GEPT -->
+                <div class="intro-brand-box" id="intro-gept">
+                    <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/GEPT_logo.svg.png.webp?updatedAt=1774590183732" class="intro-logo-gept blend-multiply" alt="GEPT">
+                    <div class="intro-brand-text">GEPT 全民英檢<br>「<span class="highlight-red">中級寫作</span>」</div>
+                </div>
+                
+                <!-- Ｘ -->
+                <div class="intro-x" id="intro-x">Ｘ</div>
+                
+                <!-- Tony -->
+                <div class="intro-brand-box" id="intro-tony">
+                    <img src="https://ik.imagekit.io/lql1uveoc/IMG_9614.PNG?updatedAt=1750437382543" class="intro-logo-tony blend-multiply" alt="Tony">
+                    <div class="intro-tony-text">
+                        <span class="tony-en">Tony</span>
+                        <span class="tony-zh">線上美語家教</span>
+                    </div>
                 </div>
             </div>
         </div>
@@ -544,81 +565,18 @@
             <div class="giant-text text-green">順利通過英檢寫作</div>
         </div>
 
-        <!-- 序列 5: 展示三張卡片代替純文字跑馬燈 -->
-        <!-- 6回影片課程卡片 -->
-        <div class="anim-group" id="card-show-6" style="display:none;">
-            <h2 class="intro-card-title">六回影片課程</h2>
-            <div class="m-card card-b intro-card-style">
-                <div class="m-card-overlay"></div>
-                <img class="m-gept-logo" src="https://ik.imagekit.io/lql1uveoc/Front%20Page/GEPT_logo.svg.png?updatedAt=1756611596300" alt="GEPT">
-                <div class="m-card-body">
-                    <div class="card-top-text">
-                        <span class="m-title-big">6回</span>
-                        <span class="m-title-small">完整影片課程</span>
-                        <span class="m-duration-badge"><i class="fa-solid fa-clock"></i> 7h 38m</span>
-                    </div>
-                    <div class="m-divider"></div>
-                    <div class="m-section-label">課程內容</div>
-                    <div class="m-points">
-                        <div class="m-point"><div class="m-point-dot"></div><span>6 回翻譯+寫作影片詳解</span></div>
-                        <div class="m-point"><div class="m-point-dot"></div><span><span style="border-bottom:2px solid #f59e0b;padding-bottom:1px;">贈</span> 4 回雙師專業批改</span></div>
-                        <div class="m-point"><div class="m-point-dot"></div><span><span style="border-bottom:2px solid #f59e0b;padding-bottom:1px;">贈</span> 2 堂 1-1 線上家教</span></div>
-                    </div>
-                    <!-- 隱藏了價格列 -->
-                    <div class="m-price-row"></div>
+        <!-- 序列 5: 往上堆疊的跑馬燈 -->
+        <div class="anim-group" id="group5" style="display:none; height:100%; width:100%;">
+            <div class="stack-ticker-window">
+                <div class="stack-ticker-track" id="ticker-track">
+                    <div class="stack-item text-blue-c">六回影片課程</div>
+                    <div class="stack-item text-blue-c">三回影片課程</div>
+                    <div class="stack-item text-orange-c">加強課程</div>
+                    <div class="stack-item text-dark">寫作批改</div>
+                    <div class="stack-item text-gold">高分範本</div>
                 </div>
             </div>
         </div>
-
-        <!-- 3回影片課程卡片 -->
-        <div class="anim-group" id="card-show-3" style="display:none;">
-            <h2 class="intro-card-title">三回影片課程</h2>
-            <div class="m-card card-a intro-card-style">
-                <div class="m-card-overlay"></div>
-                <img class="m-gept-logo" src="https://ik.imagekit.io/lql1uveoc/Front%20Page/GEPT_logo.svg.png?updatedAt=1756611596300" alt="GEPT">
-                <div class="m-card-body">
-                    <div class="card-top-text">
-                        <span class="m-title-big">3回</span>
-                        <span class="m-title-small">完整影片課程</span>
-                        <span class="m-duration-badge"><i class="fa-solid fa-clock"></i> 3h 36m</span>
-                    </div>
-                    <div class="m-divider"></div>
-                    <div class="m-section-label">課程內容</div>
-                    <div class="m-points">
-                        <div class="m-point"><div class="m-point-dot"></div><span>3 回翻譯+寫作影片詳解</span></div>
-                        <div class="m-point"><div class="m-point-dot"></div><span><span style="border-bottom:2px solid #3b82f6;padding-bottom:1px;">贈</span> 2 回雙師專業批改</span></div>
-                        <div class="m-point"><div class="m-point-dot"></div><span><span style="border-bottom:2px solid #3b82f6;padding-bottom:1px;">贈</span> 1 堂 1-1 線上家教</span></div>
-                    </div>
-                    <!-- 隱藏了價格列 -->
-                    <div class="m-price-row"></div>
-                </div>
-            </div>
-        </div>
-
-        <!-- 加強課程卡片 -->
-        <div class="anim-group" id="card-show-c" style="display:none;">
-            <h2 class="intro-card-title">加強課程</h2>
-            <div class="m-card card-c intro-card-style">
-                <div class="m-card-overlay"></div>
-                <img class="m-gept-logo" src="https://ik.imagekit.io/lql1uveoc/Front%20Page/GEPT_logo.svg.png?updatedAt=1756611596300" alt="GEPT">
-                <div class="m-card-body">
-                    <div class="card-top-text">
-                        <span class="m-title-big">中級寫作</span>
-                        <span class="m-title-small">加強課程</span>
-                    </div>
-                    <div class="m-divider"></div>
-                    <div class="m-section-label">客製化選項</div>
-                    <div class="m-points">
-                        <div class="m-point"><div class="m-point-dot"></div>選 A：4 回批改 + 2 堂家教</div>
-                        <div class="m-point"><div class="m-point-dot"></div>選 B：6 堂 1-1 家教課程</div>
-                        <div class="m-point"><div class="m-point-dot"></div>優惠 A+B：8 堂 + 4 回批改</div>
-                    </div>
-                    <!-- 隱藏了價格列 -->
-                    <div class="m-price-row"></div>
-                </div>
-            </div>
-        </div>
-
     </div>
 </section>
 
@@ -909,7 +867,7 @@
         if (sessionStorage.getItem("geptIntroSeen")) {
             loader.style.display = 'none';
             body.classList.remove('no-scroll');
-            body.classList.add('start-main-anim'); // 開始播放首頁本體動畫
+            body.classList.add('start-main-anim');
             return;
         }
 
@@ -926,7 +884,7 @@
                 onComplete: () => {
                     loader.style.display = 'none';
                     body.classList.remove('no-scroll');
-                    body.classList.add('start-main-anim'); // 動畫結束，首頁本體文字飛入
+                    body.classList.add('start-main-anim'); 
                 }
             });
         }
@@ -939,71 +897,73 @@
         // 建立 GSAP 時間軸
         const tl = gsap.timeline({ onComplete: endAnimation });
 
-        // 第一幕: GEPT Logo -> X -> Tony Logo 與文字 (完美結合格局)
-        tl.set("#group1", { display: "flex" })
-          .fromTo(".intro-logo-gept", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.7, ease: "power2.out" })
-          .fromTo(".intro-x", { opacity: 0, scale: 0.5 }, { opacity: 1, scale: 1, duration: 0.4, ease: "back.out(1.5)" }, "-=0.2")
-          .fromTo(".intro-tony-group", { opacity: 0, y: 40 }, { opacity: 1, y: 0, duration: 0.7, ease: "power2.out" }, "-=0.1")
-          .to("#group1", { opacity: 0, y: -40, duration: 0.4, delay: 1.2, ease: "power2.in" })
+        // 第一幕: GEPT Logo 配字 -> X -> Tony Logo 配字 (透明底完美融合成白畫面)
+        tl.set("#group1", { display: "flex", opacity: 1 })
+          .set("#intro-x", { opacity: 0, scale: 0.5 })
+          .set("#intro-tony", { opacity: 0, x: 50 })
+          // 1. GEPT (含字) 浮現
+          .fromTo("#intro-gept", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.6, ease: "power2.out" })
+          // 2. X 浮現
+          .to("#intro-x", { opacity: 1, scale: 1, duration: 0.3, ease: "back.out(1.5)" }, "-=0.2")
+          // 3. Tony (含字) 從右側/下方滑出
+          .to("#intro-tony", { opacity: 1, x: 0, duration: 0.6, ease: "power2.out" }, "-=0.1")
+          // 停留後隱藏
+          .to("#group1", { opacity: 0, y: -40, duration: 0.4, delay: 1.0, ease: "power2.in" })
           .set("#group1", { display: "none" });
 
         // 第二幕: 1. 這一次
-        tl.set("#group2", { display: "flex" })
-          .fromTo("#group2", { opacity: 0, scale: 1.1 }, { opacity: 1, scale: 1, duration: 0.5, ease: "power2.out" })
-          .to("#group2", { opacity: 0, scale: 0.9, duration: 0.3, delay: 0.6, ease: "power2.in" })
+        tl.set("#group2", { display: "flex", opacity: 1 })
+          .fromTo("#group2", { opacity: 0, scale: 1.1 }, { opacity: 1, scale: 1, duration: 0.4, ease: "power2.out" })
+          .to("#group2", { opacity: 0, scale: 0.9, duration: 0.3, delay: 0.3, ease: "power2.in" })
           .set("#group2", { display: "none" });
 
         // 第三幕: 全新方法 × 全新思維
-        tl.set("#group3", { display: "flex" })
-          .fromTo("#group3", { opacity: 0, scale: 1.1 }, { opacity: 1, scale: 1, duration: 0.5, ease: "power2.out" })
-          .to("#group3", { opacity: 0, scale: 0.9, duration: 0.3, delay: 0.7, ease: "power2.in" })
+        tl.set("#group3", { display: "flex", opacity: 1 })
+          .fromTo("#group3", { opacity: 0, scale: 1.1 }, { opacity: 1, scale: 1, duration: 0.4, ease: "power2.out" })
+          .to("#group3", { opacity: 0, scale: 0.9, duration: 0.3, delay: 0.3, ease: "power2.in" })
           .set("#group3", { display: "none" });
 
         // 第四幕: 順利通過英檢寫作
-        tl.set("#group4", { display: "flex" })
-          .fromTo("#group4", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" })
-          .to("#group4", { opacity: 0, y: -30, duration: 0.3, delay: 0.7, ease: "power2.in" })
+        tl.set("#group4", { display: "flex", opacity: 1 })
+          .fromTo("#group4", { opacity: 0, y: 30 }, { opacity: 1, y: 0, duration: 0.4, ease: "power2.out" })
+          .to("#group4", { opacity: 0, y: -30, duration: 0.3, delay: 0.3, ease: "power2.in" })
           .set("#group4", { display: "none" });
 
-        // 第五幕: 三張課程卡片依序「展示」 (代替原跑馬燈)
-        const cards = [
-            { id: "#card-show-6", delay: 1.0 },
-            { id: "#card-show-3", delay: 1.0 },
-            { id: "#card-show-c", delay: 1.0 }
-        ];
-
-        cards.forEach((card) => {
-            tl.set(card.id, { display: "flex" })
-              .fromTo(card.id, 
-                  { opacity: 0, y: 50, scale: 0.95 }, 
-                  { opacity: 1, y: 0, scale: 1, duration: 0.5, ease: "back.out(1.2)" }
-              )
-              .to(card.id, 
-                  { opacity: 0, y: -40, scale: 0.95, duration: 0.4, delay: card.delay, ease: "power2.in" }
-              )
-              .set(card.id, { display: "none" });
+        // 第五幕: 往上堆疊的跑馬燈
+        tl.set("#group5", { display: "flex", opacity: 1 });
+        const stackItems = document.querySelectorAll('.stack-item');
+        
+        stackItems.forEach((item, i) => {
+            let label = "step" + i;
+            if (i > 0) {
+                tl.to("#ticker-track", { y: "-=1.6em", duration: 0.35, ease: "power2.inOut" }, label);
+            }
+            tl.to(item, { opacity: 1, y: 0, duration: 0.35, ease: "power2.out" }, label);
+            tl.to({}, { duration: 0.25 }); 
         });
+
+        // 結束後整體淡出
+        tl.to("#group5", { opacity: 0, duration: 0.5, delay: 0.2, ease: "power2.inOut" });
     }
 
-    // 網頁加載完畢後觸發動畫
     document.addEventListener("DOMContentLoaded", initIntroAnimation);
 </script>
 
 <!-- ====== 原本的頁面功能腳本 ====== -->
 <script>
-const products = [
+const products =[
     {id:'course-3A', name:'全民英檢中級影片課程3回(A)', price:3650, description:'方案A (輕量實戰派)', emoji:'🎬', imageId:0},
     {id:'course-6A', name:'全民英檢中級影片課程6回(B)', price:6600, description:'方案B (完整實戰型)', emoji:'🎬', imageId:1},
     {id:'course-CA', name:'方案C: 四回批改+兩堂課程',   price:3000, description:'選項A (加強衝刺)',   emoji:'✍️', imageId:2},
     {id:'course-CB', name:'方案C: 六堂線上家教寫作課程', price:4200, description:'選項B (家教+練習)',  emoji:'👨‍🏫', imageId:2},
     {id:'course-COMBO',name:'方案C: 八堂1-1家教+四回批改',price:6800,description:'A+B 組合優惠',     emoji:'🏆', imageId:2}
 ];
-const images = [
+const images =[
     "https://ik.imagekit.io/lql1uveoc/Beginning-intermediate%20level/Dark%20Blue%20and%20Beige%20Modern%20Simple%20Schedule%20A4%20Document-7.png",
     "https://ik.imagekit.io/lql1uveoc/Beginning-intermediate%20level/Dark%20Blue%20and%20Beige%20Modern%20Simple%20Schedule%20A4%20Document-2.png",
     "https://ik.imagekit.io/lql1uveoc/Beginning-intermediate%20level/Dark%20Blue%20and%20Beige%20Modern%20Simple%20Schedule%20A4%20Document-6.png"
 ];
-const audienceData = [
+const audienceData =[
     {plan:'方案 B — 完整實戰型',rows:[{icon:'🏆',title:'追求高分',desc:'完整練習所有題型，不留死角'},{icon:'✍️',title:'大量實作',desc:'看多、寫多、改多，深度累積'},{icon:'📈',title:'長期練習',desc:'加強寫作邏輯，系統性提升'}]},
     {plan:'方案 A — 輕量實戰派',rows:[{icon:'⚡',title:'備考時間緊湊',desc:'需快速吸收精華重點'},{icon:'🔍',title:'重點補強',desc:'針對弱點確認盲點'},{icon:'🌱',title:'初次嘗試',desc:'體驗教學風格與批改服務'}]},
     {plan:'方案 C — 加強衝刺型',rows:[{icon:'🥊',title:'重實戰輕理論',desc:'直接寫、直接改，快速進步'},{icon:'📌',title:'特定弱點突破',desc:'高密度一對一指導'},{icon:'🔧',title:'靈活安排',desc:'針對性修正，彈性客製'}]}
@@ -1018,8 +978,7 @@ function renderAudience(i){
     requestAnimationFrame(()=>{ c.querySelectorAll('.audience-row').forEach((el,i)=>{ setTimeout(()=>el.classList.add('visible'),i*80); }); });
 }
 function updateMActive(index){
-    if(index===currentCard) return; currentCard=index;
-    [0,1,2].forEach(i=>{ document.getElementById('m-card-'+i).classList.toggle('active',i===index); document.getElementById('m-dot-'+i).classList.toggle('active',i===index); });
+    if(index===currentCard) return; currentCard=index;[0,1,2].forEach(i=>{ document.getElementById('m-card-'+i).classList.toggle('active',i===index); document.getElementById('m-dot-'+i).classList.toggle('active',i===index); });
     renderAudience(index);
 }
 window.scrollToMCard=function(index){
