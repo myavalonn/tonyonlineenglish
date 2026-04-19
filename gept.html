@@ -15,7 +15,6 @@
     <!-- Styles & Scripts -->
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <script src="layout-manager.js"></script>
 
     <style>
         /* 隱藏預設滾動條 */
@@ -49,7 +48,7 @@
             opacity: 0;
         }
 
-        /* --- 課程介紹背景設定 (100%清晰，無玻璃模糊) --- */
+        /* --- 課程介紹背景設定 --- */
         .card-bg-1 { background-image: url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/IMG_8528.JPG?updatedAt=1776447267458'); }
         .card-bg-2 { background-image: url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/IMG_8527.JPG?updatedAt=1776447267156'); }
         .card-bg-3 { background-image: url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/IMG_8551.JPG?updatedAt=1776447263011'); }
@@ -61,25 +60,21 @@
             cursor: pointer; position: relative;
         }
 
-        /* 電腦版 (>1024px) - 獨立穩定的滑入與 Hover 動畫 */
+        /* 電腦版 (>1024px) - 滑鼠移入提示與精準過場 */
         @media (min-width: 1024px) {
             .course-container { display: flex; flex-direction: row; justify-content: center; padding: 1rem 2rem; gap: 2rem; max-width: 1600px; margin: 0 auto; position: relative; }
             .course-item { 
                 flex: 1; max-width: 500px; display: flex; flex-direction: column; min-height: 550px; 
-                opacity: 0; animation: slideUpFade 0.8s ease forwards;
+                opacity: 0; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
             }
-            .course-item:nth-child(1) { animation-delay: 0.1s; }
-            .course-item:nth-child(2) { animation-delay: 0.25s; }
-            .course-item:nth-child(3) { animation-delay: 0.4s; }
-            
-            /* Hover 微微上浮即可，取消原本的兩倍致中放大 */
-            .course-item { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+            .course-item.show {
+                animation: slideUpFade 0.8s ease forwards;
+            }
             .course-item:hover { 
-                transform: translateY(-10px) scale(1.02); 
-                box-shadow: 0 25px 50px rgba(0,0,0,0.6); 
+                transform: translateY(-15px) scale(1.03) !important; 
+                box-shadow: 0 30px 60px rgba(0,0,0,0.7) !important; 
                 z-index: 20;
             }
-
             .mobile-detail-btn { display: none !important; }
         }
 
@@ -87,11 +82,11 @@
         @media (max-width: 1023px) {
             .course-container { display: flex; flex-direction: column; gap: 1.5rem; padding: 0 1.25rem; align-items: center; max-width: 800px; margin: 0 auto; }
             .course-item { width: 100%; display: flex; flex-direction: column; }
-            .prep-strategy { display: none; } /* 手機平板預設隱藏準備策略，彈窗才顯示 */
+            .prep-strategy { display: none; } /* 手機預設隱藏，彈窗才顯示 */
             .mobile-detail-btn { display: flex; justify-content: flex-end; align-items: center; margin-top: 1rem; }
         }
 
-        /* --- 全裝置：課程介紹彈跳視窗 (Modal - 2倍大、不用全螢幕) --- */
+        /* --- 全裝置：課程介紹彈跳視窗 (放大 2 倍的 Modal 容器) --- */
         #course-modal-overlay {
             position: fixed; inset: 0; background-color: rgba(0, 0, 0, 0.85); z-index: 5000;
             display: flex; justify-content: center; align-items: center; padding: 1rem;
@@ -105,14 +100,14 @@
             transform: translateY(20px) scale(0.95); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
         }
-        /* 電腦版設定為 1000px，剛好是原卡片 500px 的兩倍 */
+        /* 設定寬度為兩倍大 (1000px)，達成兩倍縮放的效果 */
         @media (min-width: 1024px) { .course-modal-content { max-width: 1000px; } }
         @media (max-width: 1023px) { .course-modal-content { max-width: 800px; } }
 
         #course-modal-overlay.visible .course-modal-content { transform: translateY(0) scale(1); }
         .course-modal-body { overflow-y: auto; -webkit-overflow-scrolling: touch; }
         
-        /* 彈窗內強制顯示策略，隱藏點擊按鈕 */
+        /* 強制顯示策略，隱藏按鈕 */
         #course-modal-body .prep-strategy { display: block !important; margin-top: auto; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.2); }
         #course-modal-body .mobile-detail-btn { display: none !important; }
 
@@ -124,7 +119,7 @@
         }
         .modal-close-btn:hover { background: rgba(220, 38, 38, 0.9); transform: scale(1.1); }
 
-        /* 彈窗內的放大設定 (Modal 專用縮放類別) */
+        /* Modal 專用文字兩倍縮放 */
         @media (min-width: 768px) {
             .modal-scale-text h3 { font-size: 4rem !important; line-height: 1.1 !important; }
             .modal-scale-text .subtitle-text { font-size: 1.8rem !important; }
@@ -137,11 +132,10 @@
             .modal-scale-text .logo-text { font-size: 1rem !important; }
         }
 
-        /* --- 學生回饋 --- */
+        /* 以下為原有區塊 CSS 保留 */
         @media (min-width: 768px) {
             .swipe-container-feedback { padding: 1rem 2rem; justify-content: center; flex-wrap: wrap; display: flex; gap: 2rem; overflow-x: hidden; }
             .swipe-item-feedback { flex: 0 0 350px; }
-            .swipe-hint-feedback { display: none; }
             .feedback-indicators { display: none !important; }
         }
         @media (max-width: 767px) {
@@ -152,7 +146,6 @@
             .indicator-dot.active { background-color: #3b82f6; transform: scale(1.3); width: 12px; border-radius: 4px;}
         }
 
-        /* --- 聯絡我們 --- */
         .contact-section { background: #f9fafb; padding: 50px 20px 80px; width: 100%; }
         .contact-wrap { max-width: 900px; width: 90%; margin: 0 auto; background: #fff; padding: 50px; border-radius: 16px; border: 1px solid #e5e7eb; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }
         .contact-header { text-align: center; margin-bottom: 30px; }
@@ -164,11 +157,10 @@
         .form-group input:focus, .form-group textarea:focus { outline: none; border-color: #3b82f6; background: #fff; }
         #contact-submit { width: 100%; font-size: 1.15rem; padding: 16px; margin-top: 10px; cursor: pointer; border: none; font-family: inherit; font-weight: 800; background: #3b82f6; color: #fff; border-radius: 50px; transition: all 0.3s; box-shadow: 0 4px 15px rgba(59, 130, 246, 0.3); }
         #contact-submit:hover { transform: translateY(-2px); background: #2563eb; box-shadow: 0 6px 20px rgba(59, 130, 246, 0.4); }
-        #contact-submit:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
         @media (min-width: 1181px) { .contact-wrap { max-width: 1100px; padding: 60px 70px; } }
         @media (max-width: 768px) { .contact-wrap { padding: 30px 20px; } .contact-header h2 { font-size: 1.6rem; } }
 
-        /* 以下為購物車與卡片特效 CSS 保持原狀 */
+        /* 購物車特效 */
         :root { --primary-color: #3b414a; --accent-blue: #007bff; --line-green: #00B900; --color-neutral-900: oklch(0.185 0 0); }
         .product-grid { max-width: 900px; margin: 0 auto 30px; display: flex; flex-wrap: nowrap; justify-content: center; gap: 40px; padding: 0 20px; }
         @media (max-width: 768px) { .product-grid { gap: 15px; padding: 0 15px; flex-direction: row; } }
@@ -274,7 +266,6 @@
         <header class="relative text-white pt-20 pb-12 md:pt-32 md:pb-32 px-4 text-center overflow-hidden">
             <div class="absolute inset-0 z-0 hero-bg-layer"></div>
             
-            <!-- 全裝置：右上角 GEPT Logo + 全民英檢 -->
             <div class="absolute top-4 right-4 md:top-6 md:right-8 z-20 flex flex-col items-center drop-shadow-md">
                 <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/GEPT_logo.svg.png.webp?updatedAt=1774590183732" 
                      alt="GEPT Logo" 
@@ -319,30 +310,32 @@
             </div>
         </header>
 
-        <!-- GEPT 級數課程介紹 (背景100%清晰，無玻璃效果) -->
+        <!-- GEPT 級數課程介紹 -->
         <section id="courses" class="py-16 md:py-24 bg-gray-100 scroll-mt-0">
             <div class="text-center mb-10 px-4">
                 <h2 class="text-3xl md:text-[2.5rem] lg:text-4xl font-bold text-gray-800 mb-2">全民英檢各級數課程介紹</h2>
             </div>
 
-            <!-- 電腦版並排，最大寬度 -->
+            <!-- 電腦版並排 -->
             <div class="course-container max-w-[1600px] mx-auto">
                 
                 <!-- 初級 Card -->
                 <div id="card-elementary" class="course-item group" onclick="handleCourseAction('elementary')">
                     
-                    <!-- 1. 清晰的背景圖，Hover 時僅圖片本身微微放大 -->
                     <div class="absolute inset-0 bg-cover bg-center card-bg-layer card-bg-1 transition-transform duration-700 group-hover:scale-105 z-0"></div>
-                    
-                    <!-- 2. 極輕微的暗色遮罩讓整體不過曝 -->
                     <div class="absolute inset-0 bg-slate-900/60 transition-colors duration-300 group-hover:bg-slate-900/50 z-0"></div>
                     
-                    <!-- 3. 文字內容區，取消半透明框，文字直接擴展於背景之上 -->
+                    <!-- 電腦版專屬：滑鼠移入時的「點擊放大」提示層 -->
+                    <div class="absolute inset-0 z-20 hidden lg:flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none bg-slate-900/40">
+                        <div class="bg-slate-900/90 text-white font-bold py-3 px-8 rounded-full backdrop-blur-sm transform translate-y-4 group-hover:translate-y-0 transition-all duration-400 border border-white/30 text-xl shadow-2xl tracking-wide flex items-center">
+                            <i class="fas fa-search-plus mr-3 text-2xl text-rose-400"></i> 點擊放大查看詳細介紹
+                        </div>
+                    </div>
+
                     <div class="relative z-10 p-6 md:p-8 lg:p-8 flex flex-col h-full card-content-wrapper text-gray-100">
                         
                         <div class="flex justify-between items-start border-b border-white/20 pb-5 mb-5">
                             <div class="text-left pr-4">
-                                <!-- 手機1.5倍(36px)、平板2.0倍(48px)，設定 leading-none 防止拉長 -->
                                 <h3 class="text-[36px] md:text-[48px] lg:text-[40px] font-bold text-rose-400 leading-none drop-shadow-md">初級 GEPT</h3>
                                 <p class="text-gray-200 text-base md:text-[1.4rem] lg:text-xl mt-3 drop-shadow subtitle-text">Elementary – 基礎溝通能力</p>
                             </div>
@@ -354,7 +347,6 @@
 
                         <p class="mb-5 bg-white/10 border-l-4 border-rose-500 p-4 rounded-r-lg font-medium drop-shadow purpose-text">📌 目的定位：透過日常生活語境的聽說讀寫任務，建立基礎英語能力。</p>
                         
-                        <!-- 聽說讀寫：全裝置左右排版 (Grid 2欄) -->
                         <ul class="skills-grid grid grid-cols-2 gap-x-2 gap-y-4 mb-5 drop-shadow text-lg md:text-[1.5rem] lg:text-lg">
                             <li class="flex items-start"><i class="fas fa-headphones text-rose-400 w-8 md:w-10 text-center shrink-0 mt-1"></i><span><strong>聽力：</strong>圖片描述與簡短對話。</span></li>
                             <li class="flex items-start"><i class="fas fa-book-open text-rose-400 w-8 md:w-10 text-center shrink-0 mt-1"></i><span><strong>閱讀：</strong>句子填空與短文理解。</span></li>
@@ -380,6 +372,12 @@
                     <div class="absolute inset-0 bg-cover bg-center card-bg-layer card-bg-2 transition-transform duration-700 group-hover:scale-105 z-0"></div>
                     <div class="absolute inset-0 bg-slate-900/60 transition-colors duration-300 group-hover:bg-slate-900/50 z-0"></div>
                     
+                    <div class="absolute inset-0 z-20 hidden lg:flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none bg-slate-900/40">
+                        <div class="bg-slate-900/90 text-white font-bold py-3 px-8 rounded-full backdrop-blur-sm transform translate-y-4 group-hover:translate-y-0 transition-all duration-400 border border-white/30 text-xl shadow-2xl tracking-wide flex items-center">
+                            <i class="fas fa-search-plus mr-3 text-2xl text-blue-400"></i> 點擊放大查看詳細介紹
+                        </div>
+                    </div>
+
                     <div class="relative z-10 p-6 md:p-8 lg:p-8 flex flex-col h-full card-content-wrapper text-gray-100">
                         <div class="flex justify-between items-start border-b border-white/20 pb-5 mb-5">
                             <div class="text-left pr-4">
@@ -418,6 +416,12 @@
                     <div class="absolute inset-0 bg-cover bg-center card-bg-layer card-bg-3 transition-transform duration-700 group-hover:scale-105 z-0"></div>
                     <div class="absolute inset-0 bg-slate-900/60 transition-colors duration-300 group-hover:bg-slate-900/50 z-0"></div>
                     
+                    <div class="absolute inset-0 z-20 hidden lg:flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none bg-slate-900/40">
+                        <div class="bg-slate-900/90 text-white font-bold py-3 px-8 rounded-full backdrop-blur-sm transform translate-y-4 group-hover:translate-y-0 transition-all duration-400 border border-white/30 text-xl shadow-2xl tracking-wide flex items-center">
+                            <i class="fas fa-search-plus mr-3 text-2xl text-indigo-400"></i> 點擊放大查看詳細介紹
+                        </div>
+                    </div>
+
                     <div class="relative z-10 p-6 md:p-8 lg:p-8 flex flex-col h-full card-content-wrapper text-gray-100">
                         <div class="flex justify-between items-start border-b border-white/20 pb-5 mb-5">
                             <div class="text-left pr-4">
@@ -454,18 +458,14 @@
             </div>
         </section>
 
-        <!-- 全裝置：課程介紹 Modal 容器 (點選後放大兩倍，點擊任意處/ESC 關閉) -->
+        <!-- 全裝置：課程介紹 Modal 容器 (點選後放大兩倍) -->
         <div id="course-modal-overlay" class="hide-scroll" onclick="closeCourseModal(event)">
-            
             <div class="course-modal-content relative bg-slate-900 mx-auto overflow-hidden shadow-2xl" onclick="event.stopPropagation()">
-                
-                <!-- 暗色遮罩，讓 Modal 內的文字一樣好讀 -->
+                <!-- 暗色遮罩 -->
                 <div class="absolute inset-0 bg-slate-900/75 z-0 pointer-events-none"></div>
-                
                 <!-- 關閉按鈕 -->
                 <button class="modal-close-btn" onclick="closeCourseModal()"><i class="fas fa-times"></i></button>
-
-                <!-- 彈跳視窗內部：被拷貝進來的文字區域，統一套用 .modal-scale-text 來實現兩倍放大 -->
+                <!-- 彈跳視窗內部 -->
                 <div id="course-modal-body" class="relative z-10 p-6 md:p-10 flex flex-col h-full overflow-y-auto hide-scroll modal-scale-text text-gray-100"></div>
             </div>
         </div>
@@ -592,7 +592,7 @@
             <p class="text-gray-500 text-sm mt-12">&copy; 2026 Tony線上美語家教 All Rights Reserved.</p>
         </footer>
 
-        <!-- 聯絡我們 (提取自 Code 2 置底) -->
+        <!-- 聯絡我們 -->
         <section class="contact-section" id="contact">
             <div class="contact-wrap">
                 <div class="contact-header">
@@ -677,7 +677,7 @@
 
     <!-- JS 邏輯 -->
     <script>
-        // --- 設定課程卡片滑入動畫 (單純滑入，無 JS 操作延遲，保證不失效) ---
+        // --- 設定課程卡片滑入動畫 (已修復致命語法錯誤) ---
         document.addEventListener("DOMContentLoaded", () => {
             if (window.innerWidth >= 1024) {
                 const observer = new IntersectionObserver((entries) => {
@@ -690,13 +690,14 @@
                 }, { threshold: 0.15 });
 
                 document.querySelectorAll('.course-item').forEach((item, index) => {
-                    item.style.transitionDelay = `${index * 0.1s}`;
+                    // 修復了原本錯誤的 0.1s 寫法，現在能正常啟動所有腳本
+                    item.style.animationDelay = `${index * 0.15}s`;
                     observer.observe(item);
                 });
             }
         });
 
-        // --- 全裝置點擊：開啟 Modal，放大大約 2 倍 ---
+        // --- 全裝置點擊：開啟 Modal，達成兩倍大瀏覽 ---
         function handleCourseAction(courseId) {
             const cardId = 'card-' + courseId;
             const cardEl = document.getElementById(cardId);
@@ -708,7 +709,7 @@
             const overlay = document.getElementById('course-modal-overlay');
             const modalBody = document.getElementById('course-modal-body');
             
-            // 精準拷貝 wrapper 內容，避免因找不到子類別而壞掉
+            // 精準拷貝內容，確保原卡片不受影響
             const wrapper = cardElement.querySelector('.card-content-wrapper');
             if(!wrapper) return;
             
@@ -731,14 +732,12 @@
             document.body.style.overflow = 'hidden'; 
         }
 
-        // 點擊 Modal 外部半透明黑色區域關閉
         function closeCourseModal(event) {
             if (event && event.target !== document.getElementById('course-modal-overlay')) return;
             document.getElementById('course-modal-overlay').classList.remove('visible');
             document.body.style.overflow = ''; 
         }
 
-        // 鍵盤 ESC 關閉所有彈出視窗
         document.addEventListener('keydown', function(e) {
             if (e.key === "Escape") {
                 closeCourseModal();
@@ -746,7 +745,7 @@
             }
         });
 
-        // --- 聯絡我們表單傳送邏輯 ---
+        // --- 聯絡我們 ---
         function submitContactForm(e) {
             e.preventDefault(); 
             const btn = document.getElementById('contact-submit');
@@ -771,7 +770,7 @@
             });
         }
 
-        // --- 學生回饋滑動指標 (Dots) ---
+        // --- 學生回饋 ---
         function initFeedbackIndicators() {
             if (window.innerWidth >= 768) return;
             const slider = document.getElementById('feedback-slider');
@@ -807,7 +806,7 @@
         window.addEventListener('resize', initFeedbackIndicators);
 
 
-        // --- 購物車與預約邏輯 ---
+        // --- 購物車 ---
         const products =[
           { id: 'trial-25', name: '體驗課程 25 分鐘', price: 350, gasUrl: 'https://script.google.com/macros/s/AKfycbyZMqL135r1VvRL7pdW6EB6nmeLja-MhQt95ri5xa9j9Z810WfMb7_Vm156MPFn8t5Q/exec' },
           { id: 'trial-50', name: '體驗課程 50 分鐘', price: 550, gasUrl: 'https://script.google.com/macros/s/AKfycbyWvhW6fp_ohPEvPK226KtNiQLCyAVMl77zV0Hq0k_TcEk3F1ni9qVcJystGUovVjTMGQ/exec' }
