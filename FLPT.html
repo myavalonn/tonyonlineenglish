@@ -40,10 +40,6 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', 'Noto Sans TC', sans-serif; }
         html { font-size: 18px; }
         
-        /* 
-          【修復重點 1】：移除 span, a, div 強制純黑的設定。
-          將全站顏色交給 body 繼承，這樣 layout-manager.js 產生的深色 Header 就能保有原本的白字與 Logo，不會變成黑底黑字而消失。 
-        */
         body { background-color: var(--white); color: var(--dark-text); line-height: 1.7; overflow-x: hidden; }
         h1, h2, h3, h4, h5 { font-weight: 900; }
         p, li { color: var(--dark-text); }
@@ -73,20 +69,18 @@
             text-shadow: 1px 1px 0px rgba(0,0,0,0.5);
         }
 
-        /* 控制手機版強制換行的 Class */
         .mobile-break { display: none; }
 
         /* =========================================
-           【修復重點 2】：LAYOUT MANAGER FIXES (桌機版顯示補強)
+           【修復重點：選單卡片排版恢復】
            ========================================= */
-        /* 確保 Header 層級最高，不被 Hero 區塊背景遮擋 */
         header, nav, .header, #header, [class*="header"] {
             z-index: 99999 !important;
             position: relative;
         }
 
         @media (min-width: 768px) {
-            /* 強制確保在桌機/平板版，外部導入的 Logo 與選單不會被 RWD 樣式錯誤隱藏 */
+            /* 針對 Logo 確保顯示 */
             header [class*="logo"], header [id*="logo"], header img,
             nav [class*="logo"], nav [id*="logo"], nav img {
                 display: inline-block !important;
@@ -94,8 +88,10 @@
                 opacity: 1 !important;
             }
             
-            header .fa-bars, header [class*="hamburger"], header [class*="menu"],
-            nav .fa-bars, nav [class*="hamburger"], nav [class*="menu"] {
+            /* 【關鍵修正】：移除了 [class*="menu"]，只鎖定漢堡圖示本身，
+               這樣才不會把下拉選單裡的「卡片」誤判為按鈕並改成橫向排列。 */
+            header .fa-bars, header [class*="hamburger"], header .menu-btn, header .toggle,
+            nav .fa-bars, nav [class*="hamburger"], nav .menu-btn, nav .toggle {
                 display: inline-flex !important;
                 visibility: visible !important;
                 opacity: 1 !important;
