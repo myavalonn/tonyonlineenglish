@@ -40,17 +40,20 @@
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Inter', 'Noto Sans TC', sans-serif; }
         html { font-size: 18px; }
         
-        /* 全站背景與文字強制純黑 */
+        /* 
+          【修復重點 1】：移除 span, a, div 強制純黑的設定。
+          將全站顏色交給 body 繼承，這樣 layout-manager.js 產生的深色 Header 就能保有原本的白字與 Logo，不會變成黑底黑字而消失。 
+        */
         body { background-color: var(--white); color: var(--dark-text); line-height: 1.7; overflow-x: hidden; }
-        h1, h2, h3, h4, h5, p, li, span, a, div { color: var(--dark-text); }
         h1, h2, h3, h4, h5 { font-weight: 900; }
-        a { text-decoration: none; }
+        p, li { color: var(--dark-text); }
+        a { text-decoration: none; color: inherit; }
         
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
         .section-padding { padding: 60px 0; }
         
         .section-title {
-            text-align: center; font-size: 2.2rem; margin-bottom: 40px; position: relative; 
+            text-align: center; font-size: 2.2rem; margin-bottom: 40px; position: relative; color: var(--dark-text);
         }
         .section-title::after {
             content: ''; width: 80px; height: 6px; background: var(--dark-text); display: block; margin: 15px auto 0;
@@ -62,18 +65,42 @@
         .c-p { color: var(--accent-blue) !important; }
         .c-t { color: var(--accent-green) !important; }
 
-        /* 為了配合黑色美學並讓黃色字體可讀，為標題的彩色字加上粗黑描邊與陰影 */
         h1 .color-letter, h2 .color-letter {
             -webkit-text-stroke: 1px var(--dark-text);
             text-shadow: 2px 2px 0px var(--dark-text);
         }
-        /* 內文中的彩色字較小，加上微弱陰影即可 */
         p .color-letter {
             text-shadow: 1px 1px 0px rgba(0,0,0,0.5);
         }
 
         /* 控制手機版強制換行的 Class */
         .mobile-break { display: none; }
+
+        /* =========================================
+           【修復重點 2】：LAYOUT MANAGER FIXES (桌機版顯示補強)
+           ========================================= */
+        /* 確保 Header 層級最高，不被 Hero 區塊背景遮擋 */
+        header, nav, .header, #header, [class*="header"] {
+            z-index: 99999 !important;
+            position: relative;
+        }
+
+        @media (min-width: 768px) {
+            /* 強制確保在桌機/平板版，外部導入的 Logo 與選單不會被 RWD 樣式錯誤隱藏 */
+            header [class*="logo"], header [id*="logo"], header img,
+            nav [class*="logo"], nav [id*="logo"], nav img {
+                display: inline-block !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+            }
+            
+            header .fa-bars, header [class*="hamburger"], header [class*="menu"],
+            nav .fa-bars, nav [class*="hamburger"], nav [class*="menu"] {
+                display: inline-flex !important;
+                visibility: visible !important;
+                opacity: 1 !important;
+            }
+        }
 
         /* --- Hero Section --- */
         .hero {
@@ -86,7 +113,6 @@
         
         .hero .container { position: relative; z-index: 10; max-width: 1000px; }
 
-        /* 右上方疊加圖片 */
         .hero-overlay {
             position: absolute;
             top: 20px;
@@ -112,9 +138,9 @@
             border: 3px solid var(--dark-text);
         }
         
-        .btn-primary { background: var(--brand-yellow); box-shadow: 4px 4px 0px rgba(0,0,0,1); }
+        .btn-primary { background: var(--brand-yellow); box-shadow: 4px 4px 0px rgba(0,0,0,1); color: var(--dark-text); }
         .btn-primary:hover { transform: translate(2px, 2px); box-shadow: 2px 2px 0px rgba(0,0,0,1); }
-        .btn-secondary { background: var(--white); box-shadow: 4px 4px 0px rgba(0,0,0,1); }
+        .btn-secondary { background: var(--white); box-shadow: 4px 4px 0px rgba(0,0,0,1); color: var(--dark-text); }
         .btn-secondary:hover { background: #F1F5F9; transform: translate(2px, 2px); box-shadow: 2px 2px 0px rgba(0,0,0,1); }
 
         /* --- Target Grid (Why Choose Us) --- */
@@ -215,44 +241,22 @@
 
         /* 📱 Mobile Mode (max-width: 767px) */
         @media (max-width: 767px) {
-            .mobile-break { display: block; } /* 顯示手機版強制換行 */
+            .mobile-break { display: block; }
             .hero { text-align: center; } 
-            
-            /* 控制 Hero 區塊的縮放與確保不換到第三行 */
             .hero h1 { font-size: 2.8rem; } 
-            .hero-title-2nd { 
-                display: block; 
-                font-size: 2.1rem; /* 縮小字體以確保單行容納 */
-                white-space: nowrap; /* 強制不准換行到第三行 */
-            }
-            
-            /* 控制 為什麼選擇Tony 的第二行標題，確保縮小字體、不換到第三行 */
-            .section-title-2nd {
-                display: inline-block;
-                white-space: nowrap;
-                font-size: 1.6rem; /* 確保在小螢幕也能塞進單行 */
-            }
+            .hero-title-2nd { display: block; font-size: 2.1rem; white-space: nowrap; }
+            .section-title-2nd { display: inline-block; white-space: nowrap; font-size: 1.6rem; }
 
             .hero-buttons { justify-content: center; align-items: center; }
             .cta-bottom-title { font-size: 1.5rem; } 
             
-            /* 手機版題型分析：滑動與邊緣突出 */
             .mobile-swipe-container {
-                display: flex;
-                overflow-x: auto;
-                scroll-snap-type: x mandatory;
-                gap: 15px;
-                padding: 10px 20px 30px 20px;
-                margin-left: -20px;
-                margin-right: -20px;
-                -ms-overflow-style: none;
-                scrollbar-width: none;
+                display: flex; overflow-x: auto; scroll-snap-type: x mandatory; gap: 15px;
+                padding: 10px 20px 30px 20px; margin-left: -20px; margin-right: -20px;
+                -ms-overflow-style: none; scrollbar-width: none;
             }
             .mobile-swipe-container::-webkit-scrollbar { display: none; }
-            .mobile-swipe-container .level-card {
-                flex: 0 0 82%; 
-                scroll-snap-align: center;
-            }
+            .mobile-swipe-container .level-card { flex: 0 0 82%; scroll-snap-align: center; }
             .swipe-hint { display: block; text-align: center; font-weight: 900; margin-bottom: 15px; color: var(--accent-blue); animation: bounce-x 2s infinite; }
         }
 
@@ -282,11 +286,9 @@
 
     <!-- Hero Section -->
     <section class="hero">
-        <!-- 右上方重疊圓形小圖 -->
         <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-03-13%20%E4%B8%8B%E5%8D%8810.24.32.png" alt="Tony 線上美語" class="hero-overlay">
         
         <div class="container">
-            <!-- 手機版強制雙行與 FLPT 獨立上色 -->
             <h1>
                 <span class="c-f color-letter">F</span><span class="c-l color-letter">L</span><span class="c-p color-letter">P</span><span class="c-t color-letter">T</span><br class="mobile-break"> 
                 <span class="hero-title-2nd">外語能力測驗</span>
@@ -309,7 +311,6 @@
 
     <!-- Why Choose Us -->
     <section class="section-padding container" id="introduction">
-        <!-- 手機版強制分兩行，第二行強制縮放確保不換到第三行 -->
         <h2 class="section-title">為什麼選擇<br class="mobile-break"> <span class="section-title-2nd">Tony線上美語家教？</span></h2>
         <p style="text-align: center; font-size: 1.2rem; font-weight: 900; margin-bottom: 30px;">透過系統化訓練與專業題型解析，幫助學生全面提升實力。</p>
         
@@ -317,7 +318,6 @@
             <div class="target-card border-blue">
                 <i class="fas fa-magnifying-glass-chart"></i>
                 <h3>專業考試題型分析</h3>
-                <!-- 內文中的 FLPT 上色 -->
                 <p>深入解析 <span class="c-f color-letter">F</span><span class="c-l color-letter">L</span><span class="c-p color-letter">P</span><span class="c-t color-letter">T</span> 命題方向與常見題型，幫助學生掌握考試核心重點。</p>
             </div>
             <div class="target-card border-red">
@@ -356,20 +356,16 @@
     <!-- FLPT Test Format Analysis -->
     <section class="section-padding levels-bg">
         <div class="container">
-            <!-- 手機版強制分兩行：FLPT英文測驗 (第一行) / 題型分析 (第二行) -->
             <h2 class="section-title">
                 <span class="c-f color-letter">F</span><span class="c-l color-letter">L</span><span class="c-p color-letter">P</span><span class="c-t color-letter">T</span> 英文測驗<br class="mobile-break">題型分析
             </h2>
             <p style="text-align: center; font-size: 1.2rem; font-weight: 900; margin-bottom: 20px;">很多學生準備語言考試時，最大的問題是：不熟悉題型、不了解命題邏輯、練習方法不正確。因此本課程會進行完整 <span class="c-f color-letter">F</span><span class="c-l color-letter">L</span><span class="c-p color-letter">P</span><span class="c-t color-letter">T</span> 題型解析訓練。</p>
             
-            <!-- 手機版專屬滑動提示 -->
             <div class="swipe-hint">
                 <i class="fas fa-arrows-alt-h"></i> 👉 左右滑動查看所有題型
             </div>
 
             <div class="mobile-swipe-container">
-                
-                <!-- Listening -->
                 <div class="level-card theme-blue">
                     <div class="cert-header">
                         <div class="cert-title"><span class="color-dot"></span> 聽力測驗</div>
@@ -391,7 +387,6 @@
                     </div>
                 </div>
 
-                <!-- Reading -->
                 <div class="level-card theme-red">
                     <div class="cert-header">
                         <div class="cert-title"><span class="color-dot"></span> 閱讀測驗</div>
@@ -413,7 +408,6 @@
                     </div>
                 </div>
 
-                <!-- Speaking -->
                 <div class="level-card theme-green">
                     <div class="cert-header">
                         <div class="cert-title"><span class="color-dot"></span> 口說測驗</div>
@@ -435,7 +429,6 @@
                     </div>
                 </div>
 
-                <!-- Writing -->
                 <div class="level-card theme-purple">
                     <div class="cert-header">
                         <div class="cert-title"><span class="color-dot"></span> 寫作測驗</div>
@@ -456,7 +449,6 @@
                         </ul>
                     </div>
                 </div>
-
             </div>
         </div>
     </section>
@@ -478,12 +470,9 @@
     <!-- Call to Action Section -->
     <section class="cta-section">
         <div class="container">
-            <!-- 手機版強制雙行與縮小 -->
             <h2 class="cta-bottom-title">提升英語能力，<br class="mobile-break">取得專業語言證照！</h2>
             
             <div class="hero-buttons" style="flex-direction: row; justify-content: center; align-items: center;">
-                
-                <!-- 按鈕內部分為兩行：上方標題，下方分鐘數 -->
                 <a href="https://tonyonlineenglish.netlify.app/exper" class="cta-btn btn-primary" target="_blank" style="flex-direction: column; gap: 2px; padding: 12px 35px;">
                     <span style="font-size: 1.25rem;">預約體驗課程</span>
                     <span style="font-size: 0.95rem; font-weight: 700;">25/50分鐘</span>
@@ -492,7 +481,6 @@
                 <a href="https://line.me/ti/p/T9YdimtG8_" class="contact-btn line" target="_blank">
                     <i class="fab fa-line" style="font-size: 1.8rem;"></i> LINE: myavalon
                 </a>
-                
             </div>
         </div>
     </section>
