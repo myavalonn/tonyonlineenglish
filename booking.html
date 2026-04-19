@@ -1,4 +1,4 @@
-<!-- VERSION 11.42 (UX Refinement: Multi-booking badge, Dark Blue Theme, Success Modal Info) -->
+<!-- VERSION 11.46 (Peggy Window Scaled dynamically, Image Cropped to Face, Badge Static, Show up to 8 Bookings) -->
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -98,9 +98,6 @@
         flex-direction: row; gap: 8px;
     }
 
-    /* =============================================
-       BADGE: 一次多堂預約
-       ============================================= */
     .multi-booking-badge {
         display: inline-flex; align-items: center; justify-content: center;
         height: 38px; padding: 0 14px; border-radius: 19px;
@@ -121,9 +118,6 @@
         white-space: nowrap; height: 38px; box-sizing: border-box;
     }
 
-    /* =============================================
-       RULE INFO: Side-by-side icon and text
-       ============================================= */
     .rule-info-wrapper {
         position: relative; display: inline-flex; align-items: center; justify-content: center;
     }
@@ -246,9 +240,6 @@
     .card-content { flex-grow: 1; padding: 12px; display: flex; flex-direction: column; justify-content: center; }
     .slot-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
    
-    /* =============================================
-       SLOT BUTTON
-       ============================================= */
     .slot-btn {
         background: rgba(255,255,255,0.7); border: 1px solid #333; color: #333;
         padding: 8px 0; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.1s;
@@ -261,7 +252,6 @@
     }
     .slot-btn:active { transform: scale(0.95); }
     
-    /* Dark Blue Selected State */
     .slot-btn.selected {
         background: var(--selected-bg) !important; color: var(--selected-color) !important;
         transform: scale(1.05); box-shadow: 0 4px 10px rgba(29, 43, 138, 0.3); border-color: var(--selected-bg);
@@ -478,7 +468,6 @@
     #floating-cart-btn .cal-icon-svg { width: 100%; height: 100%; color: #007aff; }
     #floating-cart-btn.show { display: block; }
     
-    /* Dark Blue Cart Badge */
     .cart-badge {
         position: absolute; top: -5px; right: -5px; background: #1d2b8a; color: white;
         width: 26px; height: 26px; border-radius: 50%; font-size: 14px; font-weight: bold;
@@ -488,6 +477,104 @@
         #floating-cart-btn { width: 120px; height: 120px; padding: 25px; bottom: 50px; right: 40px; }
         .cart-badge { width: 40px; height: 40px; font-size: 20px; top: -5px; right: -5px; border-width: 3px; }
     }
+
+    /* === Peggy Chatbot CSS === */
+    .peggy-fab {
+        position: relative;
+        z-index: 1000;
+        width: 60px;
+        height: 60px;
+        cursor: pointer;
+        transition: transform 0.3s;
+        flex-shrink: 0;
+        display: inline-block;
+        border-radius: 50%;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    .peggy-fab:hover { transform: scale(1.1); }
+    
+    .peggy-img-wrapper {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 3px solid #fff;
+        box-sizing: border-box;
+        background: #fff;
+        position: relative;
+    }
+    .peggy-img-crop {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center 20%; /* Focus on face/shoulders */
+        transform: scale(1.4); /* Zoom in to face/shoulders */
+        display: block;
+    }
+    
+    .peggy-badge-el {
+        position: absolute; top: -2px; right: -2px; background: #ff5400; color: #fff;
+        width: 22px; height: 22px; border-radius: 50%; font-size: 12px; font-weight: bold;
+        display: flex; justify-content: center; align-items: center; border: 2px solid #fff;
+        /* No animation requested */
+    }
+
+    @media (min-width: 768px) {
+        .peggy-fab { width: 80px; height: 80px; }
+        .peggy-img-wrapper { border-width: 4px; }
+        .peggy-badge-el { width: 28px; height: 28px; font-size: 14px; top: 0; right: 0; border-width: 3px; }
+        /* Positioning logic for desktop/tablet header: place after rules (order:4) */
+        .cal-top-right-group .peggy-fab { order: 4; }
+    }
+
+    /* --- Chat Window Scaling Logic --- */
+    #peggy-window {
+        font-size: 14px; /* Base mobile font size */
+        position: fixed; bottom: 100px; left: 20px; width: 340px; max-height: 65vh; height: 500px;
+        background: #fff; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        display: flex; flex-direction: column; z-index: 1001; overflow: hidden;
+        transform: translateY(20px) scale(0.95); opacity: 0; pointer-events: none; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        transform-origin: bottom left;
+    }
+    #peggy-window.show { transform: translateY(0) scale(1); opacity: 1; pointer-events: auto; }
+    
+    @media (max-width: 400px) {
+        #peggy-window { width: calc(100vw - 40px); left: 20px; }
+    }
+    @media (min-width: 768px) {
+        #peggy-window { 
+            font-size: 21px; /* Tablet 1.5x scaling */
+            bottom: 120px; left: 40px; 
+            width: 510px; height: 75vh; max-height: 800px; 
+            border-radius: 30px;
+        }
+    }
+    @media (min-width: 1024px) {
+        #peggy-window { 
+            font-size: 28px; /* Desktop 2.0x scaling */
+            bottom: 120px; left: 40px; 
+            width: 680px; height: 80vh; max-height: 1000px; 
+            border-radius: 40px;
+        }
+    }
+
+    .peggy-header { background: var(--selected-bg); padding: 1.1em; display: flex; justify-content: space-between; align-items: center; }
+    .peggy-header span { font-size: 1.15em; font-weight: bold; color: #fff; }
+    .peggy-body { flex: 1; overflow-y: auto; padding: 1.1em; background: #f4f6f9; display: flex; flex-direction: column; gap: 0.85em; scroll-behavior: smooth; }
+    .peggy-footer { padding: 0.85em; background: #fff; border-top: 1px solid #eee; display: flex; gap: 0.6em; align-items: center; }
+    .peggy-footer input { flex: 1; padding: 0.85em 1.1em; border: 1px solid #ddd; border-radius: 2em; outline: none; font-size: 1.07em; background: #f9f9f9; transition: border-color 0.2s; }
+    .peggy-footer input:focus { border-color: var(--blue-main); background: #fff; }
+    .peggy-footer button { background: var(--pill-active); color: #fff; border: none; padding: 0 1.3em; height: 3em; border-radius: 1.5em; cursor: pointer; font-weight: bold; font-size: 1.07em; transition: transform 0.1s; }
+    .peggy-footer button:active { transform: scale(0.95); }
+    .msg-peggy { align-self: flex-start; background: #fff; color: #222; padding: 0.85em 1.15em; border-radius: 1.3em 1.3em 1.3em 0; max-width: 85%; box-shadow: 0 2px 8px rgba(0,0,0,0.06); line-height: 1.5; font-size: 1em; border: 1px solid #eee; }
+    .msg-user { align-self: flex-end; background: var(--blue-main); color: #fff; padding: 0.7em 1.15em; border-radius: 1.3em 1.3em 0 1.3em; max-width: 80%; box-shadow: 0 2px 8px rgba(0, 122, 255, 0.2); font-size: 1em; }
+    
+    .typing-indicator { display: flex; gap: 0.3em; padding: 0.3em 0.6em; align-items: center; justify-content: center; }
+    .typing-dot { width: 0.45em; height: 0.45em; background: #aaa; border-radius: 50%; animation: typing 1.4s infinite ease-in-out; }
+    .typing-dot:nth-child(1) { animation-delay: 0s; }
+    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes typing { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-0.3em); } }
 
     .cal-header-wrap {
         background: #fff; padding: 15px 10px; min-height: 100%; height: auto;
@@ -542,7 +629,6 @@
     }
     .simple-slot-btn .slot-clock-icon { width: 16px; height: 16px; flex-shrink: 0; opacity: 0.7; object-fit: contain; }
     
-    /* Dark Blue Selected State */
     .simple-slot-btn.selected { 
         background: var(--selected-bg) !important; color: white !important; 
         border-color: transparent !important; box-shadow: 0 4px 10px rgba(29, 43, 138, 0.3) !important; 
@@ -654,6 +740,13 @@
                  <a href="https://tonyonlineenglish.netlify.app/regulations" target="_blank" class="rule-details-link">詳情請點這裡</a>
              </div>
         </div>
+        <!-- Peggy Chatbot Icon -->
+        <div class="peggy-fab" onclick="togglePeggy()">
+            <div class="peggy-img-wrapper">
+                <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/christina-wocintechchat-com-m-0Zx1bDv5BNY-unsplash.jpg" class="peggy-img-crop" alt="Peggy">
+            </div>
+            <span class="peggy-badge-el">1</span>
+        </div>
     </div>
     <div class="date-scroller" id="dateScroller"></div>
   </div>
@@ -696,6 +789,25 @@
     <span class="cart-badge" id="cart-count">0</span>
 </button>
 
+<!-- === Peggy Chatbot Window === -->
+<div id="peggy-window">
+    <div class="peggy-header">
+        <div style="display:flex; align-items:center; gap:0.6em;">
+            <div class="peggy-img-wrapper" style="width:2.2em; height:2.2em; border:2px solid #fff; flex-shrink:0;">
+                <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/christina-wocintechchat-com-m-0Zx1bDv5BNY-unsplash.jpg" class="peggy-img-crop" alt="Peggy">
+            </div>
+            <span>Peggy 小幫手</span>
+        </div>
+        <button onclick="togglePeggy()" style="background:none; border:none; color:#fff; font-size:1.5em; cursor:pointer; line-height:1;">&times;</button>
+    </div>
+    <div class="peggy-body" id="peggy-body"></div>
+    <div class="peggy-footer">
+        <input type="text" id="peggy-input" placeholder="輸入您的英文名字..." onkeypress="handlePeggyEnter(event)">
+        <button onclick="sendPeggyMessage()">查詢</button>
+    </div>
+</div>
+<!-- ========================== -->
+
 <div id="p-form" class="page-form">
   <div class="form-box">
     <button class="back-btn" onclick="closeForm()">❮ 返回</button>
@@ -732,6 +844,13 @@
                                  <p><span class="rule-highlight-red">週六及國定假日24小時內</span><br class="mob-br">請假或調課, 扣除1 堂</p>
                                  <a href="https://tonyonlineenglish.netlify.app/regulations" target="_blank" class="rule-details-link">詳情請點這裡</a>
                              </div>
+                        </div>
+                        <!-- Peggy Chatbot Icon -->
+                        <div class="peggy-fab cal-peggy" onclick="togglePeggy()">
+                            <div class="peggy-img-wrapper">
+                                <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/christina-wocintechchat-com-m-0Zx1bDv5BNY-unsplash.jpg" class="peggy-img-crop" alt="Peggy">
+                            </div>
+                            <span class="peggy-badge-el">1</span>
                         </div>
                     </div>
                 </div>
@@ -875,6 +994,14 @@
       if (hotPanel && hotPanel.classList.contains("show")) {
           if (!e.target.closest("#hot-panel")) hotPanel.classList.remove("show");
       }
+      
+      // Close Peggy window if clicked outside
+      const peggyWindow = document.getElementById('peggy-window');
+      if (peggyWindow && peggyWindow.classList.contains('show')) {
+          if (!e.target.closest('#peggy-window') && !e.target.closest('.peggy-fab')) {
+              togglePeggy();
+          }
+      }
   });
 
   function isValidSlot(slot) {
@@ -991,7 +1118,7 @@
   function renderSlotsInsideCalendar(dStr) {
       const container=document.getElementById("cal-slots-content"); container.innerHTML="";
       const data=cachedData[dStr];
-      if(!data||!data.slots||data.slots.length===0){container.innerHTML=`<div style="text-align:center;padding:20px;color:#aaa;font-weight:bold;">請選擇其他日期</div>`;return;}
+      if(!data||data.slots.length===0){container.innerHTML=`<div style="text-align:center;padding:20px;color:#aaa;font-weight:bold;">請選擇其他日期</div>`;return;}
       const grid=document.createElement("div"); grid.className="simple-slot-grid";
       const validSlots=data.slots.filter(s=>isValidSlot(s));
       if(validSlots.length>0&&validSlots.length<=4) grid.classList.add('few-slots'); else grid.classList.remove('few-slots');
@@ -1157,7 +1284,7 @@
                
                if (summary.successCount > 0) {
                    let bookedTimesHtml = '<div style="text-align: left; background: #f3f4f6; padding: 10px; border-radius: 8px; margin: 10px 0;">';
-                   const failedTimestamps = summary.failedSlots ? summary.failedSlots.map(s => parseInt(s.timestamp)) : [];
+                   const failedTimestamps = summary.failedSlots ? summary.failedSlots.map(s => parseInt(s.timestamp)) :[];
                    const successfulSlots = selectedSlots.filter(s => !failedTimestamps.includes(s.timestamp));
                    successfulSlots.forEach(slot => { bookedTimesHtml += `<div style="margin-bottom:4px; font-size:14px; color:#333;">• ${slot.displayStr}</div>`; });
                    bookedTimesHtml += '</div>';
@@ -1308,6 +1435,199 @@
   }
   function formatTime12H(timeStr){if(!timeStr)return"";const[h,m]=timeStr.split(':');let hour=parseInt(h);const suffix=hour>=12?'PM':'AM';hour=hour%12||12;return`${hour}:${m} ${suffix}`;}
   function fmt(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+
+  // ==========================================
+  // === Peggy Chatbot Logic ===
+  // ==========================================
+  const PEGGY_API_URL = "https://script.google.com/macros/s/AKfycbxrSJS4dGWmG_GHpginXD_Nl-R8KaZq-6NHRtBjT8_Q4TWz0pp4yinVaMKibdf-Vz1ELg/exec";
+  let peggyInitialized = false;
+
+  function togglePeggy() {
+      const windowEl = document.getElementById('peggy-window');
+      const badges = document.querySelectorAll('.peggy-badge-el');
+      
+      windowEl.classList.toggle('show');
+      
+      if(windowEl.classList.contains('show')) {
+          badges.forEach(b => b.style.display = 'none'); // Hide badge when opened
+      }
+
+      if(windowEl.classList.contains('show') && !peggyInitialized) {
+          let msg = `嗨！我是Tony線上美語家教 Peggy 👋<br>我可以幫您查詢未來的課程時間與剩餘堂數。<a href="https://tonyonlineenglish.netlify.app/ycs" target="_blank" style="color:var(--blue-main); font-weight:bold; text-decoration:underline;">也可點選這</a><br><br>請問您的<b>英文名字</b>是？`;
+          addPeggyMessage(msg, 'peggy');
+          peggyInitialized = true;
+          document.getElementById('peggy-input').focus();
+      }
+  }
+
+  function handlePeggyEnter(e) {
+      if(e.key === 'Enter') sendPeggyMessage();
+  }
+
+  function sendPeggyMessage(forceText = null, skipEasonCheck = false) {
+      const input = document.getElementById('peggy-input');
+      const text = forceText || input.value.trim();
+      if(!text) return;
+      
+      addPeggyMessage(text, 'user');
+      input.value = '';
+      
+      // Eason Rule Integration
+      if (text.toLowerCase() === 'eason' && !skipEasonCheck) {
+          showPeggyTyping();
+          setTimeout(() => {
+              hidePeggyTyping();
+              let html = `發現有幾位 Eason，請問您是：<br>
+              <button onclick="sendPeggyMessage('Eason Hsieh 新營高工', true)" style="margin-top:0.6em; width:100%; padding:0.7em; border-radius:0.7em; border:2px solid var(--blue-main); background:#fff; color:var(--blue-main); cursor:pointer; font-weight:bold; font-size:1em; transition:0.2s;">Eason Hsieh 新營高工</button>
+              <button onclick="sendPeggyMessage('Eason Cheng 鄭', true)" style="margin-top:0.6em; width:100%; padding:0.7em; border-radius:0.7em; border:2px solid var(--blue-main); background:#fff; color:var(--blue-main); cursor:pointer; font-weight:bold; font-size:1em; transition:0.2s;">Eason Cheng 鄭</button>`;
+              addPeggyMessage(html, 'peggy');
+          }, 500);
+          return;
+      }
+
+      processChatInput(text);
+  }
+
+  function addPeggyMessage(htmlContent, sender) {
+      const body = document.getElementById('peggy-body');
+      const div = document.createElement('div');
+      div.className = sender === 'peggy' ? 'msg-peggy' : 'msg-user';
+      div.innerHTML = htmlContent;
+      body.appendChild(div);
+      body.scrollTop = body.scrollHeight;
+  }
+
+  function showPeggyTyping() {
+      const body = document.getElementById('peggy-body');
+      const div = document.createElement('div');
+      div.className = 'msg-peggy';
+      div.id = 'peggy-typing';
+      div.innerHTML = `<div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>`;
+      body.appendChild(div);
+      body.scrollTop = body.scrollHeight;
+  }
+
+  function hidePeggyTyping() {
+      const typing = document.getElementById('peggy-typing');
+      if (typing) typing.remove();
+  }
+
+  function showMorePeggyBookings() {
+      document.querySelectorAll('.peggy-hidden-booking').forEach(el => {
+          el.style.display = 'block';
+      });
+      const btn = document.getElementById('peggy-show-more-btn');
+      if(btn) btn.style.display = 'none';
+  }
+
+  async function processChatInput(name) {
+      showPeggyTyping();
+      
+      try {
+          let queryName = name;
+          if (name.includes('Eason Hsieh')) queryName = 'Eason';
+          if (name.includes('Eason Cheng')) queryName = 'Eason Cheng';
+
+          const [schedRes, countRes] = await Promise.all([
+              fetch(`${PEGGY_API_URL}?action=getSchedule&name=${encodeURIComponent(queryName)}`),
+              fetch(`${PEGGY_API_URL}?action=getLessonCount&name=${encodeURIComponent(queryName)}`)
+          ]);
+          
+          const rawSchedule = await schedRes.json();
+          const countData = await countRes.json();
+          
+          let scheduleData =[];
+          const nameLower = queryName.toLowerCase();
+          
+          if (Array.isArray(rawSchedule)) {
+              if (nameLower === 'eason') {
+                  scheduleData = rawSchedule.filter(ev => {
+                      if (!ev.title || typeof ev.title !== 'string') return false;
+                      const titleLower = ev.title.toLowerCase();
+                      return titleLower.includes('eason') && !titleLower.includes('cheng') && titleLower.includes('english class');
+                  });
+              } else {
+                  scheduleData = rawSchedule.filter(ev => {
+                      if (!ev.title || typeof ev.title !== 'string') return false;
+                      const titleLower = ev.title.toLowerCase();
+                      return titleLower.includes(nameLower) && titleLower.includes('english class');
+                  });
+              }
+          }
+
+          let html = `<div style="text-align:left;">`;
+          html += `<div style="font-weight:bold; font-size:1.15em; margin-bottom:0.5em; color:var(--selected-bg);">查詢結果：${name}</div>`;
+          
+          if (countData && !countData.error && countData.total !== "" && countData.total !== null) {
+              let displayTotal = countData.total;
+              let displayCompleted = countData.completed;
+              if (!isNaN(countData.total) && Number(countData.total) >= 100) displayTotal = '會員';
+              if (!isNaN(countData.completed) && Number(countData.completed) >= 100) displayCompleted = '訂閱';
+
+              html += `<div style="font-size:1em; background:#eefaff; padding:0.7em; border-radius:0.7em; border:1px solid #bce6ff; color:#0056b3;">`;
+              html += `<span style="display:inline-block; margin-bottom:0.3em;">總堂數: <b>${displayTotal}</b> | 已完成: <b>${displayCompleted}</b></span><br>`;
+              html += `<span style="color:#d32f2f; font-weight:bold; font-size:1.07em;">剩餘堂數: ${countData.remaining}</span>`;
+              html += `</div>`;
+          } else {
+              html += `<div style="font-size:0.95em; color:#888;">查無您的堂數資料或剩餘堂數為0。</div>`;
+          }
+          
+          const now = new Date();
+          const limitDateObj = new Date();
+          limitDateObj.setDate(now.getDate() + 60);
+          
+          const upcoming = scheduleData.filter(ev => new Date(ev.start) >= now && new Date(ev.start) <= limitDateObj)
+                                       .sort((a,b) => new Date(a.start) - new Date(b.start));
+          
+          if (upcoming.length > 0) {
+              html += `<div style="margin-top:0.8em; font-weight:bold; font-size:1.07em; color:#333;">近期預約課程：</div>`;
+              html += `<div style="margin-top:0.4em;">`;
+              
+              let maxShow = 8;
+              let displayList = upcoming.slice(0, maxShow);
+              
+              displayList.forEach((ev, idx) => {
+                  const d = new Date(ev.start);
+                  const month = d.getMonth() + 1;
+                  const dateObj = d.getDate();
+                  const day = chiDayNames[d.getDay()]; 
+                  
+                  let hours = d.getHours();
+                  let minutes = d.getMinutes().toString().padStart(2, "0");
+                  const ampm = hours >= 12 ? "PM" : "AM";
+                  hours = hours % 12 || 12;
+                  const timeStr = `${hours}:${minutes} ${ampm}`;
+                  
+                  let displayStyle = idx >= 4 ? 'display:none;' : '';
+                  let extraClass = idx >= 4 ? 'peggy-hidden-booking' : '';
+                  
+                  html += `<div class="${extraClass}" style="background:#fff; border-left:4px solid var(--pill-active); box-shadow:0 1px 4px rgba(0,0,0,0.08); padding:0.6em 0.7em; margin-bottom:0.6em; border-radius:0.6em; font-size:1em; ${displayStyle}">`;
+                  html += `<div style="color:var(--pill-active); font-weight:bold;">${month}/${dateObj} (週${day}) ${timeStr}</div>`;
+                  html += `<div style="color:#666; margin-top:0.2em; font-size:0.85em;">${ev.title}</div>`;
+                  html += `</div>`;
+              });
+              html += `</div>`;
+              
+              if (displayList.length > 4) {
+                  html += `<button id="peggy-show-more-btn" onclick="showMorePeggyBookings()" style="width:100%; margin-top:0.5em; padding:0.6em; background:transparent; border:2px solid var(--blue-main); color:var(--blue-main); border-radius:0.7em; cursor:pointer; font-weight:bold; font-size:0.95em; transition:0.2s;">顯示更多</button>`;
+              }
+              if (upcoming.length > 8) {
+                  html += `<div style="font-size:0.85em; color:#888; text-align:center; margin-top:0.4em;">僅顯示最近 8 筆預約</div>`;
+              }
+          } else {
+              html += `<div style="margin-top:0.8em; font-size:1em; color:#555; background:#fff0f5; padding:0.7em; border-radius:0.7em; border:1px solid #ffebee;">目前沒有近期預約的課程喔！<br><a href="javascript:void(0)" onclick="togglePeggy(); window.scrollTo(0,0);" style="color:var(--pill-active); font-weight:bold; display:inline-block; margin-top:0.4em;">現在去預約 ❯</a></div>`;
+          }
+          html += `</div>`;
+          
+          hidePeggyTyping();
+          addPeggyMessage(html, 'peggy');
+          
+      } catch (e) {
+          console.error("Chatbot Fetch Error:", e);
+          hidePeggyTyping();
+          addPeggyMessage("抱歉，系統似乎有些問題，無法查詢您的課表，請稍後再試。🙇‍♀️", 'peggy');
+      }
+  }
 </script>
 </body>
 </html>
