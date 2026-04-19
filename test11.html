@@ -1,8 +1,13 @@
+這個問題是因為在平板或手機裝置上，當聊天機器人「第一次」被點開時，程式碼預設會自動對焦 (focus) 到輸入框 (`document.getElementById('peggy-input').focus();`)。這個自動對焦的動作會喚起平板/手機的虛擬鍵盤，導致整個螢幕的顯示範圍被壓縮，進而把固定在底部的對話框往上推。
 
+我們只要將這個自動對焦的指令移除即可解決這問題。
 
+另外，也為您將「學生未來課程月曆」日期下方的時間改為橘色 (`var(--pill-active)`)，並且放大了手機版與平板/電腦版的字體。
+
+以下是更新後的完整程式碼：
 
 ```html
-<!-- VERSION 11.50 (Peggy Chatbot Mobile Messages Full Width & Increased Font Size) -->
+<!-- VERSION 11.51 (Peggy Chatbot Keyboard Fix & Schedule Calendar Orange Time) -->
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -605,14 +610,14 @@
     .sched-cell.selected { background: var(--selected-bg) !important; color: #fff !important; box-shadow: 0 4px 10px rgba(29, 43, 138, 0.3); }
     
     .sched-date-num { line-height: 1; }
-    .sched-cell-times { font-size: 11px; color: var(--selected-bg); line-height: 1.2; margin-top: 4px; font-weight: bold; text-align: center; }
+    .sched-cell-times { font-size: 13px; color: var(--pill-active); line-height: 1.2; margin-top: 4px; font-weight: bold; text-align: center; }
     .sched-cell.selected .sched-cell-times { color: #fff; }
     
     @media (min-width: 768px) {
         .sched-modal-overlay { background: rgba(0,0,0,0.6); padding: 40px; }
         .sched-modal-container { border-radius: 24px; min-height: auto; padding: 40px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
         .sched-cell { height: 90px; padding-top: 12px; font-size: 24px; }
-        .sched-cell-times { font-size: 14px; margin-top: 6px; }
+        .sched-cell-times { font-size: 16px; margin-top: 6px; }
     }
 
     /* === Booking Cal Modal Styles === */
@@ -1520,7 +1525,7 @@
           let msg = `嗨！我是Tony線上美語家教 Peggy 👋<br>我可以幫您查詢未來的課程時間與剩餘堂數。<a href="https://tonyonlineenglish.netlify.app/ycs" target="_blank" style="color:var(--blue-main); font-weight:bold; text-decoration:underline;">也可點選這</a><br><br>請問您的<b>英文名字</b>是？`;
           addPeggyMessage(msg, 'peggy', 'bottom');
           peggyInitialized = true;
-          document.getElementById('peggy-input').focus();
+          // 移除自動對焦 focus()，避免在平板/手機上自動喚起鍵盤導致畫面上推
       }
   }
 
@@ -1839,3 +1844,4 @@
 </script>
 </body>
 </html>
+ 
