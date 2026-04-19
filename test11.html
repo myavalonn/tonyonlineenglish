@@ -2,7 +2,7 @@
 
 
 ```html
-<!-- VERSION 11.47 (Added Student Schedule Calendar inside Peggy Chatbot) -->
+<!-- VERSION 11.48 (Student Schedule Calendar: Removed Sunday, Show Time in Cell, Added Duration in Details, Chat Auto-Scroll Fix, Blue Title, Calendar Emoji) -->
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -511,8 +511,8 @@
         width: 100%;
         height: 100%;
         object-fit: cover;
-        object-position: center 20%; /* Focus on face/shoulders */
-        transform: scale(1.4); /* Zoom in to face/shoulders */
+        object-position: center 20%;
+        transform: scale(1.4);
         display: block;
     }
     
@@ -531,7 +531,7 @@
 
     /* --- Chat Window Scaling Logic --- */
     #peggy-window {
-        font-size: 14px; /* Base mobile font size */
+        font-size: 14px;
         position: fixed; bottom: 100px; left: 20px; width: 340px; max-height: 65vh; height: 500px;
         background: #fff; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.3);
         display: flex; flex-direction: column; z-index: 1001; overflow: hidden;
@@ -545,7 +545,7 @@
     }
     @media (min-width: 768px) {
         #peggy-window { 
-            font-size: 21px; /* Tablet 1.5x scaling */
+            font-size: 21px; 
             bottom: 120px; left: 40px; 
             width: 510px; height: 75vh; max-height: 800px; 
             border-radius: 30px;
@@ -553,7 +553,7 @@
     }
     @media (min-width: 1024px) {
         #peggy-window { 
-            font-size: 28px; /* Desktop 2.0x scaling */
+            font-size: 28px; 
             bottom: 120px; left: 40px; 
             width: 680px; height: 80vh; max-height: 1000px; 
             border-radius: 40px;
@@ -562,7 +562,8 @@
 
     .peggy-header { background: var(--selected-bg); padding: 1.1em; display: flex; justify-content: space-between; align-items: center; }
     .peggy-header span { font-size: 1.15em; font-weight: bold; color: #fff; }
-    .peggy-body { flex: 1; overflow-y: auto; padding: 1.1em; background: #f4f6f9; display: flex; flex-direction: column; gap: 0.85em; scroll-behavior: smooth; }
+    /* Added position:relative so offsetTop calculations are exact */
+    .peggy-body { position: relative; flex: 1; overflow-y: auto; padding: 1.1em; background: #f4f6f9; display: flex; flex-direction: column; gap: 0.85em; scroll-behavior: smooth; }
     .peggy-footer { padding: 0.85em; background: #fff; border-top: 1px solid #eee; display: flex; gap: 0.6em; align-items: center; }
     .peggy-footer input { flex: 1; padding: 0.85em 1.1em; border: 1px solid #ddd; border-radius: 2em; outline: none; font-size: 1.07em; background: #f9f9f9; transition: border-color 0.2s; }
     .peggy-footer input:focus { border-color: var(--blue-main); background: #fff; }
@@ -587,10 +588,10 @@
         max-width: 800px; margin: 0 auto; background: #fff; min-height: 100vh; padding: 20px; box-sizing: border-box; position: relative;
     }
     .sched-cal-grid {
-        display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; margin-bottom: 20px;
+        display: grid; grid-template-columns: repeat(6, 1fr); /* Sun removed */ gap: 4px; text-align: center; margin-bottom: 20px;
     }
     .sched-cell {
-        height: 55px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+        height: 65px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding-top: 8px;
         border-radius: 12px; font-size: 18px; font-weight: bold; cursor: pointer;
         transition: 0.2s; color: #333; position: relative; background: #fff; border: 1px solid #eee;
     }
@@ -598,18 +599,16 @@
     .sched-cell.empty { border: none !important; background: transparent !important; cursor: default; }
     .sched-cell.today { border: 2px solid var(--pill-active); color: var(--pill-active); }
     .sched-cell.selected { background: var(--pill-active) !important; color: #fff !important; box-shadow: 0 4px 10px rgba(255,84,0,0.3); }
-    .sched-dot {
-        background: #ff2d55; color: #fff; font-size: 10px; font-weight: bold; border-radius: 50%;
-        width: 16px; height: 16px; display: flex; align-items: center; justify-content: center;
-        position: absolute; top: -4px; right: -4px; box-shadow: 0 2px 4px rgba(0,0,0,0.2);
-    }
-    .sched-cell.selected .sched-dot { background: #fff; color: var(--pill-active); }
+    
+    .sched-date-num { line-height: 1; }
+    .sched-cell-times { font-size: 11px; color: var(--pill-active); line-height: 1.2; margin-top: 4px; font-weight: bold; text-align: center; }
+    .sched-cell.selected .sched-cell-times { color: #fff; }
     
     @media (min-width: 768px) {
         .sched-modal-overlay { background: rgba(0,0,0,0.6); padding: 40px; }
         .sched-modal-container { border-radius: 24px; min-height: auto; padding: 40px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
-        .sched-cell { height: 80px; font-size: 24px; }
-        .sched-dot { width: 22px; height: 22px; font-size: 12px; top: 2px; right: 2px; }
+        .sched-cell { height: 90px; padding-top: 12px; font-size: 24px; }
+        .sched-cell-times { font-size: 14px; margin-top: 6px; }
     }
 
     /* === Booking Cal Modal Styles === */
@@ -756,7 +755,6 @@
             <button class="cal-nav-btn" onclick="changeSchedMonth(1)">❯</button>
         </div>
         <div class="sched-cal-grid" id="sched-head-row">
-            <div class="cal-head" style="color:#d32f2f;">SUN<small>日</small></div>
             <div class="cal-head">MON<small>一</small></div>
             <div class="cal-head">TUE<small>二</small></div>
             <div class="cal-head">WED<small>三</small></div>
@@ -1516,7 +1514,7 @@
 
       if(windowEl.classList.contains('show') && !peggyInitialized) {
           let msg = `嗨！我是Tony線上美語家教 Peggy 👋<br>我可以幫您查詢未來的課程時間與剩餘堂數。<a href="https://tonyonlineenglish.netlify.app/ycs" target="_blank" style="color:var(--blue-main); font-weight:bold; text-decoration:underline;">也可點選這</a><br><br>請問您的<b>英文名字</b>是？`;
-          addPeggyMessage(msg, 'peggy');
+          addPeggyMessage(msg, 'peggy', 'bottom');
           peggyInitialized = true;
           document.getElementById('peggy-input').focus();
       }
@@ -1531,7 +1529,7 @@
       const text = forceText || input.value.trim();
       if(!text) return;
       
-      addPeggyMessage(text, 'user');
+      addPeggyMessage(text, 'user', 'bottom');
       input.value = '';
       
       // Eason Rule Integration
@@ -1542,7 +1540,7 @@
               let html = `發現有幾位 Eason，請問您是：<br>
               <button onclick="sendPeggyMessage('Eason Hsieh 新營高工', true)" style="margin-top:0.6em; width:100%; padding:0.7em; border-radius:0.7em; border:2px solid var(--blue-main); background:#fff; color:var(--blue-main); cursor:pointer; font-weight:bold; font-size:1em; transition:0.2s;">Eason Hsieh 新營高工</button>
               <button onclick="sendPeggyMessage('Eason Cheng 鄭', true)" style="margin-top:0.6em; width:100%; padding:0.7em; border-radius:0.7em; border:2px solid var(--blue-main); background:#fff; color:var(--blue-main); cursor:pointer; font-weight:bold; font-size:1em; transition:0.2s;">Eason Cheng 鄭</button>`;
-              addPeggyMessage(html, 'peggy');
+              addPeggyMessage(html, 'peggy', 'bottom');
           }, 500);
           return;
       }
@@ -1550,13 +1548,23 @@
       processChatInput(text);
   }
 
-  function addPeggyMessage(htmlContent, sender) {
+  // Modified addPeggyMessage to support 'top' alignment for long results
+  function addPeggyMessage(htmlContent, sender, scrollMode = 'bottom') {
       const body = document.getElementById('peggy-body');
       const div = document.createElement('div');
       div.className = sender === 'peggy' ? 'msg-peggy' : 'msg-user';
       div.innerHTML = htmlContent;
       body.appendChild(div);
-      body.scrollTop = body.scrollHeight;
+
+      if (scrollMode === 'top') {
+          setTimeout(() => {
+              // Scroll so the top of the new message is visible
+              body.scrollTo({ top: div.offsetTop - 15, behavior: 'smooth' });
+          }, 50);
+      } else if (scrollMode === 'bottom') {
+          body.scrollTop = body.scrollHeight;
+      }
+      return div;
   }
 
   function showPeggyTyping() {
@@ -1590,7 +1598,7 @@
           if (name.includes('Eason Hsieh')) queryName = 'Eason';
           if (name.includes('Eason Cheng')) queryName = 'Eason Cheng';
 
-          const [schedRes, countRes] = await Promise.all([
+          const[schedRes, countRes] = await Promise.all([
               fetch(`${PEGGY_API_URL}?action=getSchedule&name=${encodeURIComponent(queryName)}`),
               fetch(`${PEGGY_API_URL}?action=getLessonCount&name=${encodeURIComponent(queryName)}`)
           ]);
@@ -1630,7 +1638,7 @@
 
               html += `<div style="font-size:1em; background:#eefaff; padding:0.7em; border-radius:0.7em; border:1px solid #bce6ff; color:#0056b3;">`;
               html += `<span style="display:inline-block; margin-bottom:0.3em;">總堂數: <b>${displayTotal}</b> | 已完成: <b>${displayCompleted}</b></span><br>`;
-              html += `<span style="color:#d32f2f; font-weight:bold; font-size:1.07em;">剩餘堂數: ${countData.remaining}</span>`;
+              html += `<span style="display:inline-flex; align-items:center; color:#d32f2f; font-weight:bold; font-size:1.07em;">剩餘堂數: ${countData.remaining} <span onclick="openSchedCalendar()" style="cursor:pointer; margin-left:8px; font-size:1.2em; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));" title="檢視完整月曆課表">📅</span></span>`;
               html += `</div>`;
           } else {
               html += `<div style="font-size:0.95em; color:#888;">查無您的堂數資料或剩餘堂數為0。</div>`;
@@ -1644,7 +1652,7 @@
                                        .sort((a,b) => new Date(a.start) - new Date(b.start));
           
           if (upcoming.length > 0) {
-              html += `<div style="margin-top:0.8em; font-weight:bold; font-size:1.07em; color:#333;">近期預約課程：</div>`;
+              html += `<div style="margin-top:0.8em; font-weight:bold; font-size:1.07em; color:var(--blue-main);">近期預約課程：</div>`;
               html += `<div style="margin-top:0.4em;">`;
               
               let maxShow = 8;
@@ -1687,12 +1695,13 @@
           html += `</div>`;
           
           hidePeggyTyping();
-          addPeggyMessage(html, 'peggy');
+          // Use 'top' alignment for this long message so the user reads from the top down
+          addPeggyMessage(html, 'peggy', 'top');
           
       } catch (e) {
           console.error("Chatbot Fetch Error:", e);
           hidePeggyTyping();
-          addPeggyMessage("抱歉，系統似乎有些問題，無法查詢您的課表，請稍後再試。🙇‍♀️", 'peggy');
+          addPeggyMessage("抱歉，系統似乎有些問題，無法查詢您的課表，請稍後再試。🙇‍♀️", 'peggy', 'bottom');
       }
   }
 
@@ -1737,19 +1746,23 @@
       const container = document.getElementById("sched-cal-body");
       container.innerHTML = "";
 
-      const firstDay = new Date(schedCalYear, schedCalMonth, 1).getDay(); // 0 (Sun) to 6 (Sat)
+      const firstDay = new Date(schedCalYear, schedCalMonth, 1).getDay(); // 0(Sun) - 6(Sat)
       const daysInMonth = new Date(schedCalYear, schedCalMonth+1, 0).getDate();
       const todayStr = fmt(new Date());
 
-      for (let i = 0; i < firstDay; i++) {
+      // Since Sunday is removed (first column is Mon), empty cells before the 1st of month:
+      let emptyCells = firstDay === 0 ? 6 : firstDay - 1;
+      for (let i = 0; i < emptyCells; i++) {
           container.innerHTML += `<div class="sched-cell empty"></div>`;
       }
 
       for (let d = 1; d <= daysInMonth; d++) {
+          const currentD = new Date(schedCalYear, schedCalMonth, d);
+          if (currentD.getDay() === 0) continue; // Skip Sunday
+
           const dateStr = `${schedCalYear}-${String(schedCalMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
           const cell = document.createElement("div");
           cell.className = "sched-cell";
-          cell.innerText = d;
           
           if (dateStr === todayStr) cell.classList.add("today");
           if (dateStr === schedSelectedDateStr) cell.classList.add("selected");
@@ -1757,12 +1770,24 @@
           // Check if event exists
           const dayEvents = currentStudentSchedule.filter(ev => fmt(new Date(ev.start)) === dateStr);
 
+          let cellInner = `<div class="sched-date-num">${d}</div>`;
+
           if (dayEvents.length > 0) {
-              const dot = document.createElement("div");
-              dot.className = "sched-dot";
-              dot.innerText = dayEvents.length;
-              cell.appendChild(dot);
+              let timeLabels = dayEvents.map(ev => {
+                  let evD = new Date(ev.start);
+                  let h = evD.getHours();
+                  let m = evD.getMinutes();
+                  let ampm = h >= 12 ? 'pm' : 'am';
+                  h = h % 12 || 12;
+                  let minStr = m > 0 ? `:${m.toString().padStart(2, '0')}` : '';
+                  return `${h}${minStr}${ampm}`;
+              });
+              
+              if (timeLabels.length > 2) timeLabels = [timeLabels[0], timeLabels[1], '...'];
+              cellInner += `<div class="sched-cell-times">${timeLabels.join('<br>')}</div>`;
           }
+          
+          cell.innerHTML = cellInner;
 
           cell.onclick = () => {
               schedSelectedDateStr = dateStr;
@@ -1797,7 +1822,8 @@
 
               html += `<div style="background:#fff; border-left:4px solid var(--pill-active); box-shadow:0 1px 4px rgba(0,0,0,0.08); padding:12px; margin-bottom:10px; border-radius:8px; display:flex; flex-direction:column; gap:4px;">`;
               html += `<div style="color:var(--pill-active); font-weight:bold; font-size:16px;">${timeStr}</div>`;
-              html += `<div style="color:#444; font-size:14px;">${ev.title}</div>`;
+              html += `<div style="color:#444; font-size:14px; font-weight:bold;">${ev.title}</div>`;
+              html += `<div style="color:#666; font-size:13px; margin-top:2px;">⏱ 課程時長: 50 分鐘</div>`;
               html += `</div>`;
           });
       }
@@ -1806,3 +1832,4 @@
 </script>
 </body>
 </html>
+
