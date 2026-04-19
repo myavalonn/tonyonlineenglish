@@ -1,4 +1,4 @@
-<!-- VERSION 11.43 (Added Peggy Virtual Assistant) -->
+<!-- VERSION 11.44 (Added Peggy Virtual Assistant with Eason Rules & Updated Greeting) -->
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -1226,7 +1226,7 @@
                
                if (summary.successCount > 0) {
                    let bookedTimesHtml = '<div style="text-align: left; background: #f3f4f6; padding: 10px; border-radius: 8px; margin: 10px 0;">';
-                   const failedTimestamps = summary.failedSlots ? summary.failedSlots.map(s => parseInt(s.timestamp)) : [];
+                   const failedTimestamps = summary.failedSlots ? summary.failedSlots.map(s => parseInt(s.timestamp)) :[];
                    const successfulSlots = selectedSlots.filter(s => !failedTimestamps.includes(s.timestamp));
                    successfulSlots.forEach(slot => { bookedTimesHtml += `<div style="margin-bottom:4px; font-size:14px; color:#333;">• ${slot.displayStr}</div>`; });
                    bookedTimesHtml += '</div>';
@@ -1393,7 +1393,8 @@
       if(badge) badge.style.display = 'none'; // Hide badge when opened
 
       if(windowEl.classList.contains('show') && !peggyInitialized) {
-          addPeggyMessage("嗨！我是小幫手 Peggy 👋<br>我可以幫您查詢未來的課程時間與剩餘堂數。<br>請問您的<b>英文名字</b>是？", 'peggy');
+          let msg = `嗨！我是Tony線上美語家教 Peggy 👋<br>我可以幫您查詢未來的課程時間與剩餘堂數。也可點選這 <a href="https://tonyonlineenglish.netlify.app/ycs" target="_blank" style="color:var(--blue-main); font-weight:bold; text-decoration:underline; word-break: break-all;">https://tonyonlineenglish.netlify.app/ycs</a><br><br>請問您的<b>英文名字</b>是？`;
+          addPeggyMessage(msg, 'peggy');
           peggyInitialized = true;
           document.getElementById('peggy-input').focus();
       }
@@ -1403,13 +1404,27 @@
       if(e.key === 'Enter') sendPeggyMessage();
   }
 
-  function sendPeggyMessage() {
+  function sendPeggyMessage(forceText = null, skipEasonCheck = false) {
       const input = document.getElementById('peggy-input');
-      const text = input.value.trim();
+      const text = forceText || input.value.trim();
       if(!text) return;
       
       addPeggyMessage(text, 'user');
       input.value = '';
+      
+      // Eason Rule Integration
+      if (text.toLowerCase() === 'eason' && !skipEasonCheck) {
+          showPeggyTyping();
+          setTimeout(() => {
+              hidePeggyTyping();
+              let html = `發現有幾位 Eason，請問您是：<br>
+              <button onclick="sendPeggyMessage('Eason Hsieh 新營高工', true)" style="margin-top:8px; width:100%; padding:10px; border-radius:10px; border:2px solid var(--blue-main); background:#fff; color:var(--blue-main); cursor:pointer; font-weight:bold; font-size:14px; transition:0.2s;">Eason Hsieh 新營高工</button>
+              <button onclick="sendPeggyMessage('Eason Cheng 鄭', true)" style="margin-top:8px; width:100%; padding:10px; border-radius:10px; border:2px solid var(--blue-main); background:#fff; color:var(--blue-main); cursor:pointer; font-weight:bold; font-size:14px; transition:0.2s;">Eason Cheng 鄭</button>`;
+              addPeggyMessage(html, 'peggy');
+          }, 500);
+          return;
+      }
+
       processChatInput(text);
   }
 
@@ -1441,18 +1456,24 @@
       showPeggyTyping();
       
       try {
+          // Adjust backend query explicitly if needed, but the original logic uses the name input
+          // Example: if Eason Hsieh, we still query 'Eason' and let JS filter.
+          let queryName = name;
+          if (name.includes('Eason Hsieh')) queryName = 'Eason';
+          if (name.includes('Eason Cheng')) queryName = 'Eason Cheng';
+
           const [schedRes, countRes] = await Promise.all([
-              fetch(`${PEGGY_API_URL}?action=getSchedule&name=${encodeURIComponent(name)}`),
-              fetch(`${PEGGY_API_URL}?action=getLessonCount&name=${encodeURIComponent(name)}`)
+              fetch(`${PEGGY_API_URL}?action=getSchedule&name=${encodeURIComponent(queryName)}`),
+              fetch(`${PEGGY_API_URL}?action=getLessonCount&name=${encodeURIComponent(queryName)}`)
           ]);
           
           const rawSchedule = await schedRes.json();
           const countData = await countRes.json();
           
-          let scheduleData = [];
-          const nameLower = name.toLowerCase();
+          let scheduleData =[];
+          const nameLower = queryName.toLowerCase();
           
-          // Filter Schedule Data based on Name
+          // Filter Schedule Data based on Name & specific Eason rule
           if (Array.isArray(rawSchedule)) {
               if (nameLower === 'eason') {
                   scheduleData = rawSchedule.filter(ev => {
