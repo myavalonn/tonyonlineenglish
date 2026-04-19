@@ -1,13 +1,4 @@
-這個問題是因為在平板或手機裝置上，當聊天機器人「第一次」被點開時，程式碼預設會自動對焦 (focus) 到輸入框 (`document.getElementById('peggy-input').focus();`)。這個自動對焦的動作會喚起平板/手機的虛擬鍵盤，導致整個螢幕的顯示範圍被壓縮，進而把固定在底部的對話框往上推。
-
-我們只要將這個自動對焦的指令移除即可解決這問題。
-
-另外，也為您將「學生未來課程月曆」日期下方的時間改為橘色 (`var(--pill-active)`)，並且放大了手機版與平板/電腦版的字體。
-
-以下是更新後的完整程式碼：
-
-```html
-<!-- VERSION 11.51 (Peggy Chatbot Keyboard Fix & Schedule Calendar Orange Time) -->
+ <!-- VERSION 11.51 (Peggy Chatbot Keyboard Fix & Schedule Calendar Orange Time) -->
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
