@@ -1,4 +1,8 @@
-<!-- VERSION 11.46 (Peggy Window Scaled dynamically, Image Cropped to Face, Badge Static, Show up to 8 Bookings) -->
+
+
+
+```html
+<!-- VERSION 11.47 (Added Student Schedule Calendar inside Peggy Chatbot) -->
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -516,14 +520,12 @@
         position: absolute; top: -2px; right: -2px; background: #ff5400; color: #fff;
         width: 22px; height: 22px; border-radius: 50%; font-size: 12px; font-weight: bold;
         display: flex; justify-content: center; align-items: center; border: 2px solid #fff;
-        /* No animation requested */
     }
 
     @media (min-width: 768px) {
         .peggy-fab { width: 80px; height: 80px; }
         .peggy-img-wrapper { border-width: 4px; }
         .peggy-badge-el { width: 28px; height: 28px; font-size: 14px; top: 0; right: 0; border-width: 3px; }
-        /* Positioning logic for desktop/tablet header: place after rules (order:4) */
         .cal-top-right-group .peggy-fab { order: 4; }
     }
 
@@ -576,6 +578,41 @@
     .typing-dot:nth-child(3) { animation-delay: 0.4s; }
     @keyframes typing { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-0.3em); } }
 
+    /* === Student Schedule Modal Styles === */
+    .sched-modal-overlay {
+        display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+        background: #f4f6f9; z-index: 4000; overflow-y: auto; padding-bottom: 50px;
+    }
+    .sched-modal-container {
+        max-width: 800px; margin: 0 auto; background: #fff; min-height: 100vh; padding: 20px; box-sizing: border-box; position: relative;
+    }
+    .sched-cal-grid {
+        display: grid; grid-template-columns: repeat(7, 1fr); gap: 4px; text-align: center; margin-bottom: 20px;
+    }
+    .sched-cell {
+        height: 55px; display: flex; flex-direction: column; align-items: center; justify-content: center;
+        border-radius: 12px; font-size: 18px; font-weight: bold; cursor: pointer;
+        transition: 0.2s; color: #333; position: relative; background: #fff; border: 1px solid #eee;
+    }
+    .sched-cell:hover { background: #f0f0f0; }
+    .sched-cell.empty { border: none !important; background: transparent !important; cursor: default; }
+    .sched-cell.today { border: 2px solid var(--pill-active); color: var(--pill-active); }
+    .sched-cell.selected { background: var(--pill-active) !important; color: #fff !important; box-shadow: 0 4px 10px rgba(255,84,0,0.3); }
+    .sched-dot {
+        background: #ff2d55; color: #fff; font-size: 10px; font-weight: bold; border-radius: 50%;
+        width: 16px; height: 16px; display: flex; align-items: center; justify-content: center;
+        position: absolute; top: -4px; right: -4px; box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    .sched-cell.selected .sched-dot { background: #fff; color: var(--pill-active); }
+    
+    @media (min-width: 768px) {
+        .sched-modal-overlay { background: rgba(0,0,0,0.6); padding: 40px; }
+        .sched-modal-container { border-radius: 24px; min-height: auto; padding: 40px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
+        .sched-cell { height: 80px; font-size: 24px; }
+        .sched-dot { width: 22px; height: 22px; font-size: 12px; top: 2px; right: 2px; }
+    }
+
+    /* === Booking Cal Modal Styles === */
     .cal-header-wrap {
         background: #fff; padding: 15px 10px; min-height: 100%; height: auto;
         border-top-left-radius: 24px; border-top-right-radius: 24px;
@@ -706,6 +743,29 @@
         <div id="res-title" class="result-title">預約成功</div>
         <div id="res-msg" class="result-msg">時段已預約，請檢查您的電子郵件確認信。</div>
         <button class="result-close-btn" onclick="closeResultModal()">確定 OK</button>
+    </div>
+</div>
+
+<!-- Student Schedule Calendar Modal -->
+<div id="sched-modal-overlay" class="sched-modal-overlay">
+    <div class="sched-modal-container">
+        <button class="back-btn" onclick="closeSchedCalendar()" style="margin-bottom: 20px;">❮ 返回</button>
+        <div class="cal-nav" style="margin-bottom: 20px;">
+            <button class="cal-nav-btn" onclick="changeSchedMonth(-1)">❮</button>
+            <div id="sched-cal-title" style="font-size: 24px; font-weight: bold; color: #333;"></div>
+            <button class="cal-nav-btn" onclick="changeSchedMonth(1)">❯</button>
+        </div>
+        <div class="sched-cal-grid" id="sched-head-row">
+            <div class="cal-head" style="color:#d32f2f;">SUN<small>日</small></div>
+            <div class="cal-head">MON<small>一</small></div>
+            <div class="cal-head">TUE<small>二</small></div>
+            <div class="cal-head">WED<small>三</small></div>
+            <div class="cal-head">THU<small>四</small></div>
+            <div class="cal-head">FRI<small>五</small></div>
+            <div class="cal-head" style="color:#d32f2f;">SAT<small>六</small></div>
+        </div>
+        <div id="sched-cal-body" class="sched-cal-grid"></div>
+        <div id="sched-details-area" style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 16px; min-height: 100px;"></div>
     </div>
 </div>
 
@@ -1437,10 +1497,12 @@
   function fmt(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
 
   // ==========================================
-  // === Peggy Chatbot Logic ===
+  // === Peggy Chatbot & Schedule Calendar ===
   // ==========================================
   const PEGGY_API_URL = "https://script.google.com/macros/s/AKfycbxrSJS4dGWmG_GHpginXD_Nl-R8KaZq-6NHRtBjT8_Q4TWz0pp4yinVaMKibdf-Vz1ELg/exec";
   let peggyInitialized = false;
+  let currentStudentSchedule =[]; // Holds fetched classes for calendar
+  let schedCalYear, schedCalMonth, schedSelectedDateStr;
 
   function togglePeggy() {
       const windowEl = document.getElementById('peggy-window');
@@ -1449,7 +1511,7 @@
       windowEl.classList.toggle('show');
       
       if(windowEl.classList.contains('show')) {
-          badges.forEach(b => b.style.display = 'none'); // Hide badge when opened
+          badges.forEach(b => b.style.display = 'none');
       }
 
       if(windowEl.classList.contains('show') && !peggyInitialized) {
@@ -1555,6 +1617,8 @@
               }
           }
 
+          currentStudentSchedule = scheduleData; // Save globally for calendar
+
           let html = `<div style="text-align:left;">`;
           html += `<div style="font-weight:bold; font-size:1.15em; margin-bottom:0.5em; color:var(--selected-bg);">查詢結果：${name}</div>`;
           
@@ -1614,6 +1678,9 @@
               if (upcoming.length > 8) {
                   html += `<div style="font-size:0.85em; color:#888; text-align:center; margin-top:0.4em;">僅顯示最近 8 筆預約</div>`;
               }
+
+              // Student Schedule Calendar Button
+              html += `<button onclick="openSchedCalendar()" style="width:100%; padding:0.8em; margin-top:0.8em; border-radius:0.7em; background:var(--blue-main); color:#fff; border:none; font-weight:bold; font-size:1.05em; cursor:pointer; box-shadow: 0 4px 10px rgba(0,122,255,0.3); transition:0.2s;">📅 檢視完整月曆課表</button>`;
           } else {
               html += `<div style="margin-top:0.8em; font-size:1em; color:#555; background:#fff0f5; padding:0.7em; border-radius:0.7em; border:1px solid #ffebee;">目前沒有近期預約的課程喔！<br><a href="javascript:void(0)" onclick="togglePeggy(); window.scrollTo(0,0);" style="color:var(--pill-active); font-weight:bold; display:inline-block; margin-top:0.4em;">現在去預約 ❯</a></div>`;
           }
@@ -1627,6 +1694,114 @@
           hidePeggyTyping();
           addPeggyMessage("抱歉，系統似乎有些問題，無法查詢您的課表，請稍後再試。🙇‍♀️", 'peggy');
       }
+  }
+
+  // === Student Schedule Calendar Logic ===
+  function openSchedCalendar() {
+      const modal = document.getElementById('sched-modal-overlay');
+      modal.style.display = 'block';
+      
+      const now = new Date();
+      schedCalYear = now.getFullYear();
+      schedCalMonth = now.getMonth();
+      
+      // Auto-select the next upcoming event if possible
+      const upcoming = currentStudentSchedule.filter(ev => new Date(ev.start) >= now).sort((a,b) => new Date(a.start) - new Date(b.start));
+      
+      if (upcoming.length > 0) {
+          const nextEventDate = new Date(upcoming[0].start);
+          schedCalYear = nextEventDate.getFullYear();
+          schedCalMonth = nextEventDate.getMonth();
+          schedSelectedDateStr = fmt(nextEventDate);
+      } else {
+          schedSelectedDateStr = fmt(now);
+      }
+      
+      renderSchedCalGrid();
+      showSchedDayDetails(schedSelectedDateStr);
+  }
+
+  function closeSchedCalendar() {
+      document.getElementById('sched-modal-overlay').style.display = 'none';
+  }
+
+  function changeSchedMonth(n) {
+      schedCalMonth += n;
+      if(schedCalMonth > 11) { schedCalMonth = 0; schedCalYear++; }
+      else if(schedCalMonth < 0) { schedCalMonth = 11; schedCalYear--; }
+      renderSchedCalGrid();
+  }
+
+  function renderSchedCalGrid() {
+      document.getElementById("sched-cal-title").innerText = `${schedCalYear}年 ${schedCalMonth+1}月`;
+      const container = document.getElementById("sched-cal-body");
+      container.innerHTML = "";
+
+      const firstDay = new Date(schedCalYear, schedCalMonth, 1).getDay(); // 0 (Sun) to 6 (Sat)
+      const daysInMonth = new Date(schedCalYear, schedCalMonth+1, 0).getDate();
+      const todayStr = fmt(new Date());
+
+      for (let i = 0; i < firstDay; i++) {
+          container.innerHTML += `<div class="sched-cell empty"></div>`;
+      }
+
+      for (let d = 1; d <= daysInMonth; d++) {
+          const dateStr = `${schedCalYear}-${String(schedCalMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+          const cell = document.createElement("div");
+          cell.className = "sched-cell";
+          cell.innerText = d;
+          
+          if (dateStr === todayStr) cell.classList.add("today");
+          if (dateStr === schedSelectedDateStr) cell.classList.add("selected");
+
+          // Check if event exists
+          const dayEvents = currentStudentSchedule.filter(ev => fmt(new Date(ev.start)) === dateStr);
+
+          if (dayEvents.length > 0) {
+              const dot = document.createElement("div");
+              dot.className = "sched-dot";
+              dot.innerText = dayEvents.length;
+              cell.appendChild(dot);
+          }
+
+          cell.onclick = () => {
+              schedSelectedDateStr = dateStr;
+              renderSchedCalGrid();
+              showSchedDayDetails(dateStr);
+          };
+
+          container.appendChild(cell);
+      }
+  }
+
+  function showSchedDayDetails(dStr) {
+      const area = document.getElementById("sched-details-area");
+      const titleDate = new Date(dStr);
+      const dayName = chiDayNames[titleDate.getDay()];
+      
+      const dayEvents = currentStudentSchedule.filter(ev => fmt(new Date(ev.start)) === dStr)
+                                            .sort((a,b) => new Date(a.start) - new Date(b.start));
+
+      let html = `<div style="font-size: 18px; font-weight: bold; margin-bottom: 12px; color: #111;">${dStr} (週${dayName}) 課表</div>`;
+      
+      if (dayEvents.length === 0) {
+          html += `<div style="color: #666; font-size: 15px;">本日無排定課程</div>`;
+      } else {
+          dayEvents.forEach(ev => {
+              const d = new Date(ev.start);
+              let hours = d.getHours();
+              let minutes = d.getMinutes().toString().padStart(2, "0");
+              const ampm = hours >= 12 ? "PM" : "AM";
+              hours = hours % 12 || 12;
+              const timeStr = `${hours}:${minutes} ${ampm}`;
+
+              html += `<div style="background:#fff; border-left:4px solid var(--pill-active); box-shadow:0 1px 4px rgba(0,0,0,0.08); padding:12px; margin-bottom:10px; border-radius:8px; display:flex; flex-direction:column; gap:4px;">`;
+              html += `<div style="color:var(--pill-active); font-weight:bold; font-size:16px;">${timeStr}</div>`;
+              html += `<div style="color:#444; font-size:14px;">${ev.title}</div>`;
+              html += `</div>`;
+          });
+      }
+      area.innerHTML = html;
   }
 </script>
 </body>
