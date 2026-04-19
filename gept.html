@@ -55,30 +55,37 @@
         .card-bg-2 { background-image: url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/IMG_8527.JPG?updatedAt=1776447267156'); }
         .card-bg-3 { background-image: url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/IMG_8551.JPG?updatedAt=1776447263011'); }
         .card-overlay { position: absolute; inset: 0; background: rgba(15, 23, 42, 0.85); z-index: -1; transition: background 0.3s ease; }
-        .course-item:hover .card-overlay { background: rgba(15, 23, 42, 0.75); } /* 電腦版 Hover 稍微調亮 */
+        .course-item:hover .card-overlay { background: rgba(15, 23, 42, 0.75); }
 
-        /* --- 課程介紹 (1024px 以下手機/平板版由上往下疊加，大螢幕並排) --- */
+        /* --- 課程介紹排版 (電腦版 30% 放大，手機版由上而下疊加) --- */
         .course-item { 
             border-radius: 1rem; overflow: hidden; 
             box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3); 
         }
         .course-header { cursor: pointer; user-select: none; position: relative; z-index: 10; }
 
+        /* 電腦版 (>1024px) */
         @media (min-width: 1024px) {
-            .course-container { display: flex; flex-direction: row; justify-content: center; padding: 1rem 2rem; gap: 1.25rem; }
-            .course-item { flex: 1; max-width: 380px; display: flex; flex-direction: column; opacity: 0; transform: translateX(-50px); }
-            /* 電腦版由左至右滑入動畫 */
+            .course-container { display: flex; flex-direction: row; justify-content: center; padding: 1rem 2rem; gap: 2rem; max-width: 1600px; margin: 0 auto; }
+            /* 卡片寬度自原本 380px 放大至 500px (+31%) */
+            .course-item { flex: 1; max-width: 500px; display: flex; flex-direction: column; opacity: 0; transform: translateX(-50px); min-height: 550px; }
             .course-item.show { animation: slideInLeft 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
             .course-header { cursor: default; }
-            .course-header .mobile-click-icon { display: none; } /* 電腦版隱藏點擊提示圖示 */
-            .course-card-content { display: flex; flex-direction: column; flex: 1; position: relative; z-index: 10; } /* 電腦版顯示內容 */
-            .swipe-hint-click { display: none; }
+            .course-header .mobile-click-icon { display: none; }
+            .course-card-content { display: flex; flex-direction: column; flex: 1; position: relative; z-index: 10; } 
+            
+            .prep-strategy { display: block !important; } /* 電腦版顯示準備策略 */
+            .mobile-detail-btn { display: none !important; } /* 電腦版隱藏點擊按鈕 */
         }
 
+        /* 手機與平板版 (<=1023px) */
         @media (max-width: 1023px) {
-            .course-container { display: flex; flex-direction: column; gap: 1.5rem; padding: 0 1.25rem; align-items: center; }
-            .course-item { width: 100%; max-width: 500px; display: flex; flex-direction: column; }
-            .course-card-content { display: none; } /* 手機版預設隱藏，靠 Modal 顯示 */
+            .course-container { display: flex; flex-direction: column; gap: 1.5rem; padding: 0 1.25rem; align-items: center; max-width: 650px; margin: 0 auto; }
+            .course-item { width: 100%; display: flex; flex-direction: column; }
+            /* 手機版不再預設隱藏，直接展開顯示內容 */
+            .course-card-content { display: flex; flex-direction: column; position: relative; z-index: 10; } 
+            .prep-strategy { display: none; } /* 手機版初始隱藏準備策略 */
+            .mobile-detail-btn { display: flex; justify-content: flex-end; align-items: center; cursor: pointer; margin-top: 1rem; }
         }
 
         @keyframes slideInLeft {
@@ -86,7 +93,7 @@
             to { opacity: 1; transform: translateX(0); }
         }
 
-        /* --- 手機版專用：課程介紹彈跳視窗 (Modal) - 更新為深色質感 --- */
+        /* --- 手機版專用：課程介紹彈跳視窗 (Modal) --- */
         #course-modal-overlay {
             position: fixed; inset: 0; background-color: rgba(0, 0, 0, 0.8); z-index: 3000;
             display: flex; justify-content: center; align-items: center; padding: 1rem;
@@ -101,6 +108,10 @@
         #course-modal-overlay.visible .course-modal-content { transform: translateY(0) scale(1); }
         .course-modal-body { overflow-y: auto; -webkit-overflow-scrolling: touch; }
         
+        /* 彈出視窗內顯示隱藏的準備策略，並隱藏點擊按鈕 */
+        #course-modal-body .prep-strategy { display: block !important; margin-top: 1.5rem; padding-top: 1.25rem; border-top: 1px solid #475569; }
+        #course-modal-body .mobile-detail-btn { display: none !important; }
+
         .modal-close-btn {
             position: absolute; top: 1rem; right: 1rem; width: 36px; height: 36px;
             background: rgba(255,255,255,0.15); border-radius: 50%; display: flex; justify-content: center; align-items: center;
@@ -113,7 +124,7 @@
             .swipe-container-feedback { padding: 1rem 2rem; justify-content: center; flex-wrap: wrap; display: flex; gap: 2rem; overflow-x: hidden; }
             .swipe-item-feedback { flex: 0 0 350px; }
             .swipe-hint-feedback { display: none; }
-            .feedback-indicators { display: none !important; } /* 電腦版隱藏指標 */
+            .feedback-indicators { display: none !important; }
         }
         @media (max-width: 767px) {
             .swipe-container-feedback {
@@ -206,7 +217,6 @@
 
     <svg class="svg-container">
       <defs>
-        <!-- SVG特效定義保留 -->
         <filter id="🌀↖️" colorInterpolationFilters="sRGB" x="-20%" y="-20%" width="140%" height="140%">
           <feTurbulence type="turbulence" baseFrequency="0.02" numOctaves="10" result="noise1" seed="1" />
           <feOffset in="noise1" dx="0" dy="0" result="offsetNoise1"><animate attributeName="dy" values="700; 0" dur="6s" repeatCount="indefinite" calcMode="linear" /></feOffset>
@@ -235,7 +245,7 @@
 
     <main id="product-page" class="w-full overflow-x-hidden">
 
-        <!-- Hero Section (針對手機板上移內容，並增加右上角 Logo) -->
+        <!-- Hero Section -->
         <header class="relative text-white pt-20 pb-12 md:pt-32 md:pb-32 px-4 text-center overflow-hidden">
             <div class="absolute inset-0 z-0 hero-bg-layer"></div>
             
@@ -250,7 +260,6 @@
                     全民英檢 GEPT 專業證照輔導
                 </span>
                 
-                <!-- Hero Section 按鈕 -->
                 <div class="flex justify-center gap-3 md:gap-5 mb-8 anim-slide-up delay-100">
                     <button onclick="handleCourseAction('elementary')" class="bg-rose-500 hover:bg-rose-600 text-white px-6 py-2.5 sm:px-8 sm:py-3 rounded-full text-xl sm:text-2xl font-bold shadow-xl transition transform hover:scale-105 border border-rose-400">
                         初級
@@ -282,39 +291,44 @@
             </div>
         </header>
 
-        <!-- GEPT 級數課程介紹 (結合深色背景圖片質感與連貫展開動畫) -->
+        <!-- GEPT 級數課程介紹 -->
         <section id="courses" class="py-16 md:py-24 bg-gray-100 scroll-mt-0">
             <div class="text-center mb-10 px-4">
                 <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-2">全民英檢各級數課程介紹</h2>
-                <p class="text-gray-500 mt-2 text-lg swipe-hint-click animate-pulse">
-                    <i class="fas fa-hand-pointer mr-1"></i> 請點選查看詳細介紹
-                </p>
+                <!-- 已依需求刪除此處的手機版文字提示 -->
             </div>
 
-            <div class="course-container max-w-7xl mx-auto">
+            <!-- 電腦版放大 30% 設計，容器最大寬度設為 1600px -->
+            <div class="course-container max-w-[1600px] mx-auto">
                 
                 <!-- 初級 Card -->
                 <div id="card-elementary" class="course-item card-bg-cover card-bg-1">
                     <div class="card-overlay"></div>
-                    <div class="course-header text-white p-6 flex justify-between items-center" onclick="handleCourseAction('elementary')">
+                    <div class="course-header text-white p-6 lg:p-8 flex justify-between items-center" onclick="handleCourseAction('elementary')">
                         <div class="text-left">
-                            <h3 class="text-2xl md:text-3xl font-bold text-rose-400">初級 GEPT</h3>
-                            <p class="text-gray-300 text-base md:text-lg mt-1">Elementary – 基礎溝通能力</p>
+                            <h3 class="text-2xl md:text-3xl lg:text-4xl font-bold text-rose-400">初級 GEPT</h3>
+                            <p class="text-gray-300 text-base md:text-lg lg:text-xl mt-1">Elementary – 基礎溝通能力</p>
                         </div>
-                        <i class="fas fa-search-plus text-xl mobile-click-icon text-white"></i>
                     </div>
                     <!-- 內容區 -->
-                    <div class="course-card-content p-6 text-lg text-gray-200">
-                        <p class="mb-5 bg-white/10 border-l-4 border-rose-500 p-3 rounded-r-lg text-white font-medium leading-relaxed">📌 目的定位：透過日常生活語境的聽說讀寫任務，建立基礎英語能力。</p>
-                        <ul class="space-y-4 mb-5">
+                    <div class="course-card-content p-6 lg:p-8 text-lg lg:text-xl text-gray-200">
+                        <p class="mb-5 bg-white/10 border-l-4 border-rose-500 p-3 lg:p-4 rounded-r-lg text-white font-medium leading-relaxed">📌 目的定位：透過日常生活語境的聽說讀寫任務，建立基礎英語能力。</p>
+                        <ul class="space-y-4 lg:space-y-5 mb-5">
                             <li><strong><i class="fas fa-headphones text-rose-400 w-6"></i>聽力：</strong>圖片描述與簡短對話。</li>
                             <li><strong><i class="fas fa-book-open text-rose-400 w-6"></i>閱讀：</strong>句子填空與短文理解。</li>
                             <li><strong><i class="fas fa-comment-dots text-rose-400 w-6"></i>口說：</strong>重覆朗讀與簡單問答。</li>
                             <li><strong><i class="fas fa-pen text-rose-400 w-6"></i>寫作：</strong>句子合併，改寫，看圖寫作。</li>
                         </ul>
-                        <div class="border-t border-gray-600 pt-5 mt-auto">
-                            <strong class="text-rose-400 block mb-2 text-xl">💡 準備策略：</strong>
+                        <!-- 準備策略：手機版直接觀看時會隱藏，點擊彈窗才顯示；電腦版預設顯示 -->
+                        <div class="prep-strategy border-t border-gray-500 pt-5 mt-auto">
+                            <strong class="text-rose-400 block mb-2 text-xl lg:text-2xl">💡 準備策略：</strong>
                             從零開始建立必備詞彙與句型，練習生活短篇故事，並模擬基本英文自我介紹，打穩英語基礎。
+                        </div>
+                        
+                        <!-- 手機版專屬點擊按鈕 -->
+                        <div class="mobile-detail-btn text-rose-400 hover:text-rose-300 transition" onclick="handleCourseAction('elementary')">
+                            <span class="text-base font-bold mr-2 border-b border-rose-400 pb-0.5">請點選查看詳細介紹</span>
+                            <i class="fas fa-arrow-circle-right text-2xl animate-pulse"></i>
                         </div>
                     </div>
                 </div>
@@ -322,24 +336,29 @@
                 <!-- 中級 Card -->
                 <div id="card-intermediate" class="course-item card-bg-cover card-bg-2">
                     <div class="card-overlay"></div>
-                    <div class="course-header text-white p-6 flex justify-between items-center" onclick="handleCourseAction('intermediate')">
+                    <div class="course-header text-white p-6 lg:p-8 flex justify-between items-center" onclick="handleCourseAction('intermediate')">
                         <div class="text-left">
-                            <h3 class="text-2xl md:text-3xl font-bold text-blue-400">中級 GEPT</h3>
-                            <p class="text-gray-300 text-base md:text-lg mt-1">Intermediate – 日常溝通表達</p>
+                            <h3 class="text-2xl md:text-3xl lg:text-4xl font-bold text-blue-400">中級 GEPT</h3>
+                            <p class="text-gray-300 text-base md:text-lg lg:text-xl mt-1">Intermediate – 日常溝通表達</p>
                         </div>
-                        <i class="fas fa-search-plus text-xl mobile-click-icon text-white"></i>
                     </div>
-                    <div class="course-card-content p-6 text-lg text-gray-200">
-                        <p class="mb-5 bg-white/10 border-l-4 border-blue-500 p-3 rounded-r-lg text-white font-medium leading-relaxed">📌 目的定位：提升日常情境應對能力，可用英文進行基本溝通交流。</p>
-                        <ul class="space-y-4 mb-5">
+                    <div class="course-card-content p-6 lg:p-8 text-lg lg:text-xl text-gray-200">
+                        <p class="mb-5 bg-white/10 border-l-4 border-blue-500 p-3 lg:p-4 rounded-r-lg text-white font-medium leading-relaxed">📌 目的定位：提升日常情境應對能力，可用英文進行基本溝通交流。</p>
+                        <ul class="space-y-4 lg:space-y-5 mb-5">
                             <li><strong><i class="fas fa-headphones text-blue-400 w-6"></i>聽力：</strong>一般對話與廣播公告。</li>
                             <li><strong><i class="fas fa-book-open text-blue-400 w-6"></i>閱讀：</strong>片語運用與多篇閱讀。</li>
                             <li><strong><i class="fas fa-comment-dots text-blue-400 w-6"></i>口說：</strong>問答練習與經驗描述。</li>
                             <li><strong><i class="fas fa-pen text-blue-400 w-6"></i>寫作：</strong>生活經驗與短文描述。</li>
                         </ul>
-                        <div class="border-t border-gray-600 pt-5 mt-auto">
-                            <strong class="text-blue-400 block mb-2 text-xl">💡 準備策略：</strong>
+                        <div class="prep-strategy border-t border-gray-500 pt-5 mt-auto">
+                            <strong class="text-blue-400 block mb-2 text-xl lg:text-2xl">💡 準備策略：</strong>
                             擴大閱讀題材、建立主題性口說練習，搭配多樣片語與正確句型，穩健提升分數。
+                        </div>
+
+                        <!-- 手機版專屬點擊按鈕 -->
+                        <div class="mobile-detail-btn text-blue-400 hover:text-blue-300 transition" onclick="handleCourseAction('intermediate')">
+                            <span class="text-base font-bold mr-2 border-b border-blue-400 pb-0.5">請點選查看詳細介紹</span>
+                            <i class="fas fa-arrow-circle-right text-2xl animate-pulse"></i>
                         </div>
                     </div>
                 </div>
@@ -347,24 +366,29 @@
                 <!-- 中高級 Card -->
                 <div id="card-high-int" class="course-item card-bg-cover card-bg-3">
                     <div class="card-overlay"></div>
-                    <div class="course-header text-white p-6 flex justify-between items-center" onclick="handleCourseAction('high-int')">
+                    <div class="course-header text-white p-6 lg:p-8 flex justify-between items-center" onclick="handleCourseAction('high-int')">
                         <div class="text-left">
-                            <h3 class="text-2xl md:text-3xl font-bold text-indigo-400">中高級 GEPT</h3>
-                            <p class="text-gray-300 text-base md:text-lg mt-1">High-Int. – 有效溝通與分析</p>
+                            <h3 class="text-2xl md:text-3xl lg:text-4xl font-bold text-indigo-400">中高級 GEPT</h3>
+                            <p class="text-gray-300 text-base md:text-lg lg:text-xl mt-1">High-Int. – 有效溝通與分析</p>
                         </div>
-                        <i class="fas fa-search-plus text-xl mobile-click-icon text-white"></i>
                     </div>
-                    <div class="course-card-content p-6 text-lg text-gray-200">
-                        <p class="mb-5 bg-white/10 border-l-4 border-indigo-400 p-3 rounded-r-lg text-white font-medium leading-relaxed">📌 目的定位：具備廣泛話題理解能力，可處理社交、職場及日常議題。</p>
-                        <ul class="space-y-4 mb-5">
+                    <div class="course-card-content p-6 lg:p-8 text-lg lg:text-xl text-gray-200">
+                        <p class="mb-5 bg-white/10 border-l-4 border-indigo-400 p-3 lg:p-4 rounded-r-lg text-white font-medium leading-relaxed">📌 目的定位：具備廣泛話題理解能力，可處理社交、職場及日常議題。</p>
+                        <ul class="space-y-4 lg:space-y-5 mb-5">
                             <li><strong><i class="fas fa-headphones text-indigo-400 w-6"></i>聽力：</strong>複雜情境資訊與講座。</li>
                             <li><strong><i class="fas fa-book-open text-indigo-400 w-6"></i>閱讀：</strong>多篇長篇閱讀理解。</li>
                             <li><strong><i class="fas fa-comment-dots text-indigo-400 w-6"></i>口說：</strong>看圖描述與深度討論。</li>
                             <li><strong><i class="fas fa-pen text-indigo-400 w-6"></i>寫作：</strong>中翻英與引導寫作。</li>
                         </ul>
-                        <div class="border-t border-gray-600 pt-5 mt-auto">
-                            <strong class="text-indigo-400 block mb-2 text-xl">💡 準備策略：</strong>
+                        <div class="prep-strategy border-t border-gray-500 pt-5 mt-auto">
+                            <strong class="text-indigo-400 block mb-2 text-xl lg:text-2xl">💡 準備策略：</strong>
                             聆聽真實語境(新聞/演講)、高階語彙句型練習，輔以口說主題討論與寫作邏輯架構。
+                        </div>
+                        
+                        <!-- 手機版專屬點擊按鈕 -->
+                        <div class="mobile-detail-btn text-indigo-400 hover:text-indigo-300 transition" onclick="handleCourseAction('high-int')">
+                            <span class="text-base font-bold mr-2 border-b border-indigo-400 pb-0.5">請點選查看詳細介紹</span>
+                            <i class="fas fa-arrow-circle-right text-2xl animate-pulse"></i>
                         </div>
                     </div>
                 </div>
@@ -372,7 +396,7 @@
             </div>
         </section>
 
-        <!-- 手機版課程介紹 Modal 容器 (改為深色背景) -->
+        <!-- 手機版課程介紹 Modal 容器 -->
         <div id="course-modal-overlay" onclick="closeCourseModal(event)">
             <div class="course-modal-content" onclick="event.stopPropagation()">
                 <div id="course-modal-header">
@@ -592,7 +616,7 @@
                 }, { threshold: 0.15 });
 
                 document.querySelectorAll('.course-item').forEach((item, index) => {
-                    item.style.animationDelay = `${index * 0.2}s`; // 設定依序滑入的延遲時間
+                    item.style.animationDelay = `${index * 0.2}s`;
                     observer.observe(item);
                 });
             }
@@ -625,8 +649,6 @@
             const contentSource = cardElement.querySelector('.course-card-content');
             
             titleArea.innerHTML = headerSource.innerHTML;
-            const icon = titleArea.querySelector('.mobile-click-icon');
-            if(icon) icon.remove();
             
             bodyTarget.innerHTML = contentSource.innerHTML;
             
@@ -845,7 +867,7 @@
 
             let selectedDayOfWeek = -1;
             if (selectedMiniDate) {
-                const [y, m, d] = selectedMiniDate.split('-');
+                const[y, m, d] = selectedMiniDate.split('-');
                 if (parseInt(y) === year && parseInt(m) - 1 === month) {
                     const sd = new Date(y, m - 1, d); selectedDayOfWeek = sd.getDay();
                 }
