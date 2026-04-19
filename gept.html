@@ -325,7 +325,7 @@
             </div>
         </header>
 
-        <!-- GEPT 級數課程介紹 (支援全裝置點擊開啟Modal，平板字體放大1.5倍) -->
+        <!-- GEPT 級數課程介紹 -->
         <section id="courses" class="py-16 md:py-24 bg-gray-100 scroll-mt-0">
             <div class="text-center mb-10 px-4">
                 <h2 class="text-3xl md:text-[2.5rem] lg:text-4xl font-bold text-gray-800 mb-2">全民英檢各級數課程介紹</h2>
@@ -337,12 +337,16 @@
                 <!-- 初級 Card -->
                 <div id="card-elementary" class="course-item card-bg-cover card-bg-1" onclick="handleCourseAction('elementary')">
                     <div class="card-overlay"></div>
-                    <div class="course-header text-white p-6 md:p-10 lg:p-8 flex justify-between items-center">
-                        <div class="text-left">
+                    
+                    <!-- 卡片 Header (加入 Logo 於右上角) -->
+                    <div class="course-header text-white p-6 md:p-10 lg:p-8 flex justify-between items-start">
+                        <div class="text-left pr-4">
                             <h3 class="text-2xl md:text-[2.5rem] lg:text-4xl font-bold text-rose-400">初級 GEPT</h3>
                             <p class="text-gray-300 text-base md:text-[1.4rem] lg:text-xl mt-1">Elementary – 基礎溝通能力</p>
                         </div>
+                        <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/GEPT_logo.svg.png.webp?updatedAt=1774590183732" alt="GEPT Logo" class="w-14 md:w-20 lg:w-24 object-contain drop-shadow-md">
                     </div>
+
                     <!-- 內容區 -->
                     <div class="course-card-content p-6 md:p-10 lg:p-8 text-lg md:text-[1.6rem] md:leading-relaxed lg:text-xl text-gray-200">
                         <p class="mb-5 bg-white/10 border-l-4 border-rose-500 p-3 md:p-5 lg:p-4 rounded-r-lg text-white font-medium">📌 目的定位：透過日常生活語境的聽說讀寫任務，建立基礎英語能力。</p>
@@ -371,12 +375,15 @@
                 <!-- 中級 Card -->
                 <div id="card-intermediate" class="course-item card-bg-cover card-bg-2" onclick="handleCourseAction('intermediate')">
                     <div class="card-overlay"></div>
-                    <div class="course-header text-white p-6 md:p-10 lg:p-8 flex justify-between items-center">
-                        <div class="text-left">
+                    
+                    <div class="course-header text-white p-6 md:p-10 lg:p-8 flex justify-between items-start">
+                        <div class="text-left pr-4">
                             <h3 class="text-2xl md:text-[2.5rem] lg:text-4xl font-bold text-blue-400">中級 GEPT</h3>
                             <p class="text-gray-300 text-base md:text-[1.4rem] lg:text-xl mt-1">Intermediate – 日常溝通表達</p>
                         </div>
+                        <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/GEPT_logo.svg.png.webp?updatedAt=1774590183732" alt="GEPT Logo" class="w-14 md:w-20 lg:w-24 object-contain drop-shadow-md">
                     </div>
+
                     <div class="course-card-content p-6 md:p-10 lg:p-8 text-lg md:text-[1.6rem] md:leading-relaxed lg:text-xl text-gray-200">
                         <p class="mb-5 bg-white/10 border-l-4 border-blue-500 p-3 md:p-5 lg:p-4 rounded-r-lg text-white font-medium">📌 目的定位：提升日常情境應對能力，可用英文進行基本溝通交流。</p>
                         
@@ -404,12 +411,15 @@
                 <!-- 中高級 Card -->
                 <div id="card-high-int" class="course-item card-bg-cover card-bg-3" onclick="handleCourseAction('high-int')">
                     <div class="card-overlay"></div>
-                    <div class="course-header text-white p-6 md:p-10 lg:p-8 flex justify-between items-center">
-                        <div class="text-left">
+                    
+                    <div class="course-header text-white p-6 md:p-10 lg:p-8 flex justify-between items-start">
+                        <div class="text-left pr-4">
                             <h3 class="text-2xl md:text-[2.5rem] lg:text-4xl font-bold text-indigo-400">中高級 GEPT</h3>
                             <p class="text-gray-300 text-base md:text-[1.4rem] lg:text-xl mt-1">High-Int. – 有效溝通與分析</p>
                         </div>
+                        <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/GEPT_logo.svg.png.webp?updatedAt=1774590183732" alt="GEPT Logo" class="w-14 md:w-20 lg:w-24 object-contain drop-shadow-md">
                     </div>
+
                     <div class="course-card-content p-6 md:p-10 lg:p-8 text-lg md:text-[1.6rem] md:leading-relaxed lg:text-xl text-gray-200">
                         <p class="mb-5 bg-white/10 border-l-4 border-indigo-400 p-3 md:p-5 lg:p-4 rounded-r-lg text-white font-medium">📌 目的定位：具備廣泛話題理解能力，可處理社交、職場及日常議題。</p>
                         
@@ -445,8 +455,9 @@
                 
                 <button class="modal-close-btn" onclick="closeCourseModal()"><i class="fas fa-times"></i></button>
 
+                <!-- Header 會把卡片內的 flex 結構完整拷貝過來，並預留右側安全距離避免覆蓋X按鈕 -->
                 <div id="course-modal-header" class="relative z-10 border-b border-slate-600/50">
-                    <div id="course-modal-title-area" class="pr-12"></div>
+                    <div id="course-modal-title-area" class="w-full flex justify-between items-start pr-14 md:pr-20"></div>
                 </div>
                 <div id="course-modal-body" class="course-modal-body relative z-10 text-lg"></div>
             </div>
@@ -517,24 +528,6 @@
             <div id="feedback-dots" class="feedback-indicators"></div>
         </section>
 
-        <!-- 聯絡我們 (從 Code 2 移植，置於購物車上方) -->
-        <section class="contact-section" id="contact">
-            <div class="contact-wrap">
-                <div class="contact-header">
-                    <h2>聯繫我們</h2>
-                    <p>有任何課程問題？歡迎填寫表單與我們聯繫</p>
-                </div>
-                <form id="contact-form" onsubmit="submitContactForm(event)">
-                    <div class="form-group"><label>姓名 Name *</label><input type="text" id="contact-name" placeholder="請填寫您的姓名" required></div>
-                    <div class="form-group"><label>Email *</label><input type="email" id="contact-email" placeholder="example@gmail.com" required></div>
-                    <div class="form-group"><label>Line ID (選填)</label><input type="text" id="contact-line" placeholder="方便老師與您快速聯繫"></div>
-                    <div class="form-group"><label>學習需求 *</label><textarea id="contact-needs" rows="5" placeholder="請簡述您的程度與目前遇到的問題..." required></textarea></div>
-                    <button type="submit" id="contact-submit">送出訊息 <i class="fa-solid fa-paper-plane"></i></button>
-                </form>
-                <div id="contact-msg" style="display:none;text-align:center;padding:30px;font-size:1.2rem;color:#00B900;font-weight:700;">✓ 訊息已成功送出！Tony 老師將會盡快與您聯繫。</div>
-            </div>
-        </section>
-
         <!-- 購物車區塊 -->
         <footer id="checkout-section" class="bg-gray-900 text-center py-16 px-4">
             <h2 class="text-3xl md:text-4xl font-bold text-white mb-10">準備好迎戰全民英檢了嗎？</h2>
@@ -591,6 +584,24 @@
             
             <p class="text-gray-500 text-sm mt-12">&copy; 2026 Tony線上美語家教 All Rights Reserved.</p>
         </footer>
+
+        <!-- 聯絡我們 (從 Code 2 移植，置於最底部) -->
+        <section class="contact-section" id="contact">
+            <div class="contact-wrap">
+                <div class="contact-header">
+                    <h2>聯繫我們</h2>
+                    <p>有任何課程問題？歡迎填寫表單與我們聯繫</p>
+                </div>
+                <form id="contact-form" onsubmit="submitContactForm(event)">
+                    <div class="form-group"><label>姓名 Name *</label><input type="text" id="contact-name" placeholder="請填寫您的姓名" required></div>
+                    <div class="form-group"><label>Email *</label><input type="email" id="contact-email" placeholder="example@gmail.com" required></div>
+                    <div class="form-group"><label>Line ID (選填)</label><input type="text" id="contact-line" placeholder="方便老師與您快速聯繫"></div>
+                    <div class="form-group"><label>學習需求 *</label><textarea id="contact-needs" rows="5" placeholder="請簡述您的程度與目前遇到的問題..." required></textarea></div>
+                    <button type="submit" id="contact-submit">送出訊息 <i class="fa-solid fa-paper-plane"></i></button>
+                </form>
+                <div id="contact-msg" style="display:none;text-align:center;padding:30px;font-size:1.2rem;color:#00B900;font-weight:700;">✓ 訊息已成功送出！Tony 老師將會盡快與您聯繫。</div>
+            </div>
+        </section>
 
     </main>
 
@@ -696,7 +707,7 @@
             const headerSource = cardElement.querySelector('.course-header');
             const contentSource = cardElement.querySelector('.course-card-content');
             
-            // 複製內容
+            // 複製內容，利用 Flex 結構自動對齊
             titleArea.innerHTML = headerSource.innerHTML;
             bodyTarget.innerHTML = contentSource.innerHTML;
             
@@ -706,7 +717,7 @@
             const bodyClickIcon = bodyTarget.querySelector('.mobile-detail-btn');
             if (bodyClickIcon) bodyClickIcon.remove();
             
-            // 賦予 Modal 深色背景質感 (為了確保無背景圖時不突兀)
+            // 賦予 Modal 深色背景質感 (加一層邊框，避免無背景時突兀)
             headerTarget.className = `relative z-10 p-6 md:p-10 border-b border-slate-600/50`;
             bodyTarget.className = `course-modal-body relative z-10 p-6 md:p-10 text-lg md:text-[1.6rem] lg:text-xl`;
             
