@@ -1,4 +1,4 @@
-<!-- VERSION 11.44 (Added Peggy Virtual Assistant with Eason Rules & Updated Greeting) -->
+<!-- VERSION 11.45 (Peggy Icon Repositioned & Resized, Welcome Message Hyperlink Updated) -->
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -479,24 +479,51 @@
     }
 
     /* === Peggy Chatbot CSS === */
-    #peggy-fab {
-        position: fixed; bottom: 30px; left: 20px; z-index: 1000;
-        width: 60px; height: 60px; border-radius: 50%;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.3); cursor: pointer;
-        border: 3px solid #fff; transition: transform 0.3s;
+    .peggy-fab {
+        position: relative;
+        z-index: 1000;
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        cursor: pointer;
+        border: 3px solid #fff;
+        transition: transform 0.3s;
         background: #fff;
+        flex-shrink: 0;
+        display: inline-block;
     }
     @media (min-width: 768px) {
-        #peggy-fab { width: 80px; height: 80px; bottom: 50px; left: 40px; border-width: 4px; }
+        .peggy-fab {
+            width: 90px;
+            height: 90px;
+            border-width: 4px;
+        }
+        /* Desktop ordering so it is on the right of 50分/堂 */
+        .cal-top-right-group .peggy-fab { order: 4; }
     }
-    #peggy-fab:hover { transform: scale(1.1); }
-    #peggy-fab img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
-    #peggy-badge {
+    @media (min-width: 1024px) {
+        .peggy-fab {
+            width: 120px;
+            height: 120px;
+        }
+    }
+    .peggy-fab:hover { transform: scale(1.1); }
+    .peggy-fab img { width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block; }
+    
+    .peggy-badge-el {
         position: absolute; top: -2px; right: -2px; background: #ff5400; color: #fff;
         width: 22px; height: 22px; border-radius: 50%; font-size: 12px; font-weight: bold;
         display: flex; justify-content: center; align-items: center; border: 2px solid #fff;
         animation: bump-anim 2s infinite;
     }
+    @media (min-width: 768px) {
+        .peggy-badge-el { width: 28px; height: 28px; font-size: 14px; top: 0; right: 0; border-width: 3px; }
+    }
+    @media (min-width: 1024px) {
+        .peggy-badge-el { width: 34px; height: 34px; font-size: 16px; top: 2px; right: 2px; border-width: 4px; }
+    }
+
     #peggy-window {
         position: fixed; bottom: 100px; left: 20px; width: 340px; max-height: 500px; height: 65vh;
         background: #fff; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.3);
@@ -692,6 +719,11 @@
                  <a href="https://tonyonlineenglish.netlify.app/regulations" target="_blank" class="rule-details-link">詳情請點這裡</a>
              </div>
         </div>
+        <!-- Peggy Chatbot Icon -->
+        <div class="peggy-fab" onclick="togglePeggy()">
+            <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/christina-wocintechchat-com-m-0Zx1bDv5BNY-unsplash.jpg" alt="Peggy">
+            <span class="peggy-badge-el">1</span>
+        </div>
     </div>
     <div class="date-scroller" id="dateScroller"></div>
   </div>
@@ -734,12 +766,7 @@
     <span class="cart-badge" id="cart-count">0</span>
 </button>
 
-<!-- === Peggy Chatbot HTML === -->
-<div id="peggy-fab" onclick="togglePeggy()">
-    <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/christina-wocintechchat-com-m-0Zx1bDv5BNY-unsplash.jpg" alt="Peggy">
-    <span id="peggy-badge">1</span>
-</div>
-
+<!-- === Peggy Chatbot Window === -->
 <div id="peggy-window">
     <div class="peggy-header">
         <div style="display:flex; align-items:center; gap:10px;">
@@ -792,6 +819,11 @@
                                  <p><span class="rule-highlight-red">週六及國定假日24小時內</span><br class="mob-br">請假或調課, 扣除1 堂</p>
                                  <a href="https://tonyonlineenglish.netlify.app/regulations" target="_blank" class="rule-details-link">詳情請點這裡</a>
                              </div>
+                        </div>
+                        <!-- Peggy Chatbot Icon -->
+                        <div class="peggy-fab cal-peggy" onclick="togglePeggy()">
+                            <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/christina-wocintechchat-com-m-0Zx1bDv5BNY-unsplash.jpg" alt="Peggy">
+                            <span class="peggy-badge-el">1</span>
                         </div>
                     </div>
                 </div>
@@ -938,9 +970,8 @@
       
       // Close Peggy window if clicked outside
       const peggyWindow = document.getElementById('peggy-window');
-      const peggyFab = document.getElementById('peggy-fab');
       if (peggyWindow && peggyWindow.classList.contains('show')) {
-          if (!e.target.closest('#peggy-window') && !e.target.closest('#peggy-fab')) {
+          if (!e.target.closest('#peggy-window') && !e.target.closest('.peggy-fab')) {
               togglePeggy();
           }
       }
@@ -1060,7 +1091,7 @@
   function renderSlotsInsideCalendar(dStr) {
       const container=document.getElementById("cal-slots-content"); container.innerHTML="";
       const data=cachedData[dStr];
-      if(!data||!data.slots||data.slots.length===0){container.innerHTML=`<div style="text-align:center;padding:20px;color:#aaa;font-weight:bold;">請選擇其他日期</div>`;return;}
+      if(!data||data.slots.length===0){container.innerHTML=`<div style="text-align:center;padding:20px;color:#aaa;font-weight:bold;">請選擇其他日期</div>`;return;}
       const grid=document.createElement("div"); grid.className="simple-slot-grid";
       const validSlots=data.slots.filter(s=>isValidSlot(s));
       if(validSlots.length>0&&validSlots.length<=4) grid.classList.add('few-slots'); else grid.classList.remove('few-slots');
@@ -1386,14 +1417,16 @@
 
   function togglePeggy() {
       const windowEl = document.getElementById('peggy-window');
-      const badge = document.getElementById('peggy-badge');
+      const badges = document.querySelectorAll('.peggy-badge-el');
       
       windowEl.classList.toggle('show');
       
-      if(badge) badge.style.display = 'none'; // Hide badge when opened
+      if(windowEl.classList.contains('show')) {
+          badges.forEach(b => b.style.display = 'none'); // Hide badge when opened
+      }
 
       if(windowEl.classList.contains('show') && !peggyInitialized) {
-          let msg = `嗨！我是Tony線上美語家教 Peggy 👋<br>我可以幫您查詢未來的課程時間與剩餘堂數。也可點選這 <a href="https://tonyonlineenglish.netlify.app/ycs" target="_blank" style="color:var(--blue-main); font-weight:bold; text-decoration:underline; word-break: break-all;">https://tonyonlineenglish.netlify.app/ycs</a><br><br>請問您的<b>英文名字</b>是？`;
+          let msg = `嗨！我是Tony線上美語家教 Peggy 👋<br>我可以幫您查詢未來的課程時間與剩餘堂數。<a href="https://tonyonlineenglish.netlify.app/ycs" target="_blank" style="color:var(--blue-main); font-weight:bold; text-decoration:underline;">也可點選這</a><br><br>請問您的<b>英文名字</b>是？`;
           addPeggyMessage(msg, 'peggy');
           peggyInitialized = true;
           document.getElementById('peggy-input').focus();
@@ -1456,8 +1489,6 @@
       showPeggyTyping();
       
       try {
-          // Adjust backend query explicitly if needed, but the original logic uses the name input
-          // Example: if Eason Hsieh, we still query 'Eason' and let JS filter.
           let queryName = name;
           if (name.includes('Eason Hsieh')) queryName = 'Eason';
           if (name.includes('Eason Cheng')) queryName = 'Eason Cheng';
@@ -1473,7 +1504,6 @@
           let scheduleData =[];
           const nameLower = queryName.toLowerCase();
           
-          // Filter Schedule Data based on Name & specific Eason rule
           if (Array.isArray(rawSchedule)) {
               if (nameLower === 'eason') {
                   scheduleData = rawSchedule.filter(ev => {
@@ -1490,11 +1520,9 @@
               }
           }
 
-          // Format Result HTML
           let html = `<div style="text-align:left;">`;
           html += `<div style="font-weight:bold; font-size:16px; margin-bottom:8px; color:var(--selected-bg);">查詢結果：${name}</div>`;
           
-          // Format Class Count
           if (countData && !countData.error && countData.total !== "" && countData.total !== null) {
               let displayTotal = countData.total;
               let displayCompleted = countData.completed;
@@ -1509,7 +1537,6 @@
               html += `<div style="font-size:13px; color:#888;">查無您的堂數資料或剩餘堂數為0。</div>`;
           }
           
-          // Format Upcoming Schedule
           const now = new Date();
           const limitDateObj = new Date();
           limitDateObj.setDate(now.getDate() + 60);
@@ -1520,7 +1547,7 @@
           if (upcoming.length > 0) {
               html += `<div style="margin-top:12px; font-weight:bold; font-size:15px; color:#333;">近期預約課程：</div>`;
               html += `<div style="margin-top:6px;">`;
-              upcoming.slice(0, 4).forEach(ev => { // Show up to 4 to save space
+              upcoming.slice(0, 4).forEach(ev => {
                   const d = new Date(ev.start);
                   const month = d.getMonth() + 1;
                   const dateObj = d.getDate();
