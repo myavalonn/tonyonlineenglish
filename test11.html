@@ -2,7 +2,7 @@
 
 
 ```html
-<!-- VERSION 11.48 (Student Schedule Calendar: Removed Sunday, Show Time in Cell, Added Duration in Details, Chat Auto-Scroll Fix, Blue Title, Calendar Emoji) -->
+<!-- VERSION 11.49 (Updated Booking Info Color to Dark Blue, Filtered Past Classes from Schedule Calendar) -->
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -598,10 +598,10 @@
     .sched-cell:hover { background: #f0f0f0; }
     .sched-cell.empty { border: none !important; background: transparent !important; cursor: default; }
     .sched-cell.today { border: 2px solid var(--pill-active); color: var(--pill-active); }
-    .sched-cell.selected { background: var(--pill-active) !important; color: #fff !important; box-shadow: 0 4px 10px rgba(255,84,0,0.3); }
+    .sched-cell.selected { background: var(--selected-bg) !important; color: #fff !important; box-shadow: 0 4px 10px rgba(29, 43, 138, 0.3); }
     
     .sched-date-num { line-height: 1; }
-    .sched-cell-times { font-size: 11px; color: var(--pill-active); line-height: 1.2; margin-top: 4px; font-weight: bold; text-align: center; }
+    .sched-cell-times { font-size: 11px; color: var(--selected-bg); line-height: 1.2; margin-top: 4px; font-weight: bold; text-align: center; }
     .sched-cell.selected .sched-cell-times { color: #fff; }
     
     @media (min-width: 768px) {
@@ -1625,7 +1625,11 @@
               }
           }
 
-          currentStudentSchedule = scheduleData; // Save globally for calendar
+          // Filter for the schedule calendar (only today and future)
+          const now = new Date();
+          const todayStart = new Date(now);
+          todayStart.setHours(0,0,0,0);
+          currentStudentSchedule = scheduleData.filter(ev => new Date(ev.start) >= todayStart); 
 
           let html = `<div style="text-align:left;">`;
           html += `<div style="font-weight:bold; font-size:1.15em; margin-bottom:0.5em; color:var(--selected-bg);">查詢結果：${name}</div>`;
@@ -1644,7 +1648,6 @@
               html += `<div style="font-size:0.95em; color:#888;">查無您的堂數資料或剩餘堂數為0。</div>`;
           }
           
-          const now = new Date();
           const limitDateObj = new Date();
           limitDateObj.setDate(now.getDate() + 60);
           
@@ -1673,9 +1676,9 @@
                   let displayStyle = idx >= 4 ? 'display:none;' : '';
                   let extraClass = idx >= 4 ? 'peggy-hidden-booking' : '';
                   
-                  html += `<div class="${extraClass}" style="background:#fff; border-left:4px solid var(--pill-active); box-shadow:0 1px 4px rgba(0,0,0,0.08); padding:0.6em 0.7em; margin-bottom:0.6em; border-radius:0.6em; font-size:1em; ${displayStyle}">`;
-                  html += `<div style="color:var(--pill-active); font-weight:bold;">${month}/${dateObj} (週${day}) ${timeStr}</div>`;
-                  html += `<div style="color:#666; margin-top:0.2em; font-size:0.85em;">${ev.title}</div>`;
+                  html += `<div class="${extraClass}" style="background:#fff; border-left:4px solid var(--selected-bg); box-shadow:0 1px 4px rgba(0,0,0,0.08); padding:0.6em 0.7em; margin-bottom:0.6em; border-radius:0.6em; font-size:1em; ${displayStyle}">`;
+                  html += `<div style="color:var(--selected-bg); font-weight:bold;">${month}/${dateObj} (週${day}) ${timeStr}</div>`;
+                  html += `<div style="color:var(--selected-bg); margin-top:0.2em; font-size:0.85em; opacity: 0.9;">${ev.title}</div>`;
                   html += `</div>`;
               });
               html += `</div>`;
@@ -1783,7 +1786,7 @@
                   return `${h}${minStr}${ampm}`;
               });
               
-              if (timeLabels.length > 2) timeLabels = [timeLabels[0], timeLabels[1], '...'];
+              if (timeLabels.length > 2) timeLabels =[timeLabels[0], timeLabels[1], '...'];
               cellInner += `<div class="sched-cell-times">${timeLabels.join('<br>')}</div>`;
           }
           
@@ -1820,9 +1823,9 @@
               hours = hours % 12 || 12;
               const timeStr = `${hours}:${minutes} ${ampm}`;
 
-              html += `<div style="background:#fff; border-left:4px solid var(--pill-active); box-shadow:0 1px 4px rgba(0,0,0,0.08); padding:12px; margin-bottom:10px; border-radius:8px; display:flex; flex-direction:column; gap:4px;">`;
-              html += `<div style="color:var(--pill-active); font-weight:bold; font-size:16px;">${timeStr}</div>`;
-              html += `<div style="color:#444; font-size:14px; font-weight:bold;">${ev.title}</div>`;
+              html += `<div style="background:#fff; border-left:4px solid var(--selected-bg); box-shadow:0 1px 4px rgba(0,0,0,0.08); padding:12px; margin-bottom:10px; border-radius:8px; display:flex; flex-direction:column; gap:4px;">`;
+              html += `<div style="color:var(--selected-bg); font-weight:bold; font-size:16px;">${timeStr}</div>`;
+              html += `<div style="color:#222; font-size:14px; font-weight:bold;">${ev.title}</div>`;
               html += `<div style="color:#666; font-size:13px; margin-top:2px;">⏱ 課程時長: 50 分鐘</div>`;
               html += `</div>`;
           });
@@ -1832,4 +1835,4 @@
 </script>
 </body>
 </html>
-
+```
