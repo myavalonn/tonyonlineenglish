@@ -49,31 +49,53 @@
             opacity: 0;
         }
 
-        /* --- 課程介紹 (手機版點擊跳出視窗，電腦版並排) --- */
-        .course-container { display: flex; flex-direction: column; gap: 1.25rem; padding: 0 1rem; }
-        .course-item { border-radius: 1rem; overflow: hidden; background: white; box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1); border: 1px solid #f3f4f6; }
-        .course-header { cursor: pointer; user-select: none; position: relative; }
-        .course-card-content { display: none; } /* 手機版預設隱藏卡片內的詳細內容，依靠 Modal 顯示 */
+        /* --- 課程介紹背景與遮罩設定 --- */
+        .card-bg-cover { background-size: cover; background-position: center; position: relative; z-index: 1; }
+        .card-bg-1 { background-image: url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/IMG_8528.JPG?updatedAt=1776447267458'); }
+        .card-bg-2 { background-image: url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/IMG_8527.JPG?updatedAt=1776447267156'); }
+        .card-bg-3 { background-image: url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/IMG_8551.JPG?updatedAt=1776447263011'); }
+        .card-overlay { position: absolute; inset: 0; background: rgba(15, 23, 42, 0.85); z-index: -1; transition: background 0.3s ease; }
+        .course-item:hover .card-overlay { background: rgba(15, 23, 42, 0.75); } /* 電腦版 Hover 稍微調亮 */
 
-        @media (min-width: 768px) {
-            .course-container { flex-direction: row; justify-content: center; padding: 1rem 2rem; }
-            .course-item { flex: 1; max-width: 380px; display: flex; flex-direction: column; }
+        /* --- 課程介紹 (1024px 以下手機/平板版由上往下疊加，大螢幕並排) --- */
+        .course-item { 
+            border-radius: 1rem; overflow: hidden; 
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3); 
+        }
+        .course-header { cursor: pointer; user-select: none; position: relative; z-index: 10; }
+
+        @media (min-width: 1024px) {
+            .course-container { display: flex; flex-direction: row; justify-content: center; padding: 1rem 2rem; gap: 1.25rem; }
+            .course-item { flex: 1; max-width: 380px; display: flex; flex-direction: column; opacity: 0; transform: translateX(-50px); }
+            /* 電腦版由左至右滑入動畫 */
+            .course-item.show { animation: slideInLeft 0.8s cubic-bezier(0.4, 0, 0.2, 1) forwards; }
             .course-header { cursor: default; }
             .course-header .mobile-click-icon { display: none; } /* 電腦版隱藏點擊提示圖示 */
-            .course-card-content { display: flex; flex-direction: column; flex: 1; } /* 電腦版顯示卡片內容 */
+            .course-card-content { display: flex; flex-direction: column; flex: 1; position: relative; z-index: 10; } /* 電腦版顯示內容 */
             .swipe-hint-click { display: none; }
         }
 
-        /* --- 手機版專用：課程介紹彈跳視窗 (Modal) --- */
+        @media (max-width: 1023px) {
+            .course-container { display: flex; flex-direction: column; gap: 1.5rem; padding: 0 1.25rem; align-items: center; }
+            .course-item { width: 100%; max-width: 500px; display: flex; flex-direction: column; }
+            .course-card-content { display: none; } /* 手機版預設隱藏，靠 Modal 顯示 */
+        }
+
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-50px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+
+        /* --- 手機版專用：課程介紹彈跳視窗 (Modal) - 更新為深色質感 --- */
         #course-modal-overlay {
-            position: fixed; inset: 0; background-color: rgba(0, 0, 0, 0.7); z-index: 3000;
+            position: fixed; inset: 0; background-color: rgba(0, 0, 0, 0.8); z-index: 3000;
             display: flex; justify-content: center; align-items: center; padding: 1rem;
             opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
         }
         #course-modal-overlay.visible { opacity: 1; pointer-events: auto; }
         .course-modal-content {
-            background: white; border-radius: 1rem; width: 100%; max-width: 500px; max-height: 90vh;
-            display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+            background: #1e293b; color: #f8fafc; border-radius: 1rem; width: 100%; max-width: 500px; max-height: 90vh;
+            display: flex; flex-direction: column; overflow: hidden; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
             transform: translateY(20px) scale(0.95); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
         #course-modal-overlay.visible .course-modal-content { transform: translateY(0) scale(1); }
@@ -81,10 +103,10 @@
         
         .modal-close-btn {
             position: absolute; top: 1rem; right: 1rem; width: 36px; height: 36px;
-            background: rgba(255,255,255,0.25); border-radius: 50%; display: flex; justify-content: center; align-items: center;
-            color: white; cursor: pointer; transition: background 0.2s; z-index: 10; font-size: 1.25rem;
+            background: rgba(255,255,255,0.15); border-radius: 50%; display: flex; justify-content: center; align-items: center;
+            color: white; cursor: pointer; transition: background 0.2s; z-index: 20; font-size: 1.25rem;
         }
-        .modal-close-btn:hover { background: rgba(255,255,255,0.5); }
+        .modal-close-btn:hover { background: rgba(255,255,255,0.3); }
 
         /* --- 學生回饋 (絲滑滑動與指標) --- */
         @media (min-width: 768px) {
@@ -97,7 +119,7 @@
             .swipe-container-feedback {
                 display: flex; overflow-x: auto; scroll-snap-type: x mandatory;
                 gap: 1rem; padding: 1rem 5vw; scroll-behavior: smooth;
-                -webkit-overflow-scrolling: touch; /* iOS 絲滑滾動支援 */
+                -webkit-overflow-scrolling: touch;
             }
             .swipe-item-feedback { flex: 0 0 85vw; scroll-snap-align: center; }
             .feedback-indicators { display: flex; justify-content: center; gap: 8px; margin-top: 1rem; }
@@ -105,70 +127,50 @@
             .indicator-dot.active { background-color: #3b82f6; transform: scale(1.3); width: 12px; border-radius: 4px;}
         }
 
-        /* =========================================
-           以下為 Code 2 購物車與卡片特效 CSS 
-           ========================================= */
+        /* 以下為 Code 2 購物車與卡片特效 CSS 保持原狀... (省略部分未更改之原始樣式) */
         :root {
           --primary-color: #3b414a;
           --accent-blue: #007bff;
           --line-green: #00B900;
           --color-neutral-900: oklch(0.185 0 0);
         }
-        
-        .product-grid {
-          max-width: 900px; margin: 0 auto 30px; display: flex; flex-wrap: nowrap; justify-content: center; gap: 40px; padding: 0 20px;
-        }
+        .product-grid { max-width: 900px; margin: 0 auto 30px; display: flex; flex-wrap: nowrap; justify-content: center; gap: 40px; padding: 0 20px; }
         @media (max-width: 768px) { .product-grid { gap: 15px; padding: 0 15px; flex-direction: row; } }
-
         .svg-container { position: absolute; width: 0; height: 0; pointer-events: none; }
-
-        .card-container {
-          flex: 1 1 50%; max-width: 400px; padding: 2px; border-radius: 1.5em; position: relative; display: flex; cursor: pointer; transition: transform 0.3s ease;
-          background: linear-gradient(-30deg, var(--gradient-color), transparent, var(--gradient-color)), linear-gradient(to bottom, var(--color-neutral-900), var(--color-neutral-900));
-        }
+        .card-container { flex: 1 1 50%; max-width: 400px; padding: 2px; border-radius: 1.5em; position: relative; display: flex; cursor: pointer; transition: transform 0.3s ease; background: linear-gradient(-30deg, var(--gradient-color), transparent, var(--gradient-color)), linear-gradient(to bottom, var(--color-neutral-900), var(--color-neutral-900)); }
         .card-container:hover { transform: translateY(-8px); }
-
         .card-container[↖️] { --f: url(#🌀↖️); --electric-border-color: #dd8448; --electric-light-color: oklch(from var(--electric-border-color) l c h); --gradient-color: oklch(from var(--electric-border-color) 0.3 calc(c / 2) h / 0.4); }
         .card-container[🎨] { --f: url(#🌀🎨); --electric-border-color: DodgerBlue; --electric-light-color: oklch(from var(--electric-border-color) l c h); --gradient-color: oklch(from var(--electric-border-color) 0.3 calc(c / 2) h / 0.4); }
-
         .inner-container { position: absolute; top: 0; left: 0; right: 0; bottom: 0; overflow: hidden; border-radius: 1.5em; z-index: 0; }
         .border-outer { position: absolute; top: 0; left: 0; right: 0; bottom: 0; border: 2px solid oklch(from var(--electric-border-color) l c h / 0.5); border-radius: 1.5em; }
         .main-card { position: absolute; top: 0; left: 0; right: 0; bottom: 0; border-radius: 1.5em; border: 2px solid var(--electric-border-color); transform: translate(-4px, -4px); filter: var(--f); }
-
         @media (min-width: 769px) and (max-width: 1024px) { .main-card { filter: none !important; } }
-
         .glow-layer-1, .glow-layer-2, .overlay-1, .overlay-2, .background-glow { position: absolute; width: 100%; height: 100%; top: 0; left: 0; border-radius: 24px; pointer-events: none; }
         .glow-layer-1 { border: 2px solid oklch(from var(--electric-border-color) l c h / 0.6); filter: blur(1px); }
         .glow-layer-2 { border: 2px solid var(--electric-light-color); filter: blur(4px); }
         .overlay-1 { opacity: 1; mix-blend-mode: overlay; transform: scale(1.1); filter: blur(16px); background: linear-gradient(-30deg, white, transparent 30%, transparent 70%, white); z-index: 1; }
         .overlay-2 { opacity: 0.5; mix-blend-mode: overlay; transform: scale(1.1); filter: blur(16px); background: linear-gradient(-30deg, white, transparent 30%, transparent 70%, white); z-index: 1;}
         .background-glow { filter: blur(32px); transform: scale(1.1); opacity: 0.3; z-index: -1; background: linear-gradient(-30deg, var(--electric-light-color), transparent, var(--electric-border-color)); }
-
         .cart-icon { position: absolute; top: 25px; right: 25px; width: 50px; height: auto; z-index: 10; filter: drop-shadow(0 4px 10px rgba(0,0,0,0.4)); transition: transform 0.3s; }
         .card-container:hover .cart-icon { transform: scale(1.15) rotate(-5deg); }
         @media (max-width: 768px) { .cart-icon { top: 12px; right: 12px; width: 34px; } }
-
         .content-container { position: relative; z-index: 2; width: 100%; height: auto; display: flex; flex-direction: column; }
         .content-top { display: flex; flex-direction: column; padding: 35px 35px 20px 35px; }
         .content-bottom { display: flex; flex-direction: column; padding: 20px 35px 35px 35px; }
         @media (max-width: 768px) { .content-top { padding: 15px 12px 10px 12px; } .content-bottom { padding: 10px 12px 15px 12px; } }
-
         .scrollbar-glass { background: radial-gradient(47.2% 50% at 50.39% 88.37%, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 100%), rgba(255, 255, 255, 0.04); position: relative; border-radius: 10px; width: fit-content; padding: 0.8em 1.5em; text-transform: uppercase; font-weight: bold; font-size: 1.1rem; color: rgba(255, 255, 255, 0.95); }
         @media (max-width: 768px) { .scrollbar-glass { font-size: 0.65em; padding: 0.4em 0.6em; } }
-
         .card-title-shop { font-size: 3.2em; font-weight: 700; margin-top: 25px; margin-bottom: 12px; color: #ffffff; text-shadow: 0 4px 15px rgba(0,0,0,0.6); }
         .card-desc-shop { font-size: 1.15rem; color: rgba(255,255,255,0.85); line-height: 1.6; margin: 0; font-weight: 500;}
         .card-price-shop { font-size: 2.2em; font-weight: 600; color: #ffffff; margin: 0; text-shadow: 0 4px 15px rgba(0,0,0,0.6); }
         @media (max-width: 768px) { .card-title-shop { font-size: 1.6em; margin-top: 10px; margin-bottom: 5px;} .card-desc-shop { font-size: 0.75rem; line-height: 1.3; } .card-price-shop { font-size: 1.25em; } }
-
         .divider { margin: 0; border: none; height: 1px; background-color: #ffffff; opacity: 0.2; mask-image: linear-gradient(to right, transparent, black, transparent); -webkit-mask-image: linear-gradient(to right, transparent, black, transparent); }
 
-        /* Popup & Thank You Page CSS (From Code 2) */
         #email-popup-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: rgba(0, 0, 0, 0.7); z-index: 4000; display: none; justify-content: center; align-items: center; opacity: 0; transition: opacity 0.3s; }
         #email-popup-overlay.visible { display: flex; opacity: 1; }
-        .email-popup-content { background-color: white; padding: 40px; border-radius: 12px; max-width: 500px; width: 90%; text-align: center; transform: scale(0.9); transition: transform 0.3s; }
-        #email-popup-overlay.visible .email-popup-content { transform: scale(1); }
-        .email-popup-content input[type="email"] { width: 100%; padding: 15px; font-size: 18px; border: 1px solid #ccc; border-radius: 8px; margin-bottom: 20px; text-align: center;}
+        .email-popup-content-box { background-color: white; padding: 40px; border-radius: 12px; max-width: 500px; width: 90%; text-align: center; transform: scale(0.9); transition: transform 0.3s; color:#333; }
+        #email-popup-overlay.visible .email-popup-content-box { transform: scale(1); }
+        .email-popup-content-box input[type="email"] { width: 100%; padding: 15px; font-size: 18px; border: 1px solid #ccc; border-radius: 8px; margin-bottom: 20px; text-align: center;}
         #popup-checkout-btn { width: 100%; background-color: #3b414a; color: white; padding: 15px; font-size: 20px; font-weight: bold; border-radius: 8px; cursor: pointer; }
         .large-cancel-btn { font-size: 20px; color: #888; background: none; border: none; margin-top: 20px; text-decoration: underline; cursor: pointer; }
         .payment-info-section { margin-top: 25px; padding-top: 20px; border-top: 1px solid #eee; text-align: left; }
@@ -179,8 +181,8 @@
         #thank-you-page { display: none; padding: 40px 20px; background: #f8f9fa; min-height: 100vh;}
         .thank-you-container { max-width: 900px; margin: 0 auto; background: white; display: flex; flex-direction: column; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05);}
         @media (min-width: 768px) { .thank-you-container { flex-direction: row; } }
-        .ty-left-panel { padding: 40px; flex: 3; }
-        .ty-right-panel { padding: 40px; background: #f9f9f9; flex: 2; border-left: 1px solid #eee; }
+        .ty-left-panel { padding: 40px; flex: 3; color: #333;}
+        .ty-right-panel { padding: 40px; background: #f9f9f9; flex: 2; border-left: 1px solid #eee; color: #333;}
         .ty-checkmark { font-size: 48px; color: #27ae60; }
         .ty-detail-item { display: flex; justify-content: space-between; padding: 8px 0; font-size: 16px; }
         .cart-total { margin-top: 20px; padding-top: 20px; border-top: 2px solid #333; font-size: 22px; font-weight: bold; display: flex; justify-content: space-between;}
@@ -204,6 +206,7 @@
 
     <svg class="svg-container">
       <defs>
+        <!-- SVG特效定義保留 -->
         <filter id="🌀↖️" colorInterpolationFilters="sRGB" x="-20%" y="-20%" width="140%" height="140%">
           <feTurbulence type="turbulence" baseFrequency="0.02" numOctaves="10" result="noise1" seed="1" />
           <feOffset in="noise1" dx="0" dy="0" result="offsetNoise1"><animate attributeName="dy" values="700; 0" dur="6s" repeatCount="indefinite" calcMode="linear" /></feOffset>
@@ -232,16 +235,22 @@
 
     <main id="product-page" class="w-full overflow-x-hidden">
 
-        <!-- Hero Section -->
-        <header class="relative text-white py-24 md:py-32 px-4 text-center overflow-hidden">
+        <!-- Hero Section (針對手機板上移內容，並增加右上角 Logo) -->
+        <header class="relative text-white pt-20 pb-12 md:pt-32 md:pb-32 px-4 text-center overflow-hidden">
             <div class="absolute inset-0 z-0 hero-bg-layer"></div>
-            <div class="relative z-10 max-w-5xl mx-auto mt-4 flex flex-col items-center">
+            
+            <!-- GEPT 右上角 Logo -->
+            <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/GEPT_logo.svg.png.webp?updatedAt=1774590183732" 
+                 alt="GEPT Logo" 
+                 class="absolute top-4 right-4 md:top-6 md:right-8 w-20 md:w-32 z-20 object-contain drop-shadow-md">
+
+            <div class="relative z-10 max-w-5xl mx-auto flex flex-col items-center">
                 
                 <span class="bg-gray-900/60 backdrop-blur-sm text-white px-6 py-3 rounded-full text-xl sm:text-2xl md:text-3xl font-semibold mb-8 inline-block shadow-lg anim-slide-up border border-gray-500 tracking-wide">
                     全民英檢 GEPT 專業證照輔導
                 </span>
                 
-                <!-- Hero Section 按鈕：手機點擊開Modal，電腦點擊滑動 -->
+                <!-- Hero Section 按鈕 -->
                 <div class="flex justify-center gap-3 md:gap-5 mb-8 anim-slide-up delay-100">
                     <button onclick="handleCourseAction('elementary')" class="bg-rose-500 hover:bg-rose-600 text-white px-6 py-2.5 sm:px-8 sm:py-3 rounded-full text-xl sm:text-2xl font-bold shadow-xl transition transform hover:scale-105 border border-rose-400">
                         初級
@@ -273,7 +282,7 @@
             </div>
         </header>
 
-        <!-- GEPT 級數課程介紹 (手機版點擊標題開啟Modal，電腦版並排顯示) -->
+        <!-- GEPT 級數課程介紹 (結合深色背景圖片質感與連貫展開動畫) -->
         <section id="courses" class="py-16 md:py-24 bg-gray-100 scroll-mt-0">
             <div class="text-center mb-10 px-4">
                 <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-2">全民英檢各級數課程介紹</h2>
@@ -282,76 +291,79 @@
                 </p>
             </div>
 
-            <div class="course-container max-w-6xl mx-auto">
+            <div class="course-container max-w-7xl mx-auto">
                 
                 <!-- 初級 Card -->
-                <div id="card-elementary" class="course-item">
-                    <div class="course-header bg-rose-500 text-white p-6 flex justify-between items-center" onclick="handleCourseAction('elementary')">
+                <div id="card-elementary" class="course-item card-bg-cover card-bg-1">
+                    <div class="card-overlay"></div>
+                    <div class="course-header text-white p-6 flex justify-between items-center" onclick="handleCourseAction('elementary')">
                         <div class="text-left">
-                            <h3 class="text-2xl md:text-3xl font-bold">初級 GEPT</h3>
-                            <p class="text-rose-100 text-base md:text-lg mt-1">Elementary – 基礎溝通能力</p>
+                            <h3 class="text-2xl md:text-3xl font-bold text-rose-400">初級 GEPT</h3>
+                            <p class="text-gray-300 text-base md:text-lg mt-1">Elementary – 基礎溝通能力</p>
                         </div>
-                        <i class="fas fa-search-plus text-xl mobile-click-icon"></i>
+                        <i class="fas fa-search-plus text-xl mobile-click-icon text-white"></i>
                     </div>
-                    <!-- 以下為內容區：手機板隱藏(作為資料來源)，電腦板顯示 -->
-                    <div class="course-card-content p-6 text-lg text-gray-700 bg-white" data-color="rose">
-                        <p class="mb-5 bg-rose-50 p-3 rounded-lg text-rose-800 font-medium leading-relaxed">📌 目的定位：透過日常生活語境的聽說讀寫任務，建立基礎英語能力。</p>
+                    <!-- 內容區 -->
+                    <div class="course-card-content p-6 text-lg text-gray-200">
+                        <p class="mb-5 bg-white/10 border-l-4 border-rose-500 p-3 rounded-r-lg text-white font-medium leading-relaxed">📌 目的定位：透過日常生活語境的聽說讀寫任務，建立基礎英語能力。</p>
                         <ul class="space-y-4 mb-5">
-                            <li><strong><i class="fas fa-headphones text-rose-500 w-6"></i>聽力：</strong>圖片描述與簡短對話。<span class="text-base text-gray-500 block sm:inline sm:ml-1">重點：聽懂簡單問句與生活語境。</span></li>
-                            <li><strong><i class="fas fa-book-open text-rose-500 w-6"></i>閱讀：</strong>句子填空與短文理解。<span class="text-base text-gray-500 block sm:inline sm:ml-1">重點：簡短理解與字彙抓取。</span></li>
-                            <li><strong><i class="fas fa-comment-dots text-rose-500 w-6"></i>口說：</strong>重覆朗讀與簡單問答。<span class="text-base text-gray-500 block sm:inline sm:ml-1">重點：發音清晰與簡單回應。</span></li>
-                            <li><strong><i class="fas fa-pen text-rose-500 w-6"></i>寫作：</strong>句子寫作與短段落。<span class="text-base text-gray-500 block sm:inline sm:ml-1">重點：用簡單句正確表達意思。</span></li>
+                            <li><strong><i class="fas fa-headphones text-rose-400 w-6"></i>聽力：</strong>圖片描述與簡短對話。</li>
+                            <li><strong><i class="fas fa-book-open text-rose-400 w-6"></i>閱讀：</strong>句子填空與短文理解。</li>
+                            <li><strong><i class="fas fa-comment-dots text-rose-400 w-6"></i>口說：</strong>重覆朗讀與簡單問答。</li>
+                            <li><strong><i class="fas fa-pen text-rose-400 w-6"></i>寫作：</strong>句子合併，改寫，看圖寫作。</li>
                         </ul>
-                        <div class="border-t pt-5 mt-auto">
-                            <strong class="text-rose-600 block mb-2 text-xl">💡 準備策略：</strong>
-                            從零開始建立必備詞彙與句型，練習生活短篇故事，並模擬基本自我介紹，打穩英語基礎。
+                        <div class="border-t border-gray-600 pt-5 mt-auto">
+                            <strong class="text-rose-400 block mb-2 text-xl">💡 準備策略：</strong>
+                            從零開始建立必備詞彙與句型，練習生活短篇故事，並模擬基本英文自我介紹，打穩英語基礎。
                         </div>
                     </div>
                 </div>
 
                 <!-- 中級 Card -->
-                <div id="card-intermediate" class="course-item">
-                    <div class="course-header bg-blue-600 text-white p-6 flex justify-between items-center" onclick="handleCourseAction('intermediate')">
+                <div id="card-intermediate" class="course-item card-bg-cover card-bg-2">
+                    <div class="card-overlay"></div>
+                    <div class="course-header text-white p-6 flex justify-between items-center" onclick="handleCourseAction('intermediate')">
                         <div class="text-left">
-                            <h3 class="text-2xl md:text-3xl font-bold">中級 GEPT</h3>
-                            <p class="text-blue-100 text-base md:text-lg mt-1">Intermediate – 日常溝通表達</p>
+                            <h3 class="text-2xl md:text-3xl font-bold text-blue-400">中級 GEPT</h3>
+                            <p class="text-gray-300 text-base md:text-lg mt-1">Intermediate – 日常溝通表達</p>
                         </div>
-                        <i class="fas fa-search-plus text-xl mobile-click-icon"></i>
+                        <i class="fas fa-search-plus text-xl mobile-click-icon text-white"></i>
                     </div>
-                    <div class="course-card-content p-6 text-lg text-gray-700 bg-white" data-color="blue">
-                        <p class="mb-5 bg-blue-50 p-3 rounded-lg text-blue-800 font-medium leading-relaxed">📌 目的定位：提升日常情境應對能力，可用英文進行基本溝通交流。</p>
+                    <div class="course-card-content p-6 text-lg text-gray-200">
+                        <p class="mb-5 bg-white/10 border-l-4 border-blue-500 p-3 rounded-r-lg text-white font-medium leading-relaxed">📌 目的定位：提升日常情境應對能力，可用英文進行基本溝通交流。</p>
                         <ul class="space-y-4 mb-5">
-                            <li><strong><i class="fas fa-headphones text-blue-500 w-6"></i>聽力：</strong>一般對話與廣播公告。<span class="text-base text-gray-500 block sm:inline sm:ml-1">重點：抓取主旨與重點資訊。</span></li>
-                            <li><strong><i class="fas fa-book-open text-blue-500 w-6"></i>閱讀：</strong>片語運用與多篇閱讀。<span class="text-base text-gray-500 block sm:inline sm:ml-1">重點：理解短篇文章與生活主題。</span></li>
-                            <li><strong><i class="fas fa-comment-dots text-blue-500 w-6"></i>口說：</strong>問答練習與經驗描述。<span class="text-base text-gray-500 block sm:inline sm:ml-1">重點：清楚表達觀點及經歷。</span></li>
-                            <li><strong><i class="fas fa-pen text-blue-500 w-6"></i>寫作：</strong>生活經驗與短文描述。<span class="text-base text-gray-500 block sm:inline sm:ml-1">重點：簡潔有邏輯地表達想法。</span></li>
+                            <li><strong><i class="fas fa-headphones text-blue-400 w-6"></i>聽力：</strong>一般對話與廣播公告。</li>
+                            <li><strong><i class="fas fa-book-open text-blue-400 w-6"></i>閱讀：</strong>片語運用與多篇閱讀。</li>
+                            <li><strong><i class="fas fa-comment-dots text-blue-400 w-6"></i>口說：</strong>問答練習與經驗描述。</li>
+                            <li><strong><i class="fas fa-pen text-blue-400 w-6"></i>寫作：</strong>生活經驗與短文描述。</li>
                         </ul>
-                        <div class="border-t pt-5 mt-auto">
-                            <strong class="text-blue-600 block mb-2 text-xl">💡 準備策略：</strong>
+                        <div class="border-t border-gray-600 pt-5 mt-auto">
+                            <strong class="text-blue-400 block mb-2 text-xl">💡 準備策略：</strong>
                             擴大閱讀題材、建立主題性口說練習，搭配多樣片語與正確句型，穩健提升分數。
                         </div>
                     </div>
                 </div>
 
                 <!-- 中高級 Card -->
-                <div id="card-high-int" class="course-item">
-                    <div class="course-header bg-indigo-700 text-white p-6 flex justify-between items-center" onclick="handleCourseAction('high-int')">
+                <div id="card-high-int" class="course-item card-bg-cover card-bg-3">
+                    <div class="card-overlay"></div>
+                    <div class="course-header text-white p-6 flex justify-between items-center" onclick="handleCourseAction('high-int')">
                         <div class="text-left">
-                            <h3 class="text-2xl md:text-3xl font-bold">中高級 GEPT</h3>
-                            <p class="text-indigo-100 text-base md:text-lg mt-1">High-Int. – 有效溝通與分析</p>
+                            <h3 class="text-2xl md:text-3xl font-bold text-indigo-400">中高級 GEPT</h3>
+                            <p class="text-gray-300 text-base md:text-lg mt-1">High-Int. – 有效溝通與分析</p>
                         </div>
-                        <i class="fas fa-search-plus text-xl mobile-click-icon"></i>
+                        <i class="fas fa-search-plus text-xl mobile-click-icon text-white"></i>
                     </div>
-                    <div class="course-card-content p-6 text-lg text-gray-700 bg-white" data-color="indigo">
-                        <p class="mb-5 bg-indigo-50 p-3 rounded-lg text-indigo-800 font-medium leading-relaxed">📌 目的定位：具備廣泛話題理解能力，可處理社交、職場及日常議題。</p>
+                    <div class="course-card-content p-6 text-lg text-gray-200">
+                        <p class="mb-5 bg-white/10 border-l-4 border-indigo-400 p-3 rounded-r-lg text-white font-medium leading-relaxed">📌 目的定位：具備廣泛話題理解能力，可處理社交、職場及日常議題。</p>
                         <ul class="space-y-4 mb-5">
-                            <li><strong><i class="fas fa-headphones text-indigo-500 w-6"></i>聽力：</strong>複雜情境資訊與講座。<span class="text-base text-gray-500 block sm:inline sm:ml-1">重點：聽出主旨、細節及推論。</span></li>
-                            <li><strong><i class="fas fa-book-open text-indigo-500 w-6"></i>閱讀：</strong>多篇長篇閱讀理解。<span class="text-base text-gray-500 block sm:inline sm:ml-1">重點：分析文章結構與推論內容。</span></li>
-                            <li><strong><i class="fas fa-comment-dots text-indigo-500 w-6"></i>口說：</strong>看圖描述與深度討論。<span class="text-base text-gray-500 block sm:inline sm:ml-1">重點：自信有條理地表達意見。</span></li>
-                            <li><strong><i class="fas fa-pen text-indigo-500 w-6"></i>寫作：</strong>中翻英與引導寫作。<span class="text-base text-gray-500 block sm:inline sm:ml-1">重點：寫有結構的段落並清楚達意。</span></li>
+                            <li><strong><i class="fas fa-headphones text-indigo-400 w-6"></i>聽力：</strong>複雜情境資訊與講座。</li>
+                            <li><strong><i class="fas fa-book-open text-indigo-400 w-6"></i>閱讀：</strong>多篇長篇閱讀理解。</li>
+                            <li><strong><i class="fas fa-comment-dots text-indigo-400 w-6"></i>口說：</strong>看圖描述與深度討論。</li>
+                            <li><strong><i class="fas fa-pen text-indigo-400 w-6"></i>寫作：</strong>中翻英與引導寫作。</li>
                         </ul>
-                        <div class="border-t pt-5 mt-auto">
-                            <strong class="text-indigo-700 block mb-2 text-xl">💡 準備策略：</strong>
+                        <div class="border-t border-gray-600 pt-5 mt-auto">
+                            <strong class="text-indigo-400 block mb-2 text-xl">💡 準備策略：</strong>
                             聆聽真實語境(新聞/演講)、高階語彙句型練習，輔以口說主題討論與寫作邏輯架構。
                         </div>
                     </div>
@@ -360,16 +372,14 @@
             </div>
         </section>
 
-        <!-- 手機版課程介紹 Modal 容器 -->
+        <!-- 手機版課程介紹 Modal 容器 (改為深色背景) -->
         <div id="course-modal-overlay" onclick="closeCourseModal(event)">
             <div class="course-modal-content" onclick="event.stopPropagation()">
-                <!-- 標題區由 JS 動態填入 -->
-                <div id="course-modal-header" class="p-6 relative">
+                <div id="course-modal-header">
                     <button class="modal-close-btn" onclick="closeCourseModal()"><i class="fas fa-times"></i></button>
                     <div id="course-modal-title-area" class="pr-8"></div>
                 </div>
-                <!-- 內容區由 JS 動態填入 -->
-                <div id="course-modal-body" class="course-modal-body p-6 text-gray-700 text-lg"></div>
+                <div id="course-modal-body" class="course-modal-body p-6 text-lg"></div>
             </div>
         </div>
 
@@ -397,7 +407,7 @@
             </div>
         </section>
 
-        <!-- 學生真實回饋 (升級滑動與指標) -->
+        <!-- 學生真實回饋 -->
         <section class="py-16 md:py-24 bg-gray-50 overflow-hidden">
             <div class="text-center mb-10 px-4">
                 <h2 class="text-3xl md:text-4xl font-bold text-gray-800 mb-2">學員真實評價與回饋</h2>
@@ -406,7 +416,6 @@
             <!-- 卡片滑動區 -->
             <div id="feedback-slider" class="swipe-container-feedback max-w-7xl mx-auto" onscroll="updateFeedbackIndicators()">
                 
-                <!-- 初級 Feedback 1 (Rose) -->
                 <div class="swipe-item-feedback bg-white border-2 border-rose-100 p-8 rounded-2xl shadow-lg relative mt-4">
                     <span class="absolute -top-4 left-6 bg-rose-500 text-white text-base px-4 py-1.5 rounded-full font-bold shadow-md">初級通過</span>
                     <div class="flex text-amber-400 mb-4 mt-2 text-xl md:text-2xl"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
@@ -414,7 +423,6 @@
                     <div class="text-right text-lg md:text-xl font-bold text-gray-500">— Alice</div>
                 </div>
                 
-                <!-- 初級 Feedback 2 (Rose) -->
                 <div class="swipe-item-feedback bg-white border-2 border-rose-100 p-8 rounded-2xl shadow-lg relative mt-4">
                     <span class="absolute -top-4 left-6 bg-rose-500 text-white text-base px-4 py-1.5 rounded-full font-bold shadow-md">初級通過</span>
                     <div class="flex text-amber-400 mb-4 mt-2 text-xl md:text-2xl"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
@@ -422,7 +430,6 @@
                     <div class="text-right text-lg md:text-xl font-bold text-gray-500">— Brian</div>
                 </div>
 
-                <!-- 中級 Feedback (Blue) -->
                 <div class="swipe-item-feedback bg-white border-2 border-blue-100 p-8 rounded-2xl shadow-lg relative mt-4">
                     <span class="absolute -top-4 left-6 bg-blue-600 text-white text-base px-4 py-1.5 rounded-full font-bold shadow-md">中級高分</span>
                     <div class="flex text-amber-400 mb-4 mt-2 text-xl md:text-2xl"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
@@ -430,7 +437,6 @@
                     <div class="text-right text-lg md:text-xl font-bold text-gray-500">— Daniel</div>
                 </div>
 
-                <!-- 新增：中高級 Feedback 1 (Indigo) - 強調寫作卡關 -->
                 <div class="swipe-item-feedback bg-white border-2 border-indigo-100 p-8 rounded-2xl shadow-lg relative mt-4">
                     <span class="absolute -top-4 left-6 bg-indigo-700 text-white text-base px-4 py-1.5 rounded-full font-bold shadow-md">中高級達標</span>
                     <div class="flex text-amber-400 mb-4 mt-2 text-xl md:text-2xl"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
@@ -438,7 +444,6 @@
                     <div class="text-right text-lg md:text-xl font-bold text-gray-500">— Kevin</div>
                 </div>
 
-                <!-- 中高級 Feedback 2 (Indigo) -->
                 <div class="swipe-item-feedback bg-white border-2 border-indigo-100 p-8 rounded-2xl shadow-lg relative mt-4">
                     <span class="absolute -top-4 left-6 bg-indigo-700 text-white text-base px-4 py-1.5 rounded-full font-bold shadow-md">中高級達標</span>
                     <div class="flex text-amber-400 mb-4 mt-2 text-xl md:text-2xl"><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i><i class="fas fa-star"></i></div>
@@ -447,20 +452,14 @@
                 </div>
 
             </div>
-
-            <!-- 手機版專用：滑動指標 (Dots) -->
-            <div id="feedback-dots" class="feedback-indicators">
-                <!-- 由 JavaScript 動態生成 5 個點 -->
-            </div>
+            <div id="feedback-dots" class="feedback-indicators"></div>
         </section>
 
-        <!-- Footer / Code 2 購物車區塊 -->
+        <!-- 購物車區塊 -->
         <footer id="checkout-section" class="bg-gray-900 text-center py-16 px-4">
             <h2 class="text-3xl md:text-4xl font-bold text-white mb-10">準備好迎戰全民英檢了嗎？</h2>
             
-            <!-- Code 2 閃電購物車元件 -->
             <section class="product-grid">
-              <!-- 卡片 1: 25 分鐘 -->
               <div ↖️ class="card-container" onclick="directCheckout('trial-25')">
                 <div class="inner-container">
                   <div class="border-outer"></div><div ↖️ class="main-card"></div>
@@ -482,7 +481,6 @@
                 </div>
               </div>
               
-              <!-- 卡片 2: 50 分鐘 -->
               <div 🎨 class="card-container" onclick="directCheckout('trial-50')">
                 <div class="inner-container">
                   <div class="border-outer"></div><div class="main-card"></div>
@@ -516,9 +514,9 @@
 
     </main>
 
-    <!-- Code 2: 結帳輸入 Email 彈窗 -->
+    <!-- 結帳輸入 Email 彈窗 -->
     <div id="email-popup-overlay">
-      <div class="email-popup-content">
+      <div class="email-popup-content-box">
         <div id="popup-inner-content">
           <h3 id="popup-product-title" style="color: var(--accent-blue); font-size: 22px; margin-bottom:15px; font-weight:bold;"></h3>
           <h3 style="font-size: 20px; color: #333; margin-bottom: 15px;">請輸入您的電子信箱</h3>
@@ -539,7 +537,7 @@
       </div>
     </div>
 
-    <!-- Code 2: 感謝頁面與月曆 -->
+    <!-- 感謝頁面與月曆 -->
     <div id="thank-you-page">
       <div class="thank-you-container">
           <div class="ty-left-panel">
@@ -581,14 +579,33 @@
 
     <!-- JS 邏輯 -->
     <script>
-        // --- 1. 處理課程介紹邏輯 (手機開Modal，電腦捲動) ---
+        // --- 設定課程卡片滑入動畫 (電腦版) ---
+        document.addEventListener("DOMContentLoaded", () => {
+            if (window.innerWidth >= 1024) {
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.classList.add('show');
+                            observer.unobserve(entry.target);
+                        }
+                    });
+                }, { threshold: 0.15 });
+
+                document.querySelectorAll('.course-item').forEach((item, index) => {
+                    item.style.animationDelay = `${index * 0.2}s`; // 設定依序滑入的延遲時間
+                    observer.observe(item);
+                });
+            }
+        });
+
+        // --- 處理課程介紹邏輯 (手機開Modal，電腦捲動) ---
         function handleCourseAction(courseId) {
             const cardId = 'card-' + courseId;
             const cardEl = document.getElementById(cardId);
             if (!cardEl) return;
 
-            if (window.innerWidth < 768) {
-                // 手機版：開啟 Modal
+            if (window.innerWidth < 1024) {
+                // 手機/平板版：開啟 Modal
                 openCourseModal(cardEl);
             } else {
                 // 電腦版：平滑滾動到該卡片
@@ -604,44 +621,36 @@
             const titleArea = document.getElementById('course-modal-title-area');
             const bodyTarget = document.getElementById('course-modal-body');
             
-            // 抓取原本卡片的顏色設定
             const headerSource = cardElement.querySelector('.course-header');
             const contentSource = cardElement.querySelector('.course-card-content');
             
-            // 複製標題與內容
             titleArea.innerHTML = headerSource.innerHTML;
-            // 移除複製過來裡面的放大鏡 icon
             const icon = titleArea.querySelector('.mobile-click-icon');
             if(icon) icon.remove();
             
             bodyTarget.innerHTML = contentSource.innerHTML;
             
-            // 設定 Modal Header 的背景顏色
-            const bgClass = Array.from(headerSource.classList).find(c => c.startsWith('bg-'));
-            headerTarget.className = `p-6 relative rounded-t-2xl ${bgClass} text-white`;
+            // 賦予 Modal Header 深色背景質感
+            headerTarget.className = `p-6 relative rounded-t-2xl bg-slate-900 text-white border-b border-slate-700`;
             
-            // 顯示視窗
             overlay.classList.add('visible');
-            document.body.style.overflow = 'hidden'; // 防止背景滾動
+            document.body.style.overflow = 'hidden'; 
         }
 
         function closeCourseModal(event) {
-            // 如果有傳 event，確保是點擊 overlay 背景才關閉
             if (event && event.target !== document.getElementById('course-modal-overlay')) return;
-            
             document.getElementById('course-modal-overlay').classList.remove('visible');
-            document.body.style.overflow = ''; // 恢復背景滾動
+            document.body.style.overflow = ''; 
         }
 
-        // --- 2. 學生回饋滑動指標 (Dots) 初始化與更新邏輯 ---
+        // --- 學生回饋滑動指標 (Dots) ---
         function initFeedbackIndicators() {
-            if (window.innerWidth >= 768) return; // 電腦版不需要
-            
+            if (window.innerWidth >= 768) return;
             const slider = document.getElementById('feedback-slider');
             const dotsContainer = document.getElementById('feedback-dots');
             const itemsCount = slider.querySelectorAll('.swipe-item-feedback').length;
             
-            dotsContainer.innerHTML = ''; // 清空
+            dotsContainer.innerHTML = ''; 
             for (let i = 0; i < itemsCount; i++) {
                 const dot = document.createElement('div');
                 dot.className = 'indicator-dot' + (i === 0 ? ' active' : '');
@@ -651,32 +660,26 @@
 
         function updateFeedbackIndicators() {
             if (window.innerWidth >= 768) return;
-            
             const slider = document.getElementById('feedback-slider');
             const dots = document.querySelectorAll('#feedback-dots .indicator-dot');
             if (dots.length === 0) return;
 
-            // 計算目前滑動到第幾個元素
             const scrollLeft = slider.scrollLeft;
             const itemWidth = slider.querySelector('.swipe-item-feedback').offsetWidth;
-            const gap = 16; // 約 1rem gap
+            const gap = 16; 
             const currentIndex = Math.round(scrollLeft / (itemWidth + gap));
 
             dots.forEach((dot, index) => {
-                if (index === currentIndex) {
-                    dot.classList.add('active');
-                } else {
-                    dot.classList.remove('active');
-                }
+                if (index === currentIndex) dot.classList.add('active');
+                else dot.classList.remove('active');
             });
         }
 
-        // 頁面載入與縮放時初始化指標
         window.addEventListener('DOMContentLoaded', initFeedbackIndicators);
         window.addEventListener('resize', initFeedbackIndicators);
 
 
-        // --- 3. Code 2 購物車與預約邏輯 ---
+        // --- 購物車與預約邏輯 ---
         const products =[
           { id: 'trial-25', name: '體驗課程 25 分鐘', price: 350, gasUrl: 'https://script.google.com/macros/s/AKfycbyZMqL135r1VvRL7pdW6EB6nmeLja-MhQt95ri5xa9j9Z810WfMb7_Vm156MPFn8t5Q/exec' },
           { id: 'trial-50', name: '體驗課程 50 分鐘', price: 550, gasUrl: 'https://script.google.com/macros/s/AKfycbyWvhW6fp_ohPEvPK226KtNiQLCyAVMl77zV0Hq0k_TcEk3F1ni9qVcJystGUovVjTMGQ/exec' }
