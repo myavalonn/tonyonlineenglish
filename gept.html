@@ -60,11 +60,11 @@
             cursor: pointer; position: relative;
         }
 
-        /* 電腦版 (>1024px) - 滑鼠移入提示與精準過場 */
+        /* 電腦版 (>1024px) - 滑鼠移入提示與精準過場 (高度調為 680px 容納 1.5 倍文字) */
         @media (min-width: 1024px) {
             .course-container { display: flex; flex-direction: row; justify-content: center; padding: 1rem 2rem; gap: 2rem; max-width: 1600px; margin: 0 auto; position: relative; }
             .course-item { 
-                flex: 1; max-width: 500px; display: flex; flex-direction: column; min-height: 550px; 
+                flex: 1; max-width: 500px; display: flex; flex-direction: column; min-height: 680px; 
                 opacity: 0; transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.4s ease;
             }
             .course-item.show {
@@ -86,7 +86,7 @@
             .mobile-detail-btn { display: flex; justify-content: flex-end; align-items: center; margin-top: 1rem; }
         }
 
-        /* --- 全裝置：課程介紹彈跳視窗 (放大 2 倍的 Modal 容器) --- */
+        /* --- 全裝置：課程介紹彈跳視窗 (配合 1.5 倍字體，將 Modal 字體比例再放大) --- */
         #course-modal-overlay {
             position: fixed; inset: 0; background-color: rgba(0, 0, 0, 0.85); z-index: 5000;
             display: flex; justify-content: center; align-items: center; padding: 1rem;
@@ -100,7 +100,6 @@
             transform: translateY(20px) scale(0.95); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
             position: relative;
         }
-        /* 設定寬度為兩倍大 (1000px)，達成兩倍縮放的效果 */
         @media (min-width: 1024px) { .course-modal-content { max-width: 1000px; } }
         @media (max-width: 1023px) { .course-modal-content { max-width: 800px; } }
 
@@ -119,17 +118,17 @@
         }
         .modal-close-btn:hover { background: rgba(220, 38, 38, 0.9); transform: scale(1.1); }
 
-        /* Modal 專用文字兩倍縮放 */
+        /* Modal 專用文字縮放 (為配合卡片 1.5倍 縮放，這裡同步調升比例) */
         @media (min-width: 768px) {
-            .modal-scale-text h3 { font-size: 4rem !important; line-height: 1.1 !important; }
-            .modal-scale-text .subtitle-text { font-size: 1.8rem !important; }
-            .modal-scale-text .purpose-text { font-size: 1.8rem !important; line-height: 1.6 !important; padding: 1.5rem !important; }
-            .modal-scale-text .skills-grid { font-size: 1.8rem !important; gap: 1.5rem 2.5rem !important; margin: 2rem 0 !important; }
-            .modal-scale-text .skills-grid i { font-size: 2rem !important; width: 3rem !important; height: 3rem !important; }
-            .modal-scale-text .strategy-title { font-size: 2.2rem !important; margin-bottom: 1rem !important; }
-            .modal-scale-text .strategy-text { font-size: 1.6rem !important; line-height: 1.6 !important; }
-            .modal-scale-text .logo-img { width: 7rem !important; }
-            .modal-scale-text .logo-text { font-size: 1rem !important; }
+            .modal-scale-text h3 { font-size: 5.5rem !important; line-height: 1.1 !important; }
+            .modal-scale-text .subtitle-text { font-size: 2.5rem !important; }
+            .modal-scale-text .purpose-text { font-size: 2rem !important; line-height: 1.6 !important; padding: 1.5rem !important; }
+            .modal-scale-text .skills-grid { font-size: 2.2rem !important; gap: 1.5rem 2.5rem !important; margin: 2rem 0 !important; }
+            .modal-scale-text .skills-grid i { font-size: 2.5rem !important; width: 4rem !important; height: 3rem !important; }
+            .modal-scale-text .strategy-title { font-size: 2.5rem !important; margin-bottom: 1rem !important; }
+            .modal-scale-text .strategy-text { font-size: 2.2rem !important; line-height: 1.6 !important; }
+            .modal-scale-text .logo-img { width: 9rem !important; }
+            .modal-scale-text .logo-text { font-size: 1.5rem !important; }
         }
 
         /* 以下為原有區塊 CSS 保留 */
@@ -316,7 +315,7 @@
                 <h2 class="text-3xl md:text-[2.5rem] lg:text-4xl font-bold text-gray-800 mb-2">全民英檢各級數課程介紹</h2>
             </div>
 
-            <!-- 電腦版並排 -->
+            <!-- 電腦版並排 (已更新為 1.5倍 大小之設計) -->
             <div class="course-container max-w-[1600px] mx-auto">
                 
                 <!-- 初級 Card -->
@@ -325,7 +324,6 @@
                     <div class="absolute inset-0 bg-cover bg-center card-bg-layer card-bg-1 transition-transform duration-700 group-hover:scale-105 z-0"></div>
                     <div class="absolute inset-0 bg-slate-900/60 transition-colors duration-300 group-hover:bg-slate-900/50 z-0"></div>
                     
-                    <!-- 電腦版專屬：滑鼠移入時的「點擊放大」提示層 -->
                     <div class="absolute inset-0 z-20 hidden lg:flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 pointer-events-none bg-slate-900/40">
                         <div class="bg-slate-900/90 text-white font-bold py-3 px-8 rounded-full backdrop-blur-sm transform translate-y-4 group-hover:translate-y-0 transition-all duration-400 border border-white/30 text-xl shadow-2xl tracking-wide flex items-center">
                             <i class="fas fa-search-plus mr-3 text-2xl text-rose-400"></i> 點擊放大查看詳細介紹
@@ -336,27 +334,28 @@
                         
                         <div class="flex justify-between items-start border-b border-white/20 pb-5 mb-5">
                             <div class="text-left pr-4">
-                                <h3 class="text-[36px] md:text-[48px] lg:text-[40px] font-bold text-rose-400 leading-none drop-shadow-md">初級 GEPT</h3>
-                                <p class="text-gray-200 text-base md:text-[1.4rem] lg:text-xl mt-3 drop-shadow subtitle-text">Elementary – 基礎溝通能力</p>
+                                <h3 class="text-[36px] md:text-[48px] lg:text-[60px] font-bold text-rose-400 leading-none drop-shadow-md">初級 GEPT</h3>
+                                <p class="text-gray-200 text-base md:text-[1.4rem] lg:text-[30px] mt-3 drop-shadow subtitle-text">Elementary – 基礎溝通能力</p>
                             </div>
                             <div class="flex flex-col items-center justify-center shrink-0">
-                                <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/GEPT_logo.svg.png.webp?updatedAt=1774590183732" alt="GEPT Logo" class="w-14 md:w-20 lg:w-20 object-contain drop-shadow-md logo-img">
-                                <span class="text-white font-bold text-[11px] md:text-[14px] lg:text-[12px] tracking-widest mt-1 drop-shadow-md whitespace-nowrap logo-text">全民英檢</span>
+                                <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/GEPT_logo.svg.png.webp?updatedAt=1774590183732" alt="GEPT Logo" class="w-14 md:w-20 lg:w-[120px] object-contain drop-shadow-md logo-img">
+                                <span class="text-white font-bold text-[11px] md:text-[14px] lg:text-[18px] tracking-widest mt-1 drop-shadow-md whitespace-nowrap logo-text">全民英檢</span>
                             </div>
                         </div>
 
-                        <p class="mb-5 bg-white/10 border-l-4 border-rose-500 p-4 rounded-r-lg font-medium drop-shadow purpose-text">📌 目的定位：透過日常生活語境的聽說讀寫任務，建立基礎英語能力。</p>
+                        <!-- 這裡已加上 md:text-[1.5rem] 讓平板版跟下方標題一樣大，電腦版放大至 lg:text-[24px] -->
+                        <p class="mb-5 bg-white/10 border-l-4 border-rose-500 p-4 rounded-r-lg font-medium drop-shadow purpose-text text-base md:text-[1.5rem] lg:text-[24px]">📌 目的定位：透過日常生活語境的聽說讀寫任務，建立基礎英語能力。</p>
                         
-                        <ul class="skills-grid grid grid-cols-2 gap-x-2 gap-y-4 mb-5 drop-shadow text-lg md:text-[1.5rem] lg:text-lg">
-                            <li class="flex items-start"><i class="fas fa-headphones text-rose-400 w-8 md:w-10 text-center shrink-0 mt-1"></i><span><strong>聽力：</strong>圖片描述與簡短對話。</span></li>
-                            <li class="flex items-start"><i class="fas fa-book-open text-rose-400 w-8 md:w-10 text-center shrink-0 mt-1"></i><span><strong>閱讀：</strong>句子填空與短文理解。</span></li>
-                            <li class="flex items-start"><i class="fas fa-comment-dots text-rose-400 w-8 md:w-10 text-center shrink-0 mt-1"></i><span><strong>口說：</strong>重覆朗讀與簡單問答。</span></li>
-                            <li class="flex items-start"><i class="fas fa-pen text-rose-400 w-8 md:w-10 text-center shrink-0 mt-1"></i><span><strong>寫作：</strong>句子合併，改寫，看圖寫作。</span></li>
+                        <ul class="skills-grid grid grid-cols-2 gap-x-2 gap-y-4 mb-5 drop-shadow text-lg md:text-[1.5rem] lg:text-[27px]">
+                            <li class="flex items-start"><i class="fas fa-headphones text-rose-400 w-8 md:w-10 lg:w-[60px] lg:text-[27px] text-center shrink-0 mt-1 lg:mt-2"></i><span><strong>聽力：</strong>圖片描述與簡短對話。</span></li>
+                            <li class="flex items-start"><i class="fas fa-book-open text-rose-400 w-8 md:w-10 lg:w-[60px] lg:text-[27px] text-center shrink-0 mt-1 lg:mt-2"></i><span><strong>閱讀：</strong>句子填空與短文理解。</span></li>
+                            <li class="flex items-start"><i class="fas fa-comment-dots text-rose-400 w-8 md:w-10 lg:w-[60px] lg:text-[27px] text-center shrink-0 mt-1 lg:mt-2"></i><span><strong>口說：</strong>重覆朗讀與簡單問答。</span></li>
+                            <li class="flex items-start"><i class="fas fa-pen text-rose-400 w-8 md:w-10 lg:w-[60px] lg:text-[27px] text-center shrink-0 mt-1 lg:mt-2"></i><span><strong>寫作：</strong>句子合併，改寫，看圖寫作。</span></li>
                         </ul>
 
                         <div class="prep-strategy border-t border-white/20 pt-5 mt-auto drop-shadow">
-                            <strong class="strategy-title text-rose-400 block mb-2 text-xl md:text-[1.8rem] lg:text-xl">💡 準備策略：</strong>
-                            <span class="strategy-text block text-lg md:text-[1.5rem] lg:text-lg">從零開始建立必備詞彙與句型，練習生活短篇故事，並模擬基本英文自我介紹，打穩英語基礎。</span>
+                            <strong class="strategy-title text-rose-400 block mb-2 text-xl md:text-[1.8rem] lg:text-[30px]">💡 準備策略：</strong>
+                            <span class="strategy-text block text-lg md:text-[1.5rem] lg:text-[27px]">從零開始建立必備詞彙與句型，練習生活短篇故事，並模擬基本英文自我介紹，打穩英語基礎。</span>
                         </div>
                         
                         <!-- 手機版專屬點擊按鈕 -->
@@ -381,27 +380,27 @@
                     <div class="relative z-10 p-6 md:p-8 lg:p-8 flex flex-col h-full card-content-wrapper text-gray-100">
                         <div class="flex justify-between items-start border-b border-white/20 pb-5 mb-5">
                             <div class="text-left pr-4">
-                                <h3 class="text-[36px] md:text-[48px] lg:text-[40px] font-bold text-blue-400 leading-none drop-shadow-md">中級 GEPT</h3>
-                                <p class="text-gray-200 text-base md:text-[1.4rem] lg:text-xl mt-3 drop-shadow subtitle-text">Intermediate – 日常溝通表達</p>
+                                <h3 class="text-[36px] md:text-[48px] lg:text-[60px] font-bold text-blue-400 leading-none drop-shadow-md">中級 GEPT</h3>
+                                <p class="text-gray-200 text-base md:text-[1.4rem] lg:text-[30px] mt-3 drop-shadow subtitle-text">Intermediate – 日常溝通表達</p>
                             </div>
                             <div class="flex flex-col items-center justify-center shrink-0">
-                                <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/GEPT_logo.svg.png.webp?updatedAt=1774590183732" alt="GEPT Logo" class="w-14 md:w-20 lg:w-20 object-contain drop-shadow-md logo-img">
-                                <span class="text-white font-bold text-[11px] md:text-[14px] lg:text-[12px] tracking-widest mt-1 drop-shadow-md whitespace-nowrap logo-text">全民英檢</span>
+                                <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/GEPT_logo.svg.png.webp?updatedAt=1774590183732" alt="GEPT Logo" class="w-14 md:w-20 lg:w-[120px] object-contain drop-shadow-md logo-img">
+                                <span class="text-white font-bold text-[11px] md:text-[14px] lg:text-[18px] tracking-widest mt-1 drop-shadow-md whitespace-nowrap logo-text">全民英檢</span>
                             </div>
                         </div>
 
-                        <p class="mb-5 bg-white/10 border-l-4 border-blue-500 p-4 rounded-r-lg font-medium drop-shadow purpose-text">📌 目的定位：提升日常情境應對能力，可用英文進行基本溝通交流。</p>
+                        <p class="mb-5 bg-white/10 border-l-4 border-blue-500 p-4 rounded-r-lg font-medium drop-shadow purpose-text text-base md:text-[1.5rem] lg:text-[24px]">📌 目的定位：提升日常情境應對能力，可用英文進行基本溝通交流。</p>
                         
-                        <ul class="skills-grid grid grid-cols-2 gap-x-2 gap-y-4 mb-5 drop-shadow text-lg md:text-[1.5rem] lg:text-lg">
-                            <li class="flex items-start"><i class="fas fa-headphones text-blue-400 w-8 md:w-10 text-center shrink-0 mt-1"></i><span><strong>聽力：</strong>一般對話與廣播公告。</span></li>
-                            <li class="flex items-start"><i class="fas fa-book-open text-blue-400 w-8 md:w-10 text-center shrink-0 mt-1"></i><span><strong>閱讀：</strong>片語運用與多篇閱讀。</span></li>
-                            <li class="flex items-start"><i class="fas fa-comment-dots text-blue-400 w-8 md:w-10 text-center shrink-0 mt-1"></i><span><strong>口說：</strong>問答練習與經驗描述。</span></li>
-                            <li class="flex items-start"><i class="fas fa-pen text-blue-400 w-8 md:w-10 text-center shrink-0 mt-1"></i><span><strong>寫作：</strong>生活經驗與短文描述。</span></li>
+                        <ul class="skills-grid grid grid-cols-2 gap-x-2 gap-y-4 mb-5 drop-shadow text-lg md:text-[1.5rem] lg:text-[27px]">
+                            <li class="flex items-start"><i class="fas fa-headphones text-blue-400 w-8 md:w-10 lg:w-[60px] lg:text-[27px] text-center shrink-0 mt-1 lg:mt-2"></i><span><strong>聽力：</strong>一般對話與廣播公告。</span></li>
+                            <li class="flex items-start"><i class="fas fa-book-open text-blue-400 w-8 md:w-10 lg:w-[60px] lg:text-[27px] text-center shrink-0 mt-1 lg:mt-2"></i><span><strong>閱讀：</strong>片語運用與多篇閱讀。</span></li>
+                            <li class="flex items-start"><i class="fas fa-comment-dots text-blue-400 w-8 md:w-10 lg:w-[60px] lg:text-[27px] text-center shrink-0 mt-1 lg:mt-2"></i><span><strong>口說：</strong>問答練習與經驗描述。</span></li>
+                            <li class="flex items-start"><i class="fas fa-pen text-blue-400 w-8 md:w-10 lg:w-[60px] lg:text-[27px] text-center shrink-0 mt-1 lg:mt-2"></i><span><strong>寫作：</strong>生活經驗與短文描述。</span></li>
                         </ul>
 
                         <div class="prep-strategy border-t border-white/20 pt-5 mt-auto drop-shadow">
-                            <strong class="strategy-title text-blue-400 block mb-2 text-xl md:text-[1.8rem] lg:text-xl">💡 準備策略：</strong>
-                            <span class="strategy-text block text-lg md:text-[1.5rem] lg:text-lg">擴大閱讀題材、建立主題性口說練習，搭配多樣片語與正確句型，穩健提升分數。</span>
+                            <strong class="strategy-title text-blue-400 block mb-2 text-xl md:text-[1.8rem] lg:text-[30px]">💡 準備策略：</strong>
+                            <span class="strategy-text block text-lg md:text-[1.5rem] lg:text-[27px]">擴大閱讀題材、建立主題性口說練習，搭配多樣片語與正確句型，穩健提升分數。</span>
                         </div>
                         
                         <div class="mobile-detail-btn text-blue-400 flex justify-end items-center mt-5">
@@ -425,27 +424,27 @@
                     <div class="relative z-10 p-6 md:p-8 lg:p-8 flex flex-col h-full card-content-wrapper text-gray-100">
                         <div class="flex justify-between items-start border-b border-white/20 pb-5 mb-5">
                             <div class="text-left pr-4">
-                                <h3 class="text-[36px] md:text-[48px] lg:text-[40px] font-bold text-indigo-400 leading-none drop-shadow-md">中高級 GEPT</h3>
-                                <p class="text-gray-200 text-base md:text-[1.4rem] lg:text-xl mt-3 drop-shadow subtitle-text">High-Int. – 有效溝通與分析</p>
+                                <h3 class="text-[36px] md:text-[48px] lg:text-[60px] font-bold text-indigo-400 leading-none drop-shadow-md">中高級 GEPT</h3>
+                                <p class="text-gray-200 text-base md:text-[1.4rem] lg:text-[30px] mt-3 drop-shadow subtitle-text">High-Int. – 有效溝通與分析</p>
                             </div>
                             <div class="flex flex-col items-center justify-center shrink-0">
-                                <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/GEPT_logo.svg.png.webp?updatedAt=1774590183732" alt="GEPT Logo" class="w-14 md:w-20 lg:w-20 object-contain drop-shadow-md logo-img">
-                                <span class="text-white font-bold text-[11px] md:text-[14px] lg:text-[12px] tracking-widest mt-1 drop-shadow-md whitespace-nowrap logo-text">全民英檢</span>
+                                <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/GEPT_logo.svg.png.webp?updatedAt=1774590183732" alt="GEPT Logo" class="w-14 md:w-20 lg:w-[120px] object-contain drop-shadow-md logo-img">
+                                <span class="text-white font-bold text-[11px] md:text-[14px] lg:text-[18px] tracking-widest mt-1 drop-shadow-md whitespace-nowrap logo-text">全民英檢</span>
                             </div>
                         </div>
 
-                        <p class="mb-5 bg-white/10 border-l-4 border-indigo-400 p-4 rounded-r-lg font-medium drop-shadow purpose-text">📌 目的定位：具備廣泛話題理解能力，可處理社交、職場及日常議題。</p>
+                        <p class="mb-5 bg-white/10 border-l-4 border-indigo-400 p-4 rounded-r-lg font-medium drop-shadow purpose-text text-base md:text-[1.5rem] lg:text-[24px]">📌 目的定位：具備廣泛話題理解能力，可處理社交、職場及日常議題。</p>
                         
-                        <ul class="skills-grid grid grid-cols-2 gap-x-2 gap-y-4 mb-5 drop-shadow text-lg md:text-[1.5rem] lg:text-lg">
-                            <li class="flex items-start"><i class="fas fa-headphones text-indigo-400 w-8 md:w-10 text-center shrink-0 mt-1"></i><span><strong>聽力：</strong>複雜情境資訊與講座。</span></li>
-                            <li class="flex items-start"><i class="fas fa-book-open text-indigo-400 w-8 md:w-10 text-center shrink-0 mt-1"></i><span><strong>閱讀：</strong>多篇長篇閱讀理解。</span></li>
-                            <li class="flex items-start"><i class="fas fa-comment-dots text-indigo-400 w-8 md:w-10 text-center shrink-0 mt-1"></i><span><strong>口說：</strong>看圖描述與深度討論。</span></li>
-                            <li class="flex items-start"><i class="fas fa-pen text-indigo-400 w-8 md:w-10 text-center shrink-0 mt-1"></i><span><strong>寫作：</strong>中翻英與引導寫作。</span></li>
+                        <ul class="skills-grid grid grid-cols-2 gap-x-2 gap-y-4 mb-5 drop-shadow text-lg md:text-[1.5rem] lg:text-[27px]">
+                            <li class="flex items-start"><i class="fas fa-headphones text-indigo-400 w-8 md:w-10 lg:w-[60px] lg:text-[27px] text-center shrink-0 mt-1 lg:mt-2"></i><span><strong>聽力：</strong>複雜情境資訊與講座。</span></li>
+                            <li class="flex items-start"><i class="fas fa-book-open text-indigo-400 w-8 md:w-10 lg:w-[60px] lg:text-[27px] text-center shrink-0 mt-1 lg:mt-2"></i><span><strong>閱讀：</strong>多篇長篇閱讀理解。</span></li>
+                            <li class="flex items-start"><i class="fas fa-comment-dots text-indigo-400 w-8 md:w-10 lg:w-[60px] lg:text-[27px] text-center shrink-0 mt-1 lg:mt-2"></i><span><strong>口說：</strong>看圖描述與深度討論。</span></li>
+                            <li class="flex items-start"><i class="fas fa-pen text-indigo-400 w-8 md:w-10 lg:w-[60px] lg:text-[27px] text-center shrink-0 mt-1 lg:mt-2"></i><span><strong>寫作：</strong>中翻英與引導寫作。</span></li>
                         </ul>
 
                         <div class="prep-strategy border-t border-white/20 pt-5 mt-auto drop-shadow">
-                            <strong class="strategy-title text-indigo-400 block mb-2 text-xl md:text-[1.8rem] lg:text-xl">💡 準備策略：</strong>
-                            <span class="strategy-text block text-lg md:text-[1.5rem] lg:text-lg">聆聽真實語境(新聞/演講)、高階語彙句型練習，輔以口說主題討論與寫作邏輯架構。</span>
+                            <strong class="strategy-title text-indigo-400 block mb-2 text-xl md:text-[1.8rem] lg:text-[30px]">💡 準備策略：</strong>
+                            <span class="strategy-text block text-lg md:text-[1.5rem] lg:text-[27px]">聆聽真實語境(新聞/演講)、高階語彙句型練習，輔以口說主題討論與寫作邏輯架構。</span>
                         </div>
                         
                         <div class="mobile-detail-btn text-indigo-400 flex justify-end items-center mt-5">
@@ -458,7 +457,7 @@
             </div>
         </section>
 
-        <!-- 全裝置：課程介紹 Modal 容器 (點選後放大兩倍) -->
+        <!-- 全裝置：課程介紹 Modal 容器 -->
         <div id="course-modal-overlay" class="hide-scroll" onclick="closeCourseModal(event)">
             <div class="course-modal-content relative bg-slate-900 mx-auto overflow-hidden shadow-2xl" onclick="event.stopPropagation()">
                 <!-- 暗色遮罩 -->
@@ -677,7 +676,7 @@
 
     <!-- JS 邏輯 -->
     <script>
-        // --- 設定課程卡片滑入動畫 (已修復致命語法錯誤) ---
+        // --- 設定課程卡片滑入動畫 ---
         document.addEventListener("DOMContentLoaded", () => {
             if (window.innerWidth >= 1024) {
                 const observer = new IntersectionObserver((entries) => {
@@ -690,14 +689,13 @@
                 }, { threshold: 0.15 });
 
                 document.querySelectorAll('.course-item').forEach((item, index) => {
-                    // 修復了原本錯誤的 0.1s 寫法，現在能正常啟動所有腳本
                     item.style.animationDelay = `${index * 0.15}s`;
                     observer.observe(item);
                 });
             }
         });
 
-        // --- 全裝置點擊：開啟 Modal，達成兩倍大瀏覽 ---
+        // --- 全裝置點擊：開啟 Modal ---
         function handleCourseAction(courseId) {
             const cardId = 'card-' + courseId;
             const cardEl = document.getElementById(cardId);
@@ -709,16 +707,13 @@
             const overlay = document.getElementById('course-modal-overlay');
             const modalBody = document.getElementById('course-modal-body');
             
-            // 精準拷貝內容，確保原卡片不受影響
             const wrapper = cardElement.querySelector('.card-content-wrapper');
             if(!wrapper) return;
             
             modalBody.innerHTML = wrapper.innerHTML;
             
-            // 清理多餘的手機提示點擊按鈕
             modalBody.querySelectorAll('.mobile-detail-btn').forEach(el => el.remove());
             
-            // 提取背景圖片並設定在 Modal 的最外層容器上
             const bgElement = cardElement.querySelector('.card-bg-layer');
             if (bgElement) {
                 const bgImage = window.getComputedStyle(bgElement).backgroundImage;
@@ -804,7 +799,6 @@
 
         window.addEventListener('DOMContentLoaded', initFeedbackIndicators);
         window.addEventListener('resize', initFeedbackIndicators);
-
 
         // --- 購物車 ---
         const products =[
