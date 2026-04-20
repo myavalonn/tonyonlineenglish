@@ -884,7 +884,7 @@
             <div class="peggy-img-wrapper" style="width:2.2em; height:2.2em; border:2px solid #fff; flex-shrink:0;">
                 <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/assistant.png" class="peggy-img-crop" alt="Peggy">
             </div>
-            <span>Peggy 小幫手</span>
+            <span>Peggy</span>
         </div>
         <button onclick="togglePeggy()" style="background:none; border:none; color:#fff; font-size:1.5em; cursor:pointer; line-height:1;">&times;</button>
     </div>
@@ -1572,7 +1572,7 @@
       }
 
       if(windowEl.classList.contains('show') && !peggyInitialized) {
-          let msg = `嗨！我是Tony線上美語家教 Peggy 👋<br>我可以幫您查詢未來的課程時間與剩餘堂數。<a href="https://tonyonlineenglish.netlify.app/ycs" target="_blank" style="color:var(--blue-main); font-weight:bold; text-decoration:underline;">也可點選這</a><br><br>請問您的<b>英文名字</b>是？`;
+          let msg = `嗨！我是Tony線上美語家教 Peggy 👋<br>我可以幫您查詢未來的課程時間。<a href="https://tonyonlineenglish.netlify.app/ycs" target="_blank" style="color:var(--blue-main); font-weight:bold; text-decoration:underline;">也可點選這</a><br><br>請問您的<b>英文名字</b>是？`;
           addPeggyMessage(msg, 'peggy', 'bottom');
           peggyInitialized = true;
           // 移除自動對焦 focus()，避免在平板/手機上自動喚起鍵盤導致畫面上推
