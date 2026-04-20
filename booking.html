@@ -1,4 +1,4 @@
-<!-- VERSION 11.51 (Peggy Chatbot Keyboard Fix & Schedule Calendar Orange Time) -->
+ <!-- VERSION 11.52 (Schedule Limits, Cart Icon Update, Desktop Slots 1.5x size) -->
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -33,13 +33,15 @@
       --selected-bg: #1d2b8a; /* Updated to Dark Blue */
       --selected-color: #ffffff;
 
-      /* === DESKTOP TIME SLOT SIZES (Adjust these to resize slots on the right side) === */
-      --slot-padding-desktop: 38px 0;       /* Base slot height/padding (was 25px 0) */
-      --slot-font-size-desktop: 36px;       /* Base font size (was 24px) */
-      --slot-icon-size-desktop: 30px;       /* Base clock icon size (was 20px) */
-      
-      --slot-padding-desktop-few: 60px 0;   /* Height/padding when few slots exist (was 45px 0) */
-      --slot-font-size-desktop-few: 42px;   /* Font size when few slots exist (was 32px) */
+      /* === ADJUST DESKTOP TIME SLOT SIZE HERE (1.5x bigger) === */
+      --desktop-slot-padding: 38px 0;
+      --desktop-slot-font-size: 36px;
+      --desktop-slot-icon-size: 30px;
+
+      /* When there are only a few slots available */
+      --desktop-few-slots-padding: 68px 0;
+      --desktop-few-slots-font-size: 48px;
+      --desktop-few-slots-icon-size: 40px;
     }
    
     html, body {
@@ -416,36 +418,11 @@
         
         .multi-booking-badge { height: 48px; padding: 0 20px; border-radius: 24px; font-size: 18px; border-width: 3px; }
     }
-    
     @media (min-width: 1024px) {
         .form-box { max-width: 800px; padding: 80px 50px 50px; }
         .page-title { font-size: 42px; }
         .back-btn { font-size: 24px; top: 40px; left: 40px; padding: 12px 24px; }
-        
-        .cal-header-wrap { display: flex; justify-content: center; width: 100%; padding: 40px; }
-        .cal-desktop-wrapper { display: flex; flex-direction: row; width: 100%; justify-content: space-between; gap: 40px; }
-        .cal-left-col { flex: 1; display: flex; flex-direction: column; }
-        #cal-slots-area { flex: 1; border-top: none; border-left: 1px solid #e0e0e0; padding-left: 40px; margin-top: 0; padding-top: 125px; height: calc(100vh - 80px); overflow-y: auto; padding-bottom: 100px; }
-        .cal-cell { height: auto; aspect-ratio: 1.2 / 1; }
-        .simple-slot-grid { grid-template-columns: repeat(2, 1fr); }
-        
-        /* Apply Custom Variables To Resize Desktop Slots */
-        .simple-slot-btn { 
-            padding: var(--slot-padding-desktop) !important; 
-            font-size: var(--slot-font-size-desktop) !important; 
-        }
-        .simple-slot-btn .slot-clock-icon { 
-            width: var(--slot-icon-size-desktop) !important; 
-            height: var(--slot-icon-size-desktop) !important; 
-        }
-        .simple-slot-grid.few-slots { grid-template-columns: repeat(2, 1fr) !important; }
-        .simple-slot-grid.few-slots .simple-slot-btn { 
-            padding: var(--slot-padding-desktop-few) !important; 
-            font-size: var(--slot-font-size-desktop-few) !important; 
-        }
     }
-    @media (min-width: 1400px) { .simple-slot-grid { grid-template-columns: repeat(3, 1fr); } }
-    @media (max-width: 400px) { .full-date-display { font-size: 18px; } }
     
     @keyframes glow { from { filter: drop-shadow(0 0 4px rgba(255, 84, 0, 0.4)); } to { filter: drop-shadow(0 0 8px rgba(255, 84, 0, 0.8)); } }
     #hot-panel {
@@ -498,6 +475,7 @@
         background: #ffffff; box-shadow: 0 4px 12px rgba(0, 122, 255, 0.4);
         animation: none; transform: none !important; z-index: 400;
     }
+    #floating-cart-btn .cal-icon-svg { width: 100%; height: 100%; object-fit: contain; }
     #floating-cart-btn.show { display: block; }
     
     .cart-badge {
@@ -508,31 +486,6 @@
     @media (min-width: 768px) {
         #floating-cart-btn { width: 120px; height: 120px; padding: 25px; bottom: 50px; right: 40px; }
         .cart-badge { width: 40px; height: 40px; font-size: 20px; top: -5px; right: -5px; border-width: 3px; }
-        
-        .cal-btn-trigger { font-size: 18px; padding: 0 20px; height: 48px; border-radius: 24px; }
-        .cal-slots-title { font-size: 28px; margin-bottom: 20px; border-left-width: 8px; }
-        #hot-panel { width: 500px; max-width: 80vw; padding: 30px; border-radius: 30px; transform: translateX(-120%); }
-        #hot-panel.show { transform: translateX(0); }
-        .hot-title { font-size: 28px; margin-bottom: 25px; }
-        .hot-btn { padding: 20px; font-size: 20px; border-radius: 20px; }
-        .close-hot { width: 40px; height: 40px; font-size: 24px; }
-        .tap-icon { width: 30px; height: 30px; }
-        .rule-info-btn { height: 48px; padding: 0 20px; border-radius: 24px; border-width: 3px; gap: 6px; }
-        .rule-info-btn .btn-exclaim { font-size: 20px; }
-        .rule-info-btn .btn-label { font-size: 18px; }
-        .rule-label-text { display: none; }
-        .mob-br { display: none; }
-        .rule-popover {
-            position: fixed; top: 15%; left: 50%; transform: translateX(-50%); width: auto; min-width: 600px;
-            font-size: 28px; line-height: 1.5; padding: 50px 40px 40px; border-radius: 24px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.3); border: 1px solid #ddd; z-index: 2100;
-        }
-        .rule-logo { width: 100px; margin-bottom: 20px; }
-        .rule-details-link { font-size: 20px; margin-top: 16px; }
-        .rule-popover-close { width: 36px; height: 36px; font-size: 20px; top: 12px; right: 12px; }
-        .cal-duration-hint { background: #fff; color: #333; border: 2px solid #ddd; box-shadow: 0 2px 5px rgba(0,0,0,0.05); font-size: 16px; padding: 10px 20px; order: 3; margin-right: 0; margin-left: 10px; }
-        .cal-top-right-group .multi-booking-badge { order: 1; }
-        .cal-top-right-group .rule-info-wrapper { order: 2; }
     }
 
     /* === Peggy Chatbot CSS === */
@@ -657,16 +610,6 @@
     .sched-cell.today { border: 2px solid var(--pill-active); color: var(--pill-active); }
     .sched-cell.selected { background: var(--selected-bg) !important; color: #fff !important; box-shadow: 0 4px 10px rgba(29, 43, 138, 0.3); }
     
-    /* Disabled Past Dates Configuration */
-    .sched-cell.disabled {
-        background: #fdfdfd !important;
-        color: #d0d0d0 !important;
-        pointer-events: none; /* Make unclickable */
-        border: 1px solid #f5f5f5 !important;
-    }
-    .sched-cell.disabled .sched-cell-times { color: #d0d0d0; }
-    .sched-cell.disabled .sched-date-num { opacity: 0.5; }
-    
     .sched-date-num { line-height: 1; }
     .sched-cell-times { font-size: 13px; color: var(--pill-active); line-height: 1.2; margin-top: 4px; font-weight: bold; text-align: center; }
     .sched-cell.selected .sched-cell-times { color: #fff; }
@@ -721,6 +664,7 @@
     .cal-cell.selected::after { background: #fff; }
     
     #cal-slots-area { margin-top: 10px; padding-bottom: 100px; border-top: 1px solid #f0f0f0; padding-top: 15px; position: relative; }
+    .cal-slots-title { color: #333; font-size: 16px; font-weight: bold; margin-bottom: 10px; padding-left: 5px; border-left: 4px solid var(--pill-active); line-height: 1; }
     
     .simple-slot-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
     .simple-slot-btn {
@@ -739,6 +683,12 @@
     
     .simple-slot-grid.few-slots .simple-slot-btn .slot-clock-icon { width: 20px; height: 20px; }
 
+    .cal-duration-hint {
+        font-size: 13px; font-weight: 800; padding: 6px 12px; border-radius: 20px;
+        background: #fff; color: #333; border: 1px solid #ddd; white-space: nowrap; margin-right: 5px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
     @media (min-width: 768px) {
         .cal-header-wrap { max-width: 100% !important; margin: 0 !important; border-radius: 0 !important; min-height: 100vh; padding: 40px; box-sizing: border-box; }
         .cal-grid { gap: 10px; }
@@ -747,14 +697,70 @@
         .cal-head small { font-size: 16px; }
         .cal-nav { font-size: 36px; margin-bottom: 30px; }
         .cal-nav-btn { font-size: 40px; }
-        
+        .cal-btn-trigger { font-size: 18px; padding: 0 20px; height: 48px; border-radius: 24px; }
         .simple-slot-grid { gap: 20px; grid-template-columns: repeat(3, 1fr); }
         .simple-slot-btn { padding: 25px 0; font-size: 24px; border-radius: 15px; }
         .simple-slot-btn .slot-clock-icon { width: 20px; height: 20px; }
         .simple-slot-grid.few-slots .simple-slot-btn .slot-clock-icon { width: 26px; height: 26px; }
+        .cal-slots-title { font-size: 28px; margin-bottom: 20px; border-left-width: 8px; }
+        #hot-panel { width: 500px; max-width: 80vw; padding: 30px; border-radius: 30px; transform: translateX(-120%); }
+        #hot-panel.show { transform: translateX(0); }
+        .hot-title { font-size: 28px; margin-bottom: 25px; }
+        .hot-btn { padding: 20px; font-size: 20px; border-radius: 20px; }
+        .close-hot { width: 40px; height: 40px; font-size: 24px; }
+        .tap-icon { width: 30px; height: 30px; }
+        .rule-info-btn { height: 48px; padding: 0 20px; border-radius: 24px; border-width: 3px; gap: 6px; }
+        .rule-info-btn .btn-exclaim { font-size: 20px; }
+        .rule-info-btn .btn-label { font-size: 18px; }
+        .rule-label-text { display: none; }
+        .mob-br { display: none; }
+        .rule-popover {
+            position: fixed; top: 15%; left: 50%; transform: translateX(-50%); width: auto; min-width: 600px;
+            font-size: 28px; line-height: 1.5; padding: 50px 40px 40px; border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3); border: 1px solid #ddd; z-index: 2100;
+        }
+        .rule-logo { width: 100px; margin-bottom: 20px; }
+        .rule-details-link { font-size: 20px; margin-top: 16px; }
+        .rule-popover-close { width: 36px; height: 36px; font-size: 20px; top: 12px; right: 12px; }
         .simple-slot-grid.few-slots { grid-template-columns: repeat(2, 1fr) !important; }
         .simple-slot-grid.few-slots .simple-slot-btn { padding: 35px 0 !important; font-size: 28px !important; }
+        .cal-duration-hint { background: #fff; color: #333; border: 2px solid #ddd; box-shadow: 0 2px 5px rgba(0,0,0,0.05); font-size: 16px; padding: 10px 20px; order: 3; margin-right: 0; margin-left: 10px; }
+        .cal-top-right-group .multi-booking-badge { order: 1; }
+        .cal-top-right-group .rule-info-wrapper { order: 2; }
     }
+
+    /* SPECIFIC DESKTOP ENLARGEMENTS FOR TIME SLOTS */
+    @media (min-width: 1024px) {
+        .cal-header-wrap { display: flex; justify-content: center; width: 100%; padding: 40px; }
+        .cal-desktop-wrapper { display: flex; flex-direction: row; width: 100%; justify-content: space-between; gap: 40px; }
+        .cal-left-col { flex: 1; display: flex; flex-direction: column; }
+        #cal-slots-area { flex: 1; border-top: none; border-left: 1px solid #e0e0e0; padding-left: 40px; margin-top: 0; padding-top: 125px; height: calc(100vh - 80px); overflow-y: auto; padding-bottom: 100px; }
+        .cal-cell { height: auto; aspect-ratio: 1.2 / 1; }
+        .simple-slot-grid { grid-template-columns: repeat(2, 1fr); }
+        
+        /* Apply the custom scaling variables */
+        .simple-slot-btn { 
+            padding: var(--desktop-slot-padding) !important; 
+            font-size: var(--desktop-slot-font-size) !important; 
+            border-radius: 20px;
+        }
+        .simple-slot-btn .slot-clock-icon { 
+            width: var(--desktop-slot-icon-size) !important; 
+            height: var(--desktop-slot-icon-size) !important; 
+        }
+
+        .simple-slot-grid.few-slots { grid-template-columns: repeat(2, 1fr) !important; }
+        .simple-slot-grid.few-slots .simple-slot-btn { 
+            padding: var(--desktop-few-slots-padding) !important; 
+            font-size: var(--desktop-few-slots-font-size) !important; 
+        }
+        .simple-slot-grid.few-slots .simple-slot-btn .slot-clock-icon { 
+            width: var(--desktop-few-slots-icon-size) !important; 
+            height: var(--desktop-few-slots-icon-size) !important; 
+        }
+    }
+    @media (min-width: 1400px) { .simple-slot-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (max-width: 400px) { .full-date-display { font-size: 18px; } }
   </style>
 </head>
 <body>
@@ -865,9 +871,9 @@
   <div class="hot-list" id="hot-list"></div>
 </div>
 
-<!-- Updated Booking Cart Icon -->
 <button id="floating-cart-btn" onclick="toggleCartForm()">
-    <img src="https://ik.imagekit.io/lql1uveoc/Booking%20Website%20%E9%A0%90%E7%B4%84/online-booking.png" alt="Cart" style="width: 100%; height: 100%; object-fit: contain;">
+    <!-- UPDATED CART IMAGE -->
+    <img src="https://ik.imagekit.io/lql1uveoc/Booking%20Website%20%E9%A0%90%E7%B4%84/online-booking.png" class="cal-icon-svg" alt="cart">
     <span class="cart-badge" id="cart-count">0</span>
 </button>
 
@@ -878,7 +884,7 @@
             <div class="peggy-img-wrapper" style="width:2.2em; height:2.2em; border:2px solid #fff; flex-shrink:0;">
                 <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/christina-wocintechchat-com-m-0Zx1bDv5BNY-unsplash.jpg" class="peggy-img-crop" alt="Peggy">
             </div>
-            <span>Peggy </span>
+            <span>Peggy 小幫手</span>
         </div>
         <button onclick="togglePeggy()" style="background:none; border:none; color:#fff; font-size:1.5em; cursor:pointer; line-height:1;">&times;</button>
     </div>
@@ -942,7 +948,7 @@
                 <div class="cal-nav">
                     <button class="cal-nav-btn" id="cal-prev-btn" onclick="changeCalMonth(-1)">❮</button>
                     <div id="cal-title"></div>
-                    <button class="cal-nav-btn" onclick="changeCalMonth(1)">❯</button>
+                    <button class="cal-nav-btn" id="cal-next-btn" onclick="changeCalMonth(1)">❯</button>
                 </div>
                 <div class="cal-grid" id="cal-head-row">
                     <div class="cal-head">MON<small>一</small></div>
@@ -1234,20 +1240,49 @@
       if(selectedDateStr){selectDatePillUI(selectedDateStr);renderSlots(selectedDateStr);const pill=document.getElementById(`pill-${selectedDateStr}`);if(pill&&pill.classList.contains('loading'))forceLoadDate(selectedDateStr);}
       updateBottomBar();
   }
+
+  // Changed to limit up to 3 months for booking calendar
   function changeCalMonth(n) {
-      if(n<0){
-          const now=new Date(); const curY=now.getFullYear(); const curM=now.getMonth();
-          if(calYear===curY&&calMonth===curM)return;
-          const targetDate=new Date(calYear,calMonth+n,1); const minDate=new Date(curY,curM,1);
-          if(targetDate<minDate)return;
-      }
-      calMonth+=n; if(calMonth>11){calMonth=0;calYear++;}else if(calMonth<0){calMonth=11;calYear--;}
+      const now = new Date();
+      const curY = now.getFullYear();
+      const curM = now.getMonth();
+
+      let targetM = calMonth + n;
+      let targetY = calYear;
+
+      if (targetM > 11) { targetM = 0; targetY++; }
+      else if (targetM < 0) { targetM = 11; targetY--; }
+
+      const targetAbsolute = targetY * 12 + targetM;
+      const currentAbsolute = curY * 12 + curM;
+
+      if (targetAbsolute < currentAbsolute) return; // cannot go to past months
+      if (targetAbsolute > currentAbsolute + 2) return; // max 3 months total (current + next 2)
+
+      calMonth = targetM;
+      calYear = targetY;
       renderCalGrid();
   }
+
   function renderCalGrid() {
       document.getElementById("cal-title").innerText=`${calYear}年 ${calMonth+1}月 ${monthNamesEng[calMonth]}`;
-      const now=new Date(); const prevBtn=document.getElementById('cal-prev-btn');
-      if(calYear===now.getFullYear()&&calMonth===now.getMonth()) prevBtn.classList.add('disabled'); else prevBtn.classList.remove('disabled');
+      
+      const now = new Date();
+      const curAbsolute = now.getFullYear() * 12 + now.getMonth();
+      const calAbsolute = calYear * 12 + calMonth;
+      
+      const prevBtn = document.getElementById('cal-prev-btn');
+      const nextBtn = document.getElementById('cal-next-btn');
+
+      if (prevBtn) {
+          if (calAbsolute <= curAbsolute) prevBtn.classList.add('disabled');
+          else prevBtn.classList.remove('disabled');
+      }
+      if (nextBtn) {
+          if (calAbsolute >= curAbsolute + 2) nextBtn.classList.add('disabled');
+          else nextBtn.classList.remove('disabled');
+      }
+
       const container=document.getElementById("cal-body"); container.innerHTML="";
       const firstDay=new Date(calYear,calMonth,1).getDay(); const daysInMonth=new Date(calYear,calMonth+1,0).getDate();
       const today=new Date(); today.setHours(0,0,0,0);
@@ -1537,7 +1572,7 @@
       }
 
       if(windowEl.classList.contains('show') && !peggyInitialized) {
-          let msg = `嗨！我是Tony線上美語家教 Peggy 👋<br>我可以幫您查詢未來的課程時間。<a href="https://tonyonlineenglish.netlify.app/ycs" target="_blank" style="color:var(--blue-main); font-weight:bold; text-decoration:underline;">也可點選這</a><br><br>請問您的<b>英文名字</b>是？`;
+          let msg = `嗨！我是Tony線上美語家教 Peggy 👋<br>我可以幫您查詢未來的課程時間與剩餘堂數。<a href="https://tonyonlineenglish.netlify.app/ycs" target="_blank" style="color:var(--blue-main); font-weight:bold; text-decoration:underline;">也可點選這</a><br><br>請問您的<b>英文名字</b>是？`;
           addPeggyMessage(msg, 'peggy', 'bottom');
           peggyInitialized = true;
           // 移除自動對焦 focus()，避免在平板/手機上自動喚起鍵盤導致畫面上推
@@ -1761,46 +1796,56 @@
       document.getElementById('sched-modal-overlay').style.display = 'none';
   }
 
+  // Changed to limit up to 3 months for schedule calendar
   function changeSchedMonth(n) {
       const now = new Date();
-      const currentMonthValue = now.getFullYear() * 12 + now.getMonth();
-      const targetMonthValue = schedCalYear * 12 + schedCalMonth + n;
-      
-      // Allow current month up to current + 2 months (3 months total limits)
-      if (targetMonthValue < currentMonthValue) return; 
-      if (targetMonthValue > currentMonthValue + 2) return; 
-      
-      schedCalMonth += n;
-      if(schedCalMonth > 11) { schedCalMonth = 0; schedCalYear++; }
-      else if(schedCalMonth < 0) { schedCalMonth = 11; schedCalYear--; }
-      
+      const curY = now.getFullYear();
+      const curM = now.getMonth();
+
+      let targetM = schedCalMonth + n;
+      let targetY = schedCalYear;
+
+      if (targetM > 11) { targetM = 0; targetY++; }
+      else if (targetM < 0) { targetM = 11; targetY--; }
+
+      const targetAbsolute = targetY * 12 + targetM;
+      const currentAbsolute = curY * 12 + curM;
+
+      if (targetAbsolute < currentAbsolute) return; // cannot go to past months
+      if (targetAbsolute > currentAbsolute + 2) return; // max 3 months total (current + next 2)
+
+      schedCalMonth = targetM;
+      schedCalYear = targetY;
       renderSchedCalGrid();
   }
 
   function renderSchedCalGrid() {
       document.getElementById("sched-cal-title").innerText = `${schedCalYear}年 ${schedCalMonth+1}月`;
-      const container = document.getElementById("sched-cal-body");
-      container.innerHTML = "";
       
       const now = new Date();
-      const currentMonthValue = now.getFullYear() * 12 + now.getMonth();
-      const thisCalMonthValue = schedCalYear * 12 + schedCalMonth;
+      const curAbsolute = now.getFullYear() * 12 + now.getMonth();
+      const calAbsolute = schedCalYear * 12 + schedCalMonth;
+      
+      const prevBtn = document.getElementById('sched-prev-btn');
+      const nextBtn = document.getElementById('sched-next-btn');
 
-      // Handle Previous / Next Limits Visually
-      const prevBtn = document.getElementById("sched-prev-btn");
-      const nextBtn = document.getElementById("sched-next-btn");
+      if (prevBtn) {
+          if (calAbsolute <= curAbsolute) prevBtn.classList.add('disabled');
+          else prevBtn.classList.remove('disabled');
+      }
+      if (nextBtn) {
+          if (calAbsolute >= curAbsolute + 2) nextBtn.classList.add('disabled');
+          else nextBtn.classList.remove('disabled');
+      }
 
-      if (thisCalMonthValue <= currentMonthValue) prevBtn.classList.add('disabled');
-      else prevBtn.classList.remove('disabled');
-
-      if (thisCalMonthValue >= currentMonthValue + 2) nextBtn.classList.add('disabled');
-      else nextBtn.classList.remove('disabled');
+      const container = document.getElementById("sched-cal-body");
+      container.innerHTML = "";
 
       const firstDay = new Date(schedCalYear, schedCalMonth, 1).getDay(); // 0(Sun) - 6(Sat)
       const daysInMonth = new Date(schedCalYear, schedCalMonth+1, 0).getDate();
-      const today = new Date();
-      today.setHours(0,0,0,0);
-      const todayStr = fmt(new Date());
+      
+      const todayStr = fmt(now);
+      const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
       // Since Sunday is removed (first column is Mon), empty cells before the 1st of month:
       let emptyCells = firstDay === 0 ? 6 : firstDay - 1;
@@ -1816,9 +1861,12 @@
           const cell = document.createElement("div");
           cell.className = "sched-cell";
           
-          // Gray Out Past Dates
-          if (currentD < today) {
-              cell.classList.add("disabled");
+          // Gray out past dates
+          if (currentD < todayStart) {
+              cell.classList.add("past-date");
+              cell.style.color = "#ccc";
+              cell.style.background = "#fafafa";
+              cell.style.pointerEvents = "none";
           } else {
               if (dateStr === todayStr) cell.classList.add("today");
               if (dateStr === schedSelectedDateStr) cell.classList.add("selected");
@@ -1847,7 +1895,9 @@
               });
               
               if (timeLabels.length > 2) timeLabels =[timeLabels[0], timeLabels[1], '...'];
-              cellInner += `<div class="sched-cell-times">${timeLabels.join('<br>')}</div>`;
+              
+              let colorStyle = (currentD < todayStart) ? 'color: #999;' : '';
+              cellInner += `<div class="sched-cell-times" style="${colorStyle}">${timeLabels.join('<br>')}</div>`;
           }
           
           cell.innerHTML = cellInner;
@@ -1888,3 +1938,4 @@
 </script>
 </body>
 </html>
+```
