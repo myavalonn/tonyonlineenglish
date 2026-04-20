@@ -1011,8 +1011,9 @@
                 if (userFoundInSchedule) {
                     resultsDiv.innerHTML = "";
                     const now = new Date();
-                    const limitDate = new Date();
-                    limitDate.setDate(now.getDate() + 60);
+                    // 改為抓取三個月內來判斷
+                    const limitDate = new Date(now.getFullYear(), now.getMonth() + 3, 0);
+                    limitDate.setHours(23, 59, 59, 999);
                     const upcomingEventsIn30Days = scheduleData.filter(ev => new Date(ev.start) >= now && new Date(ev.start) <= limitDate);
                     upcomingEventsCount = upcomingEventsIn30Days.length;
                     noUpcomingClassesIn30Days = upcomingEventsCount === 0;
@@ -1191,8 +1192,9 @@
             if (!resultsDiv) return;
 
             const now = new Date();
-            const limitDate = new Date();
-            limitDate.setDate(now.getDate() + 60);
+            // 改為抓取三個月內
+            const limitDate = new Date(now.getFullYear(), now.getMonth() + 3, 0);
+            limitDate.setHours(23, 59, 59, 999);
 
             const upcomingEvents = data
                 .filter(ev => {
@@ -1247,6 +1249,7 @@
             calendarContainer.innerHTML = "";
 
             if (!data || data.length === 0) {
+                // 若無資料僅顯示一個月的空月曆
                 buildSingleCalendar([], new Date());
                 return;
             }
@@ -1255,31 +1258,22 @@
             const today = new Date();
             today.setHours(0,0,0,0);
 
-            const limitDate = new Date();
-            limitDate.setDate(now.getDate() + 60);
+            const currentYear = now.getFullYear();
+            const currentMonth = now.getMonth();
+            
+            // 涵蓋三個月的限制日期
+            const limitDate = new Date(currentYear, currentMonth + 3, 0);
+            limitDate.setHours(23, 59, 59, 999);
 
             const filteredData = data.filter(event => {
                 const eventDate = new Date(event.start);
                 return eventDate < today || eventDate <= limitDate;
             });
 
-            const currentYear = now.getFullYear();
-            const currentMonth = now.getMonth();
-
-            const currentMonthDate = new Date(currentYear, currentMonth, 1);
-            buildSingleCalendar(filteredData, currentMonthDate);
-
-            const nextMonthDate = new Date(currentYear, currentMonth + 1, 1);
-            const nextMonthYear = nextMonthDate.getFullYear();
-            const nextMonthMonth = nextMonthDate.getMonth();
-
-            const hasEventsNextMonth = data.some(event => {
-                const eventDate = new Date(event.start);
-                return eventDate.getFullYear() === nextMonthYear && eventDate.getMonth() === nextMonthMonth;
-            });
-
-            if (hasEventsNextMonth) {
-                buildSingleCalendar(filteredData, nextMonthDate);
+            // 查詢後固定顯示三個月的月曆
+            for (let i = 0; i < 3; i++) {
+                const targetDate = new Date(currentYear, currentMonth + i, 1);
+                buildSingleCalendar(filteredData, targetDate);
             }
         }
 
