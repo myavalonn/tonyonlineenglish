@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
@@ -32,14 +32,14 @@
       --selected-bg: #1d2b8a; /* Updated to Dark Blue */
       --selected-color: #ffffff;
 
-      /* === ADJUST DESKTOP TIME SLOT SIZE HERE (1.5x bigger) === */
-      --desktop-slot-padding: 38px 0;
+      /* === ADJUST DESKTOP TIME SLOT SIZE HERE (2x bigger than mobile) === */
+      --desktop-slot-padding: 30px 0;
       --desktop-slot-font-size: 36px;
-      --desktop-slot-icon-size: 30px;
+      --desktop-slot-icon-size: 32px;
 
       /* When there are only a few slots available */
-      --desktop-few-slots-padding: 68px 0;
-      --desktop-few-slots-font-size: 48px;
+      --desktop-few-slots-padding: 40px 0;
+      --desktop-few-slots-font-size: 40px;
       --desktop-few-slots-icon-size: 40px;
     }
    
@@ -52,19 +52,21 @@
     }
     button { font-family: inherit; outline: none; -webkit-tap-highlight-color: transparent; }
 
-    /* === Custom Result Modal === */
+    /* =========================================================
+       MODAL CSS (Base 1x Size for Mobile)
+       ========================================================= */
     .result-overlay {
         display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
         background: rgba(0,0,0,0.7); z-index: 10000;
         justify-content: center; align-items: center; padding: 20px;
         box-sizing: border-box; backdrop-filter: blur(4px);
     }
-    .result-content {
+    .result-content, .auth-modal-content {
         background: #fff; width: 95%; max-width: 420px;
         border-radius: 24px; padding: 40px 25px; text-align: center;
         box-shadow: 0 20px 50px rgba(0,0,0,0.3);
         animation: modalFadeIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-        box-sizing: border-box;
+        box-sizing: border-box; position: relative; /* Added for absolute close btn */
     }
     .result-icon { font-size: 60px; margin-bottom: 20px; }
     .result-title { font-size: 24px; font-weight: 800; margin-bottom: 12px; color: #111; }
@@ -74,6 +76,27 @@
         padding: 16px 0; border-radius: 15px; font-size: 18px; font-weight: bold;
         cursor: pointer; width: 100%; box-shadow: 0 4px 12px rgba(255, 84, 0, 0.3); box-sizing: border-box;
     }
+
+    /* Modal Close Button */
+    .modal-close-x {
+        position: absolute; top: 15px; right: 15px;
+        background: none; border: none; font-size: 28px; color: #999;
+        cursor: pointer; line-height: 1; padding: 5px; z-index: 10;
+        transition: color 0.2s;
+    }
+    .modal-close-x:hover { color: #333; }
+
+    /* Class Detail Modal Items */
+    .cd-header { margin-top: 0; margin-bottom: 15px; color: #333; font-size: 22px; font-weight: bold; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px; }
+    .cd-item { background: #f8f9fa; border: 1px solid #eee; border-radius: 12px; padding: 15px; margin-bottom: 15px; position: relative; }
+    .cd-date { font-size: 18px; font-weight: bold; color: var(--selected-bg); margin-bottom: 5px; }
+    .cd-title { font-size: 16px; color: #333; margin-bottom: 5px; font-weight: bold; }
+    .cd-length { font-size: 14px; color: #666; margin-bottom: 15px; }
+
+    /* Auth Modal Items */
+    .auth-input { width: 100%; padding: 15px; border: 2px solid #ccc; border-radius: 12px; margin-bottom: 20px; font-size: 16px; box-sizing: border-box; }
+    .auth-btn { flex: 1; padding: 14px; border: none; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; }
+
     @keyframes modalFadeIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
    
     .container#p-main { display: none !important; }
@@ -394,6 +417,9 @@
     }
     @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
 
+    /* =========================================================
+       TABLET (1.5x) ENLARGEMENT
+       ========================================================= */
     @media (min-width: 768px) {
         .page-form { background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); padding: 20px; overflow-y: auto; }
         .page-form.active { display: flex !important; justify-content: center; align-items: flex-start; animation: fadeIn 0.3s; padding-top: 50px; }
@@ -416,11 +442,59 @@
         .back-btn:hover { background: #e0e0e0; transform: translateY(-2px); transition: 0.2s; }
         
         .multi-booking-badge { height: 48px; padding: 0 20px; border-radius: 24px; font-size: 18px; border-width: 3px; }
+
+        /* Modal Enlargement Tablet */
+        .result-content, .auth-modal-content { max-width: 630px; padding: 60px 38px; border-radius: 36px; }
+        .result-title { font-size: 36px; margin-bottom: 18px; }
+        .result-msg { font-size: 26px; margin-bottom: 45px; }
+        .result-icon { font-size: 90px; margin-bottom: 30px; }
+        .result-close-btn { padding: 24px 0; font-size: 27px; border-radius: 22px; }
+
+        .modal-close-x { top: 20px; right: 20px; font-size: 42px; }
+
+        .cd-header { font-size: 33px; padding-bottom: 15px; margin-bottom: 22px; }
+        .cd-item { padding: 22px; margin-bottom: 22px; border-radius: 18px; }
+        .cd-date { font-size: 27px; margin-bottom: 8px; }
+        .cd-title { font-size: 24px; margin-bottom: 8px; }
+        .cd-length { font-size: 21px; margin-bottom: 22px; }
+        .cancel-class-btn { font-size: 24px; padding: 18px 15px; border-radius: 12px; }
+
+        .auth-input { padding: 22px; font-size: 24px; margin-bottom: 30px; border-radius: 18px; }
+        .auth-btn { padding: 21px; font-size: 24px; border-radius: 18px; }
+        
+        .auth-loading-img { width: 75px !important; margin-bottom: 15px !important; }
+        .auth-loading-text { font-size: 24px !important; }
     }
+    
+    /* =========================================================
+       DESKTOP (2x) ENLARGEMENT
+       ========================================================= */
     @media (min-width: 1024px) {
         .form-box { max-width: 800px; padding: 80px 50px 50px; }
         .page-title { font-size: 42px; }
         .back-btn { font-size: 24px; top: 40px; left: 40px; padding: 12px 24px; }
+
+        /* Modal Enlargement Desktop */
+        .result-content, .auth-modal-content { max-width: 840px; padding: 80px 50px; border-radius: 48px; }
+        .result-title { font-size: 48px; margin-bottom: 24px; }
+        .result-msg { font-size: 34px; margin-bottom: 60px; }
+        .result-icon { font-size: 120px; margin-bottom: 40px; }
+        .result-close-btn { padding: 32px 0; font-size: 36px; border-radius: 30px; }
+
+        .modal-close-x { top: 25px; right: 25px; font-size: 56px; }
+
+        .cd-header { font-size: 44px; padding-bottom: 20px; margin-bottom: 30px; }
+        .cd-item { padding: 30px; margin-bottom: 30px; border-radius: 24px; }
+        .cd-date { font-size: 36px; margin-bottom: 10px; }
+        .cd-title { font-size: 32px; margin-bottom: 10px; }
+        .cd-length { font-size: 28px; margin-bottom: 30px; }
+        .cancel-class-btn { font-size: 32px; padding: 24px 20px; border-radius: 16px; }
+
+        .auth-input { padding: 30px; font-size: 32px; margin-bottom: 40px; border-radius: 24px; border-width: 3px; }
+        .auth-btn { padding: 28px; font-size: 32px; border-radius: 24px; }
+        
+        .auth-loading-img { width: 100px !important; margin-bottom: 20px !important; }
+        .auth-loading-text { font-size: 32px !important; }
     }
     
     @keyframes glow { from { filter: drop-shadow(0 0 4px rgba(255, 84, 0, 0.4)); } to { filter: drop-shadow(0 0 8px rgba(255, 84, 0, 0.8)); } }
@@ -642,15 +716,6 @@
     .cancel-class-btn:hover:not(:disabled) { background: #ffebee; }
     .cancel-class-btn:active:not(:disabled) { transform: scale(0.98); }
 
-    /* ★★★ 全新加入：彈窗驗證專屬樣式 ★★★ */
-    .auth-modal-content {
-        background: #fff; width: 95%; max-width: 400px;
-        border-radius: 20px; padding: 30px 25px; text-align: center;
-        box-shadow: 0 20px 50px rgba(0,0,0,0.3);
-        animation: modalFadeIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-        box-sizing: border-box; position: relative;
-    }
-
     @media (min-width: 768px) {
         .sched-modal-overlay { background: rgba(0,0,0,0.6); padding: 40px; }
         .sched-modal-container { border-radius: 24px; min-height: auto; padding: 40px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
@@ -767,13 +832,21 @@
         .cal-top-right-group .rule-info-wrapper { order: 2; }
     }
 
-    /* SPECIFIC DESKTOP ENLARGEMENTS FOR TIME SLOTS */
+    /* SPECIFIC DESKTOP ENLARGEMENTS FOR TIME SLOTS & CALENDAR */
     @media (min-width: 1024px) {
         .cal-header-wrap { display: flex; justify-content: center; width: 100%; padding: 40px; }
         .cal-desktop-wrapper { display: flex; flex-direction: row; width: 100%; justify-content: space-between; gap: 40px; }
         .cal-left-col { flex: 1; display: flex; flex-direction: column; }
         #cal-slots-area { flex: 1; border-top: none; border-left: 1px solid #e0e0e0; padding-left: 40px; margin-top: 0; padding-top: 125px; height: calc(100vh - 80px); overflow-y: auto; padding-bottom: 100px; }
-        .cal-cell { height: auto; aspect-ratio: 1.2 / 1; }
+        
+        .cal-cell { height: auto; aspect-ratio: 1.2 / 1; font-size: 40px; border-radius: 24px; }
+        .cal-head { font-size: 24px; margin-bottom: 12px; }
+        .cal-head small { font-size: 20px; }
+
+        .sched-cell { height: 130px; padding-top: 16px; font-size: 36px; border-radius: 24px; }
+        .sched-cell-times { font-size: 26px; margin-top: 10px; }
+        .sched-month-title { font-size: 32px; margin-bottom: 20px; }
+
         .simple-slot-grid { grid-template-columns: repeat(2, 1fr); }
         
         /* Apply the custom scaling variables */
@@ -806,37 +879,39 @@
 
 <!-- Custom Notification Modal -->
 <div id="result-modal" class="result-overlay">
-    <div class="result-content">
+    <div class="result-content modal-box-shared">
         <div id="res-icon" class="result-icon">🎉</div>
-        <div id="res-title" class="result-title">預約成功</div>
-        <div id="res-msg" class="result-msg">時段已預約，請檢查您的電子郵件確認信。</div>
+        <div id="res-title" class="result-title modal-title-shared">預約成功</div>
+        <div id="res-msg" class="result-msg modal-msg-shared">時段已預約，請檢查您的電子郵件確認信。</div>
         <button class="result-close-btn" onclick="closeResultModal()">確定 OK</button>
     </div>
 </div>
 
 <!-- ★★★ 全新：課程細節彈出視窗 (取代原本在下方的設計) ★★★ -->
 <div id="class-detail-modal" class="result-overlay" style="z-index: 10004;">
-    <div class="result-content" style="text-align:left; max-width: 380px; padding: 25px;">
-        <button onclick="closeClassDetailModal()" style="position:absolute; top:15px; right:15px; background:none; border:none; font-size:24px; color:#999; cursor:pointer;">&times;</button>
+    <div class="result-content modal-box-shared" style="text-align:left;">
+        <button class="modal-close-x" onclick="closeClassDetailModal()">&times;</button>
         <div id="class-detail-content"></div>
     </div>
 </div>
 
 <!-- ★★★ 安全驗證視窗 ★★★ -->
 <div id="auth-modal" class="result-overlay" style="z-index: 10005;">
-    <div class="auth-modal-content">
+    <div class="auth-modal-content modal-box-shared">
         <!-- 專屬的沙漏動畫區塊，覆蓋在 Auth 視窗上 -->
-        <div id="auth-loading-overlay" style="display:none; position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.9); z-index:20; border-radius:20px; flex-direction:column; justify-content:center; align-items:center;">
-            <img src="https://ik.imagekit.io/lql1uveoc/Canceling%20animation%20and%20icons/hourglass-2.gif" style="width:50px; margin-bottom:10px;">
-            <div style="color:#555; font-size:16px; font-weight:bold;">取消中...</div>
+        <div id="auth-loading-overlay" style="display:none; position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.9); z-index:20; border-radius:inherit; flex-direction:column; justify-content:center; align-items:center;">
+            <img src="https://ik.imagekit.io/lql1uveoc/Canceling%20animation%20and%20icons/hourglass-2.gif" style="width:50px; margin-bottom:10px;" class="auth-loading-img">
+            <div style="color:#555; font-size:16px; font-weight:bold;" class="auth-loading-text">取消中...</div>
         </div>
 
-        <div class="result-title" style="margin-bottom: 5px;">取消安全驗證</div>
-        <div class="result-msg" style="font-size: 15px; color:#666;">為確保是您本人的操作，請輸入您預約此課程時使用的 Email：</div>
-        <input type="email" id="auth-email-input" style="width: 100%; padding: 15px; border: 2px solid #ccc; border-radius: 12px; margin-bottom: 20px; font-size: 16px; box-sizing:border-box;" placeholder="例如: name@gmail.com">
+        <button class="modal-close-x" onclick="closeAuthModal()">&times;</button>
+
+        <div class="result-title modal-title-shared" style="margin-bottom: 5px;">取消安全驗證</div>
+        <div class="result-msg modal-msg-shared" style="color:#666;">為確保是您本人的操作，請輸入您預約此課程時使用的 Email：</div>
+        <input type="email" id="auth-email-input" class="auth-input" placeholder="例如: name@gmail.com">
         <div style="display: flex; gap: 10px;">
-            <button style="flex:1; padding: 14px; background: #ddd; color: #333; border:none; border-radius: 12px; font-size: 16px; font-weight:bold; cursor:pointer;" onclick="closeAuthModal()">返回</button>
-            <button style="flex:1; padding: 14px; background: var(--pill-active); color: #fff; border:none; border-radius: 12px; font-size: 16px; font-weight:bold; cursor:pointer;" onclick="submitAuthCancel()">確認取消</button>
+            <button class="auth-btn" style="background: #ddd; color: #333;" onclick="closeAuthModal()">返回</button>
+            <button class="auth-btn" style="background: var(--pill-active); color: #fff;" onclick="submitAuthCancel()">確認取消</button>
         </div>
     </div>
 </div>
@@ -1942,7 +2017,7 @@
       
       if(dayEvents.length === 0) return; // 沒課不顯示
 
-      let html = '<h3 style="margin-top:0; margin-bottom:15px; color:#333; font-size:22px; font-weight:bold; border-bottom:2px solid #f0f0f0; padding-bottom:10px;">課程細節</h3>';
+      let html = '<h3 class="cd-header">課程細節</h3>';
       
       dayEvents.forEach(ev => {
           const d = new Date(ev.start);
@@ -1970,10 +2045,10 @@
           const nowTs = new Date().getTime();
           const isCancellable = (timestamp - nowTs) >= (24 * 60 * 60 * 1000);
 
-          html += `<div style="background:#f8f9fa; border:1px solid #eee; border-radius:12px; padding:15px; margin-bottom:15px; position:relative;">`;
-          html += `<div style="font-size:18px; font-weight:bold; color:var(--selected-bg); margin-bottom:5px;">${displayDate}</div>`;
-          html += `<div style="font-size:16px; color:#333; margin-bottom:5px; font-weight:bold;">${ev.title}</div>`;
-          html += `<div style="font-size:14px; color:#666; margin-bottom:15px;">⏱ 課程時長: 50 分鐘</div>`;
+          html += `<div class="cd-item">`;
+          html += `<div class="cd-date">${displayDate}</div>`;
+          html += `<div class="cd-title">${ev.title}</div>`;
+          html += `<div class="cd-length">⏱ 課程時長: 50 分鐘</div>`;
 
           if (isCancellable) {
               html += `<button onclick="openAuthModal('${eventId}', '${timestamp}', '${titleEscaped}')" class="cancel-class-btn">取消此課程 <span style="font-size:0.7em; font-weight:normal; display:block; margin-top:2px;">(系統支援課前24小時前)</span></button>`;
@@ -2007,8 +2082,10 @@
 
   function submitAuthCancel() {
       const emailInput = document.getElementById('auth-email-input').value.trim();
+      const errorMsg = "您的Email 與當時預約時的Email 不符合，請再次輸入正確Email。<br>或直接與Tony 聯繫。";
+
       if (!emailInput) {
-          showNotice("提示", "您的Email 不符合，請聯繫Tony", true);
+          showNotice("提示", errorMsg, true);
           return;
       }
       
@@ -2036,8 +2113,8 @@
               
               renderSchedCalGrid();
           } else {
-              // 顯示後端傳回來的「您的Email 不符合，請聯繫Tony」
-              showNotice("取消失敗", data.message, true);
+              // 顯示後端傳回來的錯誤，統一覆蓋為自定義的 errorMsg
+              showNotice("取消失敗", errorMsg, true);
           }
       })
       .catch(err => {
@@ -2049,4 +2126,3 @@
 </script>
 </body>
 </html>
-
