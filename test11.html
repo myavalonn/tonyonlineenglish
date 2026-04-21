@@ -1,4 +1,4 @@
- <!-- VERSION 11.51 (Peggy Chatbot Keyboard Fix & Schedule Calendar Orange Time) -->
+ <!-- VERSION 11.53 (Peggy In-App Cancellation Feature Added) -->
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -32,6 +32,16 @@
       --card-evening: #faf0ff;
       --selected-bg: #1d2b8a; /* Updated to Dark Blue */
       --selected-color: #ffffff;
+
+      /* === ADJUST DESKTOP TIME SLOT SIZE HERE (1.5x bigger) === */
+      --desktop-slot-padding: 38px 0;
+      --desktop-slot-font-size: 36px;
+      --desktop-slot-icon-size: 30px;
+
+      /* When there are only a few slots available */
+      --desktop-few-slots-padding: 68px 0;
+      --desktop-few-slots-font-size: 48px;
+      --desktop-few-slots-icon-size: 40px;
     }
    
     html, body {
@@ -465,11 +475,11 @@
         background: #ffffff; box-shadow: 0 4px 12px rgba(0, 122, 255, 0.4);
         animation: none; transform: none !important; z-index: 400;
     }
-    #floating-cart-btn .cal-icon-svg { width: 100%; height: 100%; color: #007aff; }
+    #floating-cart-btn .cal-icon-svg { width: 100%; height: 100%; object-fit: contain; }
     #floating-cart-btn.show { display: block; }
     
     .cart-badge {
-        position: absolute; top: -5px; right: -5px; background: #1d2b8a; color: white;
+        position: absolute; top: -5px; right: -5px; background: #ff5400;; color: white;
         width: 26px; height: 26px; border-radius: 50%; font-size: 14px; font-weight: bold;
         display: flex; justify-content: center; align-items: center; border: 2px solid white; box-shadow: 0 2px 6px rgba(0,0,0,0.2);
     }
@@ -598,17 +608,48 @@
     .sched-cell:hover { background: #f0f0f0; }
     .sched-cell.empty { border: none !important; background: transparent !important; cursor: default; }
     .sched-cell.today { border: 2px solid var(--pill-active); color: var(--pill-active); }
-    .sched-cell.selected { background: var(--selected-bg) !important; color: #fff !important; box-shadow: 0 4px 10px rgba(29, 43, 138, 0.3); }
     
-    .sched-date-num { line-height: 1; }
-    .sched-cell-times { font-size: 13px; color: var(--pill-active); line-height: 1.2; margin-top: 4px; font-weight: bold; text-align: center; }
+    /* New styles for highlighting days with events */
+    .sched-cell.has-events {
+        background-color: #fff0e6 !important;
+        border-color: #ffd8c2 !important;
+    }
+    
+    /* Ensure selection color overrides event highlight */
+    .sched-cell.selected, .sched-cell.has-events.selected { 
+        background: var(--selected-bg) !important; color: #fff !important; 
+        box-shadow: 0 4px 10px rgba(29, 43, 138, 0.3) !important; 
+        border-color: var(--selected-bg) !important; 
+    }
+    
+    .sched-date-num { line-height: 1; pointer-events: none; }
+    .sched-cell-times { font-size: 13px; color: var(--pill-active); line-height: 1.2; margin-top: 4px; font-weight: bold; text-align: center; pointer-events: none; }
     .sched-cell.selected .sched-cell-times { color: #fff; }
     
+    /* Styles for 3-months scroll layout */
+    .sched-month-wrapper { margin-bottom: 30px; }
+    .sched-month-title {
+        font-size: 20px; font-weight: bold; color: #333; margin-bottom: 10px;
+        text-align: left; padding-left: 5px; border-left: 4px solid var(--pill-active); line-height: 1.2;
+    }
+
+    /* ★★★ 取消按鈕與沙漏動畫專屬樣式 ★★★ */
+    .cancel-class-btn {
+        background: #fff0f0; color: #d32f2f; border: 1px solid #ffcdd2;
+        padding: 10px; border-radius: 8px; font-weight: bold; font-size: 16px;
+        cursor: pointer; margin-top: 10px; width: 100%; transition: 0.2s;
+        text-align: center;
+    }
+    .cancel-class-btn:hover { background: #ffebee; }
+    .cancel-class-btn:active { transform: scale(0.98); }
+    .cancel-class-btn small { display: block; font-weight: normal; margin-top: 4px; font-size: 0.75em; opacity: 0.8; }
+
     @media (min-width: 768px) {
         .sched-modal-overlay { background: rgba(0,0,0,0.6); padding: 40px; }
         .sched-modal-container { border-radius: 24px; min-height: auto; padding: 40px; box-shadow: 0 10px 40px rgba(0,0,0,0.3); }
         .sched-cell { height: 90px; padding-top: 12px; font-size: 24px; }
         .sched-cell-times { font-size: 16px; margin-top: 6px; }
+        .sched-month-title { font-size: 24px; margin-bottom: 15px; }
     }
 
     /* === Booking Cal Modal Styles === */
@@ -718,6 +759,8 @@
         .cal-top-right-group .multi-booking-badge { order: 1; }
         .cal-top-right-group .rule-info-wrapper { order: 2; }
     }
+
+    /* SPECIFIC DESKTOP ENLARGEMENTS FOR TIME SLOTS */
     @media (min-width: 1024px) {
         .cal-header-wrap { display: flex; justify-content: center; width: 100%; padding: 40px; }
         .cal-desktop-wrapper { display: flex; flex-direction: row; width: 100%; justify-content: space-between; gap: 40px; }
@@ -725,8 +768,27 @@
         #cal-slots-area { flex: 1; border-top: none; border-left: 1px solid #e0e0e0; padding-left: 40px; margin-top: 0; padding-top: 125px; height: calc(100vh - 80px); overflow-y: auto; padding-bottom: 100px; }
         .cal-cell { height: auto; aspect-ratio: 1.2 / 1; }
         .simple-slot-grid { grid-template-columns: repeat(2, 1fr); }
+        
+        /* Apply the custom scaling variables */
+        .simple-slot-btn { 
+            padding: var(--desktop-slot-padding) !important; 
+            font-size: var(--desktop-slot-font-size) !important; 
+            border-radius: 20px;
+        }
+        .simple-slot-btn .slot-clock-icon { 
+            width: var(--desktop-slot-icon-size) !important; 
+            height: var(--desktop-slot-icon-size) !important; 
+        }
+
         .simple-slot-grid.few-slots { grid-template-columns: repeat(2, 1fr) !important; }
-        .simple-slot-grid.few-slots .simple-slot-btn { padding: 45px 0 !important; font-size: 32px !important; }
+        .simple-slot-grid.few-slots .simple-slot-btn { 
+            padding: var(--desktop-few-slots-padding) !important; 
+            font-size: var(--desktop-few-slots-font-size) !important; 
+        }
+        .simple-slot-grid.few-slots .simple-slot-btn .slot-clock-icon { 
+            width: var(--desktop-few-slots-icon-size) !important; 
+            height: var(--desktop-few-slots-icon-size) !important; 
+        }
     }
     @media (min-width: 1400px) { .simple-slot-grid { grid-template-columns: repeat(3, 1fr); } }
     @media (max-width: 400px) { .full-date-display { font-size: 18px; } }
@@ -749,11 +811,7 @@
 <div id="sched-modal-overlay" class="sched-modal-overlay">
     <div class="sched-modal-container">
         <button class="back-btn" onclick="closeSchedCalendar()" style="margin-bottom: 20px;">❮ 返回</button>
-        <div class="cal-nav" style="margin-bottom: 20px;">
-            <button class="cal-nav-btn" onclick="changeSchedMonth(-1)">❮</button>
-            <div id="sched-cal-title" style="font-size: 24px; font-weight: bold; color: #333;"></div>
-            <button class="cal-nav-btn" onclick="changeSchedMonth(1)">❯</button>
-        </div>
+        <div style="font-size: 24px; font-weight: bold; color: #333; margin-bottom: 20px; text-align: center;">近期排課 (3個月內)</div>
         <div class="sched-cal-grid" id="sched-head-row">
             <div class="cal-head">MON<small>一</small></div>
             <div class="cal-head">TUE<small>二</small></div>
@@ -762,7 +820,7 @@
             <div class="cal-head">FRI<small>五</small></div>
             <div class="cal-head" style="color:#d32f2f;">SAT<small>六</small></div>
         </div>
-        <div id="sched-cal-body" class="sched-cal-grid"></div>
+        <div id="sched-cal-body" style="display: flex; flex-direction: column;"></div>
         <div id="sched-details-area" style="margin-top: 20px; padding: 15px; background: #f8f9fa; border-radius: 16px; min-height: 100px;"></div>
     </div>
 </div>
@@ -801,7 +859,7 @@
         <!-- Peggy Chatbot Icon -->
         <div class="peggy-fab" onclick="togglePeggy()">
             <div class="peggy-img-wrapper">
-                <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/christina-wocintechchat-com-m-0Zx1bDv5BNY-unsplash.jpg" class="peggy-img-crop" alt="Peggy">
+                <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/assistant.png" class="peggy-img-crop" alt="Peggy">
             </div>
             <span class="peggy-badge-el">1</span>
         </div>
@@ -841,9 +899,8 @@
 </div>
 
 <button id="floating-cart-btn" onclick="toggleCartForm()">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="cal-icon-svg">
-        <path fill="currentColor" d="M19,4H18V2H16V4H8V2H6V4H5A2,2 0 0,0 3,6V20A2,2 0 0,0 5,22H19A2,2 0 0,0 21,20V6A2,2 0 0,0 19,4M19,20H5V10H19V20M19,8H5V6H19V8Z" />
-    </svg>
+    <!-- UPDATED CART IMAGE -->
+    <img src="https://ik.imagekit.io/lql1uveoc/Booking%20Website%20%E9%A0%90%E7%B4%84/online-booking.png" class="cal-icon-svg" alt="cart">
     <span class="cart-badge" id="cart-count">0</span>
 </button>
 
@@ -852,9 +909,9 @@
     <div class="peggy-header">
         <div style="display:flex; align-items:center; gap:0.6em;">
             <div class="peggy-img-wrapper" style="width:2.2em; height:2.2em; border:2px solid #fff; flex-shrink:0;">
-                <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/christina-wocintechchat-com-m-0Zx1bDv5BNY-unsplash.jpg" class="peggy-img-crop" alt="Peggy">
+                <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/assistant.png" class="peggy-img-crop" alt="Peggy">
             </div>
-            <span>Peggy 小幫手</span>
+            <span>Peggy</span>
         </div>
         <button onclick="togglePeggy()" style="background:none; border:none; color:#fff; font-size:1.5em; cursor:pointer; line-height:1;">&times;</button>
     </div>
@@ -906,7 +963,7 @@
                         <!-- Peggy Chatbot Icon -->
                         <div class="peggy-fab cal-peggy" onclick="togglePeggy()">
                             <div class="peggy-img-wrapper">
-                                <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/christina-wocintechchat-com-m-0Zx1bDv5BNY-unsplash.jpg" class="peggy-img-crop" alt="Peggy">
+                                <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/assistant.png" class="peggy-img-crop" alt="Peggy">
                             </div>
                             <span class="peggy-badge-el">1</span>
                         </div>
@@ -918,7 +975,7 @@
                 <div class="cal-nav">
                     <button class="cal-nav-btn" id="cal-prev-btn" onclick="changeCalMonth(-1)">❮</button>
                     <div id="cal-title"></div>
-                    <button class="cal-nav-btn" onclick="changeCalMonth(1)">❯</button>
+                    <button class="cal-nav-btn" id="cal-next-btn" onclick="changeCalMonth(1)">❯</button>
                 </div>
                 <div class="cal-grid" id="cal-head-row">
                     <div class="cal-head">MON<small>一</small></div>
@@ -988,6 +1045,7 @@
       }, 6000);
   })();
 
+  // ⚠️ 請確保這裡填入您「更新後的 Google Apps Script 網址」
   const API_URL = "https://script.google.com/macros/s/AKfycbyWvhW6fp_ohPEvPK226KtNiQLCyAVMl77zV0Hq0k_TcEk3F1ni9qVcJystGUovVjTMGQ/exec";
   const STAGE_1_DAYS=3, STAGE_2_DAYS=11, BACKGROUND_BATCH=14, MAX_DAYS=45, MAX_SELECTION=10;
   let cachedData={}, loadedDaysCount=0, selectedDateStr="", selectedSlots=[];
@@ -1210,20 +1268,49 @@
       if(selectedDateStr){selectDatePillUI(selectedDateStr);renderSlots(selectedDateStr);const pill=document.getElementById(`pill-${selectedDateStr}`);if(pill&&pill.classList.contains('loading'))forceLoadDate(selectedDateStr);}
       updateBottomBar();
   }
+
+  // Changed to limit up to 3 months for booking calendar
   function changeCalMonth(n) {
-      if(n<0){
-          const now=new Date(); const curY=now.getFullYear(); const curM=now.getMonth();
-          if(calYear===curY&&calMonth===curM)return;
-          const targetDate=new Date(calYear,calMonth+n,1); const minDate=new Date(curY,curM,1);
-          if(targetDate<minDate)return;
-      }
-      calMonth+=n; if(calMonth>11){calMonth=0;calYear++;}else if(calMonth<0){calMonth=11;calYear--;}
+      const now = new Date();
+      const curY = now.getFullYear();
+      const curM = now.getMonth();
+
+      let targetM = calMonth + n;
+      let targetY = calYear;
+
+      if (targetM > 11) { targetM = 0; targetY++; }
+      else if (targetM < 0) { targetM = 11; targetY--; }
+
+      const targetAbsolute = targetY * 12 + targetM;
+      const currentAbsolute = curY * 12 + curM;
+
+      if (targetAbsolute < currentAbsolute) return; // cannot go to past months
+      if (targetAbsolute > currentAbsolute + 2) return; // max 3 months total (current + next 2)
+
+      calMonth = targetM;
+      calYear = targetY;
       renderCalGrid();
   }
+
   function renderCalGrid() {
       document.getElementById("cal-title").innerText=`${calYear}年 ${calMonth+1}月 ${monthNamesEng[calMonth]}`;
-      const now=new Date(); const prevBtn=document.getElementById('cal-prev-btn');
-      if(calYear===now.getFullYear()&&calMonth===now.getMonth()) prevBtn.classList.add('disabled'); else prevBtn.classList.remove('disabled');
+      
+      const now = new Date();
+      const curAbsolute = now.getFullYear() * 12 + now.getMonth();
+      const calAbsolute = calYear * 12 + calMonth;
+      
+      const prevBtn = document.getElementById('cal-prev-btn');
+      const nextBtn = document.getElementById('cal-next-btn');
+
+      if (prevBtn) {
+          if (calAbsolute <= curAbsolute) prevBtn.classList.add('disabled');
+          else prevBtn.classList.remove('disabled');
+      }
+      if (nextBtn) {
+          if (calAbsolute >= curAbsolute + 2) nextBtn.classList.add('disabled');
+          else nextBtn.classList.remove('disabled');
+      }
+
       const container=document.getElementById("cal-body"); container.innerHTML="";
       const firstDay=new Date(calYear,calMonth,1).getDay(); const daysInMonth=new Date(calYear,calMonth+1,0).getDate();
       const today=new Date(); today.setHours(0,0,0,0);
@@ -1500,7 +1587,7 @@
   const PEGGY_API_URL = "https://script.google.com/macros/s/AKfycbxrSJS4dGWmG_GHpginXD_Nl-R8KaZq-6NHRtBjT8_Q4TWz0pp4yinVaMKibdf-Vz1ELg/exec";
   let peggyInitialized = false;
   let currentStudentSchedule =[]; // Holds fetched classes for calendar
-  let schedCalYear, schedCalMonth, schedSelectedDateStr;
+  let schedSelectedDateStr;
 
   function togglePeggy() {
       const windowEl = document.getElementById('peggy-window');
@@ -1513,7 +1600,7 @@
       }
 
       if(windowEl.classList.contains('show') && !peggyInitialized) {
-          let msg = `嗨！我是Tony線上美語家教 Peggy 👋<br>我可以幫您查詢未來的課程時間與剩餘堂數。<a href="https://tonyonlineenglish.netlify.app/ycs" target="_blank" style="color:var(--blue-main); font-weight:bold; text-decoration:underline;">也可點選這</a><br><br>請問您的<b>英文名字</b>是？`;
+          let msg = `嗨！我是Tony線上美語家教 Peggy 👋<br>我可以幫您查詢未來的課程時間。<a href="https://tonyonlineenglish.netlify.app/ycs" target="_blank" style="color:var(--blue-main); font-weight:bold; text-decoration:underline;">也可點選這</a><br><br>請問您的<b>英文名字</b>是？`;
           addPeggyMessage(msg, 'peggy', 'bottom');
           peggyInitialized = true;
           // 移除自動對焦 focus()，避免在平板/手機上自動喚起鍵盤導致畫面上推
@@ -1714,16 +1801,12 @@
       modal.style.display = 'block';
       
       const now = new Date();
-      schedCalYear = now.getFullYear();
-      schedCalMonth = now.getMonth();
       
       // Auto-select the next upcoming event if possible
       const upcoming = currentStudentSchedule.filter(ev => new Date(ev.start) >= now).sort((a,b) => new Date(a.start) - new Date(b.start));
       
       if (upcoming.length > 0) {
           const nextEventDate = new Date(upcoming[0].start);
-          schedCalYear = nextEventDate.getFullYear();
-          schedCalMonth = nextEventDate.getMonth();
           schedSelectedDateStr = fmt(nextEventDate);
       } else {
           schedSelectedDateStr = fmt(now);
@@ -1737,71 +1820,114 @@
       document.getElementById('sched-modal-overlay').style.display = 'none';
   }
 
-  function changeSchedMonth(n) {
-      schedCalMonth += n;
-      if(schedCalMonth > 11) { schedCalMonth = 0; schedCalYear++; }
-      else if(schedCalMonth < 0) { schedCalMonth = 11; schedCalYear--; }
-      renderSchedCalGrid();
-  }
-
   function renderSchedCalGrid() {
-      document.getElementById("sched-cal-title").innerText = `${schedCalYear}年 ${schedCalMonth+1}月`;
       const container = document.getElementById("sched-cal-body");
       container.innerHTML = "";
 
-      const firstDay = new Date(schedCalYear, schedCalMonth, 1).getDay(); // 0(Sun) - 6(Sat)
-      const daysInMonth = new Date(schedCalYear, schedCalMonth+1, 0).getDate();
-      const todayStr = fmt(new Date());
+      const now = new Date();
+      const todayStr = fmt(now);
+      const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
-      // Since Sunday is removed (first column is Mon), empty cells before the 1st of month:
-      let emptyCells = firstDay === 0 ? 6 : firstDay - 1;
-      for (let i = 0; i < emptyCells; i++) {
-          container.innerHTML += `<div class="sched-cell empty"></div>`;
-      }
-
-      for (let d = 1; d <= daysInMonth; d++) {
-          const currentD = new Date(schedCalYear, schedCalMonth, d);
-          if (currentD.getDay() === 0) continue; // Skip Sunday
-
-          const dateStr = `${schedCalYear}-${String(schedCalMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
-          const cell = document.createElement("div");
-          cell.className = "sched-cell";
-          
-          if (dateStr === todayStr) cell.classList.add("today");
-          if (dateStr === schedSelectedDateStr) cell.classList.add("selected");
-
-          // Check if event exists
-          const dayEvents = currentStudentSchedule.filter(ev => fmt(new Date(ev.start)) === dateStr);
-
-          let cellInner = `<div class="sched-date-num">${d}</div>`;
-
-          if (dayEvents.length > 0) {
-              let timeLabels = dayEvents.map(ev => {
-                  let evD = new Date(ev.start);
-                  let h = evD.getHours();
-                  let m = evD.getMinutes();
-                  let ampm = h >= 12 ? 'pm' : 'am';
-                  h = h % 12 || 12;
-                  let minStr = m > 0 ? `:${m.toString().padStart(2, '0')}` : '';
-                  return `${h}${minStr}${ampm}`;
-              });
-              
-              if (timeLabels.length > 2) timeLabels =[timeLabels[0], timeLabels[1], '...'];
-              cellInner += `<div class="sched-cell-times">${timeLabels.join('<br>')}</div>`;
+      // Loop to render exactly 3 months (Current, Next, Next+1)
+      for (let mOffset = 0; mOffset < 3; mOffset++) {
+          let targetM = now.getMonth() + mOffset;
+          let targetY = now.getFullYear();
+          if (targetM > 11) {
+              targetM -= 12;
+              targetY++;
           }
-          
-          cell.innerHTML = cellInner;
 
-          cell.onclick = () => {
-              schedSelectedDateStr = dateStr;
-              renderSchedCalGrid();
-              showSchedDayDetails(dateStr);
-          };
+          const monthWrapper = document.createElement("div");
+          monthWrapper.className = "sched-month-wrapper";
 
-          container.appendChild(cell);
+          const monthTitle = document.createElement("div");
+          monthTitle.className = "sched-month-title";
+          monthTitle.innerText = `${targetY}年 ${targetM + 1}月`;
+          monthWrapper.appendChild(monthTitle);
+
+          const grid = document.createElement("div");
+          grid.className = "sched-cal-grid";
+
+          const firstDay = new Date(targetY, targetM, 1).getDay(); // 0(Sun) - 6(Sat)
+          const daysInMonth = new Date(targetY, targetM + 1, 0).getDate();
+
+          // Empty cells for the first row (Sun removed -> starts Mon)
+          let emptyCells = firstDay === 0 ? 6 : firstDay - 1;
+          for (let i = 0; i < emptyCells; i++) {
+              grid.innerHTML += `<div class="sched-cell empty"></div>`;
+          }
+
+          for (let d = 1; d <= daysInMonth; d++) {
+              const currentD = new Date(targetY, targetM, d);
+              if (currentD.getDay() === 0) continue; // Skip Sunday
+
+              const dateStr = `${targetY}-${String(targetM + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+              const cell = document.createElement("div");
+              cell.className = "sched-cell";
+              
+              // Gray out past dates
+              if (currentD < todayStart) {
+                  cell.classList.add("past-date");
+                  cell.style.color = "#ccc";
+                  cell.style.background = "#fafafa";
+                  cell.style.pointerEvents = "none";
+              } else {
+                  if (dateStr === todayStr) cell.classList.add("today");
+                  if (dateStr === schedSelectedDateStr) cell.classList.add("selected");
+                  
+                  cell.onclick = function() {
+                      schedSelectedDateStr = dateStr;
+                      
+                      // Just update the visual selected class instead of full re-render
+                      // This prevents resetting scroll position!
+                      document.querySelectorAll('.sched-cell').forEach(c => c.classList.remove('selected'));
+                      this.classList.add('selected');
+                      
+                      showSchedDayDetails(dateStr);
+                      
+                      // Scroll detail area to view for mobile UX
+                      setTimeout(() => {
+                          const detailArea = document.getElementById("sched-details-area");
+                          if(detailArea) detailArea.scrollIntoView({behavior: "smooth", block: "nearest"});
+                      }, 100);
+                  };
+              }
+
+              // Check if event exists
+              const dayEvents = currentStudentSchedule.filter(ev => fmt(new Date(ev.start)) === dateStr);
+
+              let cellInner = `<div class="sched-date-num">${d}</div>`;
+
+              if (dayEvents.length > 0) {
+                  if (currentD >= todayStart) {
+                      cell.classList.add("has-events"); // Apply light orange background for future events
+                  }
+
+                  let timeLabels = dayEvents.map(ev => {
+                      let evD = new Date(ev.start);
+                      let h = evD.getHours();
+                      let m = evD.getMinutes();
+                      let ampm = h >= 12 ? 'pm' : 'am';
+                      h = h % 12 || 12;
+                      let minStr = m > 0 ? `:${m.toString().padStart(2, '0')}` : '';
+                      return `${h}${minStr}${ampm}`;
+                  });
+                  
+                  if (timeLabels.length > 2) timeLabels = [timeLabels[0], timeLabels[1], '...'];
+                  
+                  let colorStyle = (currentD < todayStart) ? 'color: #999;' : '';
+                  cellInner += `<div class="sched-cell-times" style="${colorStyle}">${timeLabels.join('<br>')}</div>`;
+              }
+              
+              cell.innerHTML = cellInner;
+              grid.appendChild(cell);
+          }
+          monthWrapper.appendChild(grid);
+          container.appendChild(monthWrapper);
       }
   }
 
+  // ★★★ UPDATED: Includes logic to render Cancel buttons with sandglass overlays ★★★
   function showSchedDayDetails(dStr) {
       const area = document.getElementById("sched-details-area");
       const titleDate = new Date(dStr);
@@ -1823,15 +1949,81 @@
               hours = hours % 12 || 12;
               const timeStr = `${hours}:${minutes} ${ampm}`;
 
-              html += `<div style="background:#fff; border-left:4px solid var(--selected-bg); box-shadow:0 1px 4px rgba(0,0,0,0.08); padding:12px; margin-bottom:10px; border-radius:8px; display:flex; flex-direction:column; gap:4px;">`;
+              // Get exact timestamp to check if > 24H
+              const eventId = ev.id || ev.eventId;
+              const timestamp = d.getTime();
+              const nowTs = new Date().getTime();
+              const isCancellable = (timestamp - nowTs) >= (24 * 60 * 60 * 1000);
+
+              html += `<div style="background:#fff; border-left:4px solid var(--selected-bg); box-shadow:0 1px 4px rgba(0,0,0,0.08); padding:12px; margin-bottom:10px; border-radius:8px; display:flex; flex-direction:column; gap:4px; position:relative;">`;
+              
+              // Local sandglass overlay (hidden by default)
+              html += `<div id="cancel-loading-${eventId}" style="display:none; position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.9); z-index:10; border-radius:8px; flex-direction:column; justify-content:center; align-items:center;">
+                          <img src="https://ik.imagekit.io/lql1uveoc/Canceling%20animation%20and%20icons/hourglass-2.gif" style="width:40px; margin-bottom:10px;">
+                          <div style="color:#555; font-size:14px; font-weight:bold;">取消中...</div>
+                       </div>`;
+
               html += `<div style="color:var(--selected-bg); font-weight:bold; font-size:16px;">${timeStr}</div>`;
               html += `<div style="color:#222; font-size:14px; font-weight:bold;">${ev.title}</div>`;
               html += `<div style="color:#666; font-size:13px; margin-top:2px;">⏱ 課程時長: 50 分鐘</div>`;
+              
+              // Render cancellation button
+              if (eventId) {
+                  if (isCancellable) {
+                      html += `<button onclick="doAjaxCancel('${eventId}', '${timestamp}')" class="cancel-class-btn">取消此課程 <small>(系統支援課前24小時前取消)</small></button>`;
+                  } else {
+                      html += `<button disabled class="cancel-class-btn" style="background:#f5f5f5; color:#999; border-color:#ddd; cursor:not-allowed;">無法取消 <small>(距離開課不足24小時，請聯繫Tony)</small></button>`;
+                  }
+              }
+
               html += `</div>`;
           });
       }
       area.innerHTML = html;
   }
+
+  // ★★★ NEW: The function that handles the background cancellation API call ★★★
+  function doAjaxCancel(eventId, timestamp) {
+      if (!eventId || eventId === "undefined") {
+          showNotice("錯誤", "無法取得此課程ID，請透過 Email 內的連結取消。", true);
+          return;
+      }
+      
+      if (!confirm("確定要取消這堂課嗎？取消後無法復原。")) return;
+      
+      const loadingOverlay = document.getElementById(`cancel-loading-${eventId}`);
+      if(loadingOverlay) loadingOverlay.style.display = 'flex';
+      
+      // Make sure API_URL is pointing to your updated Google Apps Script
+      const url = `${API_URL}?action=ajaxCancel&eid=${encodeURIComponent(eventId)}&ts=${timestamp}`;
+      
+      fetch(url)
+      .then(res => res.json())
+      .then(data => {
+          if(loadingOverlay) loadingOverlay.style.display = 'none';
+          
+          if(data.success) {
+              showNotice("取消成功", "課程已成功從日曆中移除，並已寄送確認信給您。");
+              
+              // Immedately remove from local memory to update screen without reloading page
+              currentStudentSchedule = currentStudentSchedule.filter(ev => {
+                  let evId = ev.id || ev.eventId;
+                  return evId !== eventId;
+              });
+              
+              // Re-render
+              showSchedDayDetails(schedSelectedDateStr);
+              renderSchedCalGrid();
+          } else {
+              showNotice("取消失敗", data.message, true);
+          }
+      })
+      .catch(err => {
+          if(loadingOverlay) loadingOverlay.style.display = 'none';
+          showNotice("錯誤", "網路連線異常，請稍後再試。", true);
+      });
+  }
+
 </script>
 </body>
 </html>
