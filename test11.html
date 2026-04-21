@@ -1,5 +1,4 @@
- <!-- VERSION 11.53 (Peggy In-App Cancellation Feature Added) -->
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
@@ -633,16 +632,24 @@
         text-align: left; padding-left: 5px; border-left: 4px solid var(--pill-active); line-height: 1.2;
     }
 
-    /* ★★★ 取消按鈕與沙漏動畫專屬樣式 ★★★ */
+    /* ★★★ 取消按鈕專屬樣式 ★★★ */
     .cancel-class-btn {
         background: #fff0f0; color: #d32f2f; border: 1px solid #ffcdd2;
-        padding: 10px; border-radius: 8px; font-weight: bold; font-size: 16px;
+        padding: 12px 10px; border-radius: 8px; font-weight: bold; font-size: 16px;
         cursor: pointer; margin-top: 10px; width: 100%; transition: 0.2s;
         text-align: center;
     }
-    .cancel-class-btn:hover { background: #ffebee; }
-    .cancel-class-btn:active { transform: scale(0.98); }
-    .cancel-class-btn small { display: block; font-weight: normal; margin-top: 4px; font-size: 0.75em; opacity: 0.8; }
+    .cancel-class-btn:hover:not(:disabled) { background: #ffebee; }
+    .cancel-class-btn:active:not(:disabled) { transform: scale(0.98); }
+
+    /* ★★★ 驗證彈窗專屬樣式 ★★★ */
+    .auth-modal-content {
+        background: #fff; width: 95%; max-width: 400px;
+        border-radius: 20px; padding: 30px 25px; text-align: center;
+        box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        animation: modalFadeIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        box-sizing: border-box;
+    }
 
     @media (min-width: 768px) {
         .sched-modal-overlay { background: rgba(0,0,0,0.6); padding: 40px; }
@@ -804,6 +811,19 @@
         <div id="res-title" class="result-title">預約成功</div>
         <div id="res-msg" class="result-msg">時段已預約，請檢查您的電子郵件確認信。</div>
         <button class="result-close-btn" onclick="closeResultModal()">確定 OK</button>
+    </div>
+</div>
+
+<!-- ★★★ 取消安全驗證視窗 ★★★ -->
+<div id="auth-modal" class="result-overlay" style="z-index: 10005;">
+    <div class="auth-modal-content">
+        <div class="result-title" style="margin-bottom: 5px;">取消安全驗證</div>
+        <div class="result-msg" style="font-size: 15px; color:#666;">為確保是您本人的操作，請輸入您預約此課程時使用的 Email：</div>
+        <input type="email" id="auth-email-input" style="width: 100%; padding: 15px; border: 2px solid #ccc; border-radius: 12px; margin-bottom: 20px; font-size: 16px; box-sizing:border-box;" placeholder="例如: name@gmail.com">
+        <div style="display: flex; gap: 10px;">
+            <button style="flex:1; padding: 14px; background: #ddd; color: #333; border:none; border-radius: 12px; font-size: 16px; font-weight:bold; cursor:pointer;" onclick="closeAuthModal()">返回</button>
+            <button style="flex:1; padding: 14px; background: var(--pill-active); color: #fff; border:none; border-radius: 12px; font-size: 16px; font-weight:bold; cursor:pointer;" onclick="submitAuthCancel()">確認取消</button>
+        </div>
     </div>
 </div>
 
@@ -1045,7 +1065,7 @@
       }, 6000);
   })();
 
-  // ⚠️ 請確保這裡填入您「更新後的 Google Apps Script 網址」
+  // ⚠️ 請確保這裡填入您最新的 GAS Web App URL
   const API_URL = "https://script.google.com/macros/s/AKfycbyWvhW6fp_ohPEvPK226KtNiQLCyAVMl77zV0Hq0k_TcEk3F1ni9qVcJystGUovVjTMGQ/exec";
   const STAGE_1_DAYS=3, STAGE_2_DAYS=11, BACKGROUND_BATCH=14, MAX_DAYS=45, MAX_SELECTION=10;
   let cachedData={}, loadedDaysCount=0, selectedDateStr="", selectedSlots=[];
@@ -1635,7 +1655,6 @@
       processChatInput(text);
   }
 
-  // Modified addPeggyMessage to support 'top' alignment for long results
   function addPeggyMessage(htmlContent, sender, scrollMode = 'bottom') {
       const body = document.getElementById('peggy-body');
       const div = document.createElement('div');
@@ -1645,7 +1664,6 @@
 
       if (scrollMode === 'top') {
           setTimeout(() => {
-              // Scroll so the top of the new message is visible
               body.scrollTo({ top: div.offsetTop - 15, behavior: 'smooth' });
           }, 50);
       } else if (scrollMode === 'bottom') {
@@ -1785,7 +1803,6 @@
           html += `</div>`;
           
           hidePeggyTyping();
-          // Use 'top' alignment for this long message so the user reads from the top down
           addPeggyMessage(html, 'peggy', 'top');
           
       } catch (e) {
@@ -1851,7 +1868,6 @@
           const firstDay = new Date(targetY, targetM, 1).getDay(); // 0(Sun) - 6(Sat)
           const daysInMonth = new Date(targetY, targetM + 1, 0).getDate();
 
-          // Empty cells for the first row (Sun removed -> starts Mon)
           let emptyCells = firstDay === 0 ? 6 : firstDay - 1;
           for (let i = 0; i < emptyCells; i++) {
               grid.innerHTML += `<div class="sched-cell empty"></div>`;
@@ -1865,7 +1881,6 @@
               const cell = document.createElement("div");
               cell.className = "sched-cell";
               
-              // Gray out past dates
               if (currentD < todayStart) {
                   cell.classList.add("past-date");
                   cell.style.color = "#ccc";
@@ -1877,15 +1892,9 @@
                   
                   cell.onclick = function() {
                       schedSelectedDateStr = dateStr;
-                      
-                      // Just update the visual selected class instead of full re-render
-                      // This prevents resetting scroll position!
                       document.querySelectorAll('.sched-cell').forEach(c => c.classList.remove('selected'));
                       this.classList.add('selected');
-                      
                       showSchedDayDetails(dateStr);
-                      
-                      // Scroll detail area to view for mobile UX
                       setTimeout(() => {
                           const detailArea = document.getElementById("sched-details-area");
                           if(detailArea) detailArea.scrollIntoView({behavior: "smooth", block: "nearest"});
@@ -1893,14 +1902,12 @@
                   };
               }
 
-              // Check if event exists
               const dayEvents = currentStudentSchedule.filter(ev => fmt(new Date(ev.start)) === dateStr);
-
               let cellInner = `<div class="sched-date-num">${d}</div>`;
 
               if (dayEvents.length > 0) {
                   if (currentD >= todayStart) {
-                      cell.classList.add("has-events"); // Apply light orange background for future events
+                      cell.classList.add("has-events"); 
                   }
 
                   let timeLabels = dayEvents.map(ev => {
@@ -1914,7 +1921,6 @@
                   });
                   
                   if (timeLabels.length > 2) timeLabels = [timeLabels[0], timeLabels[1], '...'];
-                  
                   let colorStyle = (currentD < todayStart) ? 'color: #999;' : '';
                   cellInner += `<div class="sched-cell-times" style="${colorStyle}">${timeLabels.join('<br>')}</div>`;
               }
@@ -1927,7 +1933,7 @@
       }
   }
 
-  // ★★★ UPDATED: Includes logic to render Cancel buttons with sandglass overlays ★★★
+  // ★★★ 無論有沒有 EventId 都保證顯示取消按鈕 ★★★
   function showSchedDayDetails(dStr) {
       const area = document.getElementById("sched-details-area");
       const titleDate = new Date(dStr);
@@ -1949,31 +1955,30 @@
               hours = hours % 12 || 12;
               const timeStr = `${hours}:${minutes} ${ampm}`;
 
-              // Get exact timestamp to check if > 24H
-              const eventId = ev.id || ev.eventId;
+              // 擷取參數給取消功能使用
+              const eventId = ev.id || ev.eventId || "undefined";
+              const titleEscaped = (ev.title || "").replace(/'/g, "\\'");
               const timestamp = d.getTime();
               const nowTs = new Date().getTime();
               const isCancellable = (timestamp - nowTs) >= (24 * 60 * 60 * 1000);
 
-              html += `<div style="background:#fff; border-left:4px solid var(--selected-bg); box-shadow:0 1px 4px rgba(0,0,0,0.08); padding:12px; margin-bottom:10px; border-radius:8px; display:flex; flex-direction:column; gap:4px; position:relative;">`;
+              html += `<div style="background:#fff; border-left:4px solid var(--selected-bg); box-shadow:0 1px 4px rgba(0,0,0,0.08); padding:12px; margin-bottom:10px; border-radius:8px; display:flex; flex-direction:column; gap:4px; position:relative; overflow:hidden;">`;
               
-              // Local sandglass overlay (hidden by default)
-              html += `<div id="cancel-loading-${eventId}" style="display:none; position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.9); z-index:10; border-radius:8px; flex-direction:column; justify-content:center; align-items:center;">
+              // 覆蓋在卡片上的沙漏特效 (預設隱藏)
+              html += `<div id="cancel-loading-${timestamp}" style="display:none; position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.9); z-index:10; flex-direction:column; justify-content:center; align-items:center;">
                           <img src="https://ik.imagekit.io/lql1uveoc/Canceling%20animation%20and%20icons/hourglass-2.gif" style="width:40px; margin-bottom:10px;">
                           <div style="color:#555; font-size:14px; font-weight:bold;">取消中...</div>
                        </div>`;
 
               html += `<div style="color:var(--selected-bg); font-weight:bold; font-size:16px;">${timeStr}</div>`;
               html += `<div style="color:#222; font-size:14px; font-weight:bold;">${ev.title}</div>`;
-              html += `<div style="color:#666; font-size:13px; margin-top:2px;">⏱ 課程時長: 50 分鐘</div>`;
+              html += `<div style="color:#666; font-size:13px; margin-top:2px; margin-bottom:8px;">⏱ 課程時長: 50 分鐘</div>`;
               
-              // Render cancellation button
-              if (eventId) {
-                  if (isCancellable) {
-                      html += `<button onclick="doAjaxCancel('${eventId}', '${timestamp}')" class="cancel-class-btn">取消此課程 <small>(系統支援課前24小時前取消)</small></button>`;
-                  } else {
-                      html += `<button disabled class="cancel-class-btn" style="background:#f5f5f5; color:#999; border-color:#ddd; cursor:not-allowed;">無法取消 <small>(距離開課不足24小時，請聯繫Tony)</small></button>`;
-                  }
+              // ★ 直接將按鈕印出來，加入彈窗驗證功能
+              if (isCancellable) {
+                  html += `<button onclick="openAuthModal('${eventId}', '${timestamp}', '${titleEscaped}')" class="cancel-class-btn">取消此課程 <span style="font-size:0.75em; font-weight:normal;">（系統支援課前24小時前）</span></button>`;
+              } else {
+                  html += `<button disabled class="cancel-class-btn" style="background:#f5f5f5; color:#999; border-color:#ddd; cursor:not-allowed;">無法取消 <span style="font-size:0.75em; font-weight:normal;">（距離開課不足24小時）</span></button>`;
               }
 
               html += `</div>`;
@@ -1982,20 +1987,35 @@
       area.innerHTML = html;
   }
 
-  // ★★★ NEW: The function that handles the background cancellation API call ★★★
-  function doAjaxCancel(eventId, timestamp) {
-      if (!eventId || eventId === "undefined") {
-          showNotice("錯誤", "無法取得此課程ID，請透過 Email 內的連結取消。", true);
+  // ★★★ 處理驗證與發送背景取消請求的邏輯 ★★★
+  let tempCancelData = null; // 暫存欲取消的課程資料
+
+  function openAuthModal(eventId, timestamp, eventTitle) {
+      tempCancelData = { eventId, timestamp, eventTitle };
+      document.getElementById('auth-email-input').value = ''; // 清空上次輸入
+      document.getElementById('auth-modal').style.display = 'flex';
+  }
+
+  function closeAuthModal() {
+      document.getElementById('auth-modal').style.display = 'none';
+      tempCancelData = null;
+  }
+
+  function submitAuthCancel() {
+      const emailInput = document.getElementById('auth-email-input').value.trim();
+      if (!emailInput) {
+          alert('請輸入 Email！');
           return;
       }
       
-      if (!confirm("確定要取消這堂課嗎？取消後無法復原。")) return;
+      closeAuthModal();
+      const { eventId, timestamp, eventTitle } = tempCancelData;
       
-      const loadingOverlay = document.getElementById(`cancel-loading-${eventId}`);
+      const loadingOverlay = document.getElementById(`cancel-loading-${timestamp}`);
       if(loadingOverlay) loadingOverlay.style.display = 'flex';
       
-      // Make sure API_URL is pointing to your updated Google Apps Script
-      const url = `${API_URL}?action=ajaxCancel&eid=${encodeURIComponent(eventId)}&ts=${timestamp}`;
+      // 將 email 作為參數傳給 GAS
+      const url = `${API_URL}?action=ajaxCancel&eid=${encodeURIComponent(eventId)}&ts=${timestamp}&title=${encodeURIComponent(eventTitle)}&email=${encodeURIComponent(emailInput)}`;
       
       fetch(url)
       .then(res => res.json())
@@ -2005,17 +2025,16 @@
           if(data.success) {
               showNotice("取消成功", "課程已成功從日曆中移除，並已寄送確認信給您。");
               
-              // Immedately remove from local memory to update screen without reloading page
+              // 從畫面上即時移除該課程
               currentStudentSchedule = currentStudentSchedule.filter(ev => {
-                  let evId = ev.id || ev.eventId;
-                  return evId !== eventId;
+                  return new Date(ev.start).getTime() !== parseInt(timestamp);
               });
               
-              // Re-render
+              // 重新渲染課表
               showSchedDayDetails(schedSelectedDateStr);
               renderSchedCalGrid();
           } else {
-              showNotice("取消失敗", data.message, true);
+              showNotice("驗證失敗", data.message, true);
           }
       })
       .catch(err => {
@@ -2027,4 +2046,3 @@
 </script>
 </body>
 </html>
- 
