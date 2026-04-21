@@ -30,13 +30,15 @@
       --card-morning: #eaffea;
       --card-afternoon: #eefaff;
       --card-evening: #faf0ff;
-      --selected-bg: #1d2b8a;
+      --selected-bg: #1d2b8a; /* Updated to Dark Blue */
       --selected-color: #ffffff;
 
+      /* === ADJUST DESKTOP TIME SLOT SIZE HERE (1.5x bigger) === */
       --desktop-slot-padding: 38px 0;
       --desktop-slot-font-size: 36px;
       --desktop-slot-icon-size: 30px;
 
+      /* When there are only a few slots available */
       --desktop-few-slots-padding: 68px 0;
       --desktop-few-slots-font-size: 48px;
       --desktop-few-slots-icon-size: 40px;
@@ -51,6 +53,7 @@
     }
     button { font-family: inherit; outline: none; -webkit-tap-highlight-color: transparent; }
 
+    /* === Custom Result Modal === */
     .result-overlay {
         display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
         background: rgba(0,0,0,0.7); z-index: 10000;
@@ -276,6 +279,9 @@
     
     @keyframes spin { to { transform: rotate(360deg); } }
 
+    /* =========================================================
+       INTRO ANIMATION
+       ========================================================= */
     #loading-overlay {
         position: fixed; top: 0; left: 0; width: 100%; height: 100%;
         background-color: #0d1117; z-index: 9999;
@@ -306,6 +312,7 @@
     .step.active { opacity: 1; transform: scale(1.05); text-shadow: 0 0 10px currentColor; }
     .step.completed { opacity: 0.5; transform: scale(1); box-shadow: none; background: rgba(255,255,255,0.02); }
 
+    /* === Confirmation Form === */
     .page-form {
         display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
         background: #fff; z-index: 2000; padding: 0; box-sizing: border-box; overflow: hidden;
@@ -387,10 +394,7 @@
         .rule-popover .rule-logo { width: 60px !important; }
     }
     @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-```
 
-### Part 2 of 3
-```html
     @media (min-width: 768px) {
         .page-form { background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); padding: 20px; overflow-y: auto; }
         .page-form.active { display: flex !important; justify-content: center; align-items: flex-start; animation: fadeIn 0.3s; padding-top: 50px; }
@@ -475,7 +479,7 @@
     #floating-cart-btn.show { display: block; }
     
     .cart-badge {
-        position: absolute; top: -5px; right: -5px; background: #ff5400; color: white;
+        position: absolute; top: -5px; right: -5px; background: #1d2b8a; color: white;
         width: 26px; height: 26px; border-radius: 50%; font-size: 14px; font-weight: bold;
         display: flex; justify-content: center; align-items: center; border: 2px solid white; box-shadow: 0 2px 6px rgba(0,0,0,0.2);
     }
@@ -526,7 +530,7 @@
 
     /* --- Chat Window Scaling Logic --- */
     #peggy-window {
-        font-size: 15px;
+        font-size: 15px; /* Base mobile font size increased */
         position: fixed; bottom: 100px; left: 20px; width: 340px; max-height: 65vh; height: 500px;
         background: #fff; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.3);
         display: flex; flex-direction: column; z-index: 1001; overflow: hidden;
@@ -544,6 +548,7 @@
     .peggy-footer button { background: var(--pill-active); color: #fff; border: none; padding: 0 1.3em; height: 3em; border-radius: 1.5em; cursor: pointer; font-weight: bold; font-size: 1.07em; transition: transform 0.1s; }
     .peggy-footer button:active { transform: scale(0.95); }
     
+    /* Mobile: Full width message bubbles for larger text readability */
     .msg-peggy { align-self: flex-start; background: #fff; color: #222; padding: 0.85em 1.15em; border-radius: 1.3em 1.3em 1.3em 0; max-width: 100%; width: 100%; box-shadow: 0 2px 8px rgba(0,0,0,0.06); line-height: 1.5; font-size: 1.05em; border: 1px solid #eee; box-sizing: border-box; }
     .msg-user { align-self: flex-end; background: var(--blue-main); color: #fff; padding: 0.7em 1.15em; border-radius: 1.3em 1.3em 0 1.3em; max-width: 100%; box-shadow: 0 2px 8px rgba(0, 122, 255, 0.2); font-size: 1.05em; box-sizing: border-box; }
 
@@ -564,6 +569,7 @@
             border-radius: 30px;
         }
         
+        /* Desktop/Tablet: Revert bubble width to normal chat style */
         .msg-peggy { max-width: 85%; width: auto; font-size: 1em; }
         .msg-user { max-width: 80%; font-size: 1em; }
     }
@@ -603,11 +609,13 @@
     .sched-cell.empty { border: none !important; background: transparent !important; cursor: default; }
     .sched-cell.today { border: 2px solid var(--pill-active); color: var(--pill-active); }
     
+    /* New styles for highlighting days with events */
     .sched-cell.has-events {
         background-color: #fff0e6 !important;
         border-color: #ffd8c2 !important;
     }
     
+    /* Ensure selection color overrides event highlight */
     .sched-cell.selected, .sched-cell.has-events.selected { 
         background: var(--selected-bg) !important; color: #fff !important; 
         box-shadow: 0 4px 10px rgba(29, 43, 138, 0.3) !important; 
@@ -618,6 +626,7 @@
     .sched-cell-times { font-size: 13px; color: var(--pill-active); line-height: 1.2; margin-top: 4px; font-weight: bold; text-align: center; pointer-events: none; }
     .sched-cell.selected .sched-cell-times { color: #fff; }
     
+    /* Styles for 3-months scroll layout */
     .sched-month-wrapper { margin-bottom: 30px; }
     .sched-month-title {
         font-size: 20px; font-weight: bold; color: #333; margin-bottom: 10px;
@@ -749,6 +758,7 @@
         .cal-cell { height: auto; aspect-ratio: 1.2 / 1; }
         .simple-slot-grid { grid-template-columns: repeat(2, 1fr); }
         
+        /* Apply the custom scaling variables */
         .simple-slot-btn { 
             padding: var(--desktop-slot-padding) !important; 
             font-size: var(--desktop-slot-font-size) !important; 
@@ -776,6 +786,7 @@
 <body>
 <div style="position:fixed; top:0; left:0; width:100vw; height:140px; background:#060b1c; z-index:-1; pointer-events:none;"></div>
 
+<!-- Custom Notification Modal -->
 <div id="result-modal" class="result-overlay">
     <div class="result-content">
         <div id="res-icon" class="result-icon">🎉</div>
@@ -785,6 +796,7 @@
     </div>
 </div>
 
+<!-- Student Schedule Calendar Modal -->
 <div id="sched-modal-overlay" class="sched-modal-overlay">
     <div class="sched-modal-container">
         <button class="back-btn" onclick="closeSchedCalendar()" style="margin-bottom: 20px;">❮ 返回</button>
@@ -802,6 +814,7 @@
     </div>
 </div>
 
+<!-- INTRO ANIMATION -->
 <div id="loading-overlay">
     <div class="intro-container">
         <div class="step color-1" id="step1">Tony 線上美語家教</div>
@@ -818,6 +831,7 @@
         <div class="duration-hint">50分/堂</div>
     </div>
     <div class="controls-container">
+        <!-- New Badge -->
         <div class="multi-booking-badge" id="main-mode-toggle">一次多堂預約</div>
         <button class="cal-btn-trigger" onclick="openCalendar()">📅 月曆</button>
         <div class="rule-info-wrapper">
@@ -831,6 +845,7 @@
                  <a href="https://tonyonlineenglish.netlify.app/regulations" target="_blank" class="rule-details-link">詳情請點這裡</a>
              </div>
         </div>
+        <!-- Peggy Chatbot Icon -->
         <div class="peggy-fab" onclick="togglePeggy()">
             <div class="peggy-img-wrapper">
                 <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/assistant.png" class="peggy-img-crop" alt="Peggy">
@@ -873,10 +888,12 @@
 </div>
 
 <button id="floating-cart-btn" onclick="toggleCartForm()">
+    <!-- UPDATED CART IMAGE -->
     <img src="https://ik.imagekit.io/lql1uveoc/Booking%20Website%20%E9%A0%90%E7%B4%84/online-booking.png" class="cal-icon-svg" alt="cart">
     <span class="cart-badge" id="cart-count">0</span>
 </button>
 
+<!-- === Peggy Chatbot Window === -->
 <div id="peggy-window">
     <div class="peggy-header">
         <div style="display:flex; align-items:center; gap:0.6em;">
@@ -893,6 +910,7 @@
         <button onclick="sendPeggyMessage()">查詢</button>
     </div>
 </div>
+<!-- ========================== -->
 
 <div id="p-form" class="page-form">
   <div class="form-box">
@@ -918,6 +936,7 @@
                     <button class="back-btn" onclick="closeCalendar()" style="margin-bottom:0;">✕</button>
                     <div style="display:flex; align-items:center; gap: 10px;" class="cal-top-right-group">
                         <div class="cal-duration-hint">50分/堂</div>
+                        <!-- New Badge -->
                         <div class="multi-booking-badge" id="cal-mode-toggle">一次多堂預約</div>
                         <div class="rule-info-wrapper">
                              <div class="rule-info-btn" onclick="toggleRules('cal-rules')"><span class="btn-exclaim">!</span><span class="btn-label">規範</span></div>
@@ -930,6 +949,7 @@
                                  <a href="https://tonyonlineenglish.netlify.app/regulations" target="_blank" class="rule-details-link">詳情請點這裡</a>
                              </div>
                         </div>
+                        <!-- Peggy Chatbot Icon -->
                         <div class="peggy-fab cal-peggy" onclick="togglePeggy()">
                             <div class="peggy-img-wrapper">
                                 <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/assistant.png" class="peggy-img-crop" alt="Peggy">
@@ -963,10 +983,7 @@
         </div>
     </div>
 </div>
-```
 
-### Part 3 of 3
-```html
 <script>
   const CLOCK_ICON_URL = "https://ik.imagekit.io/lql1uveoc/clock-4.png?updatedAt=1774630976142";
 
@@ -974,7 +991,7 @@
   function showNotice(title, message, isError = false, callback = null) {
       document.getElementById('res-icon').innerText = isError ? "⚠️" : "🎉";
       document.getElementById('res-title').innerText = title;
-      document.getElementById('res-msg').innerHTML = message; 
+      document.getElementById('res-msg').innerHTML = message; // Updated to render HTML
       document.getElementById('result-modal').style.display = 'flex';
       modalCloseCallback = callback;
   }
@@ -983,6 +1000,7 @@
       if (modalCloseCallback) { modalCloseCallback(); modalCloseCallback = null; }
   }
 
+  // === INTRO ANIMATION ===
   let isLoadingStepsDone = false; let isCalendarDataReady = false;
   let introCurrentIdx = 0; const introAnimationSpeed = 400;
 
@@ -1041,6 +1059,7 @@
     setTimeout(() => { const cal=document.getElementById("cal-modal"); if(cal) cal.scrollIntoView({behavior:"smooth",block:"start"}); }, 600);
   };
 
+  // === INTRO ANIMATION: pulse the badge ===
   function playIntroAnimation() {
       const badges = document.querySelectorAll('.multi-booking-badge');
       const infoBtns = document.querySelectorAll('.rule-info-btn');
@@ -1080,6 +1099,7 @@
           if (!e.target.closest("#hot-panel")) hotPanel.classList.remove("show");
       }
       
+      // Close Peggy window if clicked outside
       const peggyWindow = document.getElementById('peggy-window');
       if (peggyWindow && peggyWindow.classList.contains('show')) {
           if (!e.target.closest('#peggy-window') && !e.target.closest('.peggy-fab')) {
@@ -1237,6 +1257,7 @@
       updateBottomBar();
   }
 
+  // Changed to limit up to 3 months for booking calendar
   function changeCalMonth(n) {
       const now = new Date();
       const curY = now.getFullYear();
@@ -1251,8 +1272,8 @@
       const targetAbsolute = targetY * 12 + targetM;
       const currentAbsolute = curY * 12 + curM;
 
-      if (targetAbsolute < currentAbsolute) return; 
-      if (targetAbsolute > currentAbsolute + 2) return; 
+      if (targetAbsolute < currentAbsolute) return; // cannot go to past months
+      if (targetAbsolute > currentAbsolute + 2) return; // max 3 months total (current + next 2)
 
       calMonth = targetM;
       calYear = targetY;
@@ -1548,9 +1569,12 @@
   function formatTime12H(timeStr){if(!timeStr)return"";const[h,m]=timeStr.split(':');let hour=parseInt(h);const suffix=hour>=12?'PM':'AM';hour=hour%12||12;return`${hour}:${m} ${suffix}`;}
   function fmt(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
 
+  // ==========================================
+  // === Peggy Chatbot & Schedule Calendar ===
+  // ==========================================
   const PEGGY_API_URL = "https://script.google.com/macros/s/AKfycbxrSJS4dGWmG_GHpginXD_Nl-R8KaZq-6NHRtBjT8_Q4TWz0pp4yinVaMKibdf-Vz1ELg/exec";
   let peggyInitialized = false;
-  let currentStudentSchedule =[]; 
+  let currentStudentSchedule =[]; // Holds fetched classes for calendar
   let schedSelectedDateStr;
 
   function togglePeggy() {
@@ -1567,6 +1591,7 @@
           let msg = `嗨！我是Tony線上美語家教 Peggy 👋<br>我可以幫您查詢未來的課程時間。<a href="https://tonyonlineenglish.netlify.app/ycs" target="_blank" style="color:var(--blue-main); font-weight:bold; text-decoration:underline;">也可點選這</a><br><br>請問您的<b>英文名字</b>是？`;
           addPeggyMessage(msg, 'peggy', 'bottom');
           peggyInitialized = true;
+          // 移除自動對焦 focus()，避免在平板/手機上自動喚起鍵盤導致畫面上推
       }
   }
 
@@ -1582,6 +1607,7 @@
       addPeggyMessage(text, 'user', 'bottom');
       input.value = '';
       
+      // Eason Rule Integration
       if (text.toLowerCase() === 'eason' && !skipEasonCheck) {
           showPeggyTyping();
           setTimeout(() => {
@@ -1597,6 +1623,7 @@
       processChatInput(text);
   }
 
+  // Modified addPeggyMessage to support 'top' alignment for long results
   function addPeggyMessage(htmlContent, sender, scrollMode = 'bottom') {
       const body = document.getElementById('peggy-body');
       const div = document.createElement('div');
@@ -1606,6 +1633,7 @@
 
       if (scrollMode === 'top') {
           setTimeout(() => {
+              // Scroll so the top of the new message is visible
               body.scrollTo({ top: div.offsetTop - 15, behavior: 'smooth' });
           }, 50);
       } else if (scrollMode === 'bottom') {
@@ -1672,6 +1700,7 @@
               }
           }
 
+          // Filter for the schedule calendar (only today and future)
           const now = new Date();
           const todayStart = new Date(now);
           todayStart.setHours(0,0,0,0);
@@ -1736,6 +1765,7 @@
                   html += `<div style="font-size:0.85em; color:#888; text-align:center; margin-top:0.4em;">僅顯示最近 8 筆預約</div>`;
               }
 
+              // Student Schedule Calendar Button
               html += `<button onclick="openSchedCalendar()" style="width:100%; padding:0.8em; margin-top:0.8em; border-radius:0.7em; background:var(--blue-main); color:#fff; border:none; font-weight:bold; font-size:1.05em; cursor:pointer; box-shadow: 0 4px 10px rgba(0,122,255,0.3); transition:0.2s;">📅 檢視完整月曆課表</button>`;
           } else {
               html += `<div style="margin-top:0.8em; font-size:1em; color:#555; background:#fff0f5; padding:0.7em; border-radius:0.7em; border:1px solid #ffebee;">目前沒有近期預約的課程喔！<br><a href="javascript:void(0)" onclick="togglePeggy(); window.scrollTo(0,0);" style="color:var(--pill-active); font-weight:bold; display:inline-block; margin-top:0.4em;">現在去預約 ❯</a></div>`;
@@ -1743,6 +1773,7 @@
           html += `</div>`;
           
           hidePeggyTyping();
+          // Use 'top' alignment for this long message so the user reads from the top down
           addPeggyMessage(html, 'peggy', 'top');
           
       } catch (e) {
@@ -1752,12 +1783,14 @@
       }
   }
 
+  // === Student Schedule Calendar Logic ===
   function openSchedCalendar() {
       const modal = document.getElementById('sched-modal-overlay');
       modal.style.display = 'block';
       
       const now = new Date();
       
+      // Auto-select the next upcoming event if possible
       const upcoming = currentStudentSchedule.filter(ev => new Date(ev.start) >= now).sort((a,b) => new Date(a.start) - new Date(b.start));
       
       if (upcoming.length > 0) {
@@ -1783,6 +1816,7 @@
       const todayStr = fmt(now);
       const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
 
+      // Loop to render exactly 3 months (Current, Next, Next+1)
       for (let mOffset = 0; mOffset < 3; mOffset++) {
           let targetM = now.getMonth() + mOffset;
           let targetY = now.getFullYear();
@@ -1802,9 +1836,10 @@
           const grid = document.createElement("div");
           grid.className = "sched-cal-grid";
 
-          const firstDay = new Date(targetY, targetM, 1).getDay(); 
+          const firstDay = new Date(targetY, targetM, 1).getDay(); // 0(Sun) - 6(Sat)
           const daysInMonth = new Date(targetY, targetM + 1, 0).getDate();
 
+          // Empty cells for the first row (Sun removed -> starts Mon)
           let emptyCells = firstDay === 0 ? 6 : firstDay - 1;
           for (let i = 0; i < emptyCells; i++) {
               grid.innerHTML += `<div class="sched-cell empty"></div>`;
@@ -1812,12 +1847,13 @@
 
           for (let d = 1; d <= daysInMonth; d++) {
               const currentD = new Date(targetY, targetM, d);
-              if (currentD.getDay() === 0) continue; 
+              if (currentD.getDay() === 0) continue; // Skip Sunday
 
               const dateStr = `${targetY}-${String(targetM + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
               const cell = document.createElement("div");
               cell.className = "sched-cell";
               
+              // Gray out past dates
               if (currentD < todayStart) {
                   cell.classList.add("past-date");
                   cell.style.color = "#ccc";
@@ -1830,11 +1866,14 @@
                   cell.onclick = function() {
                       schedSelectedDateStr = dateStr;
                       
+                      // Just update the visual selected class instead of full re-render
+                      // This prevents resetting scroll position!
                       document.querySelectorAll('.sched-cell').forEach(c => c.classList.remove('selected'));
                       this.classList.add('selected');
                       
                       showSchedDayDetails(dateStr);
                       
+                      // Scroll detail area to view for mobile UX
                       setTimeout(() => {
                           const detailArea = document.getElementById("sched-details-area");
                           if(detailArea) detailArea.scrollIntoView({behavior: "smooth", block: "nearest"});
@@ -1842,13 +1881,14 @@
                   };
               }
 
+              // Check if event exists
               const dayEvents = currentStudentSchedule.filter(ev => fmt(new Date(ev.start)) === dateStr);
 
               let cellInner = `<div class="sched-date-num">${d}</div>`;
 
               if (dayEvents.length > 0) {
                   if (currentD >= todayStart) {
-                      cell.classList.add("has-events"); 
+                      cell.classList.add("has-events"); // Apply light orange background for future events
                   }
 
                   let timeLabels = dayEvents.map(ev => {
