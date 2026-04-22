@@ -70,7 +70,6 @@
     .result-title { font-size: 24px; font-weight: 800; margin-bottom: 12px; color: #111; }
     .result-msg { font-size: 17px; color: #444; line-height: 1.6; margin-bottom: 30px; word-wrap: break-word; }
 
-    /* ★ FIX: Booking success time detail font size matches header */
     .result-msg .booked-times-list { font-size: inherit; }
     .result-msg .booked-times-list div { font-size: inherit; }
 
@@ -80,7 +79,7 @@
         cursor: pointer; width: 100%; box-shadow: 0 4px 12px rgba(255, 84, 0, 0.3); box-sizing: border-box;
     }
 
-    /* Modal Close Button — always stays inside .result-content */
+    /* Modal Close Button */
     .modal-close-x {
         position: absolute; top: 15px; right: 15px;
         background: none; border: none; font-size: 28px; color: #999;
@@ -104,7 +103,6 @@
     }
     .auth-input.error { border-color: #d32f2f; }
 
-    /* ★ NEW: Inline auth error message */
     #auth-error-msg {
         display: none; color: #d32f2f; font-size: 14px; font-weight: bold;
         margin-bottom: 16px; text-align: left; line-height: 1.5;
@@ -433,7 +431,6 @@
         }
         .rule-popover .rule-logo { width: 60px !important; }
 
-        /* ★ FIX Mobile: class detail modal — X stays inside modal box */
         #class-detail-modal .result-content { position: relative; }
         #class-detail-modal .modal-close-x {
             position: absolute !important;
@@ -470,7 +467,6 @@
         
         .multi-booking-badge { height: 48px; padding: 0 20px; border-radius: 24px; font-size: 18px; border-width: 3px; }
 
-        /* Modal Enlargement Tablet */
         .result-content, .auth-modal-content { max-width: 630px; padding: 60px 38px; border-radius: 36px; }
         .result-title { font-size: 36px; margin-bottom: 18px; }
         .result-msg { font-size: 26px; margin-bottom: 45px; }
@@ -479,14 +475,12 @@
 
         .modal-close-x { top: 20px; right: 20px; font-size: 42px; font-weight: 900; }
 
-        /* ★ FIX Tablet/Desktop: cd items match surrounding font size */
         .cd-header { font-size: 33px; padding-bottom: 15px; margin-bottom: 22px; }
         .cd-item { padding: 22px; margin-bottom: 22px; border-radius: 18px; }
         .cd-date { font-size: 27px; margin-bottom: 8px; }
         .cd-title { font-size: 24px; margin-bottom: 8px; }
         .cd-length { font-size: 21px; margin-bottom: 22px; }
 
-        /* ★ FIX: cancel button font matches surrounding on tablet/desktop */
         .cancel-class-btn {
             font-size: 24px !important;
             padding: 18px 15px !important;
@@ -501,7 +495,6 @@
         .auth-loading-img { width: 75px !important; margin-bottom: 15px !important; }
         .auth-loading-text { font-size: 24px !important; }
 
-        /* ★ FIX: booking success booked-times font size consistent on tablet */
         .result-msg .booked-times-box { font-size: inherit !important; }
         .result-msg .booked-times-box div { font-size: inherit !important; }
         .result-msg .booked-header { font-size: inherit !important; font-weight: bold; }
@@ -515,7 +508,6 @@
         .page-title { font-size: 42px; }
         .back-btn { font-size: 24px; top: 40px; left: 40px; padding: 12px 24px; }
 
-        /* Modal Enlargement Desktop */
         .result-content, .auth-modal-content { max-width: 840px; padding: 80px 50px; border-radius: 48px; }
         .result-title { font-size: 48px; margin-bottom: 24px; }
         .result-msg { font-size: 34px; margin-bottom: 60px; }
@@ -530,7 +522,6 @@
         .cd-title { font-size: 32px; margin-bottom: 10px; }
         .cd-length { font-size: 28px; margin-bottom: 30px; }
 
-        /* ★ FIX: cancel button font matches surrounding on desktop */
         .cancel-class-btn {
             font-size: 32px !important;
             padding: 24px 20px !important;
@@ -545,7 +536,6 @@
         .auth-loading-img { width: 100px !important; margin-bottom: 20px !important; }
         .auth-loading-text { font-size: 32px !important; }
 
-        /* ★ FIX: booking success booked-times font size consistent on desktop */
         .result-msg .booked-times-box { font-size: inherit !important; }
         .result-msg .booked-times-box div { font-size: inherit !important; }
         .result-msg .booked-header { font-size: inherit !important; font-weight: bold; }
@@ -944,7 +934,6 @@
 <!-- 安全驗證視窗 -->
 <div id="auth-modal" class="result-overlay" style="z-index: 10005;">
     <div class="auth-modal-content modal-box-shared">
-        <!-- 沙漏動畫區塊 -->
         <div id="auth-loading-overlay" style="display:none; position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.9); z-index:20; border-radius:inherit; flex-direction:column; justify-content:center; align-items:center;">
             <img src="https://ik.imagekit.io/lql1uveoc/Canceling%20animation%20and%20icons/hourglass-2.gif" style="width:50px; margin-bottom:10px;" class="auth-loading-img">
             <div style="color:#555; font-size:16px; font-weight:bold;" class="auth-loading-text">取消中...</div>
@@ -955,7 +944,6 @@
         <div class="result-title modal-title-shared" style="margin-bottom: 5px;">取消安全驗證</div>
         <div class="result-msg modal-msg-shared" style="color:#666; margin-bottom: 15px;">為確保是您本人的操作，請輸入您預約此課程時使用的 Email：</div>
         <input type="email" id="auth-email-input" class="auth-input" placeholder="例如: name@gmail.com">
-        <!-- ★ NEW: Inline error message shown right below the input -->
         <div id="auth-error-msg"></div>
         <div style="display: flex; gap: 10px;">
             <button class="auth-btn" style="background: #ddd; color: #333;" onclick="closeAuthModal()">返回</button>
@@ -965,18 +953,11 @@
 </div>
 
 <!-- Student Schedule Calendar Modal -->
-<div id="sched-modal-overlay" class="sched-modal-overlay">
+<div id="sched-modal-overlay" class="sched-modal-overlay" onclick="if(event.target === this) closeSchedCalendar()">
     <div class="sched-modal-container">
+        <button class="modal-close-x" onclick="closeSchedCalendar()" style="top: 15px; right: 15px; font-size: 36px;">&times;</button>
         <button class="back-btn" onclick="closeSchedCalendar()" style="margin-bottom: 20px;">❮ 返回</button>
         <div style="font-size: 24px; font-weight: bold; color: #333; margin-bottom: 20px; text-align: center;">近期排課 (3個月內)</div>
-        <div class="sched-cal-grid" id="sched-head-row">
-            <div class="cal-head">MON<small>一</small></div>
-            <div class="cal-head">TUE<small>二</small></div>
-            <div class="cal-head">WED<small>三</small></div>
-            <div class="cal-head">THU<small>四</small></div>
-            <div class="cal-head">FRI<small>五</small></div>
-            <div class="cal-head" style="color:#d32f2f;">SAT<small>六</small></div>
-        </div>
         <div id="sched-cal-body" style="display: flex; flex-direction: column;"></div>
     </div>
 </div>
@@ -1203,7 +1184,6 @@
   let hotPanelShown=false, calYear, calMonth;
   let limitDate = new Date(); limitDate.setDate(limitDate.getDate()+MAX_DAYS); limitDate.setHours(23,59,59,999);
 
-  // ★ Background polling: silently refresh slots every 5 seconds
   let bgPollingInterval = null;
   function startBackgroundPolling() {
       if (bgPollingInterval) return;
@@ -1213,7 +1193,6 @@
   }
 
   function silentRefreshVisibleDate() {
-      // Only refresh if we have a selected date and not currently mid-booking
       if (!selectedDateStr) return;
       const dStr = selectedDateStr;
       fetch(`${API_URL}?action=getBatchSlots&startDate=${dStr}&days=1`)
@@ -1223,16 +1202,13 @@
             const oldSlots = (cachedData[dStr] && cachedData[dStr].slots) ? cachedData[dStr].slots : [];
             const newSlots = data[dStr].slots || [];
 
-            // Check if anything actually changed (by comparing timestamps)
             const oldTs = oldSlots.map(s => s.timestamp).sort().join(',');
             const newTs = newSlots.map(s => s.timestamp).sort().join(',');
 
-            if (oldTs === newTs) return; // No change, don't re-render
+            if (oldTs === newTs) return;
 
-            // Merge new server data in
             cachedData[dStr] = data[dStr];
 
-            // Remove any selected slots that have disappeared from server
             const newTsSet = new Set(newSlots.map(s => String(s.timestamp)));
             const removedCount = selectedSlots.filter(s => s.dateStr === dStr && !newTsSet.has(String(s.timestamp))).length;
             if (removedCount > 0) {
@@ -1240,14 +1216,13 @@
                 updateBottomBar();
             }
 
-            // Silently re-render the slot view
             if (document.getElementById("cal-modal").classList.contains("active")) {
                 renderSlotsInsideCalendar(dStr);
             } else {
                 renderSlots(dStr);
             }
         })
-        .catch(() => {}); // Silent failure - do nothing on error
+        .catch(() => {});
   }
 
   window.onload = function() {
@@ -1265,8 +1240,6 @@
     openCalendar();
     document.getElementById("p-main").style.display = "none";
     setTimeout(() => { const cal=document.getElementById("cal-modal"); if(cal) cal.scrollIntoView({behavior:"smooth",block:"start"}); }, 600);
-
-    // ★ Start background polling after initial load
     setTimeout(startBackgroundPolling, 8000);
   };
 
@@ -1593,7 +1566,6 @@
   }
   function closeForm(){document.getElementById("p-form").classList.remove("active");}
 
-  // ★ Helper to build booked-times HTML block with consistent font size
   function buildBookedTimesHtml(slots) {
       let html = '<div class="booked-times-box" style="text-align: left; background: #f3f4f6; padding: 12px 15px; border-radius: 12px; margin: 15px 0;">';
       html += '<div class="booked-header" style="margin-bottom:8px; color:#111;">已預約以下時段：</div>';
@@ -1617,7 +1589,6 @@
        if(res.bookingSummary){
            const summary=res.bookingSummary;
            if(summary.failCount===0){
-               // ★ FIX: use buildBookedTimesHtml so font size inherits from result-msg
                let successMsg = `確認信已寄至您的信箱。<br>` + buildBookedTimesHtml(selectedSlots);
                successMsg += `<div style="margin-top: 15px; color: #d32f2f; font-weight:bold;">`;
                successMsg += `請假/調整請於24小時前提出。<br>`;
@@ -1862,6 +1833,9 @@
       document.querySelectorAll('.peggy-hidden-booking').forEach(el => {
           el.style.display = 'block';
       });
+      document.querySelectorAll('.peggy-stats-block').forEach(el => {
+          el.style.display = 'block';
+      });
       const btn = document.getElementById('peggy-show-more-btn');
       if(btn) btn.style.display = 'none';
   }
@@ -1907,21 +1881,7 @@
           currentStudentSchedule = scheduleData.filter(ev => new Date(ev.start) >= todayStart); 
 
           let html = `<div style="text-align:left;">`;
-          html += `<div style="font-weight:bold; font-size:1.15em; margin-bottom:0.5em; color:var(--selected-bg);">查詢結果：${name}</div>`;
-          
-          if (countData && !countData.error && countData.total !== "" && countData.total !== null) {
-              let displayTotal = countData.total;
-              let displayCompleted = countData.completed;
-              if (!isNaN(countData.total) && Number(countData.total) >= 100) displayTotal = '會員';
-              if (!isNaN(countData.completed) && Number(countData.completed) >= 100) displayCompleted = '訂閱';
-
-              html += `<div style="font-size:1em; background:#eefaff; padding:0.7em; border-radius:0.7em; border:1px solid #bce6ff; color:#0056b3;">`;
-              html += `<span style="display:inline-block; margin-bottom:0.3em;">總堂數: <b>${displayTotal}</b> | 已完成: <b>${displayCompleted}</b></span><br>`;
-              html += `<span style="display:inline-flex; align-items:center; color:#d32f2f; font-weight:bold; font-size:1.07em;">剩餘堂數: ${countData.remaining} <span onclick="openSchedCalendar()" style="cursor:pointer; margin-left:8px; font-size:1.2em; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));" title="檢視完整月曆課表">📅</span></span>`;
-              html += `</div>`;
-          } else {
-              html += `<div style="font-size:0.95em; color:#888;">查無您的堂數資料或剩餘堂數為0。</div>`;
-          }
+          html += `<div style="font-size:1.15em; margin-bottom:0.8em; color:var(--text-main); font-weight:bold;">Hello ${name} <br>請點選 <img src="https://ik.imagekit.io/lql1uveoc/Booking%20Website%20%E9%A0%90%E7%B4%84/calendar-3.png" style="width:24px; vertical-align:middle; cursor:pointer; margin-left:4px; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));" onclick="openSchedCalendar()"></div>`;
           
           const limitDateObj = new Date();
           limitDateObj.setDate(now.getDate() + 60);
@@ -1929,14 +1889,13 @@
           const upcoming = scheduleData.filter(ev => new Date(ev.start) >= now && new Date(ev.start) <= limitDateObj)
                                        .sort((a,b) => new Date(a.start) - new Date(b.start));
           
+          let maxShow = 4; // 預設只顯示4筆
+
           if (upcoming.length > 0) {
-              html += `<div style="margin-top:0.8em; font-weight:bold; font-size:1.07em; color:var(--blue-main);">近期預約課程：</div>`;
+              html += `<div style="font-weight:bold; font-size:1.07em; color:var(--blue-main);">近期預約課程：</div>`;
               html += `<div style="margin-top:0.4em;">`;
               
-              let maxShow = 8;
-              let displayList = upcoming.slice(0, maxShow);
-              
-              displayList.forEach((ev, idx) => {
+              upcoming.slice(0, 8).forEach((ev, idx) => {
                   const d = new Date(ev.start);
                   const month = d.getMonth() + 1;
                   const dateObj = d.getDate();
@@ -1948,8 +1907,8 @@
                   hours = hours % 12 || 12;
                   const timeStr = `${hours}:${minutes} ${ampm}`;
                   
-                  let displayStyle = idx >= 4 ? 'display:none;' : '';
-                  let extraClass = idx >= 4 ? 'peggy-hidden-booking' : '';
+                  let displayStyle = idx >= maxShow ? 'display:none;' : '';
+                  let extraClass = idx >= maxShow ? 'peggy-hidden-booking' : '';
                   
                   html += `<div class="${extraClass}" style="background:#fff; border-left:4px solid var(--selected-bg); box-shadow:0 1px 4px rgba(0,0,0,0.08); padding:0.6em 0.7em; margin-bottom:0.6em; border-radius:0.6em; font-size:1em; ${displayStyle}">`;
                   html += `<div style="color:var(--selected-bg); font-weight:bold;">${month}/${dateObj} (週${day}) ${timeStr}</div>`;
@@ -1957,18 +1916,37 @@
                   html += `</div>`;
               });
               html += `</div>`;
-              
-              if (displayList.length > 4) {
-                  html += `<button id="peggy-show-more-btn" onclick="showMorePeggyBookings()" style="width:100%; margin-top:0.5em; padding:0.6em; background:transparent; border:2px solid var(--blue-main); color:var(--blue-main); border-radius:0.7em; cursor:pointer; font-weight:bold; font-size:0.95em; transition:0.2s;">顯示更多</button>`;
-              }
-              if (upcoming.length > 8) {
-                  html += `<div style="font-size:0.85em; color:#888; text-align:center; margin-top:0.4em;">僅顯示最近 8 筆預約</div>`;
-              }
-
-              html += `<button onclick="openSchedCalendar()" style="width:100%; padding:0.8em; margin-top:0.8em; border-radius:0.7em; background:var(--blue-main); color:#fff; border:none; font-weight:bold; font-size:1.05em; cursor:pointer; box-shadow: 0 4px 10px rgba(0,122,255,0.3); transition:0.2s;">📅 檢視完整月曆課表</button>`;
           } else {
               html += `<div style="margin-top:0.8em; font-size:1em; color:#555; background:#fff0f5; padding:0.7em; border-radius:0.7em; border:1px solid #ffebee;">目前沒有近期預約的課程喔！<br><a href="javascript:void(0)" onclick="togglePeggy(); window.scrollTo(0,0);" style="color:var(--pill-active); font-weight:bold; display:inline-block; margin-top:0.4em;">現在去預約 ❯</a></div>`;
           }
+
+          let showStatsImmediately = upcoming.length <= maxShow;
+          let statsDisplay = showStatsImmediately ? 'block' : 'none';
+
+          html += `<div class="peggy-stats-block" style="display:${statsDisplay}; margin-top:1em;">`;
+          if (countData && !countData.error && countData.total !== "" && countData.total !== null) {
+              let displayTotal = countData.total;
+              let displayCompleted = countData.completed;
+              if (!isNaN(countData.total) && Number(countData.total) >= 100) displayTotal = '會員';
+              if (!isNaN(countData.completed) && Number(countData.completed) >= 100) displayCompleted = '訂閱';
+
+              html += `<div style="font-size:1em; background:#eefaff; padding:0.7em; border-radius:0.7em; border:1px solid #bce6ff; color:#0056b3;">`;
+              html += `<span style="display:inline-block; margin-bottom:0.3em;">總堂數: <b>${displayTotal}</b> | 已完成: <b>${displayCompleted}</b></span><br>`;
+              html += `<span style="display:inline-flex; align-items:center; color:#d32f2f; font-weight:bold; font-size:1.07em;">剩餘堂數: ${countData.remaining} </span>`;
+              html += `</div>`;
+          } else {
+              html += `<div style="font-size:0.95em; color:#888;">查無您的堂數資料或剩餘堂數為0。</div>`;
+          }
+          html += `</div>`;
+          
+          if (upcoming.length > maxShow) {
+              html += `<button id="peggy-show-more-btn" onclick="showMorePeggyBookings()" style="width:100%; margin-top:0.5em; padding:0.6em; background:transparent; border:2px solid var(--blue-main); color:var(--blue-main); border-radius:0.7em; cursor:pointer; font-weight:bold; font-size:0.95em; transition:0.2s;">顯示更多</button>`;
+          }
+          
+          if (upcoming.length > 8) {
+              html += `<div class="peggy-hidden-booking" style="display:none; font-size:0.85em; color:#888; text-align:center; margin-top:0.4em;">僅顯示最近 8 筆預約</div>`;
+          }
+
           html += `</div>`;
           
           hidePeggyTyping();
@@ -1999,6 +1977,17 @@
       const now = new Date();
       const todayStr = fmt(now);
       const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+      const todayDayIndex = now.getDay();
+
+      // Define static headers for MON - SAT
+      const headers = [
+          { id: 1, eng: 'MON', chi: '一', color: '#000' },
+          { id: 2, eng: 'TUE', chi: '二', color: '#000' },
+          { id: 3, eng: 'WED', chi: '三', color: '#000' },
+          { id: 4, eng: 'THU', chi: '四', color: '#000' },
+          { id: 5, eng: 'FRI', chi: '五', color: '#000' },
+          { id: 6, eng: 'SAT', chi: '六', color: '#d32f2f' }
+      ];
 
       for (let mOffset = 0; mOffset < 3; mOffset++) {
           let targetM = now.getMonth() + mOffset;
@@ -2016,70 +2005,116 @@
           monthTitle.innerText = `${targetY}年 ${targetM + 1}月`;
           monthWrapper.appendChild(monthTitle);
 
-          const grid = document.createElement("div");
+          // Append dynamic header for each month
+          let headerHtml = `<div class="sched-cal-grid" style="margin-bottom:10px;">`;
+          headers.forEach(h => {
+              let activeClass = (h.id === todayDayIndex) ? ' active-day' : '';
+              let isSat = (h.id === 6) ? ' sat-head' : '';
+              headerHtml += `<div class="cal-head${activeClass}${isSat}" style="color:${h.color};">
+                               ${h.eng}<small>${h.chi}</small>
+                             </div>`;
+          });
+          headerHtml += `</div>`;
+          monthWrapper.insertAdjacentHTML('beforeend', headerHtml);
+
+          let grid = document.createElement("div");
           grid.className = "sched-cal-grid";
 
-          const firstDay = new Date(targetY, targetM, 1).getDay();
           const daysInMonth = new Date(targetY, targetM + 1, 0).getDate();
-
-          let emptyCells = firstDay === 0 ? 6 : firstDay - 1;
-          for (let i = 0; i < emptyCells; i++) {
-              grid.innerHTML += `<div class="sched-cell empty"></div>`;
+          
+          // Chunk month days into weeks (Sun-Sat)
+          let weeks = [];
+          let currentWeek = Array(7).fill(null);
+          for(let d=1; d<=daysInMonth; d++) {
+              let dateObj = new Date(targetY, targetM, d);
+              currentWeek[dateObj.getDay()] = d;
+              if(dateObj.getDay() === 6 || d === daysInMonth) {
+                  weeks.push([...currentWeek]);
+                  currentWeek = Array(7).fill(null);
+              }
           }
 
-          for (let d = 1; d <= daysInMonth; d++) {
-              const currentD = new Date(targetY, targetM, d);
-              if (currentD.getDay() === 0) continue;
+          let renderedWeeks = 0;
 
-              const dateStr = `${targetY}-${String(targetM + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
-              const cell = document.createElement("div");
-              cell.className = "sched-cell";
-              
-              if (currentD < todayStart) {
-                  cell.classList.add("past-date");
-                  cell.style.color = "#ccc";
-                  cell.style.background = "#fafafa";
-                  cell.style.pointerEvents = "none";
-              } else {
-                  if (dateStr === todayStr) cell.classList.add("today");
-                  
-                  cell.onclick = function() {
-                      document.querySelectorAll('.sched-cell').forEach(c => c.classList.remove('selected'));
-                      this.classList.add('selected');
-                      openClassDetailModal(dateStr);
-                  };
-              }
-
-              const dayEvents = currentStudentSchedule.filter(ev => fmt(new Date(ev.start)) === dateStr);
-
-              let cellInner = `<div class="sched-date-num">${d}</div>`;
-
-              if (dayEvents.length > 0) {
-                  if (currentD >= todayStart) {
-                      cell.classList.add("has-events");
+          // Render valid weeks
+          weeks.forEach(week => {
+              let lastDayOfWeek = null;
+              for(let i=6; i>=0; i--) {
+                  if(week[i] !== null) {
+                      lastDayOfWeek = new Date(targetY, targetM, week[i]);
+                      break;
                   }
-
-                  let timeLabels = dayEvents.map(ev => {
-                      let evD = new Date(ev.start);
-                      let h = evD.getHours();
-                      let m = evD.getMinutes();
-                      let ampm = h >= 12 ? 'pm' : 'am';
-                      h = h % 12 || 12;
-                      let minStr = m > 0 ? `:${m.toString().padStart(2, '0')}` : '';
-                      return `${h}${minStr}${ampm}`;
-                  });
-                  
-                  if (timeLabels.length > 2) timeLabels = [timeLabels[0], timeLabels[1], '...'];
-                  
-                  let colorStyle = (currentD < todayStart) ? 'color: #999;' : '';
-                  cellInner += `<div class="sched-cell-times" style="${colorStyle}">${timeLabels.join('<br>')}</div>`;
               }
-              
-              cell.innerHTML = cellInner;
-              grid.appendChild(cell);
+
+              // Hide past weeks entirely
+              if(lastDayOfWeek && lastDayOfWeek < todayStart) {
+                  return;
+              }
+
+              renderedWeeks++;
+
+              // Render Mon - Sat (index 1 to 6)
+              for(let i=1; i<=6; i++) {
+                  let d = week[i];
+                  if(d === null) {
+                      grid.innerHTML += `<div class="sched-cell empty"></div>`;
+                  } else {
+                      const currentD = new Date(targetY, targetM, d);
+                      const dateStr = `${targetY}-${String(targetM + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+                      const cell = document.createElement("div");
+                      cell.className = "sched-cell";
+                      
+                      if (currentD < todayStart) {
+                          cell.classList.add("past-date");
+                          cell.style.color = "#ccc";
+                          cell.style.background = "#fafafa";
+                          cell.style.pointerEvents = "none";
+                          cell.style.borderColor = "transparent";
+                      } else {
+                          if (dateStr === todayStr) cell.classList.add("today");
+                          
+                          cell.onclick = function() {
+                              document.querySelectorAll('.sched-cell').forEach(c => c.classList.remove('selected'));
+                              this.classList.add('selected');
+                              openClassDetailModal(dateStr);
+                          };
+                      }
+
+                      const dayEvents = currentStudentSchedule.filter(ev => fmt(new Date(ev.start)) === dateStr);
+                      let cellInner = `<div class="sched-date-num">${d}</div>`;
+
+                      if (dayEvents.length > 0) {
+                          if (currentD >= todayStart) {
+                              cell.classList.add("has-events");
+                          }
+
+                          let timeLabels = dayEvents.map(ev => {
+                              let evD = new Date(ev.start);
+                              let h = evD.getHours();
+                              let m = evD.getMinutes();
+                              let ampm = h >= 12 ? 'pm' : 'am';
+                              h = h % 12 || 12;
+                              let minStr = m > 0 ? `:${m.toString().padStart(2, '0')}` : '';
+                              return `${h}${minStr}${ampm}`;
+                          });
+                          
+                          if (timeLabels.length > 2) timeLabels = [timeLabels[0], timeLabels[1], '...'];
+                          
+                          let colorStyle = (currentD < todayStart) ? 'color: #999;' : '';
+                          cellInner += `<div class="sched-cell-times" style="${colorStyle}">${timeLabels.join('<br>')}</div>`;
+                      }
+                      
+                      cell.innerHTML = cellInner;
+                      grid.appendChild(cell);
+                  }
+              }
+          });
+
+          // Only append the month container if it has visible weeks
+          if (renderedWeeks > 0) {
+              monthWrapper.appendChild(grid);
+              container.appendChild(monthWrapper);
           }
-          monthWrapper.appendChild(grid);
-          container.appendChild(monthWrapper);
       }
   }
 
@@ -2136,13 +2171,11 @@
       document.getElementById('class-detail-modal').style.display = 'none';
   }
 
-  // ★ Auth modal with inline error — no nested modal
   let tempCancelData = null;
 
   function openAuthModal(eventId, timestamp, eventTitle) {
       tempCancelData = { eventId, timestamp, eventTitle };
       document.getElementById('auth-email-input').value = '';
-      // Clear any previous error
       const errEl = document.getElementById('auth-error-msg');
       errEl.style.display = 'none';
       errEl.innerHTML = '';
@@ -2155,7 +2188,6 @@
       tempCancelData = null;
   }
 
-  // ★ Show error inline inside auth modal, not as a separate popup
   function showAuthError(msg) {
       const errEl = document.getElementById('auth-error-msg');
       errEl.innerHTML = msg;
@@ -2174,7 +2206,6 @@
       
       const { eventId, timestamp, eventTitle } = tempCancelData;
       
-      // Clear previous error
       const errEl = document.getElementById('auth-error-msg');
       errEl.style.display = 'none';
       document.getElementById('auth-email-input').classList.remove('error');
@@ -2200,7 +2231,6 @@
               
               renderSchedCalGrid();
           } else {
-              // ★ FIX: Show error inline inside auth modal — visible immediately
               showAuthError(errorMsg);
           }
       })
@@ -2213,3 +2243,4 @@
 </script>
 </body>
 </html>
+--- END OF FILE text/plain ---
