@@ -129,6 +129,9 @@
 <div class="grid" id="grid"></div>
 
 <script>
+// =========================================================
+// REPLACE THIS URL WITH YOUR NEW APPS SCRIPT WEB APP URL
+// =========================================================
 const API = 'https://script.google.com/macros/s/AKfycby0MWwKq9bericZPj5NYy4cOkwVa0pUMGgr6p0SS7M_JZiV_dl5L16jSDgjJtpOK6e5dA/exec';
 
 const DAY_NAMES = ['MON','TUE','WED','THU','FRI','SAT'];
@@ -137,157 +140,7 @@ const CN_DAYS = ['日','一','二','三','四','五','六'];
 const EN_DAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 
 let currentMonday = null;
-let cachedWeekData = null;
 
-// ===== 初始化 =====
-window.addEventListener('DOMContentLoaded', () => {
-  currentMonday = getMondayOf(new Date());
-  updateCurrentDateBar();
-  setInterval(updateCurrentDateBar, 60000);
-
-  renderTodayInstant();   // ⭐ 先顯示今天
-  loadWeekAsync();        // ⭐ 背景載入
-});
-
-// ===== 立即顯示今天（無API）=====
-function renderTodayInstant() {
-  const grid = document.getElementById('grid');
-  const banner = document.getElementById('todayBanner');
-
-  grid.innerHTML = '';
-  banner.style.display = 'block';
-  banner.innerHTML = `載入今日課程中…`;
-
-  const today = new Date();
-  const dStr = fmt(today);
-
-  const card = document.createElement('div');
-  card.className = 'card today';
-
-  card.innerHTML = `
-    <div class="card-head">
-      <div class="day-label">
-        <span class="day-en">${DAY_NAMES[today.getDay()-1]}</span>
-        <span class="day-zh">${DAY_NAMES_ZH[today.getDay()-1]}</span>
-      </div>
-      <div class="day-num">${today.getMonth()+1}/${today.getDate()}</div>
-      <div class="card-end-time">讀取中...</div>
-    </div>
-    <div class="student-list">
-      <div class="no-class">LOADING</div>
-    </div>
-  `;
-
-  grid.appendChild(card);
-}
-
-// ===== 背景載入 =====
-function loadWeekAsync() {
-  const script = document.createElement('script');
-  const cbName = '_cb_' + Date.now();
-
-  window[cbName] = (json) => {
-    delete window[cbName];
-    script.remove();
-
-    if (json.error) {
-      showError(json.error);
-    } else {
-      cachedWeekData = json.data;
-      renderGridProgressive(json.data);
-    }
-  };
-
-  script.src = `${API}?date=${currentMonday}&callback=${cbName}`;
-  document.head.appendChild(script);
-}
-
-// ===== 漸進渲染 =====
-function renderGridProgressive(data) {
-  const grid = document.getElementById('grid');
-  const banner = document.getElementById('todayBanner');
-  const todayStr = fmt(new Date());
-
-  grid.innerHTML = '';
-  banner.style.display = 'none';
-
-  // ⭐ 先畫 today
-  renderSingleDay(todayStr, data, true);
-
-  // ⭐ 其餘延遲載入（感覺更快）
-  let delay = 80;
-
-  for (let i = 0; i < 6; i++) {
-    const d = new Date(currentMonday + 'T00:00:00');
-    d.setDate(d.getDate() + i);
-    const dateStr = fmt(d);
-
-    if (dateStr === todayStr) continue;
-
-    setTimeout(() => {
-      renderSingleDay(dateStr, data, false);
-    }, delay);
-
-    delay += 80;
-  }
-}
-
-// ===== 單日渲染 =====
-function renderSingleDay(dateStr, data, isToday) {
-  const grid = document.getElementById('grid');
-  const banner = document.getElementById('todayBanner');
-
-  const d = new Date(dateStr + 'T00:00:00');
-  const events = data[dateStr] || [];
-
-  const last = events.length > 0 ? events[events.length - 1] : null;
-
-  let endText = '無課程';
-
-  if (last) {
-    endText = last.endTime || last.time.split('-').pop().trim();
-
-    if (isToday) {
-      banner.innerHTML = `今天最後一堂課程結束於 <span class="highlight-time">${endText}</span>`;
-      banner.style.display = 'block';
-    }
-  } else if (isToday) {
-    banner.innerHTML = `今天沒有課程`;
-    banner.style.display = 'block';
-  }
-
-  const card = document.createElement('div');
-  card.className = `card${isToday ? ' today' : ''}`;
-
-  card.innerHTML = `
-    <div class="card-head">
-      <div class="day-label">
-        <span class="day-en">${DAY_NAMES[(d.getDay()+6)%7]}</span>
-        <span class="day-zh">${DAY_NAMES_ZH[(d.getDay()+6)%7]}</span>
-      </div>
-      <div class="day-num">${d.getMonth()+1}/${d.getDate()}</div>
-      <div class="card-end-time">最後結束 ${endText}</div>
-    </div>
-    <div class="student-list">
-      ${last ? `
-        <div class="s-row">
-          <div class="s-info">
-            <div class="s-name">${last.title}</div>
-            <div class="s-time">${last.time}</div>
-          </div>
-        </div>` 
-      : `<div class="no-class">NO CLASS</div>`}
-    </div>
-  `;
-
-  if (isToday) {
-    grid.prepend(card); // ⭐ 今天永遠第一個
-  } else {
-    grid.appendChild(card);
-  }
-}
-
-// ===== 工具 =====
 function updateCurrentDateBar() {
   const now = new Date();
   const dow = now.getDay();
@@ -295,24 +148,137 @@ function updateCurrentDateBar() {
     `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')}  ${EN_DAYS[dow]}  ${CN_DAYS[dow]}`;
 }
 
-function showError(msg) {
-  document.getElementById('grid').innerHTML = `
-    <div class="error-box">
-      <h2>⚠ ERROR</h2>
-      <p>${msg}</p>
-    </div>`;
+window.addEventListener('DOMContentLoaded', () => {
+  currentMonday = getMondayOf(new Date());
+  updateCurrentDateBar();
+  setInterval(updateCurrentDateBar, 60000);
+  loadWeek();
+});
+
+function loadWeek() {
+  document.getElementById('loader').classList.remove('out');
+  
+  const monDate = new Date(currentMonday + 'T00:00:00');
+  const satDate = new Date(currentMonday + 'T00:00:00'); satDate.setDate(monDate.getDate() + 5);
+  document.getElementById('weekLabel').textContent = `${monDate.getMonth()+1}/${monDate.getDate()} – ${satDate.getMonth()+1}/${satDate.getDate()}`;
+  document.getElementById('prevBtn').disabled = currentMonday <= getMondayOf(new Date());
+
+  const script = document.createElement('script');
+  const cbName = '_cb_' + Date.now();
+  
+  window[cbName] = (json) => {
+    delete window[cbName]; script.remove();
+    document.getElementById('loader').classList.add('out');
+    if (json.error) {
+      document.getElementById('grid').innerHTML = `<div class="error-box" style="grid-column:1/-1"><h2>&#9888; Could not load data</h2><p>${json.error}</p></div>`;
+    } else {
+      renderGrid(json.data);
+    }
+  };
+
+  script.src = `${API}?date=${currentMonday}&callback=${cbName}`;
+  document.head.appendChild(script);
 }
 
-function getMondayOf(d) {
-  const nd = new Date(d);
-  const day = nd.getDay();
-  nd.setDate(nd.getDate() + (day === 0 ? -6 : 1 - day));
-  return fmt(nd);
+function renderGrid(weekEvents) {
+  const grid = document.getElementById('grid');
+  const todayStr = fmt(new Date());
+  const todayTime = new Date(todayStr + 'T00:00:00').getTime();
+  const banner = document.getElementById('todayBanner');
+  
+  grid.innerHTML = '';
+  banner.style.display = 'none';
+
+  for (let i = 0; i < 6; i++) {
+    const d = new Date(currentMonday + 'T00:00:00');
+    d.setDate(d.getDate() + i);
+    const dateStr = fmt(d);
+    
+    // Hide past days entirely
+    if (d.getTime() < todayTime) continue;
+
+    const events = weekEvents[dateStr] || [];
+    const isToday = dateStr === todayStr;
+    const lastEventOnly = events.length > 0 ? [events[events.length - 1]] : [];
+
+    let endTimeHtml = '<div class="card-end-time">無課程</div>';
+    
+    if (lastEventOnly.length > 0) {
+      const ev = lastEventOnly[0];
+      const endTimeStr = ev.endTime || ev.time.split('-').pop().trim();
+      const topicName = ev.title.replace(/\s*(English\s*(Class|Lesson)?|英文課?|英語課?|的?英文|的?英語)\s*/gi, '').trim() || ev.title;
+      
+      endTimeHtml = `<div class="card-end-time">最後結束 ${endTimeStr}</div>`;
+      
+      if (isToday) {
+        banner.innerHTML = `今天最後一堂課程結束於 <span class="highlight-time">${endTimeStr}</span><div class="today-topic">Topic ${topicName}</div>`;
+        banner.style.display = 'block';
+      }
+    } else if (isToday) {
+      banner.innerHTML = `今天沒有課程`;
+      banner.style.display = 'block';
+    }
+
+    const card = document.createElement('div');
+    card.className = `card${isToday ? ' today' : ''}`;
+    
+    card.innerHTML = `
+      <div class="card-head">
+        <div class="day-label"><span class="day-en">${DAY_NAMES[i]}</span><span class="day-zh">${DAY_NAMES_ZH[i]}</span></div>
+        <div class="day-num">${d.getMonth()+1}/${d.getDate()}</div>
+        ${endTimeHtml}
+      </div>
+      <div class="student-list">
+        ${lastEventOnly.length === 0 ? '<div class="no-class">NO CLASS</div>' : 
+          `<div class="s-row">
+            <div class="s-info">
+              <div class="s-name">${lastEventOnly[0].title.replace(/\s*(English\s*(Class|Lesson)?|英文課?|英語課?|的?英文|的?英語)\s*/gi, '').trim() || lastEventOnly[0].title}</div>
+              <div class="s-time">${lastEventOnly[0].time}</div>
+            </div>
+          </div>`
+        }
+      </div>`;
+    grid.appendChild(card);
+  }
 }
 
-function fmt(d) {
-  return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+function slideGrid(delta, cb) {
+  const grid = document.getElementById('grid');
+  grid.style.transition = 'transform 0.25s, opacity 0.25s';
+  grid.style.transform = `translateX(${delta > 0 ? '-110%' : '110%'})`;
+  grid.style.opacity = '0.2';
+  setTimeout(() => {
+    cb();
+    grid.style.transition = 'none';
+    grid.style.transform = `translateX(${delta > 0 ? '110%' : '-110%'})`;
+    void grid.offsetWidth;
+    grid.style.transition = 'transform 0.28s, opacity 0.28s';
+    grid.style.transform = 'translateX(0)';
+    grid.style.opacity = '1';
+  }, 220);
 }
+
+function changeWeek(delta) {
+  if (delta < 0 && currentMonday <= getMondayOf(new Date())) return;
+  slideGrid(delta, () => {
+    const d = new Date(currentMonday + 'T00:00:00');
+    d.setDate(d.getDate() + delta * 7);
+    currentMonday = fmt(d);
+    loadWeek();
+  });
+}
+
+function goToday() {
+  const todayMon = getMondayOf(new Date());
+  if (currentMonday === todayMon) return;
+  slideGrid(todayMon > currentMonday ? 1 : -1, () => {
+    currentMonday = todayMon;
+    loadWeek();
+  });
+}
+
+function getMondayOf(d) { const nd = new Date(d); const day = nd.getDay(); nd.setDate(nd.getDate() + (day === 0 ? -6 : 1 - day)); return fmt(nd); }
+function fmt(d) { return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; }
 </script>
 </body>
 </html>
