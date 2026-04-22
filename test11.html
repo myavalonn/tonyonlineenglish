@@ -1,24 +1,4 @@
-這是一份已經根據您的所有要求，完全修改並整合完畢的完整程式碼。
-
-### 🚀 主要更新重點：
-1. **Chatbot 對話與互動升級**：
-   - 助理回覆第一句話更新為：「Hello [名字] 請點選 [新日曆圖示]」。
-   - **日曆圖示按比例放大**：手機版放大 2倍，平板 2.5倍，電腦版 3倍。
-   - **「今日課程」高亮顯示**：如果預約列表內有「今天」的課程，該卡片會變成發亮的橘色漸層框，並加上「今日課程」的專屬標籤。
-   - **預設隱藏堂數資訊**：列表最多顯示 4 筆，堂數資訊預設隱藏，點選「顯示更多」後才會在最下方展開。
-   - **頭像微調**：Peggy 圓圈內的照片比例已縮小 15%，完整符合圓形外框。
-2. **月曆模式（近期排課視窗）優化**：
-   - **全螢幕顯示**：在平板及電腦裝置下，課表會自動放大為全螢幕，方便檢視。
-   - **右上角專屬打叉**：移除最上方的返回鍵，並在**每一個月份的右上角**都加上獨立的「Ｘ」關閉按鈕（支援 hover 變色放大），不用再滑回最頂端也能隨時關閉。點擊半透明背景也同樣能關閉。
-   - **星期標題**：現在星期一到星期六的標頭，會跟著「每一個月份」獨立出現，且**橘色底色只會固定停留在「今天的星期幾」**。
-   - **日期與當前週數邏輯**：每一個月份旁邊新增了橘色小字「今日：202X/XX/XX，週X」。並且已經實作**「自動隱藏過去週數」**，只會顯示包含今天的那一週以及未來的週數。
-3. **購物車（浮動預約按鈕）特效**：
-   - 在所有裝置下都會呈現持續發光的（Glow）特效。
-   - 手機版強制為圓形外框，內部的圖示和右上角數字已放大 1.2倍。
-   - 電腦版整體尺寸放大 2倍，且位置稍微往上移動，避免被擋住。
-
---- START OF FILE text/plain ---
-
+```html
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -760,14 +740,29 @@
     }
     .sched-cell:hover { background: #f0f0f0; }
     .sched-cell.empty { border: none !important; background: transparent !important; cursor: default; }
-    .sched-cell.today { border: 2px solid var(--pill-active); color: var(--pill-active); }
+    
+    .sched-cell.today { 
+        border: 2px solid #80c8ff !important; 
+        background: #eefaff !important; 
+        color: #007aff !important; 
+    }
     
     .sched-cell.has-events {
         background-color: #fff0e6 !important;
         border-color: #ffd8c2 !important;
     }
     
-    .sched-cell.selected, .sched-cell.has-events.selected { 
+    .sched-cell.today.has-events {
+        background-color: #1d2b8a !important;
+        border-color: #1d2b8a !important;
+        color: #ffffff !important;
+    }
+    
+    .sched-cell.today.has-events .sched-cell-times {
+        color: #ffffff !important;
+    }
+    
+    .sched-cell.selected, .sched-cell.has-events.selected, .sched-cell.today.selected, .sched-cell.today.has-events.selected { 
         background: var(--selected-bg) !important; color: #fff !important; 
         box-shadow: 0 4px 10px rgba(29, 43, 138, 0.3) !important; 
         border-color: var(--selected-bg) !important; 
@@ -775,7 +770,9 @@
     
     .sched-date-num { line-height: 1; pointer-events: none; }
     .sched-cell-times { font-size: 13px; color: var(--pill-active); line-height: 1.2; margin-top: 4px; font-weight: bold; text-align: center; pointer-events: none; }
-    .sched-cell.selected .sched-cell-times { color: #fff; }
+    .sched-cell.selected .sched-cell-times, .sched-cell.has-events.selected .sched-cell-times, .sched-cell.today.selected .sched-cell-times, .sched-cell.today.has-events.selected .sched-cell-times { 
+        color: #fff !important; 
+    }
     
     .sched-month-wrapper { margin-bottom: 30px; position: relative; }
     .sched-month-title {
@@ -797,10 +794,22 @@
     .cancel-class-btn:active:not(:disabled) { transform: scale(0.98); }
 
     @media (min-width: 768px) {
-        /* Tablet & Desktop Full Screen for Schedule */
-        .sched-modal-overlay { padding: 0 !important; }
-        .sched-modal-container { border-radius: 0 !important; padding: 40px !important; max-width: 100% !important; width: 100vw !important; min-height: 100vh !important; }
-        .sched-cell { height: 90px; padding-top: 12px; font-size: 24px; }
+        /* Tablet & Desktop Half Screen for Schedule */
+        .sched-modal-overlay { 
+            padding: 40px 0 !important; 
+            background: rgba(0,0,0,0.6) !important; 
+            backdrop-filter: blur(5px); 
+        }
+        .sched-modal-container { 
+            border-radius: 24px !important; 
+            padding: 40px !important; 
+            max-width: 800px !important; 
+            width: 70vw !important; 
+            min-height: auto !important; 
+            margin: 40px auto !important; 
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+        .sched-cell { height: 90px; padding-top: 12px; font-size: 24px; border-radius: 16px; }
         .sched-cell-times { font-size: 16px; margin-top: 6px; }
         .sched-month-title { font-size: 24px; margin-bottom: 15px; }
     }
@@ -826,8 +835,8 @@
         display: flex; flex-direction: column; line-height: 1.2; transition: 0.2s;
     }
     .cal-head small { font-size: 10px; opacity: 0.7; }
-    .cal-head.active-day { background-color: var(--pill-active); color: #ffffff; border-radius: 8px; padding-top: 5px; }
-    .cal-head.active-day small { color: #ffffff; opacity: 1; }
+    .cal-head.active-day { background-color: var(--pill-active) !important; color: #ffffff !important; border-radius: 8px; padding-top: 5px; }
+    .cal-head.active-day small { color: #ffffff !important; opacity: 1 !important; }
     @media (max-width: 767px) {
         .cal-head.sat-head { color: #d32f2f !important; }
         .cal-head.sat-head small { color: #d32f2f !important; opacity: 0.85; }
@@ -923,8 +932,9 @@
         .cal-head { font-size: 24px; margin-bottom: 12px; }
         .cal-head small { font-size: 20px; }
 
-        .sched-cell { height: 130px; padding-top: 16px; font-size: 36px; border-radius: 24px; }
-        .sched-cell-times { font-size: 26px; margin-top: 10px; }
+        .sched-modal-container { width: 50vw !important; max-width: 1000px !important; margin: 60px auto !important; }
+        .sched-cell { height: 110px; padding-top: 16px; font-size: 30px; border-radius: 20px; }
+        .sched-cell-times { font-size: 20px; margin-top: 8px; }
         .sched-month-title { font-size: 32px; margin-bottom: 20px; }
 
         .simple-slot-grid { grid-template-columns: repeat(2, 1fr); }
@@ -2005,6 +2015,9 @@
   function openSchedCalendar() {
       const modal = document.getElementById('sched-modal-overlay');
       modal.style.display = 'block';
+      if (window.innerWidth >= 768) {
+          modal.style.display = 'flex'; // Use flex for centering on desktop
+      }
       renderSchedCalGrid();
   }
 
@@ -2019,12 +2032,13 @@
       const now = new Date();
       const todayStr = fmt(now);
       const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-      const todayDayIndex = now.getDay();
+      const todayDayIndex = now.getDay() === 0 ? 7 : now.getDay(); // Adjust Sunday to 7 if needed, but headers use 1-6 for Mon-Sat
+      const jsDayIndex = now.getDay(); // 0-6
       
       const todayY = now.getFullYear();
       const todayM = String(now.getMonth() + 1).padStart(2, '0');
       const todayD = String(now.getDate()).padStart(2, '0');
-      const todayChi = chiDayNames[now.getDay()];
+      const todayChi = chiDayNames[jsDayIndex];
 
       // Define static headers for MON - SAT
       const headers = [
@@ -2062,9 +2076,10 @@
           // Append dynamic header for each month
           let headerHtml = `<div class="sched-cal-grid" style="margin-bottom:10px;">`;
           headers.forEach(h => {
-              let activeClass = (h.id === todayDayIndex) ? ' active-day' : '';
+              let activeClass = (h.id === jsDayIndex && mOffset === 0) ? ' active-day' : '';
               let isSat = (h.id === 6) ? ' sat-head' : '';
-              headerHtml += `<div class="cal-head${activeClass}${isSat}" style="color:${h.color};">
+              let headColorStyle = activeClass ? '' : `color:${h.color};`;
+              headerHtml += `<div class="cal-head${activeClass}${isSat}" style="${headColorStyle}">
                                ${h.eng}<small>${h.chi}</small>
                              </div>`;
           });
@@ -2297,4 +2312,3 @@
 </script>
 </body>
 </html>
---- END OF FILE text/plain ---
