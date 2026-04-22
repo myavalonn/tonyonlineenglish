@@ -801,9 +801,11 @@
     .sched-weekday-head small { font-size: 10px; opacity: 0.7; }
     /* Only the CURRENT month's today weekday gets orange highlight */
     .sched-weekday-head.today-head {
-        background-color: var(--pill-active); color: #fff; border-radius: 8px; padding: 4px 2px;
+        background-color: var(--pill-active); 
+        color: #fff !important; 
+        border-radius: 8px; padding: 4px 2px;
     }
-    .sched-weekday-head.today-head small { color: #fff; opacity: 1; }
+    .sched-weekday-head.today-head small { color: #fff !important; opacity: 1; }
     /* Saturday red on mobile */
     @media (max-width: 767px) {
         .sched-weekday-head.sat-head { color: #d32f2f; }
@@ -822,25 +824,28 @@
     .sched-cell:hover { background: #f0f0f0; }
     .sched-cell.empty { border: none !important; background: transparent !important; cursor: default; }
 
-    /* Today cell: orange background white text */
+    /* Today cell (no class): light blue background */
     .sched-cell.today { 
-        background-color: var(--pill-active) !important;
-        color: #fff !important;
-        border-color: var(--pill-active) !important;
+        background-color: #dbeafe !important;
+        color: #1e40af !important;
+        border-color: #93c5fd !important;
     }
-    .sched-cell.today .sched-date-num { color: #fff; }
-    .sched-cell.today .sched-cell-times { color: rgba(255,255,255,0.9) !important; }
+    .sched-cell.today .sched-date-num { color: #1e40af; }
+    .sched-cell.today .sched-cell-times { color: #1d4ed8 !important; }
 
-    /* Today AND has events → teal/green glow to stand out */
+    /* Today AND has events → deep navy/dark blue, glowing */
     .sched-cell.today.has-events {
-        background: linear-gradient(135deg, #ff5400, #ff8c00) !important;
-        border-color: #ff5400 !important;
-        box-shadow: 0 0 14px rgba(255, 84, 0, 0.7) !important;
+        background: linear-gradient(135deg, #1d2b8a, #1e40af) !important;
+        border-color: #1d2b8a !important;
+        color: #fff !important;
+        box-shadow: 0 0 14px rgba(29, 43, 138, 0.65) !important;
         animation: todayCellGlow 2s ease-in-out infinite alternate;
     }
+    .sched-cell.today.has-events .sched-date-num { color: #fff; }
+    .sched-cell.today.has-events .sched-cell-times { color: rgba(255,255,255,0.9) !important; }
     @keyframes todayCellGlow {
-        from { box-shadow: 0 0 8px rgba(255, 84, 0, 0.5); }
-        to   { box-shadow: 0 0 22px rgba(255, 84, 0, 0.9); }
+        from { box-shadow: 0 0 8px rgba(29, 43, 138, 0.5); }
+        to   { box-shadow: 0 0 24px rgba(29, 43, 138, 0.9); }
     }
 
     /* Future has-events: warm highlight */
@@ -887,14 +892,32 @@
         .sched-month-close-btn { width: 40px; height: 40px; font-size: 22px; }
     }
     @media (min-width: 1024px) {
-        .sched-modal-container { max-width: 100%; padding: 40px 60px; }
-        .sched-cell { height: 130px; padding-top: 16px; font-size: 36px; border-radius: 24px; }
-        .sched-cell-times { font-size: 26px; margin-top: 10px; }
-        .sched-month-title { font-size: 32px; }
-        .sched-today-label { font-size: 18px; }
-        .sched-weekday-head { font-size: 18px; }
-        .sched-weekday-head small { font-size: 14px; }
-        .sched-month-close-btn { width: 48px; height: 48px; font-size: 26px; top: 2px; }
+        /* Desktop: half-screen modal, centered with overlay */
+        .sched-modal-overlay { 
+            background: rgba(0,0,0,0.55);
+            backdrop-filter: blur(4px);
+            padding: 40px;
+            justify-content: center;
+            align-items: flex-start;
+        }
+        .sched-modal-container { 
+            border-radius: 24px; 
+            min-height: auto;
+            max-height: 85vh;
+            overflow-y: auto;
+            padding: 36px 48px; 
+            box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+            max-width: 55%;
+            width: 55%;
+            margin: 0;
+        }
+        .sched-cell { height: 90px; padding-top: 12px; font-size: 26px; border-radius: 16px; }
+        .sched-cell-times { font-size: 18px; margin-top: 8px; }
+        .sched-month-title { font-size: 26px; }
+        .sched-today-label { font-size: 15px; }
+        .sched-weekday-head { font-size: 14px; }
+        .sched-weekday-head small { font-size: 11px; }
+        .sched-month-close-btn { width: 40px; height: 40px; font-size: 22px; top: 2px; }
     }
 
     /* =========================================================
@@ -2119,7 +2142,12 @@
   // === Student Schedule Calendar Logic ===
   function openSchedCalendar() {
       const modal = document.getElementById('sched-modal-overlay');
-      modal.style.display = 'block';
+      // Use flex on desktop for centered half-screen layout
+      if (window.innerWidth >= 1024) {
+          modal.style.display = 'flex';
+      } else {
+          modal.style.display = 'block';
+      }
       renderSchedCalGrid();
       // close on outside click handled in window.onload
   }
