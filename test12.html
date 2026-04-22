@@ -1,0 +1,1620 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>Tony 線上美語 · 課程預約</title>
+<meta property="og:title" content="Tony 線上美語 · 50分鐘課程預約">
+<meta property="og:description" content="升學 檢定 職場 公職 高考 面試 外商 觀光美語 展場英文 翻譯">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+
+<style>
+/* ============================================================
+   DESIGN SYSTEM — Luxury Private Tutor, White Base
+   Primary: Deep Indigo #1B2CC1  Accent: Coral #FF6B47
+   Surface: Off-White #FAFAF8   Text: Charcoal #1A1A2E
+============================================================ */
+:root {
+  --white:       #ffffff;
+  --bg:          #F8F7F4;
+  --surface:     #FFFFFF;
+  --surface2:    #F4F3F0;
+  --indigo:      #1B2CC1;
+  --indigo-mid:  #2E42D1;
+  --indigo-light:#EEF0FD;
+  --indigo-dim:  rgba(27,44,193,0.08);
+  --coral:       #FF6B47;
+  --coral-light: #FFF0EC;
+  --coral-dim:   rgba(255,107,71,0.12);
+  --text:        #1A1A2E;
+  --text-mid:    #4A4A6A;
+  --text-soft:   #9090A8;
+  --border:      #E8E8F0;
+  --border-mid:  #D0D0E0;
+  --shadow-sm:   0 2px 8px rgba(27,44,193,0.06);
+  --shadow-md:   0 8px 24px rgba(27,44,193,0.10);
+  --shadow-lg:   0 20px 50px rgba(27,44,193,0.14);
+  --radius-sm:   10px;
+  --radius-md:   16px;
+  --radius-lg:   24px;
+  --radius-xl:   32px;
+  --font-display:'DM Serif Display', Georgia, serif;
+  --font-body:   'DM Sans', system-ui, sans-serif;
+
+  /* Slot card tints */
+  --morning-tint:#FFFDF5;
+  --afternoon-tint:#F5FAFF;
+  --evening-tint:#F8F5FF;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { background: var(--bg); }
+html, body {
+  font-family: var(--font-body);
+  color: var(--text);
+  background: var(--bg);
+  -webkit-tap-highlight-color: transparent;
+  overflow-x: hidden;
+  overscroll-behavior-y: none;
+  min-height: 100vh;
+}
+button { font-family: var(--font-body); outline: none; -webkit-tap-highlight-color: transparent; cursor: pointer; }
+input { font-family: var(--font-body); }
+
+/* ============================================================
+   LOADING SCREEN
+============================================================ */
+#loading-overlay {
+  position: fixed; inset: 0;
+  background: var(--white);
+  z-index: 9999;
+  display: flex; flex-direction: column;
+  justify-content: center; align-items: center; gap: 0;
+  transition: opacity 0.5s ease-out;
+}
+.intro-wordmark {
+  font-family: var(--font-display);
+  font-size: 13px; letter-spacing: 6px;
+  text-transform: uppercase; color: var(--indigo);
+  opacity: 0.4; margin-bottom: 52px;
+}
+.intro-steps { width: 88%; max-width: 400px; display: flex; flex-direction: column; gap: 10px; }
+.step {
+  padding: 18px 22px; border-radius: var(--radius-md);
+  border: 1.5px solid var(--border);
+  font-weight: 600; text-align: center;
+  font-size: 1.1rem; letter-spacing: 0.2px;
+  opacity: 0; transform: translateY(6px);
+  transition: all 0.4s cubic-bezier(0.34, 1.3, 0.64, 1);
+  color: var(--text-mid); background: var(--surface);
+}
+.step.active {
+  opacity: 1; transform: translateY(0);
+  border-color: var(--indigo);
+  color: var(--indigo);
+  background: var(--indigo-light);
+  box-shadow: var(--shadow-sm);
+}
+.step.completed { opacity: 0.22; transform: translateY(0); border-color: var(--border); background: var(--surface); }
+.intro-pulse {
+  margin-top: 36px;
+  display: flex; gap: 6px; align-items: center;
+}
+.intro-dot {
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--indigo); opacity: 0.2;
+  animation: pulseDot 1.4s ease-in-out infinite;
+}
+.intro-dot:nth-child(2) { animation-delay: 0.2s; }
+.intro-dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes pulseDot { 0%,100% { opacity: 0.2; transform: scale(1); } 50% { opacity: 1; transform: scale(1.4); } }
+
+/* ============================================================
+   RESULT MODAL
+============================================================ */
+.result-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(26,26,46,0.55);
+  backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+  z-index: 10000; justify-content: center; align-items: center; padding: 20px;
+}
+.result-content {
+  background: var(--white); width: 95%; max-width: 440px;
+  border-radius: var(--radius-xl); padding: 44px 28px;
+  text-align: center; box-shadow: var(--shadow-lg);
+  animation: modalPop 0.4s cubic-bezier(0.34,1.56,0.64,1);
+}
+.result-icon { font-size: 54px; margin-bottom: 16px; }
+.result-title {
+  font-family: var(--font-display); font-size: 28px;
+  font-weight: 400; margin-bottom: 12px; color: var(--text);
+}
+.result-msg { font-size: 15px; color: var(--text-mid); line-height: 1.7; margin-bottom: 32px; }
+.result-close-btn {
+  background: var(--indigo); color: #fff; border: none;
+  padding: 16px; border-radius: var(--radius-md);
+  font-size: 17px; font-weight: 700; width: 100%;
+  box-shadow: 0 8px 20px rgba(27,44,193,0.28);
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+.result-close-btn:active { transform: scale(0.97); }
+@keyframes modalPop { from { transform: scale(0.88) translateY(16px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
+
+/* ============================================================
+   SITE HEADER — Sticky, airy, branded
+============================================================ */
+.site-header {
+  position: sticky; top: 0; z-index: 80;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid var(--border);
+}
+
+/* Brand row */
+.brand-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 16px 0;
+}
+.brand-lockup { display: flex; flex-direction: column; gap: 1px; }
+.brand-en {
+  font-family: var(--font-display); font-size: 19px;
+  color: var(--indigo); letter-spacing: 0.5px; line-height: 1;
+}
+.brand-tag {
+  font-size: 10px; font-weight: 600; letter-spacing: 2px;
+  text-transform: uppercase; color: var(--text-soft);
+}
+.brand-actions { display: flex; align-items: center; gap: 8px; }
+
+/* Icon-style small buttons in brand row */
+.hdr-pill {
+  display: inline-flex; align-items: center; gap: 5px;
+  height: 34px; padding: 0 13px; border-radius: 17px;
+  font-size: 12.5px; font-weight: 600; letter-spacing: 0.2px;
+  border: 1.5px solid var(--border); background: var(--white);
+  color: var(--text-mid); transition: all 0.18s; white-space: nowrap;
+}
+.hdr-pill:hover { border-color: var(--indigo); color: var(--indigo); }
+.hdr-pill.active-pill { background: var(--indigo); color: #fff; border-color: var(--indigo); box-shadow: 0 4px 12px rgba(27,44,193,0.22); }
+
+/* Step progress bar */
+.step-bar {
+  display: flex; align-items: center; justify-content: center;
+  gap: 0; padding: 10px 16px 12px;
+}
+.step-node {
+  display: flex; flex-direction: column; align-items: center; gap: 4px;
+  flex: 1;
+}
+.step-circle {
+  width: 28px; height: 28px; border-radius: 50%;
+  border: 2px solid var(--border); background: var(--white);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 800; color: var(--text-soft);
+  transition: all 0.3s;
+}
+.step-label { font-size: 9.5px; font-weight: 600; color: var(--text-soft); letter-spacing: 0.3px; text-align: center; line-height: 1.2; }
+.step-node.current .step-circle { background: var(--indigo); border-color: var(--indigo); color: #fff; box-shadow: 0 4px 12px rgba(27,44,193,0.3); }
+.step-node.current .step-label { color: var(--indigo); font-weight: 700; }
+.step-node.done .step-circle { background: var(--indigo-light); border-color: var(--indigo); color: var(--indigo); }
+.step-node.done .step-label { color: var(--indigo); }
+.step-connector { flex: 0 0 24px; height: 2px; background: var(--border); margin-bottom: 16px; transition: background 0.4s; }
+.step-connector.done { background: var(--indigo); }
+
+/* Multi-select badge shown in header */
+.multi-badge {
+  display: inline-flex; align-items: center; gap: 4px;
+  height: 34px; padding: 0 12px; border-radius: 17px;
+  border: 1.5px solid var(--border); background: var(--white);
+  color: var(--text-mid); font-size: 12px; font-weight: 700;
+  pointer-events: none;
+}
+.multi-badge.lit { border-color: var(--coral); color: var(--coral); background: var(--coral-light); }
+
+/* Date strip */
+.date-strip {
+  overflow-x: auto; display: flex; gap: 7px;
+  padding: 0 14px 10px; scroll-behavior: smooth;
+}
+.date-strip::-webkit-scrollbar { display: none; }
+
+.date-chip {
+  flex: 0 0 auto;
+  display: flex; flex-direction: column; align-items: center;
+  width: 64px; padding: 10px 0 9px;
+  border-radius: 18px; border: 1.5px solid var(--border);
+  background: var(--white); cursor: default;
+  transition: all 0.22s cubic-bezier(0.34,1.3,0.64,1);
+  gap: 3px;
+}
+.date-chip.loaded { cursor: pointer; }
+.date-chip.loaded:hover { border-color: var(--indigo); background: var(--indigo-light); }
+.date-chip.active {
+  background: var(--indigo); border-color: var(--indigo);
+  transform: scale(1.06) translateY(-2px);
+  box-shadow: 0 8px 18px rgba(27,44,193,0.28);
+}
+.chip-date { font-size: 18px; font-weight: 800; color: var(--text-mid); line-height: 1; }
+.chip-day { font-size: 10px; font-weight: 600; letter-spacing: 0.5px; color: var(--text-soft); text-transform: uppercase; }
+.chip-chi { font-size: 9.5px; color: var(--text-soft); }
+.date-chip.active .chip-date,
+.date-chip.active .chip-day,
+.date-chip.active .chip-chi { color: rgba(255,255,255,0.92); }
+.date-chip.sat-chip .chip-date,
+.date-chip.sat-chip .chip-day,
+.date-chip.sat-chip .chip-chi { color: #C0392B; }
+.date-chip.sat-chip.active .chip-date,
+.date-chip.sat-chip.active .chip-day,
+.date-chip.sat-chip.active .chip-chi { color: rgba(255,255,255,0.92); }
+.chip-loader { width: 10px; height: 10px; border: 2px solid var(--border); border-top-color: var(--indigo); border-radius: 50%; animation: spin 0.8s linear infinite; display: none; }
+.date-chip.loading .chip-loader { display: block; }
+@keyframes spin { to { transform: rotate(360deg); } }
+
+/* ============================================================
+   MAIN LAYOUT — Calendar is default view
+============================================================ */
+#p-main { display: none !important; }
+
+/* ============================================================
+   CAL MODAL (full page)
+============================================================ */
+#cal-modal {
+  display: block !important; position: relative;
+  width: 100%; min-height: 100vh; background: var(--bg);
+}
+
+.cal-shell {
+  background: var(--white); border-radius: var(--radius-lg);
+  margin: 0; overflow: hidden;
+}
+
+/* Cal header controls */
+.cal-controls {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 16px 10px;
+  border-bottom: 1px solid var(--border);
+  background: var(--white);
+  position: sticky; top: 0; z-index: 20;
+}
+.cal-brand {
+  font-family: var(--font-display); font-size: 17px; color: var(--indigo);
+}
+.cal-controls-right { display: flex; align-items: center; gap: 8px; }
+
+/* Month nav */
+.cal-nav-row {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 14px 16px 10px; background: var(--white);
+}
+.cal-month-title {
+  font-family: var(--font-display); font-size: 22px;
+  font-weight: 400; color: var(--text);
+}
+.cal-nav-btn {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 1.5px solid var(--border); background: var(--white);
+  color: var(--text-mid); font-size: 16px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.18s;
+}
+.cal-nav-btn:hover { border-color: var(--indigo); color: var(--indigo); }
+.cal-nav-btn.disabled { opacity: 0.2; pointer-events: none; }
+
+/* Day headers */
+.cal-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; padding: 0 12px; }
+.cal-day-head {
+  text-align: center; padding: 6px 0 8px;
+  font-size: 10.5px; font-weight: 700; letter-spacing: 0.8px;
+  text-transform: uppercase; color: var(--text-soft);
+  display: flex; flex-direction: column; gap: 1px;
+}
+.cal-day-head small { font-size: 9px; opacity: 0.7; }
+.cal-day-head.h-active { color: var(--indigo); }
+.cal-day-head.h-sat { color: #C0392B; }
+.cal-day-head.h-sat.h-active { color: var(--indigo); }
+
+/* Calendar cells */
+.cal-cell {
+  aspect-ratio: 1; display: flex; align-items: center; justify-content: center;
+  border-radius: var(--radius-sm); font-size: 16px; font-weight: 700;
+  color: var(--text-soft); position: relative; cursor: default;
+  transition: all 0.18s; border: 1.5px solid transparent;
+}
+.cal-cell.loaded { cursor: pointer; border-color: var(--border); background: var(--white); color: var(--text); }
+.cal-cell.loaded:hover { border-color: var(--indigo); background: var(--indigo-light); color: var(--indigo); }
+.cal-cell.disabled { color: #D0D0D8; pointer-events: none; }
+.cal-cell.today { border-color: var(--coral); color: var(--coral); }
+.cal-cell.selected { background: var(--indigo) !important; border-color: var(--indigo) !important; color: #fff !important; box-shadow: 0 6px 16px rgba(27,44,193,0.3); }
+.cal-cell.has-slot::after { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--coral); position: absolute; bottom: 4px; opacity: 0.7; }
+.cal-cell.selected::after { background: rgba(255,255,255,0.6); }
+
+/* Slot area within calendar */
+#cal-slots-area {
+  padding: 16px 14px 120px;
+  border-top: 1px solid var(--border);
+  margin-top: 10px;
+}
+.slots-header {
+  display: flex; align-items: baseline; gap: 8px; margin-bottom: 14px;
+}
+.slots-date-title {
+  font-family: var(--font-display); font-size: 20px; color: var(--text);
+}
+.slots-count-badge {
+  font-size: 11px; font-weight: 700; letter-spacing: 0.5px;
+  color: var(--indigo); background: var(--indigo-light);
+  padding: 3px 9px; border-radius: 10px;
+}
+
+/* Simple slot grid */
+.simple-slot-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 9px; }
+.simple-slot-btn {
+  background: var(--white); border: 1.5px solid var(--border);
+  color: var(--text); padding: 14px 0;
+  border-radius: var(--radius-md); font-weight: 600; font-size: 15px;
+  display: flex; align-items: center; justify-content: center; gap: 5px;
+  position: relative; transition: all 0.18s; letter-spacing: 0.2px;
+  box-shadow: var(--shadow-sm);
+}
+.simple-slot-btn:hover { border-color: var(--indigo); background: var(--indigo-light); color: var(--indigo); box-shadow: var(--shadow-md); }
+.simple-slot-btn .slot-clock { width: 13px; height: 13px; opacity: 0.4; }
+.simple-slot-btn.selected {
+  background: var(--indigo) !important; color: #fff !important;
+  border-color: var(--indigo) !important;
+  box-shadow: 0 6px 18px rgba(27,44,193,0.28) !important;
+  transform: scale(1.03);
+}
+.simple-slot-btn.selected .slot-clock { opacity: 1; filter: brightness(0) invert(1); }
+.simple-slot-btn.selected::after {
+  content: '✓'; position: absolute; top: -7px; right: -7px;
+  width: 20px; height: 20px; border-radius: 50%;
+  background: var(--coral); color: #fff; font-size: 11px; font-weight: 900;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 6px rgba(255,107,71,0.4); border: 2px solid var(--white);
+}
+.simple-slot-grid.few-slots .simple-slot-btn { padding: 22px 0; font-size: 18px; }
+
+/* Empty/loading states */
+.slot-empty {
+  text-align: center; padding: 40px 20px;
+  color: var(--text-soft); font-size: 14px; font-weight: 500;
+}
+.slot-empty .empty-icon { font-size: 36px; margin-bottom: 10px; }
+
+/* Time section labels */
+.time-section { margin-bottom: 16px; }
+.time-section-label {
+  font-size: 11px; font-weight: 700; letter-spacing: 1.5px;
+  text-transform: uppercase; color: var(--text-soft);
+  margin-bottom: 8px; display: flex; align-items: center; gap: 6px;
+}
+.time-section-label span { font-size: 14px; }
+
+/* ============================================================
+   SLOT CARDS (main list view)
+============================================================ */
+.slots-container { padding: 12px 12px 120px; display: flex; flex-direction: column; gap: 10px; }
+
+.time-card {
+  border-radius: var(--radius-lg); display: none; flex-direction: row;
+  overflow: hidden; border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm); align-items: stretch;
+}
+.time-card.force-show { display: flex !important; }
+.time-card.morning { background: var(--morning-tint); }
+.time-card.afternoon { background: var(--afternoon-tint); }
+.time-card.evening { background: var(--evening-tint); }
+
+.time-axis {
+  width: 52px; background: rgba(255,255,255,0.6);
+  display: flex; flex-direction: column; justify-content: space-between;
+  align-items: center; padding: 14px 0;
+  border-right: 1px solid var(--border); flex-shrink: 0;
+}
+.axis-time { font-size: 10px; font-weight: 800; color: var(--text-soft); text-align: center; line-height: 1.2; }
+.axis-time small { font-size: 9px; display: block; }
+.axis-line { flex-grow: 1; border-left: 1.5px dashed var(--border); margin: 3px 0; min-height: 8px; display: none; }
+.axis-icon { font-size: 16px; opacity: 0.5; }
+.card-content { flex-grow: 1; padding: 14px; }
+.slot-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+
+.slot-btn {
+  background: rgba(255,255,255,0.85); border: 1.5px solid var(--border);
+  color: var(--text); padding: 10px 0; border-radius: var(--radius-sm);
+  font-weight: 600; font-size: 13.5px;
+  display: flex; align-items: center; justify-content: center; gap: 4px;
+  position: relative; touch-action: manipulation; user-select: none;
+  transition: all 0.15s; letter-spacing: 0.2px;
+}
+.slot-btn:hover { border-color: var(--indigo); background: var(--indigo-light); color: var(--indigo); }
+.slot-btn:active { transform: scale(0.94); }
+.slot-btn .slot-clock { width: 12px; height: 12px; opacity: 0.35; }
+.slot-btn.selected {
+  background: var(--indigo) !important; color: #fff !important;
+  border-color: var(--indigo) !important;
+  transform: scale(1.04);
+  box-shadow: 0 4px 14px rgba(27,44,193,0.3);
+}
+.slot-btn.selected .slot-clock { opacity: 1; filter: brightness(0) invert(1); }
+.slot-btn.selected::after {
+  content: '✓'; position: absolute; top: -6px; right: -6px;
+  width: 18px; height: 18px; border-radius: 50%;
+  background: var(--coral); color: #fff; font-size: 10px; font-weight: 900;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 2px 6px rgba(255,107,71,0.4); border: 2px solid var(--white);
+}
+.slot-grid.few-slots .slot-btn { padding: 18px 0; font-size: 16px; }
+
+#empty-msg {
+  text-align: center; display: none;
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); padding: 32px 20px;
+  margin: 12px; color: var(--text-soft); font-size: 14px; font-weight: 500;
+}
+
+/* ============================================================
+   FLOATING CART BUTTON
+============================================================ */
+#floating-cart-btn {
+  position: fixed; bottom: 28px; right: 18px; z-index: 999;
+  width: 56px; height: 56px; border-radius: 50%; border: none;
+  background: var(--indigo); padding: 14px;
+  box-shadow: 0 8px 24px rgba(27,44,193,0.35);
+  display: none;
+  animation: cartPulse 2.5s ease-in-out infinite;
+  transition: transform 0.2s;
+}
+#floating-cart-btn.show { display: block; }
+#floating-cart-btn:active { transform: scale(0.92); }
+@keyframes cartPulse { 0%,100% { box-shadow: 0 8px 24px rgba(27,44,193,0.35); } 50% { box-shadow: 0 8px 32px rgba(27,44,193,0.55); } }
+#floating-cart-btn.in-cal-view {
+  position: absolute; width: 42px; height: 42px; padding: 10px;
+  top: 4px; right: 10px; bottom: auto; left: auto; border-radius: var(--radius-sm);
+  animation: none;
+}
+#floating-cart-btn .cal-icon-svg { width: 100%; height: 100%; color: #fff; }
+.cart-badge {
+  position: absolute; top: -7px; right: -7px;
+  background: var(--coral); color: #fff;
+  width: 22px; height: 22px; border-radius: 50%; font-size: 12px; font-weight: 800;
+  display: flex; justify-content: center; align-items: center;
+  border: 2px solid var(--white); box-shadow: 0 2px 8px rgba(255,107,71,0.4);
+}
+@keyframes bump { 0% { transform: scale(1); } 50% { transform: scale(1.5); } 100% { transform: scale(1); } }
+.bump-effect { animation: bump 0.3s ease-out; }
+@media (min-width: 768px) {
+  #floating-cart-btn { width: 100px; height: 100px; padding: 24px; bottom: 48px; right: 40px; }
+  .cart-badge { width: 34px; height: 34px; font-size: 17px; top: -5px; right: -5px; border-width: 3px; }
+}
+
+/* ============================================================
+   HOT PANEL
+============================================================ */
+#hot-panel {
+  position: fixed; top: 20%; left: 0; width: 78%; max-width: 260px;
+  background: var(--white); border: 1px solid var(--border);
+  border-left: none; border-top-right-radius: var(--radius-lg);
+  border-bottom-right-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg); padding: 18px;
+  transform: translateX(-110%); transition: transform 0.45s cubic-bezier(0.25,1,0.5,1);
+  z-index: 900; overflow: hidden;
+}
+#hot-panel::before {
+  content: '⚡'; position: absolute; bottom: -10px; right: -10px;
+  font-size: 80px; opacity: 0.04; pointer-events: none;
+}
+#hot-panel.show { transform: translateX(0); }
+.hot-title {
+  font-family: var(--font-display); font-size: 16px;
+  color: var(--text); margin-bottom: 12px; display: flex; align-items: center; gap: 6px;
+}
+.hot-list { display: flex; flex-direction: column; gap: 7px; max-height: 48vh; overflow-y: auto; }
+.hot-btn {
+  background: var(--bg); border: 1px solid var(--border); color: var(--text);
+  padding: 10px 12px; border-radius: var(--radius-sm);
+  text-align: left; font-weight: 600; font-size: 13.5px;
+  display: flex; align-items: center; justify-content: space-between;
+  transition: all 0.18s;
+}
+.hot-btn:hover { border-color: var(--indigo); background: var(--indigo-light); color: var(--indigo); }
+.close-hot { position: absolute; top: 10px; right: 10px; background: var(--surface2); color: var(--text-soft); border: 1px solid var(--border); border-radius: 50%; width: 24px; height: 24px; font-size: 12px; display: flex; align-items: center; justify-content: center; }
+.hot-show-more { text-align: center; color: var(--indigo); font-size: 12px; font-weight: 700; padding: 6px; cursor: pointer; background: var(--indigo-light); border-radius: 8px; margin-top: 4px; }
+.hot-hidden { display: none; }
+.tap-icon { width: 14px; height: 14px; opacity: 0.35; }
+@media (min-width: 768px) {
+  #hot-panel { width: 320px; padding: 24px; }
+  .hot-title { font-size: 22px; }
+  .hot-btn { font-size: 17px; padding: 14px; border-radius: var(--radius-md); }
+}
+
+/* ============================================================
+   RULE POPOVER
+============================================================ */
+.rule-info-wrapper { position: relative; display: inline-flex; align-items: center; }
+.rule-popover {
+  display: none; position: absolute; top: 44px; right: 0; width: 270px;
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius-lg); box-shadow: var(--shadow-lg);
+  padding: 20px 18px; z-index: 1000; font-size: 13.5px;
+  color: var(--text-mid); line-height: 1.65; text-align: center;
+}
+.rule-popover.show { display: block; animation: fadeDown 0.22s ease; }
+@keyframes fadeDown { from { opacity: 0; transform: translateY(-6px); } to { opacity: 1; transform: translateY(0); } }
+.rule-popover p { margin-bottom: 9px; }
+.rule-popover p:last-child { margin-bottom: 0; }
+.rule-highlight { color: var(--indigo); font-weight: 700; }
+.rule-highlight-red { color: #C0392B; font-weight: 700; }
+.rule-logo { width: 44px; border-radius: 50%; display: block; margin: 0 auto 12px; }
+.rule-popover-close { position: absolute; top: 10px; right: 10px; width: 24px; height: 24px; border-radius: 50%; background: var(--surface2); border: 1px solid var(--border); color: var(--text-soft); font-size: 13px; font-weight: bold; display: flex; align-items: center; justify-content: center; }
+.rule-details-link { display: inline-block; margin-top: 10px; font-size: 13px; font-weight: 700; color: var(--indigo); text-decoration: underline; }
+.mob-br { display: block; }
+@media (min-width: 768px) {
+  .mob-br { display: none; }
+  .rule-popover {
+    position: fixed; top: 16%; left: 50%; transform: translateX(-50%);
+    width: 540px; font-size: 24px; line-height: 1.6;
+    padding: 48px 40px 40px; border-radius: var(--radius-xl);
+  }
+  .rule-logo { width: 72px; margin-bottom: 18px; }
+  .rule-details-link { font-size: 18px; }
+  .rule-popover-close { width: 32px; height: 32px; font-size: 16px; top: 12px; right: 12px; }
+}
+
+/* ============================================================
+   CHECKOUT FORM — Bottom sheet + desktop modal
+============================================================ */
+.page-form {
+  display: none; position: fixed; inset: 0; z-index: 2000;
+  background: rgba(26,26,46,0.5);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+}
+.page-form.active { display: block; }
+
+/* Sheet layout */
+.form-sheet {
+  position: absolute; bottom: 0; left: 0; right: 0;
+  background: var(--white); border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+  padding: 10px 20px 36px; max-height: 94vh;
+  display: flex; flex-direction: column;
+  animation: sheetUp 0.38s cubic-bezier(0.34,1.3,0.64,1);
+}
+@keyframes sheetUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
+
+.sheet-handle { width: 36px; height: 4px; background: var(--border-mid); border-radius: 2px; margin: 0 auto 18px; }
+.sheet-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; }
+.sheet-title { font-family: var(--font-display); font-size: 24px; color: var(--text); }
+.sheet-close { width: 34px; height: 34px; border-radius: 50%; background: var(--surface2); border: 1px solid var(--border); color: var(--text-mid); font-size: 18px; display: flex; align-items: center; justify-content: center; }
+
+.checkout-list { flex: 0 1 auto; overflow-y: auto; min-height: 0; display: flex; flex-direction: column; gap: 8px; margin-bottom: 16px; max-height: 38vh; }
+
+.checkout-item {
+  display: flex; align-items: center;
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--radius-md); padding: 11px 12px; gap: 10px;
+  transition: border-color 0.2s;
+}
+.checkout-item:hover { border-color: var(--indigo); }
+.checkout-num {
+  width: 22px; height: 22px; border-radius: 6px; flex-shrink: 0;
+  background: var(--indigo); color: #fff;
+  font-size: 11px; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+}
+.checkout-text { flex: 1; font-size: 13.5px; font-weight: 600; color: var(--text); }
+.remove-btn {
+  width: 30px; height: 30px; border-radius: 8px; flex-shrink: 0;
+  background: var(--coral-light); border: 1px solid rgba(255,107,71,0.2);
+  color: var(--coral); font-size: 14px;
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s;
+}
+.remove-btn:active { transform: scale(0.88); }
+
+.clear-btn {
+  width: 100%; padding: 11px; border-radius: var(--radius-md);
+  background: rgba(255,107,71,0.06); border: 1px solid rgba(255,107,71,0.2);
+  color: var(--coral); font-size: 13.5px; font-weight: 700;
+  margin-bottom: 12px; transition: all 0.2s;
+}
+.clear-btn:hover { background: var(--coral-light); }
+
+.form-field { margin-bottom: 12px; }
+.field-label { font-size: 10.5px; font-weight: 700; letter-spacing: 1px; text-transform: uppercase; color: var(--text-soft); margin-bottom: 6px; display: block; }
+.field-input {
+  width: 100%; padding: 13px 15px;
+  border: 1.5px solid var(--border); border-radius: var(--radius-md);
+  font-size: 15px; color: var(--text); background: var(--white);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+.field-input:focus { outline: none; border-color: var(--indigo); box-shadow: 0 0 0 3px var(--indigo-dim); }
+.field-input::placeholder { color: var(--text-soft); }
+
+.submit-btn {
+  width: 100%; padding: 16px; border: none;
+  border-radius: var(--radius-md);
+  background: var(--indigo); color: #fff;
+  font-size: 17px; font-weight: 700; letter-spacing: 0.3px;
+  box-shadow: 0 8px 20px rgba(27,44,193,0.28);
+  transition: all 0.2s;
+}
+.submit-btn:hover { box-shadow: 0 10px 28px rgba(27,44,193,0.38); transform: translateY(-1px); }
+.submit-btn:active { transform: scale(0.97); }
+
+/* Desktop: center the sheet */
+@media (min-width: 768px) {
+  .page-form.active { display: flex !important; justify-content: center; align-items: flex-start; padding-top: 60px; overflow-y: auto; }
+  .form-sheet {
+    position: static; border-radius: var(--radius-xl);
+    width: 90%; max-width: 600px; max-height: none;
+    padding: 44px; animation: modalPop 0.35s cubic-bezier(0.34,1.3,0.64,1);
+    border: 1px solid var(--border); box-shadow: var(--shadow-lg);
+  }
+  .sheet-handle { display: none; }
+  .checkout-list { max-height: 280px; }
+  .sheet-title { font-size: 32px; }
+  .checkout-item { padding: 14px 16px; }
+  .checkout-text { font-size: 16px; }
+  .field-input { padding: 16px 18px; font-size: 17px; border-radius: var(--radius-lg); margin-bottom: 4px; }
+  .field-label { font-size: 11px; }
+  .submit-btn { padding: 20px; font-size: 20px; border-radius: var(--radius-lg); }
+  .clear-btn { padding: 14px; font-size: 16px; margin-bottom: 16px; }
+  .remove-btn { width: 36px; height: 36px; }
+}
+
+/* ============================================================
+   PEGGY CHATBOT — Redesigned as floating help bubble
+============================================================ */
+.peggy-trigger {
+  position: relative; cursor: pointer; width: 50px; height: 50px;
+  border-radius: 50%; transition: transform 0.25s;
+}
+.peggy-trigger:hover { transform: scale(1.08); }
+.peggy-avatar {
+  width: 100%; height: 100%; border-radius: 50%;
+  overflow: hidden; border: 2px solid var(--white);
+  box-shadow: 0 4px 12px rgba(27,44,193,0.18);
+}
+.peggy-avatar img {
+  width: 100%; height: 100%; object-fit: cover; object-position: center 20%;
+  transform: scale(1.35); display: block;
+}
+.peggy-badge {
+  position: absolute; top: -3px; right: -3px;
+  background: var(--coral); color: #fff;
+  width: 18px; height: 18px; border-radius: 50%;
+  font-size: 10px; font-weight: 900; border: 2px solid var(--white);
+  display: flex; align-items: center; justify-content: center;
+}
+
+/* Chat Window */
+#peggy-window {
+  position: fixed; bottom: 90px; left: 16px;
+  width: 320px; height: 460px; max-height: 65vh;
+  background: var(--white); border: 1px solid var(--border);
+  border-radius: var(--radius-xl); box-shadow: var(--shadow-lg);
+  display: flex; flex-direction: column; z-index: 1001; overflow: hidden;
+  transform: translateY(18px) scale(0.94); opacity: 0; pointer-events: none;
+  transition: all 0.32s cubic-bezier(0.34,1.4,0.64,1); transform-origin: bottom left;
+  font-size: 14px;
+}
+#peggy-window.show { transform: translateY(0) scale(1); opacity: 1; pointer-events: auto; }
+
+.peggy-chat-header {
+  background: var(--indigo); padding: 14px 16px;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-shrink: 0;
+}
+.peggy-chat-identity { display: flex; align-items: center; gap: 10px; }
+.peggy-chat-avatar { width: 34px; height: 34px; border-radius: 50%; overflow: hidden; border: 2px solid rgba(255,255,255,0.3); flex-shrink: 0; }
+.peggy-chat-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: center 20%; transform: scale(1.35); display: block; }
+.peggy-chat-name { font-size: 14px; font-weight: 700; color: #fff; letter-spacing: 0.2px; }
+.peggy-chat-status { font-size: 10px; color: rgba(255,255,255,0.6); margin-top: 1px; }
+.peggy-chat-close { background: rgba(255,255,255,0.15); border: none; color: #fff; width: 28px; height: 28px; border-radius: 50%; font-size: 16px; display: flex; align-items: center; justify-content: center; transition: background 0.2s; }
+.peggy-chat-close:hover { background: rgba(255,255,255,0.25); }
+
+.peggy-body {
+  flex: 1; overflow-y: auto; padding: 14px; background: var(--bg);
+  display: flex; flex-direction: column; gap: 10px; scroll-behavior: smooth;
+}
+.msg-peggy {
+  align-self: flex-start; background: var(--white); color: var(--text);
+  padding: 10px 13px; border-radius: 14px 14px 14px 3px;
+  max-width: 100%; width: 100%; border: 1px solid var(--border);
+  line-height: 1.55; font-size: 13.5px; box-shadow: var(--shadow-sm);
+  box-sizing: border-box;
+}
+.msg-user {
+  align-self: flex-end;
+  background: var(--indigo); color: #fff;
+  padding: 9px 13px; border-radius: 14px 14px 3px 14px;
+  max-width: 85%; font-size: 13.5px; line-height: 1.45;
+}
+
+.peggy-footer {
+  padding: 10px 12px; background: var(--white);
+  border-top: 1px solid var(--border); display: flex; gap: 8px; align-items: center;
+  flex-shrink: 0;
+}
+.peggy-footer input {
+  flex: 1; padding: 10px 14px; border: 1.5px solid var(--border);
+  border-radius: 20px; font-size: 13.5px; color: var(--text);
+  background: var(--bg); transition: border-color 0.2s;
+}
+.peggy-footer input:focus { outline: none; border-color: var(--indigo); background: var(--white); box-shadow: 0 0 0 3px var(--indigo-dim); }
+.peggy-footer input::placeholder { color: var(--text-soft); }
+.peggy-send-btn {
+  width: 38px; height: 38px; border-radius: 50%; border: none;
+  background: var(--indigo); color: #fff; flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 15px; transition: transform 0.15s, box-shadow 0.15s;
+  box-shadow: 0 4px 10px rgba(27,44,193,0.25);
+}
+.peggy-send-btn:active { transform: scale(0.9); }
+
+.typing-indicator { display: flex; gap: 4px; padding: 4px 2px; align-items: center; }
+.typing-dot { width: 6px; height: 6px; background: var(--text-soft); border-radius: 50%; animation: typing 1.4s infinite ease-in-out; }
+.typing-dot:nth-child(2) { animation-delay: 0.2s; }
+.typing-dot:nth-child(3) { animation-delay: 0.4s; }
+@keyframes typing { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+
+@media (max-width: 400px) { #peggy-window { width: calc(100vw - 32px); } }
+@media (min-width: 768px) {
+  .peggy-trigger { width: 64px; height: 64px; }
+  .peggy-badge { width: 22px; height: 22px; font-size: 11px; top: -2px; right: -2px; }
+  #peggy-window { font-size: 18px; width: 420px; height: 70vh; max-height: 700px; bottom: 110px; left: 32px; border-radius: var(--radius-xl); }
+  .msg-peggy { max-width: 88%; width: auto; font-size: 1em; }
+  .msg-user { max-width: 80%; font-size: 1em; }
+  .peggy-chat-name { font-size: 16px; }
+  .peggy-footer input { font-size: 16px; padding: 12px 16px; }
+  .peggy-send-btn { width: 44px; height: 44px; font-size: 18px; }
+}
+@media (min-width: 1024px) {
+  #peggy-window { font-size: 22px; width: 520px; height: 75vh; max-height: 860px; }
+}
+
+/* ============================================================
+   STUDENT SCHEDULE MODAL
+============================================================ */
+.sched-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(26,26,46,0.5);
+  backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px);
+  z-index: 4000; overflow-y: auto;
+}
+.sched-container {
+  max-width: 780px; margin: 0 auto;
+  background: var(--white); min-height: 100vh; padding: 20px 16px 60px;
+  box-sizing: border-box;
+}
+.sched-nav-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; }
+.sched-month-title { font-family: var(--font-display); font-size: 22px; color: var(--text); }
+.sched-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; margin-bottom: 14px; }
+.sched-cell {
+  min-height: 58px; display: flex; flex-direction: column;
+  align-items: center; justify-content: flex-start; padding-top: 7px;
+  border-radius: var(--radius-sm); font-size: 16px; font-weight: 700;
+  cursor: pointer; color: var(--text-mid);
+  background: var(--white); border: 1.5px solid var(--border);
+  transition: all 0.18s; position: relative;
+}
+.sched-cell:hover { border-color: var(--indigo); background: var(--indigo-light); }
+.sched-cell.empty { border: none !important; background: transparent !important; cursor: default; }
+.sched-cell.today { border-color: var(--coral); color: var(--coral); }
+.sched-cell.selected { background: var(--indigo) !important; color: #fff !important; border-color: var(--indigo) !important; box-shadow: 0 4px 14px rgba(27,44,193,0.28); }
+.sched-cell-times { font-size: 9.5px; color: var(--coral); font-weight: 700; line-height: 1.3; text-align: center; margin-top: 3px; }
+.sched-cell.selected .sched-cell-times { color: rgba(255,255,255,0.75); }
+.sched-details { margin-top: 16px; padding: 18px; background: var(--bg); border-radius: var(--radius-lg); border: 1px solid var(--border); min-height: 90px; }
+
+@media (min-width: 768px) {
+  .sched-overlay { padding: 48px 20px; }
+  .sched-container { border-radius: var(--radius-xl); min-height: auto; padding: 44px; box-shadow: var(--shadow-lg); }
+  .sched-cell { min-height: 82px; font-size: 22px; }
+  .sched-cell-times { font-size: 11px; }
+}
+
+/* ============================================================
+   DESKTOP: Cal side-by-side layout
+============================================================ */
+@media (min-width: 1024px) {
+  .cal-body-wrap { display: flex; flex-direction: row; gap: 0; height: calc(100vh - 110px); }
+  .cal-left { flex: 1; padding: 24px 28px 24px 28px; overflow-y: auto; }
+  .cal-right { flex: 0 0 360px; border-left: 1px solid var(--border); padding: 24px; overflow-y: auto; }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .cal-grid { padding: 0 16px; }
+  .cal-cell { font-size: 24px; border-radius: var(--radius-md); }
+  .simple-slot-btn { font-size: 20px; padding: 20px 0; border-radius: var(--radius-lg); }
+  .simple-slot-grid { gap: 14px; }
+  .cal-nav-row { padding: 18px 20px 14px; }
+  .cal-month-title { font-size: 28px; }
+  .cal-controls { padding: 16px 20px 12px; }
+  #cal-slots-area { padding: 20px 20px 140px; }
+  .slots-date-title { font-size: 26px; }
+  .simple-slot-grid.few-slots { grid-template-columns: repeat(2,1fr) !important; }
+  .simple-slot-grid.few-slots .simple-slot-btn { padding: 28px 0 !important; font-size: 24px !important; }
+}
+
+/* Desktop: bigger tap targets */
+@media (min-width: 768px) {
+  .site-header { display: none; } /* Calendar is full-page on desktop */
+  .cal-controls { padding: 20px 28px 16px; }
+  .cal-brand { font-size: 22px; }
+  .cal-nav-row { padding: 20px 28px 14px; }
+  .cal-month-title { font-size: 32px; }
+  .cal-nav-btn { width: 44px; height: 44px; font-size: 18px; }
+  .cal-grid { padding: 0 20px; }
+  .cal-day-head { font-size: 12px; padding-bottom: 10px; }
+  .cal-cell { font-size: 22px; border-radius: var(--radius-md); }
+  .hdr-pill { height: 40px; padding: 0 18px; font-size: 14px; border-radius: 20px; }
+  .multi-badge { height: 40px; padding: 0 16px; font-size: 14px; }
+  .cal-controls-right { gap: 10px; }
+}
+
+@media (min-width: 1024px) {
+  .cal-cell { aspect-ratio: 1.1; font-size: 26px; }
+  .simple-slot-grid { grid-template-columns: repeat(2,1fr); }
+  .simple-slot-grid.few-slots { grid-template-columns: repeat(2,1fr) !important; }
+  .simple-slot-grid.few-slots .simple-slot-btn { padding: 36px 0 !important; font-size: 28px !important; }
+  .simple-slot-btn { font-size: 22px; padding: 22px 0; }
+  .slots-date-title { font-size: 28px; }
+  .cal-right .slots-header { padding-top: 80px; }
+}
+@media (min-width: 1400px) { .simple-slot-grid { grid-template-columns: repeat(3,1fr); } }
+</style>
+</head>
+<body>
+
+<!-- ======================== LOADING ======================== -->
+<div id="loading-overlay">
+  <div class="intro-wordmark">Tony English · 線上美語家教</div>
+  <div class="intro-steps">
+    <div class="step" id="step1">Tony 線上美語家教</div>
+    <div class="step" id="step2">支援一次多堂預約</div>
+    <div class="step" id="step3">50 分鐘 / 堂課程</div>
+    <div class="step" id="step4">歡迎使用 ✦</div>
+  </div>
+  <div class="intro-pulse">
+    <div class="intro-dot"></div><div class="intro-dot"></div><div class="intro-dot"></div>
+  </div>
+</div>
+
+<!-- ======================== RESULT MODAL ======================== -->
+<div id="result-modal" class="result-overlay">
+  <div class="result-content">
+    <div id="res-icon" class="result-icon">🎉</div>
+    <div id="res-title" class="result-title">預約成功</div>
+    <div id="res-msg" class="result-msg"></div>
+    <button class="result-close-btn" onclick="closeResultModal()">確定 OK</button>
+  </div>
+</div>
+
+<!-- ======================== STUDENT SCHEDULE MODAL ======================== -->
+<div id="sched-modal-overlay" class="sched-overlay">
+  <div class="sched-container">
+    <button onclick="closeSchedCalendar()" style="display:inline-flex;align-items:center;gap:6px;border:1.5px solid var(--border);background:var(--white);color:var(--text-mid);padding:8px 16px;border-radius:20px;font-weight:600;font-size:13px;margin-bottom:20px;transition:all 0.2s;" onmouseover="this.style.borderColor='var(--indigo)'" onmouseout="this.style.borderColor='var(--border)'">❮ 返回</button>
+    <div class="sched-nav-row">
+      <button class="cal-nav-btn" onclick="changeSchedMonth(-1)">❮</button>
+      <div id="sched-cal-title" class="sched-month-title"></div>
+      <button class="cal-nav-btn" onclick="changeSchedMonth(1)">❯</button>
+    </div>
+    <div class="sched-grid" id="sched-head-row">
+      <div class="cal-day-head">MON<small>一</small></div>
+      <div class="cal-day-head">TUE<small>二</small></div>
+      <div class="cal-day-head">WED<small>三</small></div>
+      <div class="cal-day-head">THU<small>四</small></div>
+      <div class="cal-day-head">FRI<small>五</small></div>
+      <div class="cal-day-head h-sat">SAT<small>六</small></div>
+    </div>
+    <div id="sched-cal-body" class="sched-grid"></div>
+    <div id="sched-details-area" class="sched-details"></div>
+  </div>
+</div>
+
+<!-- ======================== MAIN VIEW (hidden, calendar is default) ======================== -->
+<div class="container" id="p-main">
+  <!-- Site header only shown on mobile/fallback -->
+  <div class="site-header">
+    <div class="brand-row">
+      <div class="brand-lockup">
+        <div class="brand-en">Tony English</div>
+        <div class="brand-tag">線上美語家教 · 50分/堂</div>
+      </div>
+      <div class="brand-actions">
+        <div class="multi-badge" id="main-mode-badge">多堂預約</div>
+        <button class="hdr-pill" onclick="openCalendar()">📅 月曆</button>
+        <div class="rule-info-wrapper">
+          <button class="hdr-pill" onclick="toggleRules('mob-rules')">！規範</button>
+          <div class="rule-popover" id="mob-rules">
+            <button class="rule-popover-close" onclick="closePopover('mob-rules')">✕</button>
+            <img src="https://ik.imagekit.io/lql1uveoc/IMG_9614.PNG?updatedAt=1750437382543" class="rule-logo" alt="Logo">
+            <p>24小時內請假/調課，<span class="rule-highlight">扣 0.5 堂</span></p>
+            <p>12小時內請假/調課，<span class="rule-highlight">扣 1 堂</span></p>
+            <p><span class="rule-highlight-red">週六及國定假日24小時內</span><br class="mob-br">請假/調課，扣 1 堂</p>
+            <a href="https://tonyonlineenglish.netlify.app/regulations" target="_blank" class="rule-details-link">詳細規範</a>
+          </div>
+        </div>
+        <div class="peggy-trigger" onclick="togglePeggy()">
+          <div class="peggy-avatar"><img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/christina-wocintechchat-com-m-0Zx1bDv5BNY-unsplash.jpg" alt="Peggy"></div>
+          <span class="peggy-badge">1</span>
+        </div>
+      </div>
+    </div>
+    <div class="date-strip" id="dateScroller"></div>
+  </div>
+
+  <div class="slots-container" id="main-slots-container">
+    <div id="empty-msg"></div>
+    <div id="card-morning" class="time-card morning">
+      <div class="time-axis">
+        <div class="axis-time">10<small>AM</small></div><div class="axis-line"></div>
+        <div class="axis-icon">☀</div><div class="axis-line"></div>
+        <div class="axis-time">12<small>PM</small></div>
+      </div>
+      <div class="card-content"><div id="grid-morning" class="slot-grid"></div></div>
+    </div>
+    <div id="card-afternoon" class="time-card afternoon">
+      <div class="time-axis">
+        <div class="axis-time">01<small>PM</small></div><div class="axis-line"></div>
+        <div class="axis-icon">☕</div><div class="axis-line"></div>
+        <div class="axis-time">05<small>PM</small></div>
+      </div>
+      <div class="card-content"><div id="grid-afternoon" class="slot-grid"></div></div>
+    </div>
+    <div id="card-evening" class="time-card evening">
+      <div class="time-axis">
+        <div class="axis-time">06<small>PM</small></div><div class="axis-line"></div>
+        <div class="axis-icon">🌙</div><div class="axis-line"></div>
+        <div class="axis-time">10<small>PM</small></div>
+      </div>
+      <div class="card-content"><div id="grid-evening" class="slot-grid"></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ======================== HOT PANEL ======================== -->
+<div id="hot-panel">
+  <button class="close-hot" onclick="closeHotPanel()">✕</button>
+  <div class="hot-title">⚡ 近期晚間時段</div>
+  <div class="hot-list" id="hot-list"></div>
+</div>
+
+<!-- ======================== FLOATING CART ======================== -->
+<button id="floating-cart-btn" onclick="toggleCartForm()">
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="cal-icon-svg">
+    <path fill="currentColor" d="M19,4H18V2H16V4H8V2H6V4H5A2,2 0 0,0 3,6V20A2,2 0 0,0 5,22H19A2,2 0 0,0 21,20V6A2,2 0 0,0 19,4M19,20H5V10H19V20M19,8H5V6H19V8Z"/>
+  </svg>
+  <span class="cart-badge" id="cart-count">0</span>
+</button>
+
+<!-- ======================== PEGGY WINDOW ======================== -->
+<div id="peggy-window">
+  <div class="peggy-chat-header">
+    <div class="peggy-chat-identity">
+      <div class="peggy-chat-avatar">
+        <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/christina-wocintechchat-com-m-0Zx1bDv5BNY-unsplash.jpg" alt="Peggy">
+      </div>
+      <div>
+        <div class="peggy-chat-name">Peggy 小幫手</div>
+        <div class="peggy-chat-status">課程查詢 · 剩餘堂數</div>
+      </div>
+    </div>
+    <button class="peggy-chat-close" onclick="togglePeggy()">×</button>
+  </div>
+  <div class="peggy-body" id="peggy-body"></div>
+  <div class="peggy-footer">
+    <input type="text" id="peggy-input" placeholder="輸入英文名字查詢…" onkeypress="handlePeggyEnter(event)">
+    <button class="peggy-send-btn" onclick="sendPeggyMessage()">➤</button>
+  </div>
+</div>
+
+<!-- ======================== CHECKOUT FORM ======================== -->
+<div id="p-form" class="page-form">
+  <div class="form-sheet">
+    <div class="sheet-handle"></div>
+    <div class="sheet-header">
+      <div class="sheet-title">確認預約</div>
+      <button class="sheet-close" onclick="closeForm()">×</button>
+    </div>
+    <button class="clear-btn" onclick="clearCart()">🗑 清除所有時段</button>
+    <div style="font-size:11px;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;color:var(--text-soft);margin-bottom:8px;">
+      預約清單（共 <span id="form-total">0</span> 堂）
+    </div>
+    <div class="checkout-list" id="checkout-list"></div>
+    <div class="form-field">
+      <label class="field-label">姓名 Name</label>
+      <input class="field-input" type="text" id="iptName" placeholder="請輸入姓名">
+    </div>
+    <div class="form-field">
+      <label class="field-label">Email 電子郵件</label>
+      <input class="field-input" type="email" id="iptEmail" placeholder="用於接收確認信">
+    </div>
+    <button class="submit-btn" onclick="submitData()">確認送出預約</button>
+  </div>
+</div>
+
+<!-- ======================== CALENDAR MODAL (default view) ======================== -->
+<div id="cal-modal">
+  <div class="cal-shell">
+    <!-- Controls bar -->
+    <div class="cal-controls">
+      <div class="cal-brand">Tony English</div>
+      <div class="cal-controls-right">
+        <div style="font-size:11px;font-weight:700;letter-spacing:0.8px;background:var(--bg);border:1.5px solid var(--border);color:var(--text-mid);padding:4px 10px;border-radius:10px;">50分/堂</div>
+        <div class="multi-badge" id="cal-multi-badge">多堂預約</div>
+        <div class="rule-info-wrapper">
+          <button class="hdr-pill" onclick="toggleRules('cal-rules')">！規範</button>
+          <div class="rule-popover" id="cal-rules">
+            <button class="rule-popover-close" onclick="closePopover('cal-rules')">✕</button>
+            <img src="https://ik.imagekit.io/lql1uveoc/IMG_9614.PNG?updatedAt=1750437382543" class="rule-logo" alt="Logo">
+            <p>24小時內請假/調課，<span class="rule-highlight">扣 0.5 堂</span></p>
+            <p>12小時內請假/調課，<span class="rule-highlight">扣 1 堂</span></p>
+            <p><span class="rule-highlight-red">週六及國定假日24小時內</span><br class="mob-br">請假/調課，扣 1 堂</p>
+            <a href="https://tonyonlineenglish.netlify.app/regulations" target="_blank" class="rule-details-link">詳細規範</a>
+          </div>
+        </div>
+        <div class="peggy-trigger cal-peggy" onclick="togglePeggy()">
+          <div class="peggy-avatar"><img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/christina-wocintechchat-com-m-0Zx1bDv5BNY-unsplash.jpg" alt="Peggy"></div>
+          <span class="peggy-badge">1</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Desktop: side-by-side body wrap -->
+    <div class="cal-body-wrap">
+      <div class="cal-left">
+        <!-- Month nav -->
+        <div class="cal-nav-row">
+          <button class="cal-nav-btn" id="cal-prev-btn" onclick="changeCalMonth(-1)">❮</button>
+          <div id="cal-title" class="cal-month-title"></div>
+          <button class="cal-nav-btn" onclick="changeCalMonth(1)">❯</button>
+        </div>
+        <!-- Day headers -->
+        <div class="cal-grid" id="cal-head-row">
+          <div class="cal-day-head">MON<small>一</small></div>
+          <div class="cal-day-head">TUE<small>二</small></div>
+          <div class="cal-day-head">WED<small>三</small></div>
+          <div class="cal-day-head">THU<small>四</small></div>
+          <div class="cal-day-head">FRI<small>五</small></div>
+          <div class="cal-day-head h-sat">SAT<small>六</small></div>
+        </div>
+        <!-- Calendar cells -->
+        <div id="cal-body" class="cal-grid" style="padding-bottom:16px;"></div>
+      </div>
+
+      <div class="cal-right" id="cal-slots-area">
+        <div class="slots-header">
+          <div class="slots-date-title" id="cal-slots-title">請選擇日期</div>
+          <div class="slots-count-badge" id="slots-count-badge" style="display:none;"></div>
+        </div>
+        <div id="cal-slots-content"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+const CLOCK_ICON_URL="https://ik.imagekit.io/lql1uveoc/clock-4.png?updatedAt=1774630976142";
+let modalCloseCallback=null;
+
+function showNotice(title,message,isError=false,callback=null){
+  document.getElementById('res-icon').innerText=isError?"⚠️":"🎉";
+  document.getElementById('res-title').innerText=title;
+  document.getElementById('res-msg').innerHTML=message;
+  document.getElementById('result-modal').style.display='flex';
+  modalCloseCallback=callback;
+}
+function closeResultModal(){
+  document.getElementById('result-modal').style.display='none';
+  if(modalCloseCallback){modalCloseCallback();modalCloseCallback=null;}
+}
+
+// ===== INTRO =====
+let isLoadingStepsDone=false,isCalendarDataReady=false,introIdx=0;
+function runLoadingSteps(){
+  const steps=document.querySelectorAll('.step');
+  if(introIdx===0) steps.forEach(s=>s.classList.remove('active','completed'));
+  if(introIdx<steps.length){
+    if(introIdx>0){steps[introIdx-1].classList.remove('active');steps[introIdx-1].classList.add('completed');}
+    steps[introIdx].classList.add('active');introIdx++;
+    setTimeout(runLoadingSteps,420);
+  } else {
+    if(steps.length>0){steps[steps.length-1].classList.remove('active');steps[steps.length-1].classList.add('completed');}
+    isLoadingStepsDone=true;checkHideLoading();
+  }
+}
+function checkHideLoading(){
+  if(isLoadingStepsDone&&isCalendarDataReady){
+    const o=document.getElementById("loading-overlay");
+    if(o&&o.style.display!=="none"){o.style.opacity="0";o.style.pointerEvents="none";setTimeout(()=>{o.style.display="none";playIntroFlash();},600);}
+  }
+}
+function hideLoading(){isCalendarDataReady=true;checkHideLoading();}
+setTimeout(()=>{const o=document.getElementById("loading-overlay");if(o&&o.style.display!=="none"){o.style.opacity="0";o.style.pointerEvents="none";setTimeout(()=>o.style.display="none",600);}},6000);
+
+// ===== CONSTANTS =====
+const API_URL="https://script.google.com/macros/s/AKfycbyWvhW6fp_ohPEvPK226KtNiQLCyAVMl77zV0Hq0k_TcEk3F1ni9qVcJystGUovVjTMGQ/exec";
+const STAGE_1=3,STAGE_2=11,BG_BATCH=14,MAX_DAYS=45,MAX_SEL=10;
+let cachedData={},loadedDays=0,selDateStr="",selSlots=[];
+const dayNames=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],chiNames=["日","一","二","三","四","五","六"];
+const monthsEng=["Jan","Feb","March","April","May","June","July","Aug","Sept","Oct","Nov","Dec"];
+let hotShown=false,calYear,calMonth;
+let limitDate=new Date();limitDate.setDate(limitDate.getDate()+MAX_DAYS);limitDate.setHours(23,59,59,999);
+
+// Intro flash — highlight multi-badge
+function playIntroFlash(){
+  const badges=document.querySelectorAll('.multi-badge');
+  let c=0;const iv=setInterval(()=>{badges.forEach(b=>b.classList.toggle('lit'));c++;if(c>=6){clearInterval(iv);badges.forEach(b=>b.classList.add('lit'));setTimeout(()=>badges.forEach(b=>b.classList.remove('lit')),1400);}},220);
+}
+
+window.onload=function(){
+  setTimeout(runLoadingSteps,100);
+  setTimeout(()=>hideLoading(),5200);
+  const now=new Date();calYear=now.getFullYear();calMonth=now.getMonth();
+  updateHeaderDate();initDateScroller();
+  fetchBatch(0,STAGE_1,"STAGE1");
+  openCalendar();
+  document.getElementById("p-main").style.display="none";
+};
+
+function initDateScroller(){
+  const c=document.getElementById("dateScroller");const today=new Date();
+  for(let i=0;i<MAX_DAYS;i++){
+    const d=new Date();d.setDate(today.getDate()+i);const dStr=fmt(d);
+    if(d.getDay()===0)continue;
+    const isSat=d.getDay()===6;
+    const chip=document.createElement("div");
+    chip.className="date-chip loading"+(isSat?" sat-chip":"");
+    chip.id=`pill-${dStr}`;chip.dataset.date=dStr;
+    chip.innerHTML=`<div class="chip-date">${d.getMonth()+1}/${d.getDate()}</div><div class="chip-day">${dayNames[d.getDay()]}</div><div class="chip-chi">${chiNames[d.getDay()]}</div><div class="chip-loader"></div>`;
+    chip.onclick=()=>{if(chip.classList.contains('loading'))forceLoadDate(dStr);else selectDate(dStr);};
+    c.appendChild(chip);
+  }
+}
+
+function forceLoadDate(dStr){
+  selectPillUI(dStr);
+  document.querySelectorAll(".time-card").forEach(c=>c.style.display="none");
+  fetch(`${API_URL}?action=getBatchSlots&startDate=${dStr}&days=1`).then(r=>r.json()).then(data=>{
+    Object.assign(cachedData,data);if(!cachedData[dStr])cachedData[dStr]={slots:[]};
+    const p=document.getElementById(`pill-${dStr}`);if(p){p.classList.remove('loading');p.classList.add('loaded');}
+    renderSlots(dStr);
+  }).catch(()=>{const p=document.getElementById(`pill-${dStr}`);if(p)p.classList.remove('loading');});
+}
+
+function updateDatePills(startStr,days){
+  const start=new Date(startStr);
+  for(let i=0;i<days;i++){const d=new Date(start);d.setDate(start.getDate()+i);const dStr=fmt(d);const p=document.getElementById(`pill-${dStr}`);if(p){p.classList.remove('loading');p.classList.add('loaded');}}
+}
+
+function fetchBatch(startIdx,days,stage){
+  const today=new Date();const s=new Date();s.setDate(today.getDate()+startIdx);const startStr=fmt(s);
+  fetch(`${API_URL}?action=getBatchSlots&startDate=${startStr}&days=${days}`).then(r=>r.json()).then(data=>{
+    Object.assign(cachedData,data);
+    for(let i=0;i<days;i++){const d=new Date();d.setDate(today.getDate()+startIdx+i);const dStr=fmt(d);if(!cachedData[dStr])cachedData[dStr]={slots:[]};}
+    loadedDays+=days;updateDatePills(startStr,days);
+    if(stage==="STAGE1"){hideLoading();selectNearest();if(document.getElementById("cal-modal").classList.contains("active"))jumpToDate(selDateStr);checkHot(14);fetchBatch(loadedDays,STAGE_2,"STAGE2");}
+    else if(stage==="STAGE2"){checkHot(14);loadBg();}
+    else loadBg();
+    if(document.getElementById("cal-modal").classList.contains("active")){renderCalGrid();if(selDateStr)renderCalSlots(selDateStr);}
+  }).catch(err=>{
+    console.error(err);hideLoading();updateDatePills(startStr,days);
+    if(stage==="STAGE1"&&document.getElementById("empty-msg")){}
+    else setTimeout(()=>loadBg(),2000);
+  });
+}
+function loadBg(){if(loadedDays<MAX_DAYS)setTimeout(()=>fetchBatch(loadedDays,BG_BATCH,"BG"),500);}
+
+function selectNearest(){
+  const sorted=Object.keys(cachedData).sort();const todayStr=fmt(new Date());
+  for(const dStr of sorted){
+    if(dStr<todayStr)continue;
+    const d=cachedData[dStr];
+    if(d&&d.slots&&d.slots.some(s=>isValidSlot(s))){selectDate(dStr);return;}
+  }
+  const first=document.querySelector(".date-chip.loaded");if(first)selectDate(first.dataset.date);
+}
+
+function isValidSlot(s){if(!s||!s.time)return false;const[h,m]=s.time.split(":");const H=parseInt(h);if(H>=21)return false;if(H===20&&parseInt(m)>30)return false;return true;}
+function fmt(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+function fmtTime12(t){if(!t)return"";const[h,m]=t.split(':');let H=parseInt(h);const s=H>=12?'PM':'AM';H=H%12||12;return`${H}:${m} ${s}`;}
+function fmtHot(t){if(!t)return"";const[h,m]=t.split(':');let H=parseInt(h);const s=H>=12?'pm':'am';H=H%12||12;return m==='00'?`${H}${s}`:`${H}:${m}${s}`;}
+
+function updateHeaderDate(){
+  const now=new Date();const el=document.getElementById("full-date-display");
+  if(el)el.innerText=`今日 ${now.getFullYear()}年${now.getMonth()+1}月${now.getDate()}日 週${chiNames[now.getDay()]}`;
+}
+
+// ===== CALENDAR =====
+function openCalendar(){
+  if(!selDateStr)selDateStr=fmt(new Date());
+  renderCalGrid();jumpToDate(selDateStr);
+  document.getElementById("cal-modal").classList.add("active");
+  window.scrollTo(0,0);updateBottomBar();
+}
+function closeCalendar(){
+  if(window.innerWidth>=768)return;
+  document.getElementById("cal-modal").classList.remove("active");
+  if(selDateStr){selectPillUI(selDateStr);renderSlots(selDateStr);}
+  updateBottomBar();
+}
+function changeCalMonth(n){
+  if(n<0){const now=new Date();if(calYear===now.getFullYear()&&calMonth===now.getMonth())return;const t=new Date(calYear,calMonth+n,1);if(t<new Date(now.getFullYear(),now.getMonth(),1))return;}
+  calMonth+=n;if(calMonth>11){calMonth=0;calYear++;}else if(calMonth<0){calMonth=11;calYear--;}
+  renderCalGrid();
+}
+function renderCalGrid(){
+  document.getElementById("cal-title").innerText=`${calYear}年 ${calMonth+1}月 ${monthsEng[calMonth]}`;
+  const prev=document.getElementById("cal-prev-btn");const now=new Date();
+  if(calYear===now.getFullYear()&&calMonth===now.getMonth())prev.classList.add('disabled');else prev.classList.remove('disabled');
+  const body=document.getElementById("cal-body");body.innerHTML="";
+  const firstDay=new Date(calYear,calMonth,1).getDay();const daysInMonth=new Date(calYear,calMonth+1,0).getDate();
+  const today=new Date();today.setHours(0,0,0,0);
+  let emp=firstDay===0?6:firstDay-1;
+  for(let i=0;i<emp;i++)body.innerHTML+=`<div class="cal-cell empty"></div>`;
+  for(let d=1;d<=daysInMonth;d++){
+    const dStr=`${calYear}-${String(calMonth+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const dt=new Date(dStr);if(dt.getDay()===0)continue;
+    const cell=document.createElement("div");cell.className="cal-cell";cell.textContent=d;
+    if(dt<today||dt>limitDate)cell.classList.add("disabled");
+    else{
+      cell.classList.add("loaded");
+      if(dStr===fmt(new Date()))cell.classList.add("today");
+      if(dStr===selDateStr)cell.classList.add("selected");
+      if(cachedData[dStr]&&cachedData[dStr].slots&&cachedData[dStr].slots.some(s=>isValidSlot(s)))cell.classList.add("has-slot");
+      cell.onclick=()=>jumpToDate(dStr);
+    }
+    body.appendChild(cell);
+  }
+  highlightWeekDay(selDateStr);
+}
+
+function highlightWeekDay(dStr){
+  document.querySelectorAll('.cal-day-head').forEach(h=>h.classList.remove('h-active'));
+  if(!dStr)return;
+  const di=new Date(dStr).getDay();if(di===0)return;
+  const heads=document.querySelectorAll('.cal-day-head');
+  if(heads[di-1])heads[di-1].classList.add('h-active');
+}
+
+function jumpToDate(dStr){
+  selDateStr=dStr;renderCalGrid();
+  const dObj=new Date(dStr);
+  document.getElementById("cal-slots-title").innerText=`${dStr} 週${chiNames[dObj.getDay()]}`;
+  highlightWeekDay(dStr);
+  if(cachedData[dStr])renderCalSlots(dStr);
+  else{
+    document.getElementById("cal-slots-content").innerHTML=`<div class="slot-empty"><div class="empty-icon">⏳</div>讀取中…</div>`;
+    fetch(`${API_URL}?action=getBatchSlots&startDate=${dStr}&days=1`).then(r=>r.json()).then(data=>{
+      Object.assign(cachedData,data);if(!cachedData[dStr])cachedData[dStr]={slots:[]};
+      const p=document.getElementById(`pill-${dStr}`);if(p){p.classList.remove('loading');p.classList.add('loaded');}
+      renderCalSlots(dStr);
+    }).catch(()=>document.getElementById("cal-slots-content").innerHTML=`<div class="slot-empty"><div class="empty-icon">❌</div>讀取失敗，請重試</div>`);
+  }
+}
+
+function makeClockImg(){const img=document.createElement('img');img.src=CLOCK_ICON_URL;img.className='slot-clock';img.alt='';img.draggable=false;return img;}
+
+function renderCalSlots(dStr){
+  const con=document.getElementById("cal-slots-content");con.innerHTML="";
+  const badge=document.getElementById("slots-count-badge");
+  const data=cachedData[dStr];
+  const valid=data&&data.slots?data.slots.filter(s=>isValidSlot(s)):[];
+
+  if(valid.length===0){
+    badge.style.display="none";
+    con.innerHTML=`<div class="slot-empty"><div class="empty-icon">📭</div>本日無可預約時段<br><span style="font-size:12px;color:var(--text-soft);margin-top:6px;display:block;">請點選其他日期</span></div>`;
+    return;
+  }
+
+  badge.style.display="inline-flex";badge.textContent=`${valid.length} 個時段`;
+
+  // Group by time of day for section labels
+  const morning=valid.filter(s=>parseInt(s.time)<12);
+  const afternoon=valid.filter(s=>parseInt(s.time)>=12&&parseInt(s.time)<18);
+  const evening=valid.filter(s=>parseInt(s.time)>=18);
+
+  function renderSection(label,icon,slots){
+    if(!slots.length)return;
+    const sec=document.createElement("div");sec.className="time-section";
+    sec.innerHTML=`<div class="time-section-label"><span>${icon}</span> ${label}</div>`;
+    const grid=document.createElement("div");grid.className="simple-slot-grid";
+    if(slots.length>0&&slots.length<=4)grid.classList.add('few-slots');
+    slots.forEach(slot=>{
+      const btn=document.createElement("button");btn.className="simple-slot-btn";
+      btn.appendChild(makeClockImg());btn.appendChild(document.createTextNode(fmtTime12(slot.time)));
+      if(selSlots.some(s=>s.timestamp===slot.timestamp))btn.classList.add("selected");
+      btn.addEventListener('click',()=>{toggleSlot(slot,dStr);renderCalSlots(dStr);});
+      grid.appendChild(btn);
+    });
+    sec.appendChild(grid);con.appendChild(sec);
+  }
+
+  renderSection("上午","☀️",morning);
+  renderSection("下午","☕",afternoon);
+  renderSection("晚上","🌙",evening);
+  updateBottomBar();
+}
+
+// ===== SLOT INTERACTIONS =====
+function toggleSlot(slot,dateStr){
+  const idx=selSlots.findIndex(s=>s.timestamp===slot.timestamp);
+  if(idx>=0)selSlots.splice(idx,1);
+  else{if(selSlots.length>=MAX_SEL)return showNotice("提醒",`最多 ${MAX_SEL} 個時段`,true);addToCart(slot,dateStr);}
+  updateBottomBar();
+  if(document.getElementById("cal-modal").classList.contains("active"))renderCalSlots(selDateStr);
+  else renderSlots(selDateStr);
+}
+function addToCart(slot,dateStr){
+  const dObj=new Date(dateStr);
+  const ds=`${dObj.getMonth()+1}/${dObj.getDate()} (${dayNames[dObj.getDay()]} ${chiNames[dObj.getDay()]}) ${fmtTime12(slot.time)}`;
+  selSlots.push({dateStr,time:slot.time,timestamp:slot.timestamp,displayStr:ds});
+}
+function clearCart(){selSlots=[];updateBottomBar();if(document.getElementById("cal-modal").classList.contains("active")){if(selDateStr)renderCalSlots(selDateStr);}else renderSlots(selDateStr);closeForm();}
+function removeSingleSlot(ts){selSlots=selSlots.filter(s=>s.timestamp!==ts);if(!selSlots.length){clearCart();return;}openBatchForm();if(document.getElementById("cal-modal").classList.contains("active"))renderCalSlots(selDateStr);else renderSlots(selDateStr);updateBottomBar();}
+
+function toggleCartForm(){const f=document.getElementById("p-form");if(f.classList.contains("active"))closeForm();else openBatchForm();}
+function closeForm(){document.getElementById("p-form").classList.remove("active");}
+function openBatchForm(){
+  if(!selSlots.length)return;
+  const list=document.getElementById("checkout-list");list.innerHTML="";
+  selSlots.sort((a,b)=>a.timestamp-b.timestamp);
+  selSlots.forEach((s,i)=>{
+    const div=document.createElement("div");div.className="checkout-item";
+    div.innerHTML=`<div class="checkout-num">${i+1}</div><div class="checkout-text">${s.displayStr}</div><button class="remove-btn" onclick="removeSingleSlot(${s.timestamp})">🗑</button>`;
+    list.appendChild(div);
+  });
+  document.getElementById("form-total").textContent=selSlots.length;
+  document.getElementById("p-form").classList.add("active");
+}
+
+function updateBottomBar(){
+  const count=selSlots.length;const btn=document.getElementById("floating-cart-btn");const badge=document.getElementById("cart-count");
+  const isCalActive=document.getElementById('cal-modal').classList.contains('active');
+  if(count>0){
+    badge.textContent=count;badge.classList.remove("bump-effect");void badge.offsetWidth;badge.classList.add("bump-effect");
+    btn.classList.add("show");
+    if(window.innerWidth<768&&isCalActive){const area=document.getElementById('cal-slots-area');if(btn.parentElement!==area){area.appendChild(btn);btn.classList.add('in-cal-view');}}
+    else{if(btn.parentElement!==document.body){document.body.appendChild(btn);btn.classList.remove('in-cal-view');}}
+    // Update multi-badge
+    document.querySelectorAll('.multi-badge').forEach(b=>{b.textContent=`${count} 堂已選`;b.classList.add('lit');});
+  } else {
+    btn.classList.remove("show");
+    document.querySelectorAll('.multi-badge').forEach(b=>{b.textContent='多堂預約';b.classList.remove('lit');});
+  }
+}
+
+// ===== SUBMIT =====
+function submitData(){
+  const name=document.getElementById("iptName").value.trim();const email=document.getElementById("iptEmail").value.trim();
+  const emailRe=/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+  if(!name||!email)return showNotice("提示","請填寫姓名與 Email",true);
+  if(!emailRe.test(email))return showNotice("格式錯誤","Email 格式不正確，例：name@gmail.com",true);
+  const btn=document.querySelector(".submit-btn");const org=btn.textContent;btn.textContent="送出中…";btn.disabled=true;
+  const DURMS=3600000;
+  fetch(API_URL,{method:"POST",body:JSON.stringify({name,email,appointments:selSlots})})
+  .then(r=>r.json()).then(res=>{
+    if(res.bookingSummary){
+      const sum=res.bookingSummary;
+      if(sum.failCount===0){
+        let msg=buildSuccessMsg(selSlots);showNotice("預約成功",msg);finishSuccess(DURMS);
+      } else {
+        let msg=`⚠️ 有 <b>${sum.failCount}</b> 堂預約失敗（已被搶先）。<br>✅ 成功 <b>${sum.successCount}</b> 堂。`;
+        if(sum.failedSlots){msg+=`<br><span style="color:#C0392B;font-size:13px;">失敗：${sum.failedSlots.map(s=>{const d=new Date(parseInt(s.timestamp));return`${d.getMonth()+1}/${d.getDate()} ${d.getHours()}:${String(d.getMinutes()).padStart(2,'0')}`;}).join(', ')}</span>`;}
+        msg+=`<a href="https://tonyonlineenglish.netlify.app/regulations" target="_blank" style="color:var(--indigo);display:block;margin-top:10px;font-size:13px;">詳細規範</a>`;
+        showNotice("部分成功",msg,true,()=>location.reload());
+      }
+    } else if(res.success){
+      let msg=buildSuccessMsg(selSlots);showNotice("預約成功",msg);finishSuccess(DURMS);
+    } else showNotice("預約失敗","錯誤："+res.message,true);
+    btn.textContent=org;btn.disabled=false;
+  }).catch(()=>{showNotice("網路錯誤","請檢查連線後重試",true);btn.textContent=org;btn.disabled=false;});
+
+  function buildSuccessMsg(slots){
+    let html=`確認信已寄至您的信箱。<div style="text-align:left;margin:14px 0;padding:12px 14px;background:#F8F7F4;border-radius:12px;border:1px solid #E8E8F0;">`;
+    html+=`<div style="font-weight:700;color:var(--indigo);margin-bottom:8px;font-size:13px;letter-spacing:0.5px;text-transform:uppercase;">已預約時段</div>`;
+    slots.forEach(s=>{html+=`<div style="font-size:13.5px;color:#1A1A2E;margin-bottom:4px;">✦ ${s.displayStr}</div>`;});
+    html+=`</div><div style="font-size:12.5px;color:#C0392B;font-weight:600;">請假/調課請於24小時前提出。</div>`;
+    html+=`<a href="https://tonyonlineenglish.netlify.app/regulations" target="_blank" style="color:var(--indigo);font-size:12px;display:inline-block;margin-top:6px;">詳細規範 →</a>`;
+    return html;
+  }
+  function finishSuccess(DURMS){
+    selSlots.forEach(b=>{if(cachedData[b.dateStr])cachedData[b.dateStr].slots=cachedData[b.dateStr].slots.filter(s=>!(s.timestamp<b.timestamp+DURMS&&s.timestamp+DURMS>b.timestamp));});
+    selSlots=[];closeForm();renderCalSlots(selDateStr);updateBottomBar();checkHot(14);
+  }
+}
+
+// ===== HOT PANEL =====
+function checkHot(days){
+  const list=document.getElementById("hot-list");list.innerHTML="";let items=[];
+  const sorted=Object.keys(cachedData).sort();const today=new Date();today.setHours(0,0,0,0);
+  for(const dStr of sorted){
+    const d=new Date(dStr);d.setHours(0,0,0,0);const diff=(d-today)/86400000;
+    if(diff>=0&&diff<days){
+      const day=d.getDay();if(day<1||day>6)continue;
+      (cachedData[dStr].slots||[]).forEach(s=>{
+        const h=parseInt(s.time);if(h>=18&&h<=20){
+          const btn=document.createElement("button");btn.className="hot-btn";
+          btn.innerHTML=`<span>${d.getMonth()+1}/${d.getDate()} (${dayNames[day]}) ${fmtHot(s.time)}</span><span>→</span>`;
+          btn.onclick=()=>{closeHotPanel();if(window.innerWidth<768){closeCalendar();selectDate(dStr);}else jumpToDate(dStr);setTimeout(()=>{toggleSlot(s,dStr);},100);};
+          items.push(btn);
+        }
+      });
+    }
+  }
+  if(items.length){
+    items.forEach((b,i)=>{if(i>=4)b.classList.add("hot-hidden");list.appendChild(b);});
+    if(items.length>4){const m=document.createElement("div");m.className="hot-show-more";m.textContent="顯示更多";m.onclick=()=>{document.querySelectorAll(".hot-hidden").forEach(e=>e.classList.remove("hot-hidden"));m.style.display="none";};list.appendChild(m);}
+    if(!hotShown){hotShown=true;setTimeout(()=>document.getElementById("hot-panel").classList.add("show"),120);}
+  }
+}
+function closeHotPanel(){document.getElementById("hot-panel").classList.remove("show");}
+
+// ===== MAIN VIEW (fallback) =====
+function selectDate(dStr){selDateStr=dStr;selectPillUI(dStr);renderSlots(dStr);}
+function selectPillUI(dStr){
+  document.querySelectorAll(".date-chip").forEach(e=>e.classList.remove("active"));
+  const el=document.getElementById(`pill-${dStr}`);
+  if(el){el.classList.add("active");el.scrollIntoView({behavior:"smooth",inline:"center",block:"nearest"});}
+}
+function renderSlots(dStr){
+  if(!cachedData[dStr]){document.getElementById("empty-msg").style.display="block";return;}
+  const data=cachedData[dStr];
+  const zones={morning:{el:document.getElementById("grid-morning"),card:document.getElementById("card-morning")},afternoon:{el:document.getElementById("grid-afternoon"),card:document.getElementById("card-afternoon")},evening:{el:document.getElementById("grid-evening"),card:document.getElementById("card-evening")}};
+  Object.values(zones).forEach(z=>{z.el.innerHTML="";z.card.style.display="none";});
+  if(!data.slots||!data.slots.length){document.getElementById("empty-msg").innerHTML="<b>請選擇其他日期</b>";document.getElementById("empty-msg").style.display="block";return;}
+  document.getElementById("empty-msg").style.display="none";
+  Object.keys(zones).forEach(key=>{
+    const slots=data.slots.filter(s=>s.type===key);const z=zones[key];
+    if(slots.length){
+      z.card.style.display="flex";z.el.className="slot-grid";if(slots.length<=3)z.el.classList.add('few-slots');
+      slots.forEach(slot=>{
+        const btn=document.createElement("button");btn.className="slot-btn";
+        const img=makeClockImg();btn.appendChild(img);btn.appendChild(document.createTextNode(fmtTime12(slot.time)));
+        if(selSlots.some(s=>s.timestamp===slot.timestamp))btn.classList.add("selected");
+        btn.onclick=()=>toggleSlot(slot,dStr);z.el.appendChild(btn);
+      });
+    }
+  });
+  updateBottomBar();
+}
+
+// ===== RULES / POPOVERS =====
+function toggleRules(id){
+  const el=document.getElementById(id);document.querySelectorAll('.rule-popover').forEach(p=>{if(p.id!==id)p.classList.remove('show');});el.classList.toggle('show');
+}
+function closePopover(id){document.getElementById(id).classList.remove('show');}
+
+document.addEventListener('click',e=>{
+  if(!e.target.closest('.rule-info-wrapper')&&!e.target.closest('.rule-popover-close'))document.querySelectorAll('.rule-popover').forEach(p=>p.classList.remove('show'));
+  const hp=document.getElementById("hot-panel");if(hp&&hp.classList.contains("show")&&!e.target.closest("#hot-panel"))hp.classList.remove("show");
+  const pw=document.getElementById('peggy-window');if(pw&&pw.classList.contains('show')&&!e.target.closest('#peggy-window')&&!e.target.closest('.peggy-trigger'))togglePeggy();
+});
+
+// ===== PEGGY CHATBOT =====
+const PEGGY_API="https://script.google.com/macros/s/AKfycbxrSJS4dGWmG_GHpginXD_Nl-R8KaZq-6NHRtBjT8_Q4TWz0pp4yinVaMKibdf-Vz1ELg/exec";
+let peggyInited=false,currentSched=[],schedY,schedM,schedSel;
+
+function togglePeggy(){
+  const w=document.getElementById('peggy-window');
+  w.classList.toggle('show');
+  document.querySelectorAll('.peggy-badge').forEach(b=>b.style.display='none');
+  if(w.classList.contains('show')&&!peggyInited){
+    addPeggyMsg(`嗨！我是 Peggy 👋 可以幫您查詢課程時間與剩餘堂數。<br><a href="https://tonyonlineenglish.netlify.app/ycs" target="_blank" style="color:var(--indigo);font-weight:700;">也可點這裡查詢</a><br><br>請輸入您的<b>英文名字</b>：`,'bot','bottom');
+    peggyInited=true;
+  }
+}
+function handlePeggyEnter(e){if(e.key==='Enter')sendPeggyMessage();}
+function sendPeggyMessage(force=null,skipEason=false){
+  const inp=document.getElementById('peggy-input');const text=force||inp.value.trim();if(!text)return;
+  addPeggyMsg(text,'user','bottom');inp.value='';
+  if(text.toLowerCase()==='eason'&&!skipEason){
+    showPeggyTyping();
+    setTimeout(()=>{
+      hidePeggyTyping();
+      addPeggyMsg(`找到多位 Eason，請選擇：<br><button onclick="sendPeggyMessage('Eason Hsieh 新營高工',true)" style="margin-top:8px;width:100%;padding:9px;border-radius:10px;border:1.5px solid var(--indigo);background:var(--indigo-light);color:var(--indigo);cursor:pointer;font-weight:600;font-size:13px;">Eason Hsieh 新營高工</button><button onclick="sendPeggyMessage('Eason Cheng 鄭',true)" style="margin-top:7px;width:100%;padding:9px;border-radius:10px;border:1.5px solid var(--indigo);background:var(--indigo-light);color:var(--indigo);cursor:pointer;font-weight:600;font-size:13px;">Eason Cheng 鄭</button>`,'bot','bottom');
+    },500);return;
+  }
+  processPeggy(text);
+}
+
+function addPeggyMsg(html,sender,scroll='bottom'){
+  const body=document.getElementById('peggy-body');const div=document.createElement('div');
+  div.className=sender==='bot'?'msg-peggy':'msg-user';div.innerHTML=html;body.appendChild(div);
+  if(scroll==='top')setTimeout(()=>body.scrollTo({top:div.offsetTop-12,behavior:'smooth'}),50);
+  else body.scrollTop=body.scrollHeight;
+  return div;
+}
+function showPeggyTyping(){const b=document.getElementById('peggy-body');const d=document.createElement('div');d.className='msg-peggy';d.id='peggy-typing';d.innerHTML=`<div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>`;b.appendChild(d);b.scrollTop=b.scrollHeight;}
+function hidePeggyTyping(){const t=document.getElementById('peggy-typing');if(t)t.remove();}
+function showMorePeggyBookings(){document.querySelectorAll('.peggy-hidden').forEach(e=>e.style.display='block');const b=document.getElementById('peggy-more-btn');if(b)b.style.display='none';}
+
+async function processPeggy(name){
+  showPeggyTyping();
+  try{
+    let q=name;if(name.includes('Eason Hsieh'))q='Eason';if(name.includes('Eason Cheng'))q='Eason Cheng';
+    const[sRes,cRes]=await Promise.all([fetch(`${PEGGY_API}?action=getSchedule&name=${encodeURIComponent(q)}`),fetch(`${PEGGY_API}?action=getLessonCount&name=${encodeURIComponent(q)}`)]);
+    const raw=await sRes.json();const cnt=await cRes.json();
+    let sched=[];const nl=q.toLowerCase();
+    if(Array.isArray(raw)){
+      if(nl==='eason')sched=raw.filter(e=>e.title&&e.title.toLowerCase().includes('eason')&&!e.title.toLowerCase().includes('cheng')&&e.title.toLowerCase().includes('english class'));
+      else sched=raw.filter(e=>e.title&&e.title.toLowerCase().includes(nl)&&e.title.toLowerCase().includes('english class'));
+    }
+    const now=new Date();const ts=new Date(now);ts.setHours(0,0,0,0);
+    currentSched=sched.filter(e=>new Date(e.start)>=ts);
+
+    let html=`<div style="text-align:left;">`;
+    html+=`<div style="font-family:var(--font-display);font-size:1.1em;color:var(--indigo);margin-bottom:10px;">查詢：${name}</div>`;
+
+    if(cnt&&!cnt.error&&cnt.total!==null&&cnt.total!==""){
+      let total=cnt.total,comp=cnt.completed;
+      if(!isNaN(total)&&Number(total)>=100)total='會員';if(!isNaN(comp)&&Number(comp)>=100)comp='訂閱';
+      html+=`<div style="background:var(--indigo-light);border:1px solid rgba(27,44,193,0.18);border-radius:12px;padding:12px 14px;margin-bottom:12px;">`;
+      html+=`<div style="font-size:0.85em;color:var(--text-mid);margin-bottom:4px;">總堂數 <b style="color:var(--text)">${total}</b> · 完成 <b style="color:var(--text)">${comp}</b></div>`;
+      html+=`<div style="font-size:1.1em;font-weight:800;color:var(--indigo);">剩餘 ${cnt.remaining} 堂 <span onclick="openSchedCalendar()" style="cursor:pointer;font-size:1.15em;margin-left:6px;" title="查看月曆">📅</span></div>`;
+      html+=`</div>`;
+    }
+
+    const lim=new Date();lim.setDate(now.getDate()+60);
+    const up=sched.filter(e=>new Date(e.start)>=now&&new Date(e.start)<=lim).sort((a,b)=>new Date(a.start)-new Date(b.start));
+    if(up.length){
+      html+=`<div style="font-size:0.82em;font-weight:700;letter-spacing:0.8px;text-transform:uppercase;color:var(--text-soft);margin-bottom:8px;">近期課程</div>`;
+      up.slice(0,8).forEach((ev,i)=>{
+        const d=new Date(ev.start);let H=d.getHours();const M=String(d.getMinutes()).padStart(2,'0');const ap=H>=12?'PM':'AM';H=H%12||12;
+        const show=i<4;
+        html+=`<div class="${i>=4?'peggy-hidden':''}" style="background:var(--white);border:1px solid var(--border);border-left:3px solid var(--indigo);padding:9px 11px;margin-bottom:6px;border-radius:10px;${!show?'display:none;':''}">`;
+        html+=`<div style="font-weight:700;color:var(--indigo);font-size:0.9em;">${d.getMonth()+1}/${d.getDate()} 週${chiNames[d.getDay()]} · ${H}:${M} ${ap}</div>`;
+        html+=`<div style="color:var(--text-soft);font-size:0.8em;margin-top:2px;">${ev.title}</div></div>`;
+      });
+      if(up.length>4)html+=`<button id="peggy-more-btn" onclick="showMorePeggyBookings()" style="width:100%;padding:8px;border-radius:10px;border:1.5px solid var(--indigo);background:var(--indigo-light);color:var(--indigo);font-weight:700;font-size:0.85em;margin-top:4px;cursor:pointer;">顯示更多</button>`;
+      html+=`<button onclick="openSchedCalendar()" style="width:100%;padding:10px;margin-top:10px;border-radius:10px;background:var(--indigo);color:#fff;border:none;font-weight:700;font-size:0.9em;cursor:pointer;box-shadow:0 4px 12px rgba(27,44,193,0.25);">📅 查看完整月曆課表</button>`;
+    } else {
+      html+=`<div style="background:var(--coral-light);border:1px solid rgba(255,107,71,0.2);border-radius:10px;padding:11px 13px;font-size:0.9em;color:var(--text-mid);">目前沒有近期預約課程！<br><a href="javascript:void(0)" onclick="togglePeggy();window.scrollTo(0,0);" style="color:var(--coral);font-weight:700;display:inline-block;margin-top:5px;">立刻預約 →</a></div>`;
+    }
+    html+=`</div>`;
+    hidePeggyTyping();addPeggyMsg(html,'bot','top');
+  }catch(e){console.error(e);hidePeggyTyping();addPeggyMsg("抱歉，暫時無法查詢，請稍後再試 🙇","bot","bottom");}
+}
+
+// ===== STUDENT SCHEDULE CALENDAR =====
+function openSchedCalendar(){
+  document.getElementById('sched-modal-overlay').style.display='block';
+  const now=new Date();schedY=now.getFullYear();schedM=now.getMonth();
+  const up=currentSched.filter(e=>new Date(e.start)>=now).sort((a,b)=>new Date(a.start)-new Date(b.start));
+  if(up.length){const nd=new Date(up[0].start);schedY=nd.getFullYear();schedM=nd.getMonth();schedSel=fmt(nd);}
+  else schedSel=fmt(now);
+  renderSchedGrid();showSchedDetail(schedSel);
+}
+function closeSchedCalendar(){document.getElementById('sched-modal-overlay').style.display='none';}
+function changeSchedMonth(n){schedM+=n;if(schedM>11){schedM=0;schedY++;}else if(schedM<0){schedM=11;schedY--;}renderSchedGrid();}
+function renderSchedGrid(){
+  document.getElementById("sched-cal-title").textContent=`${schedY}年 ${schedM+1}月`;
+  const body=document.getElementById("sched-cal-body");body.innerHTML="";
+  const fd=new Date(schedY,schedM,1).getDay();const dim=new Date(schedY,schedM+1,0).getDate();const todayStr=fmt(new Date());
+  let ec=fd===0?6:fd-1;for(let i=0;i<ec;i++)body.innerHTML+=`<div class="sched-cell empty"></div>`;
+  for(let d=1;d<=dim;d++){
+    const dt=new Date(schedY,schedM,d);if(dt.getDay()===0)continue;
+    const dStr=`${schedY}-${String(schedM+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const cell=document.createElement("div");cell.className="sched-cell";
+    if(dStr===todayStr)cell.classList.add("today");if(dStr===schedSel)cell.classList.add("selected");
+    const evs=currentSched.filter(e=>fmt(new Date(e.start))===dStr);
+    let ci=`<div style="font-weight:800;font-size:inherit;">${d}</div>`;
+    if(evs.length){let tl=evs.map(e=>{let h=new Date(e.start).getHours();let m=new Date(e.start).getMinutes();let ap=h>=12?'pm':'am';h=h%12||12;return`${h}${m?':'+String(m).padStart(2,'0'):''}${ap}`;});if(tl.length>2)tl=[tl[0],tl[1],'…'];ci+=`<div class="sched-cell-times">${tl.join('<br>')}</div>`;}
+    cell.innerHTML=ci;cell.onclick=()=>{schedSel=dStr;renderSchedGrid();showSchedDetail(dStr);};
+    body.appendChild(cell);
+  }
+}
+function showSchedDetail(dStr){
+  const area=document.getElementById("sched-details-area");
+  const d=new Date(dStr);
+  let html=`<div style="font-family:var(--font-display);font-size:20px;color:var(--text);margin-bottom:14px;">${dStr} 週${chiNames[d.getDay()]}</div>`;
+  const evs=currentSched.filter(e=>fmt(new Date(e.start))===dStr).sort((a,b)=>new Date(a.start)-new Date(b.start));
+  if(!evs.length){html+=`<div style="color:var(--text-soft);font-size:14px;padding:12px 0;">本日無排定課程</div>`;}
+  else evs.forEach(ev=>{const ed=new Date(ev.start);let H=ed.getHours();const M=String(ed.getMinutes()).padStart(2,'0');const ap=H>=12?'PM':'AM';H=H%12||12;html+=`<div style="background:var(--white);border:1px solid var(--border);border-left:3px solid var(--indigo);padding:14px;margin-bottom:10px;border-radius:12px;"><div style="font-weight:700;color:var(--indigo);font-size:16px;">${H}:${M} ${ap}</div><div style="color:var(--text);font-size:14px;font-weight:600;margin-top:4px;">${ev.title}</div><div style="color:var(--text-soft);font-size:12px;margin-top:3px;">⏱ 50 分鐘</div></div>`;});
+  area.innerHTML=html;
+}
+</script>
+</body>
+</html>
