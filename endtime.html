@@ -113,7 +113,7 @@
   .modal-card {
     background: #F2ADA3; /* Match the banner color */
     color: #000; width: 100%; max-width: 550px; border-radius: 16px;
-    padding: 50px 24px 40px; position: relative;
+    padding: 44px 24px 40px; position: relative;
     box-shadow: 0 12px 32px rgba(0,0,0,0.3); text-align: center;
     transform: translateY(20px); transition: transform 0.3s ease;
   }
@@ -132,6 +132,16 @@
   .modal-card-text { font-family: var(--sans); font-size: clamp(1.5rem, 6vw, 2.2rem); font-weight: 700; }
   .modal-card-text .highlight-time { font-family: var(--mono); color: #000; font-size: 1.1em; }
   .modal-card-text .today-topic { font-size: clamp(1.2rem, 4.5vw, 1.6rem); margin-top: 16px; font-weight: 400; color: rgba(0,0,0,0.8); }
+
+  /* Modal 專用的日期樣式 */
+  .modal-date {
+    font-family: var(--mono);
+    font-size: clamp(1rem, 4vw, 1.3rem);
+    font-weight: 700;
+    color: rgba(0,0,0,0.65);
+    margin-bottom: 16px;
+    letter-spacing: 0.05em;
+  }
 </style>
 </head>
 <body>
@@ -286,11 +296,20 @@ function renderGrid(weekEvents) {
   }
 }
 
-// 彈出式 Modal 控制函數
+// 彈出式 Modal 控制函數 (加入今日日期與星期幾)
 function showModal(content) {
   const overlay = document.getElementById('infoModalOverlay');
-  document.getElementById('modalContent').innerHTML = content;
+  
+  // 取得今日日期格式化 (例如：2023.10.25 星期三)
+  const now = new Date();
+  const dateStr = `${now.getFullYear()}.${String(now.getMonth() + 1).padStart(2,'0')}.${String(now.getDate()).padStart(2,'0')} 星期${CN_DAYS[now.getDay()]}`;
+  
+  // 組合 Modal 的內容，將日期放在最上面
+  document.getElementById('modalContent').innerHTML = 
+    `<div class="modal-date">${dateStr}</div>` + content;
+    
   overlay.style.display = 'flex';
+  
   // 加入一點小延遲以確保過渡動畫能執行
   setTimeout(() => overlay.classList.add('show'), 10);
 }
