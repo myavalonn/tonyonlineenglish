@@ -570,8 +570,7 @@
     .bump-effect { animation: bump-anim 0.3s ease-out; }
 
     /* =========================================================
-       CART BUTTON — glow on all devices, round on mobile,
-       2x bigger on desktop, moved up slightly on desktop
+       CART BUTTON — MODIFIED FOR 1.5X AND SMALL BADGE
        ========================================================= */
     @keyframes glow-cart-mobile {
         from { box-shadow: 0 4px 12px rgba(0,0,0,0.2), 0 0 10px rgba(0,122,255,0.5); }
@@ -584,11 +583,11 @@
 
     #floating-cart-btn {
         position: fixed; bottom: 30px; right: 20px; z-index: 999;
-        /* Mobile: round, 1.2x bigger icon area */
-        width: 72px; height: 72px;
+        /* Mobile: ~1.5x bigger -> 90px (原本約60px) */
+        width: 90px; height: 90px;
         background: #ffffff;
         display: none; cursor: pointer; transition: transform 0.2s, opacity 0.2s;
-        border: none; padding: 12px; border-radius: 50%; box-sizing: border-box;
+        border: none; padding: 22px; border-radius: 50%; box-sizing: border-box;
         animation: glow-cart-mobile 1.5s infinite alternate;
     }
     #floating-cart-btn.in-cal-view {
@@ -600,10 +599,10 @@
     #floating-cart-btn .cal-icon-svg { width: 100%; height: 100%; object-fit: contain; }
     #floating-cart-btn.show { display: block; }
 
-    /* Mobile cart badge — 1.2x */
+    /* Mobile cart badge — Smaller size so it doesn't cover the icon */
     .cart-badge {
-        position: absolute; top: -5px; right: -5px; background: #ff5400; color: white;
-        width: 31px; height: 31px; border-radius: 50%; font-size: 17px; font-weight: bold;
+        position: absolute; top: 0px; right: 0px; background: #ff5400; color: white;
+        width: 24px; height: 24px; border-radius: 50%; font-size: 14px; font-weight: bold;
         display: flex; justify-content: center; align-items: center; border: 2px solid white;
         box-shadow: 0 2px 6px rgba(0,0,0,0.2);
     }
@@ -611,29 +610,30 @@
     /* Tablet cart */
     @media (min-width: 768px) and (max-width: 1023px) {
         #floating-cart-btn {
-            width: 120px; height: 120px; padding: 25px;
-            bottom: 50px; right: 40px;
+            width: 100px; height: 100px; padding: 25px;
+            bottom: 40px; right: 30px;
             border-radius: 50%;
             animation: glow-cart-mobile 1.5s infinite alternate;
         }
-        .cart-badge { width: 40px; height: 40px; font-size: 20px; top: -5px; right: -5px; border-width: 3px; }
+        .cart-badge { width: 28px; height: 28px; font-size: 16px; top: 0px; right: 0px; border-width: 2px; }
     }
 
-    /* Desktop cart — 2x size, moved up */
+    /* Desktop cart */
     @media (min-width: 1024px) {
         #floating-cart-btn {
-            width: 140px; height: 140px; padding: 28px;
-            bottom: 80px; right: 40px;
+            width: 110px; height: 110px; padding: 28px;
+            bottom: 50px; right: 40px;
             border-radius: 50%;
             animation: glow-cart-desktop 1.5s infinite alternate;
         }
         .cart-badge {
-            width: 56px; height: 56px; font-size: 28px;
-            top: -8px; right: -8px; border-width: 3px;
+            width: 32px; height: 32px; font-size: 18px;
+            top: 0px; right: 0px; border-width: 3px;
         }
     }
 
     /* === Peggy Chatbot CSS === */
+    /* NEW ASSISTANT IMAGE URL applied globally */
     .peggy-fab {
         position: relative;
         z-index: 1000;
@@ -658,13 +658,13 @@
         background: #fff;
         position: relative;
     }
-    /* Shrunk inner crop ~12% so full face fits */
+    /* Zoom in more so face fills the circle */
     .peggy-img-crop {
         width: 100%;
         height: 100%;
         object-fit: cover;
-        object-position: center 20%;
-        transform: scale(1.23);
+        object-position: center 15%;
+        transform: scale(1.6);
         display: block;
     }
     
@@ -674,44 +674,78 @@
         display: flex; justify-content: center; align-items: center; border: 2px solid #fff;
     }
 
+    /* Mobile: MODIFIED (NOT Full screen, leaves top space) */
     #peggy-window {
         font-size: 15px;
-        position: fixed; bottom: 100px; left: 20px; width: 340px; max-height: 65vh; height: 500px;
-        background: #fff; border-radius: 20px; box-shadow: 0 10px 40px rgba(0,0,0,0.3);
+        position: fixed;
+        bottom: 0; left: 0;
+        width: 100vw;
+        height: 85vh; /* 改為85%高度，讓上方留白不被瀏覽器列遮擋 */
+        max-height: 85vh;
+        background: #fff;
+        border-radius: 24px 24px 0 0; /* 頂部圓角 */
+        box-shadow: 0 -10px 40px rgba(0,0,0,0.3); /* 往上的陰影 */
         display: flex; flex-direction: column; z-index: 1001; overflow: hidden;
-        transform: translateY(20px) scale(0.95); opacity: 0; pointer-events: none; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-        transform-origin: bottom left;
+        transform: translateY(100%); opacity: 0; pointer-events: none;
+        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        transform-origin: bottom center;
     }
-    #peggy-window.show { transform: translateY(0) scale(1); opacity: 1; pointer-events: auto; }
+    #peggy-window.show { transform: translateY(0); opacity: 1; pointer-events: auto; }
     
-    .peggy-header { background: var(--selected-bg); padding: 1.1em; display: flex; justify-content: space-between; align-items: center; }
+    .peggy-header { 
+        background: var(--selected-bg); padding: 1.1em; display: flex; justify-content: space-between; align-items: center; 
+        border-radius: 24px 24px 0 0; /* 配合外框圓角 */
+    }
     .peggy-header span { font-size: 1.15em; font-weight: bold; color: #fff; }
     .peggy-body { position: relative; flex: 1; overflow-y: auto; padding: 1.1em; background: #f4f6f9; display: flex; flex-direction: column; gap: 0.85em; scroll-behavior: smooth; }
-    .peggy-footer { padding: 0.85em; background: #fff; border-top: 1px solid #eee; display: flex; gap: 0.6em; align-items: center; }
-    .peggy-footer input { flex: 1; padding: 0.85em 1.1em; border: 1px solid #ddd; border-radius: 2em; outline: none; font-size: 1.07em; background: #f9f9f9; transition: border-color 0.2s; }
+    /* Footer: row layout with input + button side by side */
+    .peggy-footer {
+        padding: 0.85em;
+        background: #fff;
+        border-top: 1px solid #eee;
+        display: flex;
+        flex-direction: row;
+        gap: 0.6em;
+        align-items: center;
+    }
+    .peggy-footer input {
+        flex: 1;
+        padding: 0.85em 1.1em;
+        border: 1px solid #ddd;
+        border-radius: 2em;
+        outline: none;
+        font-size: 1.07em;
+        background: #f9f9f9;
+        transition: border-color 0.2s;
+    }
     .peggy-footer input:focus { border-color: var(--blue-main); background: #fff; }
-    .peggy-footer button { background: var(--pill-active); color: #fff; border: none; padding: 0 1.3em; height: 3em; border-radius: 1.5em; cursor: pointer; font-weight: bold; font-size: 1.07em; transition: transform 0.1s; }
+    .peggy-footer button {
+        background: var(--pill-active); color: #fff; border: none;
+        padding: 0 1.3em; height: 3em; border-radius: 1.5em;
+        cursor: pointer; font-weight: bold; font-size: 1.07em;
+        transition: transform 0.1s; white-space: nowrap; flex-shrink: 0;
+    }
     .peggy-footer button:active { transform: scale(0.95); }
     
     .msg-peggy { align-self: flex-start; background: #fff; color: #222; padding: 0.85em 1.15em; border-radius: 1.3em 1.3em 1.3em 0; max-width: 100%; width: 100%; box-shadow: 0 2px 8px rgba(0,0,0,0.06); line-height: 1.5; font-size: 1.05em; border: 1px solid #eee; box-sizing: border-box; }
     .msg-user { align-self: flex-end; background: var(--blue-main); color: #fff; padding: 0.7em 1.15em; border-radius: 1.3em 1.3em 0 1.3em; max-width: 100%; box-shadow: 0 2px 8px rgba(0, 122, 255, 0.2); font-size: 1.05em; box-sizing: border-box; }
 
-    @media (max-width: 400px) {
-        #peggy-window { width: calc(100vw - 40px); left: 20px; }
-    }
-    
+    /* Tablet & Desktop: restore floating window */
     @media (min-width: 768px) {
+        #peggy-window {
+            font-size: 21px;
+            position: fixed;
+            bottom: 120px; left: 40px;
+            width: 510px; height: 75vh; max-height: 800px;
+            border-radius: 30px;
+        }
+        .peggy-header { border-radius: 30px 30px 0 0; }
+        #peggy-window.show { transform: translateY(0) scale(1); }
+
         .peggy-fab { width: 80px; height: 80px; }
         .peggy-img-wrapper { border-width: 4px; }
         .peggy-badge-el { width: 28px; height: 28px; font-size: 14px; top: 0; right: 0; border-width: 3px; }
         .cal-top-right-group .peggy-fab { order: 4; }
-
-        #peggy-window { 
-            font-size: 21px; 
-            bottom: 120px; left: 40px; 
-            width: 510px; height: 75vh; max-height: 800px; 
-            border-radius: 30px;
-        }
         
         .msg-peggy { max-width: 85%; width: auto; font-size: 1em; }
         .msg-user { max-width: 80%; font-size: 1em; }
@@ -723,6 +757,7 @@
             width: 680px; height: 80vh; max-height: 1000px; 
             border-radius: 40px;
         }
+        .peggy-header { border-radius: 40px 40px 0 0; }
     }
 
     .typing-indicator { display: flex; gap: 0.3em; padding: 0.3em 0.6em; align-items: center; justify-content: center; }
@@ -733,80 +768,95 @@
     @keyframes typing { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-0.3em); } }
 
     /* =========================================================
-       STUDENT SCHEDULE CALENDAR MODAL
+       STUDENT SCHEDULE CALENDAR MODAL — MODIFIED COLORS
        ========================================================= */
     .sched-modal-overlay {
         display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-        background: #f4f6f9; z-index: 4000; overflow-y: auto; padding-bottom: 50px;
+        background: #f4f6f9; z-index: 4000; overflow: hidden;
         box-sizing: border-box;
     }
     .sched-modal-container {
-        max-width: 800px; margin: 0 auto; background: #fff; min-height: 100vh; 
-        padding: 20px; box-sizing: border-box; position: relative;
+        width: 100%; height: 100vh;
+        background: #fff;
+        padding: 0; box-sizing: border-box; position: relative;
+        display: flex; flex-direction: column;
     }
 
-    /* Month wrapper — relative so X can be positioned inside it */
-    .sched-month-wrapper { 
-        margin-bottom: 30px; 
-        position: relative;
-    }
-
-    /* Per-month close button */
-    .sched-month-close-btn {
-        position: absolute;
-        top: 0;
-        right: 0;
-        width: 32px; height: 32px;
-        border-radius: 50%;
-        background: #f0f0f0;
-        border: none;
-        font-size: 18px;
-        font-weight: bold;
-        color: #555;
-        cursor: pointer;
-        display: flex; align-items: center; justify-content: center;
-        transition: background 0.2s, color 0.2s, transform 0.2s;
-        z-index: 10;
-        line-height: 1;
-    }
-    .sched-month-close-btn:hover {
-        background: #ff5400; color: #fff; transform: scale(1.1);
-    }
-
-    /* Month header row: title + today date label */
-    .sched-month-header-row {
+    /* Top bar with back + month nav */
+    .sched-top-bar {
         display: flex; align-items: center; justify-content: space-between;
-        margin-bottom: 10px; padding-right: 42px; /* room for X button */
+        padding: 14px 16px 10px;
+        background: #fff;
+        border-bottom: 1px solid #f0f0f0;
+        flex-shrink: 0;
+        gap: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        flex-wrap: nowrap;
     }
-    .sched-month-title {
-        font-size: 20px; font-weight: bold; color: #333;
-        text-align: left; padding-left: 5px; border-left: 4px solid var(--pill-active); line-height: 1.2;
-        margin: 0;
+    .sched-back-btn {
+        background: #f0f0f0; border: none; border-radius: 20px;
+        padding: 8px 16px; font-size: 15px; font-weight: bold; color: #333;
+        cursor: pointer; white-space: nowrap; flex-shrink: 0;
+        transition: background 0.2s;
     }
-    /* Today date shown to the right of month title (only on current month) */
-    .sched-today-label {
-        font-size: 13px; font-weight: bold; color: #666;
-        white-space: nowrap; padding-right: 4px;
+    .sched-back-btn:active { background: #ddd; }
+
+    /* Month navigation row */
+    .sched-month-nav {
+        display: flex; align-items: center; justify-content: center;
+        gap: 12px; flex: 1; min-width: 0;
+    }
+    .sched-month-nav-btn {
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        background: none; border: 2px solid #ddd; border-radius: 12px;
+        padding: 6px 14px; cursor: pointer; transition: all 0.2s;
+        flex-shrink: 0; min-width: 64px;
+    }
+    .sched-month-nav-btn:hover { border-color: var(--pill-active); background: #fff5f0; }
+    .sched-month-nav-btn:active { transform: scale(0.95); }
+    .sched-month-nav-btn.disabled { opacity: 0.2; pointer-events: none; }
+    .sched-nav-arrow { font-size: 18px; font-weight: 900; color: #333; line-height: 1; }
+    .sched-nav-month-label { font-size: 10px; font-weight: bold; color: #888; line-height: 1; margin-top: 2px; }
+    .sched-month-nav-btn:hover .sched-nav-arrow,
+    .sched-month-nav-btn:hover .sched-nav-month-label { color: var(--pill-active); }
+
+    .sched-current-month-title {
+        font-size: 17px; font-weight: 800; color: #222;
+        text-align: center; line-height: 1.2; flex: 1; white-space: nowrap;
+        overflow: hidden; text-overflow: ellipsis;
     }
 
-    /* Weekday header row per month */
+    /* Slider area */
+    .sched-slider-wrapper {
+        flex: 1; overflow: hidden; position: relative;
+    }
+    .sched-slider-track {
+        display: flex; height: 100%;
+        transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        will-change: transform;
+    }
+    .sched-slide {
+        min-width: 100vw; width: 100vw; height: 100%;
+        overflow-y: auto; box-sizing: border-box;
+        padding: 12px 12px 60px;
+        flex-shrink: 0;
+    }
+
+    /* Weekday header row per slide */
     .sched-weekday-header {
         display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px;
-        text-align: center; margin-bottom: 6px;
+        text-align: center; margin-bottom: 6px; padding: 0 2px;
     }
     .sched-weekday-head {
-        color: #555; font-size: 12px; font-weight: 900; padding-bottom: 4px;
+        color: #555; font-size: 13px; font-weight: 900; padding-bottom: 4px;
         display: flex; flex-direction: column; line-height: 1.2;
+        align-items: center; justify-content: center;
     }
-    .sched-weekday-head small { font-size: 10px; opacity: 0.7; }
-    /* Only the CURRENT month's today weekday gets orange highlight */
+    .sched-weekday-head small { font-size: 11px; opacity: 0.7; }
     .sched-weekday-head.today-head {
-        background-color: var(--pill-active); 
-        color: #fff !important; 
-        border-radius: 8px; padding: 4px 2px;
+        background-color: var(--pill-active); color: #fff; border-radius: 8px; padding: 4px 2px;
     }
-    .sched-weekday-head.today-head small { color: #fff !important; opacity: 1; }
-    /* Saturday red on mobile */
+    .sched-weekday-head.today-head small { color: #fff; opacity: 1; }
     @media (max-width: 767px) {
         .sched-weekday-head.sat-head { color: #d32f2f; }
         .sched-weekday-head.sat-head small { color: #d32f2f; }
@@ -814,45 +864,53 @@
     }
 
     .sched-cal-grid {
-        display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; text-align: center; margin-bottom: 0;
+        display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px;
+        text-align: center; margin-bottom: 0; padding: 0 2px;
     }
     .sched-cell {
-        height: 65px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; padding-top: 8px;
-        border-radius: 12px; font-size: 18px; font-weight: bold; cursor: pointer;
+        aspect-ratio: 1 / 1;
+        display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+        padding-top: 8px;
+        border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer;
         transition: 0.2s; color: #333; position: relative; background: #fff; border: 1px solid #eee;
+        box-sizing: border-box;
     }
     .sched-cell:hover { background: #f0f0f0; }
-    .sched-cell.empty { border: none !important; background: transparent !important; cursor: default; }
+    .sched-cell.empty { border: none !important; background: transparent !important; cursor: default; visibility: hidden; }
+    .sched-cell.past-hidden { border: none !important; background: transparent !important; cursor: default; visibility: hidden; }
 
-    /* Today cell (no class): light blue background */
-    .sched-cell.today { 
-        background-color: #dbeafe !important;
-        color: #1e40af !important;
-        border-color: #93c5fd !important;
+    /* TODAY (無課程): 淺藍色背景 */
+    .sched-cell.today {
+        background-color: #e3f2fd !important;
+        color: #0277bd !important;
+        border-color: #b3e5fc !important;
+        box-shadow: 0 0 10px rgba(3, 169, 244, 0.2) !important;
     }
-    .sched-cell.today .sched-date-num { color: #1e40af; }
-    .sched-cell.today .sched-cell-times { color: #1d4ed8 !important; }
+    .sched-cell.today .sched-date-num { color: #0277bd; font-weight: 900; }
+    .sched-cell.today .sched-cell-times { color: #0277bd !important; }
 
-    /* Today AND has events → deep navy/dark blue, glowing */
+    /* Today AND has events (有課程): 漸層深藍綠色發光 */
     .sched-cell.today.has-events {
-        background: linear-gradient(135deg, #1d2b8a, #1e40af) !important;
-        border-color: #1d2b8a !important;
+        background: linear-gradient(135deg, #0277bd, #00bcd4) !important;
+        border-color: #0277bd !important;
         color: #fff !important;
-        box-shadow: 0 0 14px rgba(29, 43, 138, 0.65) !important;
+        box-shadow: 0 0 16px rgba(2, 119, 189, 0.6) !important;
         animation: todayCellGlow 2s ease-in-out infinite alternate;
     }
-    .sched-cell.today.has-events .sched-date-num { color: #fff; }
-    .sched-cell.today.has-events .sched-cell-times { color: rgba(255,255,255,0.9) !important; }
     @keyframes todayCellGlow {
-        from { box-shadow: 0 0 8px rgba(29, 43, 138, 0.5); }
-        to   { box-shadow: 0 0 24px rgba(29, 43, 138, 0.9); }
+        from { box-shadow: 0 0 8px rgba(2, 119, 189, 0.4); }
+        to   { box-shadow: 0 0 20px rgba(2, 119, 189, 0.9); }
     }
+    .sched-cell.today.has-events .sched-date-num { color: #fff; }
+    .sched-cell.today.has-events .sched-cell-times { color: #fff !important; text-shadow: 0 1px 2px rgba(0,0,0,0.2); }
 
-    /* Future has-events: warm highlight */
+    /* Future has-events: 淺橘黃色區別 */
     .sched-cell.has-events:not(.today) {
-        background-color: #fff0e6 !important;
-        border-color: #ffd8c2 !important;
+        background-color: #fff3cd !important;
+        border-color: #ffeeba !important;
+        color: #856404 !important;
     }
+    .sched-cell.has-events:not(.today) .sched-cell-times { color: #d32f2f !important; }
     
     .sched-cell.selected:not(.today),
     .sched-cell.has-events.selected:not(.today) { 
@@ -860,10 +918,10 @@
         box-shadow: 0 4px 10px rgba(29, 43, 138, 0.3) !important; 
         border-color: var(--selected-bg) !important; 
     }
+    .sched-cell.selected:not(.today) .sched-cell-times { color: #fff !important; }
     
-    .sched-date-num { line-height: 1; pointer-events: none; }
-    .sched-cell-times { font-size: 13px; color: var(--pill-active); line-height: 1.2; margin-top: 4px; font-weight: bold; text-align: center; pointer-events: none; }
-    .sched-cell.selected .sched-cell-times { color: #fff; }
+    .sched-date-num { line-height: 1; pointer-events: none; font-size: 1em; }
+    .sched-cell-times { font-size: 10px; color: var(--pill-active); line-height: 1.2; margin-top: 2px; font-weight: bold; text-align: center; pointer-events: none; }
 
     /* Cancel button base */
     .cancel-class-btn {
@@ -875,49 +933,65 @@
     .cancel-class-btn:hover:not(:disabled) { background: #ffebee; }
     .cancel-class-btn:active:not(:disabled) { transform: scale(0.98); }
 
+    /* =========================================================
+       SCHED CALENDAR — Tablet & Desktop overrides
+       ========================================================= */
     @media (min-width: 768px) {
-        /* Tablet: full screen calendar */
-        .sched-modal-overlay { 
-            background: rgba(0,0,0,0.0); 
-            padding: 0; 
+        .sched-slide {
+            min-width: 100vw; width: 100vw;
+            padding: 20px 30px 80px;
         }
-        .sched-modal-container { 
-            border-radius: 0; min-height: 100vh; padding: 30px 40px; 
-            box-shadow: none; max-width: 100%;
-        }
-        .sched-cell { height: 90px; padding-top: 12px; font-size: 24px; }
-        .sched-cell-times { font-size: 16px; margin-top: 6px; }
-        .sched-month-title { font-size: 24px; margin-bottom: 0; }
-        .sched-today-label { font-size: 15px; }
-        .sched-month-close-btn { width: 40px; height: 40px; font-size: 22px; }
+        .sched-cell { font-size: 22px; padding-top: 10px; }
+        .sched-cell-times { font-size: 13px; }
+        .sched-weekday-head { font-size: 18px; }
+        .sched-weekday-head small { font-size: 14px; }
+        .sched-top-bar { padding: 18px 24px 14px; }
+        .sched-back-btn { font-size: 18px; padding: 10px 22px; border-radius: 24px; }
+        .sched-current-month-title { font-size: 22px; }
+        .sched-month-nav-btn { padding: 8px 18px; border-radius: 14px; min-width: 80px; }
+        .sched-nav-arrow { font-size: 22px; }
+        .sched-nav-month-label { font-size: 12px; }
     }
+
     @media (min-width: 1024px) {
-        /* Desktop: half-screen modal, centered with overlay */
-        .sched-modal-overlay { 
-            background: rgba(0,0,0,0.55);
-            backdrop-filter: blur(4px);
-            padding: 40px;
+        /* Desktop: 2/3 size, square cells like booking calendar */
+        .sched-modal-overlay {
+            background: rgba(0,0,0,0.5);
+            /* display: flex;  <-- REMOVED TO PREVENT AUTO-SHOW ON LOAD */
+            align-items: center;
             justify-content: center;
-            align-items: flex-start;
         }
-        .sched-modal-container { 
-            border-radius: 24px; 
-            min-height: auto;
-            max-height: 85vh;
-            overflow-y: auto;
-            padding: 36px 48px; 
+        .sched-modal-container {
+            width: 66vw;
+            max-width: 900px;
+            height: 80vh;
+            border-radius: 24px;
+            overflow: hidden;
             box-shadow: 0 20px 60px rgba(0,0,0,0.35);
-            max-width: 55%;
-            width: 55%;
-            margin: 0;
         }
-        .sched-cell { height: 90px; padding-top: 12px; font-size: 26px; border-radius: 16px; }
-        .sched-cell-times { font-size: 18px; margin-top: 8px; }
-        .sched-month-title { font-size: 26px; }
-        .sched-today-label { font-size: 15px; }
-        .sched-weekday-head { font-size: 14px; }
-        .sched-weekday-head small { font-size: 11px; }
-        .sched-month-close-btn { width: 40px; height: 40px; font-size: 22px; top: 2px; }
+        .sched-slide {
+            min-width: 100%;
+            width: 100%;
+            padding: 24px 32px 60px;
+        }
+        /* Override track so each slide is full container width */
+        .sched-slider-track { }
+        .sched-slider-wrapper { overflow: hidden; }
+        .sched-cell {
+            aspect-ratio: 1 / 1;
+            font-size: 24px;
+            border-radius: 16px;
+            padding-top: 10px;
+        }
+        .sched-cell-times { font-size: 12px; margin-top: 3px; }
+        .sched-weekday-head { font-size: 20px; }
+        .sched-weekday-head small { font-size: 14px; }
+        .sched-top-bar { padding: 20px 30px 16px; }
+        .sched-back-btn { font-size: 20px; padding: 12px 24px; }
+        .sched-current-month-title { font-size: 24px; }
+        .sched-month-nav-btn { padding: 10px 22px; min-width: 100px; border-radius: 16px; }
+        .sched-nav-arrow { font-size: 26px; }
+        .sched-nav-month-label { font-size: 13px; }
     }
 
     /* =========================================================
@@ -1074,13 +1148,10 @@
     .peggy-cal-icon-btn img {
         object-fit: contain; display: block;
     }
-    /* Mobile: 2x base (base ≈ 20px → 40px) */
     .peggy-cal-icon-btn img { width: 40px; height: 40px; }
-    /* Tablet: 2.5x */
     @media (min-width: 768px) {
         .peggy-cal-icon-btn img { width: 50px; height: 50px; }
     }
-    /* Desktop: 3x */
     @media (min-width: 1024px) {
         .peggy-cal-icon-btn img { width: 60px; height: 60px; }
     }
@@ -1128,11 +1199,30 @@
     </div>
 </div>
 
-<!-- Student Schedule Calendar Modal -->
+<!-- Student Schedule Calendar Modal — Horizontal Slider -->
 <div id="sched-modal-overlay" class="sched-modal-overlay">
     <div class="sched-modal-container">
-        <button class="back-btn" onclick="closeSchedCalendar()" style="margin-bottom: 20px;">❮ 返回</button>
-        <div id="sched-cal-body" style="display: flex; flex-direction: column;"></div>
+        <!-- Top bar -->
+        <div class="sched-top-bar">
+            <button class="sched-back-btn" onclick="closeSchedCalendar()">❮ 返回</button>
+            <div class="sched-month-nav">
+                <button class="sched-month-nav-btn" id="sched-prev-btn" onclick="schedGoMonth(-1)">
+                    <span class="sched-nav-arrow">❮</span>
+                    <span class="sched-nav-month-label" id="sched-prev-label">上個月</span>
+                </button>
+                <div class="sched-current-month-title" id="sched-month-title">—</div>
+                <button class="sched-month-nav-btn" id="sched-next-btn" onclick="schedGoMonth(1)">
+                    <span class="sched-nav-arrow">❯</span>
+                    <span class="sched-nav-month-label" id="sched-next-label">下個月</span>
+                </button>
+            </div>
+        </div>
+        <!-- Slider -->
+        <div class="sched-slider-wrapper">
+            <div class="sched-slider-track" id="sched-slider-track">
+                <!-- Slides injected by JS -->
+            </div>
+        </div>
     </div>
 </div>
 
@@ -1168,7 +1258,7 @@
         </div>
         <div class="peggy-fab" onclick="togglePeggy()">
             <div class="peggy-img-wrapper">
-                <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/assistant.png" class="peggy-img-crop" alt="Peggy">
+                <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/christina-wocintechchat-com-m-0Zx1bDv5BNY-unsplash.jpg?updatedAt=1776614639182" class="peggy-img-crop" alt="Peggy">
             </div>
             <span class="peggy-badge-el">1</span>
         </div>
@@ -1217,7 +1307,7 @@
     <div class="peggy-header">
         <div style="display:flex; align-items:center; gap:0.6em;">
             <div class="peggy-img-wrapper" style="width:2.2em; height:2.2em; border:2px solid #fff; flex-shrink:0;">
-                <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/assistant.png" class="peggy-img-crop" alt="Peggy">
+                <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/christina-wocintechchat-com-m-0Zx1bDv5BNY-unsplash.jpg?updatedAt=1776614639182" class="peggy-img-crop" alt="Peggy">
             </div>
             <span>Peggy</span>
         </div>
@@ -1268,7 +1358,7 @@
                         </div>
                         <div class="peggy-fab cal-peggy" onclick="togglePeggy()">
                             <div class="peggy-img-wrapper">
-                                <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/assistant.png" class="peggy-img-crop" alt="Peggy">
+                                <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/christina-wocintechchat-com-m-0Zx1bDv5BNY-unsplash.jpg?updatedAt=1776614639182" class="peggy-img-crop" alt="Peggy">
                             </div>
                             <span class="peggy-badge-el">1</span>
                         </div>
@@ -1303,6 +1393,8 @@
 <script>
   const CLOCK_ICON_URL = "https://ik.imagekit.io/lql1uveoc/clock-4.png?updatedAt=1774630976142";
   const CAL_ICON_URL   = "https://ik.imagekit.io/lql1uveoc/Booking%20Website%20%E9%A0%90%E7%B4%84/calendar-4.png";
+  // New assistant image
+  const ASSISTANT_IMG_URL = "https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/christina-wocintechchat-com-m-0Zx1bDv5BNY-unsplash.jpg?updatedAt=1776614639182";
 
   let modalCloseCallback = null;
   function showNotice(title, message, isError = false, callback = null) {
@@ -1405,14 +1497,14 @@
     calYear = now.getFullYear(); calMonth = now.getMonth();
     updateHeaderDate(); initDateScroller();
     fetchBatchData(0, STAGE_1_DAYS, "STAGE1");
-    openCalendar();
+    openCalendar(); // Initialize calendar structure immediately
     document.getElementById("p-main").style.display = "none";
-    setTimeout(() => { const cal=document.getElementById("cal-modal"); if(cal) cal.scrollIntoView({behavior:"smooth",block:"start"}); }, 600);
+    // 移除了在桌機版上會突然 scrollIntoView 跳出的那一行程式碼
     setTimeout(startBackgroundPolling, 8000);
 
-    // Close sched modal when clicking outside container
+    // Close sched modal when clicking outside container (desktop only)
     document.getElementById('sched-modal-overlay').addEventListener('click', function(e) {
-        if (e.target === this) closeSchedCalendar();
+        if (window.innerWidth >= 1024 && e.target === this) closeSchedCalendar();
     });
   };
 
@@ -1573,7 +1665,18 @@
   function renderSlotsInsideCalendar(dStr) {
       const container=document.getElementById("cal-slots-content"); container.innerHTML="";
       const data=cachedData[dStr];
-      if(!data||data.slots.length===0){container.innerHTML=`<div style="text-align:center;padding:20px;color:#aaa;font-weight:bold;">請選擇其他日期</div>`;return;}
+      if(!data) {
+          if (loadedDaysCount === 0) {
+              container.innerHTML=`<div style="text-align:center;padding:30px;color:#555;font-weight:bold;"><div class="spinner" style="width:30px;height:30px;margin:0 auto 10px auto;border:4px solid #ddd;border-top-color:#ff5400;border-radius:50%;animation:spin 0.8s linear infinite;"></div>時段載入中...</div>`;
+          } else {
+              container.innerHTML=`<div style="text-align:center;padding:20px;color:#aaa;font-weight:bold;">請選擇其他日期</div>`;
+          }
+          return;
+      }
+      if(data.slots.length===0){
+          container.innerHTML=`<div style="text-align:center;padding:20px;color:#aaa;font-weight:bold;">本日無可預約時段</div>`;
+          return;
+      }
       const grid=document.createElement("div"); grid.className="simple-slot-grid";
       const validSlots=data.slots.filter(s=>isValidSlot(s));
       if(validSlots.length>0&&validSlots.length<=4) grid.classList.add('few-slots'); else grid.classList.remove('few-slots');
@@ -1597,7 +1700,8 @@
 
   function openCalendar() {
       if(!selectedDateStr) selectedDateStr=fmt(new Date());
-      renderCalGrid(); jumpToDate(selectedDateStr);
+      renderCalGrid(); 
+      jumpToDate(selectedDateStr);
       const modal=document.getElementById("cal-modal"); modal.classList.add("active");
       window.scrollTo(0,0); modal.scrollTop=0; updateBottomBar();
   }
@@ -1623,9 +1727,8 @@
   }
 
   function renderCalGrid() {
-      // Keep today's weekday highlighted always
       const now = new Date();
-      const todayDayOfWeek = now.getDay(); // 0=Sun,1=Mon,...6=Sat
+      const todayDayOfWeek = now.getDay();
       
       document.getElementById("cal-title").innerText=`${calYear}年 ${calMonth+1}月 ${monthNamesEng[calMonth]}`;
       
@@ -1637,11 +1740,10 @@
       if (prevBtn) { if (calAbsolute <= curAbsolute) prevBtn.classList.add('disabled'); else prevBtn.classList.remove('disabled'); }
       if (nextBtn) { if (calAbsolute >= curAbsolute + 2) nextBtn.classList.add('disabled'); else nextBtn.classList.remove('disabled'); }
 
-      // Always highlight TODAY's weekday column in the header (stays on today)
       const headers = document.querySelectorAll('#cal-head-row .cal-head');
       headers.forEach(h => h.classList.remove('active-day'));
       if (todayDayOfWeek >= 1 && todayDayOfWeek <= 6) {
-          const todayHeaderIdx = todayDayOfWeek - 1; // Mon=0,...Sat=5
+          const todayHeaderIdx = todayDayOfWeek - 1;
           if (headers[todayHeaderIdx]) headers[todayHeaderIdx].classList.add('active-day');
       }
 
@@ -1910,6 +2012,10 @@
   let schedSelectedDateStr;
   let lastQueriedName = '';
 
+  // Sched calendar: which month index (0=current, 1=next, 2=next+1)
+  let schedCurrentMonthIdx = 0;
+  const SCHED_TOTAL_MONTHS = 3;
+
   function togglePeggy() {
       const windowEl = document.getElementById('peggy-window');
       const badges = document.querySelectorAll('.peggy-badge-el');
@@ -1976,7 +2082,6 @@
       if(btn) btn.style.display = 'none';
   }
 
-  // Helper: format today's date string for header
   function getTodayLabelString() {
       const now = new Date();
       const y = now.getFullYear();
@@ -2031,10 +2136,8 @@
           const upcoming = scheduleData.filter(ev => new Date(ev.start) >= now && new Date(ev.start) <= limitDateObj)
                                        .sort((a,b) => new Date(a.start) - new Date(b.start));
 
-          // === BUILD REPLY: Hello + name + calendar icon prompt ===
           let html = `<div style="text-align:left;">`;
           
-          // Greeting line with calendar icon
           html += `<div style="font-weight:bold; font-size:1.1em; margin-bottom:0.6em; color:var(--selected-bg);">
             Hello ${name}！<br>
             <span style="font-size:0.9em; font-weight:normal; color:#555;">請點選</span>
@@ -2043,7 +2146,6 @@
             </button>
           </div>`;
 
-          // === Upcoming classes first (show 4, then "show more") ===
           if (upcoming.length > 0) {
               html += `<div style="font-weight:bold; font-size:1.05em; color:var(--blue-main); margin-bottom:0.4em;">近期預約課程：</div>`;
               html += `<div>`;
@@ -2065,7 +2167,6 @@
                   let extraClass = isHidden ? 'peggy-hidden-booking' : '';
                   let displayStyle = isHidden ? 'display:none;' : '';
 
-                  // Today's class: glowing highlight
                   let itemStyle = isToday
                     ? `background:linear-gradient(135deg,#fff3e0,#ffe0b2);border:2px solid #ff9800;box-shadow:0 0 14px rgba(255,152,0,0.45);animation:todayGlow 2s ease-in-out infinite alternate;`
                     : `background:#fff;border-left:4px solid var(--selected-bg);box-shadow:0 1px 4px rgba(0,0,0,0.08);`;
@@ -2079,7 +2180,6 @@
               });
               html += `</div>`;
 
-              // "Show more" button after 4 items
               if (upcoming.length > 4) {
                   html += `<button id="peggy-show-more-btn" onclick="showMorePeggyBookings()" style="width:100%; margin-top:0.5em; padding:0.6em; background:transparent; border:2px solid var(--blue-main); color:var(--blue-main); border-radius:0.7em; cursor:pointer; font-weight:bold; font-size:0.95em; transition:0.2s;">顯示更多 ▾</button>`;
               }
@@ -2090,8 +2190,6 @@
               html += `<div style="margin-top:0.5em; font-size:1em; color:#555; background:#fff0f5; padding:0.7em; border-radius:0.7em; border:1px solid #ffebee;">目前沒有近期預約的課程喔！<br><a href="javascript:void(0)" onclick="togglePeggy(); window.scrollTo(0,0);" style="color:var(--pill-active); font-weight:bold; display:inline-block; margin-top:0.4em;">現在去預約 ❯</a></div>`;
           }
 
-          // "Show more" separator then lesson count info (hidden at bottom, revealed on scroll or expand)
-          // Lesson count section — after the show-more button, collapsed by default
           let countHtml = '';
           if (countData && !countData.error && countData.total !== "" && countData.total !== null) {
               let displayTotal = countData.total;
@@ -2106,7 +2204,6 @@
               countHtml += `</div>`;
               countHtml += `</div>`;
               
-              // Toggle button for count section (always visible)
               html += `<button id="peggy-count-toggle-btn" onclick="togglePeggyCountSection()" style="width:100%; margin-top:0.6em; padding:0.5em; background:transparent; border:1px dashed #bce6ff; color:#0056b3; border-radius:0.7em; cursor:pointer; font-size:0.9em; transition:0.2s;">📊 查看堂數資訊 ▾</button>`;
               html += countHtml;
           } else {
@@ -2139,36 +2236,77 @@
       }
   }
 
-  // === Student Schedule Calendar Logic ===
+  // ==========================================
+  // === Student Schedule Calendar — Slider ===
+  // ==========================================
+
+  function getMonthInfo(offset) {
+      // offset: 0=current month, 1=next, 2=next+1
+      const now = new Date();
+      let y = now.getFullYear();
+      let m = now.getMonth() + offset;
+      while (m > 11) { m -= 12; y++; }
+      return { year: y, month: m };
+  }
+
   function openSchedCalendar() {
+      schedCurrentMonthIdx = 0;
       const modal = document.getElementById('sched-modal-overlay');
-      // Use flex on desktop for centered half-screen layout
-      if (window.innerWidth >= 1024) {
-          modal.style.display = 'flex';
-      } else {
-          modal.style.display = 'block';
-      }
-      renderSchedCalGrid();
-      // close on outside click handled in window.onload
+      modal.style.display = 'flex';
+      buildSchedSlider();
+      updateSchedNav();
   }
 
   function closeSchedCalendar() {
       document.getElementById('sched-modal-overlay').style.display = 'none';
   }
 
-  function renderSchedCalGrid() {
-      const container = document.getElementById("sched-cal-body");
-      container.innerHTML = "";
+  function schedGoMonth(dir) {
+      const newIdx = schedCurrentMonthIdx + dir;
+      if (newIdx < 0 || newIdx >= SCHED_TOTAL_MONTHS) return;
+      schedCurrentMonthIdx = newIdx;
+      // Animate slider
+      const track = document.getElementById('sched-slider-track');
+      // For desktop, slides are 100% of container width
+      const slideWidth = track.parentElement.offsetWidth;
+      track.style.transform = `translateX(-${schedCurrentMonthIdx * slideWidth}px)`;
+      updateSchedNav();
+  }
+
+  function updateSchedNav() {
+      // Month title
+      const { year, month } = getMonthInfo(schedCurrentMonthIdx);
+      document.getElementById('sched-month-title').innerText = `${year}年 ${month + 1}月`;
+
+      // Prev button
+      const prevBtn = document.getElementById('sched-prev-btn');
+      if (schedCurrentMonthIdx === 0) {
+          prevBtn.classList.add('disabled');
+      } else {
+          prevBtn.classList.remove('disabled');
+          const prev = getMonthInfo(schedCurrentMonthIdx - 1);
+          document.getElementById('sched-prev-label').innerText = `${prev.month + 1}月`;
+      }
+
+      // Next button
+      const nextBtn = document.getElementById('sched-next-btn');
+      if (schedCurrentMonthIdx >= SCHED_TOTAL_MONTHS - 1) {
+          nextBtn.classList.add('disabled');
+      } else {
+          nextBtn.classList.remove('disabled');
+          const next = getMonthInfo(schedCurrentMonthIdx + 1);
+          document.getElementById('sched-next-label').innerText = `${next.month + 1}月`;
+      }
+  }
+
+  function buildSchedSlider() {
+      const track = document.getElementById('sched-slider-track');
+      track.innerHTML = '';
+      track.style.transform = 'translateX(0)';
 
       const now = new Date();
       const todayStr = fmt(now);
-      const todayDayOfWeek = now.getDay(); // 0=Sun,1=Mon,...,6=Sat
-      const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-
-      // Current week's Monday (start of the week we show)
-      const todayMondayOffset = (todayDayOfWeek === 0) ? -6 : 1 - todayDayOfWeek;
-      const currentWeekMonday = new Date(todayStart);
-      currentWeekMonday.setDate(todayStart.getDate() + todayMondayOffset);
+      const todayDayOfWeek = now.getDay();
 
       const weekDayLabels = [
           { eng: 'MON', chi: '一' },
@@ -2179,74 +2317,42 @@
           { eng: 'SAT', chi: '六' },
       ];
 
-      for (let mOffset = 0; mOffset < 3; mOffset++) {
-          let targetM = now.getMonth() + mOffset;
-          let targetY = now.getFullYear();
-          if (targetM > 11) { targetM -= 12; targetY++; }
-
+      for (let mOffset = 0; mOffset < SCHED_TOTAL_MONTHS; mOffset++) {
+          const { year: targetY, month: targetM } = getMonthInfo(mOffset);
           const isCurrentMonth = (mOffset === 0);
 
-          const monthWrapper = document.createElement("div");
-          monthWrapper.className = "sched-month-wrapper";
+          const slide = document.createElement('div');
+          slide.className = 'sched-slide';
 
-          // Month header row
-          const headerRow = document.createElement("div");
-          headerRow.className = "sched-month-header-row";
-
-          const monthTitle = document.createElement("div");
-          monthTitle.className = "sched-month-title";
-          monthTitle.innerText = `${targetY}年 ${targetM + 1}月`;
-          headerRow.appendChild(monthTitle);
-
-          // Today's date label — only shown on current month
-          if (isCurrentMonth) {
-              const todayLabel = document.createElement("div");
-              todayLabel.className = "sched-today-label";
-              todayLabel.innerText = getTodayLabelString();
-              headerRow.appendChild(todayLabel);
-          }
-
-          monthWrapper.appendChild(headerRow);
-
-          // Per-month X close button (top-right of wrapper)
-          const closeBtn = document.createElement("button");
-          closeBtn.className = "sched-month-close-btn";
-          closeBtn.innerHTML = "&#x2715;";
-          closeBtn.title = "關閉課表";
-          closeBtn.onclick = function(e) { e.stopPropagation(); closeSchedCalendar(); };
-          monthWrapper.appendChild(closeBtn);
-
-          // Weekday header row (Mon–Sat) per month
-          const wdHeader = document.createElement("div");
-          wdHeader.className = "sched-weekday-header";
-
+          // Weekday header
+          const wdHeader = document.createElement('div');
+          wdHeader.className = 'sched-weekday-header';
           weekDayLabels.forEach((wd, idx) => {
-              const head = document.createElement("div");
-              head.className = "sched-weekday-head";
-              if (idx === 5) head.classList.add("sat-head"); // Saturday
-
-              // Only current month gets orange today-highlight on the weekday header
+              const head = document.createElement('div');
+              head.className = 'sched-weekday-head';
+              if (idx === 5) head.classList.add('sat-head');
+              // Only current month gets today-highlight
               if (isCurrentMonth && todayDayOfWeek >= 1 && todayDayOfWeek <= 6) {
-                  const todayColIdx = todayDayOfWeek - 1; // Mon=0,...Sat=5
-                  if (idx === todayColIdx) head.classList.add("today-head");
+                  const todayColIdx = todayDayOfWeek - 1;
+                  if (idx === todayColIdx) head.classList.add('today-head');
               }
-
               head.innerHTML = `${wd.eng}<small>${wd.chi}</small>`;
               wdHeader.appendChild(head);
           });
+          slide.appendChild(wdHeader);
 
-          monthWrapper.appendChild(wdHeader);
-
-          // Calendar grid
-          const grid = document.createElement("div");
-          grid.className = "sched-cal-grid";
+          // Calendar grid — show ALL weeks including past
+          const grid = document.createElement('div');
+          grid.className = 'sched-cal-grid';
 
           const firstDay = new Date(targetY, targetM, 1).getDay();
           const daysInMonth = new Date(targetY, targetM + 1, 0).getDate();
-
           let emptyCells = firstDay === 0 ? 6 : firstDay - 1;
+
           for (let i = 0; i < emptyCells; i++) {
-              grid.innerHTML += `<div class="sched-cell empty"></div>`;
+              const empty = document.createElement('div');
+              empty.className = 'sched-cell empty';
+              grid.appendChild(empty);
           }
 
           for (let d = 1; d <= daysInMonth; d++) {
@@ -2255,21 +2361,11 @@
 
               const dateStr = `${targetY}-${String(targetM + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
 
-              // Hide past weeks (before current week's Monday)
-              if (currentD < currentWeekMonday) {
-                  // Render an invisible placeholder to keep grid alignment
-                  const emptyCell = document.createElement("div");
-                  emptyCell.className = "sched-cell empty";
-                  emptyCell.style.visibility = "hidden";
-                  grid.appendChild(emptyCell);
-                  continue;
-              }
-
-              const cell = document.createElement("div");
-              cell.className = "sched-cell";
+              const cell = document.createElement('div');
+              cell.className = 'sched-cell';
 
               if (dateStr === todayStr) {
-                  cell.classList.add("today");
+                  cell.classList.add('today');
               }
 
               cell.onclick = function() {
@@ -2283,7 +2379,7 @@
               let cellInner = `<div class="sched-date-num">${d}</div>`;
 
               if (dayEvents.length > 0) {
-                  cell.classList.add("has-events");
+                  cell.classList.add('has-events');
                   let timeLabels = dayEvents.map(ev => {
                       let evD = new Date(ev.start);
                       let h = evD.getHours();
@@ -2301,10 +2397,24 @@
               grid.appendChild(cell);
           }
 
-          monthWrapper.appendChild(grid);
-          container.appendChild(monthWrapper);
+          slide.appendChild(grid);
+          track.appendChild(slide);
       }
+
+      // After building, re-apply current slide position
+      const slideWidth = track.parentElement.offsetWidth;
+      track.style.transform = `translateX(-${schedCurrentMonthIdx * slideWidth}px)`;
   }
+
+  // Handle resize: re-snap slider position
+  window.addEventListener('resize', () => {
+      const track = document.getElementById('sched-slider-track');
+      if (!track) return;
+      const slideWidth = track.parentElement.offsetWidth;
+      track.style.transition = 'none';
+      track.style.transform = `translateX(-${schedCurrentMonthIdx * slideWidth}px)`;
+      setTimeout(() => { track.style.transition = ''; }, 50);
+  });
 
   function openClassDetailModal(dStr) {
       const dayEvents = currentStudentSchedule.filter(ev => fmt(new Date(ev.start)) === dStr).sort((a,b) => new Date(a.start) - new Date(b.start));
@@ -2388,7 +2498,7 @@
               currentStudentSchedule = currentStudentSchedule.filter(ev => {
                   return new Date(ev.start).getTime() !== parseInt(timestamp);
               });
-              renderSchedCalGrid();
+              buildSchedSlider();
           } else {
               showAuthError(errorMsg);
           }
