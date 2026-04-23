@@ -65,7 +65,6 @@
         box-shadow: 0 20px 50px rgba(0,0,0,0.3);
         animation: modalFadeIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         box-sizing: border-box; position: relative;
-        /* Fix for scrollable modal */
         display: flex; flex-direction: column; max-height: 85vh;
     }
     .result-icon { font-size: 50px; margin-bottom: 15px; flex-shrink: 0; }
@@ -1430,10 +1429,12 @@
   const CLOCK_ICON_URL = "https://ik.imagekit.io/lql1uveoc/clock-4.png?updatedAt=1774630976142";
   const CAL_ICON_URL   = "https://ik.imagekit.io/lql1uveoc/Booking%20Website%20%E9%A0%90%E7%B4%84/calendar-4.png";
   const ASSISTANT_IMG_URL = "https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/christina-wocintechchat-com-m-0Zx1bDv5BNY-unsplash.jpg?updatedAt=1776614639182";
+  
+  // 建立永久本地黑名單，讓剛預約過的時段直接「人間蒸發」，絕對不會再次跳出來
+  const bookedBlacklist = new Set();
 
   let modalCloseCallback = null;
   
-  // 新增 showScheduleBtn 參數，決定是否顯示查看課表的按鈕
   function showNotice(title, message, isError = false, callback = null, showScheduleBtn = false) {
       document.getElementById('res-icon').innerText = isError ? "⚠️" : "🎉";
       document.getElementById('res-title').innerText = title;
@@ -1518,13 +1519,11 @@
   let bgPollingInterval = null;
   function startBackgroundPolling() {
       if (bgPollingInterval) return;
-      // 依據您的要求，每 3 秒自動全面更新所有已載入日期的時段資料
       bgPollingInterval = setInterval(() => { backgroundSyncAll(); }, 3000);
   }
 
   function backgroundSyncAll() {
       const todayStr = fmt(new Date());
-      // 至少同步 14 天的資料，或是已載入的全部天數
       const fetchDays = Math.max(loadedDaysCount, 14);
       if (fetchDays === 0) return;
       
@@ -1533,15 +1532,18 @@
         .then(data => {
             let hasChanges = false;
             for(let dStr in data) {
+                if (!data[dStr] || !data[dStr].slots) continue;
+                // 利用永久黑名單直接剔除被預約的時段
+                const newSlots = data[dStr].slots.filter(s => !bookedBlacklist.has(s.timestamp));
+                
                 const oldSlots = (cachedData[dStr] && cachedData[dStr].slots) ? cachedData[dStr].slots : [];
-                const newSlots = data[dStr].slots || [];
                 const oldTs = oldSlots.map(s => s.timestamp).sort().join(',');
                 const newTs = newSlots.map(s => s.timestamp).sort().join(',');
                 
                 if(oldTs !== newTs) {
-                    cachedData[dStr] = data[dStr];
+                    cachedData[dStr] = { ...data[dStr], slots: newSlots };
                     hasChanges = true;
-                    // 若原本選的時段被別人訂走，從購物車中自動剃除
+                    // 同時把購物車內原本勾選但是已消失的移除
                     const newTsSet = new Set(newSlots.map(s => String(s.timestamp)));
                     selectedSlots = selectedSlots.filter(s => !(s.dateStr === dStr && !newTsSet.has(String(s.timestamp))));
                 }
@@ -1572,8 +1574,6 @@
     fetchBatchData(0, STAGE_1_DAYS, "STAGE1");
     openCalendar(); 
     document.getElementById("p-main").style.display = "none";
-    
-    // 3秒後啟動每3秒一次的全面更新機制
     setTimeout(startBackgroundPolling, 3000);
 
     document.getElementById('sched-modal-overlay').addEventListener('click', function(e) {
@@ -1655,6 +1655,11 @@
       if (!cachedData[dStr]) { document.getElementById("empty-msg").innerText="資料載入中..."; document.getElementById("empty-msg").style.display="block"; }
       document.querySelectorAll(".time-card").forEach(c => c.style.display="none");
       fetch(`${API_URL}?action=getBatchSlots&startDate=${dStr}&days=1`).then(res=>res.json()).then(data=>{
+          for(let d in data) {
+              if(data[d] && data[d].slots) {
+                  data[d].slots = data[d].slots.filter(s => !bookedBlacklist.has(s.timestamp));
+              }
+          }
           Object.assign(cachedData, data); if(!cachedData[dStr]) cachedData[dStr]={slots:[]};
           const pill=document.getElementById(`pill-${dStr}`); if(pill){pill.classList.remove('loading');pill.classList.add('loaded');}
           if (dStr === selectedDateStr) renderSlots(dStr);
@@ -1669,6 +1674,11 @@
   function fetchBatchData(startIndex, days, stage) {
     const today=new Date(); const startD=new Date(); startD.setDate(today.getDate()+startIndex); const startStr=fmt(startD);
     fetch(`${API_URL}?action=getBatchSlots&startDate=${startStr}&days=${days}`).then(res=>res.json()).then(data=>{
+        for(let d in data) {
+            if(data[d] && data[d].slots) {
+                data[d].slots = data[d].slots.filter(s => !bookedBlacklist.has(s.timestamp));
+            }
+        }
         Object.assign(cachedData, data);
         for(let i=0;i<days;i++){const d=new Date();d.setDate(today.getDate()+startIndex+i);const dStr=fmt(d);if(!cachedData[dStr])cachedData[dStr]={slots:[]};}
         loadedDaysCount+=days; updateDatePills(startStr,days);
@@ -1712,6 +1722,11 @@
       if(cachedData[dStr]){renderSlotsInsideCalendar(dStr);}else{
           container.innerHTML=`<div style="text-align:center;padding:30px;"><div class="spinner" style="width:30px;height:30px;margin:0 auto 10px auto;border:4px solid #ddd;border-top-color:#ff5400;border-radius:50%;animation:spin 0.8s linear infinite;"></div>讀取該日行程中...</div>`;
           fetch(`${API_URL}?action=getBatchSlots&startDate=${dStr}&days=1`).then(r=>r.json()).then(data=>{
+              for(let d in data) {
+                  if(data[d] && data[d].slots) {
+                      data[d].slots = data[d].slots.filter(s => !bookedBlacklist.has(s.timestamp));
+                  }
+              }
               Object.assign(cachedData,data); if(!cachedData[dStr]) cachedData[dStr]={slots:[]};
               const pill=document.getElementById(`pill-${dStr}`); if(pill){pill.classList.remove('loading');pill.classList.add('loaded');}
               if (dStr === selectedDateStr) renderSlotsInsideCalendar(dStr);
@@ -1914,7 +1929,6 @@
   function buildBookedTimesHtml(slots) {
       let html = '<div class="booked-times-box" style="text-align: left; background: #f3f4f6; padding: 12px 15px; border-radius: 12px; margin: 15px 0;">';
       html += '<div class="booked-header" style="margin-bottom:8px; color:#111;">已預約以下時段：</div>';
-      // 加入內部滾動，確保名單過長時視窗不會爆掉
       html += '<div style="max-height: 140px; overflow-y: auto; padding-right: 5px;">';
       slots.forEach(slot => { html += `<div style="margin-bottom:4px;">• ${slot.displayStr}</div>`; });
       html += '</div></div>';
@@ -1929,35 +1943,33 @@
     
     const btn=document.querySelector(".confirm-btn"); const orgText=btn.innerText; btn.innerText="處理中..."; btn.disabled=true;
     
-    // 鎖定返回和清除按鈕，避免使用者誤觸退回主畫面導致時段還在
     const backBtn = document.querySelector("#p-form .back-btn");
     const clearBtn = document.querySelector("#p-form .clear-all-btn");
     if(backBtn) backBtn.style.pointerEvents = 'none';
     if(clearBtn) clearBtn.style.pointerEvents = 'none';
 
-    // 觸發一次背景重抓，確保使用者等待期間或剛送出時能取得最新時段
-    backgroundSyncAll();
-
-    const DURATION_MS=60*60*1000;
     fetch(API_URL,{method:"POST",body:JSON.stringify({name,email,appointments:selectedSlots})})
     .then(res=>res.json())
     .then(res=>{
        if(res.bookingSummary){
            const summary=res.bookingSummary;
            if(summary.failCount===0){
+               selectedSlots.forEach(s => bookedBlacklist.add(s.timestamp));
                let successMsg = `確認信已寄至您的信箱。<br>` + buildBookedTimesHtml(selectedSlots);
                successMsg += `<div style="margin-top: 15px; color: #d32f2f; font-weight:bold;">`;
                successMsg += `請假/調整請於24小時前提出。<br>`;
                successMsg += `<a href="https://tonyonlineenglish.netlify.app/regulations" target="_blank" style="color: #007aff; text-decoration: underline; font-weight: bold; display:inline-block; margin-top:5px;">詳細規範請點這裡</a>`;
                successMsg += `</div>`;
                showNotice("預約成功", successMsg, false, null, true);
-               finishSuccessBooking();
+               finishSuccessBooking(selectedSlots);
            } else {
+               const failedTimestamps = summary.failedSlots ? summary.failedSlots.map(s => parseInt(s.timestamp)) :[];
+               const successfulSlots = selectedSlots.filter(s => !failedTimestamps.includes(s.timestamp));
+               successfulSlots.forEach(s => bookedBlacklist.add(s.timestamp));
+               
                let msg=`⚠️ 注意：有 <b>${summary.failCount}</b> 堂課預約失敗 (已被搶先預約)。<br><br>`;
                msg+=`✅ 成功預約：<b>${summary.successCount}</b> 堂<br>`;
                if (summary.successCount > 0) {
-                   const failedTimestamps = summary.failedSlots ? summary.failedSlots.map(s => parseInt(s.timestamp)) :[];
-                   const successfulSlots = selectedSlots.filter(s => !failedTimestamps.includes(s.timestamp));
                    msg += buildBookedTimesHtml(successfulSlots);
                }
                if(summary.failedSlots && summary.failedSlots.length > 0){
@@ -1980,16 +1992,17 @@
                     msg += `</div>`;
                }
                showNotice("部分預約成功", msg, false, null, true);
-               finishSuccessBooking();
+               finishSuccessBooking(successfulSlots);
            }
        } else if(res.success){
+           selectedSlots.forEach(s => bookedBlacklist.add(s.timestamp));
            let successMsg = `確認信已寄至您的信箱。<br>` + buildBookedTimesHtml(selectedSlots);
            successMsg += `<div style="margin-top: 15px; color: #d32f2f; font-weight:bold;">`;
            successMsg += `請假/調整請於24小時前提出。<br>`;
            successMsg += `<a href="https://tonyonlineenglish.netlify.app/regulations" target="_blank" style="color: #007aff; text-decoration: underline; font-weight: bold; display:inline-block; margin-top:5px;">詳細規範請點這裡</a>`;
            successMsg += `</div>`;
            showNotice("預約成功", successMsg, false, null, true);
-           finishSuccessBooking();
+           finishSuccessBooking(selectedSlots);
        } else{
            showNotice("預約失敗","預約發生錯誤："+res.message,true);
        }
@@ -2004,17 +2017,26 @@
        if(clearBtn) clearBtn.style.pointerEvents = 'auto';
     });
 
-    function finishSuccessBooking(){
-         selectedSlots.forEach(booked=>{
+    function finishSuccessBooking(successArray){
+         successArray.forEach(booked=>{
            if(cachedData[booked.dateStr]){
-             cachedData[booked.dateStr].slots=cachedData[booked.dateStr].slots.filter(s=>{
-               const sStart=s.timestamp;const sEnd=sStart+DURATION_MS;const bookedStart=booked.timestamp;const bookedEnd=bookedStart+DURATION_MS;
-               return!(sStart<bookedEnd&&sEnd>bookedStart);
-             });
+             cachedData[booked.dateStr].slots = cachedData[booked.dateStr].slots.filter(s => !bookedBlacklist.has(s.timestamp));
            }
          });
-         selectedSlots=[]; closeForm(); closeCalendar(); renderSlots(selectedDateStr); updateBottomBar(); checkHotSlots(loadedDaysCount>7?14:7);
-         backgroundSyncAll(); // 強制再次刷新
+         selectedSlots=[]; 
+         closeForm(); 
+         
+         // 注意：此處不再呼叫 closeCalendar()，直接原地更新
+         if(document.getElementById("cal-modal").classList.contains("active")) {
+             renderSlotsInsideCalendar(selectedDateStr);
+             renderCalGrid(); 
+         }
+         renderSlots(selectedDateStr); 
+         updateBottomBar(); 
+         checkHotSlots(loadedDaysCount>7?14:7);
+         
+         // 延遲 4 秒觸發全域同步，給予 Google 表單充足時間計算，期間靠黑名單濾除幽靈時段
+         setTimeout(backgroundSyncAll, 4000); 
     }
   }
 
