@@ -1,3 +1,5 @@
+ 
+
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -794,11 +796,11 @@
     
     /* 課表查詢 月曆模式標題加粗 */
     .sched-nav-arrow { font-size: 18px; font-weight: 900; color: #111; line-height: 1; }
-    .sched-nav-month-label { font-size: 11px; font-weight: 900; color: #111; line-height: 1; margin-top: 2px; }
+    .sched-nav-month-label { font-size: 13px; font-weight: 900; color: #111; line-height: 1; margin-top: 2px; }
     .sched-month-nav-btn:hover .sched-nav-arrow,
     .sched-month-nav-btn:hover .sched-nav-month-label { color: var(--pill-active); }
     .sched-current-month-title {
-        font-size: 17px; font-weight: 900; color: #111;
+        font-size: 18px; font-weight: 900; color: #111;
         text-align: center; line-height: 1.2; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
     }
 
@@ -875,10 +877,10 @@
         .sched-weekday-head small { font-size: 14px; }
         .sched-top-bar { padding: 18px 24px 14px; }
         .sched-back-btn { font-size: 18px; padding: 10px 22px; border-radius: 24px; }
-        .sched-current-month-title { font-size: 22px; }
+        .sched-current-month-title { font-size: 24px; }
         .sched-month-nav-btn { padding: 8px 18px; border-radius: 14px; min-width: 80px; }
         .sched-nav-arrow { font-size: 22px; }
-        .sched-nav-month-label { font-size: 13px; }
+        .sched-nav-month-label { font-size: 14px; }
     }
 
     @media (min-width: 1024px) {
@@ -892,10 +894,10 @@
         .sched-weekday-head small { font-size: 14px; }
         .sched-top-bar { padding: 20px 30px 16px; }
         .sched-back-btn { font-size: 20px; padding: 12px 24px; }
-        .sched-current-month-title { font-size: 24px; }
+        .sched-current-month-title { font-size: 26px; }
         .sched-month-nav-btn { padding: 10px 22px; min-width: 100px; border-radius: 16px; }
         .sched-nav-arrow { font-size: 26px; }
-        .sched-nav-month-label { font-size: 14px; }
+        .sched-nav-month-label { font-size: 16px; }
     }
 
     /* =========================================================
@@ -1056,7 +1058,7 @@
         background: linear-gradient(135deg, #e0f7fa, #b2ebf2);
         border: 2px solid #00acc1;
         border-radius: 50%;
-        padding: 12px !important;
+        padding: 16px !important;
         box-shadow: 0 4px 10px rgba(0, 172, 193, 0.3);
         animation: pulseCal 2s infinite;
         display: inline-flex; align-items: center; justify-content: center;
@@ -1065,13 +1067,13 @@
     .highlight-cal-btn:hover { transform: scale(1.05); }
     @keyframes pulseCal {
         0% { box-shadow: 0 0 0 0 rgba(0, 172, 193, 0.7); }
-        70% { box-shadow: 0 0 0 15px rgba(0, 172, 193, 0); }
+        70% { box-shadow: 0 0 0 18px rgba(0, 172, 193, 0); }
         100% { box-shadow: 0 0 0 0 rgba(0, 172, 193, 0); }
     }
 
-    .chat-cal-icon { object-fit: contain; display: block; width: 50px; height: 50px; }
-    @media (min-width: 768px) { .chat-cal-icon { width: 65px; height: 65px; } }
-    @media (min-width: 1024px) { .chat-cal-icon { width: 80px; height: 80px; } }
+    .chat-cal-icon { object-fit: contain; display: block; width: 60px; height: 60px; }
+    @media (min-width: 768px) { .chat-cal-icon { width: 75px; height: 75px; } }
+    @media (min-width: 1024px) { .chat-cal-icon { width: 90px; height: 90px; } }
 
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
   </style>
@@ -1325,6 +1327,11 @@
       if (modalCloseCallback) { modalCloseCallback(); modalCloseCallback = null; }
   }
 
+  // 自動捲動隱藏上方 140px 的 Header Logo
+  function scrollToWidget() {
+      window.scrollTo({ top: 140, behavior: 'smooth' });
+  }
+
   // === INTRO ANIMATION ===
   let isLoadingStepsDone = false; let isCalendarDataReady = false;
   let introCurrentIdx = 0; const introAnimationSpeed = 400;
@@ -1346,7 +1353,12 @@
           const overlay = document.getElementById("loading-overlay");
           if (overlay && overlay.style.display !== "none") {
               overlay.style.opacity = "0"; overlay.style.pointerEvents = "none";
-              setTimeout(() => { overlay.style.display = "none"; playIntroAnimation(); }, 500);
+              setTimeout(() => { 
+                  overlay.style.display = "none"; 
+                  playIntroAnimation(); 
+                  // 載入完成後直接滾動略過上方 logo
+                  scrollToWidget();
+              }, 500);
           }
       }
   }
@@ -1355,7 +1367,13 @@
   (function(){
       setTimeout(function(){
           var o = document.getElementById("loading-overlay");
-          if (o && o.style.display !== "none") { o.style.opacity="0"; o.style.pointerEvents="none"; setTimeout(function(){ o.style.display="none"; }, 500); }
+          if (o && o.style.display !== "none") { 
+              o.style.opacity="0"; o.style.pointerEvents="none"; 
+              setTimeout(function(){ 
+                  o.style.display="none"; 
+                  scrollToWidget();
+              }, 500); 
+          }
       }, 6000);
   })();
 
@@ -1364,6 +1382,8 @@
   let cachedData={}, loadedDaysCount=0, selectedDateStr="", selectedSlots=[];
   const dayNames=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"], chiDayNames=["日","一","二","三","四","五","六"];
   const monthNamesEng=["Jan","Feb","March","April","May","June","July","Aug","Sept","Oct","Nov","Dec"];
+  const monthNamesShort=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+  
   let hotPanelShown=false, calYear, calMonth;
   let limitDate = new Date(); limitDate.setDate(limitDate.getDate()+MAX_DAYS); limitDate.setHours(23,59,59,999);
 
@@ -1402,11 +1422,6 @@
   }
 
   window.onload = function() {
-    // 進入網站時，強制畫面回到最頂部
-    window.scrollTo(0, 0);
-    document.body.scrollTop = 0;
-    document.documentElement.scrollTop = 0;
-    
     setTimeout(runLoadingSteps, 100);
     setTimeout(() => { hideLoading(true); }, 5000);
     setTimeout(() => {
@@ -1422,7 +1437,6 @@
     document.getElementById("p-main").style.display = "none";
     setTimeout(startBackgroundPolling, 8000);
 
-    // Close sched modal when clicking outside container
     document.getElementById('sched-modal-overlay').addEventListener('click', function(e) {
         if (window.innerWidth >= 1024 && e.target === this) closeSchedCalendar();
     });
@@ -1619,10 +1633,8 @@
   }
 
   function openCalendar() {
-      // 進入預約月曆時，強制滾動到最上方
-      window.scrollTo(0, 0);
-      document.body.scrollTop = 0;
-      document.documentElement.scrollTop = 0;
+      // 只要開啟月曆模式，確保滾動到完美的高度位置 (略過 140px header logo)
+      scrollToWidget();
       
       if(!selectedDateStr) selectedDateStr=fmt(new Date());
       renderCalGrid(); 
@@ -1631,7 +1643,7 @@
       modal.scrollTop = 0; 
       updateBottomBar();
       
-      // 延遲6秒顯示未讀紅點
+      // 延遲 6 秒顯示未讀訊息數字 1
       setTimeout(() => {
           if (!peggyInitialized) {
               document.querySelectorAll('.peggy-badge-el').forEach(el => el.style.display = 'flex');
@@ -2076,7 +2088,7 @@
           
           html += `<div style="font-weight:bold; font-size:1.1em; margin-bottom:0.6em; color:var(--selected-bg);">
             Hello ${name}！<br>
-            <div style="margin-top: 12px; margin-bottom: 5px;">
+            <div style="margin-top: 15px; margin-bottom: 8px;">
                 <button class="highlight-cal-btn" onclick="openSchedCalendar()" title="查看完整月曆課表">
                     <img src="${CAL_ICON_URL}" alt="月曆" class="chat-cal-icon">
                 </button>
@@ -2209,24 +2221,27 @@
 
   function updateSchedNav() {
       const { year, month } = getMonthInfo(schedCurrentMonthIdx);
-      document.getElementById('sched-month-title').innerText = `${year}年 ${month + 1}月 ${monthNamesEng[month]}`;
+      // 修改：只顯示 2026.04月 格式
+      document.getElementById('sched-month-title').innerText = `${year}.${String(month + 1).padStart(2, '0')}月`;
 
       const prevBtn = document.getElementById('sched-prev-btn');
       if (schedCurrentMonthIdx === 0) {
           prevBtn.classList.add('disabled');
+          document.getElementById('sched-prev-label').innerText = '';
       } else {
           prevBtn.classList.remove('disabled');
           const prev = getMonthInfo(schedCurrentMonthIdx - 1);
-          document.getElementById('sched-prev-label').innerText = `${prev.month + 1}月 ${monthNamesEng[prev.month]}`;
+          document.getElementById('sched-prev-label').innerText = monthNamesShort[prev.month];
       }
 
       const nextBtn = document.getElementById('sched-next-btn');
       if (schedCurrentMonthIdx >= SCHED_TOTAL_MONTHS - 1) {
           nextBtn.classList.add('disabled');
+          document.getElementById('sched-next-label').innerText = '';
       } else {
           nextBtn.classList.remove('disabled');
           const next = getMonthInfo(schedCurrentMonthIdx + 1);
-          document.getElementById('sched-next-label').innerText = `${next.month + 1}月 ${monthNamesEng[next.month]}`;
+          document.getElementById('sched-next-label').innerText = monthNamesShort[next.month];
       }
   }
 
