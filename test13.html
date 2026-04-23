@@ -61,20 +61,31 @@
     }
     .result-content, .auth-modal-content {
         background: #fff; width: 95%; max-width: 420px;
-        border-radius: 24px; padding: 40px 25px; text-align: center;
+        border-radius: 24px; padding: 30px 20px; text-align: center;
         box-shadow: 0 20px 50px rgba(0,0,0,0.3);
         animation: modalFadeIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         box-sizing: border-box; position: relative;
+        /* Fix for scrollable modal */
+        display: flex; flex-direction: column; max-height: 85vh;
     }
-    .result-icon { font-size: 60px; margin-bottom: 20px; }
-    .result-title { font-size: 24px; font-weight: 800; margin-bottom: 12px; color: #111; }
-    .result-msg { font-size: 17px; color: #444; line-height: 1.6; margin-bottom: 30px; word-wrap: break-word; }
+    .result-icon { font-size: 50px; margin-bottom: 15px; flex-shrink: 0; }
+    .result-title { font-size: 24px; font-weight: 800; margin-bottom: 10px; color: #111; flex-shrink: 0; }
+    
+    .result-msg-container {
+        overflow-y: auto; flex: 1 1 auto; margin-bottom: 15px; padding-right: 5px;
+    }
+    .result-msg-container::-webkit-scrollbar { width: 6px; }
+    .result-msg-container::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
+    
+    .result-msg { font-size: 16px; color: #444; line-height: 1.6; word-wrap: break-word; text-align: left; }
     .result-msg .booked-times-list { font-size: inherit; }
     .result-msg .booked-times-list div { font-size: inherit; }
+    
     .result-close-btn {
         background: var(--pill-active); color: #fff; border: none;
         padding: 16px 0; border-radius: 15px; font-size: 18px; font-weight: bold;
         cursor: pointer; width: 100%; box-shadow: 0 4px 12px rgba(255, 84, 0, 0.3); box-sizing: border-box;
+        flex-shrink: 0;
     }
     .modal-close-x {
         position: absolute; top: 15px; right: 15px;
@@ -418,7 +429,7 @@
     @media (max-width: 767px) {
         .page-form.active { display: block; animation: slideUp 0.3s; }
         .form-box {
-            margin: 0; width: 100%; height: 100%; max-width: 100%;
+            margin: 0; width: 100%; height: 100vh; height: 100dvh; max-width: 100%;
             border-radius: 0; padding: 15px 20px;
             display: flex; flex-direction: column;
             border: none; background: #fff; box-sizing: border-box;
@@ -493,10 +504,10 @@
         
         .multi-booking-badge { height: 48px; padding: 0 20px; border-radius: 24px; font-size: 18px; border-width: 3px; }
 
-        .result-content, .auth-modal-content { max-width: 630px; padding: 60px 38px; border-radius: 36px; }
+        .result-content, .auth-modal-content { max-width: 630px; padding: 40px 38px; border-radius: 36px; }
         .result-title { font-size: 36px; margin-bottom: 18px; }
-        .result-msg { font-size: 26px; margin-bottom: 45px; }
-        .result-icon { font-size: 90px; margin-bottom: 30px; }
+        .result-msg { font-size: 24px; }
+        .result-icon { font-size: 70px; margin-bottom: 20px; }
         .result-close-btn { padding: 24px 0; font-size: 27px; border-radius: 22px; }
         .modal-close-x { top: 20px; right: 20px; font-size: 42px; font-weight: 900; }
         .cd-header { font-size: 33px; padding-bottom: 15px; margin-bottom: 22px; }
@@ -527,10 +538,10 @@
         .form-box { max-width: 800px; padding: 80px 50px 50px; }
         .page-title { font-size: 42px; }
         .back-btn { font-size: 24px; top: 40px; left: 40px; padding: 12px 24px; }
-        .result-content, .auth-modal-content { max-width: 840px; padding: 80px 50px; border-radius: 48px; }
+        .result-content, .auth-modal-content { max-width: 840px; padding: 60px 50px; border-radius: 48px; }
         .result-title { font-size: 48px; margin-bottom: 24px; }
-        .result-msg { font-size: 34px; margin-bottom: 60px; }
-        .result-icon { font-size: 120px; margin-bottom: 40px; }
+        .result-msg { font-size: 32px; }
+        .result-icon { font-size: 100px; margin-bottom: 30px; }
         .result-close-btn { padding: 32px 0; font-size: 36px; border-radius: 30px; }
         .modal-close-x { top: 25px; right: 25px; font-size: 56px; font-weight: 900; }
         .cd-header { font-size: 44px; padding-bottom: 20px; margin-bottom: 30px; }
@@ -1176,13 +1187,24 @@
 <body>
 <div style="position:fixed; top:0; left:0; width:100vw; height:140px; background:#060b1c; z-index:-1; pointer-events:none;"></div>
 
+<!-- 全域通用 Loading 畫面 (抓取課表用) -->
+<div id="generic-loading" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:11000; justify-content:center; align-items:center; color:#fff; font-size:20px; font-weight:bold; flex-direction:column; backdrop-filter:blur(3px);">
+    <div class="spinner" style="width:45px;height:45px;border:5px solid rgba(255,255,255,0.3);border-top-color:#ff5400;border-radius:50%;animation:spin 0.8s linear infinite;margin-bottom:15px;"></div>
+    讀取課表中...
+</div>
+
 <!-- Custom Notification Modal -->
 <div id="result-modal" class="result-overlay">
     <div class="result-content modal-box-shared">
         <div id="res-icon" class="result-icon">🎉</div>
         <div id="res-title" class="result-title modal-title-shared">預約成功</div>
-        <div id="res-msg" class="result-msg modal-msg-shared">時段已預約，請檢查您的電子郵件確認信。</div>
-        <button class="result-close-btn" onclick="closeResultModal()">確定 OK</button>
+        <div class="result-msg-container">
+            <div id="res-msg" class="result-msg modal-msg-shared">時段已預約，請檢查您的電子郵件確認信。</div>
+        </div>
+        <div style="display:flex; flex-direction:column; gap:10px; width:100%; flex-shrink:0;">
+            <button class="result-close-btn" id="btn-view-schedule" style="display:none; background:#007aff; box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);" onclick="viewMyScheduleAfterBooking()">📅 查看我的課表</button>
+            <button class="result-close-btn" onclick="closeResultModal()">確定 OK</button>
+        </div>
     </div>
 </div>
 
@@ -1190,7 +1212,7 @@
 <div id="class-detail-modal" class="result-overlay" style="z-index: 10004;">
     <div class="result-content modal-box-shared" style="text-align:left;">
         <button class="modal-close-x" onclick="closeClassDetailModal()">&times;</button>
-        <div id="class-detail-content"></div>
+        <div id="class-detail-content" style="overflow-y:auto; padding-right:5px; margin-top:20px;"></div>
     </div>
 </div>
 
@@ -1410,19 +1432,28 @@
   const ASSISTANT_IMG_URL = "https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/christina-wocintechchat-com-m-0Zx1bDv5BNY-unsplash.jpg?updatedAt=1776614639182";
 
   let modalCloseCallback = null;
-  function showNotice(title, message, isError = false, callback = null) {
+  
+  // 新增 showScheduleBtn 參數，決定是否顯示查看課表的按鈕
+  function showNotice(title, message, isError = false, callback = null, showScheduleBtn = false) {
       document.getElementById('res-icon').innerText = isError ? "⚠️" : "🎉";
       document.getElementById('res-title').innerText = title;
       document.getElementById('res-msg').innerHTML = message;
       document.getElementById('result-modal').style.display = 'flex';
+      
+      const schedBtn = document.getElementById('btn-view-schedule');
+      if (showScheduleBtn) {
+          schedBtn.style.display = 'block';
+      } else {
+          schedBtn.style.display = 'none';
+      }
       modalCloseCallback = callback;
   }
+  
   function closeResultModal() {
       document.getElementById('result-modal').style.display = 'none';
       if (modalCloseCallback) { modalCloseCallback(); modalCloseCallback = null; }
   }
 
-  // 精準對齊預約控制列
   function alignToHeader() {
       const calHeader = document.querySelector('.header-section');
       if (calHeader) {
@@ -1487,36 +1518,44 @@
   let bgPollingInterval = null;
   function startBackgroundPolling() {
       if (bgPollingInterval) return;
-      // 修改為每3秒執行一次
-      bgPollingInterval = setInterval(() => { silentRefreshVisibleDate(); }, 3000);
+      // 依據您的要求，每 3 秒自動全面更新所有已載入日期的時段資料
+      bgPollingInterval = setInterval(() => { backgroundSyncAll(); }, 3000);
   }
 
-  function silentRefreshVisibleDate() {
-      if (!selectedDateStr) return;
-      const dStr = selectedDateStr;
-      fetch(`${API_URL}?action=getBatchSlots&startDate=${dStr}&days=1`)
+  function backgroundSyncAll() {
+      const todayStr = fmt(new Date());
+      // 至少同步 14 天的資料，或是已載入的全部天數
+      const fetchDays = Math.max(loadedDaysCount, 14);
+      if (fetchDays === 0) return;
+      
+      fetch(`${API_URL}?action=getBatchSlots&startDate=${todayStr}&days=${fetchDays}`)
         .then(r => r.json())
         .then(data => {
-            if (!data || !data[dStr]) return;
-            const oldSlots = (cachedData[dStr] && cachedData[dStr].slots) ? cachedData[dStr].slots : [];
-            const newSlots = data[dStr].slots || [];
-            const oldTs = oldSlots.map(s => s.timestamp).sort().join(',');
-            const newTs = newSlots.map(s => s.timestamp).sort().join(',');
-            if (oldTs === newTs) return;
-            cachedData[dStr] = data[dStr];
-            const newTsSet = new Set(newSlots.map(s => String(s.timestamp)));
-            const removedCount = selectedSlots.filter(s => s.dateStr === dStr && !newTsSet.has(String(s.timestamp))).length;
-            if (removedCount > 0) {
-                selectedSlots = selectedSlots.filter(s => !(s.dateStr === dStr && !newTsSet.has(String(s.timestamp))));
+            let hasChanges = false;
+            for(let dStr in data) {
+                const oldSlots = (cachedData[dStr] && cachedData[dStr].slots) ? cachedData[dStr].slots : [];
+                const newSlots = data[dStr].slots || [];
+                const oldTs = oldSlots.map(s => s.timestamp).sort().join(',');
+                const newTs = newSlots.map(s => s.timestamp).sort().join(',');
+                
+                if(oldTs !== newTs) {
+                    cachedData[dStr] = data[dStr];
+                    hasChanges = true;
+                    // 若原本選的時段被別人訂走，從購物車中自動剃除
+                    const newTsSet = new Set(newSlots.map(s => String(s.timestamp)));
+                    selectedSlots = selectedSlots.filter(s => !(s.dateStr === dStr && !newTsSet.has(String(s.timestamp))));
+                }
+            }
+            if(hasChanges) {
                 updateBottomBar();
+                if(document.getElementById("cal-modal").classList.contains("active")) {
+                    renderCalGrid(); 
+                    if(selectedDateStr) renderSlotsInsideCalendar(selectedDateStr);
+                } else {
+                    if(selectedDateStr) renderSlots(selectedDateStr);
+                }
             }
-            if (document.getElementById("cal-modal").classList.contains("active")) {
-                if (dStr === selectedDateStr) renderSlotsInsideCalendar(dStr);
-            } else {
-                if (dStr === selectedDateStr) renderSlots(dStr);
-            }
-        })
-        .catch(() => {});
+        }).catch(() => {});
   }
 
   window.onload = function() {
@@ -1533,7 +1572,8 @@
     fetchBatchData(0, STAGE_1_DAYS, "STAGE1");
     openCalendar(); 
     document.getElementById("p-main").style.display = "none";
-    // 提早啟動背景刷新 (3秒後)
+    
+    // 3秒後啟動每3秒一次的全面更新機制
     setTimeout(startBackgroundPolling, 3000);
 
     document.getElementById('sched-modal-overlay').addEventListener('click', function(e) {
@@ -1874,8 +1914,10 @@
   function buildBookedTimesHtml(slots) {
       let html = '<div class="booked-times-box" style="text-align: left; background: #f3f4f6; padding: 12px 15px; border-radius: 12px; margin: 15px 0;">';
       html += '<div class="booked-header" style="margin-bottom:8px; color:#111;">已預約以下時段：</div>';
+      // 加入內部滾動，確保名單過長時視窗不會爆掉
+      html += '<div style="max-height: 140px; overflow-y: auto; padding-right: 5px;">';
       slots.forEach(slot => { html += `<div style="margin-bottom:4px;">• ${slot.displayStr}</div>`; });
-      html += '</div>';
+      html += '</div></div>';
       return html;
   }
 
@@ -1894,7 +1936,7 @@
     if(clearBtn) clearBtn.style.pointerEvents = 'none';
 
     // 觸發一次背景重抓，確保使用者等待期間或剛送出時能取得最新時段
-    silentRefreshVisibleDate();
+    backgroundSyncAll();
 
     const DURATION_MS=60*60*1000;
     fetch(API_URL,{method:"POST",body:JSON.stringify({name,email,appointments:selectedSlots})})
@@ -1908,7 +1950,7 @@
                successMsg += `請假/調整請於24小時前提出。<br>`;
                successMsg += `<a href="https://tonyonlineenglish.netlify.app/regulations" target="_blank" style="color: #007aff; text-decoration: underline; font-weight: bold; display:inline-block; margin-top:5px;">詳細規範請點這裡</a>`;
                successMsg += `</div>`;
-               showNotice("預約成功", successMsg);
+               showNotice("預約成功", successMsg, false, null, true);
                finishSuccessBooking();
            } else {
                let msg=`⚠️ 注意：有 <b>${summary.failCount}</b> 堂課預約失敗 (已被搶先預約)。<br><br>`;
@@ -1920,6 +1962,7 @@
                }
                if(summary.failedSlots && summary.failedSlots.length > 0){
                    msg += `<div style="text-align: left; color: #d32f2f; margin-top:10px;">❌ 失敗時段：<br>`;
+                   msg += `<div style="max-height: 100px; overflow-y: auto;">`;
                    summary.failedSlots.forEach(slot=>{
                        const d=new Date(parseInt(slot.timestamp));
                        const min=d.getMinutes();
@@ -1927,16 +1970,17 @@
                        const dateStr=(d.getMonth()+1)+"/"+d.getDate();
                        msg+=`• ${dateStr} ${timeStr}<br>`;
                    });
-                   msg += `</div>`;
+                   msg += `</div></div>`;
                }
-               msg += `<div style="margin-top: 15px; color: #555;">系統已成功預約的時段。<br>頁面將重新整理以顯示最新名額。</div>`;
+               msg += `<div style="margin-top: 15px; color: #555;">系統已為您成功預約剩餘的時段。<br>返回畫面後將會顯示最新的剩餘名額。</div>`;
                if (summary.successCount > 0) {
                     msg += `<div style="margin-top: 15px; color: #d32f2f; font-weight:bold;">`;
                     msg += `請假/調整請於24小時前提出。<br>`;
                     msg += `<a href="https://tonyonlineenglish.netlify.app/regulations" target="_blank" style="color: #007aff; text-decoration: underline; font-weight: bold; display:inline-block; margin-top:5px;">詳細規範請點這裡</a>`;
                     msg += `</div>`;
                }
-               showNotice("部分預約成功", msg, true, ()=>{location.reload();});
+               showNotice("部分預約成功", msg, false, null, true);
+               finishSuccessBooking();
            }
        } else if(res.success){
            let successMsg = `確認信已寄至您的信箱。<br>` + buildBookedTimesHtml(selectedSlots);
@@ -1944,7 +1988,7 @@
            successMsg += `請假/調整請於24小時前提出。<br>`;
            successMsg += `<a href="https://tonyonlineenglish.netlify.app/regulations" target="_blank" style="color: #007aff; text-decoration: underline; font-weight: bold; display:inline-block; margin-top:5px;">詳細規範請點這裡</a>`;
            successMsg += `</div>`;
-           showNotice("預約成功", successMsg);
+           showNotice("預約成功", successMsg, false, null, true);
            finishSuccessBooking();
        } else{
            showNotice("預約失敗","預約發生錯誤："+res.message,true);
@@ -1970,8 +2014,7 @@
            }
          });
          selectedSlots=[]; closeForm(); closeCalendar(); renderSlots(selectedDateStr); updateBottomBar(); checkHotSlots(loadedDaysCount>7?14:7);
-         // 完成預約後立刻強制背景再次重抓最新資料，確保無縫更新
-         silentRefreshVisibleDate();
+         backgroundSyncAll(); // 強制再次刷新
     }
   }
 
@@ -2142,46 +2185,74 @@
       if(btn) btn.style.display = 'none';
   }
 
+  // 獨立抓取課表的非同步函式 (供 Peggy 與 View Schedule 共用)
+  async function fetchUserSchedule(name) {
+      let queryName = name;
+      if (name.includes('Eason Hsieh')) queryName = 'Eason';
+      if (name.includes('Eason Cheng')) queryName = 'Eason Cheng';
+      
+      const schedRes = await fetch(`${PEGGY_API_URL}?action=getSchedule&name=${encodeURIComponent(queryName)}`);
+      const rawSchedule = await schedRes.json();
+      
+      let scheduleData = [];
+      const nameLower = queryName.toLowerCase();
+      
+      if (Array.isArray(rawSchedule)) {
+          if (nameLower === 'eason') {
+              scheduleData = rawSchedule.filter(ev => {
+                  if (!ev.title || typeof ev.title !== 'string') return false;
+                  const titleLower = ev.title.toLowerCase();
+                  return titleLower.includes('eason') && !titleLower.includes('cheng') && titleLower.includes('english class');
+              });
+          } else {
+              scheduleData = rawSchedule.filter(ev => {
+                  if (!ev.title || typeof ev.title !== 'string') return false;
+                  const titleLower = ev.title.toLowerCase();
+                  return titleLower.includes(nameLower) && titleLower.includes('english class');
+              });
+          }
+      }
+
+      const todayStart = new Date(); 
+      todayStart.setHours(0,0,0,0);
+      currentStudentSchedule = scheduleData.filter(ev => new Date(ev.start) >= todayStart);
+      return scheduleData;
+  }
+
+  // 預約完成後點擊「查看我的課表」的專用函式
+  function viewMyScheduleAfterBooking() {
+      closeResultModal();
+      const userName = document.getElementById("iptName").value.trim();
+      if (!userName) return;
+      
+      // 顯示獨立的 Loading 遮罩
+      document.getElementById('generic-loading').style.display = 'flex';
+      
+      fetchUserSchedule(userName).then(() => {
+          document.getElementById('generic-loading').style.display = 'none';
+          openSchedCalendar(); // 打開月曆
+      }).catch(() => {
+          document.getElementById('generic-loading').style.display = 'none';
+          showNotice("讀取失敗", "無法取得您的課表，請稍後再試。");
+      });
+  }
+
   async function processChatInput(name) {
       showPeggyTyping();
       try {
+          const scheduleData = await fetchUserSchedule(name);
+          
           let queryName = name;
           if (name.includes('Eason Hsieh')) queryName = 'Eason';
           if (name.includes('Eason Cheng')) queryName = 'Eason Cheng';
-
-          const[schedRes, countRes] = await Promise.all([
-              fetch(`${PEGGY_API_URL}?action=getSchedule&name=${encodeURIComponent(queryName)}`),
-              fetch(`${PEGGY_API_URL}?action=getLessonCount&name=${encodeURIComponent(queryName)}`)
-          ]);
-          
-          const rawSchedule = await schedRes.json();
+          const countRes = await fetch(`${PEGGY_API_URL}?action=getLessonCount&name=${encodeURIComponent(queryName)}`);
           const countData = await countRes.json();
           
           document.getElementById('peggy-window').classList.add('expanded');
           
-          let scheduleData = [];
-          const nameLower = queryName.toLowerCase();
-          
-          if (Array.isArray(rawSchedule)) {
-              if (nameLower === 'eason') {
-                  scheduleData = rawSchedule.filter(ev => {
-                      if (!ev.title || typeof ev.title !== 'string') return false;
-                      const titleLower = ev.title.toLowerCase();
-                      return titleLower.includes('eason') && !titleLower.includes('cheng') && titleLower.includes('english class');
-                  });
-              } else {
-                  scheduleData = rawSchedule.filter(ev => {
-                      if (!ev.title || typeof ev.title !== 'string') return false;
-                      const titleLower = ev.title.toLowerCase();
-                      return titleLower.includes(nameLower) && titleLower.includes('english class');
-                  });
-              }
-          }
-
           const now = new Date();
           const todayStart = new Date(now); todayStart.setHours(0,0,0,0);
           const todayStr = fmt(todayStart);
-          currentStudentSchedule = scheduleData.filter(ev => new Date(ev.start) >= todayStart);
 
           const limitDateObj = new Date();
           limitDateObj.setDate(now.getDate() + 60);
