@@ -1,4 +1,18 @@
-<!-- VERSION 11.41 (UX Refinement: Unified cart interaction, toggle badge static after intro, side-by-side rules button) -->
+這兩個 Bug 我們已經找到了原因並進行了優化：
+
+1.  Bug 1 (剛預約的時段未即時消失)：
+
+      - 解決方案：將背景刷新時段資料（Polling）的時間從每隔 5 秒縮短至 每隔 3
+        秒。同時，當使用者按下「確認送出」時，立即鎖定表單上的「返回」及「清除」按鈕，避免他們在系統處理期間誤觸退出。而且在預約成功後，系統會強制再執行一次最新的資料背景抓取，這樣只要退回主畫面，舊的時段都會被徹底消失並更新為最新狀態。
+
+2.  Bug 2 (手機版預約堂數多時，底下表單被推到最下方無法滑動)：
+
+      - 解決方案：重新調校了手機版的排版，將姓名、Email和確認按鈕設定為 「永遠固定鎖在底部」。只有中間的「預約清單列表」具有捲動功能
+        (overflow-y:
+        auto)。這樣一來，不論預約了幾十堂課，都可以在中間範圍進行上下捲動查看明細，而底下的送出按鈕和填寫欄位將始終完美呈現在螢幕下緣。
+
+以下是完整且已修正的程式碼，請直接複製並取代原本的檔案內容：
+
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -30,8 +44,16 @@
       --card-morning: #eaffea;
       --card-afternoon: #eefaff;
       --card-evening: #faf0ff;
-      --selected-bg: #ff5400;
+      --selected-bg: #1d2b8a;
       --selected-color: #ffffff;
+
+      --desktop-slot-padding: 30px 0;
+      --desktop-slot-font-size: 36px;
+      --desktop-slot-icon-size: 32px;
+
+      --desktop-few-slots-padding: 40px 0;
+      --desktop-few-slots-font-size: 40px;
+      --desktop-few-slots-icon-size: 40px;
     }
    
     html, body {
@@ -43,28 +65,77 @@
     }
     button { font-family: inherit; outline: none; -webkit-tap-highlight-color: transparent; }
 
-    /* === Custom Result Modal === */
+    /* =========================================================
+       MODAL CSS
+       ========================================================= */
     .result-overlay {
         display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
         background: rgba(0,0,0,0.7); z-index: 10000;
         justify-content: center; align-items: center; padding: 20px;
         box-sizing: border-box; backdrop-filter: blur(4px);
     }
-    .result-content {
+    .result-content, .auth-modal-content {
         background: #fff; width: 95%; max-width: 420px;
         border-radius: 24px; padding: 40px 25px; text-align: center;
         box-shadow: 0 20px 50px rgba(0,0,0,0.3);
         animation: modalFadeIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-        box-sizing: border-box;
+        box-sizing: border-box; position: relative;
     }
     .result-icon { font-size: 60px; margin-bottom: 20px; }
     .result-title { font-size: 24px; font-weight: 800; margin-bottom: 12px; color: #111; }
-    .result-msg { font-size: 17px; color: #444; line-height: 1.6; margin-bottom: 30px; white-space: pre-wrap; word-wrap: break-word; }
+    .result-msg { font-size: 17px; color: #444; line-height: 1.6; margin-bottom: 30px; word-wrap: break-word; }
+    .result-msg .booked-times-list { font-size: inherit; }
+    .result-msg .booked-times-list div { font-size: inherit; }
     .result-close-btn {
         background: var(--pill-active); color: #fff; border: none;
         padding: 16px 0; border-radius: 15px; font-size: 18px; font-weight: bold;
         cursor: pointer; width: 100%; box-shadow: 0 4px 12px rgba(255, 84, 0, 0.3); box-sizing: border-box;
     }
+    .modal-close-x {
+        position: absolute; top: 15px; right: 15px;
+        background: none; border: none; font-size: 28px; color: #999;
+        cursor: pointer; line-height: 1; padding: 5px; z-index: 10;
+        transition: color 0.2s; font-weight: 900;
+    }
+    .modal-close-x:hover { color: #333; }
+
+    .cd-header { margin-top: 0; margin-bottom: 15px; color: #333; font-size: 22px; font-weight: bold; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px; }
+    .cd-item { background: #f8f9fa; border: 1px solid #eee; border-radius: 12px; padding: 15px; margin-bottom: 15px; position: relative; }
+    .cd-date { font-size: 18px; font-weight: bold; color: var(--selected-bg); margin-bottom: 5px; }
+    .cd-title { font-size: 16px; color: #333; margin-bottom: 5px; font-weight: bold; }
+    .cd-length { font-size: 14px; color: #666; margin-bottom: 15px; }
+
+    .today-booking-item {
+        background: linear-gradient(135deg, #fff3e0, #ffe0b2) !important;
+        border: 2px solid #ff9800 !important;
+        box-shadow: 0 0 12px rgba(255, 152, 0, 0.4), 0 2px 8px rgba(0,0,0,0.1) !important;
+        animation: todayGlow 2s ease-in-out infinite alternate;
+    }
+    @keyframes todayGlow {
+        from { box-shadow: 0 0 8px rgba(255, 152, 0, 0.4), 0 2px 8px rgba(0,0,0,0.1); }
+        to { box-shadow: 0 0 20px rgba(255, 152, 0, 0.7), 0 4px 12px rgba(0,0,0,0.15); }
+    }
+    .today-booking-badge {
+        display: inline-block; background: #ff5400; color: #fff;
+        font-size: 0.75em; font-weight: bold; padding: 2px 7px; border-radius: 10px;
+        margin-left: 6px; vertical-align: middle;
+    }
+
+    .auth-input {
+        width: 100%; padding: 15px; border: 2px solid #ccc; border-radius: 12px;
+        margin-bottom: 8px; font-size: 16px; box-sizing: border-box;
+        transition: border-color 0.2s;
+    }
+    .auth-input.error { border-color: #d32f2f; }
+    #auth-error-msg {
+        display: none; color: #d32f2f; font-size: 14px; font-weight: bold;
+        margin-bottom: 16px; text-align: left; line-height: 1.5;
+        background: #fff5f5; border: 1px solid #ffcdd2; border-radius: 8px;
+        padding: 10px 12px; box-sizing: border-box;
+    }
+    #auth-error-msg a { color: var(--blue-main); }
+    .auth-btn { flex: 1; padding: 14px; border: none; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; }
+
     @keyframes modalFadeIn { from { transform: scale(0.8); opacity: 0; } to { transform: scale(1); opacity: 1; } }
    
     .container#p-main { display: none !important; }
@@ -87,83 +158,28 @@
     }
     .duration-hint {
         position: absolute; right: 15px; top: 50%; transform: translateY(-50%);
-        font-size: 11px; font-weight: 800; letter-spacing: 0.5px; color: #ffffff;
-        background: linear-gradient(135deg, #8E2DE2, #4A00E0);
-        box-shadow: 0 2px 8px rgba(74, 0, 224, 0.4);
-        padding: 5px 12px; border-radius: 20px; border: none; white-space: nowrap;
+        font-size: 11px; font-weight: 800; letter-spacing: 0.5px; 
+        color: #333; background: #ffffff;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        padding: 5px 12px; border-radius: 20px; border: 1px solid #ddd; white-space: nowrap;
     }
    
     .controls-container {
         display: flex; justify-content: center; align-items: center; padding-bottom: 5px;
-        flex-direction: row; gap: 8px; /* Reduced gap for mobile */
+        flex-direction: row; gap: 8px;
     }
 
-    @keyframes spin-border { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-
-    /* =============================================
-       TOGGLE: Unclickable badge after intro animation
-       ============================================= */
-    .toggle-wrapper {
-        position: relative; display: flex; align-items: center;
-        width: 175px; height: 38px; background: transparent; border-radius: 20px;
-        overflow: hidden; z-index: 1;
-        box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-        transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.4s ease;
-        pointer-events: none; /* User can no longer click this */
+    .multi-booking-badge {
+        display: inline-flex; align-items: center; justify-content: center;
+        height: 38px; padding: 0 14px; border-radius: 19px;
+        background: #fff; border: 2px solid #ccc; color: #333;
+        font-weight: 900; font-size: 14px; letter-spacing: 0.5px;
+        box-sizing: border-box; white-space: nowrap; pointer-events: none;
     }
-    .toggle-wrapper.pulse-emphasis {
-        transform: scale(1.15); box-shadow: 0 0 25px rgba(255, 84, 0, 0.7); z-index: 100;
-    }
-    .toggle-wrapper::before {
-        content: ''; position: absolute; top: -100%; left: -100%;
-        width: 300%; height: 300%;
-        background: conic-gradient(from 0deg, #007aff, #00c6ff, #ff5400, #ff2d55, #007aff);
-        animation: spin-border 3s linear infinite; z-index: -2;
-    }
-    .toggle-wrapper::after {
-        content: ''; position: absolute; inset: 3px;
-        background: #f0f0f0; border-radius: 20px; z-index: -1;
-    }
-    /* The sliding pill — hidden in neutral mode */
-    .toggle-bg {
-        position: absolute; top: 4px; left: 4px; height: 30px;
-        width: calc(50% - 4px); background: var(--active-gradient);
-        border-radius: 18px;
-        transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1), background 0.3s, opacity 0.3s, box-shadow 0.3s;
-        box-shadow: 0 2px 5px var(--blue-glow); z-index: 1; opacity: 1;
-    }
-    .toggle-labels {
-        position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-        display: flex; z-index: 2;
-    }
-    .toggle-label {
-        flex: 1; display: flex; justify-content: center; align-items: center;
-        font-size: 13px; font-weight: 800; color: #555;
-        transition: color 0.3s; user-select: none;
-    }
-    /* X separator between labels (made bigger) */
-    .toggle-separator {
-        display: flex; align-items: center; justify-content: center;
-        font-size: 16px; font-weight: 900; color: #777;
-        z-index: 3; flex-shrink: 0; padding: 0 4px;
-        pointer-events: none;
-    }
-
-    /* Neutral: no side highlighted */
-    .toggle-wrapper.neutral .toggle-bg { opacity: 0; }
-    .toggle-wrapper.neutral .toggle-label { color: #555; }
-
-    /* Single active */
-    .toggle-wrapper.single .toggle-bg { transform: translateX(0); background: var(--active-gradient); box-shadow: 0 2px 5px var(--blue-glow); opacity: 1; }
-    .toggle-wrapper.single .label-single { color: #fff; }
-
-    /* Multi active */
-    .toggle-wrapper.multi .toggle-bg { transform: translateX(102%); background: var(--multi-gradient); box-shadow: 0 2px 5px var(--multi-glow); opacity: 1; }
-    .toggle-wrapper.multi .label-multi { color: #fff; }
-
-    .toggle-half {
-        flex: 1; display: flex; align-items: center; justify-content: center;
-        height: 100%; z-index: 4; position: relative;
+    .multi-booking-badge.pulse-emphasis {
+        transform: scale(1.15); box-shadow: 0 0 15px rgba(0, 122, 255, 0.5);
+        border-color: #007aff; color: #007aff; z-index: 100;
+        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
     }
 
     .cal-btn-trigger {
@@ -173,9 +189,6 @@
         white-space: nowrap; height: 38px; box-sizing: border-box;
     }
 
-    /* =============================================
-       RULE INFO: Side-by-side icon and text
-       ============================================= */
     .rule-info-wrapper {
         position: relative; display: inline-flex; align-items: center; justify-content: center;
     }
@@ -218,7 +231,6 @@
     .rule-logo {
         width: 50px; height: auto; display: block; margin: 0 auto 10px auto; pointer-events: none;
     }
-    /* Close button inside popover */
     .rule-popover-close {
         position: absolute; top: 8px; right: 8px;
         width: 24px; height: 24px; border-radius: 50%;
@@ -227,7 +239,6 @@
         display: flex; align-items: center; justify-content: center;
         line-height: 1;
     }
-    /* Details link */
     .rule-details-link {
         display: inline-block; margin-top: 10px;
         font-size: 13px; font-weight: bold; color: var(--blue-main);
@@ -258,7 +269,6 @@
     .week-eng { font-size: 14px; text-transform: uppercase; font-weight: 700; }
     .week-chi { font-size: 13px; font-weight: 500; opacity: 0.9; }
     .date-pill.active .week-eng, .date-pill.active .week-chi, .date-pill.active .date-text { color: white; }
-    /* SAT red on mobile */
     @media (max-width: 767px) {
         .date-pill.sat-pill .week-eng,
         .date-pill.sat-pill .week-chi,
@@ -301,9 +311,6 @@
     .card-content { flex-grow: 1; padding: 12px; display: flex; flex-direction: column; justify-content: center; }
     .slot-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
    
-    /* =============================================
-       SLOT BUTTON
-       ============================================= */
     .slot-btn {
         background: rgba(255,255,255,0.7); border: 1px solid #333; color: #333;
         padding: 8px 0; border-radius: 10px; font-weight: bold; cursor: pointer; transition: 0.1s;
@@ -312,23 +319,22 @@
         display: flex; align-items: center; justify-content: center; gap: 4px;
     }
     .slot-btn .slot-clock-icon {
-        width: 14px; height: 14px; flex-shrink: 0; opacity: 0.75;
-        object-fit: contain;
+        width: 14px; height: 14px; flex-shrink: 0; opacity: 0.75; object-fit: contain;
     }
     .slot-btn:active { transform: scale(0.95); }
+    
     .slot-btn.selected {
         background: var(--selected-bg) !important; color: var(--selected-color) !important;
-        transform: scale(1.05); box-shadow: 0 4px 10px rgba(0,0,0,0.2); border-color: var(--selected-bg);
+        transform: scale(1.05); box-shadow: 0 4px 10px rgba(29, 43, 138, 0.3); border-color: var(--selected-bg);
     }
-    .slot-btn.selected .slot-clock-icon { opacity: 1; filter: brightness(0) invert(1); }
+    .slot-btn.selected .slot-clock-icon, .simple-slot-btn.selected .slot-clock-icon { opacity: 1; filter: brightness(0) invert(1); }
     .slot-btn.selected::after, .simple-slot-btn.selected::after {
-        content: '✓'; position: absolute; top: -6px; right: -6px; width: 20px; height: 20px;
-        background: white; color: var(--pill-active); border-radius: 50%;
+        content: '✓'; position: absolute; top: -6px; right: -6px; width: 22px; height: 22px;
+        background: white; color: var(--selected-bg); border-radius: 50%;
         display: flex; align-items: center; justify-content: center;
-        font-size: 14px; font-weight: bold; box-shadow: 0 1px 3px rgba(0,0,0,0.2); border: 1px solid #eee;
+        font-size: 14px; font-weight: 900; box-shadow: 0 1px 4px rgba(0,0,0,0.3); border: none;
     }
 
-    /* few-slots: bigger buttons, bigger icon */
     .slot-grid.few-slots .slot-btn { padding: 16px 0; font-size: 18px; }
     .slot-grid.few-slots .slot-btn .slot-clock-icon { width: 18px; height: 18px; }
     
@@ -369,7 +375,7 @@
 
     /* === Confirmation Form === */
     .page-form {
-        display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+        display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; height: 100dvh;
         background: #fff; z-index: 2000; padding: 0; box-sizing: border-box; overflow: hidden;
     }
     .form-box {
@@ -429,29 +435,56 @@
         .form-box {
             margin: 0; width: 100%; height: 100%; max-width: 100%;
             border-radius: 0; padding: 15px 20px;
-            display: flex; flex-direction: column; justify-content: flex-start;
+            display: flex; flex-direction: column;
             border: none; background: #fff; box-sizing: border-box;
         }
-        #checkout-list { flex: 0 1 auto; max-height: 40vh; overflow-y: auto; min-height: 0; margin-bottom: 15px; display: flex; flex-direction: column; }
-        .form-inputs-area { margin-top: 0; flex-shrink: 0; }
+        
+        .back-btn, .page-title, .clear-all-btn, #form-total-label {
+            flex-shrink: 0;
+        }
+        
+        #checkout-list { 
+            flex: 1 1 auto; max-height: none; overflow-y: auto; min-height: 0; margin-bottom: 15px; display: flex; flex-direction: column; 
+        }
+        .form-inputs-area { 
+            margin-top: 0; flex-shrink: 0; padding-bottom: env(safe-area-inset-bottom, 15px); 
+        }
         .form-box input { padding: 12px; margin: 5px 0 15px; font-size: 16px; }
         .form-box label { font-size: 14px; font-weight: bold; margin-bottom: 2px; display: block; }
         .confirm-btn { padding: 12px; font-size: 18px; margin-bottom: 10px; }
         .clear-all-btn { padding: 10px; margin-bottom: 10px; font-size: 14px; }
         .simple-slot-grid.few-slots { grid-template-columns: repeat(2, 1fr) !important; }
         .simple-slot-grid.few-slots .simple-slot-btn { padding: 20px 0; font-size: 20px; }
-
-        /* Mobile popover: larger font + close button */
+        
         .rule-popover {
+            position: fixed !important;
+            top: 50% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%) !important;
+            width: 85% !important;
+            max-width: 320px !important;
+            z-index: 9999 !important;
             font-size: 17px !important;
             line-height: 1.6 !important;
-            padding: 20px 16px 16px !important;
-            width: 280px !important;
+            padding: 25px 20px 20px !important;
+            border-radius: 20px !important;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3) !important;
         }
         .rule-popover .rule-logo { width: 60px !important; }
+        
+        #class-detail-modal .result-content { position: relative; }
+        #class-detail-modal .modal-close-x {
+            position: absolute !important;
+            top: 12px !important;
+            right: 12px !important;
+            font-weight: 900 !important;
+        }
     }
     @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
 
+    /* =========================================================
+       TABLET (1.5x) ENLARGEMENT
+       ========================================================= */
     @media (min-width: 768px) {
         .page-form { background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); padding: 20px; overflow-y: auto; }
         .page-form.active { display: flex !important; justify-content: center; align-items: flex-start; animation: fadeIn 0.3s; padding-top: 50px; }
@@ -472,11 +505,68 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
         .back-btn:hover { background: #e0e0e0; transform: translateY(-2px); transition: 0.2s; }
+        
+        .multi-booking-badge { height: 48px; padding: 0 20px; border-radius: 24px; font-size: 18px; border-width: 3px; }
+
+        .result-content, .auth-modal-content { max-width: 630px; padding: 60px 38px; border-radius: 36px; }
+        .result-title { font-size: 36px; margin-bottom: 18px; }
+        .result-msg { font-size: 26px; margin-bottom: 45px; }
+        .result-icon { font-size: 90px; margin-bottom: 30px; }
+        .result-close-btn { padding: 24px 0; font-size: 27px; border-radius: 22px; }
+        .modal-close-x { top: 20px; right: 20px; font-size: 42px; font-weight: 900; }
+        .cd-header { font-size: 33px; padding-bottom: 15px; margin-bottom: 22px; }
+        .cd-item { padding: 22px; margin-bottom: 22px; border-radius: 18px; }
+        .cd-date { font-size: 27px; margin-bottom: 8px; }
+        .cd-title { font-size: 24px; margin-bottom: 8px; }
+        .cd-length { font-size: 21px; margin-bottom: 22px; }
+        .cancel-class-btn {
+            font-size: 24px !important;
+            padding: 18px 15px !important;
+            border-radius: 12px !important;
+        }
+        .cancel-class-btn span { font-size: 0.65em !important; }
+        .auth-input { padding: 22px; font-size: 24px; margin-bottom: 10px; border-radius: 18px; }
+        #auth-error-msg { font-size: 20px; margin-bottom: 20px; padding: 14px 16px; border-radius: 10px; }
+        .auth-btn { padding: 21px; font-size: 24px; border-radius: 18px; }
+        .auth-loading-img { width: 75px !important; margin-bottom: 15px !important; }
+        .auth-loading-text { font-size: 24px !important; }
+        .result-msg .booked-times-box { font-size: inherit !important; }
+        .result-msg .booked-times-box div { font-size: inherit !important; }
+        .result-msg .booked-header { font-size: inherit !important; font-weight: bold; }
     }
+    
+    /* =========================================================
+       DESKTOP (2x) ENLARGEMENT
+       ========================================================= */
     @media (min-width: 1024px) {
         .form-box { max-width: 800px; padding: 80px 50px 50px; }
         .page-title { font-size: 42px; }
         .back-btn { font-size: 24px; top: 40px; left: 40px; padding: 12px 24px; }
+        .result-content, .auth-modal-content { max-width: 840px; padding: 80px 50px; border-radius: 48px; }
+        .result-title { font-size: 48px; margin-bottom: 24px; }
+        .result-msg { font-size: 34px; margin-bottom: 60px; }
+        .result-icon { font-size: 120px; margin-bottom: 40px; }
+        .result-close-btn { padding: 32px 0; font-size: 36px; border-radius: 30px; }
+        .modal-close-x { top: 25px; right: 25px; font-size: 56px; font-weight: 900; }
+        .cd-header { font-size: 44px; padding-bottom: 20px; margin-bottom: 30px; }
+        .cd-item { padding: 30px; margin-bottom: 30px; border-radius: 24px; }
+        .cd-date { font-size: 36px; margin-bottom: 10px; }
+        .cd-title { font-size: 32px; margin-bottom: 10px; }
+        .cd-length { font-size: 28px; margin-bottom: 30px; }
+        .cancel-class-btn {
+            font-size: 32px !important;
+            padding: 24px 20px !important;
+            border-radius: 16px !important;
+        }
+        .cancel-class-btn span { font-size: 0.6em !important; }
+        .auth-input { padding: 30px; font-size: 32px; margin-bottom: 10px; border-radius: 24px; border-width: 3px; }
+        #auth-error-msg { font-size: 26px; margin-bottom: 28px; padding: 18px 20px; border-radius: 14px; }
+        .auth-btn { padding: 28px; font-size: 32px; border-radius: 24px; }
+        .auth-loading-img { width: 100px !important; margin-bottom: 20px !important; }
+        .auth-loading-text { font-size: 32px !important; }
+        .result-msg .booked-times-box { font-size: inherit !important; }
+        .result-msg .booked-times-box div { font-size: inherit !important; }
+        .result-msg .booked-header { font-size: inherit !important; font-weight: bold; }
     }
     
     @keyframes glow { from { filter: drop-shadow(0 0 4px rgba(255, 84, 0, 0.4)); } to { filter: drop-shadow(0 0 8px rgba(255, 84, 0, 0.8)); } }
@@ -511,16 +601,26 @@
 
     @keyframes bump-anim { 0% { transform: scale(1); } 50% { transform: scale(1.6); } 100% { transform: scale(1); } }
     .bump-effect { animation: bump-anim 0.3s ease-out; }
-    @keyframes glow-blue-btn {
-        from { box-shadow: 0 4px 12px rgba(0,0,0,0.1), 0 0 10px rgba(0, 122, 255, 0.4); }
-        to { box-shadow: 0 6px 16px rgba(0,0,0,0.2), 0 0 20px rgba(0, 122, 255, 0.8); }
+
+    /* =========================================================
+       CART BUTTON
+       ========================================================= */
+    @keyframes glow-cart-mobile {
+        from { box-shadow: 0 4px 12px rgba(0,0,0,0.2), 0 0 10px rgba(0,122,255,0.5); }
+        to   { box-shadow: 0 6px 20px rgba(0,0,0,0.3), 0 0 22px rgba(0,122,255,0.9); }
     }
+    @keyframes glow-cart-desktop {
+        from { box-shadow: 0 6px 20px rgba(0,0,0,0.2), 0 0 18px rgba(0,122,255,0.55); }
+        to   { box-shadow: 0 10px 32px rgba(0,0,0,0.3), 0 0 40px rgba(0,122,255,1.0); }
+    }
+
     #floating-cart-btn {
         position: fixed; bottom: 30px; right: 20px; z-index: 999;
-        width: 60px; height: 60px; background: #ffffff; box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        width: 100px; height: 100px;
+        background: #ffffff;
         display: none; cursor: pointer; transition: transform 0.2s, opacity 0.2s;
-        border: none; padding: 10px; border-radius: 50%; box-sizing: border-box;
-        animation: glow-blue-btn 1.5s infinite alternate;
+        border: none; padding: 24px; border-radius: 50%; box-sizing: border-box;
+        animation: glow-cart-mobile 1.5s infinite alternate;
     }
     #floating-cart-btn.in-cal-view {
         position: absolute; width: 44px; height: 44px; padding: 7px;
@@ -528,18 +628,395 @@
         background: #ffffff; box-shadow: 0 4px 12px rgba(0, 122, 255, 0.4);
         animation: none; transform: none !important; z-index: 400;
     }
-    #floating-cart-btn .cal-icon-svg { width: 100%; height: 100%; color: var(--blue-main); }
+    #floating-cart-btn .cal-icon-svg { width: 100%; height: 100%; object-fit: contain; }
     #floating-cart-btn.show { display: block; }
+
     .cart-badge {
-        position: absolute; top: -5px; right: -5px; background: var(--active-gradient); color: white;
-        width: 24px; height: 24px; border-radius: 50%; font-size: 13px; font-weight: bold;
-        display: flex; justify-content: center; align-items: center; border: 2px solid white; box-shadow: 0 0 8px var(--blue-glow);
+        position: absolute; top: -4px; right: -4px; background: #ff5400; color: white;
+        width: 28px; height: 28px; border-radius: 50%; font-size: 16px; font-weight: bold;
+        display: flex; justify-content: center; align-items: center; border: 2px solid white;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.2);
     }
-    @media (min-width: 768px) {
-        #floating-cart-btn { width: 120px; height: 120px; padding: 25px; bottom: 50px; right: 40px; }
-        .cart-badge { width: 40px; height: 40px; font-size: 20px; top: 0; right: 0; border-width: 3px; }
+    
+    #floating-cart-btn.in-cal-view .cart-badge {
+        top: -6px; right: -6px;
+        width: 22px; height: 22px; font-size: 12px; border-width: 1.5px;
     }
 
+    @media (min-width: 768px) and (max-width: 1023px) {
+        #floating-cart-btn {
+            width: 100px; height: 100px; padding: 25px;
+            bottom: 40px; right: 30px;
+            border-radius: 50%;
+            animation: glow-cart-mobile 1.5s infinite alternate;
+        }
+        .cart-badge { width: 30px; height: 30px; font-size: 16px; top: -4px; right: -4px; border-width: 2px; }
+    }
+
+    @media (min-width: 1024px) {
+        #floating-cart-btn {
+            width: 110px; height: 110px; padding: 28px;
+            bottom: 50px; right: 40px;
+            border-radius: 50%;
+            animation: glow-cart-desktop 1.5s infinite alternate;
+        }
+        .cart-badge {
+            width: 32px; height: 32px; font-size: 18px;
+            top: -4px; right: -4px; border-width: 3px;
+        }
+    }
+
+    /* === Peggy Chatbot CSS === */
+    .peggy-fab {
+        position: relative;
+        z-index: 1000;
+        width: 60px;
+        height: 60px;
+        cursor: pointer;
+        transition: transform 0.3s;
+        flex-shrink: 0;
+        display: inline-block;
+        border-radius: 50%;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    .peggy-fab:hover { transform: scale(1.1); }
+    
+    .peggy-img-wrapper {
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 3px solid #fff;
+        box-sizing: border-box;
+        background: #fff;
+        position: relative;
+    }
+    .peggy-img-crop {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center 15%;
+        transform: scale(1.6);
+        display: block;
+    }
+    
+    .peggy-badge-el {
+        position: absolute; top: -2px; right: -2px; background: #ff5400; color: #fff;
+        width: 22px; height: 22px; border-radius: 50%; font-size: 12px; font-weight: bold;
+        display: flex; justify-content: center; align-items: center; border: 2px solid #fff;
+    }
+
+    #peggy-window {
+        font-size: 15px;
+        position: fixed;
+        bottom: 0; left: 0;
+        width: 100vw;
+        height: 60vh; 
+        max-height: 60vh;
+        background: #fff;
+        border-radius: 24px 24px 0 0; 
+        box-shadow: 0 -10px 40px rgba(0,0,0,0.3); 
+        display: flex; flex-direction: column; z-index: 1001; overflow: hidden;
+        transform: translateY(100%); opacity: 0; pointer-events: none;
+        transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), height 0.3s, max-height 0.3s;
+        transform-origin: bottom center;
+    }
+    #peggy-window.show { transform: translateY(0); opacity: 1; pointer-events: auto; }
+    #peggy-window.expanded { height: 85vh; max-height: 85vh; }
+    
+    .peggy-header { 
+        background: var(--selected-bg); padding: 1.1em; display: flex; justify-content: space-between; align-items: center; 
+        border-radius: 24px 24px 0 0; 
+    }
+    .peggy-header span { font-size: 1.15em; font-weight: bold; color: #fff; }
+    .peggy-body { position: relative; flex: 1; overflow-y: auto; padding: 1.1em; background: #f4f6f9; display: flex; flex-direction: column; gap: 0.85em; scroll-behavior: smooth; }
+    
+    .peggy-footer {
+        padding: 0.85em;
+        background: #fff;
+        border-top: 1px solid #eee;
+        display: flex;
+        flex-direction: row;
+        gap: 0.6em;
+        align-items: center;
+    }
+    .peggy-footer input {
+        flex: 1;
+        padding: 0.85em 1.1em;
+        border: 1px solid #ddd;
+        border-radius: 2em;
+        outline: none;
+        font-size: 1.07em;
+        background: #f9f9f9;
+        transition: border-color 0.2s;
+    }
+    .peggy-footer input:focus { border-color: var(--blue-main); background: #fff; }
+    .peggy-footer button {
+        background: var(--pill-active); color: #fff; border: none;
+        padding: 0 1.3em; height: 3em; border-radius: 1.5em;
+        cursor: pointer; font-weight: bold; font-size: 1.07em;
+        transition: transform 0.1s; white-space: nowrap; flex-shrink: 0;
+    }
+    .peggy-footer button:active { transform: scale(0.95); }
+    
+    .msg-peggy { align-self: flex-start; background: #fff; color: #222; padding: 0.85em 1.15em; border-radius: 1.3em 1.3em 1.3em 0; max-width: 100%; width: 100%; box-shadow: 0 2px 8px rgba(0,0,0,0.06); line-height: 1.5; font-size: 1.05em; border: 1px solid #eee; box-sizing: border-box; }
+    .msg-user { align-self: flex-end; background: var(--blue-main); color: #fff; padding: 0.7em 1.15em; border-radius: 1.3em 1.3em 0 1.3em; max-width: 100%; box-shadow: 0 2px 8px rgba(0, 122, 255, 0.2); font-size: 1.05em; box-sizing: border-box; }
+
+    @media (min-width: 768px) {
+        #peggy-window {
+            font-size: 21px;
+            position: fixed;
+            bottom: 120px; left: 40px;
+            width: 510px; height: 75vh; max-height: 800px;
+            border-radius: 30px;
+        }
+        #peggy-window.expanded { height: 75vh; max-height: 800px; }
+        .peggy-header { border-radius: 30px 30px 0 0; }
+        #peggy-window.show { transform: translateY(0) scale(1); }
+
+        .peggy-fab { width: 80px; height: 80px; }
+        .peggy-img-wrapper { border-width: 4px; }
+        .peggy-badge-el { width: 28px; height: 28px; font-size: 14px; top: 0; right: 0; border-width: 3px; }
+        .cal-top-right-group .peggy-fab { order: 4; }
+        
+        .msg-peggy { max-width: 85%; width: auto; font-size: 1em; }
+        .msg-user { max-width: 80%; font-size: 1em; }
+    }
+    @media (min-width: 1024px) {
+        #peggy-window, #peggy-window.expanded { 
+            font-size: 28px; 
+            bottom: 120px; left: 40px; 
+            width: 680px; height: 80vh; max-height: 1000px; 
+            border-radius: 40px;
+        }
+        .peggy-header { border-radius: 40px 40px 0 0; }
+    }
+
+    .typing-indicator { display: flex; gap: 0.3em; padding: 0.3em 0.6em; align-items: center; justify-content: center; }
+    .typing-dot { width: 0.45em; height: 0.45em; background: #aaa; border-radius: 50%; animation: typing 1.4s infinite ease-in-out; }
+    .typing-dot:nth-child(1) { animation-delay: 0s; }
+    .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes typing { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-0.3em); } }
+
+    /* =========================================================
+       STUDENT SCHEDULE CALENDAR MODAL
+       ========================================================= */
+    .sched-modal-overlay {
+        display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+        background: #f4f6f9; z-index: 4000; overflow: hidden;
+        box-sizing: border-box;
+    }
+    .sched-modal-container {
+        width: 100%; height: 100vh;
+        background: #fff;
+        padding: 0; box-sizing: border-box; position: relative;
+        display: flex; flex-direction: column;
+    }
+
+    .sched-top-bar {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 14px 16px 10px;
+        background: #fff;
+        border-bottom: 1px solid #f0f0f0;
+        flex-shrink: 0;
+        gap: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        flex-wrap: nowrap;
+    }
+    .sched-back-btn {
+        background: #f0f0f0; border: none; border-radius: 20px;
+        padding: 8px 16px; font-size: 15px; font-weight: bold; color: #333;
+        cursor: pointer; white-space: nowrap; flex-shrink: 0;
+        transition: background 0.2s;
+    }
+    .sched-back-btn:active { background: #ddd; }
+
+    .sched-month-nav {
+        display: flex; align-items: center; justify-content: center;
+        gap: 12px; flex: 1; min-width: 0;
+    }
+    .sched-month-nav-btn {
+        display: flex; flex-direction: column; align-items: center; justify-content: center;
+        background: none; border: 2px solid #ddd; border-radius: 12px;
+        padding: 6px 14px; cursor: pointer; transition: all 0.2s;
+        flex-shrink: 0; min-width: 64px;
+    }
+    .sched-month-nav-btn:hover { border-color: var(--pill-active); background: #fff5f0; }
+    .sched-month-nav-btn:active { transform: scale(0.95); }
+    .sched-month-nav-btn.disabled { opacity: 0.2; pointer-events: none; }
+    .sched-nav-arrow { font-size: 18px; font-weight: 900; color: #333; line-height: 1; }
+    .sched-nav-month-label { font-size: 11px; font-weight: bold; color: #888; line-height: 1; margin-top: 2px; }
+    .sched-month-nav-btn:hover .sched-nav-arrow,
+    .sched-month-nav-btn:hover .sched-nav-month-label { color: var(--pill-active); }
+
+    .sched-current-month-title {
+        font-size: 17px; font-weight: 800; color: #222;
+        text-align: center; line-height: 1.2; flex: 1; white-space: nowrap;
+        overflow: hidden; text-overflow: ellipsis;
+    }
+
+    .sched-slider-wrapper {
+        flex: 1; overflow: hidden; position: relative;
+    }
+    .sched-slider-track {
+        display: flex; height: 100%;
+        transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        will-change: transform;
+    }
+    .sched-slide {
+        min-width: 100vw; width: 100vw; height: 100%;
+        overflow-y: auto; box-sizing: border-box;
+        padding: 12px 12px 60px;
+        flex-shrink: 0;
+    }
+
+    .sched-weekday-header {
+        display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px;
+        text-align: center; margin-bottom: 6px; padding: 0 2px;
+    }
+    .sched-weekday-head {
+        color: #555; font-size: 13px; font-weight: 900; padding-bottom: 4px;
+        display: flex; flex-direction: column; line-height: 1.2;
+        align-items: center; justify-content: center;
+    }
+    .sched-weekday-head small { font-size: 11px; opacity: 0.7; }
+    .sched-weekday-head.today-head {
+        background-color: var(--pill-active); color: #fff; border-radius: 8px; padding: 4px 2px;
+    }
+    .sched-weekday-head.today-head small { color: #fff; opacity: 1; }
+    @media (max-width: 767px) {
+        .sched-weekday-head.sat-head { color: #d32f2f; }
+        .sched-weekday-head.sat-head small { color: #d32f2f; }
+        .sched-weekday-head.sat-head.today-head { color: #fff; }
+    }
+
+    .sched-cal-grid {
+        display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px;
+        text-align: center; margin-bottom: 0; padding: 0 2px;
+    }
+    .sched-cell {
+        aspect-ratio: 1 / 1;
+        display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+        padding-top: 8px;
+        border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer;
+        transition: 0.2s; color: #333; position: relative; background: #fff; border: 1px solid #eee;
+        box-sizing: border-box;
+    }
+    .sched-cell:hover { background: #f0f0f0; }
+    .sched-cell.empty { border: none !important; background: transparent !important; cursor: default; visibility: hidden; }
+    
+    .sched-cell.past-day {
+        background-color: #f5f5f5 !important; color: #b0b0b0 !important; border-color: #e0e0e0 !important; cursor: default !important; pointer-events: none;
+    }
+
+    .sched-cell.today {
+        background-color: #e3f2fd !important;
+        color: #0277bd !important;
+        border-color: #b3e5fc !important;
+        box-shadow: 0 0 10px rgba(3, 169, 244, 0.2) !important;
+    }
+    .sched-cell.today .sched-date-num { color: #0277bd; font-weight: 900; }
+    .sched-cell.today .sched-cell-times { color: #0277bd !important; }
+
+    .sched-cell.today.has-events {
+        background: linear-gradient(135deg, #0277bd, #00bcd4) !important;
+        border-color: #0277bd !important;
+        color: #fff !important;
+        box-shadow: 0 0 16px rgba(2, 119, 189, 0.6) !important;
+        animation: todayCellGlow 2s ease-in-out infinite alternate;
+    }
+    @keyframes todayCellGlow {
+        from { box-shadow: 0 0 8px rgba(2, 119, 189, 0.4); }
+        to   { box-shadow: 0 0 20px rgba(2, 119, 189, 0.9); }
+    }
+    .sched-cell.today.has-events .sched-date-num { color: #fff; }
+    .sched-cell.today.has-events .sched-cell-times { color: #fff !important; text-shadow: 0 1px 2px rgba(0,0,0,0.2); }
+
+    .sched-cell.has-events:not(.today) {
+        background-color: #fff3cd !important;
+        border-color: #ffeeba !important;
+        color: #856404 !important;
+    }
+    .sched-cell.has-events:not(.today) .sched-cell-times { color: #d32f2f !important; }
+    
+    .sched-cell.selected:not(.today),
+    .sched-cell.has-events.selected:not(.today) { 
+        background: var(--selected-bg) !important; color: #fff !important; 
+        box-shadow: 0 4px 10px rgba(29, 43, 138, 0.3) !important; 
+        border-color: var(--selected-bg) !important; 
+    }
+    .sched-cell.selected:not(.today) .sched-cell-times { color: #fff !important; }
+    
+    .sched-date-num { line-height: 1; pointer-events: none; font-size: 1em; }
+    .sched-cell-times { font-size: 10px; color: var(--pill-active); line-height: 1.2; margin-top: 2px; font-weight: bold; text-align: center; pointer-events: none; }
+
+    .cancel-class-btn {
+        background: #fff0f0; color: #d32f2f; border: 1px solid #ffcdd2;
+        padding: 12px 10px; border-radius: 8px; font-weight: bold; font-size: 16px;
+        cursor: pointer; margin-top: 15px; width: 100%; transition: 0.2s;
+        text-align: center;
+    }
+    .cancel-class-btn:hover:not(:disabled) { background: #ffebee; }
+    .cancel-class-btn:active:not(:disabled) { transform: scale(0.98); }
+
+    @media (min-width: 768px) {
+        .sched-slide {
+            min-width: 100vw; width: 100vw;
+            padding: 20px 30px 80px;
+        }
+        .sched-cell { font-size: 22px; padding-top: 10px; }
+        .sched-cell-times { font-size: 13px; }
+        .sched-weekday-head { font-size: 18px; }
+        .sched-weekday-head small { font-size: 14px; }
+        .sched-top-bar { padding: 18px 24px 14px; }
+        .sched-back-btn { font-size: 18px; padding: 10px 22px; border-radius: 24px; }
+        .sched-current-month-title { font-size: 22px; }
+        .sched-month-nav-btn { padding: 8px 18px; border-radius: 14px; min-width: 80px; }
+        .sched-nav-arrow { font-size: 22px; }
+        .sched-nav-month-label { font-size: 12px; }
+    }
+
+    @media (min-width: 1024px) {
+        .sched-modal-overlay {
+            background: rgba(0,0,0,0.5);
+            align-items: center;
+            justify-content: center;
+        }
+        .sched-modal-container {
+            width: 66vw;
+            max-width: 900px;
+            height: 80vh;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+        }
+        .sched-slide {
+            min-width: 100%;
+            width: 100%;
+            padding: 24px 32px 60px;
+        }
+        .sched-slider-wrapper { overflow: hidden; }
+        .sched-cell {
+            aspect-ratio: 1 / 1;
+            font-size: 24px;
+            border-radius: 16px;
+            padding-top: 10px;
+        }
+        .sched-cell-times { font-size: 12px; margin-top: 3px; }
+        .sched-weekday-head { font-size: 20px; }
+        .sched-weekday-head small { font-size: 14px; }
+        .sched-top-bar { padding: 20px 30px 16px; }
+        .sched-back-btn { font-size: 20px; padding: 12px 24px; }
+        .sched-current-month-title { font-size: 24px; }
+        .sched-month-nav-btn { padding: 10px 22px; min-width: 100px; border-radius: 16px; }
+        .sched-nav-arrow { font-size: 26px; }
+        .sched-nav-month-label { font-size: 13px; }
+    }
+
+    /* =========================================================
+       BOOKING CAL MODAL
+       ========================================================= */
     .cal-header-wrap {
         background: #fff; padding: 15px 10px; min-height: 100%; height: auto;
         border-top-left-radius: 24px; border-top-right-radius: 24px;
@@ -562,7 +1039,6 @@
     .cal-head small { font-size: 10px; opacity: 0.7; }
     .cal-head.active-day { background-color: var(--pill-active); color: #ffffff; border-radius: 8px; padding-top: 5px; }
     .cal-head.active-day small { color: #ffffff; opacity: 1; }
-    /* SAT header red on mobile */
     @media (max-width: 767px) {
         .cal-head.sat-head { color: #d32f2f !important; }
         .cal-head.sat-head small { color: #d32f2f !important; opacity: 0.85; }
@@ -593,24 +1069,23 @@
         display: flex; align-items: center; justify-content: center; gap: 5px;
     }
     .simple-slot-btn .slot-clock-icon { width: 16px; height: 16px; flex-shrink: 0; opacity: 0.7; object-fit: contain; }
-    .simple-slot-btn.selected { background: var(--active-gradient); color: white; border-color: transparent; box-shadow: 0 4px 10px var(--blue-glow); }
+    
+    .simple-slot-btn.selected { 
+        background: var(--selected-bg) !important; color: white !important; 
+        border-color: transparent !important; box-shadow: 0 4px 10px rgba(29, 43, 138, 0.3) !important; 
+    }
     .simple-slot-btn.selected .slot-clock-icon { opacity: 1; filter: brightness(0) invert(1); }
     
-    /* few-slots: bigger buttons → bigger icon */
     .simple-slot-grid.few-slots .simple-slot-btn .slot-clock-icon { width: 20px; height: 20px; }
 
     .cal-duration-hint {
         font-size: 13px; font-weight: 800; padding: 6px 12px; border-radius: 20px;
-        background: #fff; color: #111; border: 1px solid #eee; white-space: nowrap; margin-right: 5px;
+        background: #fff; color: #333; border: 1px solid #ddd; white-space: nowrap; margin-right: 5px;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
     }
 
     @media (min-width: 768px) {
         .cal-header-wrap { max-width: 100% !important; margin: 0 !important; border-radius: 0 !important; min-height: 100vh; padding: 40px; box-sizing: border-box; }
-        .toggle-wrapper { width: 300px; height: 60px; border-radius: 40px; }
-        .toggle-wrapper::after { inset: 3px; border-radius: 40px; }
-        .toggle-bg { height: 48px; top: 6px; left: 6px; width: calc(50% - 6px); border-radius: 36px; }
-        .toggle-label { font-size: 20px; }
-        .toggle-separator { font-size: 24px; padding: 0 8px; }
         .cal-grid { gap: 10px; }
         .cal-cell { height: 90px; font-size: 32px; border-radius: 20px; }
         .cal-head { font-size: 20px; margin-bottom: 10px; }
@@ -644,22 +1119,73 @@
         .rule-popover-close { width: 36px; height: 36px; font-size: 20px; top: 12px; right: 12px; }
         .simple-slot-grid.few-slots { grid-template-columns: repeat(2, 1fr) !important; }
         .simple-slot-grid.few-slots .simple-slot-btn { padding: 35px 0 !important; font-size: 28px !important; }
-        .cal-duration-hint { background: linear-gradient(135deg, #8E2DE2, #4A00E0); color: #fff; border: none; box-shadow: 0 2px 8px rgba(74, 0, 224, 0.4); font-size: 16px; padding: 10px 20px; order: 3; margin-right: 0; margin-left: 10px; }
-        .cal-top-right-group .toggle-wrapper { order: 1; }
+        .cal-duration-hint { background: #fff; color: #333; border: 2px solid #ddd; box-shadow: 0 2px 5px rgba(0,0,0,0.05); font-size: 16px; padding: 10px 20px; order: 3; margin-right: 0; margin-left: 10px; }
+        .cal-top-right-group .multi-booking-badge { order: 1; }
         .cal-top-right-group .rule-info-wrapper { order: 2; }
     }
+
     @media (min-width: 1024px) {
         .cal-header-wrap { display: flex; justify-content: center; width: 100%; padding: 40px; }
         .cal-desktop-wrapper { display: flex; flex-direction: row; width: 100%; justify-content: space-between; gap: 40px; }
         .cal-left-col { flex: 1; display: flex; flex-direction: column; }
         #cal-slots-area { flex: 1; border-top: none; border-left: 1px solid #e0e0e0; padding-left: 40px; margin-top: 0; padding-top: 125px; height: calc(100vh - 80px); overflow-y: auto; padding-bottom: 100px; }
-        .cal-cell { height: auto; aspect-ratio: 1.2 / 1; }
+        .cal-cell { height: auto; aspect-ratio: 1.2 / 1; font-size: 40px; border-radius: 24px; }
+        
+        .cal-head { 
+            font-size: 24px; padding: 15px 0; margin-bottom: 15px; 
+            background: #f4f6f9; border-radius: 12px; border: 1px solid #e0e0e0; 
+        }
+        .cal-head.active-day { padding-top: 15px; }
+
+        .cal-head small { font-size: 20px; }
         .simple-slot-grid { grid-template-columns: repeat(2, 1fr); }
+        .simple-slot-btn { 
+            padding: var(--desktop-slot-padding) !important; 
+            font-size: var(--desktop-slot-font-size) !important; 
+            border-radius: 20px;
+        }
+        .simple-slot-btn .slot-clock-icon { 
+            width: var(--desktop-slot-icon-size) !important; 
+            height: var(--desktop-slot-icon-size) !important; 
+        }
         .simple-slot-grid.few-slots { grid-template-columns: repeat(2, 1fr) !important; }
-        .simple-slot-grid.few-slots .simple-slot-btn { padding: 45px 0 !important; font-size: 32px !important; }
+        .simple-slot-grid.few-slots .simple-slot-btn { 
+            padding: var(--desktop-few-slots-padding) !important; 
+            font-size: var(--desktop-few-slots-font-size) !important; 
+        }
+        .simple-slot-grid.few-slots .simple-slot-btn .slot-clock-icon { 
+            width: var(--desktop-few-slots-icon-size) !important; 
+            height: var(--desktop-few-slots-icon-size) !important; 
+        }
     }
     @media (min-width: 1400px) { .simple-slot-grid { grid-template-columns: repeat(3, 1fr); } }
     @media (max-width: 400px) { .full-date-display { font-size: 18px; } }
+
+    /* =========================================================
+       PEGGY CALENDAR ICON
+       ========================================================= */
+    .highlight-cal-btn {
+        background: linear-gradient(135deg, #e0f7fa, #b2ebf2);
+        border: 2px solid #00acc1;
+        border-radius: 50%;
+        padding: 16px !important;
+        box-shadow: 0 4px 10px rgba(0, 172, 193, 0.3);
+        animation: pulseCal 2s infinite;
+        display: inline-flex; align-items: center; justify-content: center;
+        cursor: pointer; transition: transform 0.2s;
+    }
+    .highlight-cal-btn:hover { transform: scale(1.05); }
+    @keyframes pulseCal {
+        0% { box-shadow: 0 0 0 0 rgba(0, 172, 193, 0.7); }
+        70% { box-shadow: 0 0 0 18px rgba(0, 172, 193, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(0, 172, 193, 0); }
+    }
+
+    .chat-cal-icon { object-fit: contain; display: block; width: 60px; height: 60px; }
+    @media (min-width: 768px) { .chat-cal-icon { width: 75px; height: 75px; } }
+    @media (min-width: 1024px) { .chat-cal-icon { width: 90px; height: 90px; } }
+
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
   </style>
 </head>
 <body>
@@ -667,11 +1193,65 @@
 
 <!-- Custom Notification Modal -->
 <div id="result-modal" class="result-overlay">
-    <div class="result-content">
+    <div class="result-content modal-box-shared">
         <div id="res-icon" class="result-icon">🎉</div>
-        <div id="res-title" class="result-title">預約成功</div>
-        <div id="res-msg" class="result-msg">時段已保留，請檢查您的電子郵件確認信。</div>
+        <div id="res-title" class="result-title modal-title-shared">預約成功</div>
+        <div id="res-msg" class="result-msg modal-msg-shared">時段已預約，請檢查您的電子郵件確認信。</div>
         <button class="result-close-btn" onclick="closeResultModal()">確定 OK</button>
+    </div>
+</div>
+
+<!-- 課程細節彈出視窗 -->
+<div id="class-detail-modal" class="result-overlay" style="z-index: 10004;">
+    <div class="result-content modal-box-shared" style="text-align:left;">
+        <button class="modal-close-x" onclick="closeClassDetailModal()">&times;</button>
+        <div id="class-detail-content"></div>
+    </div>
+</div>
+
+<!-- 安全驗證視窗 -->
+<div id="auth-modal" class="result-overlay" style="z-index: 10005;">
+    <div class="auth-modal-content modal-box-shared">
+        <div id="auth-loading-overlay" style="display:none; position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.9); z-index:20; border-radius:inherit; flex-direction:column; justify-content:center; align-items:center;">
+            <img src="https://ik.imagekit.io/lql1uveoc/Canceling%20animation%20and%20icons/hourglass-2.gif" style="width:50px; margin-bottom:10px;" class="auth-loading-img">
+            <div style="color:#555; font-size:16px; font-weight:bold;" class="auth-loading-text">取消中...</div>
+        </div>
+        <button class="modal-close-x" onclick="closeAuthModal()">&times;</button>
+        <div class="result-title modal-title-shared" style="margin-bottom: 5px;">取消安全驗證</div>
+        <div class="result-msg modal-msg-shared" style="color:#666; margin-bottom: 15px;">為確保是您本人的操作，請輸入您預約此課程時使用的 Email：</div>
+        <input type="email" id="auth-email-input" class="auth-input" placeholder="例如: name@gmail.com">
+        <div id="auth-error-msg"></div>
+        <div style="display: flex; gap: 10px;">
+            <button class="auth-btn" style="background: #ddd; color: #333;" onclick="closeAuthModal()">返回</button>
+            <button class="auth-btn" style="background: var(--pill-active); color: #fff;" onclick="submitAuthCancel()">確認取消</button>
+        </div>
+    </div>
+</div>
+
+<!-- Student Schedule Calendar Modal -->
+<div id="sched-modal-overlay" class="sched-modal-overlay">
+    <div class="sched-modal-container">
+        <!-- Top bar -->
+        <div class="sched-top-bar">
+            <button class="sched-back-btn" onclick="closeSchedCalendar()">❮ 返回</button>
+            <div class="sched-month-nav">
+                <button class="sched-month-nav-btn" id="sched-prev-btn" onclick="schedGoMonth(-1)">
+                    <span class="sched-nav-arrow">❮</span>
+                    <span class="sched-nav-month-label" id="sched-prev-label"></span>
+                </button>
+                <div class="sched-current-month-title" id="sched-month-title">—</div>
+                <button class="sched-month-nav-btn" id="sched-next-btn" onclick="schedGoMonth(1)">
+                    <span class="sched-nav-arrow">❯</span>
+                    <span class="sched-nav-month-label" id="sched-next-label"></span>
+                </button>
+            </div>
+        </div>
+        <!-- Slider -->
+        <div class="sched-slider-wrapper">
+            <div class="sched-slider-track" id="sched-slider-track">
+                <!-- Slides injected by JS -->
+            </div>
+        </div>
     </div>
 </div>
 
@@ -692,19 +1272,7 @@
         <div class="duration-hint">50分/堂</div>
     </div>
     <div class="controls-container">
-        <!-- Toggle badge: completely static/unclickable after intro animation -->
-        <div class="toggle-wrapper neutral" id="main-mode-toggle">
-            <div class="toggle-bg"></div>
-            <div class="toggle-labels">
-                <div class="toggle-half">
-                    <span class="toggle-label label-single">單堂預約</span>
-                </div>
-                <span class="toggle-separator">✕</span>
-                <div class="toggle-half">
-                    <span class="toggle-label label-multi">多堂預約</span>
-                </div>
-            </div>
-        </div>
+        <div class="multi-booking-badge" id="main-mode-toggle">一次多堂預約</div>
         <button class="cal-btn-trigger" onclick="openCalendar()">📅 月曆</button>
         <div class="rule-info-wrapper">
              <div class="rule-info-btn" onclick="toggleRules('mob-rules')"><span class="btn-exclaim">!</span><span class="btn-label">規範</span></div>
@@ -716,6 +1284,12 @@
                  <p><span class="rule-highlight-red">週六及國定假日24小時內</span><br class="mob-br">請假或調課, 扣除1 堂</p>
                  <a href="https://tonyonlineenglish.netlify.app/regulations" target="_blank" class="rule-details-link">詳情請點這裡</a>
              </div>
+        </div>
+        <div class="peggy-fab" onclick="togglePeggy()">
+            <div class="peggy-img-wrapper">
+                <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/christina-wocintechchat-com-m-0Zx1bDv5BNY-unsplash.jpg?updatedAt=1776614639182" class="peggy-img-crop" alt="Peggy">
+            </div>
+            <span class="peggy-badge-el" style="display:none;">1</span>
         </div>
     </div>
     <div class="date-scroller" id="dateScroller"></div>
@@ -753,18 +1327,34 @@
 </div>
 
 <button id="floating-cart-btn" onclick="toggleCartForm()">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="cal-icon-svg">
-        <path fill="currentColor" d="M19,4H18V2H16V4H8V2H6V4H5A2,2 0 0,0 3,6V20A2,2 0 0,0 5,22H19A2,2 0 0,0 21,20V6A2,2 0 0,0 19,4M19,20H5V10H19V20M19,8H5V6H19V8Z" />
-    </svg>
+    <img src="https://ik.imagekit.io/lql1uveoc/Booking%20Website%20%E9%A0%90%E7%B4%84/online-booking.png" class="cal-icon-svg" alt="cart">
     <span class="cart-badge" id="cart-count">0</span>
 </button>
+
+<!-- === Peggy Chatbot Window === -->
+<div id="peggy-window">
+    <div class="peggy-header">
+        <div style="display:flex; align-items:center; gap:0.6em;">
+            <div class="peggy-img-wrapper" style="width:2.2em; height:2.2em; border:2px solid #fff; flex-shrink:0;">
+                <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/christina-wocintechchat-com-m-0Zx1bDv5BNY-unsplash.jpg?updatedAt=1776614639182" class="peggy-img-crop" alt="Peggy">
+            </div>
+            <span>Peggy</span>
+        </div>
+        <button onclick="togglePeggy()" style="background:none; border:none; color:#fff; font-size:1.5em; cursor:pointer; line-height:1;">&times;</button>
+    </div>
+    <div class="peggy-body" id="peggy-body"></div>
+    <div class="peggy-footer">
+        <input type="text" id="peggy-input" placeholder="輸入您的英文名字..." onkeypress="handlePeggyEnter(event)">
+        <button onclick="sendPeggyMessage()">查詢</button>
+    </div>
+</div>
 
 <div id="p-form" class="page-form">
   <div class="form-box">
     <button class="back-btn" onclick="closeForm()">❮ 返回</button>
     <div class="page-title">確認預約</div>
     <button class="clear-all-btn" onclick="clearCart()">🗑️ 清除所有時段</button>
-    <div style="margin-bottom:5px; font-weight:bold; color:#666;">預約內容 (共 <span id="form-total">0</span> 堂)：</div>
+    <div id="form-total-label" style="margin-bottom:5px; font-weight:bold; color:#666; flex-shrink: 0;">預約內容 (共 <span id="form-total">0</span> 堂)：</div>
     <div id="checkout-list"></div>
     <div class="form-inputs-area">
         <label>姓名 Name</label><input type="text" id="iptName" placeholder="請輸入姓名">
@@ -783,19 +1373,7 @@
                     <button class="back-btn" onclick="closeCalendar()" style="margin-bottom:0;">✕</button>
                     <div style="display:flex; align-items:center; gap: 10px;" class="cal-top-right-group">
                         <div class="cal-duration-hint">50分/堂</div>
-                        <!-- Calendar toggle badge: static after intro -->
-                        <div class="toggle-wrapper neutral" id="cal-mode-toggle">
-                            <div class="toggle-bg"></div>
-                            <div class="toggle-labels">
-                                <div class="toggle-half">
-                                    <span class="toggle-label label-single">單堂預約</span>
-                                </div>
-                                <span class="toggle-separator">✕</span>
-                                <div class="toggle-half">
-                                    <span class="toggle-label label-multi">多堂預約</span>
-                                </div>
-                            </div>
-                        </div>
+                        <div class="multi-booking-badge" id="cal-mode-toggle">一次多堂預約</div>
                         <div class="rule-info-wrapper">
                              <div class="rule-info-btn" onclick="toggleRules('cal-rules')"><span class="btn-exclaim">!</span><span class="btn-label">規範</span></div>
                              <div class="rule-popover" id="cal-rules">
@@ -807,6 +1385,12 @@
                                  <a href="https://tonyonlineenglish.netlify.app/regulations" target="_blank" class="rule-details-link">詳情請點這裡</a>
                              </div>
                         </div>
+                        <div class="peggy-fab cal-peggy" onclick="togglePeggy()">
+                            <div class="peggy-img-wrapper">
+                                <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/christina-wocintechchat-com-m-0Zx1bDv5BNY-unsplash.jpg?updatedAt=1776614639182" class="peggy-img-crop" alt="Peggy">
+                            </div>
+                            <span class="peggy-badge-el" style="display:none;">1</span>
+                        </div>
                     </div>
                 </div>
                 <div class="cal-top-info">
@@ -815,7 +1399,7 @@
                 <div class="cal-nav">
                     <button class="cal-nav-btn" id="cal-prev-btn" onclick="changeCalMonth(-1)">❮</button>
                     <div id="cal-title"></div>
-                    <button class="cal-nav-btn" onclick="changeCalMonth(1)">❯</button>
+                    <button class="cal-nav-btn" id="cal-next-btn" onclick="changeCalMonth(1)">❯</button>
                 </div>
                 <div class="cal-grid" id="cal-head-row">
                     <div class="cal-head">MON<small>一</small></div>
@@ -837,18 +1421,30 @@
 
 <script>
   const CLOCK_ICON_URL = "https://ik.imagekit.io/lql1uveoc/clock-4.png?updatedAt=1774630976142";
+  const CAL_ICON_URL   = "https://ik.imagekit.io/lql1uveoc/Booking%20Website%20%E9%A0%90%E7%B4%84/calendar-4.png";
+  const ASSISTANT_IMG_URL = "https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/christina-wocintechchat-com-m-0Zx1bDv5BNY-unsplash.jpg?updatedAt=1776614639182";
 
   let modalCloseCallback = null;
   function showNotice(title, message, isError = false, callback = null) {
       document.getElementById('res-icon').innerText = isError ? "⚠️" : "🎉";
       document.getElementById('res-title').innerText = title;
-      document.getElementById('res-msg').innerText = message;
+      document.getElementById('res-msg').innerHTML = message;
       document.getElementById('result-modal').style.display = 'flex';
       modalCloseCallback = callback;
   }
   function closeResultModal() {
       document.getElementById('result-modal').style.display = 'none';
       if (modalCloseCallback) { modalCloseCallback(); modalCloseCallback = null; }
+  }
+
+  // 精準對齊預約控制列
+  function alignToHeader() {
+      const calHeader = document.querySelector('.header-section');
+      if (calHeader) {
+          calHeader.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
   }
 
   // === INTRO ANIMATION ===
@@ -872,7 +1468,11 @@
           const overlay = document.getElementById("loading-overlay");
           if (overlay && overlay.style.display !== "none") {
               overlay.style.opacity = "0"; overlay.style.pointerEvents = "none";
-              setTimeout(() => { overlay.style.display = "none"; playIntroAnimation(); }, 500);
+              setTimeout(() => { 
+                  overlay.style.display = "none"; 
+                  playIntroAnimation(); 
+                  alignToHeader();
+              }, 500);
           }
       }
   }
@@ -881,17 +1481,58 @@
   (function(){
       setTimeout(function(){
           var o = document.getElementById("loading-overlay");
-          if (o && o.style.display !== "none") { o.style.opacity="0"; o.style.pointerEvents="none"; setTimeout(function(){ o.style.display="none"; }, 500); }
+          if (o && o.style.display !== "none") { 
+              o.style.opacity="0"; o.style.pointerEvents="none"; 
+              setTimeout(function(){ 
+                  o.style.display="none"; 
+                  alignToHeader();
+              }, 500); 
+          }
       }, 6000);
   })();
 
   const API_URL = "https://script.google.com/macros/s/AKfycbyWvhW6fp_ohPEvPK226KtNiQLCyAVMl77zV0Hq0k_TcEk3F1ni9qVcJystGUovVjTMGQ/exec";
-  const STAGE_1_DAYS=3, STAGE_2_DAYS=11, BACKGROUND_BATCH=14, MAX_DAYS=60, MAX_SELECTION=10;
+  const STAGE_1_DAYS=3, STAGE_2_DAYS=11, BACKGROUND_BATCH=14, MAX_DAYS=45, MAX_SELECTION=10;
   let cachedData={}, loadedDaysCount=0, selectedDateStr="", selectedSlots=[];
   const dayNames=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"], chiDayNames=["日","一","二","三","四","五","六"];
   const monthNamesEng=["Jan","Feb","March","April","May","June","July","Aug","Sept","Oct","Nov","Dec"];
   let hotPanelShown=false, calYear, calMonth;
   let limitDate = new Date(); limitDate.setDate(limitDate.getDate()+MAX_DAYS); limitDate.setHours(23,59,59,999);
+
+  let bgPollingInterval = null;
+  function startBackgroundPolling() {
+      if (bgPollingInterval) return;
+      // 修改為每3秒執行一次
+      bgPollingInterval = setInterval(() => { silentRefreshVisibleDate(); }, 3000);
+  }
+
+  function silentRefreshVisibleDate() {
+      if (!selectedDateStr) return;
+      const dStr = selectedDateStr;
+      fetch(`${API_URL}?action=getBatchSlots&startDate=${dStr}&days=1`)
+        .then(r => r.json())
+        .then(data => {
+            if (!data || !data[dStr]) return;
+            const oldSlots = (cachedData[dStr] && cachedData[dStr].slots) ? cachedData[dStr].slots : [];
+            const newSlots = data[dStr].slots || [];
+            const oldTs = oldSlots.map(s => s.timestamp).sort().join(',');
+            const newTs = newSlots.map(s => s.timestamp).sort().join(',');
+            if (oldTs === newTs) return;
+            cachedData[dStr] = data[dStr];
+            const newTsSet = new Set(newSlots.map(s => String(s.timestamp)));
+            const removedCount = selectedSlots.filter(s => s.dateStr === dStr && !newTsSet.has(String(s.timestamp))).length;
+            if (removedCount > 0) {
+                selectedSlots = selectedSlots.filter(s => !(s.dateStr === dStr && !newTsSet.has(String(s.timestamp))));
+                updateBottomBar();
+            }
+            if (document.getElementById("cal-modal").classList.contains("active")) {
+                if (dStr === selectedDateStr) renderSlotsInsideCalendar(dStr);
+            } else {
+                if (dStr === selectedDateStr) renderSlots(dStr);
+            }
+        })
+        .catch(() => {});
+  }
 
   window.onload = function() {
     setTimeout(runLoadingSteps, 100);
@@ -905,38 +1546,34 @@
     calYear = now.getFullYear(); calMonth = now.getMonth();
     updateHeaderDate(); initDateScroller();
     fetchBatchData(0, STAGE_1_DAYS, "STAGE1");
-    openCalendar();
+    openCalendar(); 
     document.getElementById("p-main").style.display = "none";
-    setTimeout(() => { const cal=document.getElementById("cal-modal"); if(cal) cal.scrollIntoView({behavior:"smooth",block:"start"}); }, 600);
+    // 提早啟動背景刷新 (3秒後)
+    setTimeout(startBackgroundPolling, 3000);
+
+    document.getElementById('sched-modal-overlay').addEventListener('click', function(e) {
+        if (window.innerWidth >= 1024 && e.target === this) closeSchedCalendar();
+    });
   };
 
-  // === INTRO ANIMATION: flicker toggle, end neutral ===
   function playIntroAnimation() {
-      const toggleWrappers = document.querySelectorAll('.toggle-wrapper');
+      const badges = document.querySelectorAll('.multi-booking-badge');
       const infoBtns = document.querySelectorAll('.rule-info-btn');
-      if (toggleWrappers.length === 0) return;
-      let count = 0; const maxFlickers = 12; const speed = 100;
+      if (badges.length === 0) return;
+      let count = 0; const maxFlickers = 6; const speed = 200;
       const interval = setInterval(() => {
-          const mode = (count % 2 === 0) ? 'multi' : 'single';
-          applyModeToUI(mode, true); count++;
+          badges.forEach(b => b.classList.toggle('pulse-emphasis'));
+          count++;
           if (count >= maxFlickers) {
               clearInterval(interval);
-              toggleWrappers.forEach(el => el.classList.add('pulse-emphasis'));
+              badges.forEach(b => b.classList.add('pulse-emphasis'));
               infoBtns.forEach(btn => btn.classList.add('pulse-emphasis-icon'));
               setTimeout(() => {
-                  toggleWrappers.forEach(el => el.classList.remove('pulse-emphasis'));
+                  badges.forEach(b => b.classList.remove('pulse-emphasis'));
                   infoBtns.forEach(btn => btn.classList.remove('pulse-emphasis-icon'));
-                  // End neutral — background goes away permanently and user cannot click it.
-                  setTimeout(() => { applyModeToUI('neutral', true); }, 300);
               }, 1200);
           }
       }, speed);
-  }
-
-  function applyModeToUI(mode, silent=false) {
-      document.querySelectorAll('.toggle-wrapper').forEach(wrapper => {
-          wrapper.className = `toggle-wrapper ${mode}`;
-      });
   }
 
   function toggleRules(id) {
@@ -944,9 +1581,7 @@
       document.querySelectorAll('.rule-popover').forEach(p => { if (p.id !== id) p.classList.remove('show'); });
       el.classList.toggle('show');
   }
-  function closePopover(id) {
-      document.getElementById(id).classList.remove('show');
-  }
+  function closePopover(id) { document.getElementById(id).classList.remove('show'); }
 
   document.addEventListener('click', function(e) {
       if (!e.target.closest('.rule-info-wrapper') && !e.target.closest('.rule-popover-close')) {
@@ -955,6 +1590,12 @@
       const hotPanel = document.getElementById("hot-panel");
       if (hotPanel && hotPanel.classList.contains("show")) {
           if (!e.target.closest("#hot-panel")) hotPanel.classList.remove("show");
+      }
+      const peggyWindow = document.getElementById('peggy-window');
+      if (peggyWindow && peggyWindow.classList.contains('show')) {
+          if (!e.target.closest('#peggy-window') && !e.target.closest('.peggy-fab')) {
+              togglePeggy();
+          }
       }
   });
 
@@ -991,7 +1632,7 @@
       fetch(`${API_URL}?action=getBatchSlots&startDate=${dStr}&days=1`).then(res=>res.json()).then(data=>{
           Object.assign(cachedData, data); if(!cachedData[dStr]) cachedData[dStr]={slots:[]};
           const pill=document.getElementById(`pill-${dStr}`); if(pill){pill.classList.remove('loading');pill.classList.add('loaded');}
-          renderSlots(dStr);
+          if (dStr === selectedDateStr) renderSlots(dStr);
       }).catch(()=>{ document.getElementById("empty-msg").innerText="連線失敗，請重試"; const pill=document.getElementById(`pill-${dStr}`); if(pill) pill.classList.remove('loading'); });
   }
 
@@ -1048,7 +1689,7 @@
           fetch(`${API_URL}?action=getBatchSlots&startDate=${dStr}&days=1`).then(r=>r.json()).then(data=>{
               Object.assign(cachedData,data); if(!cachedData[dStr]) cachedData[dStr]={slots:[]};
               const pill=document.getElementById(`pill-${dStr}`); if(pill){pill.classList.remove('loading');pill.classList.add('loaded');}
-              renderSlotsInsideCalendar(dStr);
+              if (dStr === selectedDateStr) renderSlotsInsideCalendar(dStr);
           }).catch(()=>{container.innerHTML=`<div style="text-align:center;padding:20px;color:red;">讀取失敗</div>`;});
       }
   }
@@ -1072,7 +1713,18 @@
   function renderSlotsInsideCalendar(dStr) {
       const container=document.getElementById("cal-slots-content"); container.innerHTML="";
       const data=cachedData[dStr];
-      if(!data||!data.slots||data.slots.length===0){container.innerHTML=`<div style="text-align:center;padding:20px;color:#aaa;font-weight:bold;">請選擇其他日期</div>`;return;}
+      if(!data) {
+          if (loadedDaysCount === 0) {
+              container.innerHTML=`<div style="text-align:center;padding:30px;color:#555;font-weight:bold;"><div class="spinner" style="width:30px;height:30px;margin:0 auto 10px auto;border:4px solid #ddd;border-top-color:#ff5400;border-radius:50%;animation:spin 0.8s linear infinite;"></div>時段載入中...</div>`;
+          } else {
+              container.innerHTML=`<div style="text-align:center;padding:20px;color:#aaa;font-weight:bold;">請選擇其他日期</div>`;
+          }
+          return;
+      }
+      if(data.slots.length===0){
+          container.innerHTML=`<div style="text-align:center;padding:20px;color:#aaa;font-weight:bold;">本日無可預約時段</div>`;
+          return;
+      }
       const grid=document.createElement("div"); grid.className="simple-slot-grid";
       const validSlots=data.slots.filter(s=>isValidSlot(s));
       if(validSlots.length>0&&validSlots.length<=4) grid.classList.add('few-slots'); else grid.classList.remove('few-slots');
@@ -1095,10 +1747,19 @@
   }
 
   function openCalendar() {
+      alignToHeader();
+      
       if(!selectedDateStr) selectedDateStr=fmt(new Date());
-      renderCalGrid(); jumpToDate(selectedDateStr);
+      renderCalGrid(); 
+      jumpToDate(selectedDateStr);
       const modal=document.getElementById("cal-modal"); modal.classList.add("active");
-      window.scrollTo(0,0); modal.scrollTop=0; updateBottomBar();
+      modal.scrollTop=0; updateBottomBar();
+      
+      setTimeout(() => {
+          if (!peggyInitialized) {
+              document.querySelectorAll('.peggy-badge-el').forEach(el => el.style.display = 'flex');
+          }
+      }, 6000);
   }
   function closeCalendar() {
       if(window.innerWidth>=768)return;
@@ -1106,20 +1767,42 @@
       if(selectedDateStr){selectDatePillUI(selectedDateStr);renderSlots(selectedDateStr);const pill=document.getElementById(`pill-${selectedDateStr}`);if(pill&&pill.classList.contains('loading'))forceLoadDate(selectedDateStr);}
       updateBottomBar();
   }
+
   function changeCalMonth(n) {
-      if(n<0){
-          const now=new Date(); const curY=now.getFullYear(); const curM=now.getMonth();
-          if(calYear===curY&&calMonth===curM)return;
-          const targetDate=new Date(calYear,calMonth+n,1); const minDate=new Date(curY,curM,1);
-          if(targetDate<minDate)return;
-      }
-      calMonth+=n; if(calMonth>11){calMonth=0;calYear++;}else if(calMonth<0){calMonth=11;calYear--;}
+      const now = new Date();
+      const curY = now.getFullYear(); const curM = now.getMonth();
+      let targetM = calMonth + n; let targetY = calYear;
+      if (targetM > 11) { targetM = 0; targetY++; }
+      else if (targetM < 0) { targetM = 11; targetY--; }
+      const targetAbsolute = targetY * 12 + targetM;
+      const currentAbsolute = curY * 12 + curM;
+      if (targetAbsolute < currentAbsolute) return;
+      if (targetAbsolute > currentAbsolute + 2) return;
+      calMonth = targetM; calYear = targetY;
       renderCalGrid();
   }
+
   function renderCalGrid() {
+      const now = new Date();
+      const todayDayOfWeek = now.getDay();
+      
       document.getElementById("cal-title").innerText=`${calYear}年 ${calMonth+1}月 ${monthNamesEng[calMonth]}`;
-      const now=new Date(); const prevBtn=document.getElementById('cal-prev-btn');
-      if(calYear===now.getFullYear()&&calMonth===now.getMonth()) prevBtn.classList.add('disabled'); else prevBtn.classList.remove('disabled');
+      
+      const curAbsolute = now.getFullYear() * 12 + now.getMonth();
+      const calAbsolute = calYear * 12 + calMonth;
+      
+      const prevBtn = document.getElementById('cal-prev-btn');
+      const nextBtn = document.getElementById('cal-next-btn');
+      if (prevBtn) { if (calAbsolute <= curAbsolute) prevBtn.classList.add('disabled'); else prevBtn.classList.remove('disabled'); }
+      if (nextBtn) { if (calAbsolute >= curAbsolute + 2) nextBtn.classList.add('disabled'); else nextBtn.classList.remove('disabled'); }
+
+      const headers = document.querySelectorAll('#cal-head-row .cal-head');
+      headers.forEach(h => h.classList.remove('active-day'));
+      if (todayDayOfWeek >= 1 && todayDayOfWeek <= 6) {
+          const todayHeaderIdx = todayDayOfWeek - 1;
+          if (headers[todayHeaderIdx]) headers[todayHeaderIdx].classList.add('active-day');
+      }
+
       const container=document.getElementById("cal-body"); container.innerHTML="";
       const firstDay=new Date(calYear,calMonth,1).getDay(); const daysInMonth=new Date(calYear,calMonth+1,0).getDate();
       const today=new Date(); today.setHours(0,0,0,0);
@@ -1139,12 +1822,9 @@
           }
           container.appendChild(cell);
       }
-      if(selectedDateStr) highlightWeekDay(selectedDateStr);
   }
 
-  function handleSlotClick(slot, dateStr) {
-      toggleSlot(slot, dateStr);
-  }
+  function handleSlotClick(slot, dateStr) { toggleSlot(slot, dateStr); }
   function addToCart(slot, dateStr) {
       const dObj=new Date(dateStr); const displayStr=`${dObj.getMonth()+1}/${dObj.getDate()} (${dayNames[dObj.getDay()]} ${chiDayNames[dObj.getDay()]}) ${formatTime12H(slot.time)}`;
       selectedSlots.push({dateStr,time:slot.time,timestamp:slot.timestamp,displayStr});
@@ -1206,31 +1886,94 @@
   }
   function closeForm(){document.getElementById("p-form").classList.remove("active");}
 
+  function buildBookedTimesHtml(slots) {
+      let html = '<div class="booked-times-box" style="text-align: left; background: #f3f4f6; padding: 12px 15px; border-radius: 12px; margin: 15px 0;">';
+      html += '<div class="booked-header" style="margin-bottom:8px; color:#111;">已預約以下時段：</div>';
+      slots.forEach(slot => { html += `<div style="margin-bottom:4px;">• ${slot.displayStr}</div>`; });
+      html += '</div>';
+      return html;
+  }
+
   function submitData() {
     const name=document.getElementById("iptName").value.trim(); const email=document.getElementById("iptEmail").value.trim();
     const emailRegex=/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     if(!name||!email)return showNotice("提示","請填寫完整資訊",true);
     if(!emailRegex.test(email))return showNotice("格式錯誤","Email 格式不正確，請輸入完整的 Email (例如: name@gmail.com)",true);
+    
     const btn=document.querySelector(".confirm-btn"); const orgText=btn.innerText; btn.innerText="處理中..."; btn.disabled=true;
+    
+    // 鎖定返回和清除按鈕，避免使用者誤觸退回主畫面導致時段還在
+    const backBtn = document.querySelector("#p-form .back-btn");
+    const clearBtn = document.querySelector("#p-form .clear-all-btn");
+    if(backBtn) backBtn.style.pointerEvents = 'none';
+    if(clearBtn) clearBtn.style.pointerEvents = 'none';
+
+    // 觸發一次背景重抓，確保使用者等待期間或剛送出時能取得最新時段
+    silentRefreshVisibleDate();
+
     const DURATION_MS=60*60*1000;
     fetch(API_URL,{method:"POST",body:JSON.stringify({name,email,appointments:selectedSlots})})
     .then(res=>res.json())
     .then(res=>{
        if(res.bookingSummary){
            const summary=res.bookingSummary;
-           if(summary.failCount===0){showNotice("預約成功",`🎉 預約成功！\n共 ${summary.successCount} 堂課。\n確認信已寄至您的信箱。`);finishSuccessBooking();}
-           else{
-               let msg=`⚠️ 注意：有 ${summary.failCount} 堂課預約失敗 (已被搶先預約)。\n`;
-               msg+=`✅ 成功預約：${summary.successCount} 堂\n`;
-               if(summary.failedSlots&&summary.failedSlots.length>0){msg+="\n❌ 失敗時段：\n";summary.failedSlots.forEach(slot=>{const d=new Date(parseInt(slot.timestamp));const min=d.getMinutes();const timeStr=d.getHours()+":"+(min<10?'0':'')+min;const dateStr=(d.getMonth()+1)+"/"+d.getDate();msg+=`- ${dateStr} ${timeStr}\n`;});}
-               msg+="\n系統已保留成功的時段。\n頁面將重新整理以顯示最新剩餘名額。";
-               showNotice("部分預約成功",msg,true,()=>{location.reload();});
+           if(summary.failCount===0){
+               let successMsg = `確認信已寄至您的信箱。<br>` + buildBookedTimesHtml(selectedSlots);
+               successMsg += `<div style="margin-top: 15px; color: #d32f2f; font-weight:bold;">`;
+               successMsg += `請假/調整請於24小時前提出。<br>`;
+               successMsg += `<a href="https://tonyonlineenglish.netlify.app/regulations" target="_blank" style="color: #007aff; text-decoration: underline; font-weight: bold; display:inline-block; margin-top:5px;">詳細規範請點這裡</a>`;
+               successMsg += `</div>`;
+               showNotice("預約成功", successMsg);
+               finishSuccessBooking();
+           } else {
+               let msg=`⚠️ 注意：有 <b>${summary.failCount}</b> 堂課預約失敗 (已被搶先預約)。<br><br>`;
+               msg+=`✅ 成功預約：<b>${summary.successCount}</b> 堂<br>`;
+               if (summary.successCount > 0) {
+                   const failedTimestamps = summary.failedSlots ? summary.failedSlots.map(s => parseInt(s.timestamp)) :[];
+                   const successfulSlots = selectedSlots.filter(s => !failedTimestamps.includes(s.timestamp));
+                   msg += buildBookedTimesHtml(successfulSlots);
+               }
+               if(summary.failedSlots && summary.failedSlots.length > 0){
+                   msg += `<div style="text-align: left; color: #d32f2f; margin-top:10px;">❌ 失敗時段：<br>`;
+                   summary.failedSlots.forEach(slot=>{
+                       const d=new Date(parseInt(slot.timestamp));
+                       const min=d.getMinutes();
+                       const timeStr=d.getHours()+":"+(min<10?'0':'')+min;
+                       const dateStr=(d.getMonth()+1)+"/"+d.getDate();
+                       msg+=`• ${dateStr} ${timeStr}<br>`;
+                   });
+                   msg += `</div>`;
+               }
+               msg += `<div style="margin-top: 15px; color: #555;">系統已成功預約的時段。<br>頁面將重新整理以顯示最新名額。</div>`;
+               if (summary.successCount > 0) {
+                    msg += `<div style="margin-top: 15px; color: #d32f2f; font-weight:bold;">`;
+                    msg += `請假/調整請於24小時前提出。<br>`;
+                    msg += `<a href="https://tonyonlineenglish.netlify.app/regulations" target="_blank" style="color: #007aff; text-decoration: underline; font-weight: bold; display:inline-block; margin-top:5px;">詳細規範請點這裡</a>`;
+                    msg += `</div>`;
+               }
+               showNotice("部分預約成功", msg, true, ()=>{location.reload();});
            }
-       }else if(res.success){showNotice("預約成功","預約完成！");finishSuccessBooking();}
-       else{showNotice("預約失敗","預約發生錯誤："+res.message,true);}
+       } else if(res.success){
+           let successMsg = `確認信已寄至您的信箱。<br>` + buildBookedTimesHtml(selectedSlots);
+           successMsg += `<div style="margin-top: 15px; color: #d32f2f; font-weight:bold;">`;
+           successMsg += `請假/調整請於24小時前提出。<br>`;
+           successMsg += `<a href="https://tonyonlineenglish.netlify.app/regulations" target="_blank" style="color: #007aff; text-decoration: underline; font-weight: bold; display:inline-block; margin-top:5px;">詳細規範請點這裡</a>`;
+           successMsg += `</div>`;
+           showNotice("預約成功", successMsg);
+           finishSuccessBooking();
+       } else{
+           showNotice("預約失敗","預約發生錯誤："+res.message,true);
+       }
        btn.innerText=orgText; btn.disabled=false;
+       if(backBtn) backBtn.style.pointerEvents = 'auto';
+       if(clearBtn) clearBtn.style.pointerEvents = 'auto';
     })
-    .catch(()=>{showNotice("網路錯誤","網路錯誤，請檢查連線",true);btn.innerText=orgText;btn.disabled=false;});
+    .catch(()=>{
+       showNotice("網路錯誤","網路錯誤，請檢查連線",true);
+       btn.innerText=orgText;btn.disabled=false;
+       if(backBtn) backBtn.style.pointerEvents = 'auto';
+       if(clearBtn) clearBtn.style.pointerEvents = 'auto';
+    });
 
     function finishSuccessBooking(){
          selectedSlots.forEach(booked=>{
@@ -1242,6 +1985,8 @@
            }
          });
          selectedSlots=[]; closeForm(); closeCalendar(); renderSlots(selectedDateStr); updateBottomBar(); checkHotSlots(loadedDaysCount>7?14:7);
+         // 完成預約後立刻強制背景再次重抓最新資料，確保無縫更新
+         silentRefreshVisibleDate();
     }
   }
 
@@ -1297,7 +2042,7 @@
   }
   function selectDate(dStr){
     selectedDateStr=dStr;selectDatePillUI(dStr);renderSlots(dStr);
-    if(window.innerWidth<768&&!document.getElementById('cal-modal').classList.contains('active')) document.querySelector('.header-section').scrollIntoView({behavior:'smooth'});
+    if(window.innerWidth<768&&!document.getElementById('cal-modal').classList.contains('active')) alignToHeader();
   }
   function selectDatePillUI(dStr){
     document.querySelectorAll(".date-pill").forEach(e=>e.classList.remove("active"));
@@ -1333,6 +2078,499 @@
   }
   function formatTime12H(timeStr){if(!timeStr)return"";const[h,m]=timeStr.split(':');let hour=parseInt(h);const suffix=hour>=12?'PM':'AM';hour=hour%12||12;return`${hour}:${m} ${suffix}`;}
   function fmt(d){return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+
+  // ==========================================
+  // === Peggy Chatbot & Schedule Calendar ===
+  // ==========================================
+  const PEGGY_API_URL = "https://script.google.com/macros/s/AKfycbxrSJS4dGWmG_GHpginXD_Nl-R8KaZq-6NHRtBjT8_Q4TWz0pp4yinVaMKibdf-Vz1ELg/exec";
+  let peggyInitialized = false;
+  let currentStudentSchedule = [];
+  let schedSelectedDateStr;
+  let lastQueriedName = '';
+
+  let schedCurrentMonthIdx = 0;
+  const SCHED_TOTAL_MONTHS = 3;
+
+  function togglePeggy() {
+      const windowEl = document.getElementById('peggy-window');
+      const badges = document.querySelectorAll('.peggy-badge-el');
+      windowEl.classList.toggle('show');
+      if(windowEl.classList.contains('show')) {
+          badges.forEach(b => b.style.display = 'none');
+      }
+      if(windowEl.classList.contains('show') && !peggyInitialized) {
+          let msg = `嗨！我是Tony線上美語家教 Peggy 👋<br>我可以幫您查詢未來的課程時間。<a href="https://tonyonlineenglish.netlify.app/ycs" target="_blank" style="color:var(--blue-main); font-weight:bold; text-decoration:underline;">也可點選這</a><br><br>請問您的<b>英文名字</b>是？`;
+          addPeggyMessage(msg, 'peggy', 'bottom');
+          peggyInitialized = true;
+      }
+  }
+
+  function handlePeggyEnter(e) { if(e.key === 'Enter') sendPeggyMessage(); }
+
+  function sendPeggyMessage(forceText = null, skipEasonCheck = false) {
+      const input = document.getElementById('peggy-input');
+      const text = forceText || input.value.trim();
+      if(!text) return;
+      addPeggyMessage(text, 'user', 'bottom');
+      input.value = '';
+      if (text.toLowerCase() === 'eason' && !skipEasonCheck) {
+          showPeggyTyping();
+          setTimeout(() => {
+              hidePeggyTyping();
+              let html = `發現有幾位 Eason，請問您是：<br>
+              <button onclick="sendPeggyMessage('Eason Hsieh 新營高工', true)" style="margin-top:0.6em; width:100%; padding:0.7em; border-radius:0.7em; border:2px solid var(--blue-main); background:#fff; color:var(--blue-main); cursor:pointer; font-weight:bold; font-size:1em; transition:0.2s;">Eason Hsieh 新營高工</button>
+              <button onclick="sendPeggyMessage('Eason Cheng 鄭', true)" style="margin-top:0.6em; width:100%; padding:0.7em; border-radius:0.7em; border:2px solid var(--blue-main); background:#fff; color:var(--blue-main); cursor:pointer; font-weight:bold; font-size:1em; transition:0.2s;">Eason Cheng 鄭</button>`;
+              addPeggyMessage(html, 'peggy', 'bottom');
+          }, 500);
+          return;
+      }
+      lastQueriedName = text;
+      processChatInput(text);
+  }
+
+  function addPeggyMessage(htmlContent, sender, scrollMode = 'bottom') {
+      const body = document.getElementById('peggy-body');
+      const div = document.createElement('div');
+      div.className = sender === 'peggy' ? 'msg-peggy' : 'msg-user';
+      div.innerHTML = htmlContent;
+      body.appendChild(div);
+      if (scrollMode === 'top') {
+          setTimeout(() => { body.scrollTo({ top: div.offsetTop - 15, behavior: 'smooth' }); }, 50);
+      } else if (scrollMode === 'bottom') {
+          body.scrollTop = body.scrollHeight;
+      }
+      return div;
+  }
+
+  function showPeggyTyping() {
+      const body = document.getElementById('peggy-body');
+      const div = document.createElement('div');
+      div.className = 'msg-peggy'; div.id = 'peggy-typing';
+      div.innerHTML = `<div class="typing-indicator"><div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div></div>`;
+      body.appendChild(div); body.scrollTop = body.scrollHeight;
+  }
+  function hidePeggyTyping() { const t = document.getElementById('peggy-typing'); if(t) t.remove(); }
+
+  function showMorePeggyBookings() {
+      document.querySelectorAll('.peggy-hidden-booking').forEach(el => { el.style.display = 'block'; });
+      const btn = document.getElementById('peggy-show-more-btn');
+      if(btn) btn.style.display = 'none';
+  }
+
+  async function processChatInput(name) {
+      showPeggyTyping();
+      try {
+          let queryName = name;
+          if (name.includes('Eason Hsieh')) queryName = 'Eason';
+          if (name.includes('Eason Cheng')) queryName = 'Eason Cheng';
+
+          const[schedRes, countRes] = await Promise.all([
+              fetch(`${PEGGY_API_URL}?action=getSchedule&name=${encodeURIComponent(queryName)}`),
+              fetch(`${PEGGY_API_URL}?action=getLessonCount&name=${encodeURIComponent(queryName)}`)
+          ]);
+          
+          const rawSchedule = await schedRes.json();
+          const countData = await countRes.json();
+          
+          document.getElementById('peggy-window').classList.add('expanded');
+          
+          let scheduleData = [];
+          const nameLower = queryName.toLowerCase();
+          
+          if (Array.isArray(rawSchedule)) {
+              if (nameLower === 'eason') {
+                  scheduleData = rawSchedule.filter(ev => {
+                      if (!ev.title || typeof ev.title !== 'string') return false;
+                      const titleLower = ev.title.toLowerCase();
+                      return titleLower.includes('eason') && !titleLower.includes('cheng') && titleLower.includes('english class');
+                  });
+              } else {
+                  scheduleData = rawSchedule.filter(ev => {
+                      if (!ev.title || typeof ev.title !== 'string') return false;
+                      const titleLower = ev.title.toLowerCase();
+                      return titleLower.includes(nameLower) && titleLower.includes('english class');
+                  });
+              }
+          }
+
+          const now = new Date();
+          const todayStart = new Date(now); todayStart.setHours(0,0,0,0);
+          const todayStr = fmt(todayStart);
+          currentStudentSchedule = scheduleData.filter(ev => new Date(ev.start) >= todayStart);
+
+          const limitDateObj = new Date();
+          limitDateObj.setDate(now.getDate() + 60);
+          const upcoming = scheduleData.filter(ev => new Date(ev.start) >= now && new Date(ev.start) <= limitDateObj)
+                                       .sort((a,b) => new Date(a.start) - new Date(b.start));
+
+          let html = `<div style="text-align:left;">`;
+          
+          html += `<div style="font-weight:bold; font-size:1.1em; margin-bottom:0.6em; color:var(--selected-bg);">
+            Hello ${name}！<br>
+            <div style="margin-top: 15px; margin-bottom: 8px;">
+                <button class="highlight-cal-btn" onclick="openSchedCalendar()" title="查看完整月曆課表">
+                    <img src="${CAL_ICON_URL}" alt="月曆" class="chat-cal-icon">
+                </button>
+            </div>
+          </div>`;
+
+          if (upcoming.length > 0) {
+              html += `<div style="font-weight:bold; font-size:1.05em; color:var(--blue-main); margin-bottom:0.4em;">近期預約課程：</div>`;
+              html += `<div>`;
+              
+              upcoming.forEach((ev, idx) => {
+                  const d = new Date(ev.start);
+                  const evDateStr = fmt(d);
+                  const isToday = (evDateStr === todayStr);
+                  const month = d.getMonth() + 1;
+                  const dateNum = d.getDate();
+                  const day = chiDayNames[d.getDay()];
+                  let hours = d.getHours();
+                  let minutes = d.getMinutes().toString().padStart(2, "0");
+                  const ampm = hours >= 12 ? "PM" : "AM";
+                  hours = hours % 12 || 12;
+                  const timeStr = `${hours}:${minutes} ${ampm}`;
+
+                  let isHidden = idx >= 4;
+                  let extraClass = isHidden ? 'peggy-hidden-booking' : '';
+                  let displayStyle = isHidden ? 'display:none;' : '';
+
+                  let itemStyle = isToday
+                    ? `background:linear-gradient(135deg,#fff3e0,#ffe0b2);border:2px solid #ff9800;box-shadow:0 0 14px rgba(255,152,0,0.45);animation:todayGlow 2s ease-in-out infinite alternate;`
+                    : `background:#fff;border-left:4px solid var(--selected-bg);box-shadow:0 1px 4px rgba(0,0,0,0.08);`;
+
+                  html += `<div class="${extraClass}" style="${itemStyle} padding:0.6em 0.7em; margin-bottom:0.6em; border-radius:0.6em; font-size:1em; ${displayStyle}">`;
+                  html += `<div style="color:var(--selected-bg); font-weight:bold;">${month}/${dateNum} (週${day}) ${timeStr}`;
+                  if (isToday) html += `<span class="today-booking-badge">今日上課</span>`;
+                  html += `</div>`;
+                  html += `<div style="color:#555; margin-top:0.2em; font-size:0.85em;">${ev.title}</div>`;
+                  html += `</div>`;
+              });
+              html += `</div>`;
+
+              if (upcoming.length > 4) {
+                  html += `<button id="peggy-show-more-btn" onclick="showMorePeggyBookings()" style="width:100%; margin-top:0.5em; padding:0.6em; background:transparent; border:2px solid var(--blue-main); color:var(--blue-main); border-radius:0.7em; cursor:pointer; font-weight:bold; font-size:0.95em; transition:0.2s;">顯示更多 ▾</button>`;
+              }
+              if (upcoming.length > 8) {
+                  html += `<div style="font-size:0.85em; color:#888; text-align:center; margin-top:0.4em;">僅顯示最近 8 筆預約</div>`;
+              }
+          } else {
+              html += `<div style="margin-top:0.5em; font-size:1em; color:#555; background:#fff0f5; padding:0.7em; border-radius:0.7em; border:1px solid #ffebee;">目前沒有近期預約的課程喔！<br><a href="javascript:void(0)" onclick="togglePeggy(); window.scrollTo(0,0);" style="color:var(--pill-active); font-weight:bold; display:inline-block; margin-top:0.4em;">現在去預約 ❯</a></div>`;
+          }
+
+          let countHtml = '';
+          if (countData && !countData.error && countData.total !== "" && countData.total !== null) {
+              let displayTotal = countData.total;
+              let displayCompleted = countData.completed;
+              if (!isNaN(countData.total) && Number(countData.total) >= 100) displayTotal = '會員';
+              if (!isNaN(countData.completed) && Number(countData.completed) >= 100) displayCompleted = '訂閱';
+
+              countHtml += `<div id="peggy-count-section" style="display:none; margin-top:0.8em;">`;
+              countHtml += `<div style="font-size:1em; background:#eefaff; padding:0.7em; border-radius:0.7em; border:1px solid #bce6ff; color:#0056b3;">`;
+              countHtml += `<span style="display:inline-block; margin-bottom:0.3em;">總堂數: <b>${displayTotal}</b> | 已完成: <b>${displayCompleted}</b></span><br>`;
+              countHtml += `<span style="display:inline-flex; align-items:center; color:#d32f2f; font-weight:bold; font-size:1.07em;">剩餘堂數: ${countData.remaining}</span>`;
+              countHtml += `</div>`;
+              countHtml += `</div>`;
+              
+              html += `<button id="peggy-count-toggle-btn" onclick="togglePeggyCountSection()" style="width:100%; margin-top:0.6em; padding:0.5em; background:transparent; border:1px dashed #bce6ff; color:#0056b3; border-radius:0.7em; cursor:pointer; font-size:0.9em; transition:0.2s;">📊 查看堂數資訊 ▾</button>`;
+              html += countHtml;
+          } else {
+              html += `<div style="margin-top:0.5em; font-size:0.9em; color:#888;">查無您的堂數資料或剩餘堂數為0。</div>`;
+          }
+
+          html += `</div>`;
+          
+          hidePeggyTyping();
+          addPeggyMessage(html, 'peggy', 'top');
+          
+      } catch (e) {
+          console.error("Chatbot Fetch Error:", e);
+          hidePeggyTyping();
+          addPeggyMessage("抱歉，系統似乎有些問題，無法查詢您的課表，請稍後再試。🙇‍♀️", 'peggy', 'bottom');
+      }
+  }
+
+  function togglePeggyCountSection() {
+      const section = document.getElementById('peggy-count-section');
+      const btn = document.getElementById('peggy-count-toggle-btn');
+      if (!section) return;
+      const isHidden = section.style.display === 'none';
+      section.style.display = isHidden ? 'block' : 'none';
+      if (btn) btn.textContent = isHidden ? '📊 隱藏堂數資訊 ▴' : '📊 查看堂數資訊 ▾';
+      if (isHidden) {
+          const body = document.getElementById('peggy-body');
+          setTimeout(() => { body.scrollTop = body.scrollHeight; }, 100);
+      }
+  }
+
+  // ==========================================
+  // === Student Schedule Calendar — Slider ===
+  // ==========================================
+
+  function getMonthInfo(offset) {
+      const now = new Date();
+      let y = now.getFullYear();
+      let m = now.getMonth() + offset;
+      while (m > 11) { m -= 12; y++; }
+      return { year: y, month: m };
+  }
+
+  function openSchedCalendar() {
+      schedCurrentMonthIdx = 0;
+      const modal = document.getElementById('sched-modal-overlay');
+      modal.style.display = 'flex';
+      buildSchedSlider();
+      updateSchedNav();
+  }
+
+  function closeSchedCalendar() {
+      document.getElementById('sched-modal-overlay').style.display = 'none';
+  }
+
+  function schedGoMonth(dir) {
+      const newIdx = schedCurrentMonthIdx + dir;
+      if (newIdx < 0 || newIdx >= SCHED_TOTAL_MONTHS) return;
+      schedCurrentMonthIdx = newIdx;
+      const track = document.getElementById('sched-slider-track');
+      const slideWidth = track.parentElement.offsetWidth;
+      track.style.transform = `translateX(-${schedCurrentMonthIdx * slideWidth}px)`;
+      updateSchedNav();
+  }
+
+  function updateSchedNav() {
+      const chiMonths = ["一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"];
+      const { year, month } = getMonthInfo(schedCurrentMonthIdx);
+      
+      document.getElementById('sched-month-title').innerText = `${year}.${String(month + 1).padStart(2, '0')}月`;
+
+      const prevBtn = document.getElementById('sched-prev-btn');
+      if (schedCurrentMonthIdx === 0) {
+          prevBtn.classList.add('disabled');
+          document.getElementById('sched-prev-label').innerText = '';
+      } else {
+          prevBtn.classList.remove('disabled');
+          const prev = getMonthInfo(schedCurrentMonthIdx - 1);
+          document.getElementById('sched-prev-label').innerText = chiMonths[prev.month];
+      }
+
+      const nextBtn = document.getElementById('sched-next-btn');
+      if (schedCurrentMonthIdx >= SCHED_TOTAL_MONTHS - 1) {
+          nextBtn.classList.add('disabled');
+          document.getElementById('sched-next-label').innerText = '';
+      } else {
+          nextBtn.classList.remove('disabled');
+          const next = getMonthInfo(schedCurrentMonthIdx + 1);
+          document.getElementById('sched-next-label').innerText = chiMonths[next.month];
+      }
+  }
+
+  function buildSchedSlider() {
+      const track = document.getElementById('sched-slider-track');
+      track.innerHTML = '';
+      track.style.transform = 'translateX(0)';
+
+      const now = new Date();
+      const todayStr = fmt(now);
+      const todayDayOfWeek = now.getDay();
+      
+      const todayStart = new Date(now);
+      todayStart.setHours(0,0,0,0);
+
+      const weekDayLabels = [
+          { eng: 'MON', chi: '一' }, { eng: 'TUE', chi: '二' }, { eng: 'WED', chi: '三' },
+          { eng: 'THU', chi: '四' }, { eng: 'FRI', chi: '五' }, { eng: 'SAT', chi: '六' },
+      ];
+
+      for (let mOffset = 0; mOffset < SCHED_TOTAL_MONTHS; mOffset++) {
+          const { year: targetY, month: targetM } = getMonthInfo(mOffset);
+          const isCurrentMonth = (mOffset === 0);
+
+          const slide = document.createElement('div');
+          slide.className = 'sched-slide';
+
+          const wdHeader = document.createElement('div');
+          wdHeader.className = 'sched-weekday-header';
+          weekDayLabels.forEach((wd, idx) => {
+              const head = document.createElement('div');
+              head.className = 'sched-weekday-head';
+              if (idx === 5) head.classList.add('sat-head');
+              if (isCurrentMonth && todayDayOfWeek >= 1 && todayDayOfWeek <= 6) {
+                  const todayColIdx = todayDayOfWeek - 1;
+                  if (idx === todayColIdx) head.classList.add('today-head');
+              }
+              head.innerHTML = `${wd.eng}<small>${wd.chi}</small>`;
+              wdHeader.appendChild(head);
+          });
+          slide.appendChild(wdHeader);
+
+          const grid = document.createElement('div');
+          grid.className = 'sched-cal-grid';
+
+          const firstDay = new Date(targetY, targetM, 1).getDay();
+          const daysInMonth = new Date(targetY, targetM + 1, 0).getDate();
+          let emptyCells = firstDay === 0 ? 6 : firstDay - 1;
+
+          for (let i = 0; i < emptyCells; i++) {
+              const empty = document.createElement('div');
+              empty.className = 'sched-cell empty';
+              grid.appendChild(empty);
+          }
+
+          for (let d = 1; d <= daysInMonth; d++) {
+              const currentD = new Date(targetY, targetM, d);
+              if (currentD.getDay() === 0) continue; 
+
+              const dateStr = `${targetY}-${String(targetM + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+              const cell = document.createElement('div');
+              cell.className = 'sched-cell';
+
+              const isPast = currentD < todayStart;
+              const dayEvents = currentStudentSchedule.filter(ev => fmt(new Date(ev.start)) === dateStr);
+
+              if (isPast) {
+                  cell.classList.add('past-day');
+              } else if (dateStr === todayStr) {
+                  cell.classList.add('today');
+              }
+
+              cell.onclick = function() {
+                  if (isPast || dayEvents.length === 0) return;
+                  
+                  document.querySelectorAll('.sched-cell').forEach(c => c.classList.remove('selected'));
+                  this.classList.add('selected');
+                  openClassDetailModal(dateStr);
+              };
+
+              let cellInner = `<div class="sched-date-num">${d}</div>`;
+
+              if (dayEvents.length > 0) {
+                  cell.classList.add('has-events');
+                  let timeLabels = dayEvents.map(ev => {
+                      let evD = new Date(ev.start);
+                      let h = evD.getHours();
+                      let m = evD.getMinutes();
+                      let ampm = h >= 12 ? 'pm' : 'am';
+                      h = h % 12 || 12;
+                      let minStr = m > 0 ? `:${m.toString().padStart(2, '0')}` : '';
+                      return `${h}${minStr}${ampm}`;
+                  });
+                  if (timeLabels.length > 2) timeLabels = [timeLabels[0], timeLabels[1], '...'];
+                  cellInner += `<div class="sched-cell-times">${timeLabels.join('<br>')}</div>`;
+              }
+
+              cell.innerHTML = cellInner;
+              grid.appendChild(cell);
+          }
+
+          slide.appendChild(grid);
+          track.appendChild(slide);
+      }
+
+      const slideWidth = track.parentElement.offsetWidth;
+      track.style.transform = `translateX(-${schedCurrentMonthIdx * slideWidth}px)`;
+  }
+
+  window.addEventListener('resize', () => {
+      const track = document.getElementById('sched-slider-track');
+      if (!track) return;
+      const slideWidth = track.parentElement.offsetWidth;
+      track.style.transition = 'none';
+      track.style.transform = `translateX(-${schedCurrentMonthIdx * slideWidth}px)`;
+      setTimeout(() => { track.style.transition = ''; }, 50);
+  });
+
+  function openClassDetailModal(dStr) {
+      const dayEvents = currentStudentSchedule.filter(ev => fmt(new Date(ev.start)) === dStr).sort((a,b) => new Date(a.start) - new Date(b.start));
+      if(dayEvents.length === 0) return;
+
+      let html = '<h3 class="cd-header">課程細節</h3>';
+      dayEvents.forEach(ev => {
+          const d = new Date(ev.start);
+          const yyyy = d.getFullYear();
+          const mm = String(d.getMonth() + 1).padStart(2, '0');
+          const dd = String(d.getDate()).padStart(2, '0');
+          const dayEng = dayNames[d.getDay()];
+          const dayChi = chiDayNames[d.getDay()];
+          let h = d.getHours();
+          const mStr = String(d.getMinutes()).padStart(2, '0');
+          const ampm = h >= 12 ? 'pm' : 'am';
+          let period = '上午';
+          if(h >= 12 && h < 18) period = '下午';
+          if(h >= 18) period = '晚上';
+          h = h % 12 || 12;
+          const displayDate = `${yyyy}.${mm}.${dd} ${dayEng} 週${dayChi} ${period}${h}:${mStr}${ampm}`;
+          const eventId = ev.id || ev.eventId || "undefined";
+          const titleEscaped = (ev.title || "").replace(/'/g, "\\'");
+          const timestamp = d.getTime();
+          const nowTs = new Date().getTime();
+          const isCancellable = (timestamp - nowTs) >= (24 * 60 * 60 * 1000);
+
+          html += `<div class="cd-item">`;
+          html += `<div class="cd-date">${displayDate}</div>`;
+          html += `<div class="cd-title">${ev.title}</div>`;
+          html += `<div class="cd-length">⏱ 課程時長: 50 分鐘</div>`;
+          if (isCancellable) {
+              html += `<button onclick="openAuthModal('${eventId}', '${timestamp}', '${titleEscaped}')" class="cancel-class-btn">取消此課程 <span style="display:block; margin-top:2px; font-weight:normal;">(系統支援課前24小時前)</span></button>`;
+          } else {
+              html += `<button disabled class="cancel-class-btn" style="background:#f5f5f5; color:#999; border-color:#ddd; cursor:not-allowed;">無法取消 <span style="display:block; margin-top:2px; font-weight:normal;">(距離開課不足24小時)</span></button>`;
+          }
+          html += `</div>`;
+      });
+
+      document.getElementById('class-detail-content').innerHTML = html;
+      document.getElementById('class-detail-modal').style.display = 'flex';
+  }
+
+  function closeClassDetailModal() { document.getElementById('class-detail-modal').style.display = 'none'; }
+
+  let tempCancelData = null;
+
+  function openAuthModal(eventId, timestamp, eventTitle) {
+      tempCancelData = { eventId, timestamp, eventTitle };
+      document.getElementById('auth-email-input').value = '';
+      const errEl = document.getElementById('auth-error-msg');
+      errEl.style.display = 'none'; errEl.innerHTML = '';
+      document.getElementById('auth-email-input').classList.remove('error');
+      document.getElementById('auth-modal').style.display = 'flex';
+  }
+  function closeAuthModal() { document.getElementById('auth-modal').style.display = 'none'; tempCancelData = null; }
+  function showAuthError(msg) {
+      const errEl = document.getElementById('auth-error-msg');
+      errEl.innerHTML = msg; errEl.style.display = 'block';
+      document.getElementById('auth-email-input').classList.add('error');
+  }
+
+  function submitAuthCancel() {
+      const emailInput = document.getElementById('auth-email-input').value.trim();
+      const errorMsg = `您的 Email 與當時預約時的 Email 不符合，請再次輸入正確 Email。<br>或直接與 <a href="https://tonyonlineenglish.netlify.app" target="_blank">Tony 聯繫</a>。`;
+      if (!emailInput) { showAuthError('請輸入 Email。'); return; }
+      const { eventId, timestamp, eventTitle } = tempCancelData;
+      const errEl = document.getElementById('auth-error-msg');
+      errEl.style.display = 'none';
+      document.getElementById('auth-email-input').classList.remove('error');
+      const loadingOverlay = document.getElementById('auth-loading-overlay');
+      loadingOverlay.style.display = 'flex';
+      const url = `${API_URL}?action=ajaxCancel&eid=${encodeURIComponent(eventId)}&ts=${timestamp}&title=${encodeURIComponent(eventTitle)}&email=${encodeURIComponent(emailInput)}`;
+      fetch(url)
+      .then(res => res.json())
+      .then(data => {
+          loadingOverlay.style.display = 'none';
+          if(data.success) {
+              closeAuthModal(); closeClassDetailModal();
+              showNotice("取消成功", "課程已成功從日曆中移除，並已寄送確認信給您。");
+              currentStudentSchedule = currentStudentSchedule.filter(ev => {
+                  return new Date(ev.start).getTime() !== parseInt(timestamp);
+              });
+              buildSchedSlider();
+          } else {
+              showAuthError(errorMsg);
+          }
+      })
+      .catch(() => {
+          loadingOverlay.style.display = 'none';
+          showAuthError('網路連線異常，請稍後再試。');
+      });
+  }
 </script>
 </body>
 </html>
