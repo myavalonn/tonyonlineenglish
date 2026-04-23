@@ -431,13 +431,24 @@
         .clear-all-btn { padding: 10px; margin-bottom: 10px; font-size: 14px; }
         .simple-slot-grid.few-slots { grid-template-columns: repeat(2, 1fr) !important; }
         .simple-slot-grid.few-slots .simple-slot-btn { padding: 20px 0; font-size: 20px; }
+        
+        /* 手機版 規範視窗 置中顯示 */
         .rule-popover {
+            position: fixed !important;
+            top: 50% !important;
+            left: 50% !important;
+            transform: translate(-50%, -50%) !important;
+            width: 85% !important;
+            max-width: 320px !important;
+            z-index: 9999 !important;
             font-size: 17px !important;
             line-height: 1.6 !important;
-            padding: 20px 16px 16px !important;
-            width: 280px !important;
+            padding: 25px 20px 20px !important;
+            border-radius: 20px !important;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3) !important;
         }
         .rule-popover .rule-logo { width: 60px !important; }
+        
         #class-detail-modal .result-content { position: relative; }
         #class-detail-modal .modal-close-x {
             position: absolute !important;
@@ -569,7 +580,7 @@
     .bump-effect { animation: bump-anim 0.3s ease-out; }
 
     /* =========================================================
-       CART BUTTON — ENLARGED & BADGE PUSHED OUT
+       CART BUTTON — ENLARGED FOR MOBILE & PUSHED OUT BADGE
        ========================================================= */
     @keyframes glow-cart-mobile {
         from { box-shadow: 0 4px 12px rgba(0,0,0,0.2), 0 0 10px rgba(0,122,255,0.5); }
@@ -582,10 +593,11 @@
 
     #floating-cart-btn {
         position: fixed; bottom: 30px; right: 20px; z-index: 999;
-        width: 80px; height: 80px;
+        /* Mobile: Enlarged cart */
+        width: 100px; height: 100px;
         background: #ffffff;
         display: none; cursor: pointer; transition: transform 0.2s, opacity 0.2s;
-        border: none; padding: 20px; border-radius: 50%; box-sizing: border-box;
+        border: none; padding: 24px; border-radius: 50%; box-sizing: border-box;
         animation: glow-cart-mobile 1.5s infinite alternate;
     }
     #floating-cart-btn.in-cal-view {
@@ -597,36 +609,41 @@
     #floating-cart-btn .cal-icon-svg { width: 100%; height: 100%; object-fit: contain; }
     #floating-cart-btn.show { display: block; }
 
+    /* Mobile cart badge — Larger and pushed out */
     .cart-badge {
-        position: absolute; top: -6px; right: -6px; background: #ff5400; color: white;
-        width: 28px; height: 28px; border-radius: 50%; font-size: 15px; font-weight: bold;
+        position: absolute; top: -4px; right: -4px; background: #ff5400; color: white;
+        width: 28px; height: 28px; border-radius: 50%; font-size: 16px; font-weight: bold;
         display: flex; justify-content: center; align-items: center; border: 2px solid white;
         box-shadow: 0 2px 6px rgba(0,0,0,0.2);
     }
     
     #floating-cart-btn.in-cal-view .cart-badge {
-        top: -8px; right: -8px;
+        top: -6px; right: -6px;
         width: 22px; height: 22px; font-size: 12px; border-width: 1.5px;
     }
 
+    /* Tablet cart */
     @media (min-width: 768px) and (max-width: 1023px) {
         #floating-cart-btn {
             width: 100px; height: 100px; padding: 25px;
-            bottom: 40px; right: 30px; border-radius: 50%;
+            bottom: 40px; right: 30px;
+            border-radius: 50%;
             animation: glow-cart-mobile 1.5s infinite alternate;
         }
-        .cart-badge { width: 30px; height: 30px; font-size: 16px; top: -6px; right: -6px; border-width: 2px; }
+        .cart-badge { width: 30px; height: 30px; font-size: 16px; top: -4px; right: -4px; border-width: 2px; }
     }
 
+    /* Desktop cart */
     @media (min-width: 1024px) {
         #floating-cart-btn {
             width: 110px; height: 110px; padding: 28px;
-            bottom: 50px; right: 40px; border-radius: 50%;
+            bottom: 50px; right: 40px;
+            border-radius: 50%;
             animation: glow-cart-desktop 1.5s infinite alternate;
         }
         .cart-badge {
-            width: 34px; height: 34px; font-size: 19px;
-            top: -6px; right: -6px; border-width: 3px;
+            width: 32px; height: 32px; font-size: 18px;
+            top: -4px; right: -4px; border-width: 3px;
         }
     }
 
@@ -670,16 +687,17 @@
         display: flex; justify-content: center; align-items: center; border: 2px solid #fff;
     }
 
+    /* Mobile Chat Window: ~60vh initially, expands to 85vh */
     #peggy-window {
         font-size: 15px;
         position: fixed;
         bottom: 0; left: 0;
         width: 100vw;
-        height: 55vh; 
+        height: 60vh; 
         max-height: 60vh;
         background: #fff;
         border-radius: 24px 24px 0 0; 
-        box-shadow: 0 -10px 40px rgba(0,0,0,0.3);
+        box-shadow: 0 -10px 40px rgba(0,0,0,0.3); 
         display: flex; flex-direction: column; z-index: 1001; overflow: hidden;
         transform: translateY(100%); opacity: 0; pointer-events: none;
         transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), height 0.3s, max-height 0.3s;
@@ -696,12 +714,23 @@
     .peggy-body { position: relative; flex: 1; overflow-y: auto; padding: 1.1em; background: #f4f6f9; display: flex; flex-direction: column; gap: 0.85em; scroll-behavior: smooth; }
     
     .peggy-footer {
-        padding: 0.85em; background: #fff; border-top: 1px solid #eee;
-        display: flex; flex-direction: row; gap: 0.6em; align-items: center;
+        padding: 0.85em;
+        background: #fff;
+        border-top: 1px solid #eee;
+        display: flex;
+        flex-direction: row;
+        gap: 0.6em;
+        align-items: center;
     }
     .peggy-footer input {
-        flex: 1; padding: 0.85em 1.1em; border: 1px solid #ddd; border-radius: 2em;
-        outline: none; font-size: 1.07em; background: #f9f9f9; transition: border-color 0.2s;
+        flex: 1;
+        padding: 0.85em 1.1em;
+        border: 1px solid #ddd;
+        border-radius: 2em;
+        outline: none;
+        font-size: 1.07em;
+        background: #f9f9f9;
+        transition: border-color 0.2s;
     }
     .peggy-footer input:focus { border-color: var(--blue-main); background: #fff; }
     .peggy-footer button {
@@ -717,8 +746,11 @@
 
     @media (min-width: 768px) {
         #peggy-window {
-            font-size: 21px; position: fixed; bottom: 120px; left: 40px;
-            width: 510px; height: 75vh; max-height: 800px; border-radius: 30px;
+            font-size: 21px;
+            position: fixed;
+            bottom: 120px; left: 40px;
+            width: 510px; height: 75vh; max-height: 800px;
+            border-radius: 30px;
         }
         #peggy-window.expanded { height: 75vh; max-height: 800px; }
         .peggy-header { border-radius: 30px 30px 0 0; }
@@ -734,8 +766,10 @@
     }
     @media (min-width: 1024px) {
         #peggy-window, #peggy-window.expanded { 
-            font-size: 28px; bottom: 120px; left: 40px; 
-            width: 680px; height: 80vh; max-height: 1000px; border-radius: 40px;
+            font-size: 28px; 
+            bottom: 120px; left: 40px; 
+            width: 680px; height: 80vh; max-height: 1000px; 
+            border-radius: 40px;
         }
         .peggy-header { border-radius: 40px 40px 0 0; }
     }
@@ -756,50 +790,82 @@
         box-sizing: border-box;
     }
     .sched-modal-container {
-        width: 100%; height: 100vh; background: #fff;
+        width: 100%; height: 100vh;
+        background: #fff;
         padding: 0; box-sizing: border-box; position: relative;
         display: flex; flex-direction: column;
     }
 
     .sched-top-bar {
         display: flex; align-items: center; justify-content: space-between;
-        padding: 14px 16px 10px; background: #fff; border-bottom: 1px solid #f0f0f0;
-        flex-shrink: 0; gap: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); flex-wrap: nowrap;
+        padding: 14px 16px 10px;
+        background: #fff;
+        border-bottom: 1px solid #f0f0f0;
+        flex-shrink: 0;
+        gap: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        flex-wrap: nowrap;
     }
     .sched-back-btn {
         background: #f0f0f0; border: none; border-radius: 20px;
         padding: 8px 16px; font-size: 15px; font-weight: bold; color: #333;
-        cursor: pointer; white-space: nowrap; flex-shrink: 0; transition: background 0.2s;
+        cursor: pointer; white-space: nowrap; flex-shrink: 0;
+        transition: background 0.2s;
     }
     .sched-back-btn:active { background: #ddd; }
 
-    .sched-month-nav { display: flex; align-items: center; justify-content: center; gap: 12px; flex: 1; min-width: 0; }
+    .sched-month-nav {
+        display: flex; align-items: center; justify-content: center;
+        gap: 12px; flex: 1; min-width: 0;
+    }
     .sched-month-nav-btn {
         display: flex; flex-direction: column; align-items: center; justify-content: center;
         background: none; border: 2px solid #ddd; border-radius: 12px;
-        padding: 6px 14px; cursor: pointer; transition: all 0.2s; flex-shrink: 0; min-width: 64px;
+        padding: 6px 14px; cursor: pointer; transition: all 0.2s;
+        flex-shrink: 0; min-width: 64px;
     }
     .sched-month-nav-btn:hover { border-color: var(--pill-active); background: #fff5f0; }
     .sched-month-nav-btn:active { transform: scale(0.95); }
     .sched-month-nav-btn.disabled { opacity: 0.2; pointer-events: none; }
-    
-    .sched-nav-arrow { font-size: 18px; font-weight: 900; color: #111; line-height: 1; }
-    .sched-nav-month-label { font-size: 13px; font-weight: 900; color: #111; line-height: 1; margin-top: 2px; }
+    .sched-nav-arrow { font-size: 18px; font-weight: 900; color: #333; line-height: 1; }
+    .sched-nav-month-label { font-size: 11px; font-weight: bold; color: #888; line-height: 1; margin-top: 2px; }
     .sched-month-nav-btn:hover .sched-nav-arrow,
     .sched-month-nav-btn:hover .sched-nav-month-label { color: var(--pill-active); }
+
     .sched-current-month-title {
-        font-size: 18px; font-weight: 900; color: #111;
-        text-align: center; line-height: 1.2; flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+        font-size: 17px; font-weight: 800; color: #222;
+        text-align: center; line-height: 1.2; flex: 1; white-space: nowrap;
+        overflow: hidden; text-overflow: ellipsis;
     }
 
-    .sched-slider-wrapper { flex: 1; overflow: hidden; position: relative; }
-    .sched-slider-track { display: flex; height: 100%; transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1); will-change: transform; }
-    .sched-slide { min-width: 100vw; width: 100vw; height: 100%; overflow-y: auto; box-sizing: border-box; padding: 12px 12px 60px; flex-shrink: 0; }
+    .sched-slider-wrapper {
+        flex: 1; overflow: hidden; position: relative;
+    }
+    .sched-slider-track {
+        display: flex; height: 100%;
+        transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        will-change: transform;
+    }
+    .sched-slide {
+        min-width: 100vw; width: 100vw; height: 100%;
+        overflow-y: auto; box-sizing: border-box;
+        padding: 12px 12px 60px;
+        flex-shrink: 0;
+    }
 
-    .sched-weekday-header { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; text-align: center; margin-bottom: 6px; padding: 0 2px; }
-    .sched-weekday-head { color: #555; font-size: 13px; font-weight: 900; padding-bottom: 4px; display: flex; flex-direction: column; line-height: 1.2; align-items: center; justify-content: center; }
+    .sched-weekday-header {
+        display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px;
+        text-align: center; margin-bottom: 6px; padding: 0 2px;
+    }
+    .sched-weekday-head {
+        color: #555; font-size: 13px; font-weight: 900; padding-bottom: 4px;
+        display: flex; flex-direction: column; line-height: 1.2;
+        align-items: center; justify-content: center;
+    }
     .sched-weekday-head small { font-size: 11px; opacity: 0.7; }
-    .sched-weekday-head.today-head { background-color: var(--pill-active); color: #fff; border-radius: 8px; padding: 4px 2px; }
+    .sched-weekday-head.today-head {
+        background-color: var(--pill-active); color: #fff; border-radius: 8px; padding: 4px 2px;
+    }
     .sched-weekday-head.today-head small { color: #fff; opacity: 1; }
     @media (max-width: 767px) {
         .sched-weekday-head.sat-head { color: #d32f2f; }
@@ -807,38 +873,64 @@
         .sched-weekday-head.sat-head.today-head { color: #fff; }
     }
 
-    .sched-cal-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px; text-align: center; margin-bottom: 0; padding: 0 2px; }
+    .sched-cal-grid {
+        display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px;
+        text-align: center; margin-bottom: 0; padding: 0 2px;
+    }
     .sched-cell {
-        aspect-ratio: 1 / 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
-        padding-top: 8px; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer;
-        transition: 0.2s; color: #333; position: relative; background: #fff; border: 1px solid #eee; box-sizing: border-box;
+        aspect-ratio: 1 / 1;
+        display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+        padding-top: 8px;
+        border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer;
+        transition: 0.2s; color: #333; position: relative; background: #fff; border: 1px solid #eee;
+        box-sizing: border-box;
     }
     .sched-cell:hover { background: #f0f0f0; }
     .sched-cell.empty { border: none !important; background: transparent !important; cursor: default; visibility: hidden; }
     
+    /* Past days disabled styling */
     .sched-cell.past-day {
         background-color: #f5f5f5 !important; color: #b0b0b0 !important; border-color: #e0e0e0 !important; cursor: default !important; pointer-events: none;
     }
 
-    .sched-cell.today { background-color: #e3f2fd !important; color: #0277bd !important; border-color: #b3e5fc !important; box-shadow: 0 0 10px rgba(3, 169, 244, 0.2) !important; }
+    /* TODAY (無課程) */
+    .sched-cell.today {
+        background-color: #e3f2fd !important;
+        color: #0277bd !important;
+        border-color: #b3e5fc !important;
+        box-shadow: 0 0 10px rgba(3, 169, 244, 0.2) !important;
+    }
     .sched-cell.today .sched-date-num { color: #0277bd; font-weight: 900; }
     .sched-cell.today .sched-cell-times { color: #0277bd !important; }
 
+    /* Today AND has events */
     .sched-cell.today.has-events {
-        background: linear-gradient(135deg, #0277bd, #00bcd4) !important; border-color: #0277bd !important; color: #fff !important;
-        box-shadow: 0 0 16px rgba(2, 119, 189, 0.6) !important; animation: todayCellGlow 2s ease-in-out infinite alternate;
+        background: linear-gradient(135deg, #0277bd, #00bcd4) !important;
+        border-color: #0277bd !important;
+        color: #fff !important;
+        box-shadow: 0 0 16px rgba(2, 119, 189, 0.6) !important;
+        animation: todayCellGlow 2s ease-in-out infinite alternate;
     }
-    @keyframes todayCellGlow { from { box-shadow: 0 0 8px rgba(2, 119, 189, 0.4); } to { box-shadow: 0 0 20px rgba(2, 119, 189, 0.9); } }
+    @keyframes todayCellGlow {
+        from { box-shadow: 0 0 8px rgba(2, 119, 189, 0.4); }
+        to   { box-shadow: 0 0 20px rgba(2, 119, 189, 0.9); }
+    }
     .sched-cell.today.has-events .sched-date-num { color: #fff; }
     .sched-cell.today.has-events .sched-cell-times { color: #fff !important; text-shadow: 0 1px 2px rgba(0,0,0,0.2); }
 
-    .sched-cell.has-events:not(.today) { background-color: #fff3cd !important; border-color: #ffeeba !important; color: #856404 !important; }
+    /* Future has-events */
+    .sched-cell.has-events:not(.today) {
+        background-color: #fff3cd !important;
+        border-color: #ffeeba !important;
+        color: #856404 !important;
+    }
     .sched-cell.has-events:not(.today) .sched-cell-times { color: #d32f2f !important; }
     
     .sched-cell.selected:not(.today),
     .sched-cell.has-events.selected:not(.today) { 
         background: var(--selected-bg) !important; color: #fff !important; 
-        box-shadow: 0 4px 10px rgba(29, 43, 138, 0.3) !important; border-color: var(--selected-bg) !important; 
+        box-shadow: 0 4px 10px rgba(29, 43, 138, 0.3) !important; 
+        border-color: var(--selected-bg) !important; 
     }
     .sched-cell.selected:not(.today) .sched-cell-times { color: #fff !important; }
     
@@ -848,40 +940,64 @@
     .cancel-class-btn {
         background: #fff0f0; color: #d32f2f; border: 1px solid #ffcdd2;
         padding: 12px 10px; border-radius: 8px; font-weight: bold; font-size: 16px;
-        cursor: pointer; margin-top: 15px; width: 100%; transition: 0.2s; text-align: center;
+        cursor: pointer; margin-top: 15px; width: 100%; transition: 0.2s;
+        text-align: center;
     }
     .cancel-class-btn:hover:not(:disabled) { background: #ffebee; }
     .cancel-class-btn:active:not(:disabled) { transform: scale(0.98); }
 
     @media (min-width: 768px) {
-        .sched-slide { min-width: 100vw; width: 100vw; padding: 20px 30px 80px; }
+        .sched-slide {
+            min-width: 100vw; width: 100vw;
+            padding: 20px 30px 80px;
+        }
         .sched-cell { font-size: 22px; padding-top: 10px; }
         .sched-cell-times { font-size: 13px; }
         .sched-weekday-head { font-size: 18px; }
         .sched-weekday-head small { font-size: 14px; }
         .sched-top-bar { padding: 18px 24px 14px; }
         .sched-back-btn { font-size: 18px; padding: 10px 22px; border-radius: 24px; }
-        .sched-current-month-title { font-size: 24px; }
+        .sched-current-month-title { font-size: 22px; }
         .sched-month-nav-btn { padding: 8px 18px; border-radius: 14px; min-width: 80px; }
         .sched-nav-arrow { font-size: 22px; }
-        .sched-nav-month-label { font-size: 14px; }
+        .sched-nav-month-label { font-size: 12px; }
     }
 
     @media (min-width: 1024px) {
-        .sched-modal-overlay { align-items: center; justify-content: center; background: rgba(0,0,0,0.5); }
-        .sched-modal-container { width: 66vw; max-width: 900px; height: 80vh; border-radius: 24px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.35); }
-        .sched-slide { min-width: 100%; width: 100%; padding: 24px 32px 60px; }
+        .sched-modal-overlay {
+            background: rgba(0,0,0,0.5);
+            align-items: center;
+            justify-content: center;
+        }
+        .sched-modal-container {
+            width: 66vw;
+            max-width: 900px;
+            height: 80vh;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+        }
+        .sched-slide {
+            min-width: 100%;
+            width: 100%;
+            padding: 24px 32px 60px;
+        }
         .sched-slider-wrapper { overflow: hidden; }
-        .sched-cell { aspect-ratio: 1 / 1; font-size: 24px; border-radius: 16px; padding-top: 10px; }
+        .sched-cell {
+            aspect-ratio: 1 / 1;
+            font-size: 24px;
+            border-radius: 16px;
+            padding-top: 10px;
+        }
         .sched-cell-times { font-size: 12px; margin-top: 3px; }
         .sched-weekday-head { font-size: 20px; }
         .sched-weekday-head small { font-size: 14px; }
         .sched-top-bar { padding: 20px 30px 16px; }
         .sched-back-btn { font-size: 20px; padding: 12px 24px; }
-        .sched-current-month-title { font-size: 26px; }
+        .sched-current-month-title { font-size: 24px; }
         .sched-month-nav-btn { padding: 10px 22px; min-width: 100px; border-radius: 16px; }
         .sched-nav-arrow { font-size: 26px; }
-        .sched-nav-month-label { font-size: 16px; }
+        .sched-nav-month-label { font-size: 13px; }
     }
 
     /* =========================================================
@@ -909,20 +1025,11 @@
     .cal-head small { font-size: 10px; opacity: 0.7; }
     .cal-head.active-day { background-color: var(--pill-active); color: #ffffff; border-radius: 8px; padding-top: 5px; }
     .cal-head.active-day small { color: #ffffff; opacity: 1; }
-    
     @media (max-width: 767px) {
         .cal-head.sat-head { color: #d32f2f !important; }
         .cal-head.sat-head small { color: #d32f2f !important; opacity: 0.85; }
         .cal-head.sat-head.active-day { color: #fff !important; }
         .cal-head.sat-head.active-day small { color: #fff !important; }
-    }
-    
-    @media (min-width: 1024px) {
-        .cal-head { 
-            font-size: 24px; padding: 15px 0; margin-bottom: 15px; 
-            background: #f4f6f9; border-radius: 12px; border: 1px solid #e0e0e0; 
-        }
-        .cal-head.active-day { padding-top: 15px; }
     }
     
     .cal-cell {
@@ -999,7 +1106,7 @@
         .simple-slot-grid.few-slots { grid-template-columns: repeat(2, 1fr) !important; }
         .simple-slot-grid.few-slots .simple-slot-btn { padding: 35px 0 !important; font-size: 28px !important; }
         .cal-duration-hint { background: #fff; color: #333; border: 2px solid #ddd; box-shadow: 0 2px 5px rgba(0,0,0,0.05); font-size: 16px; padding: 10px 20px; order: 3; margin-right: 0; margin-left: 10px; }
-        .cal-top-right-group .toggle-wrapper { order: 1; }
+        .cal-top-right-group .multi-booking-badge { order: 1; }
         .cal-top-right-group .rule-info-wrapper { order: 2; }
     }
 
@@ -1009,6 +1116,14 @@
         .cal-left-col { flex: 1; display: flex; flex-direction: column; }
         #cal-slots-area { flex: 1; border-top: none; border-left: 1px solid #e0e0e0; padding-left: 40px; margin-top: 0; padding-top: 125px; height: calc(100vh - 80px); overflow-y: auto; padding-bottom: 100px; }
         .cal-cell { height: auto; aspect-ratio: 1.2 / 1; font-size: 40px; border-radius: 24px; }
+        
+        /* Desktop Flat Headers Fix */
+        .cal-head { 
+            font-size: 24px; padding: 15px 0; margin-bottom: 15px; 
+            background: #f4f6f9; border-radius: 12px; border: 1px solid #e0e0e0; 
+        }
+        .cal-head.active-day { padding-top: 15px; }
+
         .cal-head small { font-size: 20px; }
         .simple-slot-grid { grid-template-columns: repeat(2, 1fr); }
         .simple-slot-btn { 
@@ -1034,7 +1149,7 @@
     @media (max-width: 400px) { .full-date-display { font-size: 18px; } }
 
     /* =========================================================
-       PEGGY CALENDAR ICON — 純圖示圓形按鈕 & 放大
+       PEGGY CALENDAR ICON — 放大閃爍圖示
        ========================================================= */
     .highlight-cal-btn {
         background: linear-gradient(135deg, #e0f7fa, #b2ebf2);
@@ -1144,19 +1259,7 @@
         <div class="duration-hint">50分/堂</div>
     </div>
     <div class="controls-container">
-        <!-- Toggle badge: completely static/unclickable after intro animation -->
-        <div class="toggle-wrapper neutral" id="main-mode-toggle">
-            <div class="toggle-bg"></div>
-            <div class="toggle-labels">
-                <div class="toggle-half">
-                    <span class="toggle-label label-single">單堂預約</span>
-                </div>
-                <span class="toggle-separator">✕</span>
-                <div class="toggle-half">
-                    <span class="toggle-label label-multi">多堂預約</span>
-                </div>
-            </div>
-        </div>
+        <div class="multi-booking-badge" id="main-mode-toggle">一次多堂預約</div>
         <button class="cal-btn-trigger" onclick="openCalendar()">📅 月曆</button>
         <div class="rule-info-wrapper">
              <div class="rule-info-btn" onclick="toggleRules('mob-rules')"><span class="btn-exclaim">!</span><span class="btn-label">規範</span></div>
@@ -1211,11 +1314,27 @@
 </div>
 
 <button id="floating-cart-btn" onclick="toggleCartForm()">
-    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="cal-icon-svg">
-        <path fill="currentColor" d="M19,4H18V2H16V4H8V2H6V4H5A2,2 0 0,0 3,6V20A2,2 0 0,0 5,22H19A2,2 0 0,0 21,20V6A2,2 0 0,0 19,4M19,20H5V10H19V20M19,8H5V6H19V8Z" />
-    </svg>
+    <img src="https://ik.imagekit.io/lql1uveoc/Booking%20Website%20%E9%A0%90%E7%B4%84/online-booking.png" class="cal-icon-svg" alt="cart">
     <span class="cart-badge" id="cart-count">0</span>
 </button>
+
+<!-- === Peggy Chatbot Window === -->
+<div id="peggy-window">
+    <div class="peggy-header">
+        <div style="display:flex; align-items:center; gap:0.6em;">
+            <div class="peggy-img-wrapper" style="width:2.2em; height:2.2em; border:2px solid #fff; flex-shrink:0;">
+                <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/christina-wocintechchat-com-m-0Zx1bDv5BNY-unsplash.jpg?updatedAt=1776614639182" class="peggy-img-crop" alt="Peggy">
+            </div>
+            <span>Peggy</span>
+        </div>
+        <button onclick="togglePeggy()" style="background:none; border:none; color:#fff; font-size:1.5em; cursor:pointer; line-height:1;">&times;</button>
+    </div>
+    <div class="peggy-body" id="peggy-body"></div>
+    <div class="peggy-footer">
+        <input type="text" id="peggy-input" placeholder="輸入您的英文名字..." onkeypress="handlePeggyEnter(event)">
+        <button onclick="sendPeggyMessage()">查詢</button>
+    </div>
+</div>
 
 <div id="p-form" class="page-form">
   <div class="form-box">
@@ -1241,19 +1360,7 @@
                     <button class="back-btn" onclick="closeCalendar()" style="margin-bottom:0;">✕</button>
                     <div style="display:flex; align-items:center; gap: 10px;" class="cal-top-right-group">
                         <div class="cal-duration-hint">50分/堂</div>
-                        <!-- Calendar toggle badge: static after intro -->
-                        <div class="toggle-wrapper neutral" id="cal-mode-toggle">
-                            <div class="toggle-bg"></div>
-                            <div class="toggle-labels">
-                                <div class="toggle-half">
-                                    <span class="toggle-label label-single">單堂預約</span>
-                                </div>
-                                <span class="toggle-separator">✕</span>
-                                <div class="toggle-half">
-                                    <span class="toggle-label label-multi">多堂預約</span>
-                                </div>
-                            </div>
-                        </div>
+                        <div class="multi-booking-badge" id="cal-mode-toggle">一次多堂預約</div>
                         <div class="rule-info-wrapper">
                              <div class="rule-info-btn" onclick="toggleRules('cal-rules')"><span class="btn-exclaim">!</span><span class="btn-label">規範</span></div>
                              <div class="rule-popover" id="cal-rules">
@@ -1279,7 +1386,7 @@
                 <div class="cal-nav">
                     <button class="cal-nav-btn" id="cal-prev-btn" onclick="changeCalMonth(-1)">❮</button>
                     <div id="cal-title"></div>
-                    <button class="cal-nav-btn" onclick="changeCalMonth(1)">❯</button>
+                    <button class="cal-nav-btn" id="cal-next-btn" onclick="changeCalMonth(1)">❯</button>
                 </div>
                 <div class="cal-grid" id="cal-head-row">
                     <div class="cal-head">MON<small>一</small></div>
@@ -1317,12 +1424,11 @@
       if (modalCloseCallback) { modalCloseCallback(); modalCloseCallback = null; }
   }
 
-  // 自動捲動並精準對齊控制列 (解決不同裝置尺寸偏移量不同的問題)
-  function scrollToWidget() {
-      const header = document.querySelector('.header-section');
-      if (header) {
-          // 使用內建的 scrollIntoView，讓瀏覽器自動計算各裝置的精準高度並對齊頂部
-          header.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  // 精準對齊預約控制列 (不再用 fixed offset)
+  function alignToHeader() {
+      const calHeader = document.querySelector('.header-section');
+      if (calHeader) {
+          calHeader.scrollIntoView({ behavior: 'smooth', block: 'start' });
       } else {
           window.scrollTo({ top: 0, behavior: 'smooth' });
       }
@@ -1352,7 +1458,7 @@
               setTimeout(() => { 
                   overlay.style.display = "none"; 
                   playIntroAnimation(); 
-                  scrollToWidget();
+                  alignToHeader();
               }, 500);
           }
       }
@@ -1366,7 +1472,7 @@
               o.style.opacity="0"; o.style.pointerEvents="none"; 
               setTimeout(function(){ 
                   o.style.display="none"; 
-                  scrollToWidget();
+                  alignToHeader();
               }, 500); 
           }
       }, 6000);
@@ -1377,8 +1483,6 @@
   let cachedData={}, loadedDaysCount=0, selectedDateStr="", selectedSlots=[];
   const dayNames=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"], chiDayNames=["日","一","二","三","四","五","六"];
   const monthNamesEng=["Jan","Feb","March","April","May","June","July","Aug","Sept","Oct","Nov","Dec"];
-  const monthNamesShort=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
-  
   let hotPanelShown=false, calYear, calMonth;
   let limitDate = new Date(); limitDate.setDate(limitDate.getDate()+MAX_DAYS); limitDate.setHours(23,59,59,999);
 
@@ -1438,30 +1542,23 @@
   };
 
   function playIntroAnimation() {
-      const toggleWrappers = document.querySelectorAll('.toggle-wrapper');
+      const badges = document.querySelectorAll('.multi-booking-badge');
       const infoBtns = document.querySelectorAll('.rule-info-btn');
-      if (toggleWrappers.length === 0) return;
-      let count = 0; const maxFlickers = 12; const speed = 100;
+      if (badges.length === 0) return;
+      let count = 0; const maxFlickers = 6; const speed = 200;
       const interval = setInterval(() => {
-          const mode = (count % 2 === 0) ? 'multi' : 'single';
-          applyModeToUI(mode, true); count++;
+          badges.forEach(b => b.classList.toggle('pulse-emphasis'));
+          count++;
           if (count >= maxFlickers) {
               clearInterval(interval);
-              toggleWrappers.forEach(el => el.classList.add('pulse-emphasis'));
+              badges.forEach(b => b.classList.add('pulse-emphasis'));
               infoBtns.forEach(btn => btn.classList.add('pulse-emphasis-icon'));
               setTimeout(() => {
-                  toggleWrappers.forEach(el => el.classList.remove('pulse-emphasis'));
+                  badges.forEach(b => b.classList.remove('pulse-emphasis'));
                   infoBtns.forEach(btn => btn.classList.remove('pulse-emphasis-icon'));
-                  setTimeout(() => { applyModeToUI('neutral', true); }, 300);
               }, 1200);
           }
       }, speed);
-  }
-
-  function applyModeToUI(mode, silent=false) {
-      document.querySelectorAll('.toggle-wrapper').forEach(wrapper => {
-          wrapper.className = `toggle-wrapper ${mode}`;
-      });
   }
 
   function toggleRules(id) {
@@ -1635,14 +1732,13 @@
   }
 
   function openCalendar() {
-      scrollToWidget(); 
+      alignToHeader();
       
       if(!selectedDateStr) selectedDateStr=fmt(new Date());
       renderCalGrid(); 
       jumpToDate(selectedDateStr);
       const modal=document.getElementById("cal-modal"); modal.classList.add("active");
-      modal.scrollTop = 0; 
-      updateBottomBar();
+      modal.scrollTop=0; updateBottomBar();
       
       setTimeout(() => {
           if (!peggyInitialized) {
@@ -1911,7 +2007,7 @@
   }
   function selectDate(dStr){
     selectedDateStr=dStr;selectDatePillUI(dStr);renderSlots(dStr);
-    if(window.innerWidth<768&&!document.getElementById('cal-modal').classList.contains('active')) scrollToWidget();
+    if(window.innerWidth<768&&!document.getElementById('cal-modal').classList.contains('active')) alignToHeader();
   }
   function selectDatePillUI(dStr){
     document.querySelectorAll(".date-pill").forEach(e=>e.classList.remove("active"));
@@ -2147,7 +2243,6 @@
               html += `<div style="margin-top:0.5em; font-size:0.9em; color:#888;">查無您的堂數資料或剩餘堂數為0。</div>`;
           }
 
-          html += `<button onclick="openSchedCalendar()" style="width:100%; padding:0.8em; margin-top:0.8em; border-radius:0.7em; background:var(--blue-main); color:#fff; border:none; font-weight:bold; font-size:1.05em; cursor:pointer; box-shadow:0 4px 10px rgba(0,122,255,0.3); transition:0.2s;">📅 檢視完整月曆課表</button>`;
           html += `</div>`;
           
           hidePeggyTyping();
