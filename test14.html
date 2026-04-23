@@ -999,7 +999,7 @@
         .simple-slot-grid.few-slots { grid-template-columns: repeat(2, 1fr) !important; }
         .simple-slot-grid.few-slots .simple-slot-btn { padding: 35px 0 !important; font-size: 28px !important; }
         .cal-duration-hint { background: #fff; color: #333; border: 2px solid #ddd; box-shadow: 0 2px 5px rgba(0,0,0,0.05); font-size: 16px; padding: 10px 20px; order: 3; margin-right: 0; margin-left: 10px; }
-        .cal-top-right-group .multi-booking-badge { order: 1; }
+        .cal-top-right-group .toggle-wrapper { order: 1; }
         .cal-top-right-group .rule-info-wrapper { order: 2; }
     }
 
@@ -1144,7 +1144,19 @@
         <div class="duration-hint">50分/堂</div>
     </div>
     <div class="controls-container">
-        <div class="multi-booking-badge" id="main-mode-toggle">一次多堂預約</div>
+        <!-- Toggle badge: completely static/unclickable after intro animation -->
+        <div class="toggle-wrapper neutral" id="main-mode-toggle">
+            <div class="toggle-bg"></div>
+            <div class="toggle-labels">
+                <div class="toggle-half">
+                    <span class="toggle-label label-single">單堂預約</span>
+                </div>
+                <span class="toggle-separator">✕</span>
+                <div class="toggle-half">
+                    <span class="toggle-label label-multi">多堂預約</span>
+                </div>
+            </div>
+        </div>
         <button class="cal-btn-trigger" onclick="openCalendar()">📅 月曆</button>
         <div class="rule-info-wrapper">
              <div class="rule-info-btn" onclick="toggleRules('mob-rules')"><span class="btn-exclaim">!</span><span class="btn-label">規範</span></div>
@@ -1199,27 +1211,11 @@
 </div>
 
 <button id="floating-cart-btn" onclick="toggleCartForm()">
-    <img src="https://ik.imagekit.io/lql1uveoc/Booking%20Website%20%E9%A0%90%E7%B4%84/online-booking.png" class="cal-icon-svg" alt="cart">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" class="cal-icon-svg">
+        <path fill="currentColor" d="M19,4H18V2H16V4H8V2H6V4H5A2,2 0 0,0 3,6V20A2,2 0 0,0 5,22H19A2,2 0 0,0 21,20V6A2,2 0 0,0 19,4M19,20H5V10H19V20M19,8H5V6H19V8Z" />
+    </svg>
     <span class="cart-badge" id="cart-count">0</span>
 </button>
-
-<!-- === Peggy Chatbot Window === -->
-<div id="peggy-window">
-    <div class="peggy-header">
-        <div style="display:flex; align-items:center; gap:0.6em;">
-            <div class="peggy-img-wrapper" style="width:2.2em; height:2.2em; border:2px solid #fff; flex-shrink:0;">
-                <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/christina-wocintechchat-com-m-0Zx1bDv5BNY-unsplash.jpg?updatedAt=1776614639182" class="peggy-img-crop" alt="Peggy">
-            </div>
-            <span>Peggy</span>
-        </div>
-        <button onclick="togglePeggy()" style="background:none; border:none; color:#fff; font-size:1.5em; cursor:pointer; line-height:1;">&times;</button>
-    </div>
-    <div class="peggy-body" id="peggy-body"></div>
-    <div class="peggy-footer">
-        <input type="text" id="peggy-input" placeholder="輸入您的英文名字..." onkeypress="handlePeggyEnter(event)">
-        <button onclick="sendPeggyMessage()">查詢</button>
-    </div>
-</div>
 
 <div id="p-form" class="page-form">
   <div class="form-box">
@@ -1245,7 +1241,19 @@
                     <button class="back-btn" onclick="closeCalendar()" style="margin-bottom:0;">✕</button>
                     <div style="display:flex; align-items:center; gap: 10px;" class="cal-top-right-group">
                         <div class="cal-duration-hint">50分/堂</div>
-                        <div class="multi-booking-badge" id="cal-mode-toggle">一次多堂預約</div>
+                        <!-- Calendar toggle badge: static after intro -->
+                        <div class="toggle-wrapper neutral" id="cal-mode-toggle">
+                            <div class="toggle-bg"></div>
+                            <div class="toggle-labels">
+                                <div class="toggle-half">
+                                    <span class="toggle-label label-single">單堂預約</span>
+                                </div>
+                                <span class="toggle-separator">✕</span>
+                                <div class="toggle-half">
+                                    <span class="toggle-label label-multi">多堂預約</span>
+                                </div>
+                            </div>
+                        </div>
                         <div class="rule-info-wrapper">
                              <div class="rule-info-btn" onclick="toggleRules('cal-rules')"><span class="btn-exclaim">!</span><span class="btn-label">規範</span></div>
                              <div class="rule-popover" id="cal-rules">
@@ -1271,7 +1279,7 @@
                 <div class="cal-nav">
                     <button class="cal-nav-btn" id="cal-prev-btn" onclick="changeCalMonth(-1)">❮</button>
                     <div id="cal-title"></div>
-                    <button class="cal-nav-btn" id="cal-next-btn" onclick="changeCalMonth(1)">❯</button>
+                    <button class="cal-nav-btn" onclick="changeCalMonth(1)">❯</button>
                 </div>
                 <div class="cal-grid" id="cal-head-row">
                     <div class="cal-head">MON<small>一</small></div>
@@ -1309,19 +1317,12 @@
       if (modalCloseCallback) { modalCloseCallback(); modalCloseCallback = null; }
   }
 
-  // 自動捲動並精準對齊控制列 (解決被切掉的問題)
+  // 自動捲動並精準對齊控制列 (解決不同裝置尺寸偏移量不同的問題)
   function scrollToWidget() {
       const header = document.querySelector('.header-section');
       if (header) {
-          
-          // ▼▼▼ 您可以在這裡調整數值 ▼▼▼
-          // 數字越大，畫面停留的位置就越「往下」（會露出更多上方的深色背景）
-          // 數字越小（例如 0 或負數），畫面停留的位置就越「往上」
-          const offset = -100; 
-          // ▲▲▲========================▲▲▲
-
-          const y = header.getBoundingClientRect().top + window.scrollY - offset;
-          window.scrollTo({ top: y, behavior: 'smooth' });
+          // 使用內建的 scrollIntoView，讓瀏覽器自動計算各裝置的精準高度並對齊頂部
+          header.scrollIntoView({ behavior: 'smooth', block: 'start' });
       } else {
           window.scrollTo({ top: 0, behavior: 'smooth' });
       }
@@ -1407,7 +1408,6 @@
                 updateBottomBar();
             }
             if (document.getElementById("cal-modal").classList.contains("active")) {
-                // 安全檢查：確保依然是在看這一天才渲染
                 if (dStr === selectedDateStr) renderSlotsInsideCalendar(dStr);
             } else {
                 if (dStr === selectedDateStr) renderSlots(dStr);
@@ -1438,23 +1438,30 @@
   };
 
   function playIntroAnimation() {
-      const badges = document.querySelectorAll('.multi-booking-badge');
+      const toggleWrappers = document.querySelectorAll('.toggle-wrapper');
       const infoBtns = document.querySelectorAll('.rule-info-btn');
-      if (badges.length === 0) return;
-      let count = 0; const maxFlickers = 6; const speed = 200;
+      if (toggleWrappers.length === 0) return;
+      let count = 0; const maxFlickers = 12; const speed = 100;
       const interval = setInterval(() => {
-          badges.forEach(b => b.classList.toggle('pulse-emphasis'));
-          count++;
+          const mode = (count % 2 === 0) ? 'multi' : 'single';
+          applyModeToUI(mode, true); count++;
           if (count >= maxFlickers) {
               clearInterval(interval);
-              badges.forEach(b => b.classList.add('pulse-emphasis'));
+              toggleWrappers.forEach(el => el.classList.add('pulse-emphasis'));
               infoBtns.forEach(btn => btn.classList.add('pulse-emphasis-icon'));
               setTimeout(() => {
-                  badges.forEach(b => b.classList.remove('pulse-emphasis'));
+                  toggleWrappers.forEach(el => el.classList.remove('pulse-emphasis'));
                   infoBtns.forEach(btn => btn.classList.remove('pulse-emphasis-icon'));
+                  setTimeout(() => { applyModeToUI('neutral', true); }, 300);
               }, 1200);
           }
       }, speed);
+  }
+
+  function applyModeToUI(mode, silent=false) {
+      document.querySelectorAll('.toggle-wrapper').forEach(wrapper => {
+          wrapper.className = `toggle-wrapper ${mode}`;
+      });
   }
 
   function toggleRules(id) {
@@ -1570,7 +1577,6 @@
           fetch(`${API_URL}?action=getBatchSlots&startDate=${dStr}&days=1`).then(r=>r.json()).then(data=>{
               Object.assign(cachedData,data); if(!cachedData[dStr]) cachedData[dStr]={slots:[]};
               const pill=document.getElementById(`pill-${dStr}`); if(pill){pill.classList.remove('loading');pill.classList.add('loaded');}
-              // 再次檢查，避免競態條件 (Race condition) 覆蓋畫面
               if (dStr === selectedDateStr) renderSlotsInsideCalendar(dStr);
           }).catch(()=>{container.innerHTML=`<div style="text-align:center;padding:20px;color:red;">讀取失敗</div>`;});
       }
@@ -1629,7 +1635,7 @@
   }
 
   function openCalendar() {
-      scrollToWidget(); // 進入時精準捲動置頂
+      scrollToWidget(); 
       
       if(!selectedDateStr) selectedDateStr=fmt(new Date());
       renderCalGrid(); 
@@ -1638,7 +1644,6 @@
       modal.scrollTop = 0; 
       updateBottomBar();
       
-      // 延遲 6 秒顯示未讀訊息數字 1
       setTimeout(() => {
           if (!peggyInitialized) {
               document.querySelectorAll('.peggy-badge-el').forEach(el => el.style.display = 'flex');
@@ -1906,7 +1911,7 @@
   }
   function selectDate(dStr){
     selectedDateStr=dStr;selectDatePillUI(dStr);renderSlots(dStr);
-    if(window.innerWidth<768&&!document.getElementById('cal-modal').classList.contains('active')) document.querySelector('.header-section').scrollIntoView({behavior:'smooth'});
+    if(window.innerWidth<768&&!document.getElementById('cal-modal').classList.contains('active')) scrollToWidget();
   }
   function selectDatePillUI(dStr){
     document.querySelectorAll(".date-pill").forEach(e=>e.classList.remove("active"));
@@ -2206,7 +2211,6 @@
       const chiMonths = ["一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"];
       const { year, month } = getMonthInfo(schedCurrentMonthIdx);
       
-      // 修改：標題改為 2026.04月 格式
       document.getElementById('sched-month-title').innerText = `${year}.${String(month + 1).padStart(2, '0')}月`;
 
       const prevBtn = document.getElementById('sched-prev-btn');
@@ -2216,7 +2220,6 @@
       } else {
           prevBtn.classList.remove('disabled');
           const prev = getMonthInfo(schedCurrentMonthIdx - 1);
-          // 修改：只顯示中文 例如 "五月"
           document.getElementById('sched-prev-label').innerText = chiMonths[prev.month];
       }
 
@@ -2227,7 +2230,6 @@
       } else {
           nextBtn.classList.remove('disabled');
           const next = getMonthInfo(schedCurrentMonthIdx + 1);
-          // 修改：只顯示中文 例如 "五月"
           document.getElementById('sched-next-label').innerText = chiMonths[next.month];
       }
   }
@@ -2442,5 +2444,3 @@
 </script>
 </body>
 </html>
-
- 
