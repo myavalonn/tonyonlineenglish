@@ -52,19 +52,19 @@
   #weekLabel { font-family: var(--mono); font-size: 1rem; font-weight: 700; color: var(--text); min-width: 140px; text-align: center; }
 
 /* ─── TODAY BANNER ──────────────────────────────────── */
-.today-end-banner {
-  background: #F2ADA3; /* Changed from var(--text) to your new color */
-  color: #000000; 
-  font-family: var(--sans);
-  font-size: clamp(1.25rem, 4.5vw, 1.8rem); 
-  font-weight: 700; 
-  text-align: center;
-  padding: 22px 16px; 
-  margin: 16px 12px 0; 
-  border-radius: var(--r);
-  box-shadow: 0 4px 16px rgba(0,0,0,0.15); 
-  animation: fadeUp 0.35s ease both;
-}
+  .today-end-banner {
+    background: #F2ADA3; 
+    color: #000000; 
+    font-family: var(--sans);
+    font-size: clamp(1.25rem, 4.5vw, 1.8rem); 
+    font-weight: 700; 
+    text-align: center;
+    padding: 22px 16px; 
+    margin: 16px 12px 0; 
+    border-radius: var(--r);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15); 
+    animation: fadeUp 0.35s ease both;
+  }
   @media (min-width: 600px) { .today-end-banner { margin: 24px auto 0; max-width: 1400px; padding: 28px; } }
   .today-end-banner .highlight-time { font-family: var(--mono); color: #000000; padding-left: 2px; }
   .today-topic { font-size: clamp(1.05rem, 3.5vw, 1.3rem); margin-top: 6px; font-weight: 400; color: rgba(0,0,0,0.7); }
@@ -102,6 +102,36 @@
   .error-box { margin: 40px auto; max-width: 440px; background: var(--card); border: 1.5px solid var(--border); border-radius: var(--r); padding: 28px 24px; text-align: center; }
   .error-box h2 { font-family: var(--mono); color: var(--red); font-size: 0.9rem; margin-bottom: 10px; }
   .error-box p { font-size: 0.8rem; color: var(--sub); }
+
+  /* ─── POPUP MODAL (NEW) ─────────────────────────────── */
+  .modal-overlay {
+    position: fixed; inset: 0; background: rgba(0, 0, 0, 0.65); backdrop-filter: blur(4px);
+    display: none; align-items: center; justify-content: center; z-index: 1000;
+    padding: 20px; opacity: 0; transition: opacity 0.3s ease;
+  }
+  .modal-overlay.show { display: flex; opacity: 1; }
+  .modal-card {
+    background: #F2ADA3; /* Match the banner color */
+    color: #000; width: 100%; max-width: 550px; border-radius: 16px;
+    padding: 50px 24px 40px; position: relative;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.3); text-align: center;
+    transform: translateY(20px); transition: transform 0.3s ease;
+  }
+  .modal-overlay.show .modal-card { transform: translateY(0); }
+  
+  .modal-close {
+    position: absolute; top: 12px; right: 16px;
+    background: none; border: none; font-size: 32px; font-weight: bold;
+    color: rgba(0,0,0,0.5); cursor: pointer; transition: color 0.2s;
+    line-height: 1; width: 44px; height: 44px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .modal-close:hover { color: #000; }
+  
+  /* Large text for the modal */
+  .modal-card-text { font-family: var(--sans); font-size: clamp(1.5rem, 6vw, 2.2rem); font-weight: 700; }
+  .modal-card-text .highlight-time { font-family: var(--mono); color: #000; font-size: 1.1em; }
+  .modal-card-text .today-topic { font-size: clamp(1.2rem, 4.5vw, 1.6rem); margin-top: 16px; font-weight: 400; color: rgba(0,0,0,0.8); }
 </style>
 </head>
 <body>
@@ -125,8 +155,17 @@
   </div>
 </header>
 
+<!-- Banner 原本位置保持不變 -->
 <div id="todayBanner" class="today-end-banner" style="display:none;"></div>
 <div class="grid" id="grid"></div>
+
+<!-- 新增的彈出式卡片 (Popup Modal) -->
+<div id="infoModalOverlay" class="modal-overlay">
+  <div class="modal-card">
+    <button class="modal-close" onclick="closeModal()">×</button>
+    <div id="modalContent" class="modal-card-text"></div>
+  </div>
+</div>
 
 <script>
 // =========================================================
@@ -140,6 +179,7 @@ const CN_DAYS = ['日','一','二','三','四','五','六'];
 const EN_DAYS = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
 
 let currentMonday = null;
+let hasShownModal = false; // 控制只在初次載入時彈出
 
 function updateCurrentDateBar() {
   const now = new Date();
@@ -211,12 +251,16 @@ function renderGrid(weekEvents) {
       endTimeHtml = `<div class="card-end-time">最後結束 ${endTimeStr}</div>`;
       
       if (isToday) {
-        banner.innerHTML = `今天最後一堂課程結束於 <span class="highlight-time">${endTimeStr}</span><div class="today-topic">Topic ${topicName}</div>`;
+        const bannerHtml = `今天最後一堂課程結束於 <span class="highlight-time">${endTimeStr}</span><div class="today-topic">Topic ${topicName}</div>`;
+        banner.innerHTML = bannerHtml;
         banner.style.display = 'block';
+        if (!hasShownModal) { showModal(bannerHtml); hasShownModal = true; }
       }
     } else if (isToday) {
-      banner.innerHTML = `今天沒有課程`;
+      const bannerHtml = `今天沒有課程`;
+      banner.innerHTML = bannerHtml;
       banner.style.display = 'block';
+      if (!hasShownModal) { showModal(bannerHtml); hasShownModal = true; }
     }
 
     const card = document.createElement('div');
@@ -240,6 +284,21 @@ function renderGrid(weekEvents) {
       </div>`;
     grid.appendChild(card);
   }
+}
+
+// 彈出式 Modal 控制函數
+function showModal(content) {
+  const overlay = document.getElementById('infoModalOverlay');
+  document.getElementById('modalContent').innerHTML = content;
+  overlay.style.display = 'flex';
+  // 加入一點小延遲以確保過渡動畫能執行
+  setTimeout(() => overlay.classList.add('show'), 10);
+}
+
+function closeModal() {
+  const overlay = document.getElementById('infoModalOverlay');
+  overlay.classList.remove('show');
+  setTimeout(() => { overlay.style.display = 'none'; }, 300);
 }
 
 function slideGrid(delta, cb) {
