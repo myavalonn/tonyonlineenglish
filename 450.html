@@ -376,7 +376,7 @@
                   
                   <div class="rule-card">
                       <div class="rule-content">
-                          <h4>平日請假/調課</h4>
+                          <h4>平日請假調課扣點</h4>
                           <p><strong>『24小時內』</strong> 提出：扣除 0.5 堂<br>
                           <strong>『12小時內』</strong> 提出：扣除 1 堂</p>
                           <div class="rule-note">(依該時段點數計算)</div>
@@ -385,7 +385,7 @@
                   
                   <div class="rule-card warning-card">
                       <div class="rule-content">
-                          <h4 style="color: #e53e3e;">假日請假規範</h4>
+                          <h4 style="color: #e53e3e;">假日請假嚴格規定</h4>
                           <p>週六和國定假日課程需於 <strong>上課前 24 小時</strong> 提出請假或調課；若未於24小時前提出，當堂課視為已使用。</p>
                       </div>
                   </div>
@@ -435,8 +435,20 @@
   <div id="email-popup-overlay">
       <div class="email-popup-content">
           <button id="close-popup-btn" onclick="closeEmailPopup()">×</button>
+          
+          <!-- 新增：顯示已選擇的方案明細區塊 -->
+          <div id="popup-selected-plan-info" style="margin-bottom: 25px; text-align: left; background-color: #f8f9fa; padding: 20px; border-radius: 8px; border: 2px solid #eee;">
+              <!-- JS 會動態填入方案資料 -->
+          </div>
+
           <label for="popup-email-input" style="font-size: 28px; font-weight: bold; color: #000; margin-bottom: 20px; display: block;">請輸入您的電子信箱</label>
           <input type="email" id="popup-email-input" required placeholder="example@email.com">
+          
+          <!-- 新增小字：付款方式提示 -->
+          <div style="font-size: 16px; color: #555; margin-top: 15px; font-weight: bold;">
+              支援付款方式：轉帳 / Line Pay / iPassMoney
+          </div>
+
           <button id="popup-checkout-btn">確認送出結帳</button>
       </div>
   </div>
@@ -783,6 +795,13 @@
         if (productToAdd) {
             cart = {}; 
             cart[productToAdd.id] = { ...productToAdd, imageUrl: images.length > 0 ? images[0] : '' };
+            
+            // 將選擇的方案資訊填入滿版彈窗中
+            document.getElementById('popup-selected-plan-info').innerHTML = `
+                <div style="font-size: 20px; color: #666; margin-bottom: 8px; font-weight: bold;">您選擇的方案：</div>
+                <div style="font-size: 28px; color: red; font-weight: 900; margin-bottom: 8px;">${productToAdd.name}</div>
+                <div style="font-size: 22px; color: #000; font-weight: bold;">${productToAdd.description}</div>
+            `;
         }
         updateCartDisplay();
         openEmailPopup();
