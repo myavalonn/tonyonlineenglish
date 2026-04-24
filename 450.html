@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="zh-TW" style="scroll-behavior: smooth;">
 <head>
@@ -90,16 +89,25 @@
     .hero-watermark { position: absolute; right: 20px; bottom: 15px; color: rgba(255, 255, 255, 0.5); font-size: 14px; z-index: 2; }
 
     /* =========================================
-       3. 適合每週固定兩堂... 
+       3. 適合每週固定兩堂... (改版為卡片樣式)
        ========================================= */
     .photo2-checklist { margin: 40px 0; padding-top: 30px; border-top: 3px solid #000; scroll-margin-top: 40px; }
-    .photo2-checklist h3 { font-size: 26px; color: #000; margin-bottom: 25px; font-weight: 900; line-height: 1.4; }
-    .photo2-checklist ul { list-style: none; padding: 0; margin: 0; }
-    .photo2-checklist li { display: flex; align-items: flex-start; margin-bottom: 22px; font-size: 20px; color: #000; line-height: 1.6; }
-    .photo2-checklist li strong { font-weight: 900; color: #000; }
-    .check-icon, .warning-icon { flex-shrink: 0; margin-right: 12px; margin-top: 3px; font-size: 22px; font-weight: bold; color: #000; }
-    .warning-icon { color: #e53e3e; }
-    .special-offer-banner { font-size: 22px; font-weight: 900; color: #000; margin-top: 30px; margin-bottom: 20px; }
+    .photo2-checklist h3 { font-size: 28px; color: #000; margin-bottom: 25px; font-weight: 900; line-height: 1.4; }
+    
+    .checklist-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 30px; }
+    .rule-card { background: #ffffff; border: 2px solid #e0e0e0; border-radius: 12px; padding: 20px; display: flex; align-items: flex-start; transition: all 0.3s ease; box-shadow: 0 4px 15px rgba(0,0,0,0.03); }
+    .rule-card:hover { border-color: #000; box-shadow: 0 8px 25px rgba(0,0,0,0.1); transform: translateY(-3px); }
+    .rule-card.warning-card { border-color: #ffcccc; background: #fffafa; }
+    .rule-card.warning-card:hover { border-color: #e53e3e; }
+    
+    .rule-icon { font-size: 34px; margin-right: 15px; flex-shrink: 0; line-height: 1.2; }
+    .rule-content { flex: 1; }
+    .rule-content h4 { margin: 0 0 10px 0; font-size: 24px; font-weight: 900; color: #000; line-height: 1.3; }
+    .rule-content p { margin: 0; font-size: 20px; color: #222; line-height: 1.6; }
+    .rule-content p strong { font-weight: 900; color: #000; }
+    .rule-note { font-size: 16px; color: #555; margin-top: 8px; line-height: 1.5; font-weight: bold; }
+
+    .special-offer-banner { font-size: 24px; font-weight: 900; color: #000; margin-top: 30px; margin-bottom: 20px; }
 
     /* =========================================
        4. 方案選擇卡片區塊 (點擊即結帳)
@@ -221,8 +229,16 @@
         .plan-header-col:last-child { text-align: right; }
 
         .product-info h1 { font-size: 42px; }
-        .photo2-checklist h3 { font-size: 32px; }
-        .photo2-checklist li { font-size: 24px; }
+        
+        /* 針對課程須知的卡片在平板/桌機上的放大 */
+        .photo2-checklist h3 { font-size: 36px; }
+        .rule-card { padding: 30px; }
+        .rule-content h4 { font-size: 28px; }
+        .rule-content p { font-size: 22px; }
+        .rule-note { font-size: 18px; }
+        .rule-icon { font-size: 42px; margin-right: 20px; }
+        .special-offer-banner { font-size: 30px; }
+
         .info-block-simple h3 { font-size: 34px; }
         .info-block-simple p { font-size: 24px; }
         .price-table th { font-size: 24px; padding: 20px; }
@@ -240,6 +256,11 @@
         .plan-col { text-align: left !important; width: auto; font-size: 22px; }
         .plan-col:nth-child(2) { font-size: 15px; font-weight: normal; color: #555; white-space: nowrap; }
         .plan-col:nth-child(3) { width: 100%; font-size: 20px; margin-top: 6px; }
+
+        /* 手機版：確保課程須知卡片間距與適應性 */
+        .checklist-grid { grid-template-columns: 1fr; gap: 15px; }
+        .rule-content h4 { font-size: 22px; }
+        .rule-content p { font-size: 18px; }
 
         .email-popup-content { width: 100%; height: 100%; border-radius: 0; display: flex; flex-direction: column; justify-content: center; }
         #close-popup-btn { top: 20px; right: 20px; }
@@ -312,27 +333,78 @@
                 </div>
             </div>
 
-            <!-- 純文字黑字白底重點清單 -->
+            <!-- 純文字黑字白底重點清單 (改版為卡片式排版) -->
             <div class="photo2-checklist" id="target-checklist">
               <h3>適合每週固定兩堂課程的學員</h3>
-              <ul>
-                  <li><i class="check-icon">✓</i> <span><strong>每週固定『900點』訂閱(每週享有兩堂超值優惠課程）</strong>，當周沒有上課也會扣除</span></li>
-                  <li><i class="check-icon">✓</i> <span><strong>適用上課時段：週一～週五 (平日) 10:00am~5:00pm前</strong></span></li>
-                  <li><i class="check-icon">✓</i> <span><strong>每週第三堂或平日5pm後：『550點』</strong><span style="font-size: 0.9em; opacity: 0.8;">*週六及國定假日每堂：『600點』</span></span></li>
-                 <li>
-  <i class="check-icon">✓</i> 
-  <span>
-  <strong> <span style="color: blue;">期間轉為非訂閱制</span>：每堂『550點』 </strong> <br> <span style="font-size: 0.9em; opacity: 0.8;"> *平日 5:00pm後每堂：『600點』，週六及國定假日每堂：『600點』 </span>   </span>
-</li>
-<li>
-  <i class="check-icon">✓</i> 
-  <span><strong>課程期間會員擁有『兩次』暫停課程權益。</strong>(不限時長)</span>
-</li>
-                  <li><i class="check-icon">✓</i> <span><strong>『24小時內』提出請假或調課，『扣除0.5堂』</strong> (該時段點數)</span></li>
-                  <li><i class="check-icon">✓</i> <span><strong>『12小時內』提出請假或調課，『扣除1堂』</strong> (該時段點數)</span></li>
-                  <li><i class="warning-icon">⚠️</i> <span><strong>週六和國定假日課程需於上課前 24 小時提出請假或調課</strong>；若未於24小時前提出，當堂課視為已使用。</span></li>
-                  <li><i class="check-icon">✓</i> <span><strong>2026 連假當週不自動扣除點數</strong> (會另行公告)，但仍可預約上課</span></li>
-              </ul>
+              <div class="checklist-grid">
+                  <div class="rule-card">
+                      <div class="rule-icon">💎</div>
+                      <div class="rule-content">
+                          <h4>固定訂閱點數</h4>
+                          <p>每週固定 <strong>『900點』</strong> 訂閱，享有兩堂超值優惠課程，當周沒有上課也會自動扣除。</p>
+                      </div>
+                  </div>
+                  
+                  <div class="rule-card">
+                      <div class="rule-icon">⏰</div>
+                      <div class="rule-content">
+                          <h4>適用上課時段</h4>
+                          <p><strong>週一～週五 (平日)</strong><br>10:00am ~ 5:00pm 前</p>
+                      </div>
+                  </div>
+                  
+                  <div class="rule-card">
+                      <div class="rule-icon">➕</div>
+                      <div class="rule-content">
+                          <h4>彈性加課優惠</h4>
+                          <p>每週第三堂或平日5pm後：<strong>『550點』</strong></p>
+                          <div class="rule-note">*週六及國定假日每堂：『600點』</div>
+                      </div>
+                  </div>
+                  
+                  <div class="rule-card">
+                      <div class="rule-icon">🔄</div>
+                      <div class="rule-content">
+                          <h4 style="color: blue;">轉為非訂閱制</h4>
+                          <p>期間轉為非訂閱制：每堂 <strong>『550點』</strong></p>
+                          <div class="rule-note">*平日 5:00pm後每堂：『600點』，週六及國定假日每堂：『600點』</div>
+                      </div>
+                  </div>
+                  
+                  <div class="rule-card">
+                      <div class="rule-icon">⏸️</div>
+                      <div class="rule-content">
+                          <h4>課程暫停權益</h4>
+                          <p>課程期間會員擁有 <strong>『兩次』</strong> 暫停課程權益。<br><span class="rule-note">(不限時長)</span></p>
+                      </div>
+                  </div>
+                  
+                  <div class="rule-card">
+                      <div class="rule-icon">📅</div>
+                      <div class="rule-content">
+                          <h4>平日請假調課扣點</h4>
+                          <p><strong>『24小時內』</strong> 提出：扣除 0.5 堂<br>
+                          <strong>『12小時內』</strong> 提出：扣除 1 堂</p>
+                          <div class="rule-note">(依該時段點數計算)</div>
+                      </div>
+                  </div>
+                  
+                  <div class="rule-card warning-card">
+                      <div class="rule-icon">⚠️</div>
+                      <div class="rule-content">
+                          <h4 style="color: #e53e3e;">假日請假嚴格規定</h4>
+                          <p>週六和國定假日課程需於 <strong>上課前 24 小時</strong> 提出請假或調課；若未於24小時前提出，當堂課視為已使用。</p>
+                      </div>
+                  </div>
+                  
+                  <div class="rule-card">
+                      <div class="rule-icon">🏖️</div>
+                      <div class="rule-content">
+                          <h4>連假特別處理</h4>
+                          <p><strong>2026 連假當週</strong> 不自動扣除點數 (會另行公告)，但仍可預約上課。</p>
+                      </div>
+                  </div>
+              </div>
               <div class="special-offer-banner">Special Offer 優惠 ⬇️⬇️⬇️⬇️⬇️</div>
             </div>
             
