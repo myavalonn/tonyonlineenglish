@@ -12,6 +12,7 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/kalen-emsley-Bkci_8qcdvQ-unsplash.jpg?updatedAt=1773813236765">
 
+    <script src="layout-manager.js"></script>
   <style>
     :root {
       --bg-color: #ffffff;
@@ -50,22 +51,6 @@
     button { font-family: inherit; outline: none; -webkit-tap-highlight-color: transparent; }
 
     /* =========================================================
-       即時同步狀態指示器
-       ========================================================= */
-    #sync-indicator {
-        position: fixed; top: 8px; left: 50%; transform: translateX(-50%);
-        background: rgba(0,0,0,0.75); color: #fff;
-        padding: 5px 14px; border-radius: 20px; font-size: 12px; font-weight: bold;
-        z-index: 99999; pointer-events: none;
-        opacity: 0; transition: opacity 0.3s;
-        white-space: nowrap;
-    }
-    #sync-indicator.show { opacity: 1; }
-    #sync-indicator.syncing { background: rgba(0,122,255,0.85); }
-    #sync-indicator.updated { background: rgba(40,167,69,0.9); }
-    #sync-indicator.error   { background: rgba(220,53,69,0.85); }
-
-    /* =========================================================
        MODAL CSS
        ========================================================= */
     .result-overlay {
@@ -95,11 +80,13 @@
     .result-msg .booked-times-list { font-size: inherit; }
     .result-msg .booked-times-list div { font-size: inherit; }
     
+    .result-buttons {
+        flex-shrink: 0; display: flex; flex-direction: column; gap: 10px; width: 100%;
+    }
     .result-close-btn {
         background: var(--pill-active); color: #fff; border: none;
         padding: 16px 0; border-radius: 15px; font-size: 18px; font-weight: bold;
         cursor: pointer; width: 100%; box-shadow: 0 4px 12px rgba(255, 84, 0, 0.3); box-sizing: border-box;
-        flex-shrink: 0;
     }
     .modal-close-x {
         position: absolute; top: 15px; right: 15px;
@@ -345,17 +332,6 @@
         font-size: 14px; font-weight: 900; box-shadow: 0 1px 4px rgba(0,0,0,0.3); border: none;
     }
 
-    /* === 時段消失動畫 === */
-    .slot-btn.vanishing, .simple-slot-btn.vanishing {
-        animation: slotVanish 0.4s ease-out forwards;
-        pointer-events: none;
-    }
-    @keyframes slotVanish {
-        0%   { transform: scale(1); opacity: 1; background: #ffcccc; border-color: #ff4444; }
-        50%  { transform: scale(1.08); opacity: 0.7; background: #ff9999; }
-        100% { transform: scale(0.8); opacity: 0; }
-    }
-
     .slot-grid.few-slots .slot-btn { padding: 16px 0; font-size: 18px; }
     .slot-grid.few-slots .slot-btn .slot-clock-icon { width: 18px; height: 18px; }
     
@@ -397,12 +373,16 @@
     /* === Confirmation Form === */
     .page-form {
         display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; height: 100dvh;
-        background: #fff; z-index: 2000; padding: 0; box-sizing: border-box; overflow: hidden;
+        background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); z-index: 2000; padding: 0; box-sizing: border-box; overflow: hidden;
+        justify-content: center; align-items: center;
     }
+    .page-form.active { display: flex !important; animation: fadeIn 0.3s; }
+    
     .form-box {
         background: #f8f9fa; border-radius: 24px; padding: 30px 20px;
-        margin-top: 40px; color: #333; max-width: 500px; margin: 40px auto;
+        color: #333; width: 90%; max-width: 500px; max-height: 90vh;
         border: 1px solid #eee; position: relative;
+        display: flex; flex-direction: column; box-sizing: border-box;
     }
     .form-box input {
         width: 100%; padding: 20px; margin: 10px 0 20px;
@@ -413,6 +393,7 @@
         width: 100%; padding: 15px; background: #ffebee; color: #d32f2f;
         border: 2px solid #ef9a9a; border-radius: 12px; margin-bottom: 20px;
         font-weight: 800; cursor: pointer; text-align: center; font-size: 16px; box-sizing: border-box;
+        flex-shrink: 0;
     }
     .confirm-btn {
         width: 100%; padding: 15px; background: var(--pill-active); color: #fff; border: none;
@@ -422,8 +403,19 @@
     .back-btn {
         background: none; border: none; color: #333; font-size: 18px; font-weight: bold;
         margin-bottom: 10px; cursor: pointer; display: block; text-align: left; padding: 5px 0;
+        flex-shrink: 0;
     }
-    .page-title { font-size: 20px; font-weight: bold; text-align: center; margin-bottom: 15px; }
+    .page-title { font-size: 20px; font-weight: bold; text-align: center; margin-bottom: 15px; flex-shrink: 0; }
+    #form-total-label { margin-bottom: 5px; font-weight: bold; color: #666; flex-shrink: 0; }
+    
+    #checkout-list { 
+        flex: 1 1 auto; overflow-y: auto; margin-bottom: 15px; min-height: 50px;
+    }
+    #checkout-list::-webkit-scrollbar { width: 6px; }
+    #checkout-list::-webkit-scrollbar-thumb { background: #ccc; border-radius: 4px; }
+    
+    .form-inputs-area { flex-shrink: 0; }
+    
     .selected-item {
         font-size: 18px; padding: 15px; background: #f3f4f6;
         border-radius: 12px; margin-bottom: 8px;
@@ -452,24 +444,14 @@
     #cal-modal .back-btn { display: none !important; }
 
     @media (max-width: 767px) {
-        .page-form.active { display: block; animation: slideUp 0.3s; }
+        .page-form { align-items: flex-end; }
+        .page-form.active { animation: slideUp 0.3s; }
         .form-box {
-            margin: 0; width: 100%; height: 100vh; height: 100dvh; max-width: 100%;
-            border-radius: 0; padding: 15px 20px;
-            display: flex; flex-direction: column;
-            border: none; background: #fff; box-sizing: border-box;
+            margin: 0; width: 100%; max-width: 100%; height: 95dvh; max-height: 95dvh;
+            border-radius: 24px 24px 0 0; padding: 20px; border: none; background: #fff;
         }
-        
-        .back-btn, .page-title, .clear-all-btn, #form-total-label {
-            flex-shrink: 0;
-        }
-        
-        #checkout-list { 
-            flex: 1 1 auto; max-height: none; overflow-y: auto; min-height: 0; margin-bottom: 15px; display: flex; flex-direction: column; 
-        }
-        .form-inputs-area { 
-            margin-top: 0; flex-shrink: 0; padding-bottom: env(safe-area-inset-bottom, 15px); 
-        }
+        #checkout-list { margin-bottom: 10px; }
+        .form-inputs-area { padding-bottom: env(safe-area-inset-bottom, 15px); }
         .form-box input { padding: 12px; margin: 5px 0 15px; font-size: 16px; }
         .form-box label { font-size: 14px; font-weight: bold; margin-bottom: 2px; display: block; }
         .confirm-btn { padding: 12px; font-size: 18px; margin-bottom: 10px; }
@@ -507,10 +489,7 @@
        TABLET (1.5x) ENLARGEMENT
        ========================================================= */
     @media (min-width: 768px) {
-        .page-form { background: rgba(0,0,0,0.6); backdrop-filter: blur(5px); padding: 20px; overflow-y: auto; }
-        .page-form.active { display: flex !important; justify-content: center; align-items: flex-start; animation: fadeIn 0.3s; padding-top: 50px; }
-        .form-box { margin: 0; width: 80%; max-width: 650px; padding: 70px 40px 40px; border-radius: 30px; position: relative; display: flex; flex-direction: column; box-sizing: border-box; }
-        #checkout-list { max-height: 300px; overflow-y: auto; margin-bottom: 20px; }
+        .form-box { width: 80%; max-width: 650px; padding: 50px 40px 40px; border-radius: 30px; }
         .page-title { font-size: 36px; margin-bottom: 30px; margin-top: 0; }
         .form-box label { font-size: 28px; display: block; margin-bottom: 10px; font-weight: bold; }
         .form-box input { padding: 30px; font-size: 24px; border-radius: 16px; margin-bottom: 30px; }
@@ -689,21 +668,38 @@
 
     /* === Peggy Chatbot CSS === */
     .peggy-fab {
-        position: relative; z-index: 1000;
-        width: 60px; height: 60px;
-        cursor: pointer; transition: transform 0.3s;
-        flex-shrink: 0; display: inline-block;
-        border-radius: 50%; box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+        position: relative;
+        z-index: 1000;
+        width: 60px;
+        height: 60px;
+        cursor: pointer;
+        transition: transform 0.3s;
+        flex-shrink: 0;
+        display: inline-block;
+        border-radius: 50%;
+        box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     }
     .peggy-fab:hover { transform: scale(1.1); }
+    
     .peggy-img-wrapper {
-        width: 100%; height: 100%; border-radius: 50%; overflow: hidden;
-        border: 3px solid #fff; box-sizing: border-box; background: #fff; position: relative;
+        width: 100%;
+        height: 100%;
+        border-radius: 50%;
+        overflow: hidden;
+        border: 3px solid #fff;
+        box-sizing: border-box;
+        background: #fff;
+        position: relative;
     }
     .peggy-img-crop {
-        width: 100%; height: 100%; object-fit: cover; object-position: center 15%;
-        transform: scale(1.6); display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        object-position: center 15%;
+        transform: scale(1.6);
+        display: block;
     }
+    
     .peggy-badge-el {
         position: absolute; top: -2px; right: -2px; background: #ff5400; color: #fff;
         width: 22px; height: 22px; border-radius: 50%; font-size: 12px; font-weight: bold;
@@ -711,10 +707,15 @@
     }
 
     #peggy-window {
-        font-size: 15px; position: fixed;
-        bottom: 0; left: 0; width: 100vw; height: 60vh; max-height: 60vh;
-        background: #fff; border-radius: 24px 24px 0 0;
-        box-shadow: 0 -10px 40px rgba(0,0,0,0.3);
+        font-size: 15px;
+        position: fixed;
+        bottom: 0; left: 0;
+        width: 100vw;
+        height: 60vh; 
+        max-height: 60vh;
+        background: #fff;
+        border-radius: 24px 24px 0 0; 
+        box-shadow: 0 -10px 40px rgba(0,0,0,0.3); 
         display: flex; flex-direction: column; z-index: 1001; overflow: hidden;
         transform: translateY(100%); opacity: 0; pointer-events: none;
         transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), height 0.3s, max-height 0.3s;
@@ -729,13 +730,25 @@
     }
     .peggy-header span { font-size: 1.15em; font-weight: bold; color: #fff; }
     .peggy-body { position: relative; flex: 1; overflow-y: auto; padding: 1.1em; background: #f4f6f9; display: flex; flex-direction: column; gap: 0.85em; scroll-behavior: smooth; }
+    
     .peggy-footer {
-        padding: 0.85em; background: #fff; border-top: 1px solid #eee;
-        display: flex; flex-direction: row; gap: 0.6em; align-items: center;
+        padding: 0.85em;
+        background: #fff;
+        border-top: 1px solid #eee;
+        display: flex;
+        flex-direction: row;
+        gap: 0.6em;
+        align-items: center;
     }
     .peggy-footer input {
-        flex: 1; padding: 0.85em 1.1em; border: 1px solid #ddd; border-radius: 2em;
-        outline: none; font-size: 1.07em; background: #f9f9f9; transition: border-color 0.2s;
+        flex: 1;
+        padding: 0.85em 1.1em;
+        border: 1px solid #ddd;
+        border-radius: 2em;
+        outline: none;
+        font-size: 1.07em;
+        background: #f9f9f9;
+        transition: border-color 0.2s;
     }
     .peggy-footer input:focus { border-color: var(--blue-main); background: #fff; }
     .peggy-footer button {
@@ -745,27 +758,36 @@
         transition: transform 0.1s; white-space: nowrap; flex-shrink: 0;
     }
     .peggy-footer button:active { transform: scale(0.95); }
+    
     .msg-peggy { align-self: flex-start; background: #fff; color: #222; padding: 0.85em 1.15em; border-radius: 1.3em 1.3em 1.3em 0; max-width: 100%; width: 100%; box-shadow: 0 2px 8px rgba(0,0,0,0.06); line-height: 1.5; font-size: 1.05em; border: 1px solid #eee; box-sizing: border-box; }
     .msg-user { align-self: flex-end; background: var(--blue-main); color: #fff; padding: 0.7em 1.15em; border-radius: 1.3em 1.3em 0 1.3em; max-width: 100%; box-shadow: 0 2px 8px rgba(0, 122, 255, 0.2); font-size: 1.05em; box-sizing: border-box; }
 
     @media (min-width: 768px) {
         #peggy-window {
-            font-size: 21px; position: fixed;
-            bottom: 120px; left: 40px; width: 510px; height: 75vh; max-height: 800px;
+            font-size: 21px;
+            position: fixed;
+            bottom: 120px; left: 40px;
+            width: 510px; height: 75vh; max-height: 800px;
             border-radius: 30px;
         }
         #peggy-window.expanded { height: 75vh; max-height: 800px; }
         .peggy-header { border-radius: 30px 30px 0 0; }
+        #peggy-window.show { transform: translateY(0) scale(1); }
+
         .peggy-fab { width: 80px; height: 80px; }
         .peggy-img-wrapper { border-width: 4px; }
         .peggy-badge-el { width: 28px; height: 28px; font-size: 14px; top: 0; right: 0; border-width: 3px; }
+        .cal-top-right-group .peggy-fab { order: 4; }
+        
         .msg-peggy { max-width: 85%; width: auto; font-size: 1em; }
         .msg-user { max-width: 80%; font-size: 1em; }
     }
     @media (min-width: 1024px) {
         #peggy-window, #peggy-window.expanded { 
-            font-size: 28px; bottom: 120px; left: 40px; 
-            width: 680px; height: 80vh; max-height: 1000px; border-radius: 40px;
+            font-size: 28px; 
+            bottom: 120px; left: 40px; 
+            width: 680px; height: 80vh; max-height: 1000px; 
+            border-radius: 40px;
         }
         .peggy-header { border-radius: 40px 40px 0 0; }
     }
@@ -782,24 +804,34 @@
        ========================================================= */
     .sched-modal-overlay {
         display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-        background: #f4f6f9; z-index: 4000; overflow: hidden; box-sizing: border-box;
+        background: #f4f6f9; z-index: 4000; overflow: hidden;
+        box-sizing: border-box;
     }
     .sched-modal-container {
-        width: 100%; height: 100vh; background: #fff;
+        width: 100%; height: 100vh;
+        background: #fff;
         padding: 0; box-sizing: border-box; position: relative;
         display: flex; flex-direction: column;
     }
+
     .sched-top-bar {
         display: flex; align-items: center; justify-content: space-between;
-        padding: 14px 16px 10px; background: #fff; border-bottom: 1px solid #f0f0f0;
-        flex-shrink: 0; gap: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.06); flex-wrap: nowrap;
+        padding: 14px 16px 10px;
+        background: #fff;
+        border-bottom: 1px solid #f0f0f0;
+        flex-shrink: 0;
+        gap: 10px;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+        flex-wrap: nowrap;
     }
     .sched-back-btn {
         background: #f0f0f0; border: none; border-radius: 20px;
         padding: 8px 16px; font-size: 15px; font-weight: bold; color: #333;
-        cursor: pointer; white-space: nowrap; flex-shrink: 0; transition: background 0.2s;
+        cursor: pointer; white-space: nowrap; flex-shrink: 0;
+        transition: background 0.2s;
     }
     .sched-back-btn:active { background: #ddd; }
+
     .sched-month-nav {
         display: flex; align-items: center; justify-content: center;
         gap: 12px; flex: 1; min-width: 0;
@@ -817,12 +849,16 @@
     .sched-nav-month-label { font-size: 11px; font-weight: bold; color: #888; line-height: 1; margin-top: 2px; }
     .sched-month-nav-btn:hover .sched-nav-arrow,
     .sched-month-nav-btn:hover .sched-nav-month-label { color: var(--pill-active); }
+
     .sched-current-month-title {
         font-size: 17px; font-weight: 800; color: #222;
         text-align: center; line-height: 1.2; flex: 1; white-space: nowrap;
         overflow: hidden; text-overflow: ellipsis;
     }
-    .sched-slider-wrapper { flex: 1; overflow: hidden; position: relative; }
+
+    .sched-slider-wrapper {
+        flex: 1; overflow: hidden; position: relative;
+    }
     .sched-slider-track {
         display: flex; height: 100%;
         transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
@@ -831,15 +867,18 @@
     .sched-slide {
         min-width: 100vw; width: 100vw; height: 100%;
         overflow-y: auto; box-sizing: border-box;
-        padding: 12px 12px 60px; flex-shrink: 0;
+        padding: 12px 12px 60px;
+        flex-shrink: 0;
     }
+
     .sched-weekday-header {
         display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px;
         text-align: center; margin-bottom: 6px; padding: 0 2px;
     }
     .sched-weekday-head {
         color: #555; font-size: 13px; font-weight: 900; padding-bottom: 4px;
-        display: flex; flex-direction: column; line-height: 1.2; align-items: center; justify-content: center;
+        display: flex; flex-direction: column; line-height: 1.2;
+        align-items: center; justify-content: center;
     }
     .sched-weekday-head small { font-size: 11px; opacity: 0.7; }
     .sched-weekday-head.today-head {
@@ -851,30 +890,39 @@
         .sched-weekday-head.sat-head small { color: #d32f2f; }
         .sched-weekday-head.sat-head.today-head { color: #fff; }
     }
+
     .sched-cal-grid {
         display: grid; grid-template-columns: repeat(6, 1fr); gap: 4px;
         text-align: center; margin-bottom: 0; padding: 0 2px;
     }
     .sched-cell {
-        aspect-ratio: 1 / 1; display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
-        padding-top: 8px; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer;
+        aspect-ratio: 1 / 1;
+        display: flex; flex-direction: column; align-items: center; justify-content: flex-start;
+        padding-top: 8px;
+        border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer;
         transition: 0.2s; color: #333; position: relative; background: #fff; border: 1px solid #eee;
         box-sizing: border-box;
     }
     .sched-cell:hover { background: #f0f0f0; }
     .sched-cell.empty { border: none !important; background: transparent !important; cursor: default; visibility: hidden; }
+    
     .sched-cell.past-day {
         background-color: #f5f5f5 !important; color: #b0b0b0 !important; border-color: #e0e0e0 !important; cursor: default !important; pointer-events: none;
     }
+
     .sched-cell.today {
-        background-color: #e3f2fd !important; color: #0277bd !important;
-        border-color: #b3e5fc !important; box-shadow: 0 0 10px rgba(3, 169, 244, 0.2) !important;
+        background-color: #e3f2fd !important;
+        color: #0277bd !important;
+        border-color: #b3e5fc !important;
+        box-shadow: 0 0 10px rgba(3, 169, 244, 0.2) !important;
     }
     .sched-cell.today .sched-date-num { color: #0277bd; font-weight: 900; }
     .sched-cell.today .sched-cell-times { color: #0277bd !important; }
+
     .sched-cell.today.has-events {
         background: linear-gradient(135deg, #0277bd, #00bcd4) !important;
-        border-color: #0277bd !important; color: #fff !important;
+        border-color: #0277bd !important;
+        color: #fff !important;
         box-shadow: 0 0 16px rgba(2, 119, 189, 0.6) !important;
         animation: todayCellGlow 2s ease-in-out infinite alternate;
     }
@@ -884,28 +932,39 @@
     }
     .sched-cell.today.has-events .sched-date-num { color: #fff; }
     .sched-cell.today.has-events .sched-cell-times { color: #fff !important; text-shadow: 0 1px 2px rgba(0,0,0,0.2); }
+
     .sched-cell.has-events:not(.today) {
-        background-color: #fff3cd !important; border-color: #ffeeba !important; color: #856404 !important;
+        background-color: #fff3cd !important;
+        border-color: #ffeeba !important;
+        color: #856404 !important;
     }
     .sched-cell.has-events:not(.today) .sched-cell-times { color: #d32f2f !important; }
+    
     .sched-cell.selected:not(.today),
     .sched-cell.has-events.selected:not(.today) { 
         background: var(--selected-bg) !important; color: #fff !important; 
-        box-shadow: 0 4px 10px rgba(29, 43, 138, 0.3) !important; border-color: var(--selected-bg) !important; 
+        box-shadow: 0 4px 10px rgba(29, 43, 138, 0.3) !important; 
+        border-color: var(--selected-bg) !important; 
     }
     .sched-cell.selected:not(.today) .sched-cell-times { color: #fff !important; }
+    
     .sched-date-num { line-height: 1; pointer-events: none; font-size: 1em; }
     .sched-cell-times { font-size: 10px; color: var(--pill-active); line-height: 1.2; margin-top: 2px; font-weight: bold; text-align: center; pointer-events: none; }
+
     .cancel-class-btn {
         background: #fff0f0; color: #d32f2f; border: 1px solid #ffcdd2;
         padding: 12px 10px; border-radius: 8px; font-weight: bold; font-size: 16px;
-        cursor: pointer; margin-top: 15px; width: 100%; transition: 0.2s; text-align: center;
+        cursor: pointer; margin-top: 15px; width: 100%; transition: 0.2s;
+        text-align: center;
     }
     .cancel-class-btn:hover:not(:disabled) { background: #ffebee; }
     .cancel-class-btn:active:not(:disabled) { transform: scale(0.98); }
 
     @media (min-width: 768px) {
-        .sched-slide { min-width: 100vw; width: 100vw; padding: 20px 30px 80px; }
+        .sched-slide {
+            min-width: 100vw; width: 100vw;
+            padding: 20px 30px 80px;
+        }
         .sched-cell { font-size: 22px; padding-top: 10px; }
         .sched-cell-times { font-size: 13px; }
         .sched-weekday-head { font-size: 18px; }
@@ -917,11 +976,33 @@
         .sched-nav-arrow { font-size: 22px; }
         .sched-nav-month-label { font-size: 12px; }
     }
+
     @media (min-width: 1024px) {
-        .sched-modal-overlay { background: rgba(0,0,0,0.5); align-items: center; justify-content: center; }
-        .sched-modal-container { width: 66vw; max-width: 900px; height: 80vh; border-radius: 24px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.35); }
-        .sched-slide { min-width: 100%; width: 100%; padding: 24px 32px 60px; }
-        .sched-cell { aspect-ratio: 1 / 1; font-size: 24px; border-radius: 16px; padding-top: 10px; }
+        .sched-modal-overlay {
+            background: rgba(0,0,0,0.5);
+            align-items: center;
+            justify-content: center;
+        }
+        .sched-modal-container {
+            width: 66vw;
+            max-width: 900px;
+            height: 80vh;
+            border-radius: 24px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.35);
+        }
+        .sched-slide {
+            min-width: 100%;
+            width: 100%;
+            padding: 24px 32px 60px;
+        }
+        .sched-slider-wrapper { overflow: hidden; }
+        .sched-cell {
+            aspect-ratio: 1 / 1;
+            font-size: 24px;
+            border-radius: 16px;
+            padding-top: 10px;
+        }
         .sched-cell-times { font-size: 12px; margin-top: 3px; }
         .sched-weekday-head { font-size: 20px; }
         .sched-weekday-head small { font-size: 14px; }
@@ -939,6 +1020,7 @@
     .cal-header-wrap {
         background: #fff; padding: 15px 10px; min-height: 100%; height: auto;
         border-top-left-radius: 24px; border-top-right-radius: 24px;
+        border-bottom-left-radius: 0; border-bottom-right-radius: 0;
         box-shadow: none; position: relative; z-index: 10; margin-bottom: 0;
     }
     .cal-top-info { text-align: center; margin: 5px 0; }
@@ -963,6 +1045,7 @@
         .cal-head.sat-head.active-day { color: #fff !important; }
         .cal-head.sat-head.active-day small { color: #fff !important; }
     }
+    
     .cal-cell {
         height: 48px; display: flex; align-items: center; justify-content: center;
         border-radius: 12px; font-size: 20px; font-weight: bold; cursor: default;
@@ -986,11 +1069,13 @@
         display: flex; align-items: center; justify-content: center; gap: 5px;
     }
     .simple-slot-btn .slot-clock-icon { width: 16px; height: 16px; flex-shrink: 0; opacity: 0.7; object-fit: contain; }
+    
     .simple-slot-btn.selected { 
         background: var(--selected-bg) !important; color: white !important; 
         border-color: transparent !important; box-shadow: 0 4px 10px rgba(29, 43, 138, 0.3) !important; 
     }
     .simple-slot-btn.selected .slot-clock-icon { opacity: 1; filter: brightness(0) invert(1); }
+    
     .simple-slot-grid.few-slots .simple-slot-btn .slot-clock-icon { width: 20px; height: 20px; }
 
     .cal-duration-hint {
@@ -1038,17 +1123,20 @@
         .cal-top-right-group .multi-booking-badge { order: 1; }
         .cal-top-right-group .rule-info-wrapper { order: 2; }
     }
+
     @media (min-width: 1024px) {
         .cal-header-wrap { display: flex; justify-content: center; width: 100%; padding: 40px; }
         .cal-desktop-wrapper { display: flex; flex-direction: row; width: 100%; justify-content: space-between; gap: 40px; }
         .cal-left-col { flex: 1; display: flex; flex-direction: column; }
         #cal-slots-area { flex: 1; border-top: none; border-left: 1px solid #e0e0e0; padding-left: 40px; margin-top: 0; padding-top: 125px; height: calc(100vh - 80px); overflow-y: auto; padding-bottom: 100px; }
         .cal-cell { height: auto; aspect-ratio: 1.2 / 1; font-size: 40px; border-radius: 24px; }
+        
         .cal-head { 
             font-size: 24px; padding: 15px 0; margin-bottom: 15px; 
             background: #f4f6f9; border-radius: 12px; border: 1px solid #e0e0e0; 
         }
         .cal-head.active-day { padding-top: 15px; }
+
         .cal-head small { font-size: 20px; }
         .simple-slot-grid { grid-template-columns: repeat(2, 1fr); }
         .simple-slot-btn { 
@@ -1077,8 +1165,10 @@
        PEGGY CALENDAR ICON
        ========================================================= */
     .highlight-cal-btn {
-        background: linear-gradient(135deg, #e0f7fa, #b2ebf2); border: 2px solid #00acc1;
-        border-radius: 50%; padding: 16px !important;
+        background: linear-gradient(135deg, #e0f7fa, #b2ebf2);
+        border: 2px solid #00acc1;
+        border-radius: 50%;
+        padding: 16px !important;
         box-shadow: 0 4px 10px rgba(0, 172, 193, 0.3);
         animation: pulseCal 2s infinite;
         display: inline-flex; align-items: center; justify-content: center;
@@ -1090,71 +1180,18 @@
         70% { box-shadow: 0 0 0 18px rgba(0, 172, 193, 0); }
         100% { box-shadow: 0 0 0 0 rgba(0, 172, 193, 0); }
     }
+
     .chat-cal-icon { object-fit: contain; display: block; width: 60px; height: 60px; }
     @media (min-width: 768px) { .chat-cal-icon { width: 75px; height: 75px; } }
     @media (min-width: 1024px) { .chat-cal-icon { width: 90px; height: 90px; } }
 
     @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-    /* =========================================================
-       HOT PANEL 快速預約：直接跳 email form
-       ========================================================= */
-    #hot-quick-form {
-        position: fixed; bottom: 0; left: 0; right: 0;
-        background: #fff; border-radius: 24px 24px 0 0;
-        box-shadow: 0 -8px 30px rgba(0,0,0,0.25);
-        z-index: 5000; padding: 20px 20px calc(20px + env(safe-area-inset-bottom, 0px));
-        transform: translateY(100%); transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1);
-        box-sizing: border-box;
-    }
-    #hot-quick-form.show { transform: translateY(0); }
-    .hqf-handle { width: 40px; height: 4px; background: #ddd; border-radius: 2px; margin: 0 auto 16px; }
-    .hqf-slot-display {
-        background: linear-gradient(135deg, #1d2b8a, #2940b8); color: #fff;
-        border-radius: 14px; padding: 14px 18px; margin-bottom: 16px;
-        font-size: 18px; font-weight: bold; text-align: center;
-    }
-    .hqf-slot-display small { display: block; font-size: 13px; opacity: 0.8; margin-bottom: 4px; }
-    .hqf-label { font-size: 14px; font-weight: bold; color: #555; margin-bottom: 4px; display: block; }
-    .hqf-input {
-        width: 100%; padding: 14px; border: 2px solid #ddd; border-radius: 12px;
-        font-size: 16px; box-sizing: border-box; margin-bottom: 12px; outline: none;
-        transition: border-color 0.2s;
-    }
-    .hqf-input:focus { border-color: var(--blue-main); }
-    .hqf-input.error { border-color: #d32f2f; }
-    .hqf-err { display: none; color: #d32f2f; font-size: 13px; margin-bottom: 10px; font-weight: bold; }
-    .hqf-submit {
-        width: 100%; padding: 16px; background: var(--pill-active); color: #fff;
-        border: none; border-radius: 14px; font-size: 18px; font-weight: bold;
-        cursor: pointer; box-shadow: 0 4px 12px rgba(255,84,0,0.3); margin-bottom: 8px;
-    }
-    .hqf-cancel {
-        width: 100%; padding: 12px; background: #f3f4f6; color: #555;
-        border: none; border-radius: 14px; font-size: 16px; font-weight: bold; cursor: pointer;
-    }
-    @media (min-width: 768px) {
-        #hot-quick-form {
-            left: 50%; right: auto; transform: translateX(-50%) translateY(100%);
-            width: 500px; border-radius: 24px; bottom: 40px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.3);
-        }
-        #hot-quick-form.show { transform: translateX(-50%) translateY(0); }
-        .hqf-slot-display { font-size: 22px; }
-        .hqf-label { font-size: 18px; }
-        .hqf-input { font-size: 20px; padding: 18px; }
-        .hqf-submit { font-size: 22px; padding: 20px; }
-        .hqf-cancel { font-size: 18px; }
-    }
   </style>
 </head>
 <body>
 <div style="position:fixed; top:0; left:0; width:100vw; height:140px; background:#060b1c; z-index:-1; pointer-events:none;"></div>
 
-<!-- 即時同步狀態指示器 -->
-<div id="sync-indicator">🔄 同步中...</div>
-
-<!-- 全域通用 Loading 畫面 -->
+<!-- 全域通用 Loading 畫面 (抓取課表用) -->
 <div id="generic-loading" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.7); z-index:11000; justify-content:center; align-items:center; color:#fff; font-size:20px; font-weight:bold; flex-direction:column; backdrop-filter:blur(3px);">
     <div class="spinner" style="width:45px;height:45px;border:5px solid rgba(255,255,255,0.3);border-top-color:#ff5400;border-radius:50%;animation:spin 0.8s linear infinite;margin-bottom:15px;"></div>
     讀取資料中...
@@ -1168,7 +1205,7 @@
         <div class="result-msg-container">
             <div id="res-msg" class="result-msg modal-msg-shared">時段已預約，請檢查您的電子郵件確認信。</div>
         </div>
-        <div style="display:flex; flex-direction:column; gap:10px; width:100%; flex-shrink:0;">
+        <div class="result-buttons">
             <button class="result-close-btn" id="btn-view-schedule" style="display:none; background:#007aff; box-shadow: 0 4px 12px rgba(0, 122, 255, 0.3);" onclick="viewMyScheduleAfterBooking()">📅 查看我的課表</button>
             <button class="result-close-btn" onclick="closeResultModal()">確定 OK</button>
         </div>
@@ -1205,6 +1242,7 @@
 <!-- Student Schedule Calendar Modal -->
 <div id="sched-modal-overlay" class="sched-modal-overlay">
     <div class="sched-modal-container">
+        <!-- Top bar -->
         <div class="sched-top-bar">
             <button class="sched-back-btn" onclick="closeSchedCalendar()">❮ 返回</button>
             <div class="sched-month-nav">
@@ -1219,29 +1257,14 @@
                 </button>
             </div>
         </div>
+        <!-- Slider -->
         <div class="sched-slider-wrapper">
-            <div class="sched-slider-track" id="sched-slider-track"></div>
+            <div class="sched-slider-track" id="sched-slider-track">
+                <!-- Slides injected by JS -->
+            </div>
         </div>
     </div>
 </div>
-
-<!-- HOT PANEL 快速預約表單（直接跳 email） -->
-<div id="hot-quick-form">
-    <div class="hqf-handle"></div>
-    <div class="hqf-slot-display">
-        <small>快速預約</small>
-        <span id="hqf-slot-text">—</span>
-    </div>
-    <label class="hqf-label">姓名 Name</label>
-    <input type="text" id="hqf-name" class="hqf-input" placeholder="請輸入姓名">
-    <label class="hqf-label">Email</label>
-    <input type="email" id="hqf-email" class="hqf-input" placeholder="接收通知用">
-    <div class="hqf-err" id="hqf-err"></div>
-    <button class="hqf-submit" id="hqf-submit-btn" onclick="submitHotQuickForm()">確認送出</button>
-    <button class="hqf-cancel" onclick="closeHotQuickForm()">取消</button>
-</div>
-<!-- Hot panel 遮罩 -->
-<div id="hqf-overlay" onclick="closeHotQuickForm()" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:4999;"></div>
 
 <!-- INTRO ANIMATION -->
 <div id="loading-overlay">
@@ -1342,7 +1365,7 @@
     <button class="back-btn" onclick="closeForm()">❮ 返回</button>
     <div class="page-title">確認預約</div>
     <button class="clear-all-btn" onclick="clearCart()">🗑️ 清除所有時段</button>
-    <div id="form-total-label" style="margin-bottom:5px; font-weight:bold; color:#666; flex-shrink: 0;">預約內容 (共 <span id="form-total">0</span> 堂)：</div>
+    <div id="form-total-label">預約內容 (共 <span id="form-total">0</span> 堂)：</div>
     <div id="checkout-list"></div>
     <div class="form-inputs-area">
         <label>姓名 Name</label><input type="text" id="iptName" placeholder="請輸入姓名">
@@ -1412,30 +1435,26 @@
   const CAL_ICON_URL   = "https://ik.imagekit.io/lql1uveoc/Booking%20Website%20%E9%A0%90%E7%B4%84/calendar-4.png";
   const ASSISTANT_IMG_URL = "https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/christina-wocintechchat-com-m-0Zx1bDv5BNY-unsplash.jpg?updatedAt=1776614639182";
   
+  // 建立永久本地黑名單，讓剛預約過的時段直接「人間蒸發」，絕對不會再次跳出來
   const bookedBlacklist = new Set();
+
   let modalCloseCallback = null;
   
-  // =========================================================
-  // 即時同步指示器
-  // =========================================================
-  let syncIndicatorTimer = null;
-  function showSyncIndicator(msg, type='syncing', duration=1500) {
-      const el = document.getElementById('sync-indicator');
-      el.textContent = msg;
-      el.className = 'show ' + type;
-      clearTimeout(syncIndicatorTimer);
-      syncIndicatorTimer = setTimeout(() => { el.classList.remove('show'); }, duration);
-  }
-
   function showNotice(title, message, isError = false, callback = null, showScheduleBtn = false) {
       document.getElementById('res-icon').innerText = isError ? "⚠️" : "🎉";
       document.getElementById('res-title').innerText = title;
       document.getElementById('res-msg').innerHTML = message;
       document.getElementById('result-modal').style.display = 'flex';
+      
       const schedBtn = document.getElementById('btn-view-schedule');
-      schedBtn.style.display = showScheduleBtn ? 'block' : 'none';
+      if (showScheduleBtn) {
+          schedBtn.style.display = 'block';
+      } else {
+          schedBtn.style.display = 'none';
+      }
       modalCloseCallback = callback;
   }
+  
   function closeResultModal() {
       document.getElementById('result-modal').style.display = 'none';
       if (modalCloseCallback) { modalCloseCallback(); modalCloseCallback = null; }
@@ -1443,8 +1462,11 @@
 
   function alignToHeader() {
       const calHeader = document.querySelector('.header-section');
-      if (calHeader) calHeader.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      else window.scrollTo({ top: 0, behavior: 'smooth' });
+      if (calHeader) {
+          calHeader.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+          window.scrollTo({ top: 0, behavior: 'smooth' });
+      }
   }
 
   // === INTRO ANIMATION ===
@@ -1468,7 +1490,11 @@
           const overlay = document.getElementById("loading-overlay");
           if (overlay && overlay.style.display !== "none") {
               overlay.style.opacity = "0"; overlay.style.pointerEvents = "none";
-              setTimeout(() => { overlay.style.display = "none"; playIntroAnimation(); alignToHeader(); }, 500);
+              setTimeout(() => { 
+                  overlay.style.display = "none"; 
+                  playIntroAnimation(); 
+                  alignToHeader();
+              }, 500);
           }
       }
   }
@@ -1479,129 +1505,87 @@
           var o = document.getElementById("loading-overlay");
           if (o && o.style.display !== "none") { 
               o.style.opacity="0"; o.style.pointerEvents="none"; 
-              setTimeout(function(){ o.style.display="none"; alignToHeader(); }, 500); 
+              setTimeout(function(){ 
+                  o.style.display="none"; 
+                  alignToHeader();
+              }, 500); 
           }
       }, 6000);
   })();
 
   const API_URL = "https://script.google.com/macros/s/AKfycbyWvhW6fp_ohPEvPK226KtNiQLCyAVMl77zV0Hq0k_TcEk3F1ni9qVcJystGUovVjTMGQ/exec";
   const STAGE_1_DAYS=3, STAGE_2_DAYS=11, BACKGROUND_BATCH=14, MAX_DAYS=45, MAX_SELECTION=10;
-  
-  // =========================================================
-  // 即時同步核心：1秒輪詢 + 差異偵測
-  // =========================================================
-  const REALTIME_INTERVAL_MS = 1000;   // 目標 1 秒
-  const REALTIME_DAYS = 7;             // 抓最近 7 天（降低伺服器負擔）
-  let realtimeTimer = null;
-  let isFetchingRealtime = false;
-  let consecutiveErrors = 0;
-  
-  // 自適應間隔：連線正常 1s，失敗後指數後退最多 30s
-  function getAdaptiveInterval() {
-      if (consecutiveErrors === 0) return REALTIME_INTERVAL_MS;
-      return Math.min(REALTIME_INTERVAL_MS * Math.pow(2, consecutiveErrors), 30000);
-  }
-
-  function startRealtimeSync() {
-      if (realtimeTimer) return;
-      scheduleNextRealtime();
-  }
-
-  function scheduleNextRealtime() {
-      realtimeTimer = setTimeout(doRealtimeSync, getAdaptiveInterval());
-  }
-
-  async function doRealtimeSync() {
-      realtimeTimer = null;
-      if (isFetchingRealtime) { scheduleNextRealtime(); return; }
-      isFetchingRealtime = true;
-
-      const todayStr = fmt(new Date());
-      const url = `${API_URL}?action=getBatchSlots&startDate=${todayStr}&days=${REALTIME_DAYS}&_t=${Date.now()}`;
-
-      try {
-          const res = await fetch(url, { cache: "no-store" });
-          const data = await res.json();
-
-          consecutiveErrors = 0;
-          let changed = false;
-
-          for (const dStr in data) {
-              if (!data[dStr] || !data[dStr].slots) continue;
-              const newSlots = data[dStr].slots.filter(s => !bookedBlacklist.has(s.timestamp));
-              const oldSlots = (cachedData[dStr] && cachedData[dStr].slots) ? cachedData[dStr].slots : [];
-              const oldTs = oldSlots.map(s=>s.timestamp).sort().join(',');
-              const newTs = newSlots.map(s=>s.timestamp).sort().join(',');
-
-              if (oldTs !== newTs) {
-                  // 找出被移除的時段（被搶走了），播動畫
-                  const removedTs = new Set(oldSlots.map(s=>String(s.timestamp)));
-                  newSlots.forEach(s => removedTs.delete(String(s.timestamp)));
-
-                  if (removedTs.size > 0) {
-                      animateVanishingSlots(removedTs);
-                  }
-
-                  cachedData[dStr] = { ...data[dStr], slots: newSlots };
-                  changed = true;
-
-                  // 同時移除購物車中已消失的時段
-                  const newTsSet = new Set(newSlots.map(s => String(s.timestamp)));
-                  const removed = selectedSlots.filter(s => s.dateStr === dStr && !newTsSet.has(String(s.timestamp)));
-                  if (removed.length > 0) {
-                      selectedSlots = selectedSlots.filter(s => !(s.dateStr === dStr && !newTsSet.has(String(s.timestamp))));
-                      showSyncIndicator('⚡ 有時段被預約了，已同步更新', 'updated', 3000);
-                  }
-              }
-          }
-
-          if (changed) {
-              refreshCurrentView();
-              updateBottomBar();
-              showSyncIndicator('✓ 已同步最新時段', 'updated', 1200);
-          }
-
-      } catch (e) {
-          consecutiveErrors++;
-          if (consecutiveErrors <= 3) showSyncIndicator('⚠ 同步中...', 'error', 2000);
-      }
-
-      isFetchingRealtime = false;
-      scheduleNextRealtime();
-  }
-
-  // 被搶走的時段播消失動畫（在 DOM 中找到並播）
-  function animateVanishingSlots(removedTsSet) {
-      document.querySelectorAll('[data-ts]').forEach(btn => {
-          if (removedTsSet.has(String(btn.dataset.ts))) {
-              btn.classList.add('vanishing');
-          }
-      });
-  }
-
-  // 重繪目前視圖（不清空也不跳動）
-  function refreshCurrentView() {
-      if (document.getElementById("cal-modal").classList.contains("active")) {
-          renderCalGrid();
-          if (selectedDateStr) renderSlotsInsideCalendar(selectedDateStr);
-      } else {
-          if (selectedDateStr) renderSlots(selectedDateStr);
-      }
-      checkHotSlots(14);
-  }
-
-  // 分頁隱藏時暫停、顯示時立刻同步
-  document.addEventListener("visibilitychange", function() {
-      if (document.visibilityState === 'visible') {
-          doRealtimeSync();
-      }
-  });
-
   let cachedData={}, loadedDaysCount=0, selectedDateStr="", selectedSlots=[];
   const dayNames=["Sun","Mon","Tue","Wed","Thu","Fri","Sat"], chiDayNames=["日","一","二","三","四","五","六"];
   const monthNamesEng=["Jan","Feb","March","April","May","June","July","Aug","Sept","Oct","Nov","Dec"];
   let hotPanelShown=false, calYear, calMonth;
   let limitDate = new Date(); limitDate.setDate(limitDate.getDate()+MAX_DAYS); limitDate.setHours(23,59,59,999);
+
+  let bgPollingInterval = null;
+  function startBackgroundPolling() {
+      if (bgPollingInterval) return;
+      bgPollingInterval = setInterval(() => { backgroundSyncAll(); }, 3000);
+  }
+
+  // 監聽螢幕喚醒或切換回本頁面時，立刻更新
+  document.addEventListener("visibilitychange", function() {
+      if (document.visibilityState === 'visible') {
+          backgroundSyncAll();
+      }
+  });
+
+  function backgroundSyncAll() {
+      const todayStr = fmt(new Date());
+      const fetchDays = Math.max(loadedDaysCount, 14);
+      if (fetchDays === 0) return;
+      
+      // 加入 Cache Busting 機制 (_t) 破除 iOS Safari 的嚴格快取
+      const url = `${API_URL}?action=getBatchSlots&startDate=${todayStr}&days=${fetchDays}&_t=${new Date().getTime()}`;
+      
+      fetch(url, { cache: "no-store" })
+        .then(r => r.json())
+        .then(data => {
+            let hasChanges = false;
+            for(let dStr in data) {
+                if (!data[dStr] || !data[dStr].slots) continue;
+                
+                // 利用永久黑名單直接剔除剛被預約的時段 (確保字串型別比對)
+                const newSlots = data[dStr].slots.filter(s => !bookedBlacklist.has(String(s.timestamp)));
+                
+                const oldSlots = (cachedData[dStr] && cachedData[dStr].slots) ? cachedData[dStr].slots : [];
+                const oldTs = oldSlots.map(s => s.timestamp).sort().join(',');
+                const newTs = newSlots.map(s => s.timestamp).sort().join(',');
+                
+                if(oldTs !== newTs) {
+                    cachedData[dStr] = { ...data[dStr], slots: newSlots };
+                    hasChanges = true;
+                    // 同時把購物車內原本勾選但是已消失的移除
+                    const newTsSet = new Set(newSlots.map(s => String(s.timestamp)));
+                    selectedSlots = selectedSlots.filter(s => {
+                        if (s.dateStr === dStr && !newTsSet.has(String(s.timestamp))) {
+                            return false; 
+                        }
+                        return true;
+                    });
+                }
+            }
+            if(hasChanges) {
+                updateBottomBar();
+                if(document.getElementById("cal-modal").classList.contains("active")) {
+                    renderCalGrid(); 
+                    if(selectedDateStr) renderSlotsInsideCalendar(selectedDateStr);
+                } else {
+                    if(selectedDateStr) renderSlots(selectedDateStr);
+                }
+                
+                // 如果購物車清單開啟中，也同步更新畫面
+                if(document.getElementById("p-form").classList.contains("active")) {
+                    if(selectedSlots.length === 0) closeForm();
+                    else openBatchForm();
+                }
+            }
+        }).catch(() => {});
+  }
 
   window.onload = function() {
     setTimeout(runLoadingSteps, 100);
@@ -1617,9 +1601,7 @@
     fetchBatchData(0, STAGE_1_DAYS, "STAGE1");
     openCalendar(); 
     document.getElementById("p-main").style.display = "none";
-
-    // 資料載入後 2 秒啟動即時同步
-    setTimeout(startRealtimeSync, 2000);
+    setTimeout(startBackgroundPolling, 3000);
 
     document.getElementById('sched-modal-overlay').addEventListener('click', function(e) {
         if (window.innerWidth >= 1024 && e.target === this) closeSchedCalendar();
@@ -1663,7 +1645,9 @@
       }
       const peggyWindow = document.getElementById('peggy-window');
       if (peggyWindow && peggyWindow.classList.contains('show')) {
-          if (!e.target.closest('#peggy-window') && !e.target.closest('.peggy-fab')) togglePeggy();
+          if (!e.target.closest('#peggy-window') && !e.target.closest('.peggy-fab')) {
+              togglePeggy();
+          }
       }
   });
 
@@ -1682,8 +1666,7 @@
     for (let i = 0; i < MAX_DAYS; i++) {
       const d = new Date(); d.setDate(today.getDate()+i); const dStr = fmt(d);
       if (d.getDay() === 0) continue;
-      const dayName = dayNames[d.getDay()]; const chiName = chiDayNames[d.getDay()];
-      const dateText = `${d.getMonth()+1}/${d.getDate()}`;
+      const dayName = dayNames[d.getDay()]; const chiName = chiDayNames[d.getDay()]; const dateText = `${d.getMonth()+1}/${d.getDate()}`;
       const isSat = d.getDay() === 6;
       const pill = document.createElement("div");
       pill.className = "date-pill loading" + (isSat ? " sat-pill" : "");
@@ -1698,9 +1681,14 @@
       selectDatePillUI(dStr);
       if (!cachedData[dStr]) { document.getElementById("empty-msg").innerText="資料載入中..."; document.getElementById("empty-msg").style.display="block"; }
       document.querySelectorAll(".time-card").forEach(c => c.style.display="none");
-      const url = `${API_URL}?action=getBatchSlots&startDate=${dStr}&days=1&_t=${Date.now()}`;
+      
+      const url = `${API_URL}?action=getBatchSlots&startDate=${dStr}&days=1&_t=${new Date().getTime()}`;
       fetch(url, { cache: "no-store" }).then(res=>res.json()).then(data=>{
-          for(let d in data) { if(data[d]&&data[d].slots) data[d].slots=data[d].slots.filter(s=>!bookedBlacklist.has(s.timestamp)); }
+          for(let d in data) {
+              if(data[d] && data[d].slots) {
+                  data[d].slots = data[d].slots.filter(s => !bookedBlacklist.has(String(s.timestamp)));
+              }
+          }
           Object.assign(cachedData, data); if(!cachedData[dStr]) cachedData[dStr]={slots:[]};
           const pill=document.getElementById(`pill-${dStr}`); if(pill){pill.classList.remove('loading');pill.classList.add('loaded');}
           if (dStr === selectedDateStr) renderSlots(dStr);
@@ -1714,9 +1702,13 @@
 
   function fetchBatchData(startIndex, days, stage) {
     const today=new Date(); const startD=new Date(); startD.setDate(today.getDate()+startIndex); const startStr=fmt(startD);
-    const url = `${API_URL}?action=getBatchSlots&startDate=${startStr}&days=${days}&_t=${Date.now()}`;
+    const url = `${API_URL}?action=getBatchSlots&startDate=${startStr}&days=${days}&_t=${new Date().getTime()}`;
     fetch(url, { cache: "no-store" }).then(res=>res.json()).then(data=>{
-        for(let d in data) { if(data[d]&&data[d].slots) data[d].slots=data[d].slots.filter(s=>!bookedBlacklist.has(s.timestamp)); }
+        for(let d in data) {
+            if(data[d] && data[d].slots) {
+                data[d].slots = data[d].slots.filter(s => !bookedBlacklist.has(String(s.timestamp)));
+            }
+        }
         Object.assign(cachedData, data);
         for(let i=0;i<days;i++){const d=new Date();d.setDate(today.getDate()+startIndex+i);const dStr=fmt(d);if(!cachedData[dStr])cachedData[dStr]={slots:[]};}
         loadedDaysCount+=days; updateDatePills(startStr,days);
@@ -1758,10 +1750,14 @@
       document.getElementById("cal-slots-title").innerText=`${dStr} 週${wDay} 可預約時段`;
       highlightWeekDay(dStr);
       if(cachedData[dStr]){renderSlotsInsideCalendar(dStr);}else{
-          container.innerHTML=`<div style="text-align:center;padding:30px;"><div class="spinner" style="width:30px;height:30px;margin:0 auto 10px auto;border:4px solid #ddd;border-top-color:#ff5400;border-radius:50%;animation:spin 0.8s linear infinite;"></div>讀取中...</div>`;
-          const url = `${API_URL}?action=getBatchSlots&startDate=${dStr}&days=1&_t=${Date.now()}`;
+          container.innerHTML=`<div style="text-align:center;padding:30px;"><div class="spinner" style="width:30px;height:30px;margin:0 auto 10px auto;border:4px solid #ddd;border-top-color:#ff5400;border-radius:50%;animation:spin 0.8s linear infinite;"></div>讀取該日行程中...</div>`;
+          const url = `${API_URL}?action=getBatchSlots&startDate=${dStr}&days=1&_t=${new Date().getTime()}`;
           fetch(url, { cache: "no-store" }).then(r=>r.json()).then(data=>{
-              for(let d in data) { if(data[d]&&data[d].slots) data[d].slots=data[d].slots.filter(s=>!bookedBlacklist.has(s.timestamp)); }
+              for(let d in data) {
+                  if(data[d] && data[d].slots) {
+                      data[d].slots = data[d].slots.filter(s => !bookedBlacklist.has(String(s.timestamp)));
+                  }
+              }
               Object.assign(cachedData,data); if(!cachedData[dStr]) cachedData[dStr]={slots:[]};
               const pill=document.getElementById(`pill-${dStr}`); if(pill){pill.classList.remove('loading');pill.classList.add('loaded');}
               if (dStr === selectedDateStr) renderSlotsInsideCalendar(dStr);
@@ -1805,7 +1801,6 @@
       if(validSlots.length>0&&validSlots.length<=4) grid.classList.add('few-slots'); else grid.classList.remove('few-slots');
       validSlots.forEach(slot=>{
           const btn=document.createElement("button"); btn.className="simple-slot-btn";
-          btn.dataset.ts = slot.timestamp;  // 供動畫定位用
           btn.appendChild(makeClockImg());
           btn.appendChild(document.createTextNode(formatTime12H(slot.time)));
           if(selectedSlots.some(s=>s.timestamp===slot.timestamp)) btn.classList.add("selected");
@@ -1824,13 +1819,17 @@
 
   function openCalendar() {
       alignToHeader();
+      
       if(!selectedDateStr) selectedDateStr=fmt(new Date());
       renderCalGrid(); 
       jumpToDate(selectedDateStr);
       const modal=document.getElementById("cal-modal"); modal.classList.add("active");
       modal.scrollTop=0; updateBottomBar();
+      
       setTimeout(() => {
-          if (!peggyInitialized) document.querySelectorAll('.peggy-badge-el').forEach(el => el.style.display = 'flex');
+          if (!peggyInitialized) {
+              document.querySelectorAll('.peggy-badge-el').forEach(el => el.style.display = 'flex');
+          }
       }, 6000);
   }
   function closeCalendar() {
@@ -1857,19 +1856,24 @@
   function renderCalGrid() {
       const now = new Date();
       const todayDayOfWeek = now.getDay();
+      
       document.getElementById("cal-title").innerText=`${calYear}年 ${calMonth+1}月 ${monthNamesEng[calMonth]}`;
+      
       const curAbsolute = now.getFullYear() * 12 + now.getMonth();
       const calAbsolute = calYear * 12 + calMonth;
+      
       const prevBtn = document.getElementById('cal-prev-btn');
       const nextBtn = document.getElementById('cal-next-btn');
       if (prevBtn) { if (calAbsolute <= curAbsolute) prevBtn.classList.add('disabled'); else prevBtn.classList.remove('disabled'); }
       if (nextBtn) { if (calAbsolute >= curAbsolute + 2) nextBtn.classList.add('disabled'); else nextBtn.classList.remove('disabled'); }
+
       const headers = document.querySelectorAll('#cal-head-row .cal-head');
       headers.forEach(h => h.classList.remove('active-day'));
       if (todayDayOfWeek >= 1 && todayDayOfWeek <= 6) {
           const todayHeaderIdx = todayDayOfWeek - 1;
           if (headers[todayHeaderIdx]) headers[todayHeaderIdx].classList.add('active-day');
       }
+
       const container=document.getElementById("cal-body"); container.innerHTML="";
       const firstDay=new Date(calYear,calMonth,1).getDay(); const daysInMonth=new Date(calYear,calMonth+1,0).getDate();
       const today=new Date(); today.setHours(0,0,0,0);
@@ -1956,7 +1960,8 @@
   function buildBookedTimesHtml(slots) {
       let html = '<div class="booked-times-box" style="text-align: left; background: #f3f4f6; padding: 12px 15px; border-radius: 12px; margin: 15px 0;">';
       html += '<div class="booked-header" style="margin-bottom:8px; color:#111;">已預約以下時段：</div>';
-      html += '<div style="max-height: 140px; overflow-y: auto; padding-right: 5px;">';
+      // 移除原有的固定高度限制，改由父層 modal 內部滾動機制全權控制
+      html += '<div>';
       slots.forEach(slot => { html += `<div style="margin-bottom:4px;">• ${slot.displayStr}</div>`; });
       html += '</div></div>';
       return html;
@@ -1969,6 +1974,7 @@
     if(!emailRegex.test(email))return showNotice("格式錯誤","Email 格式不正確，請輸入完整的 Email (例如: name@gmail.com)",true);
     
     const btn=document.querySelector(".confirm-btn"); const orgText=btn.innerText; btn.innerText="處理中..."; btn.disabled=true;
+    
     const backBtn = document.querySelector("#p-form .back-btn");
     const clearBtn = document.querySelector("#p-form .clear-all-btn");
     if(backBtn) backBtn.style.pointerEvents = 'none';
@@ -1980,19 +1986,25 @@
        if(res.bookingSummary){
            const summary=res.bookingSummary;
            if(summary.failCount===0){
-               selectedSlots.forEach(s => bookedBlacklist.add(s.timestamp));
                let successMsg = `確認信已寄至您的信箱。<br>` + buildBookedTimesHtml(selectedSlots);
-               successMsg += `<div style="margin-top: 15px; color: #d32f2f; font-weight:bold;">請假/調整請於24小時前提出。<br><a href="https://tonyonlineenglish.netlify.app/regulations" target="_blank" style="color: #007aff; text-decoration: underline; font-weight: bold; display:inline-block; margin-top:5px;">詳細規範請點這裡</a></div>`;
+               successMsg += `<div style="margin-top: 15px; color: #d32f2f; font-weight:bold;">`;
+               successMsg += `請假/調整請於24小時前提出。<br>`;
+               successMsg += `<a href="https://tonyonlineenglish.netlify.app/regulations" target="_blank" style="color: #007aff; text-decoration: underline; font-weight: bold; display:inline-block; margin-top:5px;">詳細規範請點這裡</a>`;
+               successMsg += `</div>`;
                showNotice("預約成功", successMsg, false, null, true);
                finishSuccessBooking(selectedSlots);
            } else {
                const failedTimestamps = summary.failedSlots ? summary.failedSlots.map(s => parseInt(s.timestamp)) :[];
                const successfulSlots = selectedSlots.filter(s => !failedTimestamps.includes(s.timestamp));
-               successfulSlots.forEach(s => bookedBlacklist.add(s.timestamp));
-               let msg=`⚠️ 注意：有 <b>${summary.failCount}</b> 堂課預約失敗 (已被搶先預約)。<br><br>✅ 成功預約：<b>${summary.successCount}</b> 堂<br>`;
-               if (summary.successCount > 0) msg += buildBookedTimesHtml(successfulSlots);
+               
+               let msg=`⚠️ 注意：有 <b>${summary.failCount}</b> 堂課預約失敗 (已被搶先預約)。<br><br>`;
+               msg+=`✅ 成功預約：<b>${summary.successCount}</b> 堂<br>`;
+               if (summary.successCount > 0) {
+                   msg += buildBookedTimesHtml(successfulSlots);
+               }
                if(summary.failedSlots && summary.failedSlots.length > 0){
-                   msg += `<div style="text-align: left; color: #d32f2f; margin-top:10px;">❌ 失敗時段：<br><div style="max-height: 100px; overflow-y: auto;">`;
+                   msg += `<div style="text-align: left; color: #d32f2f; margin-top:10px;">❌ 失敗時段：<br>`;
+                   msg += `<div>`;
                    summary.failedSlots.forEach(slot=>{
                        const d=new Date(parseInt(slot.timestamp));
                        const min=d.getMinutes();
@@ -2002,15 +2014,22 @@
                    });
                    msg += `</div></div>`;
                }
-               msg += `<div style="margin-top: 15px; color: #555;">系統已為您成功預約剩餘的時段。</div>`;
-               if (summary.successCount > 0) msg += `<div style="margin-top: 15px; color: #d32f2f; font-weight:bold;">請假/調整請於24小時前提出。<br><a href="https://tonyonlineenglish.netlify.app/regulations" target="_blank" style="color: #007aff; text-decoration: underline; font-weight: bold; display:inline-block; margin-top:5px;">詳細規範請點這裡</a></div>`;
+               msg += `<div style="margin-top: 15px; color: #555;">系統已為您成功預約剩餘的時段。<br>返回畫面後將會顯示最新的剩餘名額。</div>`;
+               if (summary.successCount > 0) {
+                    msg += `<div style="margin-top: 15px; color: #d32f2f; font-weight:bold;">`;
+                    msg += `請假/調整請於24小時前提出。<br>`;
+                    msg += `<a href="https://tonyonlineenglish.netlify.app/regulations" target="_blank" style="color: #007aff; text-decoration: underline; font-weight: bold; display:inline-block; margin-top:5px;">詳細規範請點這裡</a>`;
+                    msg += `</div>`;
+               }
                showNotice("部分預約成功", msg, false, null, true);
                finishSuccessBooking(successfulSlots);
            }
        } else if(res.success){
-           selectedSlots.forEach(s => bookedBlacklist.add(s.timestamp));
            let successMsg = `確認信已寄至您的信箱。<br>` + buildBookedTimesHtml(selectedSlots);
-           successMsg += `<div style="margin-top: 15px; color: #d32f2f; font-weight:bold;">請假/調整請於24小時前提出。<br><a href="https://tonyonlineenglish.netlify.app/regulations" target="_blank" style="color: #007aff; text-decoration: underline; font-weight: bold; display:inline-block; margin-top:5px;">詳細規範請點這裡</a></div>`;
+           successMsg += `<div style="margin-top: 15px; color: #d32f2f; font-weight:bold;">`;
+           successMsg += `請假/調整請於24小時前提出。<br>`;
+           successMsg += `<a href="https://tonyonlineenglish.netlify.app/regulations" target="_blank" style="color: #007aff; text-decoration: underline; font-weight: bold; display:inline-block; margin-top:5px;">詳細規範請點這裡</a>`;
+           successMsg += `</div>`;
            showNotice("預約成功", successMsg, false, null, true);
            finishSuccessBooking(selectedSlots);
        } else{
@@ -2028,24 +2047,32 @@
     });
 
     function finishSuccessBooking(successArray){
+         // 1. 馬上將成功預約的時段加入本地永久黑名單 (轉為字串確保比對正確)
+         successArray.forEach(booked => bookedBlacklist.add(String(booked.timestamp)));
+         
+         // 2. 立即將暫存資料內該時段剔除
          successArray.forEach(booked=>{
            if(cachedData[booked.dateStr]){
-             cachedData[booked.dateStr].slots = cachedData[booked.dateStr].slots.filter(s => !bookedBlacklist.has(s.timestamp));
+             cachedData[booked.dateStr].slots = cachedData[booked.dateStr].slots.filter(s => !bookedBlacklist.has(String(s.timestamp)));
            }
          });
-         selectedSlots=[]; closeForm(); 
-         if(document.getElementById("cal-modal").classList.contains("active")) { renderSlotsInsideCalendar(selectedDateStr); renderCalGrid(); }
-         renderSlots(selectedDateStr); updateBottomBar(); checkHotSlots(loadedDaysCount>7?14:7);
-         // 立刻觸發一次即時同步
-         doRealtimeSync();
+         
+         selectedSlots=[]; 
+         closeForm(); 
+         
+         // 3. 立即原地更新畫面 (拔除被預約的時段)
+         if(document.getElementById("cal-modal").classList.contains("active")) {
+             renderCalGrid(); 
+             renderSlotsInsideCalendar(selectedDateStr);
+         }
+         renderSlots(selectedDateStr); 
+         updateBottomBar(); 
+         checkHotSlots(loadedDaysCount>7?14:7);
+         
+         // 4. 延遲 3 秒後再次觸發全域伺服器同步
+         setTimeout(backgroundSyncAll, 3000); 
     }
   }
-
-  // =========================================================
-  // HOT PANEL
-  // =========================================================
-  let hotQuickSlot = null;
-  let hotQuickDateStr = null;
 
   function checkHotSlots(daysLimit) {
     if(!daysLimit)daysLimit=14;
@@ -2063,10 +2090,10 @@
                  const monDate=`${dateObj.getMonth()+1}/${dateObj.getDate()}`;const weekName=dayNames[day];const displayTime=formatHotTime(slot.time);
                  const btn=document.createElement("button");btn.className="hot-btn";
                  btn.innerHTML=`<div>${monDate} (${weekName}) &nbsp;&nbsp; ${displayTime} <img src="https://ik.imagekit.io/lql1uveoc/tap.png?updatedAt=1751188454925" class="tap-icon"></div>`;
-                 // 點選直接開啟快速預約表單（不需先選時段、不需點購物車）
                  btn.onclick=()=>{
                      closeHotPanel();
-                     openHotQuickForm(slot, dStr);
+                     if(window.innerWidth<768){closeCalendar();selectDate(dStr);}else{jumpToDate(dStr);}
+                     setTimeout(()=>{handleSlotClick(slot,dStr);},100);
                  };
                  hotItems.push(btn);
                }
@@ -2083,81 +2110,6 @@
         }
         if(!hotPanelShown){hotPanelShown=true;const panel=document.getElementById("hot-panel");setTimeout(()=>{panel.classList.add("show");},100);}
     }
-  }
-
-  // 開啟快速預約表單
-  function openHotQuickForm(slot, dateStr) {
-      hotQuickSlot = slot;
-      hotQuickDateStr = dateStr;
-      const dObj = new Date(dateStr);
-      const displayDate = `${dObj.getMonth()+1}/${dObj.getDate()} (${dayNames[dObj.getDay()]} ${chiDayNames[dObj.getDay()]})`;
-      document.getElementById('hqf-slot-text').textContent = `${displayDate}  ${formatTime12H(slot.time)}`;
-      document.getElementById('hqf-name').value = '';
-      document.getElementById('hqf-email').value = '';
-      document.getElementById('hqf-err').style.display = 'none';
-      document.getElementById('hqf-name').classList.remove('error');
-      document.getElementById('hqf-email').classList.remove('error');
-      document.getElementById('hqf-submit-btn').disabled = false;
-      document.getElementById('hqf-submit-btn').textContent = '確認送出';
-      document.getElementById('hqf-overlay').style.display = 'block';
-      document.getElementById('hot-quick-form').classList.add('show');
-      setTimeout(() => document.getElementById('hqf-name').focus(), 400);
-  }
-
-  function closeHotQuickForm() {
-      document.getElementById('hot-quick-form').classList.remove('show');
-      document.getElementById('hqf-overlay').style.display = 'none';
-      hotQuickSlot = null;
-      hotQuickDateStr = null;
-  }
-
-  function submitHotQuickForm() {
-      const name = document.getElementById('hqf-name').value.trim();
-      const email = document.getElementById('hqf-email').value.trim();
-      const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-      const errEl = document.getElementById('hqf-err');
-
-      document.getElementById('hqf-name').classList.remove('error');
-      document.getElementById('hqf-email').classList.remove('error');
-      errEl.style.display = 'none';
-
-      if (!name) { document.getElementById('hqf-name').classList.add('error'); errEl.textContent = '請輸入姓名'; errEl.style.display = 'block'; return; }
-      if (!email || !emailRegex.test(email)) { document.getElementById('hqf-email').classList.add('error'); errEl.textContent = 'Email 格式不正確'; errEl.style.display = 'block'; return; }
-      if (!hotQuickSlot || !hotQuickDateStr) return;
-
-      const btn = document.getElementById('hqf-submit-btn');
-      btn.disabled = true; btn.textContent = '預約中...';
-
-      const dObj = new Date(hotQuickDateStr);
-      const displayStr = `${dObj.getMonth()+1}/${dObj.getDate()} (${dayNames[dObj.getDay()]} ${chiDayNames[dObj.getDay()]}) ${formatTime12H(hotQuickSlot.time)}`;
-      const appointments = [{ dateStr: hotQuickDateStr, time: hotQuickSlot.time, timestamp: hotQuickSlot.timestamp, displayStr }];
-
-      fetch(API_URL, { method: "POST", body: JSON.stringify({ name, email, appointments }) })
-      .then(r => r.json())
-      .then(res => {
-          closeHotQuickForm();
-          const success = (res.bookingSummary && res.bookingSummary.failCount === 0) || res.success;
-          if (success) {
-              bookedBlacklist.add(hotQuickSlot ? hotQuickSlot.timestamp : appointments[0].timestamp);
-              if (cachedData[hotQuickDateStr]) {
-                  cachedData[hotQuickDateStr].slots = cachedData[hotQuickDateStr].slots.filter(s => !bookedBlacklist.has(s.timestamp));
-              }
-              let successMsg = `確認信已寄至您的信箱。<br>` + buildBookedTimesHtml(appointments);
-              successMsg += `<div style="margin-top: 15px; color: #d32f2f; font-weight:bold;">請假/調整請於24小時前提出。<br><a href="https://tonyonlineenglish.netlify.app/regulations" target="_blank" style="color: #007aff; text-decoration: underline; font-weight: bold; display:inline-block; margin-top:5px;">詳細規範請點這裡</a></div>`;
-              showNotice("預約成功 🎉", successMsg, false, null, false);
-              refreshCurrentView();
-              checkHotSlots(14);
-              doRealtimeSync();
-          } else {
-              showNotice("預約失敗", res.message || "此時段已被預約，請選擇其他時段。", true);
-              doRealtimeSync();
-          }
-      })
-      .catch(() => {
-          closeHotQuickForm();
-          showNotice("網路錯誤", "網路連線異常，請稍後再試。", true);
-          btn.disabled = false; btn.textContent = '確認送出';
-      });
   }
 
   function formatHotTime(timeStr){
@@ -2219,6 +2171,7 @@
   let currentStudentSchedule = [];
   let schedSelectedDateStr;
   let lastQueriedName = '';
+
   let schedCurrentMonthIdx = 0;
   const SCHED_TOTAL_MONTHS = 3;
 
@@ -2226,7 +2179,9 @@
       const windowEl = document.getElementById('peggy-window');
       const badges = document.querySelectorAll('.peggy-badge-el');
       windowEl.classList.toggle('show');
-      if(windowEl.classList.contains('show')) badges.forEach(b => b.style.display = 'none');
+      if(windowEl.classList.contains('show')) {
+          badges.forEach(b => b.style.display = 'none');
+      }
       if(windowEl.classList.contains('show') && !peggyInitialized) {
           let msg = `嗨！我是Tony線上美語家教 Peggy 👋<br>我可以幫您查詢未來的課程時間。<a href="https://tonyonlineenglish.netlify.app/ycs" target="_blank" style="color:var(--blue-main); font-weight:bold; text-decoration:underline;">也可點選這</a><br><br>請問您的<b>英文名字</b>是？`;
           addPeggyMessage(msg, 'peggy', 'bottom');
@@ -2263,8 +2218,11 @@
       div.className = sender === 'peggy' ? 'msg-peggy' : 'msg-user';
       div.innerHTML = htmlContent;
       body.appendChild(div);
-      if (scrollMode === 'top') { setTimeout(() => { body.scrollTo({ top: div.offsetTop - 15, behavior: 'smooth' }); }, 50); }
-      else if (scrollMode === 'bottom') { body.scrollTop = body.scrollHeight; }
+      if (scrollMode === 'top') {
+          setTimeout(() => { body.scrollTo({ top: div.offsetTop - 15, behavior: 'smooth' }); }, 50);
+      } else if (scrollMode === 'bottom') {
+          body.scrollTop = body.scrollHeight;
+      }
       return div;
   }
 
@@ -2283,15 +2241,19 @@
       if(btn) btn.style.display = 'none';
   }
 
+  // 獨立抓取課表的非同步函式 (供 Peggy 與 View Schedule 共用)
   async function fetchUserSchedule(name) {
       let queryName = name;
       if (name.includes('Eason Hsieh')) queryName = 'Eason';
       if (name.includes('Eason Cheng')) queryName = 'Eason Cheng';
-      const url = `${PEGGY_API_URL}?action=getSchedule&name=${encodeURIComponent(queryName)}&_t=${Date.now()}`;
+      
+      const url = `${PEGGY_API_URL}?action=getSchedule&name=${encodeURIComponent(queryName)}&_t=${new Date().getTime()}`;
       const schedRes = await fetch(url, { cache: "no-store" });
       const rawSchedule = await schedRes.json();
+      
       let scheduleData = [];
       const nameLower = queryName.toLowerCase();
+      
       if (Array.isArray(rawSchedule)) {
           if (nameLower === 'eason') {
               scheduleData = rawSchedule.filter(ev => {
@@ -2307,16 +2269,21 @@
               });
           }
       }
-      const todayStart = new Date(); todayStart.setHours(0,0,0,0);
+
+      const todayStart = new Date(); 
+      todayStart.setHours(0,0,0,0);
       currentStudentSchedule = scheduleData.filter(ev => new Date(ev.start) >= todayStart);
       return scheduleData;
   }
 
+  // 預約完成後點擊「查看我的課表」的專用函式
   function viewMyScheduleAfterBooking() {
       closeResultModal();
       const userName = document.getElementById("iptName").value.trim();
       if (!userName) return;
+      
       document.getElementById('generic-loading').style.display = 'flex';
+      
       fetchUserSchedule(userName).then(() => {
           document.getElementById('generic-loading').style.display = 'none';
           openSchedCalendar();
@@ -2330,56 +2297,105 @@
       showPeggyTyping();
       try {
           const scheduleData = await fetchUserSchedule(name);
+          
           let queryName = name;
           if (name.includes('Eason Hsieh')) queryName = 'Eason';
           if (name.includes('Eason Cheng')) queryName = 'Eason Cheng';
-          const countUrl = `${PEGGY_API_URL}?action=getLessonCount&name=${encodeURIComponent(queryName)}&_t=${Date.now()}`;
+          const countUrl = `${PEGGY_API_URL}?action=getLessonCount&name=${encodeURIComponent(queryName)}&_t=${new Date().getTime()}`;
           const countRes = await fetch(countUrl, { cache: "no-store" });
           const countData = await countRes.json();
+          
           document.getElementById('peggy-window').classList.add('expanded');
+          
           const now = new Date();
           const todayStart = new Date(now); todayStart.setHours(0,0,0,0);
           const todayStr = fmt(todayStart);
-          const limitDateObj = new Date(); limitDateObj.setDate(now.getDate() + 60);
-          const upcoming = scheduleData.filter(ev => new Date(ev.start) >= now && new Date(ev.start) <= limitDateObj).sort((a,b) => new Date(a.start) - new Date(b.start));
+
+          const limitDateObj = new Date();
+          limitDateObj.setDate(now.getDate() + 60);
+          const upcoming = scheduleData.filter(ev => new Date(ev.start) >= now && new Date(ev.start) <= limitDateObj)
+                                       .sort((a,b) => new Date(a.start) - new Date(b.start));
+
           let html = `<div style="text-align:left;">`;
-          html += `<div style="font-weight:bold; font-size:1.1em; margin-bottom:0.6em; color:var(--selected-bg);">Hello ${name}！<br><div style="margin-top: 15px; margin-bottom: 8px;"><button class="highlight-cal-btn" onclick="openSchedCalendar()" title="查看完整月曆課表"><img src="${CAL_ICON_URL}" alt="月曆" class="chat-cal-icon"></button></div></div>`;
+          
+          html += `<div style="font-weight:bold; font-size:1.1em; margin-bottom:0.6em; color:var(--selected-bg);">
+            Hello ${name}！<br>
+            <div style="margin-top: 15px; margin-bottom: 8px;">
+                <button class="highlight-cal-btn" onclick="openSchedCalendar()" title="查看完整月曆課表">
+                    <img src="${CAL_ICON_URL}" alt="月曆" class="chat-cal-icon">
+                </button>
+            </div>
+          </div>`;
+
           if (upcoming.length > 0) {
-              html += `<div style="font-weight:bold; font-size:1.05em; color:var(--blue-main); margin-bottom:0.4em;">近期預約課程：</div><div>`;
+              html += `<div style="font-weight:bold; font-size:1.05em; color:var(--blue-main); margin-bottom:0.4em;">近期預約課程：</div>`;
+              html += `<div>`;
+              
               upcoming.forEach((ev, idx) => {
                   const d = new Date(ev.start);
                   const evDateStr = fmt(d);
                   const isToday = (evDateStr === todayStr);
-                  const month = d.getMonth() + 1; const dateNum = d.getDate(); const day = chiDayNames[d.getDay()];
-                  let hours = d.getHours(); let minutes = d.getMinutes().toString().padStart(2, "0");
-                  const ampm = hours >= 12 ? "PM" : "AM"; hours = hours % 12 || 12;
+                  const month = d.getMonth() + 1;
+                  const dateNum = d.getDate();
+                  const day = chiDayNames[d.getDay()];
+                  let hours = d.getHours();
+                  let minutes = d.getMinutes().toString().padStart(2, "0");
+                  const ampm = hours >= 12 ? "PM" : "AM";
+                  hours = hours % 12 || 12;
                   const timeStr = `${hours}:${minutes} ${ampm}`;
+
                   let isHidden = idx >= 4;
-                  let itemStyle = isToday ? `background:linear-gradient(135deg,#fff3e0,#ffe0b2);border:2px solid #ff9800;box-shadow:0 0 14px rgba(255,152,0,0.45);animation:todayGlow 2s ease-in-out infinite alternate;` : `background:#fff;border-left:4px solid var(--selected-bg);box-shadow:0 1px 4px rgba(0,0,0,0.08);`;
-                  html += `<div class="${isHidden?'peggy-hidden-booking':''}" style="${itemStyle} padding:0.6em 0.7em; margin-bottom:0.6em; border-radius:0.6em; font-size:1em; ${isHidden?'display:none;':''}">`;
+                  let extraClass = isHidden ? 'peggy-hidden-booking' : '';
+                  let displayStyle = isHidden ? 'display:none;' : '';
+
+                  let itemStyle = isToday
+                    ? `background:linear-gradient(135deg,#fff3e0,#ffe0b2);border:2px solid #ff9800;box-shadow:0 0 14px rgba(255,152,0,0.45);animation:todayGlow 2s ease-in-out infinite alternate;`
+                    : `background:#fff;border-left:4px solid var(--selected-bg);box-shadow:0 1px 4px rgba(0,0,0,0.08);`;
+
+                  html += `<div class="${extraClass}" style="${itemStyle} padding:0.6em 0.7em; margin-bottom:0.6em; border-radius:0.6em; font-size:1em; ${displayStyle}">`;
                   html += `<div style="color:var(--selected-bg); font-weight:bold;">${month}/${dateNum} (週${day}) ${timeStr}`;
                   if (isToday) html += `<span class="today-booking-badge">今日上課</span>`;
-                  html += `</div><div style="color:#555; margin-top:0.2em; font-size:0.85em;">${ev.title}</div></div>`;
+                  html += `</div>`;
+                  html += `<div style="color:#555; margin-top:0.2em; font-size:0.85em;">${ev.title}</div>`;
+                  html += `</div>`;
               });
               html += `</div>`;
-              if (upcoming.length > 4) html += `<button id="peggy-show-more-btn" onclick="showMorePeggyBookings()" style="width:100%; margin-top:0.5em; padding:0.6em; background:transparent; border:2px solid var(--blue-main); color:var(--blue-main); border-radius:0.7em; cursor:pointer; font-weight:bold; font-size:0.95em; transition:0.2s;">顯示更多 ▾</button>`;
+
+              if (upcoming.length > 4) {
+                  html += `<button id="peggy-show-more-btn" onclick="showMorePeggyBookings()" style="width:100%; margin-top:0.5em; padding:0.6em; background:transparent; border:2px solid var(--blue-main); color:var(--blue-main); border-radius:0.7em; cursor:pointer; font-weight:bold; font-size:0.95em; transition:0.2s;">顯示更多 ▾</button>`;
+              }
+              if (upcoming.length > 8) {
+                  html += `<div style="font-size:0.85em; color:#888; text-align:center; margin-top:0.4em;">僅顯示最近 8 筆預約</div>`;
+              }
           } else {
               html += `<div style="margin-top:0.5em; font-size:1em; color:#555; background:#fff0f5; padding:0.7em; border-radius:0.7em; border:1px solid #ffebee;">目前沒有近期預約的課程喔！<br><a href="javascript:void(0)" onclick="togglePeggy(); window.scrollTo(0,0);" style="color:var(--pill-active); font-weight:bold; display:inline-block; margin-top:0.4em;">現在去預約 ❯</a></div>`;
           }
+
           let countHtml = '';
           if (countData && !countData.error && countData.total !== "" && countData.total !== null) {
-              let displayTotal = countData.total; let displayCompleted = countData.completed;
+              let displayTotal = countData.total;
+              let displayCompleted = countData.completed;
               if (!isNaN(countData.total) && Number(countData.total) >= 100) displayTotal = '會員';
               if (!isNaN(countData.completed) && Number(countData.completed) >= 100) displayCompleted = '訂閱';
-              countHtml += `<div id="peggy-count-section" style="display:none; margin-top:0.8em;"><div style="font-size:1em; background:#eefaff; padding:0.7em; border-radius:0.7em; border:1px solid #bce6ff; color:#0056b3;"><span style="display:inline-block; margin-bottom:0.3em;">總堂數: <b>${displayTotal}</b> | 已完成: <b>${displayCompleted}</b></span><br><span style="display:inline-flex; align-items:center; color:#d32f2f; font-weight:bold; font-size:1.07em;">剩餘堂數: ${countData.remaining}</span></div></div>`;
+
+              countHtml += `<div id="peggy-count-section" style="display:none; margin-top:0.8em;">`;
+              countHtml += `<div style="font-size:1em; background:#eefaff; padding:0.7em; border-radius:0.7em; border:1px solid #bce6ff; color:#0056b3;">`;
+              countHtml += `<span style="display:inline-block; margin-bottom:0.3em;">總堂數: <b>${displayTotal}</b> | 已完成: <b>${displayCompleted}</b></span><br>`;
+              countHtml += `<span style="display:inline-flex; align-items:center; color:#d32f2f; font-weight:bold; font-size:1.07em;">剩餘堂數: ${countData.remaining}</span>`;
+              countHtml += `</div>`;
+              countHtml += `</div>`;
+              
               html += `<button id="peggy-count-toggle-btn" onclick="togglePeggyCountSection()" style="width:100%; margin-top:0.6em; padding:0.5em; background:transparent; border:1px dashed #bce6ff; color:#0056b3; border-radius:0.7em; cursor:pointer; font-size:0.9em; transition:0.2s;">📊 查看堂數資訊 ▾</button>`;
               html += countHtml;
           } else {
               html += `<div style="margin-top:0.5em; font-size:0.9em; color:#888;">查無您的堂數資料或剩餘堂數為0。</div>`;
           }
+
           html += `</div>`;
+          
           hidePeggyTyping();
           addPeggyMessage(html, 'peggy', 'top');
+          
       } catch (e) {
           console.error("Chatbot Fetch Error:", e);
           hidePeggyTyping();
@@ -2394,24 +2410,36 @@
       const isHidden = section.style.display === 'none';
       section.style.display = isHidden ? 'block' : 'none';
       if (btn) btn.textContent = isHidden ? '📊 隱藏堂數資訊 ▴' : '📊 查看堂數資訊 ▾';
-      if (isHidden) { const body = document.getElementById('peggy-body'); setTimeout(() => { body.scrollTop = body.scrollHeight; }, 100); }
+      if (isHidden) {
+          const body = document.getElementById('peggy-body');
+          setTimeout(() => { body.scrollTop = body.scrollHeight; }, 100);
+      }
   }
 
   // ==========================================
   // === Student Schedule Calendar — Slider ===
   // ==========================================
+
   function getMonthInfo(offset) {
-      const now = new Date(); let y = now.getFullYear(); let m = now.getMonth() + offset;
+      const now = new Date();
+      let y = now.getFullYear();
+      let m = now.getMonth() + offset;
       while (m > 11) { m -= 12; y++; }
       return { year: y, month: m };
   }
+
   function openSchedCalendar() {
       schedCurrentMonthIdx = 0;
       const modal = document.getElementById('sched-modal-overlay');
       modal.style.display = 'flex';
-      buildSchedSlider(); updateSchedNav();
+      buildSchedSlider();
+      updateSchedNav();
   }
-  function closeSchedCalendar() { document.getElementById('sched-modal-overlay').style.display = 'none'; }
+
+  function closeSchedCalendar() {
+      document.getElementById('sched-modal-overlay').style.display = 'none';
+  }
+
   function schedGoMonth(dir) {
       const newIdx = schedCurrentMonthIdx + dir;
       if (newIdx < 0 || newIdx >= SCHED_TOTAL_MONTHS) return;
@@ -2421,78 +2449,143 @@
       track.style.transform = `translateX(-${schedCurrentMonthIdx * slideWidth}px)`;
       updateSchedNav();
   }
+
   function updateSchedNav() {
       const chiMonths = ["一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"];
       const { year, month } = getMonthInfo(schedCurrentMonthIdx);
+      
       document.getElementById('sched-month-title').innerText = `${year}.${String(month + 1).padStart(2, '0')}月`;
+
       const prevBtn = document.getElementById('sched-prev-btn');
-      if (schedCurrentMonthIdx === 0) { prevBtn.classList.add('disabled'); document.getElementById('sched-prev-label').innerText = ''; }
-      else { prevBtn.classList.remove('disabled'); const prev = getMonthInfo(schedCurrentMonthIdx - 1); document.getElementById('sched-prev-label').innerText = chiMonths[prev.month]; }
+      if (schedCurrentMonthIdx === 0) {
+          prevBtn.classList.add('disabled');
+          document.getElementById('sched-prev-label').innerText = '';
+      } else {
+          prevBtn.classList.remove('disabled');
+          const prev = getMonthInfo(schedCurrentMonthIdx - 1);
+          document.getElementById('sched-prev-label').innerText = chiMonths[prev.month];
+      }
+
       const nextBtn = document.getElementById('sched-next-btn');
-      if (schedCurrentMonthIdx >= SCHED_TOTAL_MONTHS - 1) { nextBtn.classList.add('disabled'); document.getElementById('sched-next-label').innerText = ''; }
-      else { nextBtn.classList.remove('disabled'); const next = getMonthInfo(schedCurrentMonthIdx + 1); document.getElementById('sched-next-label').innerText = chiMonths[next.month]; }
+      if (schedCurrentMonthIdx >= SCHED_TOTAL_MONTHS - 1) {
+          nextBtn.classList.add('disabled');
+          document.getElementById('sched-next-label').innerText = '';
+      } else {
+          nextBtn.classList.remove('disabled');
+          const next = getMonthInfo(schedCurrentMonthIdx + 1);
+          document.getElementById('sched-next-label').innerText = chiMonths[next.month];
+      }
   }
+
   function buildSchedSlider() {
-      const track = document.getElementById('sched-slider-track'); track.innerHTML = ''; track.style.transform = 'translateX(0)';
-      const now = new Date(); const todayStr = fmt(now); const todayDayOfWeek = now.getDay();
-      const todayStart = new Date(now); todayStart.setHours(0,0,0,0);
-      const weekDayLabels = [{eng:'MON',chi:'一'},{eng:'TUE',chi:'二'},{eng:'WED',chi:'三'},{eng:'THU',chi:'四'},{eng:'FRI',chi:'五'},{eng:'SAT',chi:'六'}];
+      const track = document.getElementById('sched-slider-track');
+      track.innerHTML = '';
+      track.style.transform = 'translateX(0)';
+
+      const now = new Date();
+      const todayStr = fmt(now);
+      const todayDayOfWeek = now.getDay();
+      
+      const todayStart = new Date(now);
+      todayStart.setHours(0,0,0,0);
+
+      const weekDayLabels = [
+          { eng: 'MON', chi: '一' }, { eng: 'TUE', chi: '二' }, { eng: 'WED', chi: '三' },
+          { eng: 'THU', chi: '四' }, { eng: 'FRI', chi: '五' }, { eng: 'SAT', chi: '六' },
+      ];
+
       for (let mOffset = 0; mOffset < SCHED_TOTAL_MONTHS; mOffset++) {
           const { year: targetY, month: targetM } = getMonthInfo(mOffset);
           const isCurrentMonth = (mOffset === 0);
-          const slide = document.createElement('div'); slide.className = 'sched-slide';
-          const wdHeader = document.createElement('div'); wdHeader.className = 'sched-weekday-header';
+
+          const slide = document.createElement('div');
+          slide.className = 'sched-slide';
+
+          const wdHeader = document.createElement('div');
+          wdHeader.className = 'sched-weekday-header';
           weekDayLabels.forEach((wd, idx) => {
-              const head = document.createElement('div'); head.className = 'sched-weekday-head';
+              const head = document.createElement('div');
+              head.className = 'sched-weekday-head';
               if (idx === 5) head.classList.add('sat-head');
               if (isCurrentMonth && todayDayOfWeek >= 1 && todayDayOfWeek <= 6) {
-                  if (idx === todayDayOfWeek - 1) head.classList.add('today-head');
+                  const todayColIdx = todayDayOfWeek - 1;
+                  if (idx === todayColIdx) head.classList.add('today-head');
               }
               head.innerHTML = `${wd.eng}<small>${wd.chi}</small>`;
               wdHeader.appendChild(head);
           });
           slide.appendChild(wdHeader);
-          const grid = document.createElement('div'); grid.className = 'sched-cal-grid';
+
+          const grid = document.createElement('div');
+          grid.className = 'sched-cal-grid';
+
           const firstDay = new Date(targetY, targetM, 1).getDay();
           const daysInMonth = new Date(targetY, targetM + 1, 0).getDate();
           let emptyCells = firstDay === 0 ? 6 : firstDay - 1;
-          for (let i = 0; i < emptyCells; i++) { const empty = document.createElement('div'); empty.className = 'sched-cell empty'; grid.appendChild(empty); }
+
+          for (let i = 0; i < emptyCells; i++) {
+              const empty = document.createElement('div');
+              empty.className = 'sched-cell empty';
+              grid.appendChild(empty);
+          }
+
           for (let d = 1; d <= daysInMonth; d++) {
               const currentD = new Date(targetY, targetM, d);
-              if (currentD.getDay() === 0) continue;
+              if (currentD.getDay() === 0) continue; 
+
               const dateStr = `${targetY}-${String(targetM + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
-              const cell = document.createElement('div'); cell.className = 'sched-cell';
+              const cell = document.createElement('div');
+              cell.className = 'sched-cell';
+
               const isPast = currentD < todayStart;
               const dayEvents = currentStudentSchedule.filter(ev => fmt(new Date(ev.start)) === dateStr);
-              if (isPast) cell.classList.add('past-day');
-              else if (dateStr === todayStr) cell.classList.add('today');
+
+              if (isPast) {
+                  cell.classList.add('past-day');
+              } else if (dateStr === todayStr) {
+                  cell.classList.add('today');
+              }
+
               cell.onclick = function() {
                   if (isPast || dayEvents.length === 0) return;
+                  
                   document.querySelectorAll('.sched-cell').forEach(c => c.classList.remove('selected'));
-                  this.classList.add('selected'); openClassDetailModal(dateStr);
+                  this.classList.add('selected');
+                  openClassDetailModal(dateStr);
               };
+
               let cellInner = `<div class="sched-date-num">${d}</div>`;
+
               if (dayEvents.length > 0) {
                   cell.classList.add('has-events');
                   let timeLabels = dayEvents.map(ev => {
-                      let evD = new Date(ev.start); let h = evD.getHours(); let m = evD.getMinutes();
-                      let ampm = h >= 12 ? 'pm' : 'am'; h = h % 12 || 12;
+                      let evD = new Date(ev.start);
+                      let h = evD.getHours();
+                      let m = evD.getMinutes();
+                      let ampm = h >= 12 ? 'pm' : 'am';
+                      h = h % 12 || 12;
                       let minStr = m > 0 ? `:${m.toString().padStart(2, '0')}` : '';
                       return `${h}${minStr}${ampm}`;
                   });
                   if (timeLabels.length > 2) timeLabels = [timeLabels[0], timeLabels[1], '...'];
                   cellInner += `<div class="sched-cell-times">${timeLabels.join('<br>')}</div>`;
               }
-              cell.innerHTML = cellInner; grid.appendChild(cell);
+
+              cell.innerHTML = cellInner;
+              grid.appendChild(cell);
           }
-          slide.appendChild(grid); track.appendChild(slide);
+
+          slide.appendChild(grid);
+          track.appendChild(slide);
       }
+
       const slideWidth = track.parentElement.offsetWidth;
       track.style.transform = `translateX(-${schedCurrentMonthIdx * slideWidth}px)`;
   }
 
   window.addEventListener('resize', () => {
-      const track = document.getElementById('sched-slider-track'); if (!track) return;
+      const track = document.getElementById('sched-slider-track');
+      if (!track) return;
       const slideWidth = track.parentElement.offsetWidth;
       track.style.transition = 'none';
       track.style.transform = `translateX(-${schedCurrentMonthIdx * slideWidth}px)`;
@@ -2502,20 +2595,33 @@
   function openClassDetailModal(dStr) {
       const dayEvents = currentStudentSchedule.filter(ev => fmt(new Date(ev.start)) === dStr).sort((a,b) => new Date(a.start) - new Date(b.start));
       if(dayEvents.length === 0) return;
+
       let html = '<h3 class="cd-header">課程細節</h3>';
       dayEvents.forEach(ev => {
           const d = new Date(ev.start);
-          const yyyy = d.getFullYear(); const mm = String(d.getMonth() + 1).padStart(2, '0'); const dd = String(d.getDate()).padStart(2, '0');
-          const dayEng = dayNames[d.getDay()]; const dayChi = chiDayNames[d.getDay()];
-          let h = d.getHours(); const mStr = String(d.getMinutes()).padStart(2, '0'); const ampm = h >= 12 ? 'pm' : 'am';
-          let period = '上午'; if(h >= 12 && h < 18) period = '下午'; if(h >= 18) period = '晚上';
+          const yyyy = d.getFullYear();
+          const mm = String(d.getMonth() + 1).padStart(2, '0');
+          const dd = String(d.getDate()).padStart(2, '0');
+          const dayEng = dayNames[d.getDay()];
+          const dayChi = chiDayNames[d.getDay()];
+          let h = d.getHours();
+          const mStr = String(d.getMinutes()).padStart(2, '0');
+          const ampm = h >= 12 ? 'pm' : 'am';
+          let period = '上午';
+          if(h >= 12 && h < 18) period = '下午';
+          if(h >= 18) period = '晚上';
           h = h % 12 || 12;
           const displayDate = `${yyyy}.${mm}.${dd} ${dayEng} 週${dayChi} ${period}${h}:${mStr}${ampm}`;
           const eventId = ev.id || ev.eventId || "undefined";
           const titleEscaped = (ev.title || "").replace(/'/g, "\\'");
-          const timestamp = d.getTime(); const nowTs = new Date().getTime();
+          const timestamp = d.getTime();
+          const nowTs = new Date().getTime();
           const isCancellable = (timestamp - nowTs) >= (24 * 60 * 60 * 1000);
-          html += `<div class="cd-item"><div class="cd-date">${displayDate}</div><div class="cd-title">${ev.title}</div><div class="cd-length">⏱ 課程時長: 50 分鐘</div>`;
+
+          html += `<div class="cd-item">`;
+          html += `<div class="cd-date">${displayDate}</div>`;
+          html += `<div class="cd-title">${ev.title}</div>`;
+          html += `<div class="cd-length">⏱ 課程時長: 50 分鐘</div>`;
           if (isCancellable) {
               html += `<button onclick="openAuthModal('${eventId}', '${timestamp}', '${titleEscaped}')" class="cancel-class-btn">取消此課程 <span style="display:block; margin-top:2px; font-weight:normal;">(系統支援課前24小時前)</span></button>`;
           } else {
@@ -2523,6 +2629,7 @@
           }
           html += `</div>`;
       });
+
       document.getElementById('class-detail-content').innerHTML = html;
       document.getElementById('class-detail-modal').style.display = 'flex';
   }
@@ -2530,6 +2637,7 @@
   function closeClassDetailModal() { document.getElementById('class-detail-modal').style.display = 'none'; }
 
   let tempCancelData = null;
+
   function openAuthModal(eventId, timestamp, eventTitle) {
       tempCancelData = { eventId, timestamp, eventTitle };
       document.getElementById('auth-email-input').value = '';
@@ -2544,24 +2652,37 @@
       errEl.innerHTML = msg; errEl.style.display = 'block';
       document.getElementById('auth-email-input').classList.add('error');
   }
+
   function submitAuthCancel() {
       const emailInput = document.getElementById('auth-email-input').value.trim();
       const errorMsg = `您的 Email 與當時預約時的 Email 不符合，請再次輸入正確 Email。<br>或直接與 <a href="https://tonyonlineenglish.netlify.app" target="_blank">Tony 聯繫</a>。`;
       if (!emailInput) { showAuthError('請輸入 Email。'); return; }
       const { eventId, timestamp, eventTitle } = tempCancelData;
-      const errEl = document.getElementById('auth-error-msg'); errEl.style.display = 'none';
+      const errEl = document.getElementById('auth-error-msg');
+      errEl.style.display = 'none';
       document.getElementById('auth-email-input').classList.remove('error');
-      const loadingOverlay = document.getElementById('auth-loading-overlay'); loadingOverlay.style.display = 'flex';
-      const url = `${API_URL}?action=ajaxCancel&eid=${encodeURIComponent(eventId)}&ts=${timestamp}&title=${encodeURIComponent(eventTitle)}&email=${encodeURIComponent(emailInput)}&_t=${Date.now()}`;
-      fetch(url, { cache: "no-store" }).then(res => res.json()).then(data => {
+      const loadingOverlay = document.getElementById('auth-loading-overlay');
+      loadingOverlay.style.display = 'flex';
+      const url = `${API_URL}?action=ajaxCancel&eid=${encodeURIComponent(eventId)}&ts=${timestamp}&title=${encodeURIComponent(eventTitle)}&email=${encodeURIComponent(emailInput)}&_t=${new Date().getTime()}`;
+      fetch(url, { cache: "no-store" })
+      .then(res => res.json())
+      .then(data => {
           loadingOverlay.style.display = 'none';
           if(data.success) {
               closeAuthModal(); closeClassDetailModal();
               showNotice("取消成功", "課程已成功從日曆中移除，並已寄送確認信給您。");
-              currentStudentSchedule = currentStudentSchedule.filter(ev => new Date(ev.start).getTime() !== parseInt(timestamp));
+              currentStudentSchedule = currentStudentSchedule.filter(ev => {
+                  return new Date(ev.start).getTime() !== parseInt(timestamp);
+              });
               buildSchedSlider();
-          } else { showAuthError(errorMsg); }
-      }).catch(() => { loadingOverlay.style.display = 'none'; showAuthError('網路連線異常，請稍後再試。'); });
+          } else {
+              showAuthError(errorMsg);
+          }
+      })
+      .catch(() => {
+          loadingOverlay.style.display = 'none';
+          showAuthError('網路連線異常，請稍後再試。');
+      });
   }
 </script>
 </body>
