@@ -4,55 +4,48 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
-    <!-- Meta Tags (包含您指定的 LINE 縮圖與標題) -->
     <title>線上美語家教學費資訊-Tony線上美語家教</title>
-    <meta property="og:title" content="超值優惠課程 - Tony線上美語家教">
-    <meta property="og:description" content="每堂50分鐘 線上1-1美語家教 | 升學 檢定 職場 公職 高考 面試 外商 觀光美語 展場英文 翻譯 客製化課程 口說">
+    <meta property="og:title" content="超值優惠課程-Tony線上美語家教">
+    <meta property="og:description" content="升學 檢定 職場 公職 高考 面試 外商 觀光美語 展場英文 翻譯 客製化課程 口說">
     <meta property="og:url" content="https://tonyonlineenglish.netlify.app/tui">
-    <meta property="og:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/marcos-paulo-prado-tcyW6Im5Uug-unsplash.jpg?updatedAt=1776059296878">
+    <meta property="og:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/shutter-speed-3LXPDYb83MY-unsplash.jpg?updatedAt=1772773916191">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/marcos-paulo-prado-tcyW6Im5Uug-unsplash.jpg?updatedAt=1776059296878">
     <script src="layout-manager.js"></script>
-    <!-- Google Fonts (經典字體搭配) -->
+    <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&family=Noto+Serif+TC:wght@600;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&family=Noto+Serif+TC:wght@600;900&display=swap" rel="stylesheet">
 
     <style>
-        /* 基礎設定 & 大字體 */
+        /* =========================================================
+           頁面基礎與外圍區塊佈局 (非卡片區的自訂樣式)
+        ========================================================= */
         :root {
-            --primary-color: #1A365D; /* 經典海軍藍 */
-            --accent-color: #D6A848;  /* 質感香檳金 */
-            --bg-light: #F7F9FC;
-            --text-dark: #2D3748;
-        }
-
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+            --primary-navy: #1A365D;
+            --primary-gold: #D6A848;
+            --light-bg: #F8FAFC;
         }
 
         body {
+            margin: 0;
+            padding: 0;
             font-family: 'Noto Sans TC', sans-serif;
-            color: var(--text-dark);
-            background-color: var(--bg-light);
-            line-height: 1.6;
-            font-size: 18px; /* 加大基礎字體 */
+            background-color: var(--light-bg);
+            overflow-x: hidden;
         }
 
-        h1, h2, h3, h4 {
-            font-family: 'Noto Serif TC', serif; /* 標題使用經典明體 */
+        h1, h2, h3, h4, .serif-font {
+            font-family: 'Noto Serif TC', serif;
         }
 
-        /* Hero Section (主視覺區) */
+        /* 主視覺區 Hero Section (質感漸層遮罩) */
         .hero {
             position: relative;
             background-image: url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/sebastian-knoll-vKYSvZqu_1I-unsplash.jpg?updatedAt=1776059055073');
             background-size: cover;
             background-position: center;
             height: 100vh;
-            min-height: 600px;
+            min-height: 650px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -64,41 +57,46 @@
         .hero::before {
             content: '';
             position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(15, 32, 55, 0.75); /* 深色遮罩讓文字清楚 */
+            inset: 0;
+            /* 改用漸層遮罩，更有高級感 */
+            background: linear-gradient(135deg, rgba(15, 32, 55, 0.95) 0%, rgba(26, 54, 93, 0.7) 100%);
             z-index: 1;
         }
 
         .hero-content {
             position: relative;
             z-index: 2;
-            max-width: 800px;
+            max-width: 900px;
+            animation: fadeIn 1.2s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .hero-content h2 {
-            font-size: 1.5rem;
-            color: var(--accent-color);
-            margin-bottom: 10px;
-            letter-spacing: 2px;
+            font-size: clamp(1.6rem, 4vw, 2.2rem);
+            color: var(--primary-gold);
+            margin-bottom: 15px;
+            letter-spacing: 3px;
         }
 
         .hero-content h1 {
-            font-size: 3.5rem;
-            margin-bottom: 20px;
+            font-size: clamp(2.8rem, 6vw, 4.5rem);
+            margin-bottom: 30px;
             font-weight: 900;
+            text-shadow: 0 4px 15px rgba(0,0,0,0.3);
         }
 
         .hero-pricing {
-            font-size: 1.5rem;
-            margin-bottom: 40px;
-            font-weight: bold;
-            line-height: 1.8;
+            font-size: clamp(1.3rem, 3vw, 1.6rem);
+            margin-bottom: 45px;
+            font-weight: 500;
+            line-height: 1.9;
+            color: #E2E8F0;
         }
 
-        /* 按鈕設計 */
         .btn-group {
             display: flex;
             gap: 20px;
@@ -108,185 +106,360 @@
 
         .btn {
             display: inline-block;
-            padding: 15px 40px;
-            font-size: 1.2rem;
+            padding: 16px 45px;
+            font-size: 1.3rem;
             font-weight: bold;
             text-decoration: none;
-            border-radius: 5px;
+            border-radius: 50px;
             transition: all 0.3s ease;
             text-align: center;
+            letter-spacing: 1px;
         }
 
         .btn-primary {
-            background-color: var(--accent-color);
-            color: #fff;
-            border: 2px solid var(--accent-color);
+            background-color: var(--primary-gold);
+            color: #1A202C;
+            border: 2px solid var(--primary-gold);
+            box-shadow: 0 8px 20px rgba(214, 168, 72, 0.3);
         }
 
         .btn-primary:hover {
-            background-color: #b88d35;
-            border-color: #b88d35;
+            background-color: #C28E3A;
+            border-color: #C28E3A;
             transform: translateY(-3px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            box-shadow: 0 12px 25px rgba(214, 168, 72, 0.4);
         }
 
         .btn-outline {
-            background-color: transparent;
+            background-color: rgba(255,255,255,0.1);
+            backdrop-filter: blur(5px);
             color: #fff;
             border: 2px solid #fff;
         }
 
         .btn-outline:hover {
             background-color: #fff;
-            color: var(--primary-color);
+            color: var(--primary-navy);
             transform: translateY(-3px);
         }
 
-        /* 課程特色橫幅 */
+        /* 課程特色標語 */
         .features-banner {
-            background-color: var(--primary-color);
+            background: linear-gradient(90deg, #1A365D, #2A4A7F, #1A365D);
             color: white;
             text-align: center;
-            padding: 40px 20px;
+            padding: 50px 20px;
         }
 
         .features-banner h3 {
-            font-size: 2rem;
+            font-size: 2.2rem;
             margin-bottom: 15px;
-            color: var(--accent-color);
+            color: var(--primary-gold);
         }
 
         .features-banner p {
-            font-size: 1.3rem;
-            font-weight: bold;
-            max-width: 900px;
+            font-size: 1.4rem;
+            font-weight: 500;
+            max-width: 1000px;
             margin: 0 auto;
-            line-height: 1.8;
+            line-height: 2;
+            letter-spacing: 1px;
         }
 
-        /* 卡片式訂閱區塊 */
-        .subscription-section {
-            padding: 80px 20px;
-            max-width: 1200px;
+        /* 卡片區外包裝 */
+        .cards-wrapper {
+            max-width: 1400px;
             margin: 0 auto;
+            padding: 90px max(24px, 5%);
         }
 
-        .section-title {
-            text-align: center;
-            font-size: 2.5rem;
-            color: var(--primary-color);
-            margin-bottom: 50px;
-        }
-
-        .cards-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 30px;
-        }
-
-        .card {
-            background: white;
-            border-radius: 10px;
-            padding: 40px 30px;
-            box-shadow: 0 15px 30px rgba(0,0,0,0.05);
-            border-top: 5px solid var(--accent-color);
-            transition: transform 0.3s ease;
-        }
-
-        .card:hover {
-            transform: translateY(-10px);
-            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-        }
-
-        .card-title {
-            font-size: 2rem;
-            color: var(--primary-color);
-            margin-bottom: 20px;
-            text-align: center;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 15px;
-        }
-
-        .card-features {
-            list-style: none;
-            font-size: 1.2rem;
-        }
-
-        .card-features li {
-            margin-bottom: 15px;
-            position: relative;
-            padding-left: 25px;
-        }
-
-        .card-features li::before {
-            content: '✓';
-            color: var(--accent-color);
-            position: absolute;
-            left: 0;
-            font-weight: bold;
-        }
-
-        .time-notice {
-            margin-top: 20px;
-            font-size: 1.1rem;
-            color: #666;
-            background: var(--bg-light);
-            padding: 15px;
-            border-radius: 5px;
-        }
-
-        /* Line 行動呼籲區 (CTA) */
+        /* CTA Line 按鈕區 */
         .cta-section {
             text-align: center;
-            padding: 80px 20px;
+            padding: 100px 20px;
             background-color: white;
-            border-top: 1px solid #eee;
+            position: relative;
+        }
+
+        .cta-section::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, #E2E8F0, transparent);
         }
 
         .cta-text {
             font-size: 2.5rem;
-            font-weight: bold;
-            color: var(--primary-color);
-            margin-bottom: 30px;
+            font-weight: 900;
+            font-family: 'Noto Serif TC', serif;
+            color: var(--primary-navy);
+            margin-bottom: 40px;
         }
 
         .btn-line {
-            background-color: #06C755; /* LINE 官方綠色 */
+            background-color: #06C755;
             color: white;
             border: none;
-            font-size: 1.8rem; /* LINE 按鈕超大字體 */
-            padding: 20px 60px;
+            font-size: 2rem;
+            padding: 22px 70px;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 10px;
-            border-radius: 50px;
+            gap: 15px;
+            border-radius: 60px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            /* 發光陰影，極度吸引目光 */
+            box-shadow: 0 10px 30px rgba(6, 199, 85, 0.35);
         }
 
         .btn-line:hover {
-            background-color: #05a847;
-            transform: scale(1.05);
-            box-shadow: 0 10px 20px rgba(6, 199, 85, 0.3);
+            background-color: #05B34C;
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 15px 40px rgba(6, 199, 85, 0.5);
+        }
+
+        /* Hashtags 底部區塊設計 */
+        .hashtags-footer {
+            background-color: var(--light-bg);
+            padding: 20px 20px 60px;
+            text-align: center;
+        }
+
+        .tags-container {
+            max-width: 900px;
+            margin: 0 auto;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 12px;
+        }
+
+        .tags-container span {
+            display: inline-block;
+            background-color: white;
+            color: var(--primary-navy);
+            padding: 10px 20px;
+            border-radius: 30px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+            border: 1px solid rgba(26, 54, 93, 0.1);
+            transition: all 0.3s ease;
+            cursor: default;
+        }
+
+        .tags-container span:hover {
+            background-color: var(--primary-navy);
+            color: white;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(26, 54, 93, 0.2);
         }
 
         footer {
-            background: var(--primary-color);
-            color: white;
+            background: #0F172A;
+            color: #94A3B8;
             text-align: center;
-            padding: 20px;
-            font-size: 1rem;
+            padding: 30px 20px;
+            font-size: 1.1rem;
         }
 
-        /* 響應式設計 */
-        @media (max-width: 768px) {
-            .hero-content h1 { font-size: 2.5rem; }
-            .hero-pricing { font-size: 1.2rem; }
-            .features-banner h3 { font-size: 1.5rem; }
-            .features-banner p { font-size: 1.1rem; }
-            .cta-text { font-size: 1.8rem; }
-            .btn-line { font-size: 1.4rem; padding: 15px 40px; }
-            .btn-group { flex-direction: column; }
-            .btn { width: 100%; }
+        /* =========================================================
+           高階 CSS 卡片佈局 (質感升級版)
+        ========================================================= */
+        @layer reset, base, composition, features, utilities;
+
+        @import "https://cdn.jsdelivr.net/npm/kiso.css@latest/kiso.css" layer(reset);
+
+        @layer features {
+          @scope (.scope.product-cards) to (.scope) {
+            :scope { container: --scope / inline-size; }
+
+            ._card-list > * { grid-row: span 5; }
+
+            ._card {
+              --_accent: var(--product-card--accent, #1A365D);
+              --_row-gap: 0.6rem;
+              --_padding: 28px;
+              --_radius: 35px;
+              --_accent-contrast: oklch(from var(--_accent) sign(0.7 - l) 0 0);
+              --_inner-radius: calc(var(--_radius) - var(--_padding));
+              --_category-radius: 20px;
+              --_duration: 450ms;
+              --_has-hocus-on: ;
+              --_has-hocus-off: initial;
+
+              display: block grid;
+              reading-flow: grid-rows;
+              grid-template-columns:[--full-start --heading-start] minmax(0, 1fr) [--heading-end --price-start] max-content[--price-end --full-end];
+              grid-template-rows: subgrid;
+              gap: var(--_row-gap) 1rem;
+              padding: var(--_padding);
+              border-radius: var(--_radius);
+              box-shadow: 0 15px 35px -10px rgba(0,0,0,0.08);
+              background-color: #ffffff;
+              color: #2D3748;
+              transition: transform 0.4s cubic-bezier(0.165, 0.84, 0.44, 1), box-shadow 0.4s ease;
+            }
+
+            ._card:hover {
+                transform: translateY(-8px);
+                box-shadow: 0 25px 50px -12px rgba(0,0,0,0.15);
+            }
+
+            ._card:has(:any-link:hover) { @media (any-hover) { --_has-hocus-on: initial; --_has-hocus-off: ; } }
+            ._card:has(:focus-visible) { --_has-hocus-on: initial; --_has-hocus-off: ; }
+
+            ._card > * { grid-column: --full; }
+            ._card > ._thumbnail-stack { grid-row: 1 / 2; }
+            ._card > ._category {
+              z-index: 1;
+              grid-row: 1 / 2;
+              place-self: start;
+              max-inline-size: calc(100% - (var(--_category-radius) + var(--_inner-radius)));
+              font-weight: bold;
+              font-size: 1.15rem;
+            }
+            ._card > ._heading { grid-column: --heading; align-self: center; font-family: 'Noto Serif TC', serif; font-weight: 900;}
+            ._card > ._price { grid-column: --price; place-self: center end; font-size: 1.25rem; font-weight: bold;}
+            
+            ._thumbnail-stack { display: block grid; }
+            ._thumbnail-stack > img { grid-area: 1 / 1; inline-size: 100%; aspect-ratio: 4/3; object-fit: cover;}
+
+            img {
+              border-radius: var(--_inner-radius);
+              filter: url(#svg-inset-shadow);
+              @media (prefers-reduced-motion: no-preference) {
+                transition-property: clip-path, filter;
+                transition-duration: var(--_duration);
+                transition-timing-function: var(--_has-hocus-on, var(--ease-out-expo)) var(--_has-hocus-off, var(--ease-in-expo));
+              }
+              :nth-child(1 of &) { filter: brightness(0.65) saturate(0.8); }
+              :nth-child(2 of &) {
+                @media (any-hover) {
+                  clip-path: var(--_has-hocus-on, inset(0 round var(--_inner-radius))) var(--_has-hocus-off, inset(100% round var(--_inner-radius)));
+                }
+              }
+            }
+            
+            ._card:hover img:nth-child(1) { filter: brightness(0.8) saturate(1); }
+
+            ._heading { padding-block: calc(var(--_row-gap) * 2); }
+            ._price {
+              padding-block: 0.6em; padding-inline: 1.4em;
+              border-radius: calc(infinity * 1px);
+              background-color: var(--_accent);
+              color: var(--_accent-contrast);
+              box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            }
+            ._category {
+              position: relative; align-content: center;
+              min-block-size: calc(var(--_category-radius) * 2);
+              padding-block: 0.8em; padding-inline: 1.6em;
+              border-end-end-radius: var(--_category-radius);
+              background-color: #ffffff;
+              filter: drop-shadow(4px 4px 6px rgba(0,0,0,0.08));
+              color: var(--_accent);
+            }
+            ._category::before, ._category::after {
+              content: ""; position: absolute; block-size: var(--_category-radius); aspect-ratio: 1;
+              mask-image: radial-gradient(circle at 100% 100%, transparent var(--_category-radius), red calc(var(--_category-radius) + 1px));
+              background-color: inherit;
+            }
+            ._category::before { inset-block-start: 0; inset-inline-start: 100%; }
+            ._category::after { inset-block-start: 100%; inset-inline-start: 0; }
+          }
+
+          @scope (.scope.purchase-button) to (.scope) {
+            :scope {
+              --_background: var(--purchase-button--background, var(--color-darker));
+              --_backgorund-hocus: oklch(from var(--_background) 45% 60% h);
+              --_foreground: var(--purchase-button--foreground, var(--color-lightest));
+              --_foreground-hocus: oklch(from var(--_backgorund-hocus) sign(0.7 - l) 0 0);
+              --_hocus-on: ; --_hocus-off: initial;
+
+              display: block flex; justify-content: center; align-items: center; column-gap: 1ch;
+              padding: 1.4em; border: 1px solid transparent; border-radius: calc(infinity * 1px);
+              background-color: var(--_hocus-on, var(--_backgorund-hocus)) var(--_hocus-off, var(--_background));
+              color: var(--_hocus-on, var(--_foreground-hocus)) var(--_hocus-off, var(--_foreground));
+              font-weight: 900; font-size: 1.2rem; text-decoration: none;
+              letter-spacing: 2px;
+              transition-property: background-color, color, transform, box-shadow; transition-duration: 300ms;
+            }
+            :scope::before {
+              content: ""; flex: 0 0 1.2em;
+              mask-image: var(--icon-arrow); mask-repeat: no-repeat; mask-position: center; mask-size: contain;
+              aspect-ratio: 1; background-color: currentColor;
+            }
+            :scope:any-link:hover {
+              @media (any-hover) { 
+                --_hocus-on: initial; --_hocus-off: ; 
+                transform: translateY(-2px);
+                box-shadow: 0 8px 15px rgba(0,0,0,0.15);
+              }
+            }
+          }
+        }
+
+        @layer composition {
+          .grid {
+            --_c-fill-mode: var(--grid--fill-mode, auto-fit);
+            --_c-row-gap: var(--grid--row-gap, 3rem);
+            --_c-column-gap: var(--grid--column-gap, 2.5rem);
+            --_c-column-max-count: var(--grid--column-max-count, 3);
+            --_c-column-min-width: var(--grid--column-min-width, 22rem);
+            --_c-column-width-calculated: calc((100% - var(--_c-column-gap) * (var(--_c-column-max-count) - 1)) / var(--_c-column-max-count));
+            --_c-column-width: min(100%, max(var(--_c-column-min-width), var(--_c-column-width-calculated)));
+
+            display: block grid;
+            grid-template-columns: repeat(var(--_c-fill-mode), minmax(var(--_c-column-width), 1fr));
+            gap: var(--_c-row-gap) var(--_c-column-gap);
+            justify-content: center;
+          }
+        }
+
+        @layer utilities {
+          .-fluid-text {
+            --_fluid-text--min-width: 375; --_fluid-text--max-width: 1280;
+            --_fluid-text--min-font-size: 19; 
+            --_fluid-text--max-font-size: 28;
+            --_fluid-text--base-font-size: 16;
+            --_fluid-text--relative-unit: 100svi; 
+            --_fluid-text--slope: calc((var(--_fluid-text--max-font-size) - var(--_fluid-text--min-font-size)) / (var(--_fluid-text--max-width) - var(--_fluid-text--min-width)));
+            --_fluid-text--intercept: calc(var(--_fluid-text--min-font-size) - var(--_fluid-text--slope) * var(--_fluid-text--min-width));
+            --_fluid-text--font-size: clamp(var(--_fluid-text--min-font-size) / var(--_fluid-text--base-font-size) * 1rem, var(--_fluid-text--slope) * var(--_fluid-text--relative-unit) + var(--_fluid-text--intercept) / var(--_fluid-text--base-font-size) * 1rem, var(--_fluid-text--max-font-size) / var(--_fluid-text--base-font-size) * 1rem);
+            font-size: var(--_fluid-text--font-size);
+          }
+
+          ._description {
+            color: #4A5568;
+            line-height: 1.8;
+            font-size: 1.1rem;
+            margin-top: 10px;
+            margin-bottom: 20px;
+          }
+        }
+
+        @layer base {
+          :root {
+            --ease-in-expo: cubic-bezier(0.95, 0.05, 0.795, 0.035);
+            --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
+            --_background: var(--light-bg);
+            --_grid-color: #E2E8F0;
+
+            /* 背景網格點綴，非常淡 */
+            background-image: radial-gradient(var(--_grid-color) 1.5px, transparent 1.5px);
+            background-size: 35px 35px;
+          }
+          :where(h1, h2, h3, h4, h5, h6) { line-height: 1.3; }
+        }
+
+        @property --icon-arrow {
+          syntax: "<url>"; inherits: false;
+          initial-value: url('data:image/svg+xml,<svg viewBox="0 0 448 512" xmlns="http://www.w3.org/2000/svg"><path d="M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0-105.4 105.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z" fill="black"/></svg>');
         }
     </style>
 </head>
@@ -298,13 +471,13 @@
             <h2>會員訂閱制課程</h2>
             <h1>超值優惠課程</h1>
             <div class="hero-pricing">
-                線上1對1家教（每堂50分鐘）<br>
-                每堂課只需 450點（每週兩堂）<br>
-                每堂課只需 500點（每週一堂）<br>
-                或可選擇 混合訂閱制
+                線上 1 對 1 家教（每堂50分鐘）<br><br>
+                每堂課只需 450 點（每週兩堂）<br>
+                每堂課只需 500 點（每週一堂）<br>
+                或是混合訂閱制自由搭配
             </div>
             <div class="btn-group">
-                <a href="https://tonyonlineenglish.netlify.app/exper" class="btn btn-primary">👉 預約體驗課程</a>
+                <a href="https://tonyonlineenglish.netlify.app/exper" class="btn btn-primary">預約體驗課程</a>
                 <a href="https://tonyonlineenglish.netlify.app/allcourses" class="btn btn-outline">詳細課程介紹</a>
             </div>
         </div>
@@ -312,75 +485,117 @@
 
     <!-- 課程特色橫幅 -->
     <section class="features-banner">
-        <h3>每堂 50 分鐘 ｜ 線上 1 對 1 美語家教</h3>
-        <p>升學 ✦ 檢定 ✦ 職場 ✦ 面試 ✦ 公職 ✦ 客製化課程 ✦ 口說</p>
+        <h3>客製化專屬您的美語課程</h3>
+        <p>每堂 50 分鐘 線上 1-1 美語家教<br>升學 ✦ 檢定 ✦ 職場 ✦ 面試 ✦ 公職 ✦ 客製化課程 ✦ 口說</p>
     </section>
 
-    <!-- 訂閱卡片區 -->
-    <section class="subscription-section">
-        <h2 class="section-title">多元訂閱方案，自由選擇</h2>
-        <div class="cards-container">
-            
-            <!-- 卡片 1 -->
-            <div class="card">
-                <h3 class="card-title">訂閱制 450點</h3>
-                <ul class="card-features">
-                    <li>超值優惠首選</li>
-                    <li>每週穩定雙堂，進步有感</li>
-                </ul>
-                <div class="time-notice">
-                    <strong>適用上課時段：</strong><br>
-                    週一～週五 (平日)<br>
-                    10:00am ~ 5:00pm 前<br>
-                    <small style="color:#d65151; display:block; margin-top:5px;">*其他時段也可預約上課，上課點數略有不同。</small>
-                </div>
+    <!-- 卡片式訂閱方案 -->
+    <div class="cards-wrapper">
+        <div class="scope product-cards | -fluid-text">
+            <div class="_card-list | grid">
+
+                <!-- 方案一：450點 -->
+                <section class="_card" style="--product-card--accent: #1A365D;"> 
+                    <h2 class="_heading | -fluid-text" style="--fluid-text--min-font-size: 22; --fluid-text--max-font-size: 30;">訂閱制 450 點</h2>
+                    <div class="_thumbnail-stack">
+                        <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=1200&q=80" alt="Learning" fetchpriority="high" />
+                        <img src="https://images.unsplash.com/photo-1434030216411-0b793f4b4173?auto=format&fit=crop&w=1200&q=80" alt="Learning" fetchpriority="high" />
+                    </div>
+                    <p class="_category">每週兩堂</p>
+                    <p class="_price">超值優惠</p>
+                    <div class="_description">
+                        <strong>適用上課時段：</strong><br>
+                        週一～週五 (平日)<br>
+                        10:00am ~ 5:00pm 前<br><br>
+                        <span style="color:#E53E3E; font-size: 0.95em; font-weight:bold;">* 其他時段也可預約上課，點數略有不同。</span>
+                    </div>
+                    <div class="_button" style="--purchase-button--background: var(--_accent); --purchase-button--foreground: var(--_accent-contrast);">
+                        <a href="https://tonyonlineenglish.netlify.app/exper" class="scope purchase-button">預約體驗</a>
+                    </div>
+                </section>
+
+                <!-- 方案二：500點 -->
+                <section class="_card" style="--product-card--accent: #B8860B;"> 
+                    <h2 class="_heading | -fluid-text" style="--fluid-text--min-font-size: 22; --fluid-text--max-font-size: 30;">訂閱制 500 點</h2>
+                    <div class="_thumbnail-stack">
+                        <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/marcos-paulo-prado-tcyW6Im5Uug-unsplash.jpg?updatedAt=1776059296878" alt="Home Learning" fetchpriority="high" />
+                        <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/marcos-paulo-prado-tcyW6Im5Uug-unsplash.jpg?updatedAt=1776059296878" alt="Home Learning" fetchpriority="high" />
+                    </div>
+                    <p class="_category">每週一堂</p>
+                    <p class="_price">維持語感</p>
+                    <div class="_description">
+                        <strong>適用上課時段：</strong><br>
+                        週一～週五 (平日)<br>
+                        10:00am ~ 5:00pm 前<br><br>
+                        <span style="color:#E53E3E; font-size: 0.95em; font-weight:bold;">* 其他時段也可預約上課，點數略有不同。</span>
+                    </div>
+                    <div class="_button" style="--purchase-button--background: var(--_accent); --purchase-button--foreground: var(--_accent-contrast);">
+                        <a href="https://tonyonlineenglish.netlify.app/exper" class="scope purchase-button">預約體驗</a>
+                    </div>
+                </section>
+
+                <!-- 方案三：550點 -->
+                <section class="_card" style="--product-card--accent: #2E5C4E;"> 
+                    <h2 class="_heading | -fluid-text" style="--fluid-text--min-font-size: 22; --fluid-text--max-font-size: 30;">訂閱制 550 點</h2>
+                    <div class="_thumbnail-stack">
+                        <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=80" alt="Business Coaching" fetchpriority="high" />
+                        <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1200&q=80" alt="Business Coaching" fetchpriority="high" />
+                    </div>
+                    <p class="_category">自由搭配</p>
+                    <p class="_price">高度客製</p>
+                    <div class="_description">
+                        <strong style="color: var(--_accent); font-size: 1.15em;">每週一堂，或兩堂，自由搭配</strong><br><br>
+                        <strong>適用上課時段：</strong><br>
+                        週一～週五 (平日)<br>
+                        10:00am ~ 5:00pm 前<br><br>
+                        <span style="color:#E53E3E; font-size: 0.95em; font-weight:bold;">* 其他時段也可預約上課，點數略有不同。</span>
+                    </div>
+                    <div class="_button" style="--purchase-button--background: var(--_accent); --purchase-button--foreground: var(--_accent-contrast);">
+                        <a href="https://tonyonlineenglish.netlify.app/exper" class="scope purchase-button">預約體驗</a>
+                    </div>
+                </section>
+
             </div>
 
-            <!-- 卡片 2 -->
-            <div class="card">
-                <h3 class="card-title">訂閱制 500點</h3>
-                <ul class="card-features">
-                    <li>靈活學習無壓力</li>
-                    <li>每週一堂，維持語感最佳選擇</li>
-                </ul>
-                <div class="time-notice">
-                    <strong>適用上課時段：</strong><br>
-                    週一～週五 (平日)<br>
-                    10:00am ~ 5:00pm 前<br>
-                    <small style="color:#d65151; display:block; margin-top:5px;">*其他時段也可預約上課，上課點數略有不同。</small>
-                </div>
-            </div>
-
-            <!-- 卡片 3 -->
-            <div class="card">
-                <h3 class="card-title">訂閱制 550點</h3>
-                <ul class="card-features">
-                    <li>高度客製化，自由搭配</li>
-                    <li>每週可以一堂或兩堂，彈性安排</li>
-                </ul>
-                <div class="time-notice">
-                    <strong>適用上課時段：</strong><br>
-                    週一～週五 (平日)<br>
-                    10:00am ~ 5:00pm 前<br>
-                    <small style="color:#d65151; display:block; margin-top:5px;">*其他時段也可預約上課，上課點數略有不同。</small>
-                </div>
-            </div>
-
+            <!-- SVG 濾鏡 -->
+            <svg width="0" height="0" style="visibility: hidden; position: fixed;">
+                <filter id="svg-inset-shadow">
+                    <feOffset in="SourceAlpha" dx="6" dy="8" />
+                    <feGaussianBlur in="SourceAlpha" stdDeviation="8" />
+                    <feComposite in="SourceAlpha" operator="out" />
+                    <feBlend in2="SourceGraphic" mode="multiply" />
+                </filter>
+            </svg>
         </div>
-    </section>
+    </div>
 
     <!-- 聯絡 CTA 區塊 (導流至LINE) -->
     <section class="cta-section">
         <div class="cta-text">
-            客製化您的專屬英語課程<br>立即加入 LINE 諮詢了解更多！
+            需要客製化課程或有任何疑問？<br>馬上加入 LINE 詢問吧！
         </div>
-        <a href="https://line.me/ti/p/T9YdimtG8_" class="btn btn-line">
-            <!-- LINE Icon 簡單替代符號 -->
-            <svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor">
+        <a href="https://line.me/ti/p/T9YdimtG8_" class="btn-line" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" width="45" height="45" fill="currentColor">
                 <path d="M24 10.304c0-5.369-5.383-9.738-12-9.738-6.616 0-12 4.369-12 9.738 0 4.814 3.269 8.846 8.039 9.564.315.069.752.213.856.492.093.25.03.656-.013.924-.055.334-.26 1.253-.318 1.503-.092.392-.423 2.054 1.802 1.117 2.227-.936 12.015-7.07 12.015-7.07.604-.42 1.619-1.996 1.619-6.53z"/>
             </svg>
             加入 LINE : myavalon
         </a>
+    </section>
+
+    <!-- 底部 Hashtags 區塊 -->
+    <section class="hashtags-footer">
+        <div class="tags-container">
+            <span>#進步有感</span>
+            <span>#升學檢定</span>
+            <span>#職場應用</span>
+            <span>#無壓力學習</span>
+            <span>#公職面試</span>
+            <span>#口說強化</span>
+            <span>#彈性排課</span>
+            <span>#外商翻譯</span>
+            <span>#自由搭配</span>
+            <span>#每週一堂或兩堂</span>
+        </div>
     </section>
 
     <footer>
