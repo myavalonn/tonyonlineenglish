@@ -1,9 +1,391 @@
- <title>線上美語家教學費資訊-Tony線上美語家教</title>
-
-    <!-- 3. Message Preview Picture (貼到 Line, FB, iMessage 時的預覽小圖與文字) -->
-    <meta property="og:title" content="線上美語家教學費資訊-Tony線上美語家教">
-    <meta property="og:description" content="升學 檢定 職場 公職 高考 面試 外商 觀光美語 展場英文 翻譯">
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Meta Tags (包含您指定的 LINE 縮圖與標題) -->
+    <title>線上美語家教學費資訊-Tony線上美語家教</title>
+    <meta property="og:title" content="超值優惠課程 - Tony線上美語家教">
+    <meta property="og:description" content="每堂50分鐘 線上1-1美語家教 | 升學 檢定 職場 公職 高考 面試 外商 觀光美語 展場英文 翻譯 客製化課程 口說">
     <meta property="og:url" content="https://tonyonlineenglish.netlify.app/tui">
-    <meta property="og:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/shutter-speed-3LXPDYb83MY-unsplash.jpg?updatedAt=1772773916191">
+    <meta property="og:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/marcos-paulo-prado-tcyW6Im5Uug-unsplash.jpg?updatedAt=1776059296878">
     <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/shutter-speed-3LXPDYb83MY-unsplash.jpg?updatedAt=1772773916191">
+    <meta name="twitter:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/marcos-paulo-prado-tcyW6Im5Uug-unsplash.jpg?updatedAt=1776059296878">
+
+    <!-- Google Fonts (經典字體搭配) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700&family=Noto+Serif+TC:wght@600;900&display=swap" rel="stylesheet">
+
+    <style>
+        /* 基礎設定 & 大字體 */
+        :root {
+            --primary-color: #1A365D; /* 經典海軍藍 */
+            --accent-color: #D6A848;  /* 質感香檳金 */
+            --bg-light: #F7F9FC;
+            --text-dark: #2D3748;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Noto Sans TC', sans-serif;
+            color: var(--text-dark);
+            background-color: var(--bg-light);
+            line-height: 1.6;
+            font-size: 18px; /* 加大基礎字體 */
+        }
+
+        h1, h2, h3, h4 {
+            font-family: 'Noto Serif TC', serif; /* 標題使用經典明體 */
+        }
+
+        /* Hero Section (主視覺區) */
+        .hero {
+            position: relative;
+            background-image: url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/sebastian-knoll-vKYSvZqu_1I-unsplash.jpg?updatedAt=1776059055073');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+            min-height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            color: white;
+            padding: 20px;
+        }
+
+        .hero::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 32, 55, 0.75); /* 深色遮罩讓文字清楚 */
+            z-index: 1;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 2;
+            max-width: 800px;
+        }
+
+        .hero-content h2 {
+            font-size: 1.5rem;
+            color: var(--accent-color);
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+        }
+
+        .hero-content h1 {
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            font-weight: 900;
+        }
+
+        .hero-pricing {
+            font-size: 1.5rem;
+            margin-bottom: 40px;
+            font-weight: bold;
+            line-height: 1.8;
+        }
+
+        /* 按鈕設計 */
+        .btn-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 40px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background-color: var(--accent-color);
+            color: #fff;
+            border: 2px solid var(--accent-color);
+        }
+
+        .btn-primary:hover {
+            background-color: #b88d35;
+            border-color: #b88d35;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .btn-outline {
+            background-color: transparent;
+            color: #fff;
+            border: 2px solid #fff;
+        }
+
+        .btn-outline:hover {
+            background-color: #fff;
+            color: var(--primary-color);
+            transform: translateY(-3px);
+        }
+
+        /* 課程特色橫幅 */
+        .features-banner {
+            background-color: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .features-banner h3 {
+            font-size: 2rem;
+            margin-bottom: 15px;
+            color: var(--accent-color);
+        }
+
+        .features-banner p {
+            font-size: 1.3rem;
+            font-weight: bold;
+            max-width: 900px;
+            margin: 0 auto;
+            line-height: 1.8;
+        }
+
+        /* 卡片式訂閱區塊 */
+        .subscription-section {
+            padding: 80px 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 50px;
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 30px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 40px 30px;
+            box-shadow: 0 15px 30px rgba(0,0,0,0.05);
+            border-top: 5px solid var(--accent-color);
+            transition: transform 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .card-title {
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            text-align: center;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 15px;
+        }
+
+        .card-features {
+            list-style: none;
+            font-size: 1.2rem;
+        }
+
+        .card-features li {
+            margin-bottom: 15px;
+            position: relative;
+            padding-left: 25px;
+        }
+
+        .card-features li::before {
+            content: '✓';
+            color: var(--accent-color);
+            position: absolute;
+            left: 0;
+            font-weight: bold;
+        }
+
+        .time-notice {
+            margin-top: 20px;
+            font-size: 1.1rem;
+            color: #666;
+            background: var(--bg-light);
+            padding: 15px;
+            border-radius: 5px;
+        }
+
+        /* Line 行動呼籲區 (CTA) */
+        .cta-section {
+            text-align: center;
+            padding: 80px 20px;
+            background-color: white;
+            border-top: 1px solid #eee;
+        }
+
+        .cta-text {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--primary-color);
+            margin-bottom: 30px;
+        }
+
+        .btn-line {
+            background-color: #06C755; /* LINE 官方綠色 */
+            color: white;
+            border: none;
+            font-size: 1.8rem; /* LINE 按鈕超大字體 */
+            padding: 20px 60px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            border-radius: 50px;
+        }
+
+        .btn-line:hover {
+            background-color: #05a847;
+            transform: scale(1.05);
+            box-shadow: 0 10px 20px rgba(6, 199, 85, 0.3);
+        }
+
+        footer {
+            background: var(--primary-color);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            font-size: 1rem;
+        }
+
+        /* 響應式設計 */
+        @media (max-width: 768px) {
+            .hero-content h1 { font-size: 2.5rem; }
+            .hero-pricing { font-size: 1.2rem; }
+            .features-banner h3 { font-size: 1.5rem; }
+            .features-banner p { font-size: 1.1rem; }
+            .cta-text { font-size: 1.8rem; }
+            .btn-line { font-size: 1.4rem; padding: 15px 40px; }
+            .btn-group { flex-direction: column; }
+            .btn { width: 100%; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- 主視覺區 (Hero Section) -->
+    <header class="hero">
+        <div class="hero-content">
+            <h2>會員訂閱制課程</h2>
+            <h1>超值優惠課程</h1>
+            <div class="hero-pricing">
+                線上1對1家教（每堂50分鐘）<br>
+                每堂課只需 450點（每週兩堂）<br>
+                每堂課只需 500點（每週一堂）<br>
+                或可選擇 混合訂閱制
+            </div>
+            <div class="btn-group">
+                <a href="https://tonyonlineenglish.netlify.app/exper" class="btn btn-primary">👉 預約體驗課程</a>
+                <a href="https://tonyonlineenglish.netlify.app/allcourses" class="btn btn-outline">詳細課程介紹</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- 課程特色橫幅 -->
+    <section class="features-banner">
+        <h3>每堂 50 分鐘 ｜ 線上 1 對 1 美語家教</h3>
+        <p>升學 ✦ 檢定 ✦ 職場 ✦ 面試 ✦ 公職 ✦ 客製化課程 ✦ 口說</p>
+    </section>
+
+    <!-- 訂閱卡片區 -->
+    <section class="subscription-section">
+        <h2 class="section-title">多元訂閱方案，自由選擇</h2>
+        <div class="cards-container">
+            
+            <!-- 卡片 1 -->
+            <div class="card">
+                <h3 class="card-title">訂閱制 450點</h3>
+                <ul class="card-features">
+                    <li>超值優惠首選</li>
+                    <li>每週穩定雙堂，進步有感</li>
+                </ul>
+                <div class="time-notice">
+                    <strong>適用上課時段：</strong><br>
+                    週一～週五 (平日)<br>
+                    10:00am ~ 5:00pm 前<br>
+                    <small style="color:#d65151; display:block; margin-top:5px;">*其他時段也可預約上課，上課點數略有不同。</small>
+                </div>
+            </div>
+
+            <!-- 卡片 2 -->
+            <div class="card">
+                <h3 class="card-title">訂閱制 500點</h3>
+                <ul class="card-features">
+                    <li>靈活學習無壓力</li>
+                    <li>每週一堂，維持語感最佳選擇</li>
+                </ul>
+                <div class="time-notice">
+                    <strong>適用上課時段：</strong><br>
+                    週一～週五 (平日)<br>
+                    10:00am ~ 5:00pm 前<br>
+                    <small style="color:#d65151; display:block; margin-top:5px;">*其他時段也可預約上課，上課點數略有不同。</small>
+                </div>
+            </div>
+
+            <!-- 卡片 3 -->
+            <div class="card">
+                <h3 class="card-title">訂閱制 550點</h3>
+                <ul class="card-features">
+                    <li>高度客製化，自由搭配</li>
+                    <li>每週可以一堂或兩堂，彈性安排</li>
+                </ul>
+                <div class="time-notice">
+                    <strong>適用上課時段：</strong><br>
+                    週一～週五 (平日)<br>
+                    10:00am ~ 5:00pm 前<br>
+                    <small style="color:#d65151; display:block; margin-top:5px;">*其他時段也可預約上課，上課點數略有不同。</small>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
+    <!-- 聯絡 CTA 區塊 (導流至LINE) -->
+    <section class="cta-section">
+        <div class="cta-text">
+            客製化您的專屬英語課程<br>立即加入 LINE 諮詢了解更多！
+        </div>
+        <a href="https://line.me/ti/p/T9YdimtG8_" class="btn btn-line">
+            <!-- LINE Icon 簡單替代符號 -->
+            <svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor">
+                <path d="M24 10.304c0-5.369-5.383-9.738-12-9.738-6.616 0-12 4.369-12 9.738 0 4.814 3.269 8.846 8.039 9.564.315.069.752.213.856.492.093.25.03.656-.013.924-.055.334-.26 1.253-.318 1.503-.092.392-.423 2.054 1.802 1.117 2.227-.936 12.015-7.07 12.015-7.07.604-.42 1.619-1.996 1.619-6.53z"/>
+            </svg>
+            加入 LINE : myavalon
+        </a>
+    </section>
+
+    <footer>
+        <p>© 2024 Tony線上美語家教. All Rights Reserved.</p>
+    </footer>
+
+</body>
+</html>
