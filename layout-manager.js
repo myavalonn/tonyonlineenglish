@@ -1,4 +1,4 @@
-// layout-manager.js - 終極修正版：解決 iPad 直/橫放白條問題 (包含文字換行與寬度修正) + 新增 IG & 恢復手機版白邊 + 新增全民英檢中級寫作漸層
+// layout-manager.js - 終極修正版：解決 iPad 直/橫放白條問題 (包含文字換行與寬度修正) + 新增 IG & 恢復手機版白邊 + 新增全民英檢與訂閱制課程
 document.addEventListener("DOMContentLoaded", function() {
     if (document.getElementById('tony-unique-header')) return;
 
@@ -132,6 +132,16 @@ document.addEventListener("DOMContentLoaded", function() {
             color: rgba(255, 255, 255, 0.9) !important;
         }
 
+        /* 訂閱制專區 - 質感琥珀金漸層樣式 */
+        .sub-course {
+            background: linear-gradient(135deg, #d6a848 0%, #b8860b 100%) !important;
+            color: #ffffff !important;
+            box-shadow: 0 4px 12px rgba(214, 168, 72, 0.3);
+        }
+        .sub-course span {
+            color: rgba(255, 255, 255, 0.9) !important;
+        }
+
         .menu-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 99998; display: none; }
         .menu-overlay.open { display: block; }
 
@@ -183,6 +193,8 @@ document.addEventListener("DOMContentLoaded", function() {
             <a href="https://tonyonlineenglish.netlify.app/hsw" target="_blank" class="menu-link sat-course">學測英文作文班<span>最新學測/高中英文/培養/衝刺</span></a>
 
             <a href="https://tonyonlineenglish.netlify.app/inter36w" target="_blank" class="menu-link gept-course">全民英檢中級寫作<span>三/六回影片課程+家教+批改</span></a>
+
+            <a href="https://tonyonlineenglish.netlify.app/sub" target="_blank" class="menu-link sub-course">會員訂閱制<span>高CP值課程/會員訂閱制</span></a>
             
             <a href="https://tonyonlineenglish.netlify.app/ycs" target="_blank" class="menu-link">你的課表查詢<span>即時查看課程安排狀況</span></a>
             <a href="https://tonyonlineenglish.netlify.app/exper" target="_blank" class="menu-link">預約體驗課程<span>25 / 50 分鐘線上試聽</span></a>
