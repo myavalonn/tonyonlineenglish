@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
@@ -11,7 +11,7 @@
     <meta property="og:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/kalen-emsley-Bkci_8qcdvQ-unsplash.jpg?updatedAt=1773813236765">
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/kalen-emsley-Bkci_8qcdvQ-unsplash.jpg?updatedAt=1773813236765">
-
+    <script src="layout-manager.js"></script>
   <style>
     :root {
       --bg-color: #ffffff;
@@ -1441,10 +1441,21 @@
       if (modalCloseCallback) { modalCloseCallback(); modalCloseCallback = null; }
   }
 
-  function alignToHeader() {
-      const calHeader = document.querySelector('.header-section');
-      if (calHeader) calHeader.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      else window.scrollTo({ top: 0, behavior: 'smooth' });
+  function alignToHeader(instant = false) {
+      const b = instant ? 'auto' : 'smooth';
+      const calModal = document.getElementById('cal-modal');
+      const pMain = document.getElementById('p-main');
+      
+      // 根據目前哪個模塊顯示，將其對齊螢幕最頂部（會將母網頁的漢堡選單擠出畫面）
+      if (calModal && window.getComputedStyle(calModal).display !== 'none') {
+          calModal.scrollIntoView({ behavior: b, block: 'start' });
+      } else if (pMain && window.getComputedStyle(pMain).display !== 'none') {
+          const calHeader = document.querySelector('.header-section');
+          if (calHeader) calHeader.scrollIntoView({ behavior: b, block: 'start' });
+          else pMain.scrollIntoView({ behavior: b, block: 'start' });
+      } else {
+          window.scrollTo({ top: 0, behavior: b });
+      }
   }
 
   // === INTRO ANIMATION ===
@@ -1467,8 +1478,9 @@
       if (isLoadingStepsDone && isCalendarDataReady) {
           const overlay = document.getElementById("loading-overlay");
           if (overlay && overlay.style.display !== "none") {
+              alignToHeader(true); // 在淡出前「瞬間」對齊，神不知鬼不覺隱藏上方選單
               overlay.style.opacity = "0"; overlay.style.pointerEvents = "none";
-              setTimeout(() => { overlay.style.display = "none"; playIntroAnimation(); alignToHeader(); }, 500);
+              setTimeout(() => { overlay.style.display = "none"; playIntroAnimation(); }, 500);
           }
       }
   }
@@ -1478,8 +1490,9 @@
       setTimeout(function(){
           var o = document.getElementById("loading-overlay");
           if (o && o.style.display !== "none") { 
+              alignToHeader(true); // 備用保護
               o.style.opacity="0"; o.style.pointerEvents="none"; 
-              setTimeout(function(){ o.style.display="none"; alignToHeader(); }, 500); 
+              setTimeout(function(){ o.style.display="none"; }, 500); 
           }
       }, 6000);
   })();
