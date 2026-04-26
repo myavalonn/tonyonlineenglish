@@ -3,25 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>婉玉姐健康管理：終極細節指南</title>
+    <title>婉玉姐健康管理：全細節終極指南</title>
     <style>
         :root {
-            --primary-bg: #f8f9fa;
-            --header-color: #2c3e50;
-            --accent-orange: #e67e22;
+            --primary-bg: #fdfdfd;
+            --accent-orange: #d35400;
             --accent-green: #27ae60;
-            --accent-red: #c0392b;
             --accent-blue: #2980b9;
+            --accent-red: #c0392b;
+            --card-shadow: 0 8px 20px rgba(0,0,0,0.1);
         }
         
         body {
             font-family: "Microsoft JhengHei", sans-serif;
-            line-height: 1.6;
-            background-color: var(--primary-bg);
-            color: #333;
+            line-height: 1.7;
+            background-color: #f0f2f5;
+            color: #2d3436;
             margin: 0;
             padding: 10px;
-            font-size: 26px; /* 確保超大字體，手機易讀 */
+            font-size: 28px; /* 全域超大字體，手機版絕對清晰 */
         }
 
         .container {
@@ -30,58 +30,69 @@
         }
 
         header {
-            background: #fff;
+            background: white;
             padding: 30px;
-            border-radius: 20px;
-            border: 4px solid var(--accent-orange);
+            border-radius: 25px;
+            border: 5px solid var(--accent-orange);
             text-align: center;
-            margin-bottom: 25px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
         }
 
         .profile-data {
-            font-size: 1.4rem;
+            font-size: 1.5rem;
             color: var(--accent-orange);
             font-weight: bold;
-            margin-top: 10px;
+            margin-top: 15px;
+            border-top: 2px dashed var(--accent-orange);
+            padding-top: 10px;
         }
 
-        /* 詳細卡片設計 */
+        /* 卡片通用樣式 */
         .card {
             background: white;
-            border-radius: 20px;
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border-radius: 25px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: var(--card-shadow);
+            position: relative;
+            overflow: hidden;
         }
 
         .card-header {
-            font-size: 2.2rem;
+            font-size: 2.5rem;
             font-weight: bold;
-            border-bottom: 3px solid #eee;
             margin-bottom: 20px;
             padding-bottom: 10px;
+            border-bottom: 4px solid #eee;
             display: flex;
             align-items: center;
         }
 
-        .water-card { border-top: 15px solid var(--accent-blue); }
-        .meal-card { border-top: 15px solid var(--accent-green); }
-        .cooking-card { border-top: 15px solid var(--accent-orange); }
-        .warning-card { border-top: 15px solid var(--accent-red); }
+        /* 各餐點顏色區分 */
+        .breakfast-card { border-left: 20px solid #f1c40f; }
+        .lunch-card { border-left: 20px solid var(--accent-blue); }
+        .dinner-card { border-left: 20px solid var(--accent-green); }
+        .snack-card { border-left: 20px solid #95a5a6; }
+        .water-card { border-top: 20px solid var(--accent-blue); }
+        .cooking-card { border-top: 20px solid var(--accent-orange); }
+        .logic-card { border-left: 20px solid #34495e; background: #f9f9f9; }
+        .warning-card { border-left: 20px solid var(--accent-red); background: #fff5f5; }
 
-        .time-slot {
+        .time-badge {
             background: #e1f5fe;
-            padding: 10px 15px;
-            border-radius: 10px;
-            font-weight: bold;
             color: var(--accent-blue);
-            margin-bottom: 10px;
-            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 10px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-right: 10px;
         }
 
         .amount {
-            color: #c0392b;
+            color: var(--accent-red);
             font-weight: bold;
+            font-size: 1.8rem;
             text-decoration: underline;
         }
 
@@ -91,19 +102,20 @@
             border-radius: 10px;
             margin-bottom: 15px;
             border-left: 8px solid var(--accent-orange);
+            font-size: 1.3rem;
         }
 
-        ul { padding-left: 20px; }
-        li { margin-bottom: 15px; }
-
-        .important {
+        .important-text {
             color: var(--accent-red);
             font-weight: bold;
         }
 
+        ul { padding-left: 30px; }
+        li { margin-bottom: 15px; }
+
         @media (max-width: 600px) {
-            body { font-size: 22px; }
-            .card-header { font-size: 1.8rem; }
+            body { font-size: 24px; }
+            .card-header { font-size: 2rem; }
         }
     </style>
 </head>
@@ -111,85 +123,88 @@
 
 <div class="container">
     <header>
-        <div style="font-size: 2.8rem; font-weight: bold;">婉玉姐 專屬健康細節指南</div>
+        <div style="font-size: 3rem; font-weight: bold;">婉玉姐 專屬健康指南</div>
         <div class="profile-data">
-            162cm / 80kg | 47歲 (1979/01/31)<br>
-            目標：保護腎絲球、消除脂肪肝、穩定血糖
+            林婉玉 (女性) | 162cm / 80kg<br>
+            生日：1979/01/31 (47歲)
         </div>
     </header>
 
-    <div class="card water-card">
-        <div class="card-header">💧 飲水邏輯 (喝多少/怎麼喝)</div>
-        <p><strong>每日總量：<span class="amount">3000 ml</span></strong></p>
-        <p><strong>原理：</strong> 腎絲球需要稀釋蛋白質產生的尿素氮，才不會受損。水是身體的「稀釋劑」。</p>
-        
-        <div>
-            <div class="time-slot">07:00 醒來</div> 立即喝 <span class="amount">500 ml</span> (喚醒腎臟)
-        </div>
-        <div>
-            <div class="time-slot">09:00 - 12:00</div> 每小時 <span class="amount">250 ml</span> (共 750ml)
-        </div>
-        <div>
-            <div class="time-slot">13:00 午餐前</div> 喝 <span class="amount">250 ml</span>
-        </div>
-        <div>
-            <div class="time-slot">14:00 - 17:00</div> 每小時 <span class="amount">250 ml</span> (共 750ml)
-        </div>
-        <div>
-            <div class="time-slot">18:00 晚餐前</div> 喝 <span class="amount">250 ml</span>
-        </div>
-        <div>
-            <div class="time-slot">19:00 - 21:00</div> 分次小口喝完剩餘 <span class="amount">500 ml</span>
-        </div>
-        <p class="important">注意：每次喝水「小口慢飲」，不要猛灌，以免增加心臟負擔。</p>
-    </div>
-
-    <div class="card cooking-card">
-        <div class="card-header">👨‍🍳 烹飪 SOP (去鉀保護)</div>
-        <p><strong>原理：</strong> 蔬菜與肉類的「鉀」會溶於水。倒掉水，能防止過多鉀離子增加腎臟壓力。</p>
-        
-        <div class="cooking-step">
-            <strong>第一步：肉類除雜質</strong><br>
-            雞肉或鮭魚先放入沸水煮約 2-3 分鐘，<span class="important">煮出的混濁泡沫水必須全部倒掉。</span>
-        </div>
-        <div class="cooking-step">
-            <strong>第二步：二次烹飪</strong><br>
-            換乾淨的水，放入川燙過的肉與高麗菜一起煮熟。
-        </div>
-        <div class="cooking-step">
-            <strong>第三步：只吃料，不喝湯</strong><br>
-            煮完後，<span class="important">湯水絕對不能喝</span>，因為鉀離子都在湯裡。將菜與肉撈起，拌入靜置 10 分鐘的蒜泥即可。
-        </div>
-    </div>
-
-    <div class="card meal-card">
-        <div class="card-header">🥗 每日精準食譜</div>
-        
-        <p><strong>🍳 早餐：</strong><br>
-        雞蛋 1-2 顆。補充「卵磷脂」修復肝細胞，提供一早耐餓力。</p>
-        
-        <p><strong>☀️ 午餐：</strong><br>
-        雞胸肉 <span class="amount">150g</span> + 高麗菜 <span class="amount">250g</span> (約 2 碗)。<br>
-        (纖維墊底防止便秘，保護腎絲球規律率。)</p>
-        
-        <p><strong>🌙 晚餐：</strong><br>
-        鮭魚 <span class="amount">150-180g</span> + 豆腐 <span class="amount">150g</span> + 高麗菜 <span class="amount">200g</span>。<br>
-        (鮭魚 Omega-3 協助夜間肝臟排毒，色胺酸助眠。)</p>
-        
-        <p><strong>😴 消夜：</strong><br>
-        <span class="important">絕對嚴禁泡麵！</span>若極餓，只能吃 10 顆無鹽堅果。</p>
-    </div>
-
-    <div class="card warning-card">
-        <div class="card-header">🚫 絕對禁忌與警告</div>
+    <div class="card breakfast-card">
+        <div class="card-header">🌅 早餐：啟動代謝</div>
         <ul>
-            <li><strong>泡麵與罐頭：</strong> 超高鈉量會導致「水鈉滯留」，引發水腫與高血壓，直接破壞腎絲球。</li>
-            <li><strong>含糖飲料：</strong> 會造成胰島素阻抗，讓妳越減越肥，且增加尿酸。</li>
-            <li><strong>加工醬料：</strong> 滷汁、沙拉醬、醬油膏皆不可碰。</li>
-            <li><strong>判斷標準：</strong> 觀察尿液！若顏色深黃且泡泡 20 分鐘不消，代表水喝太少或蛋白質太高。</li>
+            <li><strong>雞蛋：<span class="amount">1 ~ 2 顆</span></strong></li>
+            <li><strong>烹飪方式：</strong> 水煮、清蒸或水花蛋。</li>
+            <li><strong>醫理：</strong> 提供「卵磷脂」修復肝細胞，穩定血糖，提供一早耐餓力。</li>
+            <li><strong>水分：</strong> 醒來立刻喝下 <span class="amount">500ml</span> 溫開水。</li>
         </ul>
     </div>
 
+    <div class="card lunch-card">
+        <div class="card-header">☀️ 午餐：能量補給</div>
+        <ul>
+            <li><strong>雞胸肉：<span class="amount">150 公克</span></strong></li>
+            <li><strong>高麗菜：<span class="amount">250 公克</span></strong> (約兩大碗)</li>
+            <li><strong>蒜泥：1 ~ 1.5 瓣</strong> (切碎靜置 10 分鐘)。</li>
+        </ul>
+        <div class="cooking-step">
+            <strong>⚠️ 必須遵循「二次川燙法」：</strong><br>
+            1. 肉先燙 3 分鐘，<span class="important-text">首鍋水丟掉</span>。<br>
+            2. 換新水煮肉與菜，<span class="important-text">二鍋湯水丟掉 (去鉀)</span>。
+        </div>
+    </div>
+
+    <div class="card dinner-card">
+        <div class="card-header">🌙 晚餐：修復排毒</div>
+        <ul>
+            <li><strong>清蒸鮭魚：<span class="amount">150 ~ 180 公克</span></strong></li>
+            <li><strong>清蒸豆腐：半盒</strong> (約 150g)。</li>
+            <li><strong>高麗菜：<span class="amount">200 公克</span></strong> (約一碗半)。</li>
+            <li><strong>蒜泥：1 瓣</strong>。</li>
+        </ul>
+        <div class="cooking-step">
+            同樣執行「二次川燙，水不喝」以減少腎臟鉀負擔。
+        </div>
+    </div>
+
+    <div class="card snack-card">
+        <div class="card-header">😴 消夜：緊急緩解</div>
+        <p class="important-text">嚴禁泡麵！泡麵是腎臟殺手！</p>
+        <ul>
+            <li>若真的餓：<strong>10 顆無鹽堅果</strong>。</li>
+            <li>或：<strong>半碗燙高麗菜</strong> (水必須倒掉)。</li>
+        </ul>
+    </div>
+
+    <div class="card water-card">
+        <div class="card-header">💧 精準飲水時間表</div>
+        <p>每日總目標：<span class="amount">3000 ml</span></p>
+        <div><span class="time-badge">07:00</span> 醒來 500ml</div>
+        <div><span class="time-badge">09:00-12:00</span> 每小時 250ml (共 750ml)</div>
+        <div><span class="time-badge">13:00</span> 午餐前 250ml</div>
+        <div><span class="time-badge">14:00-17:00</span> 每小時 250ml (共 750ml)</div>
+        <div><span class="time-badge">18:00</span> 晚餐前 250ml</div>
+        <div><span class="time-badge">19:00-21:00</span> 分次小口喝完 500ml</div>
+    </div>
+
+    <div class="card logic-card">
+        <div class="card-header">🧠 為什麼要這樣吃？</div>
+        <p><strong>1. 保護腎絲球：</strong> 高蛋白代謝產生尿素氮，水能稀釋它，讓腎絲球規律率維持正常。</p>
+        <p><strong>2. 二次川燙去鉀：</strong> 蔬菜與肉的鉀會溶於水，倒掉水能大幅減輕腎臟負荷。</p>
+        <p><strong>3. 大量高麗菜：</strong> 80公斤體重需要飽足感，纖維能預防便秘並穩定血糖。</p>
+        <p><strong>4. 女性生理補充：</strong> 生理期前若水腫或尿液泡泡增加是正常的，多補水即可。</p>
+    </div>
+
+    <div class="card warning-card">
+        <div class="card-header">🚫 絕對不能吃！</div>
+        <ul>
+            <li><strong>泡麵/罐頭：</strong> 鈉含量會鎖住水分導致嚴重水腫與高血壓。</li>
+            <li><strong>含糖飲料：</strong> 脂肪肝與肥胖的元兇。</li>
+            <li><strong>任何加工醬料：</strong> 醬油膏、甜辣醬、滷汁。</li>
+        </ul>
+    </div>
+
+    <p style="text-align: center; color: #888; margin-top: 30px;">健康是給家人最好的禮物</p>
 </div>
 
 </body>
