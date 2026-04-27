@@ -1,4 +1,4 @@
-// layout-manager.js - 終極修正版：解決 iPad 直/橫放白條問題 (包含文字換行與寬度修正) + 新增 IG & 恢復手機版白邊 + 新增全民英檢與訂閱制課程 (含發亮掃光特效)
+// layout-manager.js - 終極修正版：解決 iPad 直/橫放白條問題 (包含文字換行與寬度修正) + 新增 IG & 恢復手機版白邊 + 新增全民英檢與訂閱制課程 (含發亮掃光與卡片邊框)
 document.addEventListener("DOMContentLoaded", function() {
     if (document.getElementById('tony-unique-header')) return;
 
@@ -101,7 +101,7 @@ document.addEventListener("DOMContentLoaded", function() {
             line-height: 1.4; white-space: normal; 
         }
 
-        /* 課程詳細介紹 - 高對比強調樣式 */
+        /* 課程詳細介紹 - 高對比黃底黑字 */
         .highlight-course {
             background: #FFD700 !important; 
             color: #000 !important; 
@@ -112,27 +112,45 @@ document.addEventListener("DOMContentLoaded", function() {
             font-weight: 700;
         }
 
-        /* 學測英文作文班 - 藍紫漸層樣式 */
+        /* 學測英文作文班 - 冰藍漸層 (配合黑色字體) */
         .sat-course {
-            background: linear-gradient(135deg, #3b4fd8 0%, #6f42c1 100%) !important;
-            color: #ffffff !important;
-            box-shadow: 0 4px 12px rgba(111, 66, 193, 0.3);
+            background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%) !important;
+            color: #000 !important;
+            box-shadow: 0 4px 12px rgba(161, 196, 253, 0.4);
         }
         .sat-course span {
-            color: rgba(255, 255, 255, 0.9) !important;
+            color: #333 !important;
+            font-weight: 700;
         }
 
-        /* 全民英檢中級寫作 - 專屬漸層樣式 */
+        /* 全民英檢中級寫作 - 蜜桃橘漸層 (配合黑色字體) */
         .gept-course {
-            background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%) !important;
-            color: #ffffff !important;
-            box-shadow: 0 4px 12px rgba(197, 48, 48, 0.3);
+            background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%) !important;
+            color: #000 !important;
+            box-shadow: 0 4px 12px rgba(252, 182, 159, 0.4);
         }
         .gept-course span {
-            color: rgba(255, 255, 255, 0.9) !important;
+            color: #333 !important;
+            font-weight: 700;
         }
 
-        /* --- 訂閱制專屬：大字體金屬掃光特效 --- */
+        /* --- 訂閱制專屬：卡片邊框發亮 + 大字體掃光特效 --- */
+        .sub-card {
+            border: 2px solid #FAD961;
+            background: rgba(250, 217, 97, 0.08) !important;
+            animation: cardGlow 2s ease-in-out infinite alternate;
+        }
+        @keyframes cardGlow {
+            from { 
+                box-shadow: 0 0 5px rgba(250, 217, 97, 0.2); 
+                border-color: rgba(250, 217, 97, 0.4);
+            }
+            to { 
+                box-shadow: 0 0 16px rgba(250, 217, 97, 0.8); 
+                border-color: #FAD961;
+            }
+        }
+
         .shimmer-text {
             font-size: 26px !important;
             font-weight: 900;
@@ -146,9 +164,7 @@ document.addEventListener("DOMContentLoaded", function() {
             line-height: 1.2;
         }
         @keyframes shineText {
-            to {
-                background-position: 200% center;
-            }
+            to { background-position: 200% center; }
         }
 
         /* 火焰動態特效 */
@@ -213,9 +229,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
             <a href="https://tonyonlineenglish.netlify.app/inter36w" target="_blank" class="menu-link gept-course">全民英檢中級寫作<span>三/六回影片課程+家教+批改</span></a>
 
-            <a href="https://tonyonlineenglish.netlify.app/sub" target="_blank" class="menu-link" style="display: flex; align-items: center; justify-content: space-between;">
+            <a href="https://tonyonlineenglish.netlify.app/sub" target="_blank" class="menu-link sub-card" style="display: flex; align-items: center; justify-content: space-between;">
                 <div>
-                    <div class="shimmer-text">會員訂閱制</div>
+                    <div class="shimmer-text">學員訂閱課程</div>
                     <span>高CP值課程/持續學習</span>
                 </div>
                 <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/flame.png" alt="Flame Icon" class="flame-icon">
