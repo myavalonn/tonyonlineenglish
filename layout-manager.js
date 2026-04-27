@@ -1,4 +1,4 @@
-// layout-manager.js - 終極修正版：解決 iPad 直/橫放白條問題 (包含文字換行與寬度修正) + 新增 IG & 恢復手機版白邊 + 新增全民英檢與訂閱制課程 (含發亮掃光特效)
+// layout-manager.js - 終極修正版：解決 iPad 直/橫放白條問題 (包含文字換行與寬度修正) + 新增 IG & 恢復手機版白邊 + 訂閱制卡片發光 + 右上角外連 Icon
 document.addEventListener("DOMContentLoaded", function() {
     if (document.getElementById('tony-unique-header')) return;
 
@@ -89,9 +89,13 @@ document.addEventListener("DOMContentLoaded", function() {
             display: block; 
         }
         .side-menu.open { left: 0; visibility: visible; }
+        
         .menu-link {
+            position: relative; /* 為了讓右上角 Icon 絕對定位 */
             color: white; text-decoration: none; font-size: 26px !important;
-            font-weight: 700; padding: 18px; background: rgba(255,255,255,0.05);
+            font-weight: 700; padding: 18px; 
+            padding-right: 32px; /* 預留右側空間給外連 Icon */
+            background: rgba(255,255,255,0.05);
             border-radius: 12px; display: block; margin-bottom: 15px;
             white-space: normal; 
             word-wrap: break-word;
@@ -101,38 +105,62 @@ document.addEventListener("DOMContentLoaded", function() {
             line-height: 1.4; white-space: normal; 
         }
 
-        /* 課程詳細介紹 - 高對比強調樣式 */
+        /* 右上角外連 Icon 樣式 */
+        .ext-icon {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            width: 16px;
+            height: auto;
+            opacity: 0.4;
+            transition: opacity 0.3s;
+        }
+        .menu-link:hover .ext-icon {
+            opacity: 0.8;
+        }
+
+        /* 課程詳細介紹 - 高對比黃底黑字 */
         .highlight-course {
             background: #FFD700 !important; 
             color: #000 !important; 
             box-shadow: 0 4px 12px rgba(255, 215, 0, 0.2);
         }
-        .highlight-course span {
-            color: #333 !important; 
-            font-weight: 700;
-        }
+        .highlight-course span { color: #333 !important; font-weight: 700; }
+        .highlight-course .ext-icon { filter: invert(1); opacity: 0.6; } /* 在黃底上把 icon 變深色 */
 
-        /* 學測英文作文班 - 藍紫漸層樣式 */
+        /* 學測英文作文班 - 恢復質感深藍紫漸層 + 白字 */
         .sat-course {
             background: linear-gradient(135deg, #3b4fd8 0%, #6f42c1 100%) !important;
             color: #ffffff !important;
             box-shadow: 0 4px 12px rgba(111, 66, 193, 0.3);
         }
-        .sat-course span {
-            color: rgba(255, 255, 255, 0.9) !important;
-        }
+        .sat-course span { color: rgba(255, 255, 255, 0.9) !important; }
 
-        /* 全民英檢中級寫作 - 專屬漸層樣式 */
+        /* 全民英檢中級寫作 - 恢復質感深紅漸層 + 白字 */
         .gept-course {
             background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%) !important;
             color: #ffffff !important;
             box-shadow: 0 4px 12px rgba(197, 48, 48, 0.3);
         }
-        .gept-course span {
-            color: rgba(255, 255, 255, 0.9) !important;
+        .gept-course span { color: rgba(255, 255, 255, 0.9) !important; }
+
+        /* --- 訂閱制專屬：卡片邊框發亮 + 大字體掃光特效 --- */
+        .sub-card {
+            border: 2px solid #FAD961;
+            background: rgba(250, 217, 97, 0.08) !important;
+            animation: cardGlow 2s ease-in-out infinite alternate;
+        }
+        @keyframes cardGlow {
+            from { 
+                box-shadow: 0 0 5px rgba(250, 217, 97, 0.2); 
+                border-color: rgba(250, 217, 97, 0.4);
+            }
+            to { 
+                box-shadow: 0 0 16px rgba(250, 217, 97, 0.8); 
+                border-color: #FAD961;
+            }
         }
 
-        /* --- 訂閱制專屬：大字體金屬掃光特效 --- */
         .shimmer-text {
             font-size: 26px !important;
             font-weight: 900;
@@ -146,14 +174,12 @@ document.addEventListener("DOMContentLoaded", function() {
             line-height: 1.2;
         }
         @keyframes shineText {
-            to {
-                background-position: 200% center;
-            }
+            to { background-position: 200% center; }
         }
 
         /* 火焰動態特效 */
         .flame-icon {
-            height: 35px; width: auto; flex-shrink: 0; margin-left: 10px;
+            height: 35px; width: auto; flex-shrink: 0; margin-left: 5px; margin-right: 15px;
             animation: flamePulse 1.5s ease-in-out infinite alternate;
         }
         @keyframes flamePulse {
@@ -206,24 +232,47 @@ document.addEventListener("DOMContentLoaded", function() {
             <div style="text-align: right; margin-bottom: 20px;">
                 <span id="menu-close" style="color:white; font-size:50px; cursor:pointer; line-height: 1;">&times;</span>
             </div>
+            
             <a href="index.html" class="menu-link">回首頁</a>
-            <a href="https://tonyonlineenglish.netlify.app/allcourses" target="_blank" class="menu-link highlight-course">課程詳細介紹<span>升學 檢定 職場 公職 客製化</span></a>
+            
+            <a href="https://tonyonlineenglish.netlify.app/allcourses" target="_blank" class="menu-link highlight-course">
+                課程詳細介紹<span>升學 檢定 職場 公職 客製化</span>
+                <img src="https://ik.imagekit.io/lql1uveoc/external-link.png?updatedAt=1754911187731" class="ext-icon">
+            </a>
 
-            <a href="https://tonyonlineenglish.netlify.app/hsw" target="_blank" class="menu-link sat-course">學測英文作文班<span>最新學測/高中英文/培養/衝刺</span></a>
+            <a href="https://tonyonlineenglish.netlify.app/hsw" target="_blank" class="menu-link sat-course">
+                學測英文作文班<span>最新學測/高中英文/培養/衝刺</span>
+                <img src="https://ik.imagekit.io/lql1uveoc/external-link.png?updatedAt=1754911187731" class="ext-icon">
+            </a>
 
-            <a href="https://tonyonlineenglish.netlify.app/inter36w" target="_blank" class="menu-link gept-course">全民英檢中級寫作<span>三/六回影片課程+家教+批改</span></a>
+            <a href="https://tonyonlineenglish.netlify.app/inter36w" target="_blank" class="menu-link gept-course">
+                全民英檢中級寫作<span>三/六回影片課程+家教+批改</span>
+                <img src="https://ik.imagekit.io/lql1uveoc/external-link.png?updatedAt=1754911187731" class="ext-icon">
+            </a>
 
-            <a href="https://tonyonlineenglish.netlify.app/sub" target="_blank" class="menu-link" style="display: flex; align-items: center; justify-content: space-between;">
+            <a href="https://tonyonlineenglish.netlify.app/sub" target="_blank" class="menu-link sub-card" style="display: flex; align-items: center; justify-content: space-between;">
                 <div>
-                    <div class="shimmer-text">會員訂閱制</div>
+                    <div class="shimmer-text">學員訂閱課程</div>
                     <span>高CP值課程/持續學習</span>
                 </div>
                 <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/flame.png" alt="Flame Icon" class="flame-icon">
+                <img src="https://ik.imagekit.io/lql1uveoc/external-link.png?updatedAt=1754911187731" class="ext-icon">
             </a>
             
-            <a href="https://tonyonlineenglish.netlify.app/ycs" target="_blank" class="menu-link">你的課表查詢<span>即時查看課程安排狀況</span></a>
-            <a href="https://tonyonlineenglish.netlify.app/exper" target="_blank" class="menu-link">預約體驗課程<span>25 / 50 分鐘線上試聽</span></a>
-            <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="menu-link" style="color: #00B900;">LINE 直接聯絡<span>ID: Myavalon</span></a>
+            <a href="https://tonyonlineenglish.netlify.app/ycs" target="_blank" class="menu-link">
+                你的課表查詢<span>即時查看課程安排狀況</span>
+                <img src="https://ik.imagekit.io/lql1uveoc/external-link.png?updatedAt=1754911187731" class="ext-icon">
+            </a>
+            
+            <a href="https://tonyonlineenglish.netlify.app/exper" target="_blank" class="menu-link">
+                預約體驗課程<span>25 / 50 分鐘線上試聽</span>
+                <img src="https://ik.imagekit.io/lql1uveoc/external-link.png?updatedAt=1754911187731" class="ext-icon">
+            </a>
+            
+            <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="menu-link" style="color: #00B900;">
+                LINE 直接聯絡<span>ID: Myavalon</span>
+                <img src="https://ik.imagekit.io/lql1uveoc/external-link.png?updatedAt=1754911187731" class="ext-icon">
+            </a>
         </nav>
 
         <header class="tony-banner" id="tony-unique-header">
