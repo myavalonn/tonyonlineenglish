@@ -1,4 +1,4 @@
-// layout-manager.js - 終極修正版：解決 iPad 直/橫放白條問題 (包含文字換行與寬度修正) + 新增 IG & 恢復手機版白邊 + 訂閱制卡片發光 + 右上角外連 Icon
+// layout-manager.js - 終極修正版：解決 iPad 直/橫放白條問題 + 原版高級深色漸層 + 訂閱制卡片發光 + 智慧黑白外連 Icon
 document.addEventListener("DOMContentLoaded", function() {
     if (document.getElementById('tony-unique-header')) return;
 
@@ -94,7 +94,7 @@ document.addEventListener("DOMContentLoaded", function() {
             position: relative; /* 為了讓右上角 Icon 絕對定位 */
             color: white; text-decoration: none; font-size: 26px !important;
             font-weight: 700; padding: 18px; 
-            padding-right: 32px; /* 預留右側空間給外連 Icon */
+            padding-right: 36px; /* 預留右側空間，避免文字蓋住 Icon */
             background: rgba(255,255,255,0.05);
             border-radius: 12px; display: block; margin-bottom: 15px;
             white-space: normal; 
@@ -105,18 +105,19 @@ document.addEventListener("DOMContentLoaded", function() {
             line-height: 1.4; white-space: normal; 
         }
 
-        /* 右上角外連 Icon 樣式 */
+        /* 智慧外連 Icon 樣式設定 (預設在深底上強制轉為白色) */
         .ext-icon {
             position: absolute;
-            top: 12px;
-            right: 12px;
+            top: 14px;
+            right: 14px;
             width: 16px;
             height: auto;
+            filter: brightness(0) invert(1); /* 強制變成純白色 */
             opacity: 0.4;
             transition: opacity 0.3s;
         }
         .menu-link:hover .ext-icon {
-            opacity: 0.8;
+            opacity: 0.9; /* 滑鼠移過去變亮 */
         }
 
         /* 課程詳細介紹 - 高對比黃底黑字 */
@@ -126,7 +127,12 @@ document.addEventListener("DOMContentLoaded", function() {
             box-shadow: 0 4px 12px rgba(255, 215, 0, 0.2);
         }
         .highlight-course span { color: #333 !important; font-weight: 700; }
-        .highlight-course .ext-icon { filter: invert(1); opacity: 0.6; } /* 在黃底上把 icon 變深色 */
+        /* 黃底上將 Icon 強制轉為黑色 */
+        .highlight-course .ext-icon { 
+            filter: brightness(0); /* 強制變成純黑色 */
+            opacity: 0.4; 
+        }
+        .highlight-course:hover .ext-icon { opacity: 0.8; }
 
         /* 學測英文作文班 - 恢復質感深藍紫漸層 + 白字 */
         .sat-course {
