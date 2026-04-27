@@ -1,4 +1,4 @@
-// layout-manager.js - 終極修正版：解決 iPad 直/橫放白條問題 (包含文字換行與寬度修正) + 新增 IG & 恢復手機版白邊 + 新增全民英檢與訂閱制課程
+// layout-manager.js - 終極修正版：解決 iPad 直/橫放白條問題 (包含文字換行與寬度修正) + 新增 IG & 恢復手機版白邊 + 新增全民英檢與訂閱制課程 (含發亮掃光特效)
 document.addEventListener("DOMContentLoaded", function() {
     if (document.getElementById('tony-unique-header')) return;
 
@@ -132,6 +132,35 @@ document.addEventListener("DOMContentLoaded", function() {
             color: rgba(255, 255, 255, 0.9) !important;
         }
 
+        /* --- 訂閱制專屬：大字體金屬掃光特效 --- */
+        .shimmer-text {
+            font-size: 26px !important;
+            font-weight: 900;
+            display: inline-block;
+            background: linear-gradient(120deg, #FAD961 20%, #FFFFFF 50%, #FAD961 80%);
+            background-size: 200% auto;
+            color: transparent !important;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: shineText 2.5s linear infinite;
+            line-height: 1.2;
+        }
+        @keyframes shineText {
+            to {
+                background-position: 200% center;
+            }
+        }
+
+        /* 火焰動態特效 */
+        .flame-icon {
+            height: 35px; width: auto; flex-shrink: 0; margin-left: 10px;
+            animation: flamePulse 1.5s ease-in-out infinite alternate;
+        }
+        @keyframes flamePulse {
+            from { transform: scale(1); filter: drop-shadow(0 0 2px rgba(255,106,0,0.5)); }
+            to { transform: scale(1.15); filter: drop-shadow(0 0 8px rgba(255,186,0,0.9)); }
+        }
+
         .menu-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 99998; display: none; }
         .menu-overlay.open { display: block; }
 
@@ -185,8 +214,11 @@ document.addEventListener("DOMContentLoaded", function() {
             <a href="https://tonyonlineenglish.netlify.app/inter36w" target="_blank" class="menu-link gept-course">全民英檢中級寫作<span>三/六回影片課程+家教+批改</span></a>
 
             <a href="https://tonyonlineenglish.netlify.app/sub" target="_blank" class="menu-link" style="display: flex; align-items: center; justify-content: space-between;">
-                <div>會員訂閱制<span>高CP值課程/持續學習</span></div>
-                <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/flame.png" alt="Flame Icon" style="height: 35px; width: auto; flex-shrink: 0; margin-left: 10px;">
+                <div>
+                    <div class="shimmer-text">會員訂閱制</div>
+                    <span>高CP值課程/持續學習</span>
+                </div>
+                <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/flame.png" alt="Flame Icon" class="flame-icon">
             </a>
             
             <a href="https://tonyonlineenglish.netlify.app/ycs" target="_blank" class="menu-link">你的課表查詢<span>即時查看課程安排狀況</span></a>
