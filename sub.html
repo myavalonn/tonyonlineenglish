@@ -18,7 +18,7 @@
 
     <style>
         /* =========================================================
-           頁面基礎與外圍區塊佈局 (非卡片區的自訂樣式)
+           頁面基礎與外圍區塊佈局
         ========================================================= */
         :root {
             --primary-navy: #1A365D;
@@ -58,7 +58,6 @@
             content: '';
             position: absolute;
             inset: 0;
-            /* 改用漸層遮罩，更有高級感 */
             background: linear-gradient(135deg, rgba(15, 32, 55, 0.95) 0%, rgba(26, 54, 93, 0.7) 100%);
             z-index: 1;
         }
@@ -173,7 +172,7 @@
             padding: 90px max(24px, 5%);
         }
 
-        /* CTA Line 按鈕區 */
+        /* CTA Line 與表單聯絡區 */
         .cta-section {
             text-align: center;
             padding: 100px 20px;
@@ -197,28 +196,98 @@
             margin-bottom: 40px;
         }
 
-        .btn-line {
+        /* 縮小後的 LINE 按鈕 */
+        .btn-line-small {
             background-color: #06C755;
             color: white;
             border: none;
-            font-size: 2rem;
-            padding: 22px 70px;
+            font-size: 1.2rem; /* 字體縮小 */
+            padding: 14px 40px; /* 留白縮小 */
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 15px;
-            border-radius: 60px;
+            gap: 10px;
+            border-radius: 50px;
             text-decoration: none;
             font-weight: bold;
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            /* 發光陰影，極度吸引目光 */
-            box-shadow: 0 10px 30px rgba(6, 199, 85, 0.35);
+            box-shadow: 0 8px 20px rgba(6, 199, 85, 0.3);
+            margin-bottom: 50px; /* 與下方表單保持距離 */
         }
 
-        .btn-line:hover {
+        .btn-line-small:hover {
             background-color: #05B34C;
-            transform: translateY(-5px) scale(1.02);
-            box-shadow: 0 15px 40px rgba(6, 199, 85, 0.5);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 25px rgba(6, 199, 85, 0.4);
+        }
+
+        /* 聯絡我們表單樣式 (融入新版主題色彩) */
+        .contact-wrap {
+            max-width: 650px;
+            margin: 0 auto;
+            background: var(--light-bg);
+            padding: 50px;
+            border-radius: 25px;
+            border: 1px solid rgba(26, 54, 93, 0.08);
+            box-shadow: 0 15px 35px -10px rgba(0,0,0,0.08);
+            text-align: left;
+        }
+
+        .form-group {
+            margin-bottom: 24px;
+        }
+
+        .form-group label {
+            display: block;
+            font-weight: 700;
+            margin-bottom: 8px;
+            font-size: 1rem;
+            color: var(--primary-navy);
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            box-sizing: border-box; /* 確保不超過容器寬度 */
+            padding: 16px 20px;
+            border: 2px solid #E2E8F0;
+            border-radius: 12px;
+            font-family: 'Noto Sans TC', sans-serif;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background-color: white;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--primary-gold);
+            box-shadow: 0 0 0 4px rgba(214, 168, 72, 0.15);
+        }
+
+        .btn-submit {
+            width: 100%;
+            font-size: 1.2rem;
+            padding: 16px;
+            margin-top: 10px;
+            cursor: pointer;
+            border: none;
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: var(--primary-navy);
+            color: white;
+            border-radius: 50px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            letter-spacing: 2px;
+        }
+
+        .btn-submit:hover {
+            background-color: #2A4A7F;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(26, 54, 93, 0.3);
+        }
+
+        .btn-submit:disabled {
+            opacity: 0.7;
+            cursor: not-allowed;
         }
 
         /* Hashtags 底部區塊設計 */
@@ -268,7 +337,7 @@
         }
 
         /* =========================================================
-           高階 CSS 卡片佈局 (質感升級版)
+           高階 CSS 卡片佈局 
         ========================================================= */
         @layer reset, base, composition, features, utilities;
 
@@ -450,7 +519,6 @@
             --_background: var(--light-bg);
             --_grid-color: #E2E8F0;
 
-            /* 背景網格點綴，非常淡 */
             background-image: radial-gradient(var(--_grid-color) 1.5px, transparent 1.5px);
             background-size: 35px 35px;
           }
@@ -569,17 +637,45 @@
         </div>
     </div>
 
-    <!-- 聯絡 CTA 區塊 (導流至LINE) -->
+    <!-- 聯絡 CTA 與 表單區塊 -->
     <section class="cta-section">
         <div class="cta-text">
-            需要客製化課程或有任何疑問？<br>馬上加入 LINE 詢問吧！
+            需要客製化課程或有任何疑問？<br>底下留言或加入 LINE 詢問詳情！ 專人回覆。
         </div>
-        <a href="https://line.me/ti/p/T9YdimtG8_" class="btn-line" target="_blank" rel="noopener noreferrer">
-            <svg viewBox="0 0 24 24" width="45" height="45" fill="currentColor">
+        
+        <!-- 縮小的 LINE 按鈕 -->
+        <a href="https://line.me/ti/p/T9YdimtG8_" class="btn-line-small" target="_blank" rel="noopener noreferrer">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor">
                 <path d="M24 10.304c0-5.369-5.383-9.738-12-9.738-6.616 0-12 4.369-12 9.738 0 4.814 3.269 8.846 8.039 9.564.315.069.752.213.856.492.093.25.03.656-.013.924-.055.334-.26 1.253-.318 1.503-.092.392-.423 2.054 1.802 1.117 2.227-.936 12.015-7.07 12.015-7.07.604-.42 1.619-1.996 1.619-6.53z"/>
             </svg>
             加入 LINE : myavalon
         </a>
+
+        <!-- 聯繫我們表單 -->
+        <div class="contact-wrap">
+            <form id="contact-form" onsubmit="submitContactForm(event)">
+                <div class="form-group">
+                    <label>姓名 Name *</label>
+                    <input type="text" id="contact-name" placeholder="請填寫您的姓名" required>
+                </div>
+                <div class="form-group">
+                    <label>Email (選填)</label>
+                    <input type="email" id="contact-email" placeholder="example@gmail.com">
+                </div>
+                <div class="form-group">
+                    <label>Line ID (選填)</label>
+                    <input type="text" id="contact-line" placeholder="方便老師與您快速聯繫">
+                </div>
+                <div class="form-group">
+                    <label>學習需求 *</label>
+                    <textarea id="contact-needs" rows="5" placeholder="請簡述您的需求或目前的學習狀況..." required></textarea>
+                </div>
+                <button type="submit" class="btn-submit" id="contact-submit">送出訊息</button>
+            </form>
+            <div id="contact-msg" style="display:none; text-align:center; padding: 30px; font-size: 1.2rem; color: #06C755; font-weight: 700;">
+                ✓ 訊息已成功送出！Tony 老師將會盡快與您聯繫。
+            </div>
+        </div>
     </section>
 
     <!-- 底部 Hashtags 區塊 -->
@@ -602,5 +698,39 @@
         <p>© 2024 Tony線上美語家教. All Rights Reserved.</p>
     </footer>
 
+    <!-- 聯絡表單送出邏輯 JS -->
+    <script>
+    function submitContactForm(e) {
+        e.preventDefault();
+        const btn = document.getElementById('contact-submit');
+        btn.innerText = "傳送中...";
+        btn.disabled = true;
+
+        // 使用原本的 GAS URL
+        const GAS_URL = "https://script.google.com/macros/s/AKfycbwE5thuJP9luwed0GG0eRF4DheFubXRfWQ5ZnnJL5r8TxFGaIrhUzEB4AAp51RZ_WL3/exec"; 
+        
+        const params = new URLSearchParams();
+        params.append('name', document.getElementById('contact-name').value);
+        // 如果 Email 沒填，自動帶入"無"以免後端出錯
+        params.append('email', document.getElementById('contact-email').value || "無");
+        params.append('line', document.getElementById('contact-line').value || "無");
+        params.append('needs', document.getElementById('contact-needs').value);
+
+        fetch(GAS_URL, {
+            method: "POST",
+            mode: "no-cors",
+            body: params
+        }).then(() => {
+            // 隱藏表單，顯示成功訊息
+            document.getElementById('contact-form').style.display = 'none';
+            document.getElementById('contact-msg').style.display = 'block';
+        }).catch(err => {
+            alert("傳送失敗，請檢查網路連線。");
+        }).finally(() => {
+            btn.innerText = "送出訊息";
+            btn.disabled = false;
+        });
+    }
+    </script>
 </body>
 </html>
