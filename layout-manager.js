@@ -1,4 +1,4 @@
-// layout-manager.js - 終極修正版：解決 iPad 直/橫放白條問題 + 黑白外連 Icon + 訂閱卡片(桌機專屬排版，手機/平板維持原狀)
+// layout-manager.js - 終極修正版：消除 X 上方空白 + 桌機版學測班小字不換行
 document.addEventListener("DOMContentLoaded", function() {
     if (document.getElementById('tony-unique-header')) return;
 
@@ -80,7 +80,8 @@ document.addEventListener("DOMContentLoaded", function() {
             background: var(--tony-dark); 
             z-index: 99999; 
             transition: left 0.4s ease; 
-            padding: 40px 20px 80px 20px; 
+            /* 修改這裡：將 top padding 從 40px 縮減到 10px，消除 X 上方的空白 */
+            padding: 10px 20px 80px 20px; 
             visibility: hidden;
             box-sizing: border-box;
             overflow-y: auto !important; 
@@ -197,7 +198,9 @@ document.addEventListener("DOMContentLoaded", function() {
         }
 
         /* ========================================================
-           桌機版專屬 (Desktop Only >= 1025px)：火焰移至右下，文字強制兩行
+           桌機版專屬 (Desktop Only >= 1025px)：
+           1. 訂閱卡片排版：火焰移至右下，文字強制兩行
+           2. 學測英文作文班：灰色小字強制同一行
         ======================================================== */
         @media (min-width: 1025px) {
             .sub-card {
@@ -215,6 +218,11 @@ document.addEventListener("DOMContentLoaded", function() {
                 right: 14px; /* 對齊右上角的 Icon */
                 margin: 0;
                 height: 38px;
+            }
+            
+            /* 學測班底下的小字強制不換行，保持在同一行 */
+            .sat-course span {
+                white-space: nowrap !important;
             }
         }
 
