@@ -1,4 +1,4 @@
-// layout-manager.js - 終極修正版：解決 iPad 直/橫放白條問題 + 原版高級深色漸層 + 訂閱制卡片發光 + 智慧黑白外連 Icon (純黑/亮白且取消半透明)
+// layout-manager.js - 終極修正版：解決 iPad 直/橫放白條問題 + 原版高級深色漸層 + 訂閱制卡片發光 + 智慧黑白外連 Icon + 訂閱卡片排版修正
 document.addEventListener("DOMContentLoaded", function() {
     if (document.getElementById('tony-unique-header')) return;
 
@@ -150,12 +150,21 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         .gept-course span { color: rgba(255, 255, 255, 0.9) !important; }
 
-        /* --- 訂閱制專屬：卡片邊框發亮 + 大字體掃光特效 --- */
+        /* --- 訂閱制專屬：卡片邊框發亮 + 大字體掃光特效 + 絕對定位排版 --- */
         .sub-card {
             border: 2px solid #FAD961;
             background: rgba(250, 217, 97, 0.08) !important;
             animation: cardGlow 2s ease-in-out infinite alternate;
+            padding-right: 50px; /* 預留給右側火焰與Icon的空間，防止文字蓋到 */
         }
+        
+        /* 強制文字排成兩列且絕對不換行 */
+        .sub-card .shimmer-text, 
+        .sub-card span {
+            white-space: nowrap !important; 
+            display: block;
+        }
+
         @keyframes cardGlow {
             from { 
                 box-shadow: 0 0 5px rgba(250, 217, 97, 0.2); 
@@ -183,9 +192,13 @@ document.addEventListener("DOMContentLoaded", function() {
             to { background-position: 200% center; }
         }
 
-        /* 火焰動態特效 */
+        /* 火焰動態特效 - 改為絕對定位在右下角，不影響文字排版 */
         .flame-icon {
-            height: 35px; width: auto; flex-shrink: 0; margin-left: 5px; margin-right: 15px;
+            position: absolute;
+            bottom: 12px;
+            right: 10px; /* 對齊在 ext-icon 之下 */
+            height: 38px; 
+            width: auto; 
             animation: flamePulse 1.5s ease-in-out infinite alternate;
         }
         @keyframes flamePulse {
@@ -256,11 +269,10 @@ document.addEventListener("DOMContentLoaded", function() {
                 <img src="https://ik.imagekit.io/lql1uveoc/external-link.png?updatedAt=1754911187731" class="ext-icon">
             </a>
 
-            <a href="https://tonyonlineenglish.netlify.app/sub" target="_blank" class="menu-link sub-card" style="display: flex; align-items: center; justify-content: space-between;">
-                <div>
-                    <div class="shimmer-text">學員訂閱課程</div>
-                    <span>高CP值課程/持續學習</span>
-                </div>
+            <!-- 移除了干擾排版的 inline flex 樣式，回歸標準區塊堆疊 -->
+            <a href="https://tonyonlineenglish.netlify.app/sub" target="_blank" class="menu-link sub-card">
+                <div class="shimmer-text">學員訂閱課程</div>
+                <span>高CP值課程/持續學習</span>
                 <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/flame.png" alt="Flame Icon" class="flame-icon">
                 <img src="https://ik.imagekit.io/lql1uveoc/external-link.png?updatedAt=1754911187731" class="ext-icon">
             </a>
