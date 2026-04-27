@@ -1,4 +1,4 @@
- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
@@ -1146,6 +1146,45 @@
         .hqf-submit { font-size: 22px; padding: 20px; }
         .hqf-cancel { font-size: 18px; }
     }
+
+    /* =========================================================
+       週末特殊時段 浮動按鈕與彈窗 (已修正為從後端讀取)
+       ========================================================= */
+    #special-weekend-floater {
+        position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
+        background: linear-gradient(135deg, #ff2d55, #ff5400); color: white;
+        padding: 10px 24px 15px; border-radius: 20px 20px 0 0;
+        font-weight: bold; font-size: 15px; cursor: pointer;
+        box-shadow: 0 -2px 15px rgba(255, 84, 0, 0.4);
+        display: none; z-index: 998; border: 2px solid #fff; border-bottom: none;
+        transition: transform 0.3s;
+    }
+    #special-weekend-floater:hover { transform: translateX(-50%) translateY(-3px); }
+    
+    #special-weekend-modal {
+        display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+        background: rgba(0,0,0,0.7); z-index: 10005;
+        justify-content: center; align-items: center; padding: 20px; box-sizing: border-box;
+        backdrop-filter: blur(4px);
+    }
+    #special-weekend-modal .special-modal-content {
+        background: #fff; width: 100%; max-width: 400px;
+        border-radius: 24px; padding: 30px 20px; text-align: center;
+        box-shadow: 0 10px 40px rgba(0,0,0,0.3); position: relative;
+        animation: modalFadeIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        max-height: 80vh; display: flex; flex-direction: column;
+    }
+    .special-slots-container {
+        overflow-y: auto; flex-grow: 1; padding-right: 5px; margin-bottom: 10px;
+    }
+    .special-slot-btn {
+        background: #fff0f5; border: 2px solid #ff2d55; color: #333;
+        padding: 14px; border-radius: 12px; font-weight: bold; font-size: 17px;
+        cursor: pointer; margin-bottom: 10px; width: 100%;
+        display: flex; justify-content: center; align-items: center; gap: 10px;
+        transition: 0.2s;
+    }
+    .special-slot-btn:active { background: #ff2d55; color: #fff; transform: scale(0.98); }
   </style>
 </head>
 <body>
@@ -1407,6 +1446,21 @@
     </div>
 </div>
 
+<!-- ============================================== -->
+<!-- 特殊時段浮動按鈕 (新增) -->
+<button id="special-weekend-floater" onclick="openSpecialWeekendModal()">✨ 週末特開時段</button>
+
+<!-- 特殊時段彈出視窗 (新增) -->
+<div id="special-weekend-modal" class="special-modal">
+    <div class="special-modal-content">
+        <button class="modal-close-x" onclick="closeSpecialWeekendModal()">&times;</button>
+        <div class="special-title" style="font-size:22px; font-weight:800; color:#ff2d55; margin-bottom:10px;">🔥 週末特殊時段釋出</div>
+        <p style="color:#555; margin-bottom:20px; font-size:15px; margin-top:0;">老師額外開放的週末空檔，趕快把握！</p>
+        <div class="special-slots-container" id="special-weekend-list"></div>
+    </div>
+</div>
+<!-- ============================================== -->
+
 <script>
   const CLOCK_ICON_URL = "https://ik.imagekit.io/lql1uveoc/clock-4.png?updatedAt=1774630976142";
   const CAL_ICON_URL   = "https://ik.imagekit.io/lql1uveoc/Booking%20Website%20%E9%A0%90%E7%B4%84/calendar-4.png";
@@ -1497,6 +1551,7 @@
       }, 6000);
   })();
 
+  // 👇👇 這裡務必要確認是你的最新 Apps Script 網址 👇👇
   const API_URL = "https://script.google.com/macros/s/AKfycbyWvhW6fp_ohPEvPK226KtNiQLCyAVMl77zV0Hq0k_TcEk3F1ni9qVcJystGUovVjTMGQ/exec";
   const STAGE_1_DAYS=3, STAGE_2_DAYS=11, BACKGROUND_BATCH=14, MAX_DAYS=45, MAX_SELECTION=10;
   
@@ -1601,6 +1656,7 @@
           if (selectedDateStr) renderSlots(selectedDateStr);
       }
       checkHotSlots(14);
+      fetchSpecialSlots(); // 同步重繪特殊時段
   }
 
   // 分頁隱藏時暫停、顯示時立刻同步
@@ -1631,8 +1687,11 @@
     openCalendar(); 
     document.getElementById("p-main").style.display = "none";
 
-    // 資料載入後 2 秒啟動即時同步
-    setTimeout(startRealtimeSync, 2000);
+    // 資料載入後 2 秒啟動即時同步，並拉取週末特殊時段
+    setTimeout(() => {
+        startRealtimeSync();
+        fetchSpecialSlots(); 
+    }, 2000);
 
     document.getElementById('sched-modal-overlay').addEventListener('click', function(e) {
         if (window.innerWidth >= 1024 && e.target === this) closeSchedCalendar();
@@ -1733,15 +1792,19 @@
         Object.assign(cachedData, data);
         for(let i=0;i<days;i++){const d=new Date();d.setDate(today.getDate()+startIndex+i);const dStr=fmt(d);if(!cachedData[dStr])cachedData[dStr]={slots:[]};}
         loadedDaysCount+=days; updateDatePills(startStr,days);
+        
         if(stage==="STAGE1"){
           hideLoading(false); selectNearestAvailableDay();
           if(document.getElementById("cal-modal").classList.contains("active")) jumpToDate(selectedDateStr);
-          checkHotSlots(14); fetchBatchData(loadedDaysCount,STAGE_2_DAYS,"STAGE2");
+          checkHotSlots(14); 
+          fetchBatchData(loadedDaysCount,STAGE_2_DAYS,"STAGE2");
         } else if(stage==="STAGE2"){
-          checkHotSlots(14); loadRestInBackground();
+          checkHotSlots(14); 
+          loadRestInBackground();
         } else if(stage==="BG"){
           loadRestInBackground();
         }
+        
         if(document.getElementById("cal-modal").classList.contains("active")){
             renderCalGrid(); if(selectedDateStr&&document.getElementById("cal-slots-content").innerHTML.includes("載入")) renderSlotsInsideCalendar(selectedDateStr);
         }
@@ -2048,9 +2111,10 @@
          });
          selectedSlots=[]; closeForm(); 
          if(document.getElementById("cal-modal").classList.contains("active")) { renderSlotsInsideCalendar(selectedDateStr); renderCalGrid(); }
-         renderSlots(selectedDateStr); updateBottomBar(); checkHotSlots(loadedDaysCount>7?14:7);
+         renderSlots(selectedDateStr); updateBottomBar(); 
+         checkHotSlots(loadedDaysCount>7?14:7);
          // 立刻觸發一次即時同步
-         doRealtimeSync();
+         doRealtimeSync(); 
     }
   }
 
@@ -2076,7 +2140,7 @@
                  const monDate=`${dateObj.getMonth()+1}/${dateObj.getDate()}`;const weekName=dayNames[day];const displayTime=formatHotTime(slot.time);
                  const btn=document.createElement("button");btn.className="hot-btn";
                  btn.innerHTML=`<div>${monDate} (${weekName}) &nbsp;&nbsp; ${displayTime} <img src="https://ik.imagekit.io/lql1uveoc/tap.png?updatedAt=1751188454925" class="tap-icon"></div>`;
-                 // 點選直接開啟快速預約表單（不需先選時段、不需點購物車）
+                 // 點選直接開啟快速預約表單
                  btn.onclick=()=>{
                      closeHotPanel();
                      openHotQuickForm(slot, dStr);
@@ -2098,7 +2162,75 @@
     }
   }
 
-  // 開啟快速預約表單
+  // =========================================================
+  // 週末特殊時段 (已修正：從後端 API 正確讀取)
+  // =========================================================
+  let hasShownSpecialModalThisSession = false;
+
+  function fetchSpecialSlots() {
+      const url = `${API_URL}?action=getSpecialSlots&_t=${Date.now()}`;
+      fetch(url, { cache: "no-store" })
+        .then(res => res.json())
+        .then(data => {
+            const list = document.getElementById('special-weekend-list');
+            list.innerHTML = '';
+            const floater = document.getElementById('special-weekend-floater');
+            const modal = document.getElementById('special-weekend-modal');
+
+            if (data && data.length > 0) {
+                data.forEach(slot => {
+                    const d = new Date(parseInt(slot.timestamp));
+                    const displayDate = `${d.getMonth()+1}/${d.getDate()} (${dayNames[d.getDay()]} ${chiDayNames[d.getDay()]})`;
+                    const displayTime = formatTime12H(slot.time);
+                    
+                    const btn = document.createElement('button');
+                    btn.className = 'special-slot-btn';
+                    btn.innerHTML = `<span>📅 ${displayDate}</span> <span style="color:#ff2d55;">⏰ ${displayTime}</span>`;
+                    
+                    btn.onclick = () => {
+                        closeSpecialWeekendModal();
+                        // 點擊後跳出結帳視窗（需要傳入 slot 與 dateStr）
+                        openHotQuickForm(slot, slot.dateStr); 
+                    };
+                    list.appendChild(btn);
+                });
+
+                // 判斷是否需要自動彈出或顯示底部按鈕
+                if (!hasShownSpecialModalThisSession) {
+                    modal.style.display = 'flex';
+                    floater.style.display = 'none';
+                    hasShownSpecialModalThisSession = true;
+                } else {
+                    // 如果視窗已經被關閉，則顯示底部按鈕
+                    if (modal.style.display !== 'flex') {
+                        floater.style.display = 'block';
+                    }
+                }
+            } else {
+                // 沒有特殊時段時，完全隱藏
+                floater.style.display = 'none';
+                modal.style.display = 'none';
+            }
+        })
+        .catch(err => console.error("特殊時段讀取失敗", err));
+  }
+
+  function closeSpecialWeekendModal() {
+      document.getElementById('special-weekend-modal').style.display = 'none';
+      // 關閉時若清單內仍有時段，就顯示底部按鈕
+      if (document.getElementById('special-weekend-list').children.length > 0) {
+          document.getElementById('special-weekend-floater').style.display = 'block';
+      }
+  }
+
+  function openSpecialWeekendModal() {
+      document.getElementById('special-weekend-floater').style.display = 'none';
+      document.getElementById('special-weekend-modal').style.display = 'flex';
+  }
+
+  // =========================================================
+  // 開啟快速預約表單 (共用)
+  // =========================================================
   function openHotQuickForm(slot, dateStr) {
       hotQuickSlot = slot;
       hotQuickDateStr = dateStr;
@@ -2159,7 +2291,6 @@
               successMsg += `<div style="margin-top: 15px; color: #d32f2f; font-weight:bold;">請假/調整請於24小時前提出。<br><a href="https://tonyonlineenglish.netlify.app/regulations" target="_blank" style="color: #007aff; text-decoration: underline; font-weight: bold; display:inline-block; margin-top:5px;">詳細規範請點這裡</a></div>`;
               showNotice("預約成功 🎉", successMsg, false, null, false);
               refreshCurrentView();
-              checkHotSlots(14);
               doRealtimeSync();
           } else {
               showNotice("預約失敗", res.message || "此時段已被預約，請選擇其他時段。", true);
@@ -2578,4 +2709,4 @@
   }
 </script>
 </body>
-</html>
+</html>--- START OF FILE text/plain ---
