@@ -554,6 +554,20 @@
         .result-msg .booked-times-box { font-size: inherit !important; }
         .result-msg .booked-times-box div { font-size: inherit !important; }
         .result-msg .booked-header { font-size: inherit !important; font-weight: bold; }
+        
+        /* 週末特殊時段浮動按鈕 (Tablet Scale & Position) */
+        #special-weekend-floater {
+            bottom: 30px !important;
+            border-radius: 30px !important;
+            border-bottom: 2px solid #fff !important;
+            box-shadow: 0 4px 15px rgba(255, 84, 0, 0.4) !important;
+            font-size: 20px !important;
+            padding: 15px 30px !important;
+        }
+        #special-weekend-modal .special-modal-content { max-width: 600px; padding: 45px 30px; border-radius: 36px; }
+        #special-weekend-modal .special-title { font-size: 33px !important; margin-bottom: 15px; }
+        #special-weekend-modal p { font-size: 22px !important; margin-bottom: 30px; }
+        .special-slot-btn { font-size: 25px !important; padding: 21px !important; border-radius: 18px !important; }
     }
     
     /* =========================================================
@@ -588,6 +602,15 @@
         .result-msg .booked-times-box { font-size: inherit !important; }
         .result-msg .booked-times-box div { font-size: inherit !important; }
         .result-msg .booked-header { font-size: inherit !important; font-weight: bold; }
+        
+        /* 週末特殊時段浮動按鈕 (Desktop Scale) */
+        #special-weekend-modal .special-modal-content { max-width: 800px; padding: 60px 40px; border-radius: 48px; }
+        #special-weekend-modal .special-title { font-size: 44px !important; margin-bottom: 20px; }
+        #special-weekend-modal p { font-size: 30px !important; margin-bottom: 40px; }
+        .special-slot-btn { font-size: 34px !important; padding: 28px !important; border-radius: 24px !important; }
+        #special-weekend-floater {
+            font-size: 24px !important; padding: 20px 40px !important; bottom: 40px !important; border-radius: 40px !important;
+        }
     }
     
     @keyframes glow { from { filter: drop-shadow(0 0 4px rgba(255, 84, 0, 0.4)); } to { filter: drop-shadow(0 0 8px rgba(255, 84, 0, 0.8)); } }
@@ -1148,7 +1171,7 @@
     }
 
     /* =========================================================
-       週末特殊時段 浮動按鈕與彈窗 (已修正為從後端讀取)
+       週末特殊時段 浮動按鈕與彈窗
        ========================================================= */
     #special-weekend-floater {
         position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
@@ -1156,7 +1179,7 @@
         padding: 10px 24px 15px; border-radius: 20px 20px 0 0;
         font-weight: bold; font-size: 15px; cursor: pointer;
         box-shadow: 0 -2px 15px rgba(255, 84, 0, 0.4);
-        display: none; z-index: 998; border: 2px solid #fff; border-bottom: none;
+        display: none; z-index: 9999; border: 2px solid #fff; border-bottom: none;
         transition: transform 0.3s;
     }
     #special-weekend-floater:hover { transform: translateX(-50%) translateY(-3px); }
@@ -1185,6 +1208,30 @@
         transition: 0.2s;
     }
     .special-slot-btn:active { background: #ff2d55; color: #fff; transform: scale(0.98); }
+
+    /* 平板 1.5x 與 桌機 2x 縮放，且避免底部橫桿問題 */
+    @media (min-width: 768px) {
+        #special-weekend-floater {
+            bottom: 30px; 
+            border-radius: 30px; 
+            border-bottom: 2px solid #fff;
+            box-shadow: 0 4px 15px rgba(255, 84, 0, 0.4);
+            font-size: 20px;
+            padding: 15px 30px;
+        }
+        #special-weekend-modal .special-modal-content { max-width: 600px; padding: 45px 30px; border-radius: 36px; }
+        #special-weekend-modal .special-title { font-size: 33px !important; margin-bottom: 15px; }
+        #special-weekend-modal p { font-size: 22px !important; margin-bottom: 30px; }
+        .special-slot-btn { font-size: 25px !important; padding: 21px !important; border-radius: 18px !important; }
+    }
+    @media (min-width: 1024px) {
+        #special-weekend-modal .special-modal-content { max-width: 800px; padding: 60px 40px; border-radius: 48px; }
+        #special-weekend-modal .special-title { font-size: 44px !important; margin-bottom: 20px; }
+        #special-weekend-modal p { font-size: 30px !important; margin-bottom: 40px; }
+        .special-slot-btn { font-size: 34px !important; padding: 28px !important; border-radius: 24px !important; }
+        #special-weekend-floater { font-size: 24px !important; padding: 20px 40px !important; bottom: 40px !important; border-radius: 40px !important; }
+    }
+
   </style>
 </head>
 <body>
@@ -1447,15 +1494,15 @@
 </div>
 
 <!-- ============================================== -->
-<!-- 特殊時段浮動按鈕 (新增) -->
+<!-- 特殊時段浮動按鈕 -->
 <button id="special-weekend-floater" onclick="openSpecialWeekendModal()">✨ 週末特開時段</button>
 
-<!-- 特殊時段彈出視窗 (新增) -->
+<!-- 特殊時段彈出視窗 -->
 <div id="special-weekend-modal" class="special-modal">
     <div class="special-modal-content">
         <button class="modal-close-x" onclick="closeSpecialWeekendModal()">&times;</button>
-        <div class="special-title" style="font-size:22px; font-weight:800; color:#ff2d55; margin-bottom:10px;">🔥 週末特殊時段釋出</div>
-        <p style="color:#555; margin-bottom:20px; font-size:15px; margin-top:0;">老師額外開放的週末空檔，趕快把握！</p>
+        <div class="special-title" style="color:#ff2d55; margin-bottom:10px;">🔥 週末特殊時段釋出</div>
+        <p style="color:#555; margin-top:0;">老師額外開放的週末空檔，趕快把握！</p>
         <div class="special-slots-container" id="special-weekend-list"></div>
     </div>
 </div>
@@ -2163,7 +2210,7 @@
   }
 
   // =========================================================
-  // 週末特殊時段 (已修正：從後端 API 正確讀取)
+  // 週末特殊時段 (從後端 API 正確讀取)
   // =========================================================
   let hasShownSpecialModalThisSession = false;
 
@@ -2185,29 +2232,26 @@
                     
                     const btn = document.createElement('button');
                     btn.className = 'special-slot-btn';
-                    btn.innerHTML = `<span>📅 ${displayDate}</span> <span style="color:#ff2d55;">⏰ ${displayTime}</span>`;
+                    // 時段文字顏色改為黑色 (#000)
+                    btn.innerHTML = `<span>📅 ${displayDate}</span> <span style="color:#000;">⏰ ${displayTime}</span>`;
                     
                     btn.onclick = () => {
                         closeSpecialWeekendModal();
-                        // 點擊後跳出結帳視窗（需要傳入 slot 與 dateStr）
                         openHotQuickForm(slot, slot.dateStr); 
                     };
                     list.appendChild(btn);
                 });
 
-                // 判斷是否需要自動彈出或顯示底部按鈕
                 if (!hasShownSpecialModalThisSession) {
                     modal.style.display = 'flex';
                     floater.style.display = 'none';
                     hasShownSpecialModalThisSession = true;
                 } else {
-                    // 如果視窗已經被關閉，則顯示底部按鈕
                     if (modal.style.display !== 'flex') {
                         floater.style.display = 'block';
                     }
                 }
             } else {
-                // 沒有特殊時段時，完全隱藏
                 floater.style.display = 'none';
                 modal.style.display = 'none';
             }
@@ -2217,7 +2261,6 @@
 
   function closeSpecialWeekendModal() {
       document.getElementById('special-weekend-modal').style.display = 'none';
-      // 關閉時若清單內仍有時段，就顯示底部按鈕
       if (document.getElementById('special-weekend-list').children.length > 0) {
           document.getElementById('special-weekend-floater').style.display = 'block';
       }
@@ -2709,4 +2752,4 @@
   }
 </script>
 </body>
-</html>--- START OF FILE text/plain ---
+</html>
