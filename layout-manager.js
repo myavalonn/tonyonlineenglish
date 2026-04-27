@@ -1,4 +1,4 @@
-// layout-manager.js - 終極修正版：解決 iPad 直/橫放白條問題 + 原版高級深色漸層 + 訂閱制卡片發光 + 智慧黑白外連 Icon + 訂閱卡片排版修正
+// layout-manager.js - 終極修正版：解決 iPad 直/橫放白條問題 + 黑白外連 Icon + 訂閱卡片(桌機專屬排版，手機/平板維持原狀)
 document.addEventListener("DOMContentLoaded", function() {
     if (document.getElementById('tony-unique-header')) return;
 
@@ -150,21 +150,15 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         .gept-course span { color: rgba(255, 255, 255, 0.9) !important; }
 
-        /* --- 訂閱制專屬：卡片邊框發亮 + 大字體掃光特效 + 絕對定位排版 --- */
+        /* --- 訂閱制專屬 (預設：手機/平板維持原本的 Flex 並排樣式) --- */
         .sub-card {
             border: 2px solid #FAD961;
             background: rgba(250, 217, 97, 0.08) !important;
             animation: cardGlow 2s ease-in-out infinite alternate;
-            padding-right: 50px; /* 預留給右側火焰與Icon的空間，防止文字蓋到 */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
         }
-        
-        /* 強制文字排成兩列且絕對不換行 */
-        .sub-card .shimmer-text, 
-        .sub-card span {
-            white-space: nowrap !important; 
-            display: block;
-        }
-
         @keyframes cardGlow {
             from { 
                 box-shadow: 0 0 5px rgba(250, 217, 97, 0.2); 
@@ -192,18 +186,36 @@ document.addEventListener("DOMContentLoaded", function() {
             to { background-position: 200% center; }
         }
 
-        /* 火焰動態特效 - 改為絕對定位在右下角，不影響文字排版 */
+        /* 火焰動態特效 (預設手機/平板樣式) */
         .flame-icon {
-            position: absolute;
-            bottom: 12px;
-            right: 10px; /* 對齊在 ext-icon 之下 */
-            height: 38px; 
-            width: auto; 
+            height: 35px; width: auto; flex-shrink: 0; margin-left: 5px; margin-right: 15px;
             animation: flamePulse 1.5s ease-in-out infinite alternate;
         }
         @keyframes flamePulse {
             from { transform: scale(1); filter: drop-shadow(0 0 2px rgba(255,106,0,0.5)); }
             to { transform: scale(1.15); filter: drop-shadow(0 0 8px rgba(255,186,0,0.9)); }
+        }
+
+        /* ========================================================
+           桌機版專屬 (Desktop Only >= 1025px)：火焰移至右下，文字強制兩行
+        ======================================================== */
+        @media (min-width: 1025px) {
+            .sub-card {
+                display: block; /* 取消 Flex 並排 */
+                padding-right: 50px;
+            }
+            .sub-card-content .shimmer-text, 
+            .sub-card-content span {
+                white-space: nowrap !important; /* 強制文字不換行 */
+                display: block;
+            }
+            .flame-icon {
+                position: absolute;
+                bottom: 12px;
+                right: 14px; /* 對齊右上角的 Icon */
+                margin: 0;
+                height: 38px;
+            }
         }
 
         .menu-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.7); z-index: 99998; display: none; }
@@ -269,10 +281,11 @@ document.addEventListener("DOMContentLoaded", function() {
                 <img src="https://ik.imagekit.io/lql1uveoc/external-link.png?updatedAt=1754911187731" class="ext-icon">
             </a>
 
-            <!-- 移除了干擾排版的 inline flex 樣式，回歸標準區塊堆疊 -->
             <a href="https://tonyonlineenglish.netlify.app/sub" target="_blank" class="menu-link sub-card">
-                <div class="shimmer-text">學員訂閱課程</div>
-                <span>高CP值課程/持續學習</span>
+                <div class="sub-card-content">
+                    <div class="shimmer-text">學員訂閱課程</div>
+                    <span>高CP值課程/持續學習</span>
+                </div>
                 <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/flame.png" alt="Flame Icon" class="flame-icon">
                 <img src="https://ik.imagekit.io/lql1uveoc/external-link.png?updatedAt=1754911187731" class="ext-icon">
             </a>
