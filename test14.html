@@ -1197,6 +1197,25 @@
         animation: modalFadeIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         max-height: 80vh; display: flex; flex-direction: column;
     }
+    
+    /* iMac macOS Genie 縮小收回底部動畫 */
+    @keyframes minimizeToBottom {
+        0% { transform: scale(1) translateY(0); opacity: 1; }
+        20% { transform: scale(1.02) translateY(-5px); opacity: 1; }
+        100% { transform: scale(0.1) translateY(50vh); opacity: 0; }
+    }
+    #special-weekend-modal .special-modal-content.minimizing {
+        animation: minimizeToBottom 0.35s ease-in forwards !important;
+        transform-origin: center bottom;
+    }
+    #special-weekend-modal.minimizing-overlay {
+        animation: fadeOutOverlay 0.35s ease-in forwards !important;
+    }
+    @keyframes fadeOutOverlay {
+        0% { background: rgba(0,0,0,0.7); backdrop-filter: blur(4px); }
+        100% { background: rgba(0,0,0,0); backdrop-filter: blur(0px); }
+    }
+
     .special-slots-container {
         overflow-y: auto; flex-grow: 1; padding-right: 5px; margin-bottom: 10px;
     }
@@ -1547,7 +1566,6 @@
       const calModal = document.getElementById('cal-modal');
       const pMain = document.getElementById('p-main');
       
-      // 根據目前哪個模塊顯示，將其對齊螢幕最頂部（會將母網頁的漢堡選單擠出畫面）
       if (calModal && window.getComputedStyle(calModal).display !== 'none') {
           calModal.scrollIntoView({ behavior: b, block: 'start' });
       } else if (pMain && window.getComputedStyle(pMain).display !== 'none') {
@@ -1579,7 +1597,7 @@
       if (isLoadingStepsDone && isCalendarDataReady) {
           const overlay = document.getElementById("loading-overlay");
           if (overlay && overlay.style.display !== "none") {
-              alignToHeader(true); // 在淡出前「瞬間」對齊，神不知鬼不覺隱藏上方選單
+              alignToHeader(true);
               overlay.style.opacity = "0"; overlay.style.pointerEvents = "none";
               setTimeout(() => { overlay.style.display = "none"; playIntroAnimation(); }, 500);
           }
@@ -1591,14 +1609,13 @@
       setTimeout(function(){
           var o = document.getElementById("loading-overlay");
           if (o && o.style.display !== "none") { 
-              alignToHeader(true); // 備用保護
+              alignToHeader(true); 
               o.style.opacity="0"; o.style.pointerEvents="none"; 
               setTimeout(function(){ o.style.display="none"; }, 500); 
           }
       }, 6000);
   })();
 
-  // 👇👇 這裡務必要確認是你的最新 Apps Script 網址 👇👇
   const API_URL = "https://script.google.com/macros/s/AKfycbyWvhW6fp_ohPEvPK226KtNiQLCyAVMl77zV0Hq0k_TcEk3F1ni9qVcJystGUovVjTMGQ/exec";
   const STAGE_1_DAYS=3, STAGE_2_DAYS=11, BACKGROUND_BATCH=14, MAX_DAYS=45, MAX_SELECTION=10;
   
@@ -1606,12 +1623,11 @@
   // 即時同步核心：1秒輪詢 + 差異偵測
   // =========================================================
   const REALTIME_INTERVAL_MS = 1000;   // 目標 1 秒
-  const REALTIME_DAYS = 7;             // 抓最近 7 天（降低伺服器負擔）
+  const REALTIME_DAYS = 7;             // 抓最近 7 天
   let realtimeTimer = null;
   let isFetchingRealtime = false;
   let consecutiveErrors = 0;
   
-  // 自適應間隔：連線正常 1s，失敗後指數後退最多 30s
   function getAdaptiveInterval() {
       if (consecutiveErrors === 0) return REALTIME_INTERVAL_MS;
       return Math.min(REALTIME_INTERVAL_MS * Math.pow(2, consecutiveErrors), 30000);
@@ -1649,7 +1665,6 @@
               const newTs = newSlots.map(s=>s.timestamp).sort().join(',');
 
               if (oldTs !== newTs) {
-                  // 找出被移除的時段（被搶走了），播動畫
                   const removedTs = new Set(oldSlots.map(s=>String(s.timestamp)));
                   newSlots.forEach(s => removedTs.delete(String(s.timestamp)));
 
@@ -1660,7 +1675,6 @@
                   cachedData[dStr] = { ...data[dStr], slots: newSlots };
                   changed = true;
 
-                  // 同時移除購物車中已消失的時段
                   const newTsSet = new Set(newSlots.map(s => String(s.timestamp)));
                   const removed = selectedSlots.filter(s => s.dateStr === dStr && !newTsSet.has(String(s.timestamp)));
                   if (removed.length > 0) {
@@ -1685,7 +1699,6 @@
       scheduleNextRealtime();
   }
 
-  // 被搶走的時段播消失動畫（在 DOM 中找到並播）
   function animateVanishingSlots(removedTsSet) {
       document.querySelectorAll('[data-ts]').forEach(btn => {
           if (removedTsSet.has(String(btn.dataset.ts))) {
@@ -1694,7 +1707,6 @@
       });
   }
 
-  // 重繪目前視圖（不清空也不跳動）
   function refreshCurrentView() {
       if (document.getElementById("cal-modal").classList.contains("active")) {
           renderCalGrid();
@@ -1703,10 +1715,9 @@
           if (selectedDateStr) renderSlots(selectedDateStr);
       }
       checkHotSlots(14);
-      fetchSpecialSlots(); // 同步重繪特殊時段
+      fetchSpecialSlots(); 
   }
 
-  // 分頁隱藏時暫停、顯示時立刻同步
   document.addEventListener("visibilitychange", function() {
       if (document.visibilityState === 'visible') {
           doRealtimeSync();
@@ -1734,7 +1745,6 @@
     openCalendar(); 
     document.getElementById("p-main").style.display = "none";
 
-    // 資料載入後 2 秒啟動即時同步，並拉取週末特殊時段
     setTimeout(() => {
         startRealtimeSync();
         fetchSpecialSlots(); 
@@ -1778,7 +1788,13 @@
       }
       const hotPanel = document.getElementById("hot-panel");
       if (hotPanel && hotPanel.classList.contains("show")) {
-          if (!e.target.closest("#hot-panel")) hotPanel.classList.remove("show");
+          // 點擊特開時段卡片、按鈕或預約表單時，不連動關閉晚間時段面板
+          if (!e.target.closest("#hot-panel") && 
+              !e.target.closest("#special-weekend-modal") && 
+              !e.target.closest("#special-weekend-floater") &&
+              !e.target.closest("#hot-quick-form")) {
+              hotPanel.classList.remove("show");
+          }
       }
       const peggyWindow = document.getElementById('peggy-window');
       if (peggyWindow && peggyWindow.classList.contains('show')) {
@@ -1928,7 +1944,7 @@
       if(validSlots.length>0&&validSlots.length<=4) grid.classList.add('few-slots'); else grid.classList.remove('few-slots');
       validSlots.forEach(slot=>{
           const btn=document.createElement("button"); btn.className="simple-slot-btn";
-          btn.dataset.ts = slot.timestamp;  // 供動畫定位用
+          btn.dataset.ts = slot.timestamp;  
           btn.appendChild(makeClockImg());
           btn.appendChild(document.createTextNode(formatTime12H(slot.time)));
           if(selectedSlots.some(s=>s.timestamp===slot.timestamp)) btn.classList.add("selected");
@@ -2160,7 +2176,6 @@
          if(document.getElementById("cal-modal").classList.contains("active")) { renderSlotsInsideCalendar(selectedDateStr); renderCalGrid(); }
          renderSlots(selectedDateStr); updateBottomBar(); 
          checkHotSlots(loadedDaysCount>7?14:7);
-         // 立刻觸發一次即時同步
          doRealtimeSync(); 
     }
   }
@@ -2232,11 +2247,15 @@
                     
                     const btn = document.createElement('button');
                     btn.className = 'special-slot-btn';
-                    // 時段文字顏色改為黑色 (#000)
                     btn.innerHTML = `<span>📅 ${displayDate}</span> <span style="color:#000;">⏰ ${displayTime}</span>`;
                     
                     btn.onclick = () => {
-                        closeSpecialWeekendModal();
+                        // 點擊前往預約，直接隱藏卡片並開啟表單，不帶縮小動畫
+                        modal.style.display = 'none';
+                        const content = modal.querySelector('.special-modal-content');
+                        if (content) content.classList.remove('minimizing');
+                        modal.classList.remove('minimizing-overlay');
+
                         openHotQuickForm(slot, slot.dateStr); 
                     };
                     list.appendChild(btn);
@@ -2248,7 +2267,10 @@
                     hasShownSpecialModalThisSession = true;
                 } else {
                     if (modal.style.display !== 'flex') {
-                        floater.style.display = 'block';
+                        // 如果有開啟預約表單，則由表單關閉時負責顯示按鈕
+                        if (!document.getElementById('hot-quick-form').classList.contains('show')) {
+                            floater.style.display = 'block';
+                        }
                     }
                 }
             } else {
@@ -2260,10 +2282,24 @@
   }
 
   function closeSpecialWeekendModal() {
-      document.getElementById('special-weekend-modal').style.display = 'none';
-      if (document.getElementById('special-weekend-list').children.length > 0) {
-          document.getElementById('special-weekend-floater').style.display = 'block';
-      }
+      const modal = document.getElementById('special-weekend-modal');
+      const content = modal.querySelector('.special-modal-content');
+      
+      // 加上缩小吸入動畫與背景淡出
+      content.classList.add('minimizing');
+      modal.classList.add('minimizing-overlay');
+      
+      setTimeout(() => {
+          modal.style.display = 'none';
+          content.classList.remove('minimizing');
+          modal.classList.remove('minimizing-overlay');
+          if (document.getElementById('special-weekend-list').children.length > 0) {
+              const floater = document.getElementById('special-weekend-floater');
+              floater.style.display = 'block';
+              floater.classList.add('bump-effect');
+              setTimeout(() => floater.classList.remove('bump-effect'), 300);
+          }
+      }, 340); // 對應 CSS 動畫 0.35s
   }
 
   function openSpecialWeekendModal() {
@@ -2289,6 +2325,11 @@
       document.getElementById('hqf-submit-btn').textContent = '確認送出';
       document.getElementById('hqf-overlay').style.display = 'block';
       document.getElementById('hot-quick-form').classList.add('show');
+      
+      // 開啟時段表單時隱藏浮動按鈕
+      const floater = document.getElementById('special-weekend-floater');
+      if (floater) floater.style.display = 'none';
+
       setTimeout(() => document.getElementById('hqf-name').focus(), 400);
   }
 
@@ -2297,6 +2338,17 @@
       document.getElementById('hqf-overlay').style.display = 'none';
       hotQuickSlot = null;
       hotQuickDateStr = null;
+
+      // 關閉表單時，若特開時段還有剩餘則重新顯示浮動按鈕
+      const list = document.getElementById('special-weekend-list');
+      if (list && list.children.length > 0) {
+          const floater = document.getElementById('special-weekend-floater');
+          if (floater) {
+              floater.style.display = 'block';
+              floater.classList.add('bump-effect');
+              setTimeout(() => floater.classList.remove('bump-effect'), 300);
+          }
+      }
   }
 
   function submitHotQuickForm() {
