@@ -1,4 +1,4 @@
-// layout-manager.js - 終極修正版：解決 iPad 直/橫放白條問題 + 原版高級深色漸層 + 訂閱制卡片發光 + 智慧黑白外連 Icon
+// layout-manager.js - 終極修正版：解決 iPad 直/橫放白條問題 + 原版高級深色漸層 + 訂閱制卡片發光 + 智慧黑白外連 Icon (純黑/亮白且取消半透明)
 document.addEventListener("DOMContentLoaded", function() {
     if (document.getElementById('tony-unique-header')) return;
 
@@ -105,36 +105,36 @@ document.addEventListener("DOMContentLoaded", function() {
             line-height: 1.4; white-space: normal; 
         }
 
-        /* 智慧外連 Icon 樣式設定 (預設在深底上強制轉為純白色) */
+        /* ========================================================
+           智慧外連 Icon 樣式設定 (預設亮白色，取消半透明)
+        ======================================================== */
         .ext-icon {
             position: absolute;
             top: 14px;
             right: 14px;
             width: 16px;
             height: auto;
-            filter: brightness(0) invert(1); /* 強制變成純白色 */
-            opacity: 0.4;
-            transition: opacity 0.3s;
-        }
-        .menu-link:hover .ext-icon {
-            opacity: 0.9; /* 滑鼠移過去變亮 */
+            filter: brightness(0) invert(1); /* 預設強制為純亮白色 */
+            opacity: 1; /* 保持100%顯示，不要移動才變亮 */
         }
 
-        /* 課程詳細介紹 - 高對比黃底黑字 */
+        /* 針對選單 No.1, No.2, No.3：右上角 Icon 強制轉為純黑色 */
+        .highlight-course .ext-icon,
+        .sat-course .ext-icon,
+        .gept-course .ext-icon { 
+            filter: brightness(0); /* 強制變成純黑色 */
+            opacity: 1; /* 保持100%顯示 */
+        }
+
+        /* 課程詳細介紹 (No.1) - 高對比黃底黑字 */
         .highlight-course {
             background: #FFD700 !important; 
             color: #000 !important; 
             box-shadow: 0 4px 12px rgba(255, 215, 0, 0.2);
         }
         .highlight-course span { color: #333 !important; font-weight: 700; }
-        /* 黃底上將 Icon 強制轉為黑色 */
-        .highlight-course .ext-icon { 
-            filter: brightness(0); /* 強制變成純黑色 */
-            opacity: 0.4; 
-        }
-        .highlight-course:hover .ext-icon { opacity: 0.8; }
 
-        /* 學測英文作文班 - 恢復質感深藍紫漸層 + 白字 */
+        /* 學測英文作文班 (No.2) - 深藍紫漸層 + 白字 */
         .sat-course {
             background: linear-gradient(135deg, #3b4fd8 0%, #6f42c1 100%) !important;
             color: #ffffff !important;
@@ -142,7 +142,7 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         .sat-course span { color: rgba(255, 255, 255, 0.9) !important; }
 
-        /* 全民英檢中級寫作 - 恢復質感深紅漸層 + 白字 */
+        /* 全民英檢中級寫作 (No.3) - 深紅漸層 + 白字 */
         .gept-course {
             background: linear-gradient(135deg, #e53e3e 0%, #c53030 100%) !important;
             color: #ffffff !important;
