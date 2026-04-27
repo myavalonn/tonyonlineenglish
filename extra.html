@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Edit Date-Specific Hours</title>
+    <style>
+        :root {
+            --green-btn: #2ecc71;
+            --green-hover: #27ae60;
+            --border-color: #e5e7eb;
+            --text-main: #374151;
+            --text-light: #6b7280;
+            --danger: #ef4444;
+            --bg-color: #f9fafb;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            margin: 0; padding: 0; color: var(--text-main);
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        /* Widget Container */
+        .widget-container {
+            max-width: 800px; margin: 0 auto; background: #ffffff;
+            min-height: 100vh; display: flex; flex-direction: column;
+        }
+
+        @media (min-width: 768px) {
+            .widget-container {
+                margin: 40px auto; min-height: auto; border-radius: 12px;
+                box-shadow: 0 10px 25px rgba(0,0,0,0.05); border: 1px solid var(--border-color);
+            }
+        }
+
+        /* Header */
+        .header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px; border-bottom: 1px solid var(--border-color);
+        }
+        .header h1 { font-size: 22px; margin: 0; display: flex; align-items: center; gap: 10px; color: var(--text-main); }
+        .close-icon { font-size: 28px; color: #9ca3af; cursor: pointer; border: none; background: none; }
+
+        /* Password Bar */
+        .pwd-bar { padding: 15px 20px; background: #f3f4f6; border-bottom: 1px solid var(--border-color); }
+        .pwd-bar input { width: 100%; padding: 12px; border: 1px solid var(--border-color); border-radius: 8px; font-size: 16px; box-sizing: border-box; }
+
+        /* Toolbar */
+        .toolbar {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 20px;
+        }
+        .btn-add {
+            background: #ffffff; border: 1px solid var(--border-color); color: #3b82f6;
+            padding: 10px 16px; border-radius: 8px; font-size: 16px; font-weight: 500;
+            cursor: pointer; display: flex; align-items: center; gap: 8px; box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+        }
+        .btn-add:active { background: #f3f4f6; }
+        .btn-remove-all {
+            background: none; border: none; color: var(--danger); font-size: 16px;
+            cursor: pointer; display: flex; align-items: center; gap: 5px;
+        }
+
+        /* List Area */
+        .slots-list { padding: 0 20px; flex-grow: 1; }
+
+        /* Slot Row */
+        .slot-row {
+            display: flex; border: 1px solid var(--border-color); border-radius: 8px;
+            margin-bottom: 15px; overflow: hidden; align-items: stretch; background: #fff;
+        }
+        
+        .row-date {
+            width: 110px; border-right: 1px solid var(--border-color);
+            position: relative; background: #f9fafb;
+        }
+        /* Native date picker filling the block transparently */
+        .row-date input[type="date"] {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            opacity: 0; cursor: pointer; z-index: 2;
+        }
+        .date-display {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            display: flex; flex-direction: column; justify-content: center; align-items: center;
+            z-index: 1; pointer-events: none;
+        }
+        .date-display .day { font-size: 14px; color: var(--text-light); margin-bottom: 2px; }
+        .date-display .md { font-size: 18px; font-weight: bold; color: var(--text-main); }
+
+        .row-time-controls {
+            flex-grow: 1; display: flex; align-items: center; justify-content: space-between;
+            padding: 10px 15px;
+        }
+        .time-picker-wrapper { display: flex; align-items: center; gap: 10px; flex-grow: 1; }
+        
+        input[type="time"] {
+            border: 1px solid var(--border-color); border-radius: 6px; padding: 12px;
+            font-size: 18px; color: var(--text-main); background: #fff; width: 130px;
+            text-align: center; cursor: pointer;
+        }
+        
+        .row-actions { display: flex; gap: 15px; color: var(--text-light); font-size: 22px; margin-left: 10px; }
+        .row-actions button { background: none; border: none; font-size: 22px; color: #9ca3af; cursor: pointer; padding: 5px; }
+        .row-actions button:hover { color: var(--danger); }
+
+        /* Footer Actions */
+        .footer {
+            padding: 20px; border-top: 1px solid var(--border-color);
+            display: flex; justify-content: flex-end; gap: 15px; background: #fff;
+        }
+        .btn-cancel {
+            background: #fff; border: 1px solid var(--border-color); color: var(--text-main);
+            padding: 12px 24px; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer;
+        }
+        .btn-save {
+            background: var(--green-btn); border: none; color: #fff;
+            padding: 12px 24px; border-radius: 8px; font-size: 18px; font-weight: bold; cursor: pointer;
+        }
+        .btn-save:active { background: var(--green-hover); }
+
+        /* Online Slots View */
+        .online-slots-section { padding: 20px; background: #f3f4f6; border-top: 1px solid #ddd; }
+        .online-slot-item {
+            background: #fff; padding: 15px; border-radius: 8px; margin-bottom: 10px;
+            display: flex; justify-content: space-between; align-items: center;
+            border: 1px solid var(--border-color); font-size: 18px; font-weight: bold;
+        }
+        .btn-del-online { background: #fee2e2; color: #ef4444; border: none; padding: 8px 15px; border-radius: 6px; font-size: 14px; font-weight: bold; cursor: pointer;}
+
+        /* Loading / Message Overlay */
+        #msg-overlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(0,0,0,0.6);
+            display: none; justify-content: center; align-items: center; z-index: 9999;
+        }
+        .msg-box { background: #fff; padding: 30px; border-radius: 16px; font-size: 20px; font-weight: bold; text-align: center; }
+    </style>
+</head>
+<body>
+
+<div id="msg-overlay"><div class="msg-box" id="msg-text">處理中...</div></div>
+
+<div class="widget-container">
+    <div class="header">
+        <h1><span style="color:var(--green-btn);">📝</span> Edit Date-Specific Hours</h1>
+        <button class="close-icon" onclick="window.close()">&times;</button>
+    </div>
+
+    <div class="pwd-bar">
+        <input type="password" id="adminPwd" placeholder="🔑 請輸入管理密碼 (預設: tony)" value="tony">
+    </div>
+
+    <div class="toolbar">
+        <button class="btn-add" onclick="addRow()">
+            <span style="font-size: 20px;">📅</span> Add Dates <span style="font-size: 12px;">▼</span>
+        </button>
+        <button class="btn-remove-all" onclick="removeAllRows()">
+            🗑 Remove All Dates
+        </button>
+    </div>
+
+    <div class="slots-list" id="rows-container"></div>
+
+    <div class="footer">
+        <button class="btn-cancel" onclick="loadOnlineSlots()">Refresh Active List</button>
+        <button class="btn-save" id="saveBtn" onclick="saveChanges()">Save Changes</button>
+    </div>
+
+    <div class="online-slots-section">
+        <h3 style="margin-top:0; color:var(--text-light); font-size: 16px;">🟢 目前已在網站上開放的特殊時段</h3>
+        <div id="online-list">
+            <p style="color:#9ca3af; font-size: 14px;">請點擊 Refresh 載入線上資料</p>
+        </div>
+    </div>
+</div>
+
+<script>
+    // 👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇👇
+    // REPLACE THIS WITH YOUR LATEST GOOGLE APPS SCRIPT URL!
+    const API_URL = "https://script.google.com/macros/s/AKfycbyWvhW6fp_ohPEvPK226KtNiQLCyAVMl77zV0Hq0k_TcEk3F1ni9qVcJystGUovVjTMGQ/exec";
+    // 👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆👆
+
+    const dayNames = ['週日', '週一', '週二', '週三', '週四', '週五', '週六'];
+
+    function getTodayStr() {
+        const d = new Date();
+        return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+    }
+
+    function addRow(dateVal = getTodayStr(), timeVal = "10:00") {
+        const container = document.getElementById('rows-container');
+        const rowId = 'row-' + Date.now() + Math.random();
+        const row = document.createElement('div');
+        row.className = 'slot-row';
+        row.id = rowId;
+
+        row.innerHTML = `
+            <div class="row-date">
+                <input type="date" value="${dateVal}" onchange="updateDateDisplay('${rowId}', this.value)">
+                <div class="date-display" id="disp-${rowId}">
+                    <span class="day">--</span>
+                    <span class="md">--/--</span>
+                </div>
+            </div>
+            <div class="row-time-controls">
+                <div class="time-picker-wrapper">
+                    <input type="time" value="${timeVal}">
+                </div>
+                <div class="row-actions">
+                    <button onclick="cloneRow('${rowId}')">📄</button>
+                    <button onclick="removeRow('${rowId}')">🗑</button>
+                </div>
+            </div>
+        `;
+        container.appendChild(row);
+        updateDateDisplay(rowId, dateVal);
+    }
+
+    function updateDateDisplay(rowId, dateStr) {
+        if(!dateStr) return;
+        const d = new Date(dateStr);
+        const dayStr = dayNames[d.getDay()];
+        const mdStr = String(d.getMonth()+1).padStart(2,'0') + '/' + String(d.getDate()).padStart(2,'0');
+        const disp = document.getElementById(`disp-${rowId}`);
+        if(disp) {
+            disp.querySelector('.day').innerText = dayStr;
+            disp.querySelector('.md').innerText = mdStr;
+        }
+    }
+
+    function removeRow(rowId) { document.getElementById(rowId).remove(); }
+    function removeAllRows() { document.getElementById('rows-container').innerHTML = ''; }
+    
+    function cloneRow(rowId) {
+        const row = document.getElementById(rowId);
+        const dateVal = row.querySelector('input[type="date"]').value;
+        const timeVal = row.querySelector('input[type="time"]').value;
+        addRow(dateVal, timeVal);
+    }
+
+    function showMsg(text, autoHide = true) {
+        const overlay = document.getElementById('msg-overlay');
+        const msgText = document.getElementById('msg-text');
+        overlay.style.display = 'flex'; msgText.innerText = text;
+        if(autoHide) setTimeout(() => { overlay.style.display = 'none'; }, 2000);
+    }
+
+    function saveChanges() {
+        const pwd = document.getElementById('adminPwd').value;
+        if(!pwd) return alert("請輸入密碼 (Password)");
+
+        const rows = document.querySelectorAll('.slot-row');
+        if(rows.length === 0) return alert("You didn't add any dates!");
+
+        const newSlots = [];
+        rows.forEach(row => {
+            const dateStr = row.querySelector('input[type="date"]').value;
+            const timeStr = row.querySelector('input[type="time"]').value;
+            if(dateStr && timeStr) {
+                const ts = new Date(`${dateStr}T${timeStr}:00+08:00`).getTime();
+                newSlots.push({ timestamp: ts, dateStr: dateStr, time: timeStr });
+            }
+        });
+
+        showMsg("Saving...", false);
+
+        fetch(API_URL, {
+            method: 'POST',
+            body: JSON.stringify({ action: 'saveSpecialSlots', password: pwd, slots: newSlots })
+        }).then(r=>r.json()).then(res => {
+            if(res.success) {
+                showMsg("✅ Successfully Published!");
+                removeAllRows();
+                renderOnlineSlots(res.slots);
+            } else { showMsg("❌ Error: " + res.message); }
+        }).catch(() => showMsg("❌ Network Error"));
+    }
+
+    function loadOnlineSlots() {
+        const pwd = document.getElementById('adminPwd').value;
+        if(!pwd) return alert("請輸入密碼");
+        showMsg("Loading...", false);
+        fetch(API_URL, {
+            method: 'POST',
+            body: JSON.stringify({ action: 'getAdminSpecialSlots', password: pwd })
+        }).then(r=>r.json()).then(res => {
+            document.getElementById('msg-overlay').style.display = 'none';
+            if(res.success) renderOnlineSlots(res.slots);
+            else alert("Error: " + res.message);
+        });
+    }
+
+    function deleteOnlineSlot(ts) {
+        if(!confirm("Remove this slot from the website?")) return;
+        const pwd = document.getElementById('adminPwd').value;
+        showMsg("Deleting...", false);
+        fetch(API_URL, {
+            method: 'POST',
+            body: JSON.stringify({ action: 'removeSpecialSlot', password: pwd, timestamp: ts })
+        }).then(r=>r.json()).then(res => {
+            if(res.success) {
+                showMsg("✅ Removed");
+                renderOnlineSlots(res.slots);
+            } else showMsg("❌ Error: " + res.message);
+        });
+    }
+
+    function renderOnlineSlots(slots) {
+        const list = document.getElementById('online-list');
+        list.innerHTML = '';
+        if(slots.length === 0) {
+            list.innerHTML = '<p style="color:#888;">No special slots available online right now.</p>';
+            return;
+        }
+        slots.forEach(s => {
+            const d = new Date(parseInt(s.timestamp));
+            const dayStr = dayNames[d.getDay()];
+            let h = d.getHours(); const m = String(d.getMinutes()).padStart(2,'0');
+            const ampm = h >= 12 ? 'PM' : 'AM'; h = h % 12 || 12;
+            const display = `${d.getMonth()+1}/${d.getDate()} (${dayStr}) ${h}:${m} ${ampm}`;
+
+            const div = document.createElement('div');
+            div.className = 'online-slot-item';
+            div.innerHTML = `<span>📅 ${display}</span> <button class="btn-del-online" onclick="deleteOnlineSlot(${s.timestamp})">Remove</button>`;
+            list.appendChild(div);
+        });
+    }
+
+    window.onload = () => { addRow(); loadOnlineSlots(); };
+</script>
+</body>
+</html>
