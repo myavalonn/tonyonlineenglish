@@ -186,7 +186,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
             <a href="https://tonyonlineenglish.netlify.app/sub" target="_blank" class="menu-link" style="display: flex; align-items: center; justify-content: space-between;">
                 <div>會員訂閱制<span>高CP值課程/持續學習</span></div>
-                <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/elements.gif" alt="Flame Icon" style="height: 35px; width: auto; flex-shrink: 0; margin-left: 10px;">
+                <img src="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/flame.png" alt="Flame Icon" style="height: 35px; width: auto; flex-shrink: 0; margin-left: 10px;">
             </a>
             
             <a href="https://tonyonlineenglish.netlify.app/ycs" target="_blank" class="menu-link">你的課表查詢<span>即時查看課程安排狀況</span></a>
