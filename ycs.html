@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
-<meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>你的課表查詢-Tony線上美語家教</title>
 
-    <!-- 3. Message Preview Picture (貼到 Line, FB, iMessage 時的預覽小圖與文字) -->
+    <!-- Message Preview Picture -->
     <meta property="og:title" content="課表查詢-Tony線上美語家教">
     <meta property="og:description" content="升學 檢定 職場 公職 高考 面試 外商 觀光美語 展場英文 翻譯">
     <meta property="og:url" content="https://tonyonlineenglish.netlify.app/ycs">
@@ -13,31 +13,28 @@
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/tigerlily713-calendar-660670.jpg">
 
-    <script src="layout-manager.js"></script>    <style>
-  /* 強制修正：不管外層怎麼擠，body 都要置左靠滿 */
-  html, body { 
-    margin: 0 !important; 
-    padding: 0 !important; 
-    margin-left: 0 !important; 
-    padding-left: 0 !important;
-    left: 0 !important;
-    position: relative !important;
-    width: 100% !important;
-  }
-</style>
-    <meta charset="UTF-8">
-    <!-- CRITICAL FIX: This meta tag makes RWD work on Netlify and mobile browsers -->
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Tony's Schedule Finder</title>
-
+    <script src="layout-manager.js" defer></script>
+    
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap" rel="stylesheet">
-    <script src="layout-manager.js" defer></script>
-    <!-- Tony's Schedule Finder - Start -->
+    
     <style>
-        /* This style block is self-contained */
+        /* 強制修正：不管外層怎麼擠，body 都要置左靠滿 */
+        html, body { 
+            margin: 0 !important; 
+            padding: 0 !important; 
+            margin-left: 0 !important; 
+            padding-left: 0 !important;
+            left: 0 !important;
+            position: relative !important;
+            width: 100% !important;
+        }
+
+        /* -------------------------------------------------------------
+           Code 2 Original Styles 
+           ------------------------------------------------------------- */
         body {
             margin: 0;
             padding: 0;
@@ -49,16 +46,18 @@
             background: #f9f9f9;
             padding: 20px;
             width: 100%;
-            max-width: 800px; /* Default max width */
-            margin: 0 auto; /* Center align */
+            max-width: 800px;
+            margin: 0 auto;
             box-sizing: border-box;
             position: relative;
-            overflow-x: hidden; /* Prevent horizontal scrollbars from animations */
+            overflow-x: hidden;
         }
         #tony-schedule-container * { box-sizing: border-box; }
 
         /* Title Styles */
-        #tony-schedule-container #current-date-header { font-size: 1.5em; color: #333; text-align: center; margin-bottom: 15px; transition: all 0.3s; }
+        #tony-schedule-container #current-date-header { 
+            font-size: 1.5em; color: #333; text-align: center; margin-bottom: 15px; transition: all 0.3s; 
+        }
         #tony-schedule-container h2 {
             color: #333; text-align: center; margin-bottom: 25px; font-size: 2.2em;
             display: flex; justify-content: center; align-items: center; flex-wrap: nowrap;
@@ -69,7 +68,7 @@
         }
         #tony-schedule-container .logo-text { color: #2c2c2c; font-weight: bold; flex-shrink: 0; }
 
-        /* === NEW: Progress Pill Animation Styles === */
+        /* Progress Pill Animation Styles */
         #progress-pill-container {
             position: fixed;
             top: 100px;
@@ -97,7 +96,7 @@
         .progress-chart-svg {
             width: 100%;
             height: 100%;
-            transform: rotate(-90deg); /* Start from the top */
+            transform: rotate(-90deg);
         }
         .progress-bg {
             fill: none;
@@ -109,12 +108,12 @@
             stroke: url(#progressGradient);
             stroke-width: 12;
             stroke-linecap: round;
-            stroke-dasharray: 314; /* Circumference of a circle with r=50 */
+            stroke-dasharray: 314;
             stroke-dashoffset: 314;
             transition: stroke-dashoffset 1.5s cubic-bezier(0.65, 0, 0.35, 1);
         }
         .progress-text-group {
-            transform: rotate(90deg); /* Counter-rotate the text */
+            transform: rotate(90deg);
             transform-origin: center;
         }
         .progress-percentage {
@@ -131,7 +130,7 @@
         .progress-student-name {
             font-size: 1.8em;
             font-weight: 500;
-            line-height: 1.2; /* Adjust line height for two lines */
+            line-height: 1.2;
         }
 
         /* Search Bar & Autocomplete */
@@ -171,7 +170,7 @@
         .autocomplete-items div:hover { background-color: #e9e9e9; }
         .autocomplete-active { background-color: DodgerBlue !important; color: #ffffff; }
 
-        /* --- Class Counter Styles --- */
+        /* Class Counter Styles */
         .class-counter-wrapper {
             display: flex;
             justify-content: center;
@@ -191,9 +190,8 @@
             min-width: 0;
             box-shadow: none;
             opacity: 1;
-            position: relative; /* Needed for positioning the click reminder */
+            position: relative;
         }
-        /* Animation class will handle initial hide for new data */
         .class-counter-wrapper .info-card.start-animation {
             opacity: 0;
         }
@@ -215,7 +213,6 @@
 
         .mobile-only-text { display: none; }
 
-        /* --- NEW: Loading GIF and Number Animation Styles --- */
         .class-counter-wrapper .number .loading-gif {
             height: 100%;
             width: auto;
@@ -228,7 +225,7 @@
             animation: fade-in-scale-up 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
         }
 
-        /* --- Upcoming 3 Sessions --- */
+        /* Upcoming 3 Sessions */
         #tony-schedule-container #upcoming-sessions-container {
             display: flex; justify-content: center; gap: 15px;
             margin: 10px auto 10px auto;
@@ -240,14 +237,13 @@
             width: 110px; flex-shrink: 0; box-shadow: 0 4px 8px rgba(0,0,0,0.1);
             display: flex; flex-direction: column; justify-content: center; min-height: 100px;
             position: relative; z-index: 1;
-            opacity: 0; /* Initially hidden for animation */
+            opacity: 0;
         }
         #tony-schedule-container .session-item.female-session { background-color: #E85D75; }
         #tony-schedule-container .session-day { font-size: 1.1em; font-weight: 500; }
         #tony-schedule-container .session-date { font-size: 1.8em; font-weight: bold; line-height: 1.2; margin: 4px 0; white-space: nowrap; }
         #tony-schedule-container .session-time { font-size: 1.1em; font-weight: 500; }
 
-        /* --- NEW: Animation Styles --- */
         @keyframes slide-in-left {
             from { transform: translateX(-40px); opacity: 0; }
             to { transform: translateX(0); opacity: 1; }
@@ -269,11 +265,11 @@
             margin-bottom: 12px;
             text-align: left;
             box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-            border: 1px solid #eee; /* Subtle border */
-            transition: background-color 0.3s; /* Smooth color transition */
+            border: 1px solid #eee; 
+            transition: background-color 0.3s; 
         }
         #tony-schedule-container .event.future-month {
-            background-color: #F5F5F5; /* White Smoke */
+            background-color: #F5F5F5;
         }
 
         #tony-schedule-container .info-date { color: blue; font-weight: bold; }
@@ -283,7 +279,7 @@
         .upcoming-title-toggle {
             font-size: 1.2em;
             font-weight: bold;
-            margin-bottom: 15px; /* Increased margin */
+            margin-bottom: 15px; 
             cursor: pointer;
             user-select: none;
             display: flex;
@@ -307,7 +303,7 @@
             color: #ffffff;
         }
         .toggle-icon.expanded {
-            transform: rotate(180deg); /* Point chevron down when expanded */
+            transform: rotate(180deg);
         }
         #schedule-list-details { display: none; padding-top: 10px; }
 
@@ -360,7 +356,6 @@
             50% { transform: scale(1.05); }
         }
 
-        /* --- NEW: Rainbow Glow Animation --- */
         @keyframes rainbow-glow {
             0%, 100% { border-color: #ff0000; box-shadow: 0 0 15px #ff0000, inset 0 0 5px rgba(255, 255, 255, 0.5); }
             16%      { border-color: #ff7f00; box-shadow: 0 0 20px #ff7f00, inset 0 0 7px rgba(255, 255, 255, 0.5); }
@@ -376,7 +371,7 @@
             z-index: 10;
         }
 
-        /* --- NEW: Enlarged Card Styled After Image --- */
+        /* Enlarged Card Styled After Image */
         .enlarged-remaining-card {
             background-color: #ffffff;
             border: 1.5px solid #6F42C1;
@@ -394,7 +389,7 @@
             gap: 20px;
         }
         .enlarged-remaining-card .enlarged-number-section {
-            font-size: 5em; /* Large number */
+            font-size: 5em; 
             font-weight: bold;
             color: #6F42C1;
             line-height: 1;
@@ -435,15 +430,15 @@
             transform: scale(1.05);
         }
 
-        /* === NEW: Line Button Styling === */
+        /* Line Button Styling */
         .line-contact-button {
             display: inline-block;
             margin-top: 15px;
             padding: 10px 20px;
-            background-color: #06C755; /* LINE green */
+            background-color: #06C755;
             color: white;
             text-decoration: none;
-            border-radius: 50px; /* pill-shape */
+            border-radius: 50px;
             font-weight: bold;
             font-size: 1em;
             border: none;
@@ -454,18 +449,16 @@
             background-color: #05a546;
             transform: scale(1.05);
         }
-        /* Style for the enlarged card view */
         .enlarged-remaining-card .line-contact-button {
             margin-top: 25px;
             padding: 14px 30px;
             font-size: 1.2em;
         }
 
-        /* === NEW: Standalone Line Button for 'Not Found' Case === */
         .standalone-line-button {
-            margin-top: 25px; /* More space from the search bar */
-            padding: 16px 40px; /* Larger padding */
-            font-size: 1.5em; /* Larger font */
+            margin-top: 25px;
+            padding: 16px 40px;
+            font-size: 1.5em;
         }
         .standalone-line-button:hover {
             transform: scale(1.05);
@@ -482,9 +475,9 @@
             height: 100%;
             background-color: rgba(0, 0, 0, 0.6);
             justify-content: center;
-            align-items: flex-start; /* Position at the top */
+            align-items: flex-start;
             padding: 15px;
-            padding-top: 10vh; /* Add some space from the top */
+            padding-top: 10vh;
         }
         .details-modal .modal-content {
             background-color: #fff;
@@ -496,7 +489,7 @@
             gap: 20px;
             width: 100%;
             max-width: 350px;
-            position: relative; /* Needed for positioning the close button */
+            position: relative;
         }
         .close-modal-btn {
             position: absolute;
@@ -553,11 +546,11 @@
         #tony-schedule-container .time { display: block; font-size: 14px; margin-top: 4px; font-weight: normal; white-space: nowrap; color: #d00; }
         #tony-schedule-container .multi-event-day .time { color: #00642f; }
 
-        /* --- Click Reminder GIF Styles --- */
+        /* Click Reminder GIF Styles */
         .click-reminder { position: absolute; bottom: -2px; left: 8px; width: 25px; height: 25px; z-index: 5; }
         .click-reminder img { width: 100%; height: 100%; }
 
-        /* === CALENDAR PAST/COMPLETED STYLES === */
+        /* CALENDAR PAST/COMPLETED STYLES */
         #tony-schedule-container .day.past-day { opacity: 0.7; background-color: #f0f0f0; }
         #tony-schedule-container .day.past-day .date-number { color: #999; }
         #tony-schedule-container .day.past-day.highlight,
@@ -577,7 +570,7 @@
            RESPONSIVE QUERIES (RWD)
            ========================================= */
 
-        /* iPad Horizontal Mode (20% bigger) */
+        /* iPad Horizontal Mode */
         @media screen and (min-width: 900px) and (max-width: 1199px) and (orientation: landscape) {
             #tony-schedule-container { max-width: 95%; }
             #tony-schedule-container h2 { font-size: 2.64em; } 
@@ -586,9 +579,21 @@
             #tony-schedule-container .day.has-event .date-number,
             #tony-schedule-container .day.today .date-number,
             #tony-schedule-container .day.today-with-event .date-number { width: 34px; height: 34px; font-size: 21px; }
+            body {
+                margin: 0 !important;
+                padding-left: 0 !important;
+                background-color: #f9f9f9 !important;
+            }
+            #tony-schedule-container {
+                max-width: 100% !important;
+                width: 100% !important;
+                margin: 0 auto !important;
+                padding-left: 40px !important;
+                padding-right: 40px !important;
+            }
         }
 
-        /* Desktop Mode (50% bigger) */
+        /* Desktop Mode */
         @media screen and (min-width: 1200px) {
             #tony-schedule-container { max-width: 1400px; padding: 40px; }
             #tony-schedule-container #current-date-header { font-size: 2.25em; margin-bottom: 25px;}
@@ -683,7 +688,6 @@
             #tony-schedule-container .event-date-line { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.5em; font-size: 1em; line-height: 1.4; }
             #tony-schedule-container .event-title-line { margin-top: 5px; }
 
-            /* CRITICAL FIX: Make action buttons full-width and block elements on mobile so they don't break/shrink */
             .line-contact-button, 
             .booking-button-enlarged {
                 display: block !important;
@@ -704,21 +708,63 @@
             .progress-label { font-size: 10px; }
             .progress-student-name { font-size: 1.3em; }
         }
-        /* --- iPad 專用安全補丁：修正左側白條 --- */
-@media screen and (min-width: 900px) and (max-width: 1199px) and (orientation: landscape) {
-    body {
-        margin: 0 !important;
-        padding-left: 0 !important; /* 強制消除 layout-manager 可能造成的推移 */
-        background-color: #f9f9f9 !important; /* 把背景漆成一致的顏色 */
-    }
-    #tony-schedule-container {
-        max-width: 100% !important; /* 讓容器橫向撐滿 */
-        width: 100% !important;
-        margin: 0 auto !important;
-        padding-left: 40px !important; /* 內部留白，確保文字不貼邊 */
-        padding-right: 40px !important;
-    }
-}
+
+        /* -------------------------------------------------------------
+           Code 1 Extracted Modal Styles (Cancel Feature)
+           ------------------------------------------------------------- */
+        .result-overlay {
+            display: none; 
+            position: fixed; 
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.7); 
+            z-index: 10004; 
+            justify-content: center; align-items: center; padding: 20px;
+            box-sizing: border-box; backdrop-filter: blur(4px);
+        }
+        .result-content, .auth-modal-content {
+            background: #fff; width: 95%; max-width: 420px;
+            border-radius: 24px; padding: 30px 20px; text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            box-sizing: border-box; position: relative;
+            display: flex; flex-direction: column; max-height: 85vh;
+        }
+        .modal-close-x {
+            position: absolute; top: 15px; right: 15px;
+            background: none; border: none; font-size: 28px; color: #999;
+            cursor: pointer; line-height: 1; padding: 5px; z-index: 10;
+            font-weight: 900;
+        }
+        .modal-close-x:hover { color: #333; }
+        
+        .cd-header { margin-top: 0; margin-bottom: 15px; color: #333; font-size: 22px; font-weight: bold; border-bottom: 2px solid #f0f0f0; padding-bottom: 10px; }
+        .cd-item { background: #f8f9fa; border: 1px solid #eee; border-radius: 12px; padding: 15px; margin-bottom: 15px; position: relative; }
+        .cd-date { font-size: 18px; font-weight: bold; color: #1d2b8a; margin-bottom: 5px; }
+        .cd-title { font-size: 16px; color: #333; margin-bottom: 5px; font-weight: bold; }
+        .cd-length { font-size: 14px; color: #666; margin-bottom: 15px; }
+        
+        .cancel-class-btn {
+            background: #fff0f0; color: #d32f2f; border: 1px solid #ffcdd2;
+            padding: 12px 10px; border-radius: 8px; font-weight: bold; font-size: 16px;
+            cursor: pointer; margin-top: 15px; width: 100%; transition: 0.2s; text-align: center;
+        }
+        .cancel-class-btn:hover:not(:disabled) { background: #ffebee; }
+        
+        .auth-input {
+            width: 100%; padding: 15px; border: 2px solid #ccc; border-radius: 12px;
+            margin-bottom: 8px; font-size: 16px; box-sizing: border-box;
+        }
+        .auth-input.error { border-color: #d32f2f; }
+        
+        #auth-error-msg {
+            display: none; color: #d32f2f; font-size: 14px; font-weight: bold;
+            margin-bottom: 16px; text-align: left; line-height: 1.5;
+            background: #fff5f5; border: 1px solid #ffcdd2; border-radius: 8px;
+            padding: 10px 12px; box-sizing: border-box;
+        }
+        
+        .auth-btn { flex: 1; padding: 14px; border: none; border-radius: 12px; font-size: 16px; font-weight: bold; cursor: pointer; }
+        .result-title { font-size: 24px; font-weight: 800; margin-bottom: 10px; color: #111; }
+        .result-msg { font-size: 16px; color: #444; line-height: 1.6; text-align: left; }
     </style>
 </head>
 <body>
@@ -822,8 +868,63 @@
         </div>
     </div>
 
+    <!-- -------------------------------------------------------------
+         Code 1 Extracted Modals (Cancel Feature)
+         ------------------------------------------------------------- -->
+    
+    <!-- Custom Notification Modal -->
+    <div id="result-modal" class="result-overlay" style="z-index: 10006;">
+        <div class="result-content modal-box-shared">
+            <div id="res-icon" class="result-icon" style="font-size: 50px; margin-bottom: 10px;">🎉</div>
+            <div id="res-title" class="result-title modal-title-shared">預約成功</div>
+            <div class="result-msg-container">
+                <div id="res-msg" class="result-msg modal-msg-shared">時段已預約，請檢查您的電子郵件確認信。</div>
+            </div>
+            <div style="display:flex; flex-direction:column; gap:10px; width:100%; flex-shrink:0;">
+                <button class="auth-btn" style="background:#007aff; color:#fff; width:100%; margin-top:15px;" onclick="closeResultModal()">確定 OK</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 課程細節彈出視窗 -->
+    <div id="class-detail-modal" class="result-overlay">
+        <div class="result-content modal-box-shared" style="text-align:left;">
+            <button class="modal-close-x" onclick="closeClassDetailModal()">&times;</button>
+            <div id="class-detail-content" style="overflow-y:auto; padding-right:5px; margin-top:20px;"></div>
+        </div>
+    </div>
+
+    <!-- 安全驗證視窗 -->
+    <div id="auth-modal" class="result-overlay" style="z-index: 10005;">
+        <div class="auth-modal-content modal-box-shared">
+            <div id="auth-loading-overlay" style="display:none; position:absolute; top:0; left:0; width:100%; height:100%; background:rgba(255,255,255,0.9); z-index:20; border-radius:inherit; flex-direction:column; justify-content:center; align-items:center;">
+                <img src="https://ik.imagekit.io/lql1uveoc/Canceling%20animation%20and%20icons/hourglass-2.gif" style="width:50px; margin-bottom:10px;" class="auth-loading-img">
+                <div style="color:#555; font-size:16px; font-weight:bold;" class="auth-loading-text">取消中...</div>
+            </div>
+            <button class="modal-close-x" onclick="closeAuthModal()">&times;</button>
+            <div class="result-title modal-title-shared" style="margin-bottom: 5px;">取消安全驗證</div>
+            <div class="result-msg modal-msg-shared" style="color:#666; margin-bottom: 15px;">為確保是您本人的操作，請輸入您預約此課程時使用的 Email：</div>
+            <input type="email" id="auth-email-input" class="auth-input" placeholder="例如: name@gmail.com">
+            <div id="auth-error-msg"></div>
+            <div style="display: flex; gap: 10px;">
+                <button class="auth-btn" style="background: #ddd; color: #333;" onclick="closeAuthModal()">返回</button>
+                <button class="auth-btn" style="background: #ff5400; color: #fff;" onclick="submitAuthCancel()">確認取消</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         const GAS_URL = "https://script.google.com/macros/s/AKfycbxrSJS4dGWmG_GHpginXD_Nl-R8KaZq-6NHRtBjT8_Q4TWz0pp4yinVaMKibdf-Vz1ELg/exec";
+        
+        // --- Added for Code 1 Cancel Modal Integration ---
+        const API_URL = GAS_URL; // 串接同一個後端
+        let currentStudentSchedule = []; // 給詳細彈窗使用
+        const dayNames = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
+        const chiDayNames = ["日","一","二","三","四","五","六"];
+        function fmt(d){
+            return d.getFullYear() + "-" + String(d.getMonth() + 1).padStart(2, "0") + "-" + String(d.getDate()).padStart(2, "0");
+        }
+        // ------------------------------------------------
 
         const weekdaysEn = ["Sun","Mon","Tue","Wed","Thu","Fri","Sat"];
         const weekdaysZh = ["週日","週一","週二","週三","週四","週五","週六"];
@@ -960,10 +1061,12 @@
 
             counterContainer.style.display = 'flex';
             document.getElementById('total-label').innerHTML = '總堂數 Total';
+            
             if(resultsDiv) resultsDiv.innerHTML = "<p>Your request is being processed. 查詢中</p>";
             if(upcomingContainer) upcomingContainer.innerHTML = "";
             document.querySelector('.click-reminder').innerHTML = '';
             if(header) header.classList.remove('has-class-today');
+            
             buildCalendars([]);
 
             if (!nameInput) {
@@ -989,6 +1092,7 @@
             try {
                 const scheduleResponse = await schedulePromise;
                 const scheduleDataRaw = await scheduleResponse.json();
+                
                 if (scheduleDataRaw.error) throw new Error(scheduleDataRaw.error);
                 
                 if (Array.isArray(scheduleDataRaw)) {
@@ -1008,10 +1112,12 @@
                     userFoundInSchedule = scheduleData.length > 0;
                 }
 
+                // 將抓到的個人課表指定給 global 變數，給取消功能的詳細彈窗使用
+                currentStudentSchedule = scheduleData; 
+
                 if (userFoundInSchedule) {
                     resultsDiv.innerHTML = "";
                     const now = new Date();
-                    // 改為抓取三個月內來判斷
                     const limitDate = new Date(now.getFullYear(), now.getMonth() + 3, 0);
                     limitDate.setHours(23, 59, 59, 999);
                     const upcomingEventsIn30Days = scheduleData.filter(ev => new Date(ev.start) >= now && new Date(ev.start) <= limitDate);
@@ -1054,6 +1160,7 @@
 
             const formatNumber = (num) => (window.innerWidth <= 600 && String(num).length > 3 && String(num) !== 'N/A') ? String(num).substring(0, 3) + '.' : num;
             const isMobile = window.innerWidth <= 600;
+            
             const updateValue = (selector, value) => document.querySelectorAll(selector).forEach(el => el.innerHTML = `<span class="number-loaded-animation">${value}</span>`);
             updateValue('.total-val', (!isNaN(fullData.total) && Number(fullData.total) >= 100) ? '會員' : formatNumber(fullData.total));
             updateValue('.completed-val', (!isNaN(fullData.completed) && Number(fullData.completed) >= 100) ? (isMobile ? '訂閱' : '訂閱制') : formatNumber(fullData.completed));
@@ -1133,11 +1240,14 @@
         function buildUpcomingSessions(data, isFemale) {
             const container = document.querySelector('#tony-schedule-container #upcoming-sessions-container');
             if (!container) return;
+            
             const now = new Date();
             const upcomingEvents = data
                 .filter(ev => ev.end && new Date(ev.end) > now)
                 .sort((a, b) => new Date(a.start) - new Date(b.start));
+                
             const nextThree = upcomingEvents.slice(0, 3);
+            
             container.innerHTML = nextThree.map((ev, index) => {
                 const d = new Date(ev.start);
                 const isStartingToday = d.toDateString() === now.toDateString();
@@ -1192,7 +1302,6 @@
             if (!resultsDiv) return;
 
             const now = new Date();
-            // 改為抓取三個月內
             const limitDate = new Date(now.getFullYear(), now.getMonth() + 3, 0);
             limitDate.setHours(23, 59, 59, 999);
 
@@ -1223,8 +1332,9 @@
                 const fullDateInfo = `<span class="info-date">${displayDate}</span> <span class="info-day">${dayOfWeekEn} ${dayOfWeekZh}</span> <span class="info-time">${formatTime(startDate)}</span>`;
                 const titleInfo = `<strong>${ev.title}${durationText}</strong>`;
 
+                // Add onClick trigger for Modal Info
                 detailsHtml += `
-                <div class="event${monthClass} ${isToday ? 'today-schedule-item' : ''}">
+                <div class="event${monthClass} ${isToday ? 'today-schedule-item' : ''}" onclick="openClassDetailModal('${displayDate}')" style="cursor:pointer;">
                     <div class="event-date-line">${fullDateInfo}</div>
                     <div class="event-title-line">${titleInfo}</div>
                 </div>`;
@@ -1246,10 +1356,10 @@
         function buildCalendars(data) {
             const calendarContainer = document.querySelector('#tony-schedule-container #calendarContainer');
             if (!calendarContainer) return;
+            
             calendarContainer.innerHTML = "";
 
             if (!data || data.length === 0) {
-                // 若無資料僅顯示一個月的空月曆
                 buildSingleCalendar([], new Date());
                 return;
             }
@@ -1257,11 +1367,9 @@
             const now = new Date();
             const today = new Date();
             today.setHours(0,0,0,0);
-
+            
             const currentYear = now.getFullYear();
             const currentMonth = now.getMonth();
-            
-            // 涵蓋三個月的限制日期
             const limitDate = new Date(currentYear, currentMonth + 3, 0);
             limitDate.setHours(23, 59, 59, 999);
 
@@ -1270,7 +1378,6 @@
                 return eventDate < today || eventDate <= limitDate;
             });
 
-            // 查詢後固定顯示三個月的月曆
             for (let i = 0; i < 3; i++) {
                 const targetDate = new Date(currentYear, currentMonth + i, 1);
                 buildSingleCalendar(filteredData, targetDate);
@@ -1342,36 +1449,27 @@
                 }
 
                 const dayId = `date-${year}-${month + 1}-${d}`;
-                html += `<div class="${classes}" id="${dayId}"><span class="date-number">${d}</span>`;
+                const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(d).padStart(2, '0')}`;
+                
+                // Add onClick trigger for Modal Info if it has events
+                if (hasEventsOnDay) {
+                    html += `<div class="${classes}" id="${dayId}" onclick="openClassDetailModal('${dateStr}')" style="cursor:pointer;"><span class="date-number">${d}</span>`;
+                } else {
+                    html += `<div class="${classes}" id="${dayId}"><span class="date-number">${d}</span>`;
+                }
 
                 if (allEventsCompleted) {
                     const iconUrlSet = new Set(); 
-
                     dayEvents.forEach(ev => {
                         const title = ev.title || '';
                         const titleLower = title.toLowerCase();
                         let iconAdded = false;
 
-                        if (titleLower.includes('sick')) {
-                            iconUrlSet.add("https://ik.imagekit.io/lql1uveoc/Schedule%20information/sick.png?updatedAt=1761040616337");
-                            iconAdded = true;
-                        }
-                        if (titleLower.includes('12h')) {
-                            iconUrlSet.add("https://ik.imagekit.io/lql1uveoc/Schedule%20information/12-4.png?updatedAt=1761203508055");
-                            iconAdded = true;
-                        }
-                        if (titleLower.includes('24h')) {
-                            iconUrlSet.add("https://ik.imagekit.io/lql1uveoc/Schedule%20information/24-hours-support-2.png");
-                            iconAdded = true;
-                        }
-                        if (title.includes('❖')) {
-                            iconUrlSet.add("https://ik.imagekit.io/lql1uveoc/Schedule%20information/absent%202.png?updatedAt=1757568614877");
-                            iconAdded = true;
-                        }
-                        if (title.includes('?')) {
-                            iconUrlSet.add("https://ik.imagekit.io/lql1uveoc/Schedule%20information/question-sign.png?updatedAt=1762328136511");
-                            iconAdded = true;
-                        }
+                        if (titleLower.includes('sick')) { iconUrlSet.add("https://ik.imagekit.io/lql1uveoc/Schedule%20information/sick.png?updatedAt=1761040616337"); iconAdded = true; }
+                        if (titleLower.includes('12h')) { iconUrlSet.add("https://ik.imagekit.io/lql1uveoc/Schedule%20information/12-4.png?updatedAt=1761203508055"); iconAdded = true; }
+                        if (titleLower.includes('24h')) { iconUrlSet.add("https://ik.imagekit.io/lql1uveoc/Schedule%20information/24-hours-support-2.png"); iconAdded = true; }
+                        if (title.includes('❖')) { iconUrlSet.add("https://ik.imagekit.io/lql1uveoc/Schedule%20information/absent%202.png?updatedAt=1757568614877"); iconAdded = true; }
+                        if (title.includes('?')) { iconUrlSet.add("https://ik.imagekit.io/lql1uveoc/Schedule%20information/question-sign.png?updatedAt=1762328136511"); iconAdded = true; }
                         
                         if (!iconAdded) {
                             if (ev.start && ev.end && (new Date(ev.end) - new Date(ev.start)) / 60000 === 25) {
@@ -1405,38 +1503,33 @@
         function setupEasonAutocomplete() {
             const nameInput = document.getElementById('studentName');
             if (!nameInput) return; 
-
+            
             const autocompleteContainer = nameInput.parentElement;
-
+            
             function closeAllLists(elmnt) {
                 const items = document.getElementsByClassName("autocomplete-items");
                 for (let i = 0; i < items.length; i++) {
-                    if (elmnt != items[i] && elmnt != nameInput) {
-                        items[i].parentNode.removeChild(items[i]);
-                    }
+                    if (elmnt != items[i] && elmnt != nameInput) { items[i].parentNode.removeChild(items[i]); }
                 }
             }
-
+            
             nameInput.addEventListener('input', function() {
                 closeAllLists();
                 const val = this.value;
-                if (val.trim().toLowerCase() !== 'eason') {
-                    return;
-                }
-
+                if (val.trim().toLowerCase() !== 'eason') return;
+                
                 const suggestionsDiv = document.createElement("DIV");
                 suggestionsDiv.setAttribute("class", "autocomplete-items");
                 autocompleteContainer.appendChild(suggestionsDiv);
-
+                
                 const easons = [
                     { displayName: "Eason Hsieh 新營高工", searchValue: "Eason" },
                     { displayName: "Eason Cheng 鄭", searchValue: "Eason Cheng" }
                 ];
-
+                
                 easons.forEach(eason => {
                     const itemDiv = document.createElement("DIV");
                     itemDiv.innerHTML = eason.displayName;
-                    
                     itemDiv.addEventListener("click", function() {
                         nameInput.value = eason.searchValue;
                         closeAllLists();
@@ -1445,17 +1538,14 @@
                     suggestionsDiv.appendChild(itemDiv);
                 });
             });
-
-            document.addEventListener("click", function (e) {
-                closeAllLists(e.target);
-            });
+            document.addEventListener("click", function (e) { closeAllLists(e.target); });
         }
 
         function initializeScheduleFinder() {
             if (document.querySelector('#tony-schedule-container')) {
                 setDateHeader();
                 buildEmptyCalendar();
-
+                
                 const nameInput = document.getElementById('studentName');
                 if (nameInput) {
                     nameInput.addEventListener('keydown', function(event) {
@@ -1465,9 +1555,9 @@
                         }
                     });
                 }
-
+                
                 setupEasonAutocomplete();
-
+                
                 document.querySelectorAll('.info-card').forEach(card => {
                     card.addEventListener('click', showDetailsModal);
                 });
@@ -1478,6 +1568,112 @@
             document.addEventListener('DOMContentLoaded', initializeScheduleFinder);
         } else {
             initializeScheduleFinder();
+        }
+
+        // -------------------------------------------------------------
+        // Code 1 Extracted JS Logic (Cancel Modal)
+        // -------------------------------------------------------------
+        
+        function openClassDetailModal(dStr) {
+            const dayEvents = currentStudentSchedule.filter(ev => fmt(new Date(ev.start)) === dStr).sort((a,b) => new Date(a.start) - new Date(b.start));
+            if(dayEvents.length === 0) return;
+            
+            let html = '<h3 class="cd-header">課程細節</h3>';
+            dayEvents.forEach(ev => {
+                const d = new Date(ev.start);
+                const yyyy = d.getFullYear(); const mm = String(d.getMonth() + 1).padStart(2, '0'); const dd = String(d.getDate()).padStart(2, '0');
+                const dayEng = dayNames[d.getDay()]; const dayChi = chiDayNames[d.getDay()];
+                let h = d.getHours(); const mStr = String(d.getMinutes()).padStart(2, '0'); const ampm = h >= 12 ? 'pm' : 'am';
+                let period = '上午'; if(h >= 12 && h < 18) period = '下午'; if(h >= 18) period = '晚上';
+                h = h % 12 || 12;
+                
+                const displayDate = `${yyyy}.${mm}.${dd} ${dayEng} 週${dayChi} ${period}${h}:${mStr}${ampm}`;
+                const eventId = ev.id || ev.eventId || "undefined";
+                const titleEscaped = (ev.title || "").replace(/'/g, "\\'");
+                const timestamp = d.getTime(); const nowTs = new Date().getTime();
+                
+                // 課程前24小時可以取消
+                const isCancellable = (timestamp - nowTs) >= (24 * 60 * 60 * 1000);
+                
+                html += `<div class="cd-item"><div class="cd-date">${displayDate}</div><div class="cd-title">${ev.title}</div><div class="cd-length">⏱ 課程時長: 50 分鐘</div>`;
+                if (isCancellable) {
+                    html += `<button onclick="openAuthModal('${eventId}', '${timestamp}', '${titleEscaped}')" class="cancel-class-btn">取消此課程 <span style="display:block; margin-top:2px; font-weight:normal;">(系統支援課前24小時前)</span></button>`;
+                } else {
+                    html += `<button disabled class="cancel-class-btn" style="background:#f5f5f5; color:#999; border-color:#ddd; cursor:not-allowed;">無法取消 <span style="display:block; margin-top:2px; font-weight:normal;">(距離開課不足24小時)</span></button>`;
+                }
+                html += `</div>`;
+            });
+            document.getElementById('class-detail-content').innerHTML = html;
+            document.getElementById('class-detail-modal').style.display = 'flex';
+        }
+
+        function closeClassDetailModal() { 
+            document.getElementById('class-detail-modal').style.display = 'none'; 
+        }
+
+        let tempCancelData = null;
+        function openAuthModal(eventId, timestamp, eventTitle) {
+            tempCancelData = { eventId, timestamp, eventTitle };
+            document.getElementById('auth-email-input').value = '';
+            const errEl = document.getElementById('auth-error-msg');
+            errEl.style.display = 'none'; errEl.innerHTML = '';
+            document.getElementById('auth-email-input').classList.remove('error');
+            document.getElementById('auth-modal').style.display = 'flex';
+        }
+
+        function closeAuthModal() { 
+            document.getElementById('auth-modal').style.display = 'none'; 
+            tempCancelData = null; 
+        }
+
+        function showAuthError(msg) {
+            const errEl = document.getElementById('auth-error-msg');
+            errEl.innerHTML = msg; errEl.style.display = 'block';
+            document.getElementById('auth-email-input').classList.add('error');
+        }
+
+        function showNotice(title, message, isError = false) {
+            document.getElementById('res-icon').innerText = isError ? "⚠️" : "🎉";
+            document.getElementById('res-title').innerText = title;
+            document.getElementById('res-msg').innerHTML = message;
+            document.getElementById('result-modal').style.display = 'flex';
+        }
+
+        function closeResultModal() {
+            document.getElementById('result-modal').style.display = 'none';
+        }
+
+        function submitAuthCancel() {
+            const emailInput = document.getElementById('auth-email-input').value.trim();
+            const errorMsg = `您的 Email 與當時預約時的 Email 不符合，請再次輸入正確 Email。<br>或直接與 <a href="https://tonyonlineenglish.netlify.app" target="_blank">Tony 聯繫</a>。`;
+            if (!emailInput) { showAuthError('請輸入 Email。'); return; }
+            
+            const { eventId, timestamp, eventTitle } = tempCancelData;
+            const errEl = document.getElementById('auth-error-msg'); errEl.style.display = 'none';
+            document.getElementById('auth-email-input').classList.remove('error');
+            
+            const loadingOverlay = document.getElementById('auth-loading-overlay'); loadingOverlay.style.display = 'flex';
+            
+            // 使用跟預約相同的那支 API，並加上 action=ajaxCancel 進行取消
+            const url = `${API_URL}?action=ajaxCancel&eid=${encodeURIComponent(eventId)}&ts=${timestamp}&title=${encodeURIComponent(eventTitle)}&email=${encodeURIComponent(emailInput)}&_t=${Date.now()}`;
+            
+            fetch(url, { cache: "no-store" })
+            .then(res => res.json())
+            .then(data => {
+                loadingOverlay.style.display = 'none';
+                if(data.success) {
+                    closeAuthModal(); closeClassDetailModal();
+                    showNotice("取消成功", "課程已成功從日曆中移除，並已寄送確認信給您。");
+                    // Code 2 專屬：取消成功後，觸發重新查詢最新課表狀態
+                    searchSchedule();
+                } else { 
+                    showAuthError(errorMsg); 
+                }
+            })
+            .catch(() => { 
+                loadingOverlay.style.display = 'none'; 
+                showAuthError('網路連線異常，請稍後再試。'); 
+            });
         }
     </script>
 </body>
