@@ -1,6 +1,4 @@
- 
-
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
@@ -1205,29 +1203,33 @@
     .special-slots-container {
         overflow-y: auto; flex-grow: 1; padding-right: 5px; margin-bottom: 10px;
     }
+    
     .special-slot-btn {
         background: #fff0f5; border: 2px solid #ff2d55; color: #333;
-        padding: 12px 10px; border-radius: 12px; font-weight: bold; font-size: 14px;
+        padding: 12px 10px; border-radius: 12px; font-weight: bold; font-size: 16.5px;
         cursor: pointer; margin-bottom: 10px; width: 100%;
-        display: flex; align-items: center; justify-content: space-between;
+        display: flex; align-items: center; justify-content: space-between; gap: 8px;
         transition: 0.2s; box-sizing: border-box; white-space: nowrap; overflow: hidden;
-    }
-    .special-slot-btn::before {
-        content: ''; width: 20px; flex-shrink: 0; display: block;
     }
     .special-slot-btn:active { background: #ff2d55; color: #fff; transform: scale(0.98); }
 
     .slot-info-wrapper {
-        display: flex; align-items: center; justify-content: center; gap: 6px; flex: 1;
+        display: flex; align-items: center; justify-content: flex-start; gap: 8px; flex: 1;
         white-space: nowrap; overflow: hidden;
     }
     .slot-info-wrapper span {
         flex-shrink: 0;
     }
 
+    .special-tap-icon {
+        width: 24px; height: 24px;
+        object-fit: contain; flex-shrink: 0; margin-left: auto;
+    }
+
     @media (max-width: 360px) {
-        .special-slot-btn { font-size: 13px; padding: 10px 6px; }
+        .special-slot-btn { font-size: 15px; padding: 10px 4px; }
         .slot-info-wrapper { gap: 4px; }
+        .special-tap-icon { width: 20px; height: 20px; }
     }
 
     /* 平板 1.5x 與 桌機 2x 縮放，且避免底部橫桿問題 */
@@ -1244,6 +1246,7 @@
         #special-weekend-modal .special-title { font-size: 33px !important; margin-bottom: 15px; }
         #special-weekend-modal p { font-size: 22px !important; margin-bottom: 30px; }
         .special-slot-btn { font-size: 22px; padding: 18px 20px; border-radius: 18px; }
+        .special-tap-icon { width: 48px; height: 48px; }
     }
     @media (min-width: 1024px) {
         #special-weekend-modal .special-modal-content { max-width: 800px; padding: 60px 40px; border-radius: 48px; }
@@ -1251,6 +1254,7 @@
         #special-weekend-modal p { font-size: 30px !important; margin-bottom: 40px; }
         .special-slot-btn { font-size: 30px; padding: 24px 30px; border-radius: 24px; }
         #special-weekend-floater { font-size: 20px; padding: 16px 36px; bottom: 40px; border-radius: 40px; }
+        .special-tap-icon { width: 60px; height: 60px; }
     }
 
   </style>
@@ -1790,7 +1794,6 @@
       }
       const hotPanel = document.getElementById("hot-panel");
       if (hotPanel && hotPanel.classList.contains("show")) {
-          // 點擊特開時段卡片、按鈕或預約表單時，不連動關閉晚間時段面板
           if (!e.target.closest("#hot-panel") && 
               !e.target.closest("#special-weekend-modal") && 
               !e.target.closest("#special-weekend-floater") &&
@@ -2269,16 +2272,12 @@
                     const btn = document.createElement('button');
                     btn.className = 'special-slot-btn';
                     
-                    // 修改：移除 emoji 並加入自訂點擊 icon 在最後方
-                    btn.innerHTML = `<div class="slot-info-wrapper"><span>📅 ${displayDate}</span> <span style="color:#000;">⏰ ${displayTime}</span></div> <img src="https://ik.imagekit.io/lql1uveoc/tap-4.png?updatedAt=1771239128743" style="width:20px; height:20px; object-fit:contain; flex-shrink:0;">`;
+                    // 修改：保留 📅 與 ⏰ icon，並在最右側加入 tap-4.png
+                    btn.innerHTML = `<div class="slot-info-wrapper"><span>📅 ${displayDate}</span> <span style="color:#000;">⏰ ${displayTime}</span></div> <img src="https://ik.imagekit.io/lql1uveoc/tap-4.png?updatedAt=1771239128743" class="special-tap-icon">`;
                     
                     btn.onclick = () => {
-                        // 點擊前往預約，直接隱藏卡片並開啟表單，不帶縮小動畫
+                        // 點擊前往預約，直接隱藏卡片並開啟表單
                         modal.style.display = 'none';
-                        const content = modal.querySelector('.special-modal-content');
-                        if (content) content.classList.remove('minimizing');
-                        modal.classList.remove('minimizing-overlay');
-
                         openHotQuickForm(slot, slot.dateStr); 
                     };
                     list.appendChild(btn);
@@ -2306,23 +2305,12 @@
 
   function closeSpecialWeekendModal() {
       const modal = document.getElementById('special-weekend-modal');
-      const content = modal.querySelector('.special-modal-content');
-      
-      // 加上缩小吸入動畫與背景淡出 (往正中央縮小)
-      content.classList.add('minimizing');
-      modal.classList.add('minimizing-overlay');
-      
-      setTimeout(() => {
-          modal.style.display = 'none';
-          content.classList.remove('minimizing');
-          modal.classList.remove('minimizing-overlay');
-          if (document.getElementById('special-weekend-list').children.length > 0) {
-              const floater = document.getElementById('special-weekend-floater');
-              floater.style.display = 'block';
-              floater.classList.add('bump-effect');
-              setTimeout(() => floater.classList.remove('bump-effect'), 300);
-          }
-      }, 340); // 對應 CSS 動畫 0.35s
+      // 直接關閉彈出視窗，並於正下方顯示浮動按鈕，不使用任何動畫
+      modal.style.display = 'none';
+      if (document.getElementById('special-weekend-list').children.length > 0) {
+          const floater = document.getElementById('special-weekend-floater');
+          floater.style.display = 'block';
+      }
   }
 
   function openSpecialWeekendModal() {
@@ -2370,8 +2358,6 @@
           const floater = document.getElementById('special-weekend-floater');
           if (floater) {
               floater.style.display = 'block';
-              floater.classList.add('bump-effect');
-              setTimeout(() => floater.classList.remove('bump-effect'), 300);
           }
       }
   }
