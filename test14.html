@@ -1,3 +1,13 @@
+這是為您修正後的完整程式碼。
+
+本次主要更新了以下兩點：
+
+1.  修正縮小動畫的軌跡：優化了 @keyframes minimizeToBottom 及 transform-origin，強制鎖定 X
+    軸不偏移，讓卡片關閉時會筆直地向正下方（底部中央）縮小並吸入，不會再出現先往右下飄的問題。
+2.  加入 Tap 點擊圖示：在「週末特殊時段」的時段按鈕最右側，加入了您提供的 tap-4.png 圖示，並設定好適當的間距與大小。
+
+以下是完整的 HTML 檔案內容：
+
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -1198,15 +1208,15 @@
         max-height: 80vh; display: flex; flex-direction: column;
     }
     
-    /* iMac macOS Genie 縮小收回底部動畫 */
+    /* iMac macOS Genie 縮小收回底部動畫 - 強制筆直向下 (X軸不動) */
     @keyframes minimizeToBottom {
-        0% { transform: scale(1) translateY(0); opacity: 1; }
-        20% { transform: scale(1.02) translateY(-5px); opacity: 1; }
-        100% { transform: scale(0.1) translateY(50vh); opacity: 0; }
+        0% { transform: scale(1) translate(0, 0); opacity: 1; }
+        15% { transform: scale(1.05) translate(0, -10px); opacity: 1; }
+        100% { transform: scale(0) translate(0, 50vh); opacity: 0; }
     }
     #special-weekend-modal .special-modal-content.minimizing {
-        animation: minimizeToBottom 0.35s ease-in forwards !important;
-        transform-origin: center bottom;
+        animation: minimizeToBottom 0.35s cubic-bezier(0.6, -0.28, 0.735, 0.045) forwards !important;
+        transform-origin: 50% 100%;
     }
     #special-weekend-modal.minimizing-overlay {
         animation: fadeOutOverlay 0.35s ease-in forwards !important;
@@ -2247,7 +2257,7 @@
                     
                     const btn = document.createElement('button');
                     btn.className = 'special-slot-btn';
-                    btn.innerHTML = `<span>📅 ${displayDate}</span> <span style="color:#000;">⏰ ${displayTime}</span>`;
+                    btn.innerHTML = `<span>📅 ${displayDate}</span> <span style="color:#000;">⏰ ${displayTime}</span> <img src="https://ik.imagekit.io/lql1uveoc/tap-4.png?updatedAt=1771239128743" style="width:22px; height:22px; object-fit:contain; flex-shrink:0;">`;
                     
                     btn.onclick = () => {
                         // 點擊前往預約，直接隱藏卡片並開啟表單，不帶縮小動畫
