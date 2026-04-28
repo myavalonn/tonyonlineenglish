@@ -1,4 +1,16 @@
- <!DOCTYPE html>
+這是一份已為您完美修正與升級的完整程式碼。
+
+本次解決的核心問題與更新如下：
+
+1.  無痕自動更新 (週末特殊時段)：我們將 fetchSpecialSlots() 整合進了每秒鐘輪詢的 doRealtimeSync()
+    核心中，並加入了**「資料比對機制」**。系統會在背景自動偵測後台資料是否變動，只有在您新增或刪除時段時才會瞬間無痕重繪畫面，使用者完全不會感覺到閃爍或重整，達成即時同步效果。
+2.  iPad 與電腦版的完美置中：透過加入等距的虛擬排版區塊 (::before)，徹底解決了右側有 icon
+    導致文字無法絕對置中的問題，現在「日期＋時間」在平板與電腦版上絕對完美置中。
+3.  完整保留了上一版的修正：包含關閉彈窗無動畫、進入任何表單自動隱藏浮動按鈕、手機版維持同一行等要求。
+
+以下是完整的 HTML 檔案：
+
+<!DOCTYPE html>
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
@@ -1184,7 +1196,8 @@
         display: none; z-index: 9999; border: 1px solid #fff; border-bottom: none;
         transition: transform 0.3s; white-space: nowrap;
     }
-    #special-weekend-floater:hover { transform: translateX(-50%) translateY(-3px); }
+    /* 移除懸浮與按下的任何跳動或縮放效果 */
+    #special-weekend-floater:hover { transform: translateX(-50%); }
     
     #special-weekend-modal {
         display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
@@ -1246,6 +1259,8 @@
         #special-weekend-modal .special-title { font-size: 33px !important; margin-bottom: 15px; }
         #special-weekend-modal p { font-size: 22px !important; margin-bottom: 30px; }
         .special-slot-btn { font-size: 22px; padding: 18px 20px; border-radius: 18px; }
+        .slot-info-wrapper { justify-content: center; }
+        .special-slot-btn::before { content: ''; width: 48px; display: block; flex-shrink: 0; }
         .special-tap-icon { width: 48px; height: 48px; }
     }
     @media (min-width: 1024px) {
@@ -1254,6 +1269,7 @@
         #special-weekend-modal p { font-size: 30px !important; margin-bottom: 40px; }
         .special-slot-btn { font-size: 30px; padding: 24px 30px; border-radius: 24px; }
         #special-weekend-floater { font-size: 20px; padding: 16px 36px; bottom: 40px; border-radius: 40px; }
+        .special-slot-btn::before { content: ''; width: 60px; display: block; flex-shrink: 0; }
         .special-tap-icon { width: 60px; height: 60px; }
     }
 
@@ -1701,6 +1717,9 @@
           if (consecutiveErrors <= 3) showSyncIndicator('⚠ 同步中...', 'error', 2000);
       }
 
+      // 自動無痕讀取週末特殊時段
+      await fetchSpecialSlots();
+
       isFetchingRealtime = false;
       scheduleNextRealtime();
   }
@@ -1721,7 +1740,6 @@
           if (selectedDateStr) renderSlots(selectedDateStr);
       }
       checkHotSlots(14);
-      fetchSpecialSlots(); 
   }
 
   document.addEventListener("visibilitychange", function() {
@@ -1753,7 +1771,6 @@
 
     setTimeout(() => {
         startRealtimeSync();
-        fetchSpecialSlots(); 
     }, 2000);
 
     document.getElementById('sched-modal-overlay').addEventListener('click', function(e) {
@@ -2249,63 +2266,70 @@
   }
 
   // =========================================================
-  // 週末特殊時段 (從後端 API 正確讀取)
+  // 週末特殊時段 (從後端 API 正確讀取, 整合至背景比對)
   // =========================================================
   let hasShownSpecialModalThisSession = false;
+  let cachedSpecialSlotsStr = "";
 
-  function fetchSpecialSlots() {
+  async function fetchSpecialSlots() {
       const url = `${API_URL}?action=getSpecialSlots&_t=${Date.now()}`;
-      fetch(url, { cache: "no-store" })
-        .then(res => res.json())
-        .then(data => {
-            const list = document.getElementById('special-weekend-list');
-            list.innerHTML = '';
-            const floater = document.getElementById('special-weekend-floater');
-            const modal = document.getElementById('special-weekend-modal');
+      try {
+          const res = await fetch(url, { cache: "no-store" });
+          const data = await res.json();
 
-            if (data && data.length > 0) {
-                data.forEach(slot => {
-                    const d = new Date(parseInt(slot.timestamp));
-                    const displayDate = `${d.getMonth()+1}/${d.getDate()} (${dayNames[d.getDay()]} ${chiDayNames[d.getDay()]})`;
-                    const displayTime = formatTime12H(slot.time);
-                    
-                    const btn = document.createElement('button');
-                    btn.className = 'special-slot-btn';
-                    
-                    // 修改：保留 📅 與 ⏰ icon，並在最右側加入 tap-4.png
-                    btn.innerHTML = `<div class="slot-info-wrapper"><span>📅 ${displayDate}</span> <span style="color:#000;">⏰ ${displayTime}</span></div> <img src="https://ik.imagekit.io/lql1uveoc/tap-4.png?updatedAt=1771239128743" class="special-tap-icon">`;
-                    
-                    btn.onclick = () => {
-                        // 點擊前往預約，直接隱藏卡片並開啟表單
-                        modal.style.display = 'none';
-                        openHotQuickForm(slot, slot.dateStr); 
-                    };
-                    list.appendChild(btn);
-                });
+          const newDataStr = JSON.stringify(data);
+          if (newDataStr === cachedSpecialSlotsStr) return; // 無痕更新：資料沒變就不動畫面
+          cachedSpecialSlotsStr = newDataStr;
 
-                if (!hasShownSpecialModalThisSession) {
-                    modal.style.display = 'flex';
-                    floater.style.display = 'none';
-                    hasShownSpecialModalThisSession = true;
-                } else {
-                    if (modal.style.display !== 'flex') {
-                        // 如果有開啟預約表單，則由表單關閉時負責顯示按鈕
-                        if (!document.getElementById('hot-quick-form').classList.contains('show') && !document.getElementById('p-form').classList.contains('active')) {
-                            floater.style.display = 'block';
-                        }
-                    }
-                }
-            } else {
-                floater.style.display = 'none';
-                modal.style.display = 'none';
-            }
-        })
-        .catch(err => console.error("特殊時段讀取失敗", err));
+          const list = document.getElementById('special-weekend-list');
+          list.innerHTML = '';
+          const floater = document.getElementById('special-weekend-floater');
+          const modal = document.getElementById('special-weekend-modal');
+
+          if (data && data.length > 0) {
+              data.forEach(slot => {
+                  const d = new Date(parseInt(slot.timestamp));
+                  const displayDate = `${d.getMonth()+1}/${d.getDate()} (${dayNames[d.getDay()]} ${chiDayNames[d.getDay()]})`;
+                  const displayTime = formatTime12H(slot.time);
+                  
+                  const btn = document.createElement('button');
+                  btn.className = 'special-slot-btn';
+                  
+                  // 加入 📅 ⏰ 與最右側 tap-4.png
+                  btn.innerHTML = `<div class="slot-info-wrapper"><span>📅 ${displayDate}</span> <span style="color:#000;">⏰ ${displayTime}</span></div> <img src="https://ik.imagekit.io/lql1uveoc/tap-4.png?updatedAt=1771239128743" class="special-tap-icon">`;
+                  
+                  btn.onclick = () => {
+                      // 點擊前往預約，直接隱藏卡片並開啟表單
+                      modal.style.display = 'none';
+                      openHotQuickForm(slot, slot.dateStr); 
+                  };
+                  list.appendChild(btn);
+              });
+
+              if (!hasShownSpecialModalThisSession) {
+                  modal.style.display = 'flex';
+                  floater.style.display = 'none';
+                  hasShownSpecialModalThisSession = true;
+              } else {
+                  if (modal.style.display !== 'flex') {
+                      // 如果有開啟預約表單，則由表單關閉時負責顯示按鈕
+                      if (!document.getElementById('hot-quick-form').classList.contains('show') && !document.getElementById('p-form').classList.contains('active')) {
+                          floater.style.display = 'block';
+                      }
+                  }
+              }
+          } else {
+              floater.style.display = 'none';
+              modal.style.display = 'none';
+          }
+      } catch (err) {
+          console.error("特殊時段讀取失敗", err);
+      }
   }
 
   function closeSpecialWeekendModal() {
       const modal = document.getElementById('special-weekend-modal');
-      // 直接關閉彈出視窗，並於正下方顯示浮動按鈕，不使用任何動畫
+      // 直接關閉彈出視窗，不套用動畫
       modal.style.display = 'none';
       if (document.getElementById('special-weekend-list').children.length > 0) {
           const floater = document.getElementById('special-weekend-floater');
