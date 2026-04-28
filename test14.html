@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
@@ -559,15 +559,15 @@
         #special-weekend-floater {
             bottom: 30px !important;
             border-radius: 30px !important;
-            border-bottom: 1px solid #fff !important;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15) !important;
-            font-size: 18px !important;
-            padding: 12px 24px !important;
+            border-bottom: 2px solid #fff !important;
+            box-shadow: 0 4px 15px rgba(255, 84, 0, 0.4) !important;
+            font-size: 20px !important;
+            padding: 15px 30px !important;
         }
         #special-weekend-modal .special-modal-content { max-width: 600px; padding: 45px 30px; border-radius: 36px; }
         #special-weekend-modal .special-title { font-size: 33px !important; margin-bottom: 15px; }
         #special-weekend-modal p { font-size: 22px !important; margin-bottom: 30px; }
-        .special-slot-btn { font-size: 22px !important; padding: 18px 20px !important; border-radius: 18px !important; }
+        .special-slot-btn { font-size: 25px !important; padding: 21px !important; border-radius: 18px !important; }
     }
     
     /* =========================================================
@@ -607,9 +607,9 @@
         #special-weekend-modal .special-modal-content { max-width: 800px; padding: 60px 40px; border-radius: 48px; }
         #special-weekend-modal .special-title { font-size: 44px !important; margin-bottom: 20px; }
         #special-weekend-modal p { font-size: 30px !important; margin-bottom: 40px; }
-        .special-slot-btn { font-size: 30px !important; padding: 24px 30px !important; border-radius: 24px !important; }
+        .special-slot-btn { font-size: 34px !important; padding: 28px !important; border-radius: 24px !important; }
         #special-weekend-floater {
-            font-size: 20px !important; padding: 16px 36px !important; bottom: 40px !important; border-radius: 40px !important;
+            font-size: 24px !important; padding: 20px 40px !important; bottom: 40px !important; border-radius: 40px !important;
         }
     }
     
@@ -1175,14 +1175,12 @@
        ========================================================= */
     #special-weekend-floater {
         position: fixed; bottom: 0; left: 50%; transform: translateX(-50%);
-        background: #ffb6c1; /* 桃色底 */
-        color: #000; /* 黑色文字 */
-        padding: 6px 16px; /* 手機版扁窄化 */
-        border-radius: 12px 12px 0 0;
-        font-weight: bold; font-size: 14px; cursor: pointer;
-        box-shadow: 0 -2px 10px rgba(0,0,0,0.1);
-        display: none; z-index: 9999; border: 1px solid #fff; border-bottom: none;
-        transition: transform 0.3s; white-space: nowrap;
+        background: linear-gradient(135deg, #ff2d55, #ff5400); color: white;
+        padding: 10px 24px 15px; border-radius: 20px 20px 0 0;
+        font-weight: bold; font-size: 15px; cursor: pointer;
+        box-shadow: 0 -2px 15px rgba(255, 84, 0, 0.4);
+        display: none; z-index: 9999; border: 2px solid #fff; border-bottom: none;
+        transition: transform 0.3s;
     }
     #special-weekend-floater:hover { transform: translateX(-50%) translateY(-3px); }
     
@@ -1199,56 +1197,57 @@
         animation: modalFadeIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         max-height: 80vh; display: flex; flex-direction: column;
     }
+    
+    /* iMac macOS Genie 縮小收回底部正中央動畫 */
+    @keyframes minimizeToBottomCenter {
+        0% { transform: scale(1); opacity: 1; }
+        100% { transform: scale(0); opacity: 0; }
+    }
+    #special-weekend-modal .special-modal-content.minimizing {
+        animation: minimizeToBottomCenter 0.35s cubic-bezier(0.4, 0, 0.2, 1) forwards !important;
+        transform-origin: center bottom;
+    }
+    #special-weekend-modal.minimizing-overlay {
+        animation: fadeOutOverlay 0.35s ease-in forwards !important;
+    }
+    @keyframes fadeOutOverlay {
+        0% { background: rgba(0,0,0,0.7); backdrop-filter: blur(4px); }
+        100% { background: rgba(0,0,0,0); backdrop-filter: blur(0px); }
+    }
 
     .special-slots-container {
         overflow-y: auto; flex-grow: 1; padding-right: 5px; margin-bottom: 10px;
     }
     .special-slot-btn {
         background: #fff0f5; border: 2px solid #ff2d55; color: #333;
-        padding: 12px 10px; border-radius: 12px; font-weight: bold; font-size: 14px;
+        padding: 14px; border-radius: 12px; font-weight: bold; font-size: 17px;
         cursor: pointer; margin-bottom: 10px; width: 100%;
-        display: flex; align-items: center; justify-content: space-between;
-        transition: 0.2s; box-sizing: border-box; white-space: nowrap; overflow: hidden;
-    }
-    .special-slot-btn::before {
-        content: ''; width: 20px; flex-shrink: 0; display: block;
+        display: flex; align-items: center; justify-content: space-between; gap: 10px;
+        transition: 0.2s; box-sizing: border-box;
     }
     .special-slot-btn:active { background: #ff2d55; color: #fff; transform: scale(0.98); }
-
-    .slot-info-wrapper {
-        display: flex; align-items: center; justify-content: center; gap: 6px; flex: 1;
-        white-space: nowrap; overflow: hidden;
-    }
-    .slot-info-wrapper span {
-        flex-shrink: 0;
-    }
-
-    @media (max-width: 360px) {
-        .special-slot-btn { font-size: 13px; padding: 10px 6px; }
-        .slot-info-wrapper { gap: 4px; }
-    }
 
     /* 平板 1.5x 與 桌機 2x 縮放，且避免底部橫桿問題 */
     @media (min-width: 768px) {
         #special-weekend-floater {
             bottom: 30px; 
             border-radius: 30px; 
-            border-bottom: 1px solid #fff;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-            font-size: 18px;
-            padding: 12px 24px;
+            border-bottom: 2px solid #fff;
+            box-shadow: 0 4px 15px rgba(255, 84, 0, 0.4);
+            font-size: 20px;
+            padding: 15px 30px;
         }
         #special-weekend-modal .special-modal-content { max-width: 600px; padding: 45px 30px; border-radius: 36px; }
         #special-weekend-modal .special-title { font-size: 33px !important; margin-bottom: 15px; }
         #special-weekend-modal p { font-size: 22px !important; margin-bottom: 30px; }
-        .special-slot-btn { font-size: 22px; padding: 18px 20px; border-radius: 18px; }
+        .special-slot-btn { font-size: 25px !important; padding: 21px !important; border-radius: 18px !important; }
     }
     @media (min-width: 1024px) {
         #special-weekend-modal .special-modal-content { max-width: 800px; padding: 60px 40px; border-radius: 48px; }
         #special-weekend-modal .special-title { font-size: 44px !important; margin-bottom: 20px; }
         #special-weekend-modal p { font-size: 30px !important; margin-bottom: 40px; }
-        .special-slot-btn { font-size: 30px; padding: 24px 30px; border-radius: 24px; }
-        #special-weekend-floater { font-size: 20px; padding: 16px 36px; bottom: 40px; border-radius: 40px; }
+        .special-slot-btn { font-size: 34px !important; padding: 28px !important; border-radius: 24px !important; }
+        #special-weekend-floater { font-size: 24px !important; padding: 20px 40px !important; bottom: 40px !important; border-radius: 40px !important; }
     }
 
   </style>
@@ -1514,7 +1513,7 @@
 
 <!-- ============================================== -->
 <!-- 特殊時段浮動按鈕 -->
-<button id="special-weekend-floater" onclick="openSpecialWeekendModal()">週末特開時段</button>
+<button id="special-weekend-floater" onclick="openSpecialWeekendModal()">✨ 週末特開時段</button>
 
 <!-- 特殊時段彈出視窗 -->
 <div id="special-weekend-modal" class="special-modal">
@@ -2268,7 +2267,7 @@
                     btn.className = 'special-slot-btn';
                     
                     // 修改：移除 emoji 並加入自訂點擊 icon 在最後方
-                    btn.innerHTML = `<div class="slot-info-wrapper"><span>📅 ${displayDate}</span> <span style="color:#000;">⏰ ${displayTime}</span></div> <img src="https://ik.imagekit.io/lql1uveoc/tap-4.png?updatedAt=1771239128743" style="width:20px; height:20px; object-fit:contain; flex-shrink:0;">`;
+                    btn.innerHTML = `<div style="flex: 1; display: flex; justify-content: center; gap: 10px;"><span>${displayDate}</span> <span style="color:#000;">${displayTime}</span></div> <img src="https://ik.imagekit.io/lql1uveoc/tap-4.png?updatedAt=1771239128743" style="width:24px; height:24px; object-fit:contain; flex-shrink:0; margin-left:auto;">`;
                     
                     btn.onclick = () => {
                         // 點擊前往預約，直接隱藏卡片並開啟表單，不帶縮小動畫
@@ -2306,7 +2305,7 @@
       const modal = document.getElementById('special-weekend-modal');
       const content = modal.querySelector('.special-modal-content');
       
-      // 加上缩小吸入動畫與背景淡出 (往正中央縮小)
+      // 加上缩小吸入動畫與背景淡出
       content.classList.add('minimizing');
       modal.classList.add('minimizing-overlay');
       
@@ -2360,11 +2359,10 @@
       hotQuickSlot = null;
       hotQuickDateStr = null;
 
-      // 關閉表單時，若特開時段還有剩餘且主表單也沒開，則重新顯示浮動按鈕
+      // 關閉表單時，若特開時段還有剩餘則重新顯示浮動按鈕
       const list = document.getElementById('special-weekend-list');
       const specialModal = document.getElementById('special-weekend-modal');
-      const pForm = document.getElementById('p-form');
-      if (list && list.children.length > 0 && specialModal && specialModal.style.display !== 'flex' && !pForm.classList.contains('active')) {
+      if (list && list.children.length > 0 && specialModal && specialModal.style.display !== 'flex') {
           const floater = document.getElementById('special-weekend-floater');
           if (floater) {
               floater.style.display = 'block';
