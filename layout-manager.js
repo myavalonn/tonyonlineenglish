@@ -1,4 +1,4 @@
-// layout-manager.js - 質感升級版：亮色系選單設計
+// layout-manager.js - 質感升級版：亮色系選單 + 原始字體大小
 document.addEventListener("DOMContentLoaded", function() {
     if (document.getElementById('tony-unique-header')) return;
 
@@ -84,17 +84,16 @@ document.addEventListener("DOMContentLoaded", function() {
             top: 0; bottom: 0;
             left: -360px;
             width: 340px;
-            max-width: 90%;
+            max-width: 92%;
             background: #ffffff;
             z-index: 99999;
             transition: left 0.38s cubic-bezier(0.4, 0, 0.2, 1);
-            padding: 0 0 40px 0;
+            padding: 0 0 80px 0;
             visibility: hidden;
             box-sizing: border-box;
             overflow-y: auto;
             overscroll-behavior: contain;
             -webkit-overflow-scrolling: touch;
-            border-right: 1px solid #ebe8e2;
             box-shadow: 4px 0 30px rgba(0,0,0,0.12);
         }
         .side-menu.open { left: 0; visibility: visible; }
@@ -104,35 +103,35 @@ document.addEventListener("DOMContentLoaded", function() {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 24px 20px 18px 20px;
+            padding: 22px 20px 18px 20px;
             border-bottom: 1px solid #f0ede8;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
             position: sticky;
             top: 0;
             background: #ffffff;
             z-index: 10;
         }
         .menu-brand {
-            font-size: 13px;
-            font-weight: 700;
-            letter-spacing: 0.06em;
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: 0.02em;
             color: #1a1a1a;
             font-family: 'Noto Sans TC', sans-serif;
-            line-height: 1.4;
+            line-height: 1.3;
         }
-        .menu-brand span {
-            color: #7c6fcd;
-        }
+        .menu-brand span { color: #7c6fcd; }
+
         .menu-close-btn {
-            width: 30px; height: 30px;
+            width: 48px; height: 48px;
             border-radius: 50%;
             background: #f2f0eb;
             border: none;
             display: flex; align-items: center; justify-content: center;
-            font-size: 13px; color: #888;
+            font-size: 22px; color: #888;
             cursor: pointer;
             flex-shrink: 0;
             font-family: sans-serif;
+            line-height: 1;
         }
 
         /* --- 6. 選單連結區 --- */
@@ -140,13 +139,14 @@ document.addEventListener("DOMContentLoaded", function() {
             padding: 0 14px;
             display: flex;
             flex-direction: column;
-            gap: 7px;
+            gap: 10px;
         }
 
         /* 所有卡片共用基礎 */
         .menu-card {
-            border-radius: 14px;
-            padding: 14px 16px;
+            border-radius: 16px;
+            padding: 18px 20px;
+            padding-right: 16px;
             display: flex;
             align-items: center;
             text-decoration: none;
@@ -159,8 +159,9 @@ document.addEventListener("DOMContentLoaded", function() {
             filter: brightness(0.96);
         }
         .menu-card-text { flex: 1; min-width: 0; }
+
         .menu-card-title {
-            font-size: 14px;
+            font-size: 26px;
             font-weight: 700;
             line-height: 1.3;
             font-family: 'Noto Sans TC', sans-serif;
@@ -168,14 +169,14 @@ document.addEventListener("DOMContentLoaded", function() {
             word-break: break-word;
         }
         .menu-card-sub {
-            font-size: 11px;
-            margin-top: 4px;
+            font-size: 16px;
+            margin-top: 6px;
             line-height: 1.5;
             font-family: 'Noto Sans TC', sans-serif;
         }
         .menu-card-arr {
-            font-size: 13px;
-            margin-left: 10px;
+            font-size: 22px;
+            margin-left: 14px;
             flex-shrink: 0;
         }
 
@@ -184,8 +185,8 @@ document.addEventListener("DOMContentLoaded", function() {
             background: #f7f5f2;
             border: 1px solid #ebe8e2;
         }
-        .mc-home .menu-card-title { color: #666; font-weight: 500; font-size: 13px; }
-        .mc-home .menu-card-arr { color: #bbb; }
+        .mc-home .menu-card-title { color: #666; font-weight: 600; }
+        .mc-home .menu-card-arr   { color: #bbb; }
 
         /* 課程詳細介紹 — 金黃 */
         .mc-courses {
@@ -193,8 +194,8 @@ document.addEventListener("DOMContentLoaded", function() {
             border: 1px solid #f0d97a;
         }
         .mc-courses .menu-card-title { color: #7a5c00; }
-        .mc-courses .menu-card-sub  { color: #a07c20; }
-        .mc-courses .menu-card-arr  { color: #c9a030; }
+        .mc-courses .menu-card-sub   { color: #a07c20; }
+        .mc-courses .menu-card-arr   { color: #c9a030; }
 
         /* 學測英文作文班 — 薰衣草紫 */
         .mc-sat {
@@ -202,8 +203,8 @@ document.addEventListener("DOMContentLoaded", function() {
             border: 1px solid #c4b8f5;
         }
         .mc-sat .menu-card-title { color: #3d2d9e; }
-        .mc-sat .menu-card-sub  { color: #6b5bbf; }
-        .mc-sat .menu-card-arr  { color: #7c6fcd; }
+        .mc-sat .menu-card-sub   { color: #6b5bbf; }
+        .mc-sat .menu-card-arr   { color: #7c6fcd; }
 
         /* 全民英檢中級寫作 — 玫瑰紅 */
         .mc-gept {
@@ -211,8 +212,8 @@ document.addEventListener("DOMContentLoaded", function() {
             border: 1px solid #fbb6be;
         }
         .mc-gept .menu-card-title { color: #9b1c2e; }
-        .mc-gept .menu-card-sub  { color: #c0404f; }
-        .mc-gept .menu-card-arr  { color: #e05060; }
+        .mc-gept .menu-card-sub   { color: #c0404f; }
+        .mc-gept .menu-card-arr   { color: #e05060; }
 
         /* 訂閱課程 — 流光金 */
         .mc-sub {
@@ -222,13 +223,13 @@ document.addEventListener("DOMContentLoaded", function() {
         }
         @keyframes subGlow {
             from { border-color: rgba(212,170,40,0.25); box-shadow: none; }
-            to   { border-color: rgba(212,150,0,0.7); box-shadow: 0 0 14px rgba(212,170,40,0.15); }
+            to   { border-color: rgba(212,150,0,0.7); box-shadow: 0 0 16px rgba(212,170,40,0.18); }
         }
         .mc-sub .menu-card-sub { color: #a07820; }
         .mc-sub .menu-card-arr { color: #c9a030; }
 
         .shimmer-text {
-            font-size: 14px;
+            font-size: 26px;
             font-weight: 900;
             display: inline-block;
             background: linear-gradient(120deg, #b8860b 10%, #f5c842 45%, #ffe680 55%, #f5c842 65%, #b8860b 90%);
@@ -242,8 +243,8 @@ document.addEventListener("DOMContentLoaded", function() {
         @keyframes shineText { to { background-position: 250% center; } }
 
         .flame-icon {
-            font-size: 20px;
-            margin-left: 8px;
+            font-size: 32px;
+            margin-left: 10px;
             flex-shrink: 0;
             animation: flamePulse 1.7s ease-in-out infinite alternate;
         }
@@ -264,18 +265,18 @@ document.addEventListener("DOMContentLoaded", function() {
             background: #f7f5f2;
             border: 1px solid #ebe8e2;
         }
-        .mc-plain .menu-card-title { color: #3a3630; font-weight: 500; }
-        .mc-plain .menu-card-sub  { color: #9a9590; }
-        .mc-plain .menu-card-arr  { color: #ccc; }
+        .mc-plain .menu-card-title { color: #3a3630; font-weight: 600; }
+        .mc-plain .menu-card-sub   { color: #9a9590; }
+        .mc-plain .menu-card-arr   { color: #ccc; }
 
         /* LINE — 薄荷綠 */
         .mc-line {
             background: #f0faf4;
             border: 1px solid #86d9a8;
         }
-        .mc-line .menu-card-title { color: #0d6e35; font-weight: 700; }
-        .mc-line .menu-card-sub  { color: #3a9e60; }
-        .mc-line .menu-card-arr  { color: #2db360; }
+        .mc-line .menu-card-title { color: #0d6e35; font-weight: 800; }
+        .mc-line .menu-card-sub   { color: #3a9e60; }
+        .mc-line .menu-card-arr   { color: #2db360; }
 
         /* --- 7. iPad 補丁 --- */
         @media screen and (min-width: 768px) and (max-width: 1199px) {
@@ -295,7 +296,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         }
 
-        /* --- 8. 手機版 --- */
+        /* --- 8. 手機版 Banner --- */
         @media (max-width: 600px) {
             .tony-banner { height: 100px; padding: 0 10px; }
             .logo-box { height: 70px; }
