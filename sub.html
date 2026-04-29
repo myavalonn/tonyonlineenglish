@@ -18,7 +18,6 @@
 :root {
   --navy: #0F2340;
   --navy-mid: #1A365D;
-  /* 將原本的土黃色改為亮橘色 */
   --orange: #FF7A00; 
   --orange-dark: #D35400;
   --green-line: #06C755;
@@ -28,7 +27,6 @@
   --red-alert: #C0392B;
 }
 
-/* 確保平滑滾動，點擊按鈕時有滑動效果 */
 html { scroll-behavior: smooth; }
 
 body {
@@ -162,18 +160,18 @@ body {
   line-height: 1.2;
 }
 
-/* ── HOW IT WORKS strip (改用 Grid 排版) ── */
+/* ── HOW IT WORKS ── */
 .how-strip {
   background: var(--navy);
   margin-top: 70px;
   padding: 60px 20px;
   display: grid;
-  grid-template-columns: repeat(2, 1fr); /* 手機版：左右兩列 */
+  grid-template-columns: repeat(2, 1fr);
   gap: 40px 10px;
 }
 @media (min-width: 768px) {
   .how-strip {
-    grid-template-columns: repeat(4, 1fr); /* 電腦版：橫向四個 */
+    grid-template-columns: repeat(4, 1fr);
     padding: 60px 40px;
     gap: 20px;
   }
@@ -187,7 +185,6 @@ body {
   color: #fff;
   position: relative;
 }
-/* 電腦版的箭頭指標 */
 @media (min-width: 768px) {
   .how-item:not(:last-child)::after {
     content: '→';
@@ -213,33 +210,28 @@ body {
   margin-bottom: 18px;
   flex-shrink: 0;
 }
-.how-title {
-  font-size: clamp(1.2rem, 2.5vw, 1.55rem);
-  font-weight: 900;
-  margin-bottom: 8px;
-}
-.how-desc {
-  font-size: clamp(1rem, 2vw, 1.15rem);
-  color: rgba(255,255,255,0.72);
-  line-height: 1.7;
-}
+.how-title { font-size: clamp(1.2rem, 2.5vw, 1.55rem); font-weight: 900; margin-bottom: 8px; }
+.how-desc { font-size: clamp(1rem, 2vw, 1.15rem); color: rgba(255,255,255,0.72); line-height: 1.7; }
 
 /* ── PRICING CARDS ── */
 .pricing-section {
   padding: 60px 24px 100px;
 }
+
+/* 手機版：維持 1 列直排 */
 .cards-grid {
-  max-width: 1280px;
-  margin: 60px auto 0;
+  max-width: 1200px;
+  margin: 50px auto 0;
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
-  gap: 32px;
+  grid-template-columns: 1fr;
+  gap: 28px;
   align-items: stretch;
 }
 
+/* 共通卡片樣式 */
 .plan-card {
   background: #fff;
-  border-radius: 28px;
+  border-radius: 24px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -247,331 +239,137 @@ body {
   transition: transform 0.3s cubic-bezier(0.165,0.84,0.44,1), box-shadow 0.3s;
   border: 2.5px solid transparent;
 }
-.plan-card:hover {
-  transform: translateY(-10px);
-  box-shadow: 0 24px 56px rgba(15,35,64,0.15);
-}
-.plan-card.featured {
-  border-color: var(--orange);
-}
+.plan-card:hover { transform: translateY(-10px); box-shadow: 0 24px 56px rgba(15,35,64,0.15); }
+.plan-card.featured { border-color: var(--orange); }
 
-.plan-header {
-  padding: 36px 36px 28px;
-  color: #fff;
-  position: relative;
-}
+.plan-header { color: #fff; position: relative; }
 .plan-header.navy { background: var(--navy); }
 .plan-header.orange-bg  { background: linear-gradient(135deg, #FF7A00, #D35400); }
 .plan-header.teal  { background: linear-gradient(135deg, #1A4744, #2E7A6E); }
 
-.plan-badge {
-  display: inline-block;
-  font-size: clamp(1rem, 2vw, 1.15rem);
-  font-weight: 900;
-  background: rgba(255,255,255,0.2);
-  border: 1.5px solid rgba(255,255,255,0.4);
-  padding: 6px 22px;
-  border-radius: 100px;
-  letter-spacing: 2px;
-  margin-bottom: 20px;
-}
-.plan-badge.highlight {
-  background: var(--orange);
-  border-color: var(--orange);
-  color: #fff;
-}
+.plan-badge { display: inline-block; font-weight: 900; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.4); border-radius: 100px; letter-spacing: 1px; }
+.plan-badge.highlight { background: var(--orange); border-color: var(--orange); color: #fff; }
 
-.plan-name {
-  font-family: 'Noto Serif TC', serif;
-  font-size: clamp(2rem, 5vw, 2.8rem);
-  font-weight: 900;
-  line-height: 1.15;
-  margin-bottom: 6px;
-}
-.plan-freq {
-  font-size: clamp(1.1rem, 2.5vw, 1.35rem);
-  font-weight: 700;
-  opacity: 0.82;
-}
+.plan-name { font-family: 'Noto Serif TC', serif; font-weight: 900; line-height: 1.15; }
+.plan-freq { font-weight: 700; opacity: 0.85; }
 
-.plan-price-block {
-  display: flex;
-  align-items: flex-end;
-  gap: 8px;
-  margin-top: 24px;
-  padding-top: 20px;
-  border-top: 1.5px solid rgba(255,255,255,0.2);
-}
-.plan-price-num {
-  font-size: clamp(3.2rem, 8vw, 5rem);
-  font-weight: 900;
-  line-height: 1;
-}
-.plan-price-unit {
-  font-size: clamp(1.1rem, 2vw, 1.4rem);
-  font-weight: 700;
-  opacity: 0.85;
-  padding-bottom: 8px;
-}
+.plan-price-block { display: flex; align-items: flex-end; gap: 6px; border-top: 1.5px solid rgba(255,255,255,0.2); }
+.plan-price-num { font-weight: 900; line-height: 1; }
+.plan-price-unit { font-weight: 700; opacity: 0.9; padding-bottom: 4px; }
 
-.plan-body {
-  padding: 32px 36px 36px;
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 0;
-}
+.plan-body { flex: 1; display: flex; flex-direction: column; gap: 0; }
 
-.plan-info-row {
-  display: flex;
-  align-items: flex-start;
-  gap: 14px;
-  padding: 16px 0;
-  border-bottom: 1px solid rgba(15,35,64,0.08);
-}
+.plan-info-row { display: flex; align-items: flex-start; border-bottom: 1px solid rgba(15,35,64,0.08); }
 .plan-info-row:last-of-type { border-bottom: none; }
-.plan-info-icon {
-  width: 36px; height: 36px;
-  border-radius: 10px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1.3rem;
-  flex-shrink: 0;
-}
+.plan-info-icon { border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
 .icon-navy { background: #EDF2FA; }
-.icon-orange  { background: #FFF0E5; }
-.icon-teal  { background: #E6F4F1; }
-.plan-info-text {}
-.plan-info-label {
-  font-size: clamp(0.9rem, 1.8vw, 1rem);
-  font-weight: 700;
-  color: var(--text-mid);
-  letter-spacing: 1px;
-  text-transform: uppercase;
-  margin-bottom: 4px;
-}
-.plan-info-val {
-  font-size: clamp(1.1rem, 2.5vw, 1.35rem);
-  font-weight: 700;
-  color: var(--text-dark);
-  line-height: 1.5;
-}
+.icon-orange { background: #FFF0E5; }
+.icon-teal { background: #E6F4F1; }
 
-.plan-note {
-  background: #FFF5F5;
-  border-left: 4px solid var(--red-alert);
-  border-radius: 0 10px 10px 0;
-  padding: 14px 18px;
-  font-size: clamp(0.95rem, 2vw, 1.05rem);
-  font-weight: 700;
-  color: var(--red-alert);
-  line-height: 1.6;
-  margin: 20px 0 28px;
-}
+.plan-info-label { font-weight: 700; color: var(--text-mid); letter-spacing: 1px; margin-bottom: 2px; }
+.plan-info-val { font-weight: 700; color: var(--text-dark); line-height: 1.5; }
 
-.plan-cta {
-  display: block;
-  background: var(--navy);
-  color: #fff;
-  text-align: center;
-  text-decoration: none;
-  font-size: clamp(1.15rem, 2.5vw, 1.4rem);
-  font-weight: 900;
-  padding: 20px;
-  border-radius: 14px;
-  letter-spacing: 2px;
-  transition: background 0.25s, transform 0.25s, box-shadow 0.25s;
-  margin-top: auto;
-}
-.plan-cta:hover {
-  background: #1e3d70;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 20px rgba(15,35,64,0.25);
-}
-.plan-cta.orange-cta {
-  background: var(--orange);
-  color: #fff;
-  box-shadow: 0 6px 20px rgba(255, 122, 0, 0.3);
-}
+.plan-note { background: #FFF5F5; border-left: 4px solid var(--red-alert); border-radius: 0 10px 10px 0; font-weight: 700; color: var(--red-alert); line-height: 1.6; }
+
+.plan-cta { display: block; background: var(--navy); color: #fff; text-align: center; text-decoration: none; font-weight: 900; border-radius: 14px; letter-spacing: 2px; transition: background 0.25s, transform 0.25s, box-shadow 0.25s; margin-top: auto; }
+.plan-cta:hover { background: #1e3d70; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(15,35,64,0.25); }
+.plan-cta.orange-cta { background: var(--orange); box-shadow: 0 6px 20px rgba(255, 122, 0, 0.3); }
 .plan-cta.orange-cta:hover { background: #FF8F2B; }
 
-/* ── POPULAR RIBBON ── */
-.popular-ribbon {
-  position: absolute;
-  top: 20px; right: -8px;
-  background: var(--orange);
-  color: #fff;
-  font-size: 1rem;
-  font-weight: 900;
-  padding: 6px 22px 6px 16px;
-  border-radius: 4px 0 0 4px;
-  letter-spacing: 1px;
-  box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
-}
-.popular-ribbon::after {
-  content: '';
-  position: absolute;
-  right: -10px; bottom: 0;
-  border: 10px solid transparent;
-  border-left: 10px solid var(--orange-dark);
-  border-bottom: 0;
+.popular-ribbon { position: absolute; background: var(--orange); color: #fff; font-weight: 900; border-radius: 4px 0 0 4px; box-shadow: 2px 2px 8px rgba(0,0,0,0.2); }
+.popular-ribbon::after { content: ''; position: absolute; right: -10px; bottom: 0; border: 10px solid transparent; border-left: 10px solid var(--orange-dark); border-bottom: 0; }
+
+
+/* 手機版預設數值 ( < 768px ) */
+.plan-header { padding: 32px 28px 24px; }
+.plan-badge { font-size: 1.1rem; padding: 6px 20px; margin-bottom: 16px; }
+.plan-name { font-size: 2.5rem; margin-bottom: 6px; }
+.plan-freq { font-size: 1.15rem; }
+.plan-price-block { margin-top: 24px; padding-top: 20px; }
+.plan-price-num { font-size: 4.5rem; }
+.plan-price-unit { font-size: 1.25rem; }
+.plan-body { padding: 28px; }
+.plan-info-row { gap: 14px; padding: 16px 0; }
+.plan-info-icon { width: 36px; height: 36px; font-size: 1.2rem; }
+.plan-info-label { font-size: 1rem; }
+.plan-info-val { font-size: 1.2rem; }
+.plan-note { padding: 14px 16px; font-size: 1rem; margin: 20px 0 28px; }
+.plan-cta { font-size: 1.25rem; padding: 18px; }
+.popular-ribbon { font-size: 1rem; padding: 6px 20px 6px 14px; top: 16px; right: -8px; }
+
+
+/* 平板專屬設定 (768px ~ 1023px) 讓它呈現三個並排的長方形 */
+@media (min-width: 768px) {
+  .cards-grid { grid-template-columns: repeat(3, 1fr); gap: 16px; } /* 強制 3 列，間距縮小 */
+  .plan-card { border-radius: 18px; }
+  .plan-header { padding: 24px 16px 20px; }
+  .plan-badge { font-size: 0.85rem; padding: 4px 12px; margin-bottom: 12px; }
+  .plan-name { font-size: 1.6rem; margin-bottom: 4px; }
+  .plan-freq { font-size: 0.95rem; }
+  .plan-price-block { margin-top: 16px; padding-top: 16px; }
+  .plan-price-num { font-size: 2.8rem; }
+  .plan-price-unit { font-size: 0.9rem; padding-bottom: 6px; }
+  .plan-body { padding: 20px 16px 24px; }
+  .plan-info-row { gap: 10px; padding: 12px 0; }
+  .plan-info-icon { width: 30px; height: 30px; font-size: 1rem; }
+  .plan-info-label { font-size: 0.85rem; }
+  .plan-info-val { font-size: 0.95rem; }
+  .plan-note { padding: 12px; font-size: 0.85rem; margin: 16px 0 20px; }
+  .plan-cta { font-size: 1.05rem; padding: 14px; letter-spacing: 1px; border-radius: 10px; }
+  .popular-ribbon { font-size: 0.85rem; padding: 4px 12px 4px 10px; top: 12px; right: -8px; }
 }
 
+/* 桌機大螢幕設定 (1024px 以上) 放寬間距與字體 */
+@media (min-width: 1024px) {
+  .cards-grid { gap: 32px; }
+  .plan-card { border-radius: 28px; }
+  .plan-header { padding: 36px 36px 28px; }
+  .plan-badge { font-size: 1rem; padding: 6px 20px; margin-bottom: 20px; }
+  .plan-name { font-size: 2.6rem; margin-bottom: 6px; }
+  .plan-freq { font-size: 1.2rem; }
+  .plan-price-block { margin-top: 24px; padding-top: 20px; }
+  .plan-price-num { font-size: 4.8rem; }
+  .plan-price-unit { font-size: 1.25rem; padding-bottom: 8px; }
+  .plan-body { padding: 32px 36px 36px; }
+  .plan-info-row { gap: 14px; padding: 16px 0; }
+  .plan-info-icon { width: 36px; height: 36px; font-size: 1.2rem; }
+  .plan-info-label { font-size: 1rem; }
+  .plan-info-val { font-size: 1.2rem; }
+  .plan-note { padding: 14px 18px; font-size: 1.05rem; margin: 20px 0 28px; }
+  .plan-cta { font-size: 1.3rem; padding: 20px; border-radius: 14px; }
+  .popular-ribbon { font-size: 1rem; padding: 6px 22px 6px 16px; top: 20px; right: -8px; }
+}
+
+
 /* ── TAGS ── */
-.tags-section {
-  background: var(--navy);
-  padding: 60px 32px;
-  text-align: center;
-}
-.tags-section .eyebrow {
-  font-size: clamp(1rem, 2vw, 1.2rem);
-  font-weight: 900;
-  letter-spacing: 4px;
-  color: var(--orange);
-  margin-bottom: 32px;
-  display: block;
-}
-.tags-grid {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 14px;
-  max-width: 900px;
-  margin: 0 auto;
-}
-.tag {
-  display: inline-block;
-  background: rgba(255,255,255,0.1);
-  color: #fff;
-  border: 1.5px solid rgba(255,255,255,0.25);
-  padding: 12px 26px;
-  border-radius: 100px;
-  font-size: clamp(1rem, 2vw, 1.2rem);
-  font-weight: 700;
-  transition: background 0.25s, transform 0.25s;
-  cursor: default;
-}
+.tags-section { background: var(--navy); padding: 60px 32px; text-align: center; }
+.tags-section .eyebrow { font-size: clamp(1rem, 2vw, 1.2rem); font-weight: 900; letter-spacing: 4px; color: var(--orange); margin-bottom: 32px; display: block; }
+.tags-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 14px; max-width: 900px; margin: 0 auto; }
+.tag { display: inline-block; background: rgba(255,255,255,0.1); color: #fff; border: 1.5px solid rgba(255,255,255,0.25); padding: 12px 26px; border-radius: 100px; font-size: clamp(1rem, 2vw, 1.2rem); font-weight: 700; transition: background 0.25s, transform 0.25s; cursor: default; }
 .tag:hover { background: var(--orange); color: #fff; border-color: var(--orange); transform: translateY(-3px); }
 
 /* ── CTA ── */
-.cta-section {
-  padding: 100px 24px;
-  background: var(--off-white);
-  text-align: center;
-}
-.cta-section h2 {
-  font-family: 'Noto Serif TC', serif;
-  font-size: clamp(2rem, 5vw, 3.2rem);
-  font-weight: 900;
-  color: var(--navy);
-  line-height: 1.4;
-  margin-bottom: 50px;
-}
-.cta-line-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  background: var(--green-line);
-  color: #fff;
-  text-decoration: none;
-  font-size: clamp(1.2rem, 3vw, 1.6rem);
-  font-weight: 900;
-  padding: 20px 56px;
-  border-radius: 100px;
-  letter-spacing: 2px;
-  box-shadow: 0 8px 28px rgba(6,199,85,0.35);
-  transition: background 0.25s, transform 0.25s, box-shadow 0.25s;
-  margin-bottom: 60px;
-}
+.cta-section { padding: 100px 24px; background: var(--off-white); text-align: center; }
+.cta-section h2 { font-family: 'Noto Serif TC', serif; font-size: clamp(2rem, 5vw, 3.2rem); font-weight: 900; color: var(--navy); line-height: 1.4; margin-bottom: 50px; }
+.cta-line-btn { display: inline-flex; align-items: center; gap: 12px; background: var(--green-line); color: #fff; text-decoration: none; font-size: clamp(1.2rem, 3vw, 1.6rem); font-weight: 900; padding: 20px 56px; border-radius: 100px; letter-spacing: 2px; box-shadow: 0 8px 28px rgba(6,199,85,0.35); transition: background 0.25s, transform 0.25s, box-shadow 0.25s; margin-bottom: 60px; }
 .cta-line-btn:hover { background: #05A848; transform: translateY(-3px); box-shadow: 0 14px 36px rgba(6,199,85,0.4); }
 
 /* ── CONTACT FORM ── */
-.contact-card {
-  max-width: 680px;
-  margin: 0 auto;
-  background: #fff;
-  border-radius: 28px;
-  padding: clamp(32px, 6vw, 60px);
-  box-shadow: 0 12px 40px rgba(15,35,64,0.09);
-  text-align: left;
-}
-.contact-card h3 {
-  font-family: 'Noto Serif TC', serif;
-  font-size: clamp(1.6rem, 4vw, 2.2rem);
-  font-weight: 900;
-  color: var(--navy);
-  margin-bottom: 8px;
-}
-.contact-card .sub {
-  font-size: clamp(1rem, 2vw, 1.15rem);
-  color: var(--text-mid);
-  margin-bottom: 36px;
-}
+.contact-card { max-width: 680px; margin: 0 auto; background: #fff; border-radius: 28px; padding: clamp(32px, 6vw, 60px); box-shadow: 0 12px 40px rgba(15,35,64,0.09); text-align: left; }
+.contact-card h3 { font-family: 'Noto Serif TC', serif; font-size: clamp(1.6rem, 4vw, 2.2rem); font-weight: 900; color: var(--navy); margin-bottom: 8px; }
+.contact-card .sub { font-size: clamp(1rem, 2vw, 1.15rem); color: var(--text-mid); margin-bottom: 36px; }
 .form-group { margin-bottom: 24px; }
-.form-group label {
-  display: block;
-  font-size: clamp(1rem, 2vw, 1.15rem);
-  font-weight: 900;
-  color: var(--navy);
-  margin-bottom: 10px;
-  letter-spacing: 0.5px;
-}
-.form-group input,
-.form-group textarea {
-  width: 100%;
-  padding: 18px 22px;
-  font-family: 'Noto Sans TC', sans-serif;
-  font-size: clamp(1rem, 2vw, 1.15rem);
-  border: 2px solid #DDE3EC;
-  border-radius: 14px;
-  background: var(--off-white);
-  color: var(--text-dark);
-  transition: border-color 0.25s, box-shadow 0.25s;
-  outline: none;
-}
-.form-group input:focus,
-.form-group textarea:focus {
-  border-color: var(--orange);
-  box-shadow: 0 0 0 4px rgba(255,122,0,0.15);
-  background: #fff;
-}
-.btn-submit {
-  width: 100%;
-  font-size: clamp(1.15rem, 2.5vw, 1.4rem);
-  font-weight: 900;
-  padding: 20px;
-  border-radius: 14px;
-  background: var(--navy);
-  color: #fff;
-  border: none;
-  cursor: pointer;
-  letter-spacing: 2px;
-  font-family: 'Noto Sans TC', sans-serif;
-  transition: background 0.25s, transform 0.25s, box-shadow 0.25s;
-  margin-top: 10px;
-}
+.form-group label { display: block; font-size: clamp(1rem, 2vw, 1.15rem); font-weight: 900; color: var(--navy); margin-bottom: 10px; letter-spacing: 0.5px; }
+.form-group input, .form-group textarea { width: 100%; padding: 18px 22px; font-family: 'Noto Sans TC', sans-serif; font-size: clamp(1rem, 2vw, 1.15rem); border: 2px solid #DDE3EC; border-radius: 14px; background: var(--off-white); color: var(--text-dark); transition: border-color 0.25s, box-shadow 0.25s; outline: none; }
+.form-group input:focus, .form-group textarea:focus { border-color: var(--orange); box-shadow: 0 0 0 4px rgba(255,122,0,0.15); background: #fff; }
+.btn-submit { width: 100%; font-size: clamp(1.15rem, 2.5vw, 1.4rem); font-weight: 900; padding: 20px; border-radius: 14px; background: var(--navy); color: #fff; border: none; cursor: pointer; letter-spacing: 2px; font-family: 'Noto Sans TC', sans-serif; transition: background 0.25s, transform 0.25s, box-shadow 0.25s; margin-top: 10px; }
 .btn-submit:hover { background: #1e3d70; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(15,35,64,0.25); }
 .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-.success-msg {
-  display: none;
-  text-align: center;
-  font-size: clamp(1.2rem, 3vw, 1.5rem);
-  font-weight: 900;
-  color: var(--green-line);
-  padding: 40px 20px;
-}
+.success-msg { display: none; text-align: center; font-size: clamp(1.2rem, 3vw, 1.5rem); font-weight: 900; color: var(--green-line); padding: 40px 20px; }
 
-footer {
-  background: #060F1E;
-  color: rgba(255,255,255,0.45);
-  text-align: center;
-  padding: 32px 20px;
-  font-size: clamp(0.95rem, 2vw, 1.1rem);
-}
+footer { background: #060F1E; color: rgba(255,255,255,0.45); text-align: center; padding: 32px 20px; font-size: clamp(0.95rem, 2vw, 1.1rem); }
 footer a { color: var(--orange); text-decoration: none; }
 
-/* ── UTILITIES ── */
 .text-center { text-align: center; }
 </style>
 </head>
@@ -582,7 +380,6 @@ footer a { color: var(--orange); text-decoration: none; }
   <div class="hero-badge">線上 1 對 1 美語家教</div>
   <h1>一堂課<br><span>只要 450 點</span><br>起</h1>
   
-  <!-- 加入了手機專用與電腦專用顯示邏輯，強制客製化課程掉到第二行 -->
   <p class="hero-sub">
     每堂 50 分鐘 ✦ 全程 1 對 1 <span class="hide-mobile">✦</span><br class="show-mobile">
     客製化課程 <span class="show-mobile">✦</span><br class="hide-mobile">
@@ -590,13 +387,12 @@ footer a { color: var(--orange); text-decoration: none; }
   </p>
 
   <div class="hero-btns">
-    <!-- 按鈕文字改為課程方案，並且加上了錨點 #pricing 跳轉 -->
     <a href="#pricing" class="btn btn-orange">→ 課程方案</a>
     <a href="https://tonyonlineenglish.netlify.app/allcourses" class="btn btn-outline">查看所有課程</a>
   </div>
 </header>
 
-<!-- ═══ HOW IT WORKS (手機版改為 2x2 排版) ═══ -->
+<!-- ═══ HOW IT WORKS ═══ -->
 <div class="how-strip">
   <div class="how-item">
     <div class="how-num">1</div>
@@ -620,7 +416,7 @@ footer a { color: var(--orange); text-decoration: none; }
   </div>
 </div>
 
-<!-- ═══ PRICING (加入了 id="pricing" 讓按鈕可以滑下來) ═══ -->
+<!-- ═══ PRICING ═══ -->
 <section class="pricing-section" id="pricing">
   <div class="section-label">
     <span class="eyebrow">PRICING PLANS</span>
@@ -631,24 +427,19 @@ footer a { color: var(--orange); text-decoration: none; }
 
     <!-- 方案一：每週兩堂 450點 -->
     <article class="plan-card featured">
-      <div class="plan-header navy" style="position:relative;">
+      <div class="plan-header navy">
         <div class="popular-ribbon">最受歡迎</div>
         <span class="plan-badge highlight">最高 CP 值</span>
         <div class="plan-name">每週兩堂</div>
         <div class="plan-freq">快速提升英語能力</div>
         <div class="plan-price-block">
           <div class="plan-price-num">450</div>
-          <div class="plan-price-unit">點 / 堂</div>
+          <!-- 這裡融入了 50分 資訊 -->
+          <div class="plan-price-unit">點 / 50分</div>
         </div>
       </div>
       <div class="plan-body">
-        <div class="plan-info-row">
-          <div class="plan-info-icon icon-navy">📅</div>
-          <div class="plan-info-text">
-            <div class="plan-info-label">上課頻率</div>
-            <div class="plan-info-val">每週固定兩堂・50分/堂</div>
-          </div>
-        </div>
+        <!-- 已刪除上課頻率行 -->
         <div class="plan-info-row">
           <div class="plan-info-icon icon-navy">🕙</div>
           <div class="plan-info-text">
@@ -657,30 +448,24 @@ footer a { color: var(--orange); text-decoration: none; }
           </div>
         </div>
         <div class="plan-note">＊ 其他時段也可預約，點數略有不同，請洽 Tony 老師確認。</div>
-        <!-- 這裡的 450 方案按鈕加上了 orange-cta 改為橘色 -->
         <a href="https://tonyonlineenglish.netlify.app/exper" class="plan-cta orange-cta">立即預約體驗 →</a>
       </div>
     </article>
 
     <!-- 方案二：每週一堂 500點 -->
     <article class="plan-card">
-      <div class="plan-header orange-bg" style="position:relative;">
+      <div class="plan-header orange-bg">
         <span class="plan-badge">維持語感</span>
         <div class="plan-name">每週一堂</div>
         <div class="plan-freq">穩定累積英語實力</div>
         <div class="plan-price-block">
           <div class="plan-price-num">500</div>
-          <div class="plan-price-unit">點 / 堂</div>
+          <!-- 這裡融入了 50分 資訊 -->
+          <div class="plan-price-unit">點 / 50分</div>
         </div>
       </div>
       <div class="plan-body">
-        <div class="plan-info-row">
-          <div class="plan-info-icon icon-orange">📅</div>
-          <div class="plan-info-text">
-            <div class="plan-info-label">上課頻率</div>
-            <div class="plan-info-val">每週固定一堂・50分/堂</div>
-          </div>
-        </div>
+        <!-- 已刪除上課頻率行 -->
         <div class="plan-info-row">
           <div class="plan-info-icon icon-orange">🕙</div>
           <div class="plan-info-text">
@@ -698,20 +483,16 @@ footer a { color: var(--orange); text-decoration: none; }
       <div class="plan-header teal">
         <span class="plan-badge">最大彈性</span>
         <div class="plan-name">自由混搭</div>
-        <div class="plan-freq">一堂或兩堂，你決定</div>
+        <!-- 第三卡片的特色移入副標題 -->
+        <div class="plan-freq">一堂或兩堂，每月自由調整</div>
         <div class="plan-price-block">
           <div class="plan-price-num">550</div>
-          <div class="plan-price-unit">點 / 堂</div>
+          <!-- 這裡融入了 50分 資訊 -->
+          <div class="plan-price-unit">點 / 50分</div>
         </div>
       </div>
       <div class="plan-body">
-        <div class="plan-info-row">
-          <div class="plan-info-icon icon-teal">📅</div>
-          <div class="plan-info-text">
-            <div class="plan-info-label">上課頻率</div>
-            <div class="plan-info-val">每週一堂或兩堂・50分/堂<br>每月可自由調整</div>
-          </div>
-        </div>
+        <!-- 已刪除上課頻率行 -->
         <div class="plan-info-row">
           <div class="plan-info-icon icon-teal">🕙</div>
           <div class="plan-info-text">
