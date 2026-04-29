@@ -18,8 +18,9 @@
 :root {
   --navy: #0F2340;
   --navy-mid: #1A365D;
-  --gold: #D6A848;
-  --gold-dark: #B8861A;
+  /* 將原本的土黃色改為亮橘色 */
+  --orange: #FF7A00; 
+  --orange-dark: #D35400;
   --green-line: #06C755;
   --off-white: #F7F4EE;
   --text-dark: #0F2340;
@@ -27,6 +28,7 @@
   --red-alert: #C0392B;
 }
 
+/* 確保平滑滾動，點擊按鈕時有滑動效果 */
 html { scroll-behavior: smooth; }
 
 body {
@@ -34,6 +36,15 @@ body {
   background: var(--off-white);
   color: var(--text-dark);
   overflow-x: hidden;
+}
+
+/* 手機與電腦版的排版小工具 */
+.show-mobile { display: none; }
+.hide-mobile { display: inline; }
+@media (max-width: 767px) {
+  .show-mobile { display: inline; }
+  br.show-mobile { display: block; }
+  .hide-mobile { display: none; }
 }
 
 /* ── HERO ── */
@@ -59,8 +70,8 @@ body {
 
 .hero-badge {
   display: inline-block;
-  background: var(--gold);
-  color: var(--navy);
+  background: var(--orange);
+  color: #fff;
   font-size: clamp(1rem, 2.5vw, 1.3rem);
   font-weight: 900;
   padding: 10px 32px;
@@ -78,10 +89,10 @@ body {
   margin-bottom: 20px;
   animation: fadeDown 0.9s 0.1s ease both;
 }
-.hero h1 span { color: var(--gold); }
+.hero h1 span { color: var(--orange); }
 
 .hero-sub {
-  font-size: clamp(1.3rem, 3vw, 1.9rem);
+  font-size: clamp(1.2rem, 3vw, 1.9rem);
   font-weight: 700;
   color: rgba(255,255,255,0.88);
   line-height: 1.7;
@@ -110,12 +121,12 @@ body {
   cursor: pointer;
   border: none;
 }
-.btn-gold {
-  background: var(--gold);
-  color: var(--navy);
-  box-shadow: 0 8px 28px rgba(214,168,72,0.4);
+.btn-orange {
+  background: var(--orange);
+  color: #fff;
+  box-shadow: 0 8px 28px rgba(255, 122, 0, 0.4);
 }
-.btn-gold:hover { background: #e8b84e; transform: translateY(-3px); box-shadow: 0 14px 36px rgba(214,168,72,0.5); }
+.btn-orange:hover { background: #FF8F2B; transform: translateY(-3px); box-shadow: 0 14px 36px rgba(255, 122, 0, 0.5); }
 .btn-outline {
   background: rgba(255,255,255,0.1);
   color: #fff;
@@ -139,7 +150,7 @@ body {
   font-size: clamp(1rem, 2vw, 1.25rem);
   font-weight: 900;
   letter-spacing: 4px;
-  color: var(--gold-dark);
+  color: var(--orange-dark);
   margin-bottom: 14px;
   text-transform: uppercase;
 }
@@ -151,44 +162,49 @@ body {
   line-height: 1.2;
 }
 
-/* ── HOW IT WORKS strip ── */
+/* ── HOW IT WORKS strip (改用 Grid 排版) ── */
 .how-strip {
   background: var(--navy);
   margin-top: 70px;
-  padding: 60px 40px;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-  gap: 10px 0;
+  padding: 60px 20px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr); /* 手機版：左右兩列 */
+  gap: 40px 10px;
+}
+@media (min-width: 768px) {
+  .how-strip {
+    grid-template-columns: repeat(4, 1fr); /* 電腦版：橫向四個 */
+    padding: 60px 40px;
+    gap: 20px;
+  }
 }
 .how-item {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  flex: 1 1 220px;
-  padding: 30px 28px;
+  padding: 10px;
   color: #fff;
   position: relative;
 }
-.how-item:not(:last-child)::after {
-  content: '→';
-  position: absolute;
-  right: -8px;
-  top: 50%;
-  transform: translateY(-50%);
-  font-size: 2rem;
-  color: var(--gold);
-  display: none;
-}
+/* 電腦版的箭頭指標 */
 @media (min-width: 768px) {
-  .how-item:not(:last-child)::after { display: block; }
+  .how-item:not(:last-child)::after {
+    content: '→';
+    position: absolute;
+    right: -15px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 2rem;
+    color: var(--orange);
+    display: block;
+  }
 }
 .how-num {
   width: 64px; height: 64px;
   border-radius: 50%;
-  background: var(--gold);
-  color: var(--navy);
+  background: var(--orange);
+  color: #fff;
   font-size: 1.8rem;
   font-weight: 900;
   display: flex;
@@ -236,7 +252,7 @@ body {
   box-shadow: 0 24px 56px rgba(15,35,64,0.15);
 }
 .plan-card.featured {
-  border-color: var(--gold);
+  border-color: var(--orange);
 }
 
 .plan-header {
@@ -245,7 +261,7 @@ body {
   position: relative;
 }
 .plan-header.navy { background: var(--navy); }
-.plan-header.gold  { background: linear-gradient(135deg, #8B6200, #C28E3A); }
+.plan-header.orange-bg  { background: linear-gradient(135deg, #FF7A00, #D35400); }
 .plan-header.teal  { background: linear-gradient(135deg, #1A4744, #2E7A6E); }
 
 .plan-badge {
@@ -260,9 +276,9 @@ body {
   margin-bottom: 20px;
 }
 .plan-badge.highlight {
-  background: var(--gold);
-  border-color: var(--gold);
-  color: var(--navy);
+  background: var(--orange);
+  border-color: var(--orange);
+  color: #fff;
 }
 
 .plan-name {
@@ -324,7 +340,7 @@ body {
   flex-shrink: 0;
 }
 .icon-navy { background: #EDF2FA; }
-.icon-gold  { background: #FDF6E3; }
+.icon-orange  { background: #FFF0E5; }
 .icon-teal  { background: #E6F4F1; }
 .plan-info-text {}
 .plan-info-label {
@@ -373,19 +389,19 @@ body {
   transform: translateY(-2px);
   box-shadow: 0 8px 20px rgba(15,35,64,0.25);
 }
-.plan-cta.gold-cta {
-  background: var(--gold);
-  color: var(--navy);
-  box-shadow: 0 6px 20px rgba(214,168,72,0.3);
+.plan-cta.orange-cta {
+  background: var(--orange);
+  color: #fff;
+  box-shadow: 0 6px 20px rgba(255, 122, 0, 0.3);
 }
-.plan-cta.gold-cta:hover { background: #c28e3a; }
+.plan-cta.orange-cta:hover { background: #FF8F2B; }
 
 /* ── POPULAR RIBBON ── */
 .popular-ribbon {
   position: absolute;
   top: 20px; right: -8px;
-  background: var(--gold);
-  color: var(--navy);
+  background: var(--orange);
+  color: #fff;
   font-size: 1rem;
   font-weight: 900;
   padding: 6px 22px 6px 16px;
@@ -398,7 +414,7 @@ body {
   position: absolute;
   right: -10px; bottom: 0;
   border: 10px solid transparent;
-  border-left: 10px solid #B8861A;
+  border-left: 10px solid var(--orange-dark);
   border-bottom: 0;
 }
 
@@ -412,7 +428,7 @@ body {
   font-size: clamp(1rem, 2vw, 1.2rem);
   font-weight: 900;
   letter-spacing: 4px;
-  color: var(--gold);
+  color: var(--orange);
   margin-bottom: 32px;
   display: block;
 }
@@ -436,7 +452,7 @@ body {
   transition: background 0.25s, transform 0.25s;
   cursor: default;
 }
-.tag:hover { background: var(--gold); color: var(--navy); border-color: var(--gold); transform: translateY(-3px); }
+.tag:hover { background: var(--orange); color: #fff; border-color: var(--orange); transform: translateY(-3px); }
 
 /* ── CTA ── */
 .cta-section {
@@ -516,8 +532,8 @@ body {
 }
 .form-group input:focus,
 .form-group textarea:focus {
-  border-color: var(--gold);
-  box-shadow: 0 0 0 4px rgba(214,168,72,0.15);
+  border-color: var(--orange);
+  box-shadow: 0 0 0 4px rgba(255,122,0,0.15);
   background: #fff;
 }
 .btn-submit {
@@ -553,7 +569,7 @@ footer {
   padding: 32px 20px;
   font-size: clamp(0.95rem, 2vw, 1.1rem);
 }
-footer a { color: var(--gold); text-decoration: none; }
+footer a { color: var(--orange); text-decoration: none; }
 
 /* ── UTILITIES ── */
 .text-center { text-align: center; }
@@ -565,17 +581,22 @@ footer a { color: var(--gold); text-decoration: none; }
 <header class="hero">
   <div class="hero-badge">線上 1 對 1 美語家教</div>
   <h1>一堂課<br><span>只要 450 點</span><br>起</h1>
+  
+  <!-- 加入了手機專用與電腦專用顯示邏輯，強制客製化課程掉到第二行 -->
   <p class="hero-sub">
-    每堂 50 分鐘 ✦ 全程 1 對 1 ✦ 客製化課程<br>
+    每堂 50 分鐘 ✦ 全程 1 對 1 <span class="hide-mobile">✦</span><br class="show-mobile">
+    客製化課程 <span class="show-mobile">✦</span><br class="hide-mobile">
     彈性排課 ✦ 多方案自由選擇
   </p>
+
   <div class="hero-btns">
-    <a href="https://tonyonlineenglish.netlify.app/exper" class="btn btn-gold">→ 立即預約體驗課</a>
+    <!-- 按鈕文字改為課程方案，並且加上了錨點 #pricing 跳轉 -->
+    <a href="#pricing" class="btn btn-orange">→ 課程方案</a>
     <a href="https://tonyonlineenglish.netlify.app/allcourses" class="btn btn-outline">查看所有課程</a>
   </div>
 </header>
 
-<!-- ═══ HOW IT WORKS ═══ -->
+<!-- ═══ HOW IT WORKS (手機版改為 2x2 排版) ═══ -->
 <div class="how-strip">
   <div class="how-item">
     <div class="how-num">1</div>
@@ -599,8 +620,8 @@ footer a { color: var(--gold); text-decoration: none; }
   </div>
 </div>
 
-<!-- ═══ PRICING ═══ -->
-<section class="pricing-section">
+<!-- ═══ PRICING (加入了 id="pricing" 讓按鈕可以滑下來) ═══ -->
+<section class="pricing-section" id="pricing">
   <div class="section-label">
     <span class="eyebrow">PRICING PLANS</span>
     <h2>選擇最適合你的方案</h2>
@@ -636,13 +657,14 @@ footer a { color: var(--gold); text-decoration: none; }
           </div>
         </div>
         <div class="plan-note">＊ 其他時段也可預約，點數略有不同，請洽 Tony 老師確認。</div>
-        <a href="https://tonyonlineenglish.netlify.app/exper" class="plan-cta">立即預約體驗 →</a>
+        <!-- 這裡的 450 方案按鈕加上了 orange-cta 改為橘色 -->
+        <a href="https://tonyonlineenglish.netlify.app/exper" class="plan-cta orange-cta">立即預約體驗 →</a>
       </div>
     </article>
 
     <!-- 方案二：每週一堂 500點 -->
     <article class="plan-card">
-      <div class="plan-header gold" style="position:relative;">
+      <div class="plan-header orange-bg" style="position:relative;">
         <span class="plan-badge">維持語感</span>
         <div class="plan-name">每週一堂</div>
         <div class="plan-freq">穩定累積英語實力</div>
@@ -653,21 +675,21 @@ footer a { color: var(--gold); text-decoration: none; }
       </div>
       <div class="plan-body">
         <div class="plan-info-row">
-          <div class="plan-info-icon icon-gold">📅</div>
+          <div class="plan-info-icon icon-orange">📅</div>
           <div class="plan-info-text">
             <div class="plan-info-label">上課頻率</div>
             <div class="plan-info-val">每週固定一堂・50分/堂</div>
           </div>
         </div>
         <div class="plan-info-row">
-          <div class="plan-info-icon icon-gold">🕙</div>
+          <div class="plan-info-icon icon-orange">🕙</div>
           <div class="plan-info-text">
             <div class="plan-info-label">適用時段</div>
             <div class="plan-info-val">平常日 週一～週五<br>上午 10:00 ～ 下午 5:00</div>
           </div>
         </div>
         <div class="plan-note">＊ 其他時段也可預約，點數略有不同，請洽 Tony 老師確認。</div>
-        <a href="https://tonyonlineenglish.netlify.app/exper" class="plan-cta gold-cta">立即預約體驗 →</a>
+        <a href="https://tonyonlineenglish.netlify.app/exper" class="plan-cta">立即預約體驗 →</a>
       </div>
     </article>
 
