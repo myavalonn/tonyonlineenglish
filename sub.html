@@ -13,7 +13,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&family=Noto+Serif+TC:wght@700;900&display=swap" rel="stylesheet">
-   <style>
+
+<!-- 已經將 layout-manager.js 移到正確的位置 -->
+<script src="layout-manager.js" defer></script>
+
+<style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
@@ -57,7 +61,7 @@ body {
   text-align: center;
   padding: 60px 24px 80px;
   color: #fff;
-  overflow: hidden; /* 防止背景由下往上滑動時產生滾動條 */
+  overflow: hidden; 
 }
 
 /* 背景圖片：由下往上滑入動畫 (耗時 1.2 秒) */
@@ -83,7 +87,6 @@ body {
 
 .hero > * { position: relative; z-index: 1; }
 
-/* 文字區塊：與背景圖片同時開始進場，最晚的按鈕在 1.6 秒時完全顯示 */
 .hero-badge {
   display: inline-block;
   background: var(--orange);
@@ -137,146 +140,60 @@ body {
   cursor: pointer;
   border: none;
 }
-.btn-orange {
-  background: var(--orange);
-  color: #fff;
-  box-shadow: 0 8px 28px rgba(255, 122, 0, 0.4);
-}
+.btn-orange { background: var(--orange); color: #fff; box-shadow: 0 8px 28px rgba(255, 122, 0, 0.4); }
 .btn-orange:hover { background: #FF8F2B; transform: translateY(-3px); box-shadow: 0 14px 36px rgba(255, 122, 0, 0.5); }
-.btn-outline {
-  background: rgba(255,255,255,0.1);
-  color: #fff;
-  border: 2.5px solid rgba(255,255,255,0.7);
-  backdrop-filter: blur(6px);
-}
+.btn-outline { background: rgba(255,255,255,0.1); color: #fff; border: 2.5px solid rgba(255,255,255,0.7); backdrop-filter: blur(6px); }
 .btn-outline:hover { background: #fff; color: var(--navy); transform: translateY(-3px); }
 
-/* 文字向下淡入 */
 @keyframes fadeDown {
   from { opacity: 0; transform: translateY(24px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-
-/* 圖片由下往上滑入 */
 @keyframes slideUpBg {
   from { transform: translateY(100%); }
   to   { transform: translateY(0); }
 }
-
-/* 背景變暗遮罩淡入 */
 @keyframes fadeInOverlay {
   from { opacity: 0; }
   to   { opacity: 1; }
 }
 
 /* ── SECTION LABEL ── */
-.section-label {
-  text-align: center;
-  padding: 90px 24px 0;
-}
-.section-label .eyebrow {
-  display: inline-block;
-  font-size: clamp(1rem, 2vw, 1.25rem);
-  font-weight: 900;
-  letter-spacing: 4px;
-  color: var(--orange-dark);
-  margin-bottom: 14px;
-  text-transform: uppercase;
-}
-.section-label h2 {
-  font-family: 'Noto Serif TC', serif;
-  font-size: clamp(2.4rem, 6vw, 4rem);
-  font-weight: 900;
-  color: var(--navy);
-  line-height: 1.2;
-}
+.section-label { text-align: center; padding: 90px 24px 0; }
+.section-label .eyebrow { display: inline-block; font-size: clamp(1rem, 2vw, 1.25rem); font-weight: 900; letter-spacing: 4px; color: var(--orange-dark); margin-bottom: 14px; text-transform: uppercase; }
+.section-label h2 { font-family: 'Noto Serif TC', serif; font-size: clamp(2.4rem, 6vw, 4rem); font-weight: 900; color: var(--navy); line-height: 1.2; }
 
 /* ── HOW IT WORKS ── */
-.how-strip {
-  background: var(--navy);
-  margin-top: 70px;
-  padding: 60px 20px;
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 40px 10px;
-}
-@media (min-width: 768px) {
-  .how-strip {
-    grid-template-columns: repeat(4, 1fr);
-    padding: 60px 40px;
-    gap: 20px;
-  }
-}
-.how-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  padding: 10px;
-  color: #fff;
-  position: relative;
-}
-@media (min-width: 768px) {
-  .how-item:not(:last-child)::after {
-    content: '→';
-    position: absolute;
-    right: -15px;
-    top: 50%;
-    transform: translateY(-50%);
-    font-size: 2rem;
-    color: var(--orange);
-    display: block;
-  }
-}
-.how-num {
-  width: 64px; height: 64px;
-  border-radius: 50%;
-  background: var(--orange);
-  color: #fff;
-  font-size: 1.8rem;
-  font-weight: 900;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 18px;
-  flex-shrink: 0;
-}
+.how-strip { background: var(--navy); margin-top: 70px; padding: 60px 20px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 40px 10px; }
+@media (min-width: 768px) { .how-strip { grid-template-columns: repeat(4, 1fr); padding: 60px 40px; gap: 20px; } }
+.how-item { display: flex; flex-direction: column; align-items: center; text-align: center; padding: 10px; color: #fff; position: relative; }
+@media (min-width: 768px) { .how-item:not(:last-child)::after { content: '→'; position: absolute; right: -15px; top: 50%; transform: translateY(-50%); font-size: 2rem; color: var(--orange); display: block; } }
+.how-num { width: 64px; height: 64px; border-radius: 50%; background: var(--orange); color: #fff; font-size: 1.8rem; font-weight: 900; display: flex; align-items: center; justify-content: center; margin-bottom: 18px; flex-shrink: 0; }
 .how-title { font-size: clamp(1.2rem, 2.5vw, 1.55rem); font-weight: 900; margin-bottom: 8px; }
 .how-desc { font-size: clamp(1rem, 2vw, 1.15rem); color: rgba(255,255,255,0.72); line-height: 1.7; }
 
 /* ── PRICING CARDS ── */
-.pricing-section {
-  padding: 60px 24px 100px;
-}
-
-/* 手機版：維持 1 列直排 */
-.cards-grid {
-  max-width: 1200px;
-  margin: 50px auto 0;
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 28px;
-  align-items: stretch;
-}
-
-/* 共通卡片樣式 */
-.plan-card {
-  background: #fff;
-  border-radius: 24px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0 8px 32px rgba(15,35,64,0.08);
-  transition: transform 0.3s cubic-bezier(0.165,0.84,0.44,1), box-shadow 0.3s;
-  border: 2.5px solid transparent;
-}
+.pricing-section { padding: 60px 24px 100px; }
+.cards-grid { max-width: 1200px; margin: 50px auto 0; display: grid; grid-template-columns: 1fr; gap: 28px; align-items: stretch; }
+.plan-card { background: #fff; border-radius: 24px; overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 8px 32px rgba(15,35,64,0.08); transition: transform 0.3s cubic-bezier(0.165,0.84,0.44,1), box-shadow 0.3s; border: 2.5px solid transparent; }
 .plan-card:hover { transform: translateY(-10px); box-shadow: 0 24px 56px rgba(15,35,64,0.15); }
 .plan-card.featured { border-color: var(--orange); }
 
 .plan-header { color: #fff; position: relative; }
 .plan-header.navy { background: var(--navy); }
-.plan-header.orange-bg  { background: linear-gradient(135deg, #FF7A00, #D35400); }
 .plan-header.teal  { background: linear-gradient(135deg, #1A4744, #2E7A6E); }
+
+/* --- 方案2：橘色背景，黑色字體專屬設定 --- */
+.plan-header.orange-bg  { 
+  background: linear-gradient(135deg, #FF7A00, #D35400); 
+  color: var(--text-dark); /* 字樣變成黑色 */
+}
+.plan-header.orange-bg .plan-badge {
+  background: rgba(0, 0, 0, 0.08);
+  border-color: rgba(0, 0, 0, 0.3);
+  color: var(--text-dark);
+}
+/* -------------------------------------- */
 
 .plan-badge { display: inline-block; font-weight: 900; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.4); border-radius: 100px; letter-spacing: 1px; }
 .plan-badge.highlight { background: var(--orange); border-color: var(--orange); color: #fff; }
@@ -285,11 +202,13 @@ body {
 .plan-freq { font-weight: 700; opacity: 0.85; }
 
 .plan-price-block { display: flex; align-items: flex-end; gap: 6px; border-top: 1.5px solid rgba(255,255,255,0.2); }
+/* 修正方案二的底線顏色，讓它在黑色字體下更明顯 */
+.plan-header.orange-bg .plan-price-block { border-top: 1.5px solid rgba(0,0,0,0.15); }
+
 .plan-price-num { font-weight: 900; line-height: 1; }
 .plan-price-unit { font-weight: 700; opacity: 0.9; padding-bottom: 4px; }
 
 .plan-body { flex: 1; display: flex; flex-direction: column; gap: 0; }
-
 .plan-info-row { display: flex; align-items: flex-start; border-bottom: 1px solid rgba(15,35,64,0.08); }
 .plan-info-row:last-of-type { border-bottom: none; }
 .plan-info-icon { border-radius: 10px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
@@ -299,9 +218,7 @@ body {
 
 .plan-info-label { font-weight: 700; color: var(--text-mid); letter-spacing: 1px; margin-bottom: 2px; }
 .plan-info-val { font-weight: 700; color: var(--text-dark); line-height: 1.5; }
-
 .plan-note { background: #FFF5F5; border-left: 4px solid var(--red-alert); border-radius: 0 10px 10px 0; font-weight: 700; color: var(--red-alert); line-height: 1.6; }
-
 .plan-cta { display: block; background: var(--navy); color: #fff; text-align: center; text-decoration: none; font-weight: 900; border-radius: 14px; letter-spacing: 2px; transition: background 0.25s, transform 0.25s, box-shadow 0.25s; margin-top: auto; }
 .plan-cta:hover { background: #1e3d70; transform: translateY(-2px); box-shadow: 0 8px 20px rgba(15,35,64,0.25); }
 .plan-cta.orange-cta { background: var(--orange); box-shadow: 0 6px 20px rgba(255, 122, 0, 0.3); }
@@ -310,7 +227,7 @@ body {
 .popular-ribbon { position: absolute; background: var(--orange); color: #fff; font-weight: 900; border-radius: 4px 0 0 4px; box-shadow: 2px 2px 8px rgba(0,0,0,0.2); }
 .popular-ribbon::after { content: ''; position: absolute; right: -10px; bottom: 0; border: 10px solid transparent; border-left: 10px solid var(--orange-dark); border-bottom: 0; }
 
-/* 手機版預設數值 ( < 768px ) */
+/* 響應式尺寸設定 */
 .plan-header { padding: 32px 28px 24px; }
 .plan-badge { font-size: 1.1rem; padding: 6px 20px; margin-bottom: 16px; }
 .plan-name { font-size: 2.5rem; margin-bottom: 6px; }
@@ -327,7 +244,6 @@ body {
 .plan-cta { font-size: 1.25rem; padding: 18px; }
 .popular-ribbon { font-size: 1rem; padding: 6px 20px 6px 14px; top: 16px; right: -8px; }
 
-/* 平板專屬設定 (768px ~ 1023px) 讓它呈現三個並排的長方形 */
 @media (min-width: 768px) {
   .cards-grid { grid-template-columns: repeat(3, 1fr); gap: 16px; }
   .plan-card { border-radius: 18px; }
@@ -348,7 +264,6 @@ body {
   .popular-ribbon { font-size: 0.85rem; padding: 4px 12px 4px 10px; top: 12px; right: -8px; }
 }
 
-/* 桌機大螢幕設定 (1024px 以上) 放寬間距與字體 */
 @media (min-width: 1024px) {
   .cards-grid { gap: 32px; }
   .plan-card { border-radius: 28px; }
@@ -397,14 +312,12 @@ body {
 
 footer { background: #060F1E; color: rgba(255,255,255,0.45); text-align: center; padding: 32px 20px; font-size: clamp(0.95rem, 2vw, 1.1rem); }
 footer a { color: var(--orange); text-decoration: none; }
-
-.text-center { text-align: center; }
 </style>
 </head>
 <body>
 
-<!-- ═══ HERO ═══ -->
-<header class="hero">
+<!-- 注意：這裡已經從 <header> 改成 <section> 以避免和 layout-manager 衝突 -->
+<section class="hero">
   <div class="hero-badge">線上 1 對 1 美語家教</div>
   <h1>一堂課<br><span>只要 450 點</span><br>起</h1>
   
@@ -418,7 +331,7 @@ footer a { color: var(--orange); text-decoration: none; }
     <a href="#pricing" class="btn btn-orange">→ 課程方案</a>
     <a href="https://tonyonlineenglish.netlify.app/allcourses" class="btn btn-outline">查看所有課程</a>
   </div>
-</header>
+</section>
 
 <!-- ═══ HOW IT WORKS ═══ -->
 <div class="how-strip">
@@ -462,12 +375,10 @@ footer a { color: var(--orange); text-decoration: none; }
         <div class="plan-freq">快速提升英語能力</div>
         <div class="plan-price-block">
           <div class="plan-price-num">450</div>
-          <!-- 這裡融入了 50分 資訊 -->
           <div class="plan-price-unit">點 / 50分</div>
         </div>
       </div>
       <div class="plan-body">
-        <!-- 已刪除上課頻率行 -->
         <div class="plan-info-row">
           <div class="plan-info-icon icon-navy">🕙</div>
           <div class="plan-info-text">
@@ -480,7 +391,7 @@ footer a { color: var(--orange); text-decoration: none; }
       </div>
     </article>
 
-    <!-- 方案二：每週一堂 500點 -->
+    <!-- 方案二：每週一堂 500點 (已套用橘底黑字) -->
     <article class="plan-card">
       <div class="plan-header orange-bg">
         <span class="plan-badge">維持語感</span>
@@ -488,12 +399,10 @@ footer a { color: var(--orange); text-decoration: none; }
         <div class="plan-freq">穩定累積英語實力</div>
         <div class="plan-price-block">
           <div class="plan-price-num">500</div>
-          <!-- 這裡融入了 50分 資訊 -->
           <div class="plan-price-unit">點 / 50分</div>
         </div>
       </div>
       <div class="plan-body">
-        <!-- 已刪除上課頻率行 -->
         <div class="plan-info-row">
           <div class="plan-info-icon icon-orange">🕙</div>
           <div class="plan-info-text">
@@ -511,16 +420,13 @@ footer a { color: var(--orange); text-decoration: none; }
       <div class="plan-header teal">
         <span class="plan-badge">最大彈性</span>
         <div class="plan-name">自由混搭</div>
-        <!-- 第三卡片的特色移入副標題 -->
         <div class="plan-freq">一堂或兩堂，每月自由調整</div>
         <div class="plan-price-block">
           <div class="plan-price-num">550</div>
-          <!-- 這裡融入了 50分 資訊 -->
           <div class="plan-price-unit">點 / 50分</div>
         </div>
       </div>
       <div class="plan-body">
-        <!-- 已刪除上課頻率行 -->
         <div class="plan-info-row">
           <div class="plan-info-icon icon-teal">🕙</div>
           <div class="plan-info-text">
