@@ -372,7 +372,7 @@
     @keyframes spin { to { transform: rotate(360deg); } }
 
     /* =========================================================
-       NEW INTRO ANIMATION
+       NEW INTRO ANIMATION (4-5s Version)
        ========================================================= */
     #loading-overlay {
         position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -433,7 +433,8 @@
     .avatar-box::before { top: 0; left: 0; border-right: none; border-bottom: none; }
     .avatar-box::after { bottom: 0; right: 0; border-left: none; border-top: none; }
 
-    .avatar-1 { animation: sceneTransition1 4s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+    /* --- 動畫時間壓縮版 --- */
+    .avatar-1 { animation: sceneTransition1 2.5s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
     @keyframes sceneTransition1 {
         0%   { opacity: 0; top: 22%; left: 50%; transform: translate(-50%, -50%) scale(0.3); }
         12%  { opacity: 1; top: 22%; left: 50%; transform: translate(-50%, -50%) scale(1.1); }
@@ -445,7 +446,7 @@
     .cross-mark {
         position: absolute; font-family: 'Rajdhani', sans-serif;
         font-weight: 900; color: var(--primary-orange); z-index: 20;
-        animation: sceneTransitionX 4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+        animation: sceneTransitionX 2.5s cubic-bezier(0.25, 1, 0.5, 1) forwards;
     }
     @keyframes sceneTransitionX {
         0%, 17% { opacity: 0; top: 50%; left: 50%; font-size: 5.5rem; transform: translate(-50%, -50%) scale(0) rotate(-90deg); }
@@ -455,7 +456,7 @@
         100% { opacity: 1; top: 15%; left: 50%; font-size: 5.5rem; transform: translate(-50%, -50%) scale(0.4) rotate(0deg); text-shadow: 0 0 10px rgba(255,107,0,0.4); }
     }
 
-    .avatar-2 { animation: sceneTransition2 4s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
+    .avatar-2 { animation: sceneTransition2 2.5s cubic-bezier(0.25, 1, 0.5, 1) forwards; }
     @keyframes sceneTransition2 {
         0%, 35% { opacity: 0; top: 78%; left: 50%; transform: translate(-50%, -50%) scale(0.3); }
         43% { opacity: 1; top: 78%; left: 50%; transform: translate(-50%, -50%) scale(1.1); }
@@ -471,7 +472,7 @@
 
     .brand-section {
         opacity: 0; transform: translateX(-30px);
-        animation: flyInLeft 1.2s cubic-bezier(0.1, 0.8, 0.2, 1) forwards 4.2s;
+        animation: flyInLeft 0.8s cubic-bezier(0.1, 0.8, 0.2, 1) forwards 2.5s;
     }
     .brand-zh { font-size: 1.8rem; font-weight: 900; color: var(--ai-gray); line-height: 1.2; margin: 0; }
     .brand-zh span { color: var(--primary-orange); }
@@ -479,7 +480,7 @@
 
     .update-section {
         opacity: 0; transform: translateX(30px); text-align: right; border-right: 4px solid var(--primary-orange); padding-right: 15px;
-        animation: flyInRight 1.2s cubic-bezier(0.1, 0.8, 0.2, 1) forwards 4.6s;
+        animation: flyInRight 0.8s cubic-bezier(0.1, 0.8, 0.2, 1) forwards 2.8s;
     }
     .update-zh { font-size: 2.2rem; font-weight: 900; color: #0f172a; line-height: 1.2; margin: 0; }
     .update-en { font-size: 0.95rem; font-weight: 700; margin-top: 5px; }
@@ -488,7 +489,7 @@
         position: relative; background: rgba(255, 255, 255, 0.8); border: 1px solid rgba(255, 107, 0, 0.3);
         backdrop-filter: blur(10px); padding: 1.8rem 1rem; text-align: center; border-radius: 8px;
         box-shadow: 0 10px 30px rgba(255, 107, 0, 0.1); opacity: 0; transform: translateY(30px);
-        animation: flyInUp 1.2s cubic-bezier(0.1, 0.8, 0.2, 1) forwards 5.0s;
+        animation: flyInUp 0.8s cubic-bezier(0.1, 0.8, 0.2, 1) forwards 3.1s;
     }
     .feature-box::before, .feature-box::after {
         content: ''; position: absolute; width: 30px; height: 30px; border: 4px solid var(--primary-orange);
@@ -1481,7 +1482,7 @@
 <!-- Hot panel 遮罩 -->
 <div id="hqf-overlay" onclick="closeHotQuickForm()" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:4999;"></div>
 
-<!-- NEW INTRO ANIMATION -->
+<!-- NEW INTRO ANIMATION (4-5s Version) -->
 <div id="loading-overlay">
     <div class="mobile-frame">
         <!-- 背景裝飾 -->
@@ -1751,18 +1752,19 @@
       }
   }
 
-  // === NEW INTRO ANIMATION LOGIC ===
+  // === INTRO ANIMATION LOGIC ===
   let isLoadingStepsDone = false; let isCalendarDataReady = false;
 
   function runLoadingSteps() {
-      // 動畫完整時長約為 6.2s 左右結束。設定 7.0s 作為隱藏檢查的觸發點
+      // 設定 3.8 秒作為「最低播放時間」，確保文字有時間飛進來
       setTimeout(() => {
           isLoadingStepsDone = true;
           checkAndHideLoading();
-      }, 7000);
+      }, 3800);
   }
 
   function checkAndHideLoading() {
+      // 必須滿足：1. 動畫跑完最低時間 (3.8秒) + 2. API背景資料抓取完畢
       if (isLoadingStepsDone && isCalendarDataReady) {
           const overlay = document.getElementById("loading-overlay");
           if (overlay && overlay.style.display !== "none") {
@@ -1773,18 +1775,22 @@
       }
   }
   
-  function hideLoading(isForce = false) { isCalendarDataReady = true; checkAndHideLoading(); }
+  // API 讀取完畢時會呼叫此函數
+  function hideLoading(isForce = false) { 
+      isCalendarDataReady = true; 
+      checkAndHideLoading(); 
+  }
 
-  // 避免遇到極端網路問題的「強制關閉」保護機制 (延長到 8 秒，確保動畫能跑完)
+  // 網路極端緩慢的「強制關閉」保護機制 (設定為 5.5 秒)
   (function(){
       setTimeout(function(){
           var o = document.getElementById("loading-overlay");
           if (o && o.style.display !== "none") { 
               alignToHeader(true); 
               o.style.opacity="0"; o.style.pointerEvents="none"; 
-              setTimeout(function(){ o.style.display="none"; }, 500); 
+              setTimeout(function(){ o.style.display="none"; playIntroAnimation(); }, 500); 
           }
-      }, 8500);
+      }, 5500);
   })();
 
   const API_URL = "https://script.google.com/macros/s/AKfycbyWvhW6fp_ohPEvPK226KtNiQLCyAVMl77zV0Hq0k_TcEk3F1ni9qVcJystGUovVjTMGQ/exec";
@@ -1905,8 +1911,8 @@
 
   window.onload = function() {
     setTimeout(runLoadingSteps, 100);
-    // 強制隱藏超時機制（比起動畫結束時間略長 7.5 秒）
-    setTimeout(() => { hideLoading(true); }, 7500); 
+    // 遇到無法讀取時的強制解鎖時間改回 5.0 秒
+    setTimeout(() => { hideLoading(true); }, 5000); 
     setTimeout(() => {
         document.querySelectorAll('.date-pill.loading').forEach(pill => { pill.classList.remove('loading'); pill.classList.add('loaded','force-loaded'); });
         const msg = document.getElementById("empty-msg"); if(msg && msg.innerText.includes("中...")) msg.innerText="請點選日期重新載入";
@@ -2990,3 +2996,4 @@
 </script>
 </body>
 </html>
+
