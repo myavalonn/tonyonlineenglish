@@ -14,9 +14,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;700;900&family=Noto+Serif+TC:wght@700;900&display=swap" rel="stylesheet">
 
-<!-- 已經將 layout-manager.js 移到正確的位置 -->
-<script src="layout-manager.js" defer></script>
-
 <style>
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -50,42 +47,47 @@ body {
   .hide-mobile { display: none; }
 }
 
-/* ── HERO ── */
+/* ── HERO (修復動畫結構) ── */
 .hero {
   position: relative;
   min-height: 100svh;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  text-align: center;
-  padding: 60px 24px 80px;
-  color: #fff;
-  overflow: hidden; 
+  overflow: hidden; /* 防止滑動產生卷軸 */
 }
 
-/* 背景圖片：由下往上滑入動畫 (耗時 1.2 秒) */
-.hero::after {
-  content: '';
+/* 背景圖層 (改用正數 z-index: 1) */
+.hero-bg {
   position: absolute;
   inset: 0;
   background: url('https://ik.imagekit.io/lql1uveoc/IMG_8926.jpeg') center/cover no-repeat;
-  z-index: -2;
+  z-index: 1; 
   animation: slideUpBg 1.2s cubic-bezier(0.25, 1, 0.5, 1) forwards;
 }
 
-/* 背景變暗遮罩：等文字全部顯示完畢(延遲 1.6 秒)後才開始變暗 */
-.hero::before {
-  content: '';
+/* 黑色漸層遮罩 (改用正數 z-index: 2) */
+.hero-overlay {
   position: absolute;
   inset: 0;
   background: linear-gradient(170deg, rgba(10,22,42,0.94) 0%, rgba(15,35,64,0.82) 100%);
-  z-index: -1;
+  z-index: 2;
   opacity: 0;
   animation: fadeInOverlay 1s 1.6s ease forwards;
 }
 
-.hero > * { position: relative; z-index: 1; }
+/* 內容文字區 (最高層級 z-index: 3) */
+.hero-content {
+  position: relative;
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 60px 24px 80px;
+  color: #fff;
+  width: 100%;
+}
 
 .hero-badge {
   display: inline-block;
@@ -126,37 +128,17 @@ body {
   justify-content: center;
   animation: fadeDown 0.8s 0.8s ease both;
 }
-.btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  font-size: clamp(1.1rem, 2.5vw, 1.4rem);
-  font-weight: 900;
-  padding: 18px 48px;
-  border-radius: 100px;
-  text-decoration: none;
-  transition: transform 0.25s, box-shadow 0.25s, background 0.25s;
-  letter-spacing: 1px;
-  cursor: pointer;
-  border: none;
-}
+.btn { display: inline-flex; align-items: center; gap: 10px; font-size: clamp(1.1rem, 2.5vw, 1.4rem); font-weight: 900; padding: 18px 48px; border-radius: 100px; text-decoration: none; transition: transform 0.25s, box-shadow 0.25s, background 0.25s; letter-spacing: 1px; cursor: pointer; border: none; }
 .btn-orange { background: var(--orange); color: #fff; box-shadow: 0 8px 28px rgba(255, 122, 0, 0.4); }
 .btn-orange:hover { background: #FF8F2B; transform: translateY(-3px); box-shadow: 0 14px 36px rgba(255, 122, 0, 0.5); }
 .btn-outline { background: rgba(255,255,255,0.1); color: #fff; border: 2.5px solid rgba(255,255,255,0.7); backdrop-filter: blur(6px); }
 .btn-outline:hover { background: #fff; color: var(--navy); transform: translateY(-3px); }
 
-@keyframes fadeDown {
-  from { opacity: 0; transform: translateY(24px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-@keyframes slideUpBg {
-  from { transform: translateY(100%); }
-  to   { transform: translateY(0); }
-}
-@keyframes fadeInOverlay {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
+/* 動畫設定 */
+@keyframes fadeDown { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes slideUpBg { from { transform: translateY(100%); } to { transform: translateY(0); } }
+@keyframes fadeInOverlay { from { opacity: 0; } to { opacity: 1; } }
+
 
 /* ── SECTION LABEL ── */
 .section-label { text-align: center; padding: 90px 24px 0; }
@@ -184,27 +166,17 @@ body {
 .plan-header.teal  { background: linear-gradient(135deg, #1A4744, #2E7A6E); }
 
 /* --- 方案2：橘色背景，黑色字體專屬設定 --- */
-.plan-header.orange-bg  { 
-  background: linear-gradient(135deg, #FF7A00, #D35400); 
-  color: var(--text-dark); /* 字樣變成黑色 */
-}
-.plan-header.orange-bg .plan-badge {
-  background: rgba(0, 0, 0, 0.08);
-  border-color: rgba(0, 0, 0, 0.3);
-  color: var(--text-dark);
-}
+.plan-header.orange-bg  { background: linear-gradient(135deg, #FF7A00, #D35400); color: var(--text-dark); }
+.plan-header.orange-bg .plan-badge { background: rgba(0, 0, 0, 0.08); border-color: rgba(0, 0, 0, 0.3); color: var(--text-dark); }
+.plan-header.orange-bg .plan-price-block { border-top: 1.5px solid rgba(0,0,0,0.15); }
 /* -------------------------------------- */
 
 .plan-badge { display: inline-block; font-weight: 900; background: rgba(255,255,255,0.2); border: 1px solid rgba(255,255,255,0.4); border-radius: 100px; letter-spacing: 1px; }
 .plan-badge.highlight { background: var(--orange); border-color: var(--orange); color: #fff; }
-
 .plan-name { font-family: 'Noto Serif TC', serif; font-weight: 900; line-height: 1.15; }
 .plan-freq { font-weight: 700; opacity: 0.85; }
 
 .plan-price-block { display: flex; align-items: flex-end; gap: 6px; border-top: 1.5px solid rgba(255,255,255,0.2); }
-/* 修正方案二的底線顏色，讓它在黑色字體下更明顯 */
-.plan-header.orange-bg .plan-price-block { border-top: 1.5px solid rgba(0,0,0,0.15); }
-
 .plan-price-num { font-weight: 900; line-height: 1; }
 .plan-price-unit { font-weight: 700; opacity: 0.9; padding-bottom: 4px; }
 
@@ -316,20 +288,25 @@ footer a { color: var(--orange); text-decoration: none; }
 </head>
 <body>
 
-<!-- 注意：這裡已經從 <header> 改成 <section> 以避免和 layout-manager 衝突 -->
+<!-- 注意這裡：結構已經改掉，用實體 div 取代 ::after，徹底解決 z-index 消失問題 -->
 <section class="hero">
-  <div class="hero-badge">線上 1 對 1 美語家教</div>
-  <h1>一堂課<br><span>只要 450 點</span><br>起</h1>
+  <div class="hero-bg"></div>
+  <div class="hero-overlay"></div>
   
-  <p class="hero-sub">
-    每堂 50 分鐘 ✦ 全程 1 對 1 <span class="hide-mobile">✦</span><br class="show-mobile">
-    客製化課程 <span class="show-mobile">✦</span><br class="hide-mobile">
-    彈性排課 ✦ 多方案自由選擇
-  </p>
+  <div class="hero-content">
+    <div class="hero-badge">線上 1 對 1 美語家教</div>
+    <h1>一堂課<br><span>只要 450 點</span><br>起</h1>
+    
+    <p class="hero-sub">
+      每堂 50 分鐘 ✦ 全程 1 對 1 <span class="hide-mobile">✦</span><br class="show-mobile">
+      客製化課程 <span class="show-mobile">✦</span><br class="hide-mobile">
+      彈性排課 ✦ 多方案自由選擇
+    </p>
 
-  <div class="hero-btns">
-    <a href="#pricing" class="btn btn-orange">→ 課程方案</a>
-    <a href="https://tonyonlineenglish.netlify.app/allcourses" class="btn btn-outline">查看所有課程</a>
+    <div class="hero-btns">
+      <a href="#pricing" class="btn btn-orange">→ 課程方案</a>
+      <a href="https://tonyonlineenglish.netlify.app/allcourses" class="btn btn-outline">查看所有課程</a>
+    </div>
   </div>
 </section>
 
@@ -365,8 +342,6 @@ footer a { color: var(--orange); text-decoration: none; }
   </div>
 
   <div class="cards-grid">
-
-    <!-- 方案一：每週兩堂 450點 -->
     <article class="plan-card featured">
       <div class="plan-header navy">
         <div class="popular-ribbon">最受歡迎</div>
@@ -391,7 +366,6 @@ footer a { color: var(--orange); text-decoration: none; }
       </div>
     </article>
 
-    <!-- 方案二：每週一堂 500點 (已套用橘底黑字) -->
     <article class="plan-card">
       <div class="plan-header orange-bg">
         <span class="plan-badge">維持語感</span>
@@ -415,7 +389,6 @@ footer a { color: var(--orange); text-decoration: none; }
       </div>
     </article>
 
-    <!-- 方案三：混合訂閱 550點 -->
     <article class="plan-card">
       <div class="plan-header teal">
         <span class="plan-badge">最大彈性</span>
@@ -438,7 +411,6 @@ footer a { color: var(--orange); text-decoration: none; }
         <a href="https://tonyonlineenglish.netlify.app/exper" class="plan-cta">立即預約體驗 →</a>
       </div>
     </article>
-
   </div>
 </section>
 
@@ -526,5 +498,8 @@ function submitContactForm(e) {
     .finally(() => { btn.innerText = '送出訊息'; btn.disabled = false; });
 }
 </script>
+
+<!-- 將外部 JS 放到最底部，確保不干擾網頁初始渲染與 DOM 結構 -->
+<script src="layout-manager.js"></script>
 </body>
 </html>
