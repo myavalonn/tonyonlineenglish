@@ -122,7 +122,8 @@ body { background: var(--white); color: var(--ink); font-family: var(--f-body); 
     top: -5%; left: -5%; right: -5%; bottom: -5%; 
     background-image: url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/IMG_8859.jpeg'); 
     background-size: cover; 
-    background-position: center; 
+    /* 修改這裡：將對齊點改為上方，讓山與上面的空白保留 */
+    background-position: center top; 
     opacity: 0; 
     filter: brightness(1);
     animation: bgSlideUp 1.2s cubic-bezier(0.2, 0.8, 0.2, 1) forwards, bgDarken 1.5s ease-in-out forwards 1.6s; 
