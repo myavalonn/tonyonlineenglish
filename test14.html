@@ -12,14 +12,14 @@
   
   <script src="layout-manager.js"></script>
   <style>
+    /* 基礎重置與變數 */
     :root {
       --primary-dark: #0f172a; 
       --primary-blue: #2563eb;
       --accent-gold: #f59e0b;
       --danger-red: #ef4444;
-      --bg-light: #fdf8f1; /* 溫和溫暖的背景色 */
       --text-main: #334155;
-      --text-dark: #0f172a;
+      --text-dark: #000000;
     }
 
     *, *::before, *::after {
@@ -30,60 +30,61 @@
 
     body {
       font-family: 'Helvetica Neue', Helvetica, Arial, 'PingFang TC', '微軟正黑體', sans-serif;
-      background-color: var(--bg-light);
+      background-color: #fdf8f1; 
       color: var(--text-main);
-      line-height: 1.5;
-      word-break: break-word;
+      line-height: 1.6;
       -webkit-font-smoothing: antialiased;
     }
 
     /* =========================================
-       上方大標題與四個按鈕區塊
+       上方大標題區塊
        ========================================= */
-    .section-header {
+    .page-header {
       text-align: center;
-      padding: 2.5rem 1rem 0.5rem 1rem;
-      max-width: 900px;
-      margin: 0 auto;
+      padding: 3rem 1.5rem 1rem 1.5rem;
+      animation: fadeInDown 0.6s ease forwards;
     }
 
-    .section-header h1 {
-      font-size: clamp(1.8rem, 5vw, 2.6rem);
-      color: var(--primary-dark);
+    .page-title {
+      font-size: clamp(1.8rem, 5vw, 2.5rem);
       font-weight: 900;
-      letter-spacing: 1px;
+      color: var(--text-dark);
+      letter-spacing: 2px;
+      margin-bottom: 0.5rem;
     }
 
-    .section-header p {
-      font-size: clamp(1rem, 3vw, 1.25rem);
+    .page-subtitle {
+      font-size: clamp(1rem, 3vw, 1.2rem);
       color: var(--primary-blue);
       font-weight: bold;
-      margin-top: 5px;
     }
 
+    /* =========================================
+       四個按鈕 (規範重點區塊)
+       ========================================= */
     .bar-container {
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 1.2rem;
-      padding: 1.5rem 1rem 3rem 1rem;
-      max-width: 900px;
+      padding: 0 1.5rem 3rem 1.5rem;
+      max-width: 800px;
       margin: 0 auto;
     }
 
     .bar {
+      position: relative;
       width: 100%;
       border-radius: 20px;
-      padding: 1.2rem 2rem;
-      font-size: clamp(1.15rem, 3.2vw, 1.5rem); /* 響應式字體，確保手機上夠大 */
+      padding: 1.5rem 2rem;
       box-shadow: 0 8px 20px rgba(0, 0, 0, 0.06);
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
       display: flex;
       align-items: center;
-      gap: 15px;
-      animation: fadeInUp 0.6s ease forwards;
+      gap: 15px; /* 讓圖示與文字完美分開 */
+      animation: fadeInUp 0.8s ease forwards;
       opacity: 0;
-      transform: translateY(15px);
+      transform: translateY(20px);
     }
 
     .bar:hover {
@@ -91,54 +92,29 @@
       box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
     }
 
-    /* 按鈕個性化邊框與底色 */
+    /* 動畫延遲與各卡片顏色設定 */
     .bar1 { animation-delay: 0.1s; background: #ffffff; border-left: 8px solid #10b981; }
     .bar2 { animation-delay: 0.2s; background: #ffffff; border-left: 8px solid var(--primary-blue); }
-    .bar3 { animation-delay: 0.3s; background: #fff5f5; border-left: 8px solid var(--danger-red); }
-    .bar4 { animation-delay: 0.4s; background: var(--primary-dark); border-left: 8px solid #64748b; color: #ffffff; }
-
-    .bar-content {
-      display: flex;
-      flex-direction: column;
-      width: 100%;
-    }
-
-    /* 關鍵字突出 */
-    .bar-title {
-      font-weight: 900;
-      color: var(--text-dark);
-      display: flex;
-      align-items: center;
-      flex-wrap: wrap;
-    }
-    
-    .bar4 .bar-title {
-      color: #ffffff;
-    }
-
-    /* 黑色粗體強調（用於週六假日重點） */
-    .bar-important {
-      font-weight: 900;
-      color: #000000;
-      margin-top: 4px;
-      font-size: 0.95em;
-    }
-
-    .bar-important-red {
-      font-weight: 900;
-      color: var(--danger-red);
-      margin-top: 4px;
-      font-size: 0.95em;
-    }
+    .bar3 { animation-delay: 0.3s; background: #fffcfc; border-left: 8px solid var(--danger-red); }
+    .bar4 { animation-delay: 0.4s; background: var(--primary-dark); color: #ffffff; text-align: center; justify-content: center; }
 
     .rule-icon-img {
-      height: 2.2rem;
+      height: 36px;
       width: auto;
-      flex-shrink: 0;
+      flex-shrink: 0; /* 防止圖片被壓縮 */
     }
 
+    .bar-text-content {
+      flex: 1;
+      font-size: clamp(1.2rem, 4vw, 1.5rem);
+      font-weight: bold;
+      color: var(--text-dark);
+      line-height: 1.5;
+    }
+
+    /* 數字特別放大 */
     .number {
-      font-size: 1.45em;
+      font-size: 1.4em;
       font-weight: 900;
       margin: 0 4px;
     }
@@ -146,24 +122,40 @@
     .bar1 .number { color: #10b981; }
     .bar2 .number { color: var(--primary-blue); }
     .bar3 .number { color: var(--danger-red); }
+    
+    .text-black { color: var(--text-dark) !important; }
+
+    .rule-row {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap; /* 允許過長時自然換行，但不打斷數字 */
+    }
+
+    .sub-row {
+      margin-top: 8px;
+    }
+
+    /* 避免「24」跟「小時」被切斷 */
+    .nowrap {
+      white-space: nowrap;
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
     @keyframes fadeInUp {
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* 手機版排版調整：字體大、不換行 */
+    /* 手機版按鈕排版微調 */
     @media (max-width: 600px) {
-      .section-header { padding: 1.5rem 1rem 0.2rem 1rem; }
-      .bar-container { padding: 1rem 0.8rem 2rem 0.8rem; gap: 0.9rem; }
-      .bar { 
-        padding: 1.2rem 1.2rem; 
-        border-radius: 16px; 
-        font-size: 1.25rem; /* 手機版字體加大，更好讀 */
-        border-left-width: 6px;
-        gap: 10px;
-      }
-      .rule-icon-img { height: 1.8rem; }
-      .number { font-size: 1.35em; }
+      .bar-container { padding: 0 1rem 2rem 1rem; gap: 1rem; }
+      .bar { padding: 1.2rem; border-radius: 16px; border-left-width: 6px; }
+      .bar-text-content { font-size: 1.25rem; }
+      .rule-icon-img { height: 32px; }
+      .number { font-size: 1.5em; }
     }
 
     /* =========================================
@@ -172,11 +164,11 @@
     .extra-section {
       max-width: 900px;
       margin: 0 auto;
-      padding: 1rem 1.5rem;
+      padding: 2rem 1.5rem;
     }
 
     .faq-title {
-      font-size: clamp(1.5rem, 4vw, 2rem);
+      font-size: 2rem;
       color: var(--primary-dark);
       margin-bottom: 2rem;
       text-align: center;
@@ -187,10 +179,10 @@
     .faq-title::after {
       content: '';
       display: block;
-      width: 50px;
+      width: 60px;
       height: 4px;
       background: var(--accent-gold);
-      margin: 8px auto 0;
+      margin: 10px auto 0;
       border-radius: 2px;
     }
 
@@ -198,7 +190,7 @@
       background: #ffffff;
       border-radius: 12px;
       margin-bottom: 1rem;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.03);
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
       overflow: hidden;
       border: 1px solid #e2e8f0;
     }
@@ -208,10 +200,10 @@
       text-align: left;
       background: none;
       border: none;
-      font-size: clamp(1.1rem, 3vw, 1.25rem);
+      font-size: 1.25rem;
       font-weight: bold;
       color: var(--text-dark);
-      padding: 1.2rem 1.5rem;
+      padding: 1.5rem;
       cursor: pointer;
       display: flex;
       justify-content: space-between;
@@ -222,14 +214,12 @@
     .faq-question:hover { background: #f8fafc; }
     
     .faq-icon {
-      font-size: 1.4rem;
+      font-size: 1.5rem;
       color: var(--primary-blue);
       transition: transform 0.3s;
     }
     
-    .faq-question.active .faq-icon {
-      transform: rotate(45deg);
-    }
+    .faq-question.active .faq-icon { transform: rotate(45deg); }
 
     .faq-answer {
       max-height: 0;
@@ -240,32 +230,17 @@
 
     .faq-content {
       padding: 0 1.5rem 1.5rem 1.5rem;
-      font-size: clamp(1.05rem, 2.8vw, 1.15rem);
+      font-size: 1.15rem;
       color: #475569;
-      line-height: 1.7;
+      line-height: 1.8;
     }
 
-    .faq-content ul {
-      list-style: none;
-      padding-left: 0;
-    }
-
-    .faq-content li {
-      margin-bottom: 0.6rem;
-      padding-left: 1.2rem;
-      position: relative;
-    }
-
-    .faq-content li::before {
-      content: '❖';
-      position: absolute;
-      left: 0;
-      color: var(--accent-gold);
-    }
-
+    .faq-content ul { list-style: none; padding-left: 0; }
+    .faq-content li { margin-bottom: 0.8rem; padding-left: 1.5rem; position: relative; }
+    .faq-content li::before { content: '❖'; position: absolute; left: 0; color: var(--accent-gold); }
     .faq-content a {
       display: inline-block;
-      margin-top: 8px;
+      margin-top: 10px;
       color: var(--primary-blue);
       text-decoration: none;
       font-weight: bold;
@@ -275,7 +250,7 @@
     .highlight-box {
       background: #fff8e6;
       border-left: 4px solid var(--accent-gold);
-      padding: 1rem;
+      padding: 1rem 1.5rem;
       margin-top: 1rem;
       border-radius: 0 8px 8px 0;
       color: var(--text-dark);
@@ -286,132 +261,125 @@
        公告區塊
        ========================================= */
     .announcement-box {
-      margin: 2rem 0 4rem 0;
-      padding: 2.5rem 2rem;
+      margin: 3rem 0;
+      padding: 3rem;
       background: #ffffff;
       border-radius: 20px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.06);
+      box-shadow: 0 15px 40px rgba(0,0,0,0.08);
       border-top: 8px solid var(--primary-blue);
       text-align: center;
     }
 
-    .announcement-title {
-      font-size: clamp(1.4rem, 4vw, 1.8rem);
-      color: var(--primary-blue);
-      font-weight: 900;
-      margin-bottom: 1.5rem;
-    }
-
-    .announcement-box p {
-      font-size: clamp(1.1rem, 3vw, 1.2rem);
-      margin-bottom: 1rem;
-      color: var(--text-main);
-    }
-
+    .announcement-title { font-size: 1.8rem; color: var(--primary-blue); font-weight: 900; margin-bottom: 1.5rem; }
+    .announcement-box p { font-size: 1.2rem; margin-bottom: 1rem; color: var(--text-main); }
+    
     .hr-divider {
       border: 0;
       height: 1px;
-      background: linear-gradient(to right, transparent, #e2e8f0, transparent);
-      margin: 1.5rem 0;
+      background: linear-gradient(to right, transparent, #cbd5e1, transparent);
+      margin: 2rem 0;
     }
 
     .info-list {
       text-align: left;
       display: inline-block;
       background: #f8fafc;
-      padding: 1.5rem;
+      padding: 2rem;
       border-radius: 12px;
       width: 100%;
       max-width: 650px;
     }
 
-    .info-list p { font-size: 1.1rem; margin-bottom: 0.5rem; }
+    .info-list p { font-size: 1.15rem; margin-bottom: 0.5rem; }
 
     .btn-action {
       display: inline-block;
-      margin-top: 1.5rem;
-      padding: 0.8rem 2.5rem;
-      font-size: clamp(1.15rem, 3vw, 1.3rem);
+      margin-top: 2rem;
+      padding: 1rem 3rem;
+      font-size: 1.3rem;
       font-weight: bold;
       color: #fff;
       background: var(--primary-blue);
       border-radius: 50px;
       text-decoration: none;
-      box-shadow: 0 4px 15px rgba(37, 99, 235, 0.3);
-      transition: all 0.2s;
+      box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+      transition: all 0.3s;
     }
 
-    .btn-action:hover {
-      background: var(--primary-dark);
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(15, 23, 42, 0.3);
-    }
+    .btn-action:hover { background: var(--primary-dark); transform: translateY(-3px); box-shadow: 0 8px 20px rgba(15, 23, 42, 0.4); }
 
     .text-blue { color: var(--primary-blue); font-weight: bold; }
     .text-red { color: var(--danger-red); font-weight: bold; }
 
-    @media (max-width: 600px) {
-      .extra-section { padding: 0.5rem 1rem; }
-      .announcement-box { padding: 1.8rem 1rem; border-radius: 16px; }
-      .info-list { padding: 1rem; }
-      .btn-action { width: 100%; padding: 0.9rem; }
+    /* 手機版優化 */
+    @media (max-width: 768px) {
+      .faq-title { font-size: 1.8rem; }
+      .faq-question { font-size: 1.2rem; padding: 1.2rem; }
+      .faq-content { font-size: 1.1rem; padding: 0 1.2rem 1.2rem 1.2rem; }
+      .announcement-box { padding: 2rem 1.2rem; border-radius: 16px; }
+      .announcement-title { font-size: 1.5rem; }
+      .announcement-box p { font-size: 1.15rem; }
+      .info-list { padding: 1.5rem 1rem; }
+      .btn-action { width: 100%; font-size: 1.25rem; }
     }
   </style>
 </head>
 <body>
 
-  <!-- 新增：上方統一的大標題 -->
-  <div class="section-header" id="main-content">
-    <h1>請假與調課規範</h1>
-    <p>Tony 線上美語家教 • 確保雙方學習權益</p>
+  <!-- 新增：獨立頂部大標題 -->
+  <div class="page-header" id="main-content">
+    <h1 class="page-title">請假與調課規範</h1>
+    <p class="page-subtitle">Tony 線上美語家教 ‧ 確保雙方學習權益</p>
   </div>
 
-  <!-- 上方四個按鈕區塊 (已文字精簡、防止手機換行) -->
+  <!-- 四大規範按鈕區塊 -->
   <div class="bar-container">
     
-    <!-- 按鈕 1 -->
+    <!-- 第一條：24小時 -->
     <div class="bar bar1">
       <img class="rule-icon-img" src="https://ik.imagekit.io/lql1uveoc/rules.png" alt="rule icon">
-      <div class="bar-content">
-        <div class="bar-title">
-          <span class="number">24</span>小時內 ➔ 扣 <span class="number">0.5</span> 堂
+      <div class="bar-text-content">
+        <div class="rule-row">
+          <span class="nowrap"><span class="number">24</span> 小時內 ➔ </span> 
+          <span class="nowrap">扣 <span class="number">0.5</span> 堂</span>
         </div>
-        <div class="bar-important">
-          ★ 週六 / 國定假日 ➔ 扣 <span class="number" style="color: black;">1</span> 堂
+        <div class="rule-row sub-row">
+          <span class="nowrap">★ 週六 / 國定假日 ➔ </span> 
+          <span class="nowrap">扣 <span class="number text-black">1</span> 堂</span>
         </div>
       </div>
     </div>
 
-    <!-- 按鈕 2 -->
+    <!-- 第二條：12小時 -->
     <div class="bar bar2">
       <img class="rule-icon-img" src="https://ik.imagekit.io/lql1uveoc/rules.png" alt="rule icon">
-      <div class="bar-content">
-        <div class="bar-title">
-          <span class="number">12</span>小時內 ➔ 扣 <span class="number">1</span> 堂
+      <div class="bar-text-content">
+        <div class="rule-row">
+          <span class="nowrap"><span class="number">12</span> 小時內 ➔ </span> 
+          <span class="nowrap">扣 <span class="number">1</span> 堂</span>
         </div>
       </div>
     </div>
 
-    <!-- 按鈕 3 -->
+    <!-- 第三條：週六假日 -->
     <div class="bar bar3">
       <img class="rule-icon-img" src="https://ik.imagekit.io/lql1uveoc/rules.png" alt="rule icon">
-      <div class="bar-content">
-        <div class="bar-title" style="color: var(--danger-red);">
-          週六 / 假日 ➔ 需 <span class="number">24</span> 小時前提出
+      <div class="bar-text-content">
+        <div class="rule-row">
+          <span class="nowrap">週六 / 假日 ➔ </span> 
+          <span class="nowrap">需 <span class="number">24</span> 小時前提出</span>
         </div>
-        <div class="bar-important-red">
+        <div class="rule-row sub-row" style="font-size: 0.9em;">
           ⚠️ 未提前提出，當堂課視同已使用
         </div>
       </div>
     </div>
 
-    <!-- 按鈕 4 -->
+    <!-- 第四條：總結警告 -->
     <div class="bar bar4">
-      <div class="bar-content" style="text-align: center; align-items: center;">
-        <div class="bar-title" style="font-size: 1.05em; margin-bottom: 2px;">
-          本規範適用全部上課時段
-        </div>
-        <div style="font-weight: normal; font-size: 0.85em; color: #cbd5e1;">
+      <div class="bar-text-content">
+        <div>本規範適用全部上課時段</div>
+        <div style="color: #cbd5e1; font-weight: normal; font-size: 0.85em; margin-top: 5px;">
           （請假頻繁者，將取消其固定時段課程）
         </div>
       </div>
@@ -419,9 +387,9 @@
 
   </div>
 
-  <!-- FAQ 常見問題區塊 -->
+  <!-- 常見問題區塊 -->
   <div class="extra-section">
-    <h2 class="faq-title">學生請假規範常見問題</h2>
+    <h2 class="faq-title">請假規範常見問題</h2>
 
     <div class="faq-item">
       <button class="faq-question">1. 什麼情況下會扣除堂數？ <span class="faq-icon">＋</span></button>
@@ -490,11 +458,11 @@
 
   </div>
 
-  <!-- 底部公告與預約區塊 -->
+  <!-- 公告與預約區塊 -->
   <div class="extra-section">
     <div class="announcement-box">
 
-      <h2 class="announcement-title">【Tony 線上美語：課程預約與請假守則】</h2>
+      <h2 class="announcement-title">【Tony 線上美語：預約與請假守則】</h2>
 
       <p style="font-weight: bold;">各位學生與家長您好：</p>
 
@@ -505,19 +473,19 @@
       <hr class="hr-divider">
 
       <div class="info-list">
-        <p class="text-blue" style="font-size: 1.2rem; border-bottom: 2px solid #cbd5e1; padding-bottom: 8px; margin-bottom: 12px; font-weight: 900;">📌 規範簡化統整：</p>
+        <p class="text-blue" style="font-size: 1.3rem; border-bottom: 2px solid #cbd5e1; padding-bottom: 10px; margin-bottom: 15px;">📌 規範統整：</p>
         <p><strong>平日 (週一至週五)：</strong></p>
         <p>• 上課前 12–24 小時提出：<span class="text-red">扣 0.5 堂</span></p>
         <p>• 上課前 12 小時內提出：<span class="text-red">扣 1 堂</span></p>
         <br>
         <p><strong>週六及國定假日：</strong></p>
         <p>• 需於 <span class="text-red">24 小時前</span> 提出請假/調課。</p>
-        <p>• 若未提前 24 小時告知，<span class="text-red">視同已使用 (扣 1 堂)</span>。</p>
+        <p>• 若未提前告知，<span class="text-red">視同已使用 (扣 1 堂)</span>。</p>
       </div>
 
       <hr class="hr-divider">
 
-      <p style="font-size: 1.15rem;">
+      <p style="font-size: 1.2rem;">
         🫶 感謝您的理解與配合，讓我們共同創造 <strong>最高質量的學習環境</strong>！
       </p>
       <p style="font-size: 1.15rem; margin-top: 1rem; font-weight: bold;">Tony 線上美語家教</p>
@@ -530,7 +498,6 @@
   </div>
 
   <script>
-    // 進入頁面時平滑滾動
     window.addEventListener('load', function() {
       const content = document.getElementById('main-content');
       if (content) {
@@ -540,7 +507,6 @@
       }
     });
 
-    // 常見問題 FAQ 折疊邏輯
     document.addEventListener("DOMContentLoaded", function() {
       const faqQuestions = document.querySelectorAll(".faq-question");
       
