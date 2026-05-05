@@ -1,1019 +1,318 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
-  <title>請假調課規範 - Tony線上美語家教</title>
-  <meta property="og:title" content="請假調課規範詳情 - Tony線上美語家教">
-  <meta property="og:description" content="請學員詳細閱讀，確保雙方權益，謝謝您的合作">
-  <meta property="og:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/rules-3.png">
-  <meta property="og:url" content="https://tonyonlineenglish.netlify.app/regulations">
-  <meta property="og:type" content="website">
-
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;600;700;900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-
-  <style>
-    :root {
-      --ink: #0e1117;
-      --ink-mid: #2d3340;
-      --ink-light: #5a6070;
-      --rule-gold: #b89a4a;
-      --rule-gold-light: #e8d49a;
-      --rule-red: #8b1a1a;
-      --rule-red-light: #f9ecec;
-      --rule-blue: #1a3566;
-      --rule-blue-mid: #2a4f96;
-      --rule-blue-light: #eaf0fb;
-      --rule-green: #1a4d35;
-      --rule-green-light: #e8f4ed;
-      --surface: #f5f2ec;
-      --surface-white: #fdfcf9;
-      --border: #c8c0b0;
-      --border-light: #e0dbd0;
-    }
-
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    body {
-      font-family: 'Noto Serif TC', 'Georgia', serif;
-      background-color: var(--surface);
-      color: var(--ink);
-      line-height: 1.7;
-      -webkit-font-smoothing: antialiased;
-    }
-
-    /* ── STAMP HEADER ── */
-    .doc-header {
-      background: var(--surface-white);
-      color: var(--ink);
-      padding: 0;
-      position: relative;
-      overflow: hidden;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .header-top-rule {
-      height: 5px;
-      background: linear-gradient(90deg, var(--rule-gold), #d4b96a, var(--rule-gold));
-    }
-
-    .header-inner {
-      position: relative;
-      z-index: 1;
-      max-width: 860px;
-      margin: 0 auto;
-      padding: 2.5rem 2rem 2rem;
-      display: block;
-    }
-
-    .header-text-group {}
-
-    .doc-id {
-      font-family: 'DM Mono', monospace;
-      font-size: 11px;
-      letter-spacing: 2px;
-      color: var(--ink-light);
-      margin-bottom: 0.5rem;
-      text-transform: uppercase;
-    }
-
-    .doc-title {
-      font-size: clamp(1.6rem, 4.5vw, 2.4rem);
-      font-weight: 900;
-      color: var(--ink);
-      letter-spacing: 3px;
-      line-height: 1.2;
-    }
-
-    .doc-subtitle {
-      margin-top: 0.6rem;
-      font-size: clamp(0.85rem, 2vw, 1rem);
-      color: var(--rule-blue-mid);
-      letter-spacing: 1.5px;
-      font-weight: 600;
-    }
-
-    .header-bottom-rule {
-      height: 1px;
-      background: linear-gradient(90deg, transparent, var(--rule-gold), transparent);
-      opacity: 0.6;
-      margin: 0 2rem;
-    }
-
-    .header-meta {
-      position: relative;
-      z-index: 1;
-      max-width: 860px;
-      margin: 0 auto;
-      padding: 1rem 2rem 1.5rem;
-      display: flex;
-      gap: 2rem;
-      flex-wrap: wrap;
-    }
-
-    .meta-item {
-      display: flex;
-      flex-direction: column;
-    }
-
-    .meta-label {
-      font-family: 'DM Mono', monospace;
-      font-size: 9px;
-      letter-spacing: 2px;
-      color: var(--ink-light);
-      text-transform: uppercase;
-      margin-bottom: 2px;
-    }
-
-    .meta-value {
-      font-size: 12px;
-      color: var(--ink-mid);
-      letter-spacing: 0.5px;
-    }
-
-    /* ── MAIN CONTENT ── */
-    .main-wrap {
-      max-width: 860px;
-      margin: 0 auto;
-      padding: 2.5rem 1.5rem 4rem;
-    }
-
-    /* ── SECTION LABEL ── */
-    .section-label {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-      margin-bottom: 1.5rem;
-      margin-top: 2.5rem;
-    }
-
-    .section-label:first-child { margin-top: 0; }
-
-    .section-num {
-      font-family: 'DM Mono', monospace;
-      font-size: 11px;
-      letter-spacing: 2px;
-      color: var(--ink-light);
-      flex-shrink: 0;
-    }
-
-    .section-rule-line {
-      flex: 1;
-      height: 1px;
-      background: var(--border);
-    }
-
-    .section-title {
-      font-size: 1rem;
-      font-weight: 700;
-      letter-spacing: 2px;
-      color: var(--ink-mid);
-      flex-shrink: 0;
-    }
-
-    /* ── ARTICLE BLOCKS ── */
-    .article-grid {
-      display: grid;
-      gap: 1px;
-      background: var(--border);
-      border: 1px solid var(--border);
-      border-radius: 2px;
-      overflow: hidden;
-    }
-
-    .article {
-      background: var(--surface-white);
-      display: grid;
-      grid-template-columns: 3.5rem 1fr;
-      min-height: 90px;
-    }
-
-    .article-num-col {
-      background: var(--ink);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 1rem 0.5rem;
-      gap: 4px;
-    }
-
-    .article-num-label {
-      font-family: 'DM Mono', monospace;
-      font-size: 8px;
-      color: rgba(255,255,255,0.35);
-      letter-spacing: 1px;
-      text-transform: uppercase;
-    }
-
-    .article-num {
-      font-family: 'DM Mono', monospace;
-      font-size: 1.1rem;
-      font-weight: 500;
-      color: var(--rule-gold);
-      line-height: 1;
-    }
-
-    .article-body {
-      padding: 1.25rem 1.5rem;
-      border-left: 3px solid var(--border-light);
-    }
-
-    .article.art-penalty .article-body { border-left-color: var(--rule-red); }
-    .article.art-caution .article-body { border-left-color: #c07a1a; }
-    .article.art-info .article-body { border-left-color: var(--rule-blue-mid); }
-    .article.art-general .article-body { border-left-color: var(--rule-green); }
-
-    .article-heading {
-      font-size: 0.78rem;
-      font-family: 'DM Mono', monospace;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      margin-bottom: 0.5rem;
-    }
-
-    .art-penalty .article-heading { color: var(--rule-red); }
-    .art-caution .article-heading { color: #9a621a; }
-    .art-info .article-heading { color: var(--rule-blue-mid); }
-    .art-general .article-heading { color: var(--rule-green); }
-
-    .article-content {
-      font-size: clamp(1rem, 2.8vw, 1.15rem);
-      font-weight: 600;
-      color: var(--ink);
-      line-height: 1.6;
-    }
-
-    .article-sub {
-      margin-top: 0.6rem;
-      font-size: clamp(0.88rem, 2.3vw, 0.98rem);
-      color: var(--ink-light);
-      font-weight: 400;
-      line-height: 1.6;
-    }
-
-    .num-highlight {
-      font-family: 'DM Mono', monospace;
-      font-weight: 700;
-    }
-
-    .art-penalty .num-highlight { color: var(--rule-red); font-size: 1.15em; }
-    .art-caution .num-highlight { color: #9a621a; font-size: 1.15em; }
-    .art-info .num-highlight { color: var(--rule-blue-mid); font-size: 1.15em; }
-    .art-general .num-highlight { color: var(--rule-green); font-size: 1.15em; }
-
-    .penalty-tag {
-      display: inline-block;
-      font-family: 'DM Mono', monospace;
-      font-size: 0.75rem;
-      letter-spacing: 0.5px;
-      padding: 2px 8px;
-      border-radius: 2px;
-      margin-left: 4px;
-      vertical-align: middle;
-    }
-
-    .tag-red { background: var(--rule-red-light); color: var(--rule-red); border: 1px solid #d9aaaa; }
-    .tag-amber { background: #fef4e8; color: #7a4d10; border: 1px solid #e0c09a; }
-    .tag-blue { background: var(--rule-blue-light); color: var(--rule-blue); border: 1px solid #a8bedd; }
-    .tag-green { background: var(--rule-green-light); color: var(--rule-green); border: 1px solid #9ec4b0; }
-
-    /* ── OVERVIEW TABLE ── */
-    .table-wrap {
-      border: 1px solid var(--border);
-      border-radius: 2px;
-      overflow: hidden;
-      margin-top: 0;
-    }
-
-    .reg-table {
-      width: 100%;
-      border-collapse: collapse;
-      font-size: clamp(0.85rem, 2.2vw, 0.95rem);
-    }
-
-    .reg-table thead { background: var(--ink); }
-
-    .reg-table th {
-      padding: 0.85rem 1rem;
-      color: rgba(255,255,255,0.7);
-      font-family: 'DM Mono', monospace;
-      font-size: 0.72rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      font-weight: 400;
-      text-align: left;
-      border-right: 1px solid rgba(255,255,255,0.08);
-    }
-
-    .reg-table th:last-child { border-right: none; }
-
-    .reg-table tbody tr {
-      border-bottom: 1px solid var(--border-light);
-      background: var(--surface-white);
-    }
-
-    .reg-table tbody tr:last-child { border-bottom: none; }
-    .reg-table tbody tr:nth-child(even) { background: #f9f7f3; }
-
-    .reg-table td {
-      padding: 0.9rem 1rem;
-      border-right: 1px solid var(--border-light);
-      vertical-align: middle;
-      color: var(--ink-mid);
-    }
-
-    .reg-table td:last-child { border-right: none; }
-
-    .td-label {
-      font-weight: 700;
-      color: var(--ink);
-      font-size: 0.92rem;
-      letter-spacing: 0.5px;
-    }
-
-    .penalty-cell {
-      font-family: 'DM Mono', monospace;
-      font-weight: 600;
-      color: var(--rule-red);
-      font-size: 0.95rem;
-    }
-
-    /* ── FAQ ── */
-    .faq-wrap {
-      margin-top: 0;
-    }
-
-    .faq-item {
-      border: 1px solid var(--border);
-      border-radius: 0;
-      margin-bottom: -1px;
-      background: var(--surface-white);
-    }
-
-    .faq-item:first-child { border-radius: 2px 2px 0 0; }
-    .faq-item:last-child { border-radius: 0 0 2px 2px; margin-bottom: 0; }
-
-    .faq-question {
-      width: 100%;
-      text-align: left;
-      background: none;
-      border: none;
-      font-family: 'Noto Serif TC', serif;
-      font-size: clamp(0.95rem, 2.5vw, 1.05rem);
-      font-weight: 700;
-      color: var(--ink);
-      padding: 1.1rem 1.5rem;
-      cursor: pointer;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      transition: background 0.2s;
-      letter-spacing: 0.5px;
-    }
-
-    .faq-question:hover { background: #f5f2ec; }
-
-    .faq-q-left {
-      display: flex;
-      align-items: center;
-      gap: 1rem;
-    }
-
-    .faq-q-code {
-      font-family: 'DM Mono', monospace;
-      font-size: 0.7rem;
-      letter-spacing: 1.5px;
-      color: var(--ink-light);
-      flex-shrink: 0;
-    }
-
-    .faq-icon {
-      width: 22px;
-      height: 22px;
-      border: 1px solid var(--border);
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      font-size: 14px;
-      color: var(--ink-light);
-      transition: all 0.25s;
-      line-height: 1;
-    }
-
-    .faq-question.active .faq-icon {
-      background: var(--ink);
-      border-color: var(--ink);
-      color: #fff;
-    }
-
-    .faq-answer {
-      max-height: 0;
-      overflow: hidden;
-      transition: max-height 0.4s ease;
-      border-top: 0 solid var(--border-light);
-    }
-
-    .faq-answer.open {
-      border-top-width: 1px;
-    }
-
-    .faq-content {
-      padding: 1.25rem 1.5rem 1.5rem 3.5rem;
-      font-size: clamp(0.9rem, 2.2vw, 1rem);
-      color: var(--ink-mid);
-      line-height: 1.8;
-    }
-
-    .faq-list { list-style: none; padding: 0; }
-
-    .faq-list li {
-      padding: 0.4rem 0 0.4rem 1.4rem;
-      position: relative;
-      border-bottom: 1px solid var(--border-light);
-    }
-
-    .faq-list li:last-child { border-bottom: none; }
-
-    .faq-list li::before {
-      content: '—';
-      position: absolute;
-      left: 0;
-      color: var(--ink-light);
-      font-family: 'DM Mono', monospace;
-    }
-
-    .faq-note {
-      margin-top: 1rem;
-      padding: 1rem 1.25rem;
-      background: #f5f2ec;
-      border-left: 3px solid var(--rule-gold);
-      font-size: 0.92rem;
-      color: var(--ink-mid);
-    }
-
-    .faq-note strong { color: var(--ink); }
-
-    .faq-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      margin-top: 0.8rem;
-      color: var(--rule-blue-mid);
-      text-decoration: none;
-      font-size: 0.92rem;
-      font-weight: 700;
-      border-bottom: 1px solid var(--rule-blue-mid);
-      padding-bottom: 1px;
-    }
-
-    /* ── NOTICE BLOCK ── */
-    .notice-block {
-      margin-top: 0;
-      background: var(--surface-white);
-      border: 1px solid var(--border);
-      border-radius: 2px;
-      overflow: hidden;
-    }
-
-    .notice-header {
-      background: var(--rule-blue);
-      padding: 1.5rem 2rem;
-      display: flex;
-      align-items: flex-start;
-      gap: 1.25rem;
-    }
-
-    .notice-stamp {
-      font-family: 'DM Mono', monospace;
-      font-size: 9px;
-      letter-spacing: 2px;
-      color: rgba(255,255,255,0.45);
-      text-transform: uppercase;
-      writing-mode: vertical-lr;
-      flex-shrink: 0;
-      padding-top: 3px;
-    }
-
-    .notice-title-group {}
-
-    .notice-eyebrow {
-      font-family: 'DM Mono', monospace;
-      font-size: 10px;
-      letter-spacing: 3px;
-      color: var(--rule-gold-light);
-      text-transform: uppercase;
-      margin-bottom: 0.4rem;
-    }
-
-    .notice-title {
-      font-size: clamp(1.1rem, 3vw, 1.5rem);
-      font-weight: 900;
-      color: #fff;
-      letter-spacing: 2px;
-      line-height: 1.3;
-    }
-
-    .notice-body {
-      padding: 1.75rem 2rem;
-    }
-
-    .notice-intro {
-      font-size: clamp(0.9rem, 2.3vw, 1rem);
-      color: var(--ink-mid);
-      line-height: 1.8;
-      padding-bottom: 1.5rem;
-      border-bottom: 1px solid var(--border-light);
-    }
-
-    .notice-intro strong { color: var(--ink); }
-
-    .notice-rules-title {
-      font-family: 'DM Mono', monospace;
-      font-size: 10px;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: var(--ink-light);
-      margin: 1.5rem 0 1rem;
-    }
-
-    .notice-rule-row {
-      display: flex;
-      gap: 1rem;
-      padding: 0.8rem 0;
-      border-bottom: 1px solid var(--border-light);
-      align-items: flex-start;
-    }
-
-    .notice-rule-row:last-of-type { border-bottom: none; }
-
-    .notice-rule-period {
-      font-weight: 700;
-      color: var(--ink);
-      font-size: 0.95rem;
-      min-width: 140px;
-      flex-shrink: 0;
-    }
-
-    .notice-rule-detail {
-      font-size: 0.9rem;
-      color: var(--ink-mid);
-      line-height: 1.7;
-    }
-
-    .notice-rule-detail .penalty { color: var(--rule-red); font-weight: 700; font-family: 'DM Mono', monospace; }
-
-    .notice-footer {
-      padding: 1.25rem 2rem;
-      background: #f5f2ec;
-      border-top: 1px solid var(--border-light);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      flex-wrap: wrap;
-      gap: 1rem;
-    }
-
-    .notice-sign {
-      font-size: 0.9rem;
-      color: var(--ink-mid);
-    }
-
-    .notice-sign strong { color: var(--ink); }
-
-    .btn-book {
-      display: inline-block;
-      padding: 0.7rem 2rem;
-      font-family: 'Noto Serif TC', serif;
-      font-size: 0.95rem;
-      font-weight: 700;
-      letter-spacing: 1px;
-      color: #fff;
-      background: var(--rule-blue);
-      border-radius: 2px;
-      text-decoration: none;
-      border: 1px solid var(--rule-blue-mid);
-      transition: background 0.2s;
-    }
-
-    .btn-book:hover { background: var(--ink); }
-
-    /* ── FOOTER RULE ── */
-    .page-footer {
-      border-top: 1px solid var(--border);
-      padding: 1.5rem;
-      text-align: center;
-    }
-
-    .footer-text {
-      font-family: 'DM Mono', monospace;
-      font-size: 10px;
-      letter-spacing: 2px;
-      color: var(--ink-light);
-      text-transform: uppercase;
-    }
-
-    /* ── ANIMATIONS ── */
-    @keyframes revealUp {
-      from { opacity: 0; transform: translateY(12px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    .reveal { opacity: 0; animation: revealUp 0.5s ease forwards; }
-    .d1 { animation-delay: 0.05s; }
-    .d2 { animation-delay: 0.12s; }
-    .d3 { animation-delay: 0.2s; }
-    .d4 { animation-delay: 0.28s; }
-    .d5 { animation-delay: 0.36s; }
-    .d6 { animation-delay: 0.44s; }
-
-    /* ── MOBILE ── */
-    @media (max-width: 640px) {
-      .header-inner { padding: 2rem 1.25rem 1.5rem; }
-      .main-wrap { padding: 2rem 1rem 3rem; }
-      .article { grid-template-columns: 2.8rem 1fr; }
-      .article-body { padding: 1rem; }
-      .article-num-col { width: 2.8rem; }
-      .notice-header { padding: 1.25rem; }
-      .notice-body { padding: 1.25rem; }
-      .notice-footer { padding: 1rem 1.25rem; flex-direction: column; align-items: flex-start; }
-      .btn-book { width: 100%; text-align: center; }
-      .notice-stamp { display: none; }
-      .notice-rule-period { min-width: 110px; }
-      .faq-content { padding-left: 1.5rem; }
-      .reg-table th, .reg-table td { padding: 0.7rem 0.75rem; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<!-- 網頁標題與 SEO Meta Tags (已針對 GEPT 問卷微調) -->
+<title>GEPT 全民英檢考後回饋問卷｜初級・中級・中高級 | Tony線上美語家教</title>
+<meta name="description" content="專為 Tony 線上美語家教學生設計的全民英檢 (GEPT) 考後回饋問卷。透過反饋幫助我們精準調整課程，針對聽說讀寫弱點全面加強。">
+<meta name="keywords" content="全民英檢, GEPT, 考後回饋, GEPT初級, GEPT中級, GEPT中高級, Tony線上美語家教, 英文檢定">
+<link rel="canonical" href="https://tonyonlineenglish.netlify.app/gept-survey">
+
+<!-- Open Graph / 社群分享預覽圖 (Line, FB) -->
+<meta property="og:title" content="GEPT 全民英檢考後回饋問卷 | Tony線上美語家教">
+<meta property="og:description" content="完成 GEPT 考試了嗎？請填寫考後反饋，幫助我們針對你的弱點進行精準的課程調整！">
+<meta property="og:url" content="https://tonyonlineenglish.netlify.app/gept-survey">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/highschool2.png">
+
+<!-- Twitter Cards -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/highschool2.png">
+
+<!-- 你的外部腳本 -->
+<script src="layout-manager.js"></script>
+
+<!-- Google 字體 -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Noto+Sans+TC:wght@300;400;500;700;900&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<style>
+:root {
+    --white: #ffffff; --off: #faf9f7; --stone-50: #f7f5f2; --stone-100: #ede9e4; --stone-200: #d6cfc6; 
+    --stone-400: #9a9085; --stone-700: #4a4540; --ink: #1a1714; --orange: #f07020; --orange-lt: #f5934a; 
+    --gold: #b8934a; --gold-light: #d4aa6a; --gold-pale: #f5eedd; --green: #27ae60; 
+    --f-display: 'Cormorant Garamond', Georgia, serif; --f-body: 'Noto Sans TC', system-ui, sans-serif;
+    --r-sm: 8px; --r-md: 16px; --r-lg: 24px; --r-pill: 999px;
+    --sh-sm: 0 1px 4px rgba(0,0,0,.06), 0 4px 12px rgba(0,0,0,.04); 
+    --sh-md: 0 4px 20px rgba(0,0,0,.09);
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--stone-50); color: var(--ink); font-family: var(--f-body); line-height: 1.7; }
+
+/* 動畫 */
+@keyframes fadeUp { 
+    from { opacity: 0; transform: translateY(30px); } 
+    to { opacity: 1; transform: translateY(0); } 
+}
+
+/* 頂部標題區 */
+.survey-header {
+    background: #111110;
+    color: var(--white);
+    padding: 60px 20px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+.survey-eyebrow {
+    font-family: var(--f-body); font-weight: 700; font-size: .9rem; letter-spacing: .1em;
+    padding: 6px 16px; border-radius: var(--r-pill); margin-bottom: 20px; display: inline-block;
+    border: 1.5px solid rgba(255,255,255,.4); background: rgba(0,0,0,0.2); color: var(--gold-light);
+    animation: fadeUp .6s ease forwards;
+}
+.survey-title {
+    font-size: clamp(2rem, 5vw, 3rem); font-weight: 900; margin-bottom: 10px;
+    animation: fadeUp .6s ease forwards 0.1s; opacity: 0;
+}
+.survey-subtitle {
+    font-size: 1.1rem; color: rgba(255,255,255,0.7);
+    animation: fadeUp .6s ease forwards 0.2s; opacity: 0;
+}
+
+/* 問卷主體 */
+.survey-container {
+    max-width: 800px;
+    margin: -30px auto 60px;
+    background: var(--white);
+    padding: 50px;
+    border-radius: var(--r-lg);
+    box-shadow: var(--sh-md);
+    position: relative;
+    z-index: 10;
+    animation: fadeUp .6s ease forwards 0.3s; opacity: 0;
+}
+
+.form-group { margin-bottom: 32px; text-align: left; }
+.form-group label.question-title { 
+    display: block; font-weight: 700; margin-bottom: 12px; font-size: 1.1rem; color: var(--ink); 
+    border-left: 4px solid var(--gold); padding-left: 10px;
+}
+.form-group .sub-label {
+    display: block; font-size: 0.9rem; color: var(--stone-400); margin-top: -8px; margin-bottom: 12px; padding-left: 14px;
+}
+
+/* 文字輸入框 */
+.form-group input[type="text"], 
+.form-group input[type="email"], 
+.form-group textarea { 
+    width: 100%; padding: 14px 18px; border: 1.5px solid var(--stone-200); border-radius: 8px; 
+    font-family: var(--f-body); font-size: 1rem; transition: border-color .2s; background: var(--off);
+}
+.form-group input:focus, .form-group textarea:focus { outline: none; border-color: var(--gold); background: var(--white);}
+
+/* 自訂 Radio / Checkbox 按鈕 */
+.radio-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 12px;
+}
+.scale-grid {
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; text-align: center;
+}
+.custom-radio input[type="radio"], .custom-radio input[type="checkbox"] { display: none; }
+.custom-radio .radio-btn {
+    display: flex; align-items: center; justify-content: center; width: 100%; padding: 14px;
+    border: 1.5px solid var(--stone-200); border-radius: 8px; cursor: pointer;
+    font-weight: 500; color: var(--stone-700); transition: all 0.2s; text-align: center;
+}
+.custom-radio .radio-btn:hover { border-color: var(--gold-light); background: var(--stone-50); }
+.custom-radio input:checked + .radio-btn {
+    border-color: var(--gold); background: var(--gold-pale); color: var(--gold); font-weight: 700;
+    box-shadow: 0 2px 8px rgba(184,147,74,.15);
+}
+
+/* 難度量表文字標籤 */
+.scale-labels { display: flex; justify-content: space-between; font-size: 0.85rem; color: var(--stone-400); margin-top: 8px; padding: 0 5px;}
+
+/* 提交按鈕 */
+.btn-submit { 
+    width: 100%; font-size: 1.15rem; padding: 18px; margin-top: 20px; cursor: pointer; border: none; 
+    font-family: var(--f-body); font-weight: 700; color: #ffffff; background: var(--orange); 
+    border-radius: var(--r-pill); box-shadow: 0 6px 24px rgba(240,112,32,.4); transition: all 0.2s;
+}
+.btn-submit:hover { transform: translateY(-2px); background: var(--orange-lt); box-shadow: 0 10px 32px rgba(240,112,32,.5); }
+.btn-submit:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+
+/* 成功訊息 */
+#success-msg { display: none; text-align: center; padding: 40px 20px; }
+.success-icon {
+    width: 80px; height: 80px; background: var(--gold-pale); color: var(--gold);
+    border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 2.5rem; margin: 0 auto 20px;
+}
+#success-msg h3 { font-size: 1.8rem; margin-bottom: 10px; color: var(--ink); }
+#success-msg p { color: var(--stone-700); font-size: 1.1rem; }
+
+/* 手機版適配 */
+@media (max-width: 768px) {
+    .survey-container { margin: -20px 15px 40px; padding: 30px 20px; width: auto; }
+    .radio-grid { grid-template-columns: 1fr; }
+    .scale-grid { gap: 4px; }
+    .custom-radio .radio-btn { padding: 10px; font-size: 0.95rem; }
+    .scale-labels { font-size: 0.75rem; }
+}
+</style>
 </head>
 <body>
 
-  <!-- ═══ DOCUMENT HEADER ═══ -->
-  <header class="doc-header" id="main-content">
-    <div class="header-top-rule"></div>
-    <div class="header-inner">
-      <div class="header-text-group">
-        <div class="doc-id">DOC — REG — 2024 · 001</div>
-        <h1 class="doc-title">請假與調課規範</h1>
-        <p class="doc-subtitle">Tony 線上美語家教 ‧ 學員權益保障文件</p>
-      </div>
-    </div>
-    <div class="header-bottom-rule"></div>
-    <div class="header-meta">
-      <div class="meta-item">
-        <span class="meta-label">實施日期</span>
-        <span class="meta-value">2024 年 起</span>
-      </div>
-      <div class="meta-item">
-        <span class="meta-label">適用對象</span>
-        <span class="meta-value">全體在籍學員</span>
-      </div>
-      <div class="meta-item">
-        <span class="meta-label">版本</span>
-        <span class="meta-value">v2.1 — 現行有效</span>
-      </div>
-    </div>
-  </header>
+    <!-- 標題區 -->
+    <header class="survey-header">
+        <span class="survey-eyebrow">Student Feedback</span>
+        <h1 class="survey-title">GEPT 全民英檢考後回饋</h1>
+        <p class="survey-subtitle">恭喜你完成考試！請與 Tony 老師分享你的考試狀況，幫助我們調整未來的學習方針。</p>
+    </header>
 
-  <!-- ═══ MAIN ═══ -->
-  <main class="main-wrap">
-
-    <!-- SECTION: 核心規範條文 -->
-    <div class="section-label reveal d1">
-      <span class="section-num">§ 01</span>
-      <div class="section-rule-line"></div>
-      <span class="section-title">核心規範條文</span>
-      <div class="section-rule-line"></div>
-    </div>
-
-    <div class="article-grid reveal d2">
-
-      <div class="article art-penalty">
-        <div class="article-num-col">
-          <span class="article-num-label">ART</span>
-          <span class="article-num">01</span>
-        </div>
-        <div class="article-body">
-          <div class="article-heading">平日短期請假懲罰</div>
-          <div class="article-content">
-            上課前 <span class="num-highlight">24</span> 小時內提出請假或調課
-            <span class="penalty-tag tag-red">扣 0.5 堂</span>
-          </div>
-          <div class="article-sub">
-            ⚑ 例外：週六或國定假日課程，於 24 小時內請假
-            <span class="penalty-tag tag-red">扣 1 堂</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="article art-penalty">
-        <div class="article-num-col">
-          <span class="article-num-label">ART</span>
-          <span class="article-num">02</span>
-        </div>
-        <div class="article-body">
-          <div class="article-heading">緊急請假懲罰</div>
-          <div class="article-content">
-            上課前 <span class="num-highlight">12</span> 小時內提出請假或調課
-            <span class="penalty-tag tag-red">扣 1 堂</span>
-          </div>
-          <div class="article-sub">
-            此條適用於全部上課時段，無論平日或假日。
-          </div>
-        </div>
-      </div>
-
-      <div class="article art-caution">
-        <div class="article-num-col">
-          <span class="article-num-label">ART</span>
-          <span class="article-num">03</span>
-        </div>
-        <div class="article-body">
-          <div class="article-heading">週六及國定假日專項規定</div>
-          <div class="article-content">
-            週六及國定假日課程，須於 <span class="num-highlight">24</span> 小時前提出請假
-          </div>
-          <div class="article-sub">
-            ⚑ 未於期限前提出者，該堂課視同已使用，計扣 1 堂，無例外。
-          </div>
-        </div>
-      </div>
-
-      <div class="article art-info">
-        <div class="article-num-col">
-          <span class="article-num-label">ART</span>
-          <span class="article-num">04</span>
-        </div>
-        <div class="article-body">
-          <div class="article-heading">適用範圍</div>
-          <div class="article-content">
-            本規範適用於<span class="num-highlight">全部</span>上課時段
-          </div>
-          <div class="article-sub">
-            包含週一至週五 10:00–22:00，及週六、國定假日全天。凡有固定排課之學員，均受本規範約束。
-          </div>
-        </div>
-      </div>
-
-      <div class="article art-general">
-        <div class="article-num-col">
-          <span class="article-num-label">ART</span>
-          <span class="article-num">05</span>
-        </div>
-        <div class="article-body">
-          <div class="article-heading">頻繁缺席處置</div>
-          <div class="article-content">
-            請假或缺席頻繁者，將<span class="num-highlight">取消</span>其固定時段課程
-          </div>
-          <div class="article-sub">
-            建議選擇更穩定之時段，或改以線上系統彈性預約課程，避免影響個人學習進程。
-          </div>
-        </div>
-      </div>
-
-    </div><!-- /article-grid -->
-
-    <!-- SECTION: 規範速查表 -->
-    <div class="section-label reveal d3" style="margin-top: 3rem;">
-      <span class="section-num">§ 02</span>
-      <div class="section-rule-line"></div>
-      <span class="section-title">規範速查表</span>
-      <div class="section-rule-line"></div>
-    </div>
-
-    <div class="table-wrap reveal d4">
-      <table class="reg-table">
-        <thead>
-          <tr>
-            <th>情境</th>
-            <th>提出時間</th>
-            <th>應扣堂數</th>
-            <th>備註</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td class="td-label">平日提前告知</td>
-            <td>24 小時前</td>
-            <td class="penalty-cell">免扣</td>
-            <td>全額保留</td>
-          </tr>
-          <tr>
-            <td class="td-label">平日短期請假</td>
-            <td>12–24 小時內</td>
-            <td class="penalty-cell">— 0.5 堂</td>
-            <td>—</td>
-          </tr>
-          <tr>
-            <td class="td-label">平日緊急請假</td>
-            <td>12 小時內</td>
-            <td class="penalty-cell">— 1 堂</td>
-            <td>—</td>
-          </tr>
-          <tr>
-            <td class="td-label">週六 / 假日提前告知</td>
-            <td>24 小時前</td>
-            <td class="penalty-cell">免扣</td>
-            <td>全額保留</td>
-          </tr>
-          <tr>
-            <td class="td-label">週六 / 假日（24h 內）</td>
-            <td>24 小時內</td>
-            <td class="penalty-cell">— 1 堂</td>
-            <td>視同已使用</td>
-          </tr>
-          <tr>
-            <td class="td-label">病假（核准後）</td>
-            <td>上課前 6 小時內</td>
-            <td class="penalty-cell">免扣</td>
-            <td>需填表申請</td>
-          </tr>
-          <tr>
-            <td class="td-label">病假（核准後）</td>
-            <td>上課前 3 小時內</td>
-            <td class="penalty-cell">— 0.5 堂</td>
-            <td>需填表申請</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- SECTION: 常見問題 -->
-    <div class="section-label reveal d4" style="margin-top: 3rem;">
-      <span class="section-num">§ 03</span>
-      <div class="section-rule-line"></div>
-      <span class="section-title">常見問題</span>
-      <div class="section-rule-line"></div>
-    </div>
-
-    <div class="faq-wrap reveal d5">
-
-      <div class="faq-item">
-        <button class="faq-question">
-          <span class="faq-q-left">
-            <span class="faq-q-code">Q.01</span>
-            <span>生病突發狀況被扣堂數，該如何申請？</span>
-          </span>
-          <span class="faq-icon">＋</span>
-        </button>
-        <div class="faq-answer">
-          <div class="faq-content">
-            <p>若因身體不適或突發疾病無法提前通知，請填寫病假免扣堂數申請表單，由專人審核後處理。</p>
-            <div class="faq-note">
-              <strong>病假規範（審核核准後生效）：</strong><br>
-              上課前 6 小時內提出 → 免扣堂數<br>
-              上課前 3 小時內提出 → 扣 0.5 堂
+    <!-- 問卷表單區 -->
+    <main class="survey-container">
+        <form id="gept-feedback-form" onsubmit="submitSurvey(event)">
+            
+            <!-- 基本資料 -->
+            <div class="form-group">
+                <label class="question-title">姓名 Name *</label>
+                <input type="text" id="student-name" placeholder="請輸入你的名字" required>
             </div>
-            <a class="faq-link" href="https://tonyonlineenglish.netlify.app/sickleave" target="_blank">
-              → 填寫病假申請表單
-            </a>
-          </div>
-        </div>
-      </div>
 
-      <div class="faq-item">
-        <button class="faq-question">
-          <span class="faq-q-left">
-            <span class="faq-q-code">Q.02</span>
-            <span>週六課程可以在當天早上請假嗎？</span>
-          </span>
-          <span class="faq-icon">＋</span>
-        </button>
-        <div class="faq-answer">
-          <div class="faq-content">
-            <p>不可以。依規範第 03 條，週六及國定假日課程須於 <strong>24 小時前</strong>提出請假或調課。</p>
-            <p style="margin-top: 0.6rem;">未於期限前提出者，無論理由，該堂課視同已使用，計扣 1 堂。</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="faq-item">
-        <button class="faq-question">
-          <span class="faq-q-left">
-            <span class="faq-q-code">Q.03</span>
-            <span>請假頻繁會有什麼後果？</span>
-          </span>
-          <span class="faq-icon">＋</span>
-        </button>
-        <div class="faq-answer">
-          <div class="faq-content">
-            <p>依規範第 05 條，請假或缺席過於頻繁者，Tony 線上美語家教將取消其固定時段課程。</p>
-            <div class="faq-note">
-              建議選擇更穩定的時段，或改透過線上系統彈性預約，以維持學習品質與連續性。
+            <!-- 報考級別 -->
+            <div class="form-group">
+                <label class="question-title">1. 你這次參加的是哪個級別？ *</label>
+                <div class="radio-grid">
+                    <label class="custom-radio">
+                        <input type="radio" name="gept-level" value="初級" required>
+                        <div class="radio-btn">初級 (Elementary)</div>
+                    </label>
+                    <label class="custom-radio">
+                        <input type="radio" name="gept-level" value="中級">
+                        <div class="radio-btn">中級 (Intermediate)</div>
+                    </label>
+                    <label class="custom-radio">
+                        <input type="radio" name="gept-level" value="中高級">
+                        <div class="radio-btn">中高級 (High-Intermediate)</div>
+                    </label>
+                </div>
             </div>
-          </div>
+
+            <!-- 報考階段 -->
+            <div class="form-group">
+                <label class="question-title">2. 本次參加的考試階段為？ *</label>
+                <div class="radio-grid">
+                    <label class="custom-radio">
+                        <input type="radio" name="gept-stage" value="初試" required>
+                        <div class="radio-btn">初試 (聽力與閱讀)</div>
+                    </label>
+                    <label class="custom-radio">
+                        <input type="radio" name="gept-stage" value="複試">
+                        <div class="radio-btn">複試 (口說與寫作)</div>
+                    </label>
+                    <label class="custom-radio">
+                        <input type="radio" name="gept-stage" value="一日考">
+                        <div class="radio-btn">聽讀說寫一日考</div>
+                    </label>
+                </div>
+            </div>
+
+            <!-- 難度評分 -->
+            <div class="form-group">
+                <label class="question-title">3. 相比我們平時的練習，你覺得這次考試難度如何？ *</label>
+                <div class="scale-grid">
+                    <label class="custom-radio"><input type="radio" name="difficulty" value="1" required><div class="radio-btn">1</div></label>
+                    <label class="custom-radio"><input type="radio" name="difficulty" value="2"><div class="radio-btn">2</div></label>
+                    <label class="custom-radio"><input type="radio" name="difficulty" value="3"><div class="radio-btn">3</div></label>
+                    <label class="custom-radio"><input type="radio" name="difficulty" value="4"><div class="radio-btn">4</div></label>
+                    <label class="custom-radio"><input type="radio" name="difficulty" value="5"><div class="radio-btn">5</div></label>
+                </div>
+                <div class="scale-labels">
+                    <span>非常簡單</span>
+                    <span>跟練習差不多</span>
+                    <span>非常困難</span>
+                </div>
+            </div>
+
+            <!-- 遇到的挑戰 (可複選) -->
+            <div class="form-group">
+                <label class="question-title">4. 考試中，你覺得最具挑戰的部分是？ (可複選)</label>
+                <div class="radio-grid">
+                    <label class="custom-radio"><input type="checkbox" name="challenges" value="聽力速度太快"><div class="radio-btn">聽力速度太快</div></label>
+                    <label class="custom-radio"><input type="checkbox" name="challenges" value="閱讀時間不夠"><div class="radio-btn">閱讀時間不夠</div></label>
+                    <label class="custom-radio"><input type="checkbox" name="challenges" value="單字量不足"><div class="radio-btn">單字量不足/看不懂</div></label>
+                    <label class="custom-radio"><input type="checkbox" name="challenges" value="寫作想不出點子"><div class="radio-btn">寫作想不出點子</div></label>
+                    <label class="custom-radio"><input type="checkbox" name="challenges" value="口說容易緊張卡詞"><div class="radio-btn">口說容易緊張卡詞</div></label>
+                    <label class="custom-radio"><input type="checkbox" name="challenges" value="其他"><div class="radio-btn">其他狀況</div></label>
+                </div>
+            </div>
+
+            <!-- 考題回憶與心得分享 -->
+            <div class="form-group">
+                <label class="question-title">5. 考題回憶與心得分享</label>
+                <span class="sub-label">請盡量分享你記得的「寫作題目」、「口說情境」或「閱讀主題」。有沒有遇到平時沒準備到的題型？</span>
+                <textarea id="student-feedback" rows="5" placeholder="例如：寫作考了關於環保的圖表題，口說有一題問到最喜歡的節日..."></textarea>
+            </div>
+
+            <!-- 想對老師說的話 -->
+            <div class="form-group">
+                <label class="question-title">6. 接下來的課程，希望老師加強哪方面的訓練？</label>
+                <textarea id="student-wishes" rows="3" placeholder="例如：希望多練習寫作句型、加強聽力抓關鍵字的技巧..."></textarea>
+            </div>
+
+            <button type="submit" class="btn-submit" id="submit-btn">送出回饋問卷</button>
+        </form>
+
+        <!-- 送出成功畫面 -->
+        <div id="success-msg">
+            <div class="success-icon">✓</div>
+            <h3>辛苦了！回饋已成功送出</h3>
+            <p>Tony 老師已經收到你的考後反饋。<br>接下來好好放鬆休息一下，我們下堂課見！</p>
         </div>
-      </div>
+    </main>
 
-      <div class="faq-item">
-        <button class="faq-question">
-          <span class="faq-q-left">
-            <span class="faq-q-code">Q.04</span>
-            <span>本規範的成效如何？</span>
-          </span>
-          <span class="faq-icon">＋</span>
-        </button>
-        <div class="faq-answer">
-          <div class="faq-content">
-            <p>本規範自 2024 年正式實施以來，已有效協助多位學員建立穩定的學習律動，並依家長及學員回饋，取得顯著的學習成效提升。</p>
-          </div>
-        </div>
-      </div>
+<script>
+function submitSurvey(e) {
+    e.preventDefault();
+    const btn = document.getElementById('submit-btn');
+    btn.innerText = "傳送中...";
+    btn.disabled = true;
 
-    </div><!-- /faq-wrap -->
+    // 收集表單資料
+    const formData = {
+        name: document.getElementById('student-name').value,
+        level: document.querySelector('input[name="gept-level"]:checked').value,
+        stage: document.querySelector('input[name="gept-stage"]:checked').value,
+        difficulty: document.querySelector('input[name="difficulty"]:checked').value,
+        challenges: Array.from(document.querySelectorAll('input[name="challenges"]:checked')).map(cb => cb.value).join(', '),
+        feedback: document.getElementById('student-feedback').value,
+        wishes: document.getElementById('student-wishes').value
+    };
 
-    <!-- SECTION: 正式公告 -->
-    <div class="section-label reveal d5" style="margin-top: 3rem;">
-      <span class="section-num">§ 04</span>
-      <div class="section-rule-line"></div>
-      <span class="section-title">正式公告</span>
-      <div class="section-rule-line"></div>
-    </div>
+    console.log("收集到的問卷資料:", formData);
 
-    <div class="notice-block reveal d6">
-      <div class="notice-header">
-        <span class="notice-stamp">NOTICE · 公告</span>
-        <div class="notice-title-group">
-          <div class="notice-eyebrow">OFFICIAL ANNOUNCEMENT</div>
-          <div class="notice-title">預約與請假守則公告</div>
-        </div>
-      </div>
-      <div class="notice-body">
-        <p class="notice-intro">
-          各位學生與家長您好，目前正值各大考試衝刺期（<strong>會考、學測、GEPT、多益</strong>等），教學時段需求極高。為確保每位學員之上課權益與學習連續性，並避免寶貴時段因臨時缺席而浪費，特此重申以下請假規範。
-        </p>
-
-        <div class="notice-rules-title">SCHEDULE OF PENALTIES · 規範統整</div>
-
-        <div class="notice-rule-row">
-          <span class="notice-rule-period">平日（週一至週五）</span>
-          <div class="notice-rule-detail">
-            上課前 12–24 小時提出：<span class="penalty">扣 0.5 堂</span><br>
-            上課前 12 小時內提出：<span class="penalty">扣 1 堂</span>
-          </div>
-        </div>
-
-        <div class="notice-rule-row">
-          <span class="notice-rule-period">週六及國定假日</span>
-          <div class="notice-rule-detail">
-            需於 24 小時前提出，否則視同已使用，<span class="penalty">扣 1 堂</span>
-          </div>
-        </div>
-
-        <div class="notice-rule-row">
-          <span class="notice-rule-period">病假（申請核准後）</span>
-          <div class="notice-rule-detail">
-            6 小時內提出：免扣；3 小時內提出：<span class="penalty">扣 0.5 堂</span>
-          </div>
-        </div>
-
-      </div>
-      <div class="notice-footer">
-        <div class="notice-sign">
-          感謝您的理解與配合。<br>
-          <strong>Tony 線上美語家教</strong> 敬上
-        </div>
-        <a href="https://tonyonlineenglish.netlify.app/2550mbk" target="_blank" class="btn-book">
-          立即線上預約課程 →
-        </a>
-      </div>
-    </div>
-
-  </main>
-
-  <footer class="page-footer">
-    <p class="footer-text">Tony Online English · DOC-REG-2024-001 · 本規範保留修訂權利</p>
-  </footer>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", function () {
-      const questions = document.querySelectorAll(".faq-question");
-      questions.forEach(q => {
-        q.addEventListener("click", function () {
-          const answer = this.nextElementSibling;
-          const icon = this.querySelector('.faq-icon');
-          const isOpen = this.classList.contains('active');
-
-          document.querySelectorAll('.faq-question.active').forEach(other => {
-            other.classList.remove('active');
-            other.querySelector('.faq-icon').textContent = '＋';
-            const otherAns = other.nextElementSibling;
-            otherAns.style.maxHeight = null;
-            otherAns.classList.remove('open');
-          });
-
-          if (!isOpen) {
-            this.classList.add('active');
-            icon.textContent = '×';
-            answer.style.maxHeight = answer.scrollHeight + "px";
-            answer.classList.add('open');
-          }
-        });
-      });
+    // ==========================================
+    // 這裡可以串接你的 Google Apps Script (GAS) URL
+    // const GAS_URL = "你的 Google App Script 網址"; 
+    // ==========================================
+    
+    /* 
+    fetch(GAS_URL, {
+        method: "POST",
+        mode: "no-cors",
+        body: new URLSearchParams(formData)
+    }).then(() => {
+        showSuccess();
+    }).catch(err => {
+        alert("傳送失敗，請檢查網路連線。");
+        btn.innerText = "送出回饋問卷";
+        btn.disabled = false;
     });
-  </script>
+    */
+
+    // 這裡用 setTimeout 模擬網路傳輸等待時間 (1.5秒後顯示成功)
+    setTimeout(() => {
+        document.getElementById('gept-feedback-form').style.display = 'none';
+        const successMsg = document.getElementById('success-msg');
+        successMsg.style.display = 'block';
+        successMsg.style.animation = 'fadeUp 0.6s ease forwards';
+    }, 1500);
+}
+</script>
 
 </body>
 </html>
