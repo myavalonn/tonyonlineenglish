@@ -24,7 +24,7 @@
         }
 
         /* Hero Carousel Section */
-        .hero-slider {
+        .hero-slider-wrapper {
             position: relative;
             height: 500px;
             width: 100%;
@@ -37,7 +37,7 @@
         .slides {
             display: flex;
             height: 100%;
-            transition: transform 0.8s cubic-bezier(0.45, 0, 0.55, 1);
+            /* 這裡的 transition 會由 JS 動態控制以達到無縫循環 */
         }
 
         .slide {
@@ -70,6 +70,60 @@
             margin-bottom: 10px;
         }
 
+        /* 輪播箭頭 (透明低調版) */
+        .slider-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 255, 255, 0.15);
+            border: none;
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 1.8rem;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            cursor: pointer;
+            z-index: 10;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .slider-btn:hover {
+            background: rgba(255, 255, 255, 0.4);
+            color: white;
+        }
+
+        .prev-btn { left: 15px; }
+        .next-btn { right: 15px; }
+
+        /* 輪播點點 */
+        .dots-container {
+            position: absolute;
+            bottom: 25px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+            z-index: 10;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.4);
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .dot:hover { background: rgba(255, 255, 255, 0.8); }
+        .dot.active {
+            background: white;
+            transform: scale(1.3);
+        }
+
         /* Container */
         .container {
             max-width: 1100px;
@@ -87,7 +141,7 @@
         /* Info Cards */
         .info-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
             gap: 25px;
             margin-bottom: 50px;
         }
@@ -139,7 +193,7 @@
             margin-right: 12px;
         }
 
-        /* Footer & Contact Section - Optimized for Mobile Email */
+        /* Footer & Contact Section */
         .footer {
             background: #f1f2f6;
             padding: 80px 20px;
@@ -152,12 +206,12 @@
             background: white;
             display: inline-block;
             width: 100%;
-            max-width: 450px; /* 限制最大寬度防止在平板上過寬 */
+            max-width: 450px;
             padding: 30px 20px;
             border-radius: 25px;
             box-shadow: var(--card-shadow);
             margin-bottom: 35px;
-            box-sizing: border-box; /* 確保 padding 不會撐破寬度 */
+            box-sizing: border-box;
         }
 
         .contact-item {
@@ -165,21 +219,47 @@
             align-items: center;
             justify-content: center;
             margin: 15px 0;
-            font-size: clamp(1rem, 4vw, 1.2rem);
+            /* 修正手機版字體大小，避免破版或單字被切斷 */
+            font-size: clamp(0.9rem, 3.5vw, 1.1rem); 
             color: var(--text-dark);
-            /* 核心修正：處理長 Email 換行 */
-            word-break: break-all; 
+            word-break: normal; 
             overflow-wrap: break-word;
         }
 
         .contact-item strong {
-            white-space: nowrap; /* 讓 "Email:" 保持在一行 */
+            white-space: nowrap; 
             margin-right: 8px;
         }
 
         .contact-item i {
             margin-right: 10px;
             min-width: 25px;
+            font-size: 1.2rem;
+        }
+
+        /* Line 專屬加入按鈕 */
+        .line-add-btn {
+            background-color: #00c300;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-flex;
+            align-items: center;
+            box-shadow: 0 4px 10px rgba(0, 195, 0, 0.3);
+            transition: transform 0.2s;
+        }
+
+        .line-add-btn:hover {
+            transform: scale(1.05);
+            color: white;
+        }
+
+        .line-add-btn i {
+            margin-right: 8px;
+            color: white !important;
+            min-width: auto;
         }
 
         /* The CTA Button */
@@ -202,14 +282,19 @@
             .contact-card { padding: 25px 15px; }
             .hero-text h1 { font-size: 1.8rem; }
             .section-title { font-size: 1.6rem; }
+            .slider-btn { width: 40px; height: 40px; font-size: 1.2rem; }
         }
     </style>
 </head>
 <body>
 
     <!-- Hero Section -->
-    <div class="hero-slider">
+    <div class="hero-slider-wrapper">
+        <button class="slider-btn prev-btn" id="prevBtn"><i class="fas fa-chevron-left"></i></button>
+        <button class="slider-btn next-btn" id="nextBtn"><i class="fas fa-chevron-right"></i></button>
+        
         <div class="slides" id="slider">
+            <!-- Slide 1 -->
             <div class="slide" style="background-image: url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/yy-teoh-PnxiwxEDJ8Q-unsplash.jpg')">
                 <div class="slide-overlay"></div>
                 <div class="hero-text">
@@ -217,6 +302,7 @@
                     <p>專業線上美語，打好孩子英文基礎</p>
                 </div>
             </div>
+            <!-- Slide 2 -->
             <div class="slide" style="background-image: url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/childrens-chinese-course-online-BLCU-2.jpg')">
                 <div class="slide-overlay"></div>
                 <div class="hero-text">
@@ -224,6 +310,7 @@
                     <p>互動式趣味課堂，建立學習自信</p>
                 </div>
             </div>
+            <!-- Slide 3 -->
             <div class="slide" style="background-image: url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/Child-learning-Chinese-online-1.jpg')">
                 <div class="slide-overlay"></div>
                 <div class="hero-text">
@@ -231,7 +318,18 @@
                     <p>專業應試技巧與實用英語並重</p>
                 </div>
             </div>
+            <!-- Slide 4 (新增) -->
+            <div class="slide" style="background-image: url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/%E6%88%AA%E5%9C%96%202026-05-05%20%E4%B8%8B%E5%8D%888.42.23.png?updatedAt=1777984951453')">
+                <div class="slide-overlay"></div>
+                <div class="hero-text">
+                    <h1>銜接國中課程</h1>
+                    <p>無縫接軌進階英文，領先一步</p>
+                </div>
+            </div>
         </div>
+
+        <!-- 點點指示器會由 JS 動態生成 -->
+        <div class="dots-container" id="dotsContainer"></div>
     </div>
 
     <div class="container">
@@ -259,10 +357,19 @@
                 <p>🎲 故事、圖片與遊戲輔助</p>
                 <p>💡 課後單字挑戰抽測</p>
             </div>
+            <!-- 新增的 銜接國中 方格 -->
+            <div class="card">
+                <i class="fas fa-school"></i>
+                <h3>銜接國中英文</h3>
+                <p>🚀 提前熟悉國中題型架構</p>
+                <p>📚 擴充進階單字與文法觀念</p>
+                <p>🏆 建立升學英語自信心</p>
+            </div>
         </div>
 
         <div class="gept-box">
-            <h2>🏆 全民英檢 (GEPT) 資訊</h2>
+            <!-- 使用 white-space: nowrap 確保「資訊」不換行 -->
+            <h2>🏆 全民英檢 (GEPT) <span style="white-space: nowrap;">資訊</span></h2>
             <p>我們提供針對國小學生的英檢銜接指導，包含聽說讀寫全方位練習，讓孩子輕鬆應對檢定挑戰。</p>
         </div>
 
@@ -278,9 +385,11 @@
         <h2 style="margin-bottom: 30px;">立即報名，突破學習瓶頸！</h2>
         
         <div class="contact-card">
+            <!-- Line 專屬按鈕 -->
             <div class="contact-item">
-                <i class="fab fa-line" style="color: #00c300;"></i>
-                <strong>LINE:</strong> myavalon
+                <a href="https://line.me/ti/p/T9YdimtG8_" target="_blank" class="line-add-btn">
+                    <i class="fab fa-line"></i> 點此加入 LINE +1
+                </a>
             </div>
             <div class="contact-item">
                 <i class="fas fa-envelope" style="color: #ff7e5f;"></i>
@@ -299,15 +408,109 @@
     <!-- Layout Manager -->
     <script src="layout-manager.js"></script>
 
-    <!-- Slider Script -->
+    <!-- Infinite Loop Slider Script -->
     <script>
-        let current = 0;
-        const slides = document.getElementById('slider');
-        function rotate() {
-            current = (current + 1) % 3;
-            slides.style.transform = `translateX(-${current * 100}%)`;
+        const slider = document.getElementById('slider');
+        const dotsContainer = document.getElementById('dotsContainer');
+        const originalSlides = Array.from(document.querySelectorAll('.slide'));
+        const totalOriginalSlides = originalSlides.length;
+        
+        // 為了達到往右滑無縫循環，複製第一張跟最後一張圖片
+        const firstClone = originalSlides[0].cloneNode(true);
+        const lastClone = originalSlides[totalOriginalSlides - 1].cloneNode(true);
+        
+        slider.appendChild(firstClone);
+        slider.insertBefore(lastClone, originalSlides[0]);
+        
+        const allSlides = document.querySelectorAll('.slide');
+        let currentIndex = 1; // 從真正的第一張開始
+        let isTransitioning = false;
+        let slideInterval;
+
+        // 初始化位置
+        slider.style.transform = `translateX(-100%)`;
+
+        // 建立點點
+        originalSlides.forEach((_, index) => {
+            const dot = document.createElement('div');
+            dot.classList.add('dot');
+            if (index === 0) dot.classList.add('active');
+            
+            dot.addEventListener('click', () => {
+                if(isTransitioning || currentIndex === index + 1) return;
+                currentIndex = index + 1;
+                updateSlider();
+                resetInterval();
+            });
+            
+            dotsContainer.appendChild(dot);
+        });
+
+        const dots = document.querySelectorAll('.dot');
+
+        function updateDots() {
+            dots.forEach(dot => dot.classList.remove('active'));
+            let dotIndex = currentIndex - 1;
+            // 處理複製層的點點對應
+            if (currentIndex === allSlides.length - 1) dotIndex = 0;
+            if (currentIndex === 0) dotIndex = totalOriginalSlides - 1;
+            if(dots[dotIndex]) dots[dotIndex].classList.add('active');
         }
-        setInterval(rotate, 5000);
+
+        function updateSlider() {
+            isTransitioning = true;
+            slider.style.transition = 'transform 0.8s cubic-bezier(0.45, 0, 0.55, 1)';
+            slider.style.transform = `translateX(-${currentIndex * 100}%)`;
+            updateDots();
+        }
+
+        function nextSlide() {
+            if (isTransitioning) return;
+            currentIndex++;
+            updateSlider();
+        }
+
+        function prevSlide() {
+            if (isTransitioning) return;
+            currentIndex--;
+            updateSlider();
+        }
+
+        // 監聽動畫結束，若是假背景則偷偷切換回真背景 (實現無縫)
+        slider.addEventListener('transitionend', () => {
+            isTransitioning = false;
+            if (currentIndex === allSlides.length - 1) {
+                slider.style.transition = 'none';
+                currentIndex = 1;
+                slider.style.transform = `translateX(-${currentIndex * 100}%)`;
+            }
+            if (currentIndex === 0) {
+                slider.style.transition = 'none';
+                currentIndex = totalOriginalSlides;
+                slider.style.transform = `translateX(-${currentIndex * 100}%)`;
+            }
+        });
+
+        // 箭頭按鈕監聽
+        document.getElementById('nextBtn').addEventListener('click', () => {
+            nextSlide();
+            resetInterval();
+        });
+        document.getElementById('prevBtn').addEventListener('click', () => {
+            prevSlide();
+            resetInterval();
+        });
+
+        // 自動輪播
+        function startInterval() {
+            slideInterval = setInterval(nextSlide, 5000);
+        }
+        function resetInterval() {
+            clearInterval(slideInterval);
+            startInterval();
+        }
+        
+        startInterval();
     </script>
 </body>
 </html>
