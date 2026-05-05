@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: "Microsoft JhengHei", "PingFang TC", sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h2 {
+            color: #0056b3;
+            border-left: 5px solid #0056b3;
+            padding-left: 10px;
+            margin-top: 30px;
+        }
+        h3 {
+            color: #444;
+            background: #e9ecef;
+            padding: 8px 15px;
+            border-radius: 4px;
+        }
+        ul {
+            list-style-type: none;
+            padding-left: 0;
+        }
+        li {
+            margin-bottom: 8px;
+            padding-left: 20px;
+            position: relative;
+        }
+        li::before {
+            content: "•";
+            color: #0056b3;
+            font-weight: bold;
+            position: absolute;
+            left: 0;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table, th, td {
+            border: 1px solid #dee2e6;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: #0056b3;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f8f9fa;
+        }
+        .highlight {
+            background-color: #fff3cd;
+            padding: 15px;
+            border-left: 5px solid #ffc107;
+            margin: 20px 0;
+            font-weight: bold;
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+            table {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <p>根據您提供的照片，這台電腦的型號是 <strong>HP EliteDesk 800 G1 SFF</strong> (Small Form Factor)。這是一台 2013 年左右推出的商用桌上型電腦，其詳細硬體規格與擴充性如下：</p>
+
+    <h2>核心硬體規格</h2>
+    <ul>
+        <li><strong>處理器 (CPU)</strong>：支援第 4 代 Intel Core 處理器（例如 i3-4130、i5-4570、i7-4770 等）。</li>
+        <li><strong>晶片組</strong>：Intel Q87。</li>
+        <li><strong>記憶體 (RAM)</strong>：
+            <ul>
+                <li>插槽數量：4 個 DIMM 插槽。</li>
+                <li>類型：DDR3-1600 MHz。</li>
+                <li>最大支援容量：32 GB。</li>
+            </ul>
+        </li>
+        <li><strong>儲存裝置 (Storage)</strong>：支援 3.5 吋或 2.5 吋 SATA 硬碟/固態硬碟 (HDD/SSD)。</li>
+        <li><strong>內建顯示 (GPU)</strong>：Intel HD Graphics 4600。</li>
+        <li><strong>電源供應器 (PSU)</strong>：240 W (白金級效率)。</li>
+    </ul>
+
+    <h2>外部接口 (I/O Ports)</h2>
+    <h3>前方面板</h3>
+    <ul>
+        <li>USB 3.0 x 2，USB 2.0 x 2。</li>
+        <li>3.5mm 耳機插孔與麥克風插孔。</li>
+    </ul>
+    <h3>後方面板</h3>
+    <ul>
+        <li><strong>螢幕輸出</strong>：DisplayPort x 2，VGA x 1。</li>
+        <li>USB 接口：USB 3.0 x 2，USB 2.0 x 4。</li>
+        <li>網路：RJ-45 (Gigabit Ethernet)。</li>
+        <li>序列埠 (Serial Port)：1 個 RS-232。</li>
+        <li>音訊：3.5mm 音源輸入與輸出。</li>
+        <li>其他：PS/2 鍵盤與滑鼠接口。</li>
+    </ul>
+
+    <h2>擴充能力與尺寸</h2>
+    <ul>
+        <li><strong>擴充插槽</strong>：
+            <ul>
+                <li>PCIe x16 插槽 x 2 (其中一個以 x4 模式運行)。</li>
+                <li>PCIe x1 插槽 x 2。</li>
+                <li>注意：所有顯卡都必須是 Low-Profile (半高/窄卡) 規格。</li>
+            </ul>
+        </li>
+        <li><strong>機殼尺寸</strong>：約 33.8 x 37.9 x 10 公分。</li>
+        <li><strong>重量</strong>：約 7.6 公斤。</li>
+    </ul>
+    <p>這台機器非常適合文書處理和網頁瀏覽。若想提升流暢度，建議優先將傳統硬碟 (HDD) 更換為 SATA SSD，並將記憶體提升至 8GB 或 16GB。</p>
+
+    <hr>
+
+    <p>您的這台 HP EliteDesk 800 G1 SFF，透過後方的 DisplayPort (DP) 接口，規格支援如下：</p>
+
+    <h2>1. 解析度支援能力</h2>
+    <ul>
+        <li><strong>1080p (1920 x 1080)</strong>：<strong>完全支援</strong>。這是這台電腦最理想的運作解析度，文字和畫面會非常清晰穩定。</li>
+        <li><strong>4K (3840 x 2160)</strong>：<strong>技術上支援，但有限制</strong>。
+            <ul>
+                <li>這台主機搭載的第 4 代 Intel 內顯（HD 4600）可以透過 DP 輸出 4K 訊號。</li>
+                <li>限制：如果您連接 4K 螢幕，可能只能達到 30Hz 的更新率（畫面捲動時會感覺有一點點「頓」），除非驅動程式與硬體配置完美契合才可能達到 60Hz。</li>
+                <li>不建議使用 4K 做為日常文書：因為這台機器的處理能力較舊，推動 4K 像素對系統負擔較重，操作感可能不如 1080p 流暢。</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h2>2. 為什麼建議您用 1080p？</h2>
+    <p>針對您提到的「打字字體模糊」問題：</p>
+    <ul>
+        <li><strong>原生解析度最清晰</strong>：如果您目前的螢幕是 1080p 的，那麼使用 DP 轉 HDMI 線 或 DP 線 輸出 1080p 訊號，就能達到「點對點」精確顯示，這會讓字體瞬間變得銳利清晰。</li>
+        <li><strong>內顯負擔小</strong>：在 1080p 下，您的 i5 或 i7 處理器（HD 4600）運行起來非常輕鬆，開啟網頁或教學檔案會非常流暢。</li>
+    </ul>
+
+    <h2>3. 整理規格清單 (HP EliteDesk 800 G1 SFF)</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>組件</th>
+                <th>規格說明</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>處理器</td>
+                <td>第 4 代 Intel Core i3 / i5 / i7</td>
+            </tr>
+            <tr>
+                <td>記憶體</td>
+                <td>4 個插槽，最高支援 32GB DDR3</td>
+            </tr>
+            <tr>
+                <td>螢幕輸出</td>
+                <td>DisplayPort x 2 (支援 4K), VGA x 1</td>
+            </tr>
+            <tr>
+                <td>USB 接口</td>
+                <td>USB 3.0 x 4 (前2後2), USB 2.0 x 6</td>
+            </tr>
+            <tr>
+                <td>擴充槽</td>
+                <td>2 個 PCIe x16 (僅限 Low-Profile 窄卡)</td>
+            </tr>
+            <tr>
+                <td>電源</td>
+                <td>240W (80 PLUS 白金級，轉換效率極高)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="highlight">
+        最後建議：您不需要買那張 1,590 元的 N210 顯卡，因為它的效能甚至比不上您這台電腦「內建」的顯示晶片。買一條 200-300 元左右的「DP 轉 HDMI 轉接線」，插在主機後方的 DP 孔，就能讓您的 1080p 螢幕恢復應有的清晰度了！
+    </div>
+</div>
+
+</body>
+</html>
