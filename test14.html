@@ -1,258 +1,505 @@
 <!DOCTYPE html>
-<html lang="zh-TW">
+<html lang="zh-Hant">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Tony線上美語家教 - 雙場景聯名更新</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>請假調課規範 - Tony線上美語家教</title>
+  <meta property="og:title" content="請假調課規範詳情 - Tony線上美語家教">
+  <meta property="og:description" content="請學員詳細閱讀，確保雙方權益，謝謝您的合作">
+  <meta property="og:image" content="https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/rules-3.png">
+  <meta property="og:url" content="https://tonyonlineenglish.netlify.app/regulations">
+  <meta property="og:type" content="website">
+  
+  <script src="layout-manager.js"></script>
+  <style>
+    /* 基礎重置與變數 */
+    :root {
+      --primary-dark: #0f172a; /* 專業深藍 */
+      --primary-blue: #2563eb;
+      --accent-gold: #f59e0b;
+      --danger-red: #ef4444;
+      --bg-light: #f8fafc;
+      --text-main: #334155;
+      --text-dark: #0f172a;
+      
+      --grad-1: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+      --grad-2: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%);
+      --grad-3: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Helvetica Neue', Helvetica, Arial, 'PingFang TC', '微軟正黑體', sans-serif;
+      background-color: #fdf8f1; /* 溫和的象牙白背景，保護眼睛 */
+      color: var(--text-main);
+      line-height: 1.6;
+      word-break: break-word;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* =========================================
+       上方四個按鈕 (規範重點區塊)
+       ========================================= */
+    .bar-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 3rem 1.5rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+
+    .bar {
+      position: relative;
+      width: 100%;
+      border-radius: 24px;
+      padding: 1.8rem 2.5rem;
+      font-weight: bold;
+      font-size: clamp(1.3rem, 3.5vw, 1.8rem); /* 響應式字體 */
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.08);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      animation: fadeInUp 0.8s ease forwards;
+      opacity: 0;
+      transform: translateY(20px);
+    }
+
+    .bar:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.12);
+    }
+
+    /* 動畫延遲 */
+    .bar1 { animation-delay: 0.1s; background: #ffffff; border-left: 8px solid #10b981; color: var(--text-dark); }
+    .bar2 { animation-delay: 0.3s; background: #ffffff; border-left: 8px solid var(--primary-blue); color: var(--text-dark); }
+    .bar3 { animation-delay: 0.5s; background: #fff5f5; border-left: 8px solid var(--danger-red); color: var(--text-dark); flex-direction: column; align-items: flex-start; }
+    .bar4 { animation-delay: 0.7s; background: var(--primary-dark); color: #ffffff; flex-direction: column; text-align: center; }
+
+    .rule-icon-img {
+      height: 1.8rem;
+      margin-right: 12px;
+      vertical-align: middle;
+    }
+
+    /* 強調數字與文字 */
+    .number {
+      font-size: 1.8em;
+      font-weight: 900;
+      margin: 0 6px;
+      color: var(--primary-blue);
+    }
     
-    <!-- 引入中文字體與AI科技感英文字體 -->
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@700;900&family=Rajdhani:wght@600;700&display=swap" rel="stylesheet">
+    .bar1 .number { color: #10b981; }
+    .bar2 .number { color: var(--primary-blue); }
+    .bar3 .number { color: var(--danger-red); }
+
+    .highlight-red { color: var(--danger-red); font-weight: 900; }
     
-    <style>
-        /* 基礎重置 */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+    @keyframes fadeInUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-        :root {
-            --primary-orange: #FF6B00;
-            --light-orange: #FFA94D;
-            --ai-gray: #475569;
-            --bg-white: #ffffff;
-        }
+    /* 手機版按鈕區塊優化 */
+    @media (max-width: 768px) {
+      .bar-container { padding: 1.5rem 1rem; gap: 1rem; }
+      .bar { 
+        padding: 1.5rem; 
+        border-radius: 16px; 
+        font-size: 1.4rem; /* 手機上字體放大 */
+        border-left-width: 6px;
+      }
+      .rule-icon-img { height: 1.5rem; }
+      .number { font-size: 2em; display: inline-block; } /* 數字在手機上更巨大 */
+      .bar3 { font-size: 1.35rem; }
+    }
 
-        body {
-            background-color: #e2e8f0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            font-family: 'Noto Sans TC', sans-serif;
-            overflow: hidden;
-        }
+    /* =========================================
+       FAQ 區塊
+       ========================================= */
+    .extra-section {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
 
-        /* 9:16 手機版框架 */
-        .mobile-frame {
-            position: relative;
-            width: 100%;
-            max-width: 420px;
-            aspect-ratio: 9 / 16;
-            background-color: var(--bg-white);
-            box-shadow: 0 25px 50px -12px rgba(255, 107, 0, 0.2);
-            border-radius: 20px;
-            overflow: hidden;
-            display: flex;
-            flex-direction: column;
-            justify-content: flex-end; /* 讓文字內容靠下 */
-            padding: 2.5rem 2rem;
-            z-index: 1;
-        }
+    .faq-title {
+      font-size: 2.2rem;
+      color: var(--primary-dark);
+      margin-bottom: 2rem;
+      text-align: center;
+      font-weight: 900;
+      position: relative;
+    }
+    
+    .faq-title::after {
+      content: '';
+      display: block;
+      width: 60px;
+      height: 4px;
+      background: var(--accent-gold);
+      margin: 10px auto 0;
+      border-radius: 2px;
+    }
 
-        /* --- AI 科技感白色背景 --- */
-        .ai-grid {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            background-image: radial-gradient(var(--light-orange) 1.5px, transparent 1.5px);
-            background-size: 24px 24px; opacity: 0.15; z-index: -2;
-        }
+    .faq-item {
+      background: #ffffff;
+      border-radius: 12px;
+      margin-bottom: 1rem;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+      overflow: hidden;
+      border: 1px solid #e2e8f0;
+    }
 
-        .glow-orb {
-            position: absolute; border-radius: 50%; filter: blur(70px); z-index: -1;
-            animation: pulseOrb 6s infinite alternate ease-in-out;
-        }
-        .orb-top { width: 250px; height: 250px; background: rgba(255, 107, 0, 0.15); top: -50px; right: -80px; }
-        .orb-bottom { width: 300px; height: 300px; background: rgba(255, 169, 77, 0.15); bottom: -50px; left: -80px; animation-delay: -3s; }
+    .faq-question {
+      width: 100%;
+      text-align: left;
+      background: none;
+      border: none;
+      font-size: 1.3rem;
+      font-weight: bold;
+      color: var(--text-dark);
+      padding: 1.5rem;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      transition: background 0.3s;
+    }
 
-        .scanner-line {
-            position: absolute; top: 0; left: 0; width: 100%; height: 2px;
-            background: linear-gradient(90deg, transparent, var(--primary-orange), transparent);
-            box-shadow: 0 0 10px var(--primary-orange); opacity: 0.5;
-            animation: scanAI 3s infinite linear;
-        }
+    .faq-question:hover { background: #f8fafc; }
+    
+    .faq-icon {
+      font-size: 1.5rem;
+      color: var(--primary-blue);
+      transition: transform 0.3s;
+    }
+    
+    .faq-question.active .faq-icon {
+      transform: rotate(45deg);
+    }
 
-        /* --- 場景 1 & 轉場 動畫設定 (Intro Sequence) --- */
-        
-        /* 基礎頭像外框 */
-        .avatar-box {
-            position: absolute;
-            width: 160px; height: 160px;
-            padding: 6px;
-            z-index: 20;
-        }
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.4s ease-out;
+      background: #fdfdfd;
+    }
 
-        .avatar-box img {
-            width: 100%; height: 100%; object-fit: cover;
-            clip-path: polygon(20% 0%, 80% 0%, 100% 20%, 100% 80%, 80% 100%, 20% 100%, 0% 80%, 0% 20%);
-            background-color: #fff; box-shadow: 0 0 20px rgba(255, 107, 0, 0.5);
-        }
+    .faq-content {
+      padding: 0 1.5rem 1.5rem 1.5rem;
+      font-size: 1.2rem;
+      color: #475569;
+      line-height: 1.8;
+    }
 
-        /* HUD 科技角框 */
-        .avatar-box::before, .avatar-box::after {
-            content: ''; position: absolute; width: 20px; height: 20px; border: 3px solid var(--primary-orange);
-        }
-        .avatar-box::before { top: 0; left: 0; border-right: none; border-bottom: none; }
-        .avatar-box::after { bottom: 0; right: 0; border-left: none; border-top: none; }
+    .faq-content ul {
+      list-style: none;
+      padding-left: 0;
+    }
 
-        /* 頭像 1 (上方 ➔ 縮小至左上) */
-        .avatar-1 {
-            animation: sceneTransition1 4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-        }
-        @keyframes sceneTransition1 {
-            0%   { opacity: 0; top: 22%; left: 50%; transform: translate(-50%, -50%) scale(0.3); }
-            12%  { opacity: 1; top: 22%; left: 50%; transform: translate(-50%, -50%) scale(1.1); }
-            16%  { opacity: 1; top: 22%; left: 50%; transform: translate(-50%, -50%) scale(1); }
-            70%  { opacity: 1; top: 22%; left: 50%; transform: translate(-50%, -50%) scale(1); } /* 停留 Scene 1 */
-            100% { opacity: 1; top: 15%; left: 22%; transform: translate(-50%, -50%) scale(0.5); } /* 移動到 Scene 2 */
-        }
+    .faq-content li {
+      margin-bottom: 0.8rem;
+      padding-left: 1.5rem;
+      position: relative;
+    }
 
-        /* 中間發光的 X (中間 ➔ 縮小至中上) */
-        .cross-mark {
-            position: absolute;
-            font-family: 'Rajdhani', sans-serif;
-            font-weight: 900; color: var(--primary-orange);
-            z-index: 20;
-            animation: sceneTransitionX 4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-        }
-        @keyframes sceneTransitionX {
-            0%, 17% { opacity: 0; top: 50%; left: 50%; font-size: 5.5rem; transform: translate(-50%, -50%) scale(0) rotate(-90deg); }
-            25% { opacity: 1; top: 50%; left: 50%; font-size: 5.5rem; transform: translate(-50%, -50%) scale(1.2) rotate(10deg); text-shadow: 0 0 35px orange; }
-            29% { opacity: 1; top: 50%; left: 50%; font-size: 5.5rem; transform: translate(-50%, -50%) scale(1) rotate(0deg); text-shadow: 0 0 15px rgba(255,107,0,0.6); }
-            70% { opacity: 1; top: 50%; left: 50%; font-size: 5.5rem; transform: translate(-50%, -50%) scale(1) rotate(0deg); }
-            100% { opacity: 1; top: 15%; left: 50%; font-size: 5.5rem; transform: translate(-50%, -50%) scale(0.4) rotate(0deg); text-shadow: 0 0 10px rgba(255,107,0,0.4); }
-        }
+    .faq-content li::before {
+      content: '❖';
+      position: absolute;
+      left: 0;
+      color: var(--accent-gold);
+    }
 
-        /* 頭像 2 (下方 ➔ 縮小至右上) */
-        .avatar-2 {
-            animation: sceneTransition2 4s cubic-bezier(0.25, 1, 0.5, 1) forwards;
-        }
-        @keyframes sceneTransition2 {
-            0%, 35% { opacity: 0; top: 78%; left: 50%; transform: translate(-50%, -50%) scale(0.3); }
-            43% { opacity: 1; top: 78%; left: 50%; transform: translate(-50%, -50%) scale(1.1); }
-            47% { opacity: 1; top: 78%; left: 50%; transform: translate(-50%, -50%) scale(1); }
-            70% { opacity: 1; top: 78%; left: 50%; transform: translate(-50%, -50%) scale(1); }
-            100% { opacity: 1; top: 15%; left: 78%; transform: translate(-50%, -50%) scale(0.5); }
-        }
+    .faq-content a {
+      display: inline-block;
+      margin-top: 10px;
+      color: var(--primary-blue);
+      text-decoration: none;
+      font-weight: bold;
+      border-bottom: 2px solid var(--primary-blue);
+    }
 
+    .highlight-box {
+      background: #fff8e6;
+      border-left: 4px solid var(--accent-gold);
+      padding: 1rem 1.5rem;
+      margin-top: 1rem;
+      border-radius: 0 8px 8px 0;
+      color: var(--text-dark);
+      font-weight: bold;
+    }
 
-        /* --- 場景 2：主要文字內容 (等場景 1 結束才飛入) --- */
-        .content-wrapper {
-            position: relative;
-            z-index: 10;
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-            margin-top: 130px; /* 避開 Scene 2 上方的縮小頭像 */
-        }
+    /* =========================================
+       公告區塊
+       ========================================= */
+    .announcement-box {
+      margin: 3rem 0;
+      padding: 3rem;
+      background: #ffffff;
+      border-radius: 20px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.08);
+      border-top: 8px solid var(--primary-blue);
+      text-align: center;
+    }
 
-        .en-text { font-family: 'Rajdhani', sans-serif; text-transform: uppercase; letter-spacing: 2px; color: var(--primary-orange); display: block; }
+    .announcement-title {
+      font-size: 1.8rem;
+      color: var(--primary-blue);
+      font-weight: 900;
+      margin-bottom: 1.5rem;
+    }
 
-        /* 品牌區塊 (4.2秒後飛入) */
-        .brand-section {
-            opacity: 0; transform: translateX(-30px);
-            animation: flyInLeft 1.2s cubic-bezier(0.1, 0.8, 0.2, 1) forwards 4.2s;
-        }
-        .brand-zh { font-size: 1.8rem; font-weight: 900; color: var(--ai-gray); line-height: 1.2; }
-        .brand-zh span { color: var(--primary-orange); }
-        .brand-en { font-size: 0.9rem; font-weight: 700; margin-top: 4px; }
+    .announcement-box p {
+      font-size: 1.25rem;
+      margin-bottom: 1rem;
+      color: var(--text-main);
+    }
 
-        /* 更新標題 (4.6秒後飛入) */
-        .update-section {
-            opacity: 0; transform: translateX(30px); text-align: right; border-right: 4px solid var(--primary-orange); padding-right: 15px;
-            animation: flyInRight 1.2s cubic-bezier(0.1, 0.8, 0.2, 1) forwards 4.6s;
-        }
-        .update-zh { font-size: 2.2rem; font-weight: 900; color: #0f172a; line-height: 1.2; }
-        .update-en { font-size: 0.95rem; font-weight: 700; margin-top: 5px; }
+    .hr-divider {
+      border: 0;
+      height: 1px;
+      background: linear-gradient(to right, transparent, #cbd5e1, transparent);
+      margin: 2rem 0;
+    }
 
-        /* 功能框 (5.0秒後飛入) */
-        .feature-box {
-            position: relative; background: rgba(255, 255, 255, 0.8); border: 1px solid rgba(255, 107, 0, 0.3);
-            backdrop-filter: blur(10px); padding: 1.8rem 1rem; text-align: center; border-radius: 8px;
-            box-shadow: 0 10px 30px rgba(255, 107, 0, 0.1); opacity: 0; transform: translateY(30px);
-            animation: flyInUp 1.2s cubic-bezier(0.1, 0.8, 0.2, 1) forwards 5.0s;
-        }
+    .info-list {
+      text-align: left;
+      display: inline-block;
+      background: #f8fafc;
+      padding: 2rem;
+      border-radius: 12px;
+      width: 100%;
+      max-width: 650px;
+    }
 
-        .feature-box::before, .feature-box::after {
-            content: ''; position: absolute; width: 30px; height: 30px; border: 4px solid var(--primary-orange);
-        }
-        .feature-box::before { top: -2px; left: -2px; border-right: none; border-bottom: none; }
-        .feature-box::after { bottom: -2px; right: -2px; border-left: none; border-top: none; }
+    .info-list p { font-size: 1.2rem; margin-bottom: 0.5rem; }
 
-        .feature-zh { font-size: 2.5rem; font-weight: 900; color: #000; display: block; line-height: 1.1; }
-        .feature-en { font-size: 1.1rem; font-weight: 700; margin-top: 8px; color: var(--ai-gray); }
+    .btn-action {
+      display: inline-block;
+      margin-top: 2rem;
+      padding: 1rem 3rem;
+      font-size: 1.4rem;
+      font-weight: bold;
+      color: #fff;
+      background: var(--primary-blue);
+      border-radius: 50px;
+      text-decoration: none;
+      box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+      transition: all 0.3s;
+    }
 
-        .plus-sign { font-size: 2.2rem; font-weight: 900; color: var(--primary-orange); margin: 0.5rem 0; display: block; animation: aiPulse 1.5s infinite; }
+    .btn-action:hover {
+      background: var(--primary-dark);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.4);
+    }
 
-        .sys-code {
-            position: absolute; top: 15px; left: 15px; font-family: 'Rajdhani', sans-serif;
-            font-size: 0.75rem; color: var(--light-orange); letter-spacing: 1px; opacity: 0.7; z-index: 50;
-        }
+    /* 文字色彩輔助類 */
+    .text-blue { color: var(--primary-blue); font-weight: bold; }
+    .text-red { color: var(--danger-red); font-weight: bold; }
+    .text-gold { color: var(--accent-gold); font-weight: bold; }
 
-        /* --- 文字飛入動畫 --- */
-        @keyframes flyInLeft { 0% { opacity: 0; transform: translateX(-30px); } 100% { opacity: 1; transform: translateX(0); } }
-        @keyframes flyInRight { 0% { opacity: 0; transform: translateX(30px); } 100% { opacity: 1; transform: translateX(0); } }
-        @keyframes flyInUp { 0% { opacity: 0; transform: translateY(30px); } 100% { opacity: 1; transform: translateY(0); } }
-        @keyframes aiPulse { 0%, 100% { transform: scale(1); text-shadow: 0 0 5px rgba(255,107,0,0.2); } 50% { transform: scale(1.2); text-shadow: 0 0 20px rgba(255,107,0,0.8); } }
-        @keyframes pulseOrb { 0% { transform: scale(1); opacity: 0.5; } 100% { transform: scale(1.2); opacity: 1; } }
-        @keyframes scanAI { 0% { top: 0; opacity: 0; } 10% { opacity: 0.8; } 90% { opacity: 0.8; } 100% { top: 100%; opacity: 0; } }
-
-        /* 小螢幕響應式微調 */
-        @media (max-width: 380px) {
-            .feature-zh { font-size: 2.2rem; }
-            .update-zh { font-size: 1.8rem; }
-            .brand-zh { font-size: 1.6rem; }
-        }
-    </style>
+    /* 手機版 FAQ 與公告優化 */
+    @media (max-width: 768px) {
+      .faq-title { font-size: 1.8rem; }
+      .faq-question { font-size: 1.35rem; padding: 1.2rem; }
+      .faq-content { font-size: 1.2rem; padding: 0 1.2rem 1.2rem 1.2rem; }
+      
+      .announcement-box { padding: 2rem 1.2rem; border-radius: 16px; }
+      .announcement-title { font-size: 1.6rem; }
+      .announcement-box p { font-size: 1.2rem; }
+      .info-list { padding: 1.5rem 1rem; }
+      .btn-action { width: 100%; font-size: 1.3rem; }
+    }
+  </style>
 </head>
 <body>
 
-    <div class="mobile-frame">
-        <!-- 背景裝飾 -->
-        <div class="ai-grid"></div>
-        <div class="glow-orb orb-top"></div>
-        <div class="glow-orb orb-bottom"></div>
-        <div class="scanner-line"></div>
-        <div class="sys-code">SYS.UPDATE.V2.0 // COLLAB</div>
-
-        <!-- 照片 Scene 1 ➔ Scene 2 轉場區塊 (絕對定位) -->
-        <div class="avatar-box avatar-1">
-            <img src="https://ik.imagekit.io/lql1uveoc/IMG_9614.PNG?updatedAt=1750437382543" alt="Photo 1">
-        </div>
-        
-        <div class="cross-mark">X</div>
-        
-        <div class="avatar-box avatar-2">
-            <img src="https://ik.imagekit.io/lql1uveoc/IMG_9040.PNG" alt="Photo 2">
-        </div>
-
-        <!-- 場景 2：主要文字內容 -->
-        <div class="content-wrapper">
-            <!-- 品牌區塊 -->
-            <div class="brand-section">
-                <h2 class="brand-zh"><span>Tony</span>線上美語家教</h2>
-                <span class="en-text brand-en">Tony Online English Tutoring</span>
-            </div>
-            
-            <!-- 更新標題區塊 -->
-            <div class="update-section">
-                <h1 class="update-zh">線上預約系統<br>新增</h1>
-                <span class="en-text update-en">New Booking System Update</span>
-            </div>
-            
-            <!-- 功能區塊 -->
-            <div class="feature-box">
-                <div>
-                    <span class="feature-zh">課程查詢</span>
-                    <span class="en-text feature-en">Class Inquiry</span>
-                </div>
-                <span class="plus-sign">＋</span>
-                <div>
-                    <span class="feature-zh">取消功能</span>
-                    <span class="en-text feature-en">Cancellation</span>
-                </div>
-            </div>
-        </div>
+  <!-- 頂部四大規範按鈕區塊 -->
+  <div class="bar-container" id="main-content">
+    
+    <div class="bar bar1">
+      <img class="rule-icon-img" src="https://ik.imagekit.io/lql1uveoc/rules.png" alt="rule icon">
+      <span>
+        <span class="number">24</span>小時內請假或調課，扣<span class="number">0.5</span>堂<br>
+        <span style="font-size: 0.8em; font-weight: normal; color: #64748b;">（週六/國定假日扣 1 堂）</span>
+      </span>
     </div>
+
+    <div class="bar bar2">
+      <img class="rule-icon-img" src="https://ik.imagekit.io/lql1uveoc/rules.png" alt="rule icon">
+      <span>
+        <span class="number">12</span>小時內請假或調課，扣<span class="number">1</span>堂
+      </span>
+    </div>
+
+    <div class="bar bar3">
+      <div style="width: 100%;">
+        ⚠️ 週六及國定假日課程：<br>
+        需於 <span class="number">24</span> 小時前提出請假/調課。<br>
+        若未於24小時前提出，<span class="highlight-red">當堂課視同已使用（扣1堂）</span>。
+      </div>
+    </div>
+
+    <div class="bar bar4">
+      <div style="font-size: 1.1em; margin-bottom: 5px;">本規範適用於全部上課時段</div>
+      <div style="color: #cbd5e1; font-weight: normal; font-size: 0.85em;">（若請假/缺席頻繁，將取消該固定時段課程，改為線上預約）</div>
+    </div>
+
+  </div>
+
+  <!-- 常見問題區塊 -->
+  <div class="extra-section">
+    <h2 class="faq-title">學生請假規範常見問題</h2>
+
+    <div class="faq-item">
+      <button class="faq-question">1. 什麼情況下會扣除堂數？ <span class="faq-icon">＋</span></button>
+      <div class="faq-answer">
+        <div class="faq-content">
+          <ul>
+            <li><span class="text-blue">24小時內</span>提出請假/調課：<span class="text-red">扣除 0.5 堂</span> (週六/國定假日 1 堂)</li>
+            <li><span class="text-blue">12小時內</span>提出請假/調課：<span class="text-red">扣除 1 堂</span></li>
+            <li><span class="text-blue">週六/國定假日課程</span>需於 <span class="text-red">24小時前</span>提出，否則視同已使用。</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">2. 適用上課時段為？ <span class="faq-icon">＋</span></button>
+      <div class="faq-answer">
+        <div class="faq-content">
+          <p><strong>如果您的上課時間為：</strong></p>
+          <ul>
+            <li>週一至週五：10:00 AM ~ 10:00 PM</li>
+            <li>週六及國定假日：全天</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">3. 時常請假或缺席會怎樣？ <span class="faq-icon">＋</span></button>
+      <div class="faq-answer">
+        <div class="faq-content">
+          <div class="highlight-box">
+            ⭐ 若請假或缺席過於頻繁，Tony線上美語家教將 <span class="text-red">取消該固定時段課程</span>。<br>
+            建議您選擇更穩定的時段，或改透過線上系統彈性預約課程。
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">4. 生病突發狀況被扣堂數怎麼辦？ <span class="faq-icon">＋</span></button>
+      <div class="faq-answer">
+        <div class="faq-content">
+          <p>若因身體不適或突發疾病無法提前通知，請填寫下方表單提出申請，我們將由專人進行審核：</p>
+          <a href="https://tonyonlineenglish.netlify.app/sickleave" target="_blank">👉 點擊填寫：病假免扣堂數申請表單</a>
+          
+          <div class="highlight-box" style="margin-top: 1.5rem; background: #f1f5f9; border-color: #94a3b8;">
+            <strong>病假規範細節 (審核核准後)：</strong><br>
+            • 上課前 6 小時內提出申請，<span class="text-blue">不扣除堂數</span><br>
+            • 上課前 3 小時內提出申請，<span class="text-red">扣除 0.5 堂</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question">5. 實施後的成效如何？ <span class="faq-icon">＋</span></button>
+      <div class="faq-answer">
+        <div class="faq-content">
+          <p style="text-align: center; font-size: 1.3rem; font-weight: bold; color: var(--primary-blue);">
+            🎉 本規範自 2024 年實施以來，已有效幫助多位學生建立穩定的學習律動，並從家長回饋中取得顯著的學習成效！🎉
+          </p>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- 公告與預約區塊 -->
+  <div class="extra-section">
+    <div class="announcement-box">
+
+      <h2 class="announcement-title">【Tony 線上美語：課程預約與請假守則】</h2>
+
+      <p style="font-weight: bold;">各位學生與家長您好：</p>
+
+      <p>
+        目前正值各大考試衝刺期（<strong>會考、學測、GEPT、多益</strong>等），教學時段需求極高。為確保每位學生的 <span class="text-blue">上課權益與學習連續性</span>，並避免寶貴時段因臨時缺席而浪費，特此重申請假規範。
+      </p>
+
+      <hr class="hr-divider">
+
+      <div class="info-list">
+        <p class="text-blue" style="font-size: 1.4rem; border-bottom: 2px solid #cbd5e1; padding-bottom: 10px; margin-bottom: 15px;">📌 規範統整：</p>
+        <p><strong>平日 (週一至週五)：</strong></p>
+        <p>• 上課前 12–24 小時提出：<span class="text-red">扣 0.5 堂</span></p>
+        <p>• 上課前 12 小時內提出：<span class="text-red">扣 1 堂</span></p>
+        <br>
+        <p><strong>週六及國定假日：</strong></p>
+        <p>• 需於 <span class="text-red">24 小時前</span> 提出請假/調課。</p>
+        <p>• 若未提前 24 小時告知，<span class="text-red">視同已使用 (扣 1 堂)</span>。</p>
+      </div>
+
+      <hr class="hr-divider">
+
+      <p style="font-size: 1.3rem;">
+        🫶 感謝您的理解與配合，讓我們共同創造 <strong>最高質量的學習環境</strong>！
+      </p>
+      <p style="font-size: 1.2rem; margin-top: 1rem; font-weight: bold;">Tony 線上美語家教</p>
+
+      <a href="https://tonyonlineenglish.netlify.app/2550mbk" target="_blank" class="btn-action">
+        立即線上預約課程
+      </a>
+
+    </div>
+  </div>
+
+  <script>
+    // 進入頁面時平滑滾動
+    window.addEventListener('load', function() {
+      const content = document.getElementById('main-content');
+      if (content) {
+        setTimeout(() => {
+          content.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+      }
+    });
+
+    // 常見問題 (FAQ) 折疊邏輯優化
+    document.addEventListener("DOMContentLoaded", function() {
+      const faqQuestions = document.querySelectorAll(".faq-question");
+      
+      faqQuestions.forEach(question => {
+        question.addEventListener("click", function() {
+          const answer = this.nextElementSibling;
+          const icon = this.querySelector('.faq-icon');
+          
+          // 切換 active 狀態來旋轉圖示
+          this.classList.toggle('active');
+          
+          if (answer.style.maxHeight) {
+            answer.style.maxHeight = null;
+            icon.textContent = "＋";
+          } else {
+            answer.style.maxHeight = answer.scrollHeight + "px";
+            icon.innerHTML = "×";
+          }
+        });
+      });
+    });
+  </script>
 
 </body>
 </html>
