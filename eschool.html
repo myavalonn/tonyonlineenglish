@@ -26,11 +26,11 @@
         /* Hero Carousel Section */
         .hero-slider {
             position: relative;
-            height: 550px;
+            height: 500px;
             width: 100%;
             overflow: hidden;
-            border-bottom-left-radius: 60px;
-            border-bottom-right-radius: 60px;
+            border-bottom-left-radius: 40px;
+            border-bottom-right-radius: 40px;
             box-shadow: var(--card-shadow);
         }
 
@@ -54,7 +54,7 @@
         .slide-overlay {
             position: absolute;
             top: 0; left: 0; right: 0; bottom: 0;
-            background: rgba(0,0,0,0.35);
+            background: rgba(0,0,0,0.4);
         }
 
         .hero-text {
@@ -66,131 +66,98 @@
         }
 
         .hero-text h1 {
-            font-size: clamp(2.5rem, 8vw, 4rem);
-            margin-bottom: 15px;
-            text-shadow: 2px 4px 15px rgba(0,0,0,0.4);
+            font-size: clamp(2rem, 7vw, 3.5rem);
+            margin-bottom: 10px;
         }
 
-        .hero-text p {
-            font-size: 1.5rem;
-            opacity: 0.95;
-            text-shadow: 1px 2px 10px rgba(0,0,0,0.3);
-        }
-
-        /* Container & Titles */
+        /* Container */
         .container {
             max-width: 1100px;
             margin: 0 auto;
-            padding: 80px 20px;
+            padding: 60px 20px;
         }
 
         .section-title {
             text-align: center;
-            font-size: 2.5rem;
+            font-size: 2rem;
             color: var(--primary-color);
-            margin-bottom: 50px;
-            position: relative;
+            margin-bottom: 40px;
         }
 
         /* Info Cards */
         .info-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 30px;
-            margin-bottom: 60px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-bottom: 50px;
         }
 
         .card {
             background: white;
-            padding: 40px;
-            border-radius: 30px;
+            padding: 30px;
+            border-radius: 25px;
             box-shadow: var(--card-shadow);
-            transition: all 0.3s ease;
-            text-align: left;
-            position: relative;
-            overflow: hidden;
+            transition: transform 0.3s ease;
         }
 
-        .card:hover {
-            transform: translateY(-12px);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.15);
-        }
+        .card:hover { transform: translateY(-10px); }
 
         .card i {
-            font-size: 2.8rem;
-            margin-bottom: 20px;
-            background: linear-gradient(to right, var(--primary-color), var(--secondary-color));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-
-        .card h3 {
-            font-size: 1.6rem;
+            font-size: 2.5rem;
+            color: var(--primary-color);
             margin-bottom: 15px;
-            color: #2d3436;
-        }
-
-        .card p {
-            line-height: 1.8;
-            margin: 8px 0;
-            color: #636e72;
         }
 
         /* GEPT Special Box */
         .gept-box {
             background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
             color: white;
-            padding: 50px;
-            border-radius: 40px;
-            margin: 60px 0;
-            position: relative;
-            box-shadow: 0 20px 40px rgba(106, 17, 203, 0.3);
+            padding: 40px;
+            border-radius: 30px;
+            margin: 40px 0;
+            box-shadow: 0 15px 30px rgba(106, 17, 203, 0.2);
         }
 
-        .gept-box h2 {
-            font-size: 2.2rem;
-            margin-bottom: 20px;
-        }
-
-        /* Checkbox Features */
+        /* Why Choose Us Feature List */
         .feature-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
         }
 
         .feature-item {
             background: #fff;
-            padding: 20px 25px;
-            border-radius: 20px;
+            padding: 15px 20px;
+            border-radius: 15px;
             display: flex;
             align-items: center;
-            font-weight: 500;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
         }
 
         .feature-item i {
             color: #2ecc71;
-            font-size: 1.4rem;
-            margin-right: 15px;
+            margin-right: 12px;
         }
 
-        /* Footer & Contact */
+        /* Footer & Contact Section - Optimized for Mobile Email */
         .footer {
-            background: #f8f9fa;
-            padding: 100px 20px 60px;
+            background: #f1f2f6;
+            padding: 80px 20px;
             text-align: center;
-            border-top-left-radius: 60px;
-            border-top-right-radius: 60px;
+            border-top-left-radius: 40px;
+            border-top-right-radius: 40px;
         }
 
         .contact-card {
             background: white;
             display: inline-block;
-            padding: 40px;
-            border-radius: 30px;
+            width: 100%;
+            max-width: 450px; /* 限制最大寬度防止在平板上過寬 */
+            padding: 30px 20px;
+            border-radius: 25px;
             box-shadow: var(--card-shadow);
-            margin-bottom: 40px;
+            margin-bottom: 35px;
+            box-sizing: border-box; /* 確保 padding 不會撐破寬度 */
         }
 
         .contact-item {
@@ -198,120 +165,117 @@
             align-items: center;
             justify-content: center;
             margin: 15px 0;
-            font-size: 1.2rem;
+            font-size: clamp(1rem, 4vw, 1.2rem);
+            color: var(--text-dark);
+            /* 核心修正：處理長 Email 換行 */
+            word-break: break-all; 
+            overflow-wrap: break-word;
+        }
+
+        .contact-item strong {
+            white-space: nowrap; /* 讓 "Email:" 保持在一行 */
+            margin-right: 8px;
         }
 
         .contact-item i {
-            margin-right: 12px;
-            font-size: 1.5rem;
+            margin-right: 10px;
+            min-width: 25px;
         }
 
-        /* The Button */
+        /* The CTA Button */
         .btn-cta {
             background: linear-gradient(to right, #ff7e5f, #feb47b);
             color: white;
-            padding: 20px 50px;
-            border-radius: 100px;
+            padding: 18px 40px;
+            border-radius: 50px;
             text-decoration: none;
-            font-size: 1.3rem;
-            font-weight: 800;
+            font-size: 1.2rem;
+            font-weight: bold;
             display: inline-block;
-            box-shadow: 0 10px 20px rgba(255, 126, 95, 0.4);
-            transition: all 0.3s ease;
-            border: none;
-            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(255, 126, 95, 0.3);
+            transition: transform 0.2s ease;
         }
 
-        .btn-cta:hover {
-            transform: scale(1.08) rotate(-1deg);
-            box-shadow: 0 15px 30px rgba(255, 126, 95, 0.5);
-        }
+        .btn-cta:hover { transform: scale(1.05); }
 
-        @media (max-width: 768px) {
-            .container { padding: 40px 20px; }
-            .hero-slider { height: 400px; }
-            .section-title { font-size: 1.8rem; }
+        @media (max-width: 480px) {
+            .contact-card { padding: 25px 15px; }
+            .hero-text h1 { font-size: 1.8rem; }
+            .section-title { font-size: 1.6rem; }
         }
     </style>
 </head>
 <body>
 
-    <!-- Hero Section with Images -->
+    <!-- Hero Section -->
     <div class="hero-slider">
         <div class="slides" id="slider">
-            <!-- Slide 1 -->
             <div class="slide" style="background-image: url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/yy-teoh-PnxiwxEDJ8Q-unsplash.jpg')">
                 <div class="slide-overlay"></div>
                 <div class="hero-text">
                     <h1>國小學生加強培養</h1>
-                    <p>為孩子開啟通往世界的英語之窗</p>
+                    <p>專業線上美語，打好孩子英文基礎</p>
                 </div>
             </div>
-            <!-- Slide 2 -->
             <div class="slide" style="background-image: url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/childrens-chinese-course-online-BLCU-2.jpg')">
                 <div class="slide-overlay"></div>
                 <div class="hero-text">
-                    <h1>趣味互動教學</h1>
-                    <p>透過故事與遊戲，愛上說英文</p>
+                    <h1>聽說讀寫全面提升</h1>
+                    <p>互動式趣味課堂，建立學習自信</p>
                 </div>
             </div>
-            <!-- Slide 3 -->
             <div class="slide" style="background-image: url('https://ik.imagekit.io/lql1uveoc/HIgh%20Quality%20Pictures/Child-learning-Chinese-online-1.jpg')">
                 <div class="slide-overlay"></div>
                 <div class="hero-text">
-                    <h1>GEPT 證照銜接</h1>
-                    <p>專業引導，從小打造紮實英檢競爭力</p>
+                    <h1>GEPT 全民英檢相關</h1>
+                    <p>專業應試技巧與實用英語並重</p>
                 </div>
             </div>
         </div>
     </div>
 
     <div class="container">
-        <!-- Main Content -->
-        <h2 class="section-title">專業教學規劃</h2>
+        <!-- Course Content -->
+        <h2 class="section-title">課程特色與目標</h2>
         <div class="info-grid">
             <div class="card">
-                <i class="fas fa-child"></i>
+                <i class="fas fa-graduation-cap"></i>
                 <h3>適合對象</h3>
-                <p>🐢 國小三年級至六年級學生 🐣</p>
-                <p>🎯 目標：打好基礎、提高單字量</p>
-                <p>📚 培養獨立閱讀理解能力</p>
+                <p>🐢 國小三至六年級學生 🐣</p>
+                <p>💪 基礎紮根、提高單字量</p>
+                <p>📖 培養獨立閱讀理解力</p>
             </div>
             <div class="card">
-                <i class="fas fa-pencil-alt"></i>
+                <i class="fas fa-book-reader"></i>
                 <h3>學習內容</h3>
-                <p>🔡 常見單字與實用句型強化</p>
-                <p>⏳ 基礎文法概念與句子結構</p>
-                <p>✍️ 閱讀理解與基礎寫作練習</p>
-                <p>🗣️ 聽力口說訓練，建立自信</p>
+                <p>🔡 單字句型強化與基礎文法</p>
+                <p>✍️ 閱讀理解與寫作練習</p>
+                <p>🗣️ 口說與聽力專項訓練</p>
             </div>
             <div class="card">
-                <i class="fas fa-magic"></i>
-                <h3>教學特色</h3>
-                <p>🎭 互動式課堂，拒絕傳統死背</p>
-                <p>🎲 遊戲與趣味圖卡輔助學習</p>
-                <p>💡 課後單字挑戰，成效看得見</p>
+                <i class="fas fa-comments"></i>
+                <h3>教學方法</h3>
+                <p>🎭 互動式課堂，拒絕死背</p>
+                <p>🎲 故事、圖片與遊戲輔助</p>
+                <p>💡 課後單字挑戰抽測</p>
             </div>
         </div>
 
-        <!-- GEPT & Future -->
         <div class="gept-box">
-            <h2>🏆 全民英檢 (GEPT) 全方位預備</h2>
-            <p>我們不僅教英文，更協助孩子銜接正式檢定。提供初級英檢相關資訊、模擬題庫練習，並加強「聽說讀寫」四大區塊，讓孩子在面對考試時能遊刃有餘。</p>
+            <h2>🏆 全民英檢 (GEPT) 資訊</h2>
+            <p>我們提供針對國小學生的英檢銜接指導，包含聽說讀寫全方位練習，讓孩子輕鬆應對檢定挑戰。</p>
         </div>
 
-        <h2 class="section-title">為什麼選擇 Tony Online English？</h2>
         <div class="feature-grid">
-            <div class="feature-item"><i class="fas fa-check-circle"></i> 彈性學習：在家就能上課</div>
-            <div class="feature-item"><i class="fas fa-check-circle"></i> 1對1指導：專屬進度調整</div>
-            <div class="feature-item"><i class="fas fa-check-circle"></i> 系統教材：重點清晰好懂</div>
-            <div class="feature-item"><i class="fas fa-check-circle"></i> 高效提升：應試與實用並重</div>
+            <div class="feature-item"><i class="fas fa-check"></i> 彈性學習：在家上課</div>
+            <div class="feature-item"><i class="fas fa-check"></i> 1對1指導：專屬進度</div>
+            <div class="feature-item"><i class="fas fa-check"></i> 系統化教材：依考試設計</div>
         </div>
     </div>
 
-    <!-- Final Footer -->
+    <!-- Footer -->
     <div class="footer">
-        <h2 style="color: #2d3436; margin-bottom: 30px;">立即報名，讓我們一起突破英文學習瓶頸！</h2>
+        <h2 style="margin-bottom: 30px;">立即報名，突破學習瓶頸！</h2>
         
         <div class="contact-card">
             <div class="contact-item">
@@ -325,30 +289,25 @@
         </div>
 
         <div>
-            <!-- Updated Hyperlink -->
             <a href="https://tonyonlineenglish.netlify.app/exper" target="_blank" class="btn-cta">
-                <i class="fas fa-calendar-check"></i> 預約試聽課程
+                預約試聽課程
             </a>
         </div>
-
-        <p style="margin-top: 60px; color: #b2bec3; font-size: 0.9rem;">&copy; 2026 Tony Online English. 版權所有.</p>
+        <p style="margin-top: 50px; color: #95a5a6;">&copy; 2026 Tony Online English</p>
     </div>
 
-    <!-- Required Script -->
+    <!-- Layout Manager -->
     <script src="layout-manager.js"></script>
 
-    <!-- Carousel Script -->
+    <!-- Slider Script -->
     <script>
-        let currentSlide = 0;
-        const totalSlides = 3;
-        const slider = document.getElementById('slider');
-
-        function moveSlider() {
-            currentSlide = (currentSlide + 1) % totalSlides;
-            slider.style.transform = `translateX(-${currentSlide * 100}%)`;
+        let current = 0;
+        const slides = document.getElementById('slider');
+        function rotate() {
+            current = (current + 1) % 3;
+            slides.style.transform = `translateX(-${current * 100}%)`;
         }
-
-        setInterval(moveSlider, 5000); // 每5秒切換一張圖
+        setInterval(rotate, 5000);
     </script>
 </body>
 </html>
